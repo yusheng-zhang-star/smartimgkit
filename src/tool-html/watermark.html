@@ -1,0 +1,62 @@
+<div class="tool-workspace">
+                <!-- Before/After Preview -->
+        <div class="before-after-preview" id="beforeAfterPreview">
+          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-images">
+            <div class="before-after-item">
+              <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400&q=80" alt="Before" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
+              <div class="before-after-item-caption before">Before</div>
+            </div>
+            <div class="before-after-item">
+              <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
+                <span style="font-size:3rem;opacity:0.5;">🔏</span>
+              </div>
+              <div class="before-after-item-caption after">After — processed</div>
+            </div>
+          </div>
+        </div>        <input type="file" id="fileInput" accept="image/*" style="display:none;">
+      <label for="fileInput" class="dropzone" id="dropzone">
+          <div class="dropzone-icon">📤</div>
+          <h3>Drop an image here</h3>
+          <p>or click to browse. Supports JPG, PNG, WebP.</p>
+      </label>
+      <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Try with a sample image</span>
+        <div class="preview-area" id="previewArea">
+          <div class="preview-container"><canvas id="canvas" style="max-width:100%"></canvas></div>
+          <div style="max-width:500px;margin:16px auto">
+            <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:12px">
+              <button class="btn btn-secondary" id="textModeBtn" style="padding:8px 16px;font-size:.85rem">Text Watermark</button>
+              <button class="btn btn-secondary" id="imgModeBtn" style="padding:8px 16px;font-size:.85rem">Image Watermark</button>
+            </div>
+            <div id="textControls">
+              <input type="text" id="wmText" placeholder="Your watermark text" value="SmartImgKit">
+              <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
+                <div><label style="color:var(--text-secondary);font-size:.8rem">Color</label><input type="color" id="wmColor" value="#ffffff"></div>
+                <div><label style="color:var(--text-secondary);font-size:.8rem">Size</label><input type="number" id="wmSize" value="48" style="width:80px"></div>
+                <div><label style="color:var(--text-secondary);font-size:.8rem">Opacity</label><input type="range" id="wmOp" min="0" max="100" value="50" style="width:100px"></div>
+              </div>
+            </div>
+            <div id="imgControls" class="hidden">
+              <input type="file" id="wmImgInput" accept="image/*">
+          <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Try with a sample image</span>
+              <div style="margin-top:8px"><label style="color:var(--text-secondary);font-size:.8rem">Opacity</label><input type="range" id="wmImgOp" min="0" max="100" value="50" style="width:200px"></div>
+            </div>
+            <div style="margin-top:12px">
+              <label style="color:var(--text-secondary);font-size:.8rem">Position</label>
+              <select id="wmPos">
+                <option value="bottom-right">Bottom Right</option>
+                <option value="bottom-left">Bottom Left</option>
+                <option value="top-right">Top Right</option>
+                <option value="top-left">Top Left</option>
+                <option value="center">Center</option>
+              </select>
+            </div>
+          </div>
+          <div class="tool-actions">
+            <button class="btn btn-primary" id="applyBtn">🔏 Apply Watermark</button>
+            <button class="btn btn-secondary hidden" id="downloadBtn">⬇️ Download</button>
+            <button class="btn btn-secondary" id="resetBtn">🔄 New Image</button>
+          </div>
+          <div id="status" class="text-center mt-16" style="color:var(--text-secondary)"></div>
+        </div>
+      </div>

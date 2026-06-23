@@ -1,0 +1,108 @@
+<!-- Before/After Preview -->
+        <div class="before-after-preview" id="beforeAfterPreview">
+          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-images">
+            <div class="before-after-item">
+              <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">📄</span></div>
+              <div class="before-after-item-caption before">Before: PDF file</div>
+            </div>
+            <div class="before-after-item">
+              <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🖼️</span></div>
+              <div class="before-after-item-caption after">After: PNG/JPG images</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upload -->
+        <input type="file" id="fileInput" accept=".pdf" style="display:none;">
+          <label for="fileInput" class="dropzone" id="dropzone">
+            <div class="dropzone-icon">📄</div>
+            <h3>Upload PDF File</h3>
+            <p>Select a PDF file (max 100MB). Your file is processed entirely in your browser.</p>
+          </label>
+
+        <!-- PDF Info + Controls -->
+        <div class="controls hidden" id="controlsSection">
+            <h2 style="font-size:1.2rem;margin-bottom:1rem;padding-bottom:0.5rem;">⚙️ Conversion Settings</h2>
+            <div class="pdf-info" id="pdfInfo"></div>
+            <div class="control-row">
+                <label>Output Format</label>
+                <select id="outputFormat">
+                    <option value="png">PNG (best quality)</option>
+                    <option value="jpeg">JPG (smaller file)</option>
+                    <option value="webp">WebP (modern)</option>
+                </select>
+            </div>
+            <div class="control-row">
+                <label>Scale Factor</label>
+                <select id="scaleFactor">
+                    <option value="1">1x (original)</option>
+                    <option value="1.5">1.5x</option>
+                    <option value="2" selected>2x (recommended)</option>
+                    <option value="3">3x (high resolution)</option>
+                </select>
+            </div>
+            <div class="control-row">
+                <label>Page Range</label>
+                <input type="number" id="pageFrom" placeholder="From" style="width:80px;" min="1">
+                <span>to</span>
+                <input type="number" id="pageTo" placeholder="To" style="width:80px;" min="1">
+                <span style="font-size:0.85rem;">(leave blank for all pages)</span>
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-primary" id="convertBtn">📄 Convert PDF</button>
+                <button class="btn btn-secondary" id="resetBtn">Reset</button>
+            </div>
+          </div>
+
+        <!-- Status -->
+        <div class="hidden" id="statusSection">
+            <div class="status-text" id="statusText">Loading PDF...</div>
+        </div>
+
+        <!-- Results -->
+        <div class="preview-section hidden" id="resultSection">
+            <h2>🖼️ Converted Pages (<span id="convertedCount">0</span>)</h2>
+            <div class="pages-grid" id="pagesGrid"></div>
+            <div class="btn-row" style="justify-content:center;margin-top:1.5rem;">
+                <button class="btn btn-primary" id="downloadAllBtn">⬇️ Download All as ZIP</button>
+            </div>
+        </div>
+
+        <!-- Guide -->
+        <div class="guide">
+            <h2>📖 How to Convert PDF to Images</h2>
+            <ol>
+                <li><strong>Upload your PDF:</strong> Click the upload area and select a PDF file. It's loaded entirely in your browser — no server upload.</li>
+                <li><strong>Choose settings:</strong> Pick the output format (PNG for quality, JPG for smaller files), scale factor (2x is good for most uses), and page range.</li>
+                <li><strong>Convert:</strong> Click "Convert PDF". Each page is rendered to a canvas and exported as an image.</li>
+                <li><strong>Download:</strong> Download individual pages or all pages as a ZIP file.</li>
+            </ol>
+        </div>
+
+        <!-- FAQ -->
+        <div class="faq">
+            <h2>❓ FAQ — PDF to Image</h2>
+            <div class="faq-item">
+                <h3>Is there a file size limit?</h3>
+                <p>The tool runs in your browser, so very large PDFs (100+ MB) may cause memory issues. For best results, keep PDFs under 50MB.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Which output format should I choose?</h3>
+                <p><strong>PNG:</strong> Best quality, lossless, larger file size. Good for text documents and diagrams.<br>
+                <strong>JPG:</strong> Smaller file size, some quality loss. Good for photos.<br>
+                <strong>WebP:</strong> Modern format, good balance of quality and size.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Why is conversion slow?</h3>
+                <p>PDF rendering is CPU-intensive, especially at 2x or 3x scale. Complex PDFs with many fonts or graphics take longer. Be patient — it's running on your device, not a slow server.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Are my PDFs uploaded to a server?</h3>
+                <p>No. Everything happens in your browser using pdf.js. Your PDF never leaves your device.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Can I convert password-protected PDFs?</h3>
+                <p>Not currently. Please remove the password protection before uploading.</p>
+            </div>
+        </div>

@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-tool-id="image-filters">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Image Filters — Apply Beautiful Filters & Adjustments Free | SmartImgKit</title>
+  <meta name="description" content="Apply beautiful filters and fine-tune image adjustments online. 15+ preset filters plus brightness, contrast, saturation, blur sliders. Free, no uploads, 100% browser-based.">
+  <meta name="keywords" content="image filters, photo filters, image adjustment, brightness contrast, saturate, blur, vintage filter, sepia, grayscale, online photo editor">
+  <link rel="canonical" href="https://smartimgkit.com/tools/image-filters">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="Free Image Filters Tool — SmartImgKit">
+  <meta property="og:description" content="Apply beautiful filters and image adjustments online. 15+ preset filters, brightness/contrast/saturation sliders. Free, no signup, 100% browser-based.">
+  <meta property="og:url" content="https://smartimgkit.com/tools/image-filters">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/image-filters.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free Image Filters Tool — SmartImgKit">
+  <meta name="twitter:description" content="Apply beautiful filters and image adjustments online. 15+ preset filters, brightness/contrast/saturation sliders. Free, no signup, 100% browser-based.">
+  <meta name="twitter:image" content="https://smartimgkit.com/screenshots/image-filters.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <!-- Hreflang tags -->
+  <link rel="stylesheet" href="../css/style.css?v=3">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Image Filters",
+  "url": "https://smartimgkit.com/tools/image-filters",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Apply beautiful filters and fine-tune image adjustments online. 15+ preset filters plus brightness, contrast, saturation, blur sliders."
+}
+</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Apply Image Filters",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Upload Image",
+      "text": "Click the upload area or drag and drop your image file."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Choose Preset Filter",
+      "text": "Click a preset filter button to apply it instantly."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Fine-Tune",
+      "text": "Use the sliders to adjust brightness, contrast, saturation, blur, and hue rotate."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "name": "Download",
+      "text": "Click Download to save your filtered image."
+    }
+  ]
+}
+</script>
+  <style>
+    .filters-toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+        .filter-preset-btn {
+          padding: 8px 14px; border: 1px solid var(--border-color); border-radius: 8px;
+          background: var(--bg-primary); color: var(--text-secondary); cursor: pointer;
+          font-size: .8rem; transition: all .2s; white-space: nowrap;
+        }
+        .filter-preset-btn:hover { border-color: var(--accent); color: var(--text-primary); }
+        .filter-preset-btn.active { border-color: var(--accent); background: rgba(99,102,241,.1); color: var(--accent); }
+
+        .slider-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        @media (max-width: 600px) { .slider-grid { grid-template-columns: 1fr; } }
+        .slider-group { display: flex; flex-direction: column; gap: 4px; }
+        .slider-group label { font-size: .78rem; color: var(--text-secondary); font-weight: 500; display: flex; justify-content: space-between; }
+        .slider-group input[type="range"] { width: 100%; accent-color: var(--accent); }
+        .slider-value { color: var(--accent); font-weight: 600; }
+
+        .preview-wrapper {
+          background: repeating-conic-gradient(var(--bg-secondary) 0% 25%, var(--bg-primary) 0% 50%) 50% / 20px 20px;
+          border: 1px solid var(--border-color); border-radius: 12px; padding: 16px;
+          display: flex; align-items: center; justify-content: center; min-height: 350px; overflow: auto;
+        }
+        .preview-wrapper canvas { max-width: 100%; max-height: 65vh; border-radius: 4px; }
+
+        .tool-flex { display: flex; gap: 24px; flex-wrap: wrap; }
+        .tool-sidebar { flex: 0 0 320px; display: flex; flex-direction: column; gap: 14px; }
+        .tool-canvas-area { flex: 1; min-width: 300px; }
+        @media (max-width: 768px) { .tool-flex { flex-direction: column; } .tool-sidebar { flex: none; width: 100%; } }
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What filters are available?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Grayscale, sepia, blur, sharpen, invert, brightness, contrast, saturation, hue."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I apply multiple filters?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Filters can be stacked for combined effects."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my image uploaded to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All filter processing happens locally."
+      }
+    }
+  ]
+}
+</script>
+<style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+</head>
+<body>
+  <!-- Adsterra Social Bar (29640799) - Popunder 替代品,移动端友好 -->
+  <script src="https://pl29741298.effectivecpmnetwork.com/70/c0/84/70c084b07dadc5b3f66fae02aa21f788.js"></script>
+
+  <!-- Header: exact match image-rotator compact format -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover.html">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/about.html">About</a><a href="/contact.html">Contact</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher">
+          <button class="lang-btn" aria-label="Switch language">🇬🇧 EN</button>
+          <div class="lang-dropdown">
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+          </div>
+        </div>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/">Tools</a><span>/</span><span>🎨 Image Filters & Adjustments</span></nav>
+      <div class="tool-page-header">
+        <h1>🎨 Image Filters & Adjustments</h1>
+        <p>Apply beautiful preset filters and fine-tune brightness, contrast, saturation, blur, and hue. 100% browser-based, no uploads.</p>
+      </div>
+      <!-- Adsterra Native Banner (29640800) - 工具标题下,融入内容流 -->
+      <div class="ad-native-banner">
+        <script async="async" data-cfasync="false" src="https://pl29741299.effectivecpmnetwork.com/5a540a2ce35c794ad7d73a726a88971c/invoke.js"></script>
+        <div id="container-5a540a2ce35c794ad7d73a726a88971c"></div>
+      </div>
+      <div class="tool-workspace">
+<!-- Upload Area -->
+              <!-- Before/After Preview -->
+        <div class="before-after-preview" id="beforeAfterPreview">
+          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-images">
+            <div class="before-after-item">
+              <img src="https://images.unsplash.com/photo-1493552152660-f915ab47ae9d?w=400&q=80" alt="Before" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
+              <div class="before-after-item-caption before">Before</div>
+            </div>
+            <div class="before-after-item">
+              <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
+                <span style="font-size:3rem;opacity:0.5;">🎨</span>
+              </div>
+              <div class="before-after-item-caption after">After — processed</div>
+            </div>
+          </div>
+        </div>        <input type="file" id="fileInput" accept="image/*" style="display:none;">
+      <label for="fileInput" class="dropzone" id="dropzone">
+        <div class="dropzone-icon">📤</div>
+        <h3>Drop your image here</h3>
+        <p>or click to browse. Supports JPG, PNG, WebP, GIF, BMP.</p>
+      </label>
+      <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Try with a sample image</span>
+
+      <!-- Workspace -->
+      <div id="workspace" style="display:none">
+        <div class="tool-flex">
+          <div class="tool-sidebar">
+            <div>
+              <label style="font-size:.8rem;color:var(--text-secondary);font-weight:500;display:block;margin-bottom:8px;">Preset Filters</label>
+              <div class="filters-toolbar" id="presetBar">
+                <button class="filter-preset-btn active" data-filter="none">None</button>
+                <button class="filter-preset-btn" data-filter="grayscale">Grayscale</button>
+                <button class="filter-preset-btn" data-filter="sepia">Sepia</button>
+                <button class="filter-preset-btn" data-filter="invert">Invert</button>
+                <button class="filter-preset-btn" data-filter="blur">Blur</button>
+                <button class="filter-preset-btn" data-filter="vintage">Vintage</button>
+                <button class="filter-preset-btn" data-filter="cool">Cool</button>
+                <button class="filter-preset-btn" data-filter="warm">Warm</button>
+                <button class="filter-preset-btn" data-filter="vibrant">Vibrant</button>
+                <button class="filter-preset-btn" data-filter="polaroid">Polaroid</button>
+                <button class="filter-preset-btn" data-filter="emboss">Emboss</button>
+                <button class="filter-preset-btn" data-filter="sharpen">Sharpen</button>
+                <button class="filter-preset-btn" data-filter="hue-rotate">Hue Shift</button>
+                <button class="filter-preset-btn" data-filter="sataturate">Saturate</button>
+              </div>
+            </div>
+
+            <div class="slider-grid">
+              <div class="slider-group">
+                <label>Brightness <span class="slider-value" id="brightnessVal">100%</span></label>
+                <input type="range" id="brightness" min="0" max="300" value="100">
+              </div>
+              <div class="slider-group">
+                <label>Contrast <span class="slider-value" id="contrastVal">100%</span></label>
+                <input type="range" id="contrast" min="0" max="300" value="100">
+              </div>
+              <div class="slider-group">
+                <label>Saturation <span class="slider-value" id="saturationVal">100%</span></label>
+                <input type="range" id="saturation" min="0" max="300" value="100">
+              </div>
+              <div class="slider-group">
+                <label>Blur <span class="slider-value" id="blurVal">0px</span></label>
+                <input type="range" id="blur" min="0" max="20" value="0">
+              </div>
+              <div class="slider-group">
+                <label>Hue Rotate <span class="slider-value" id="hueVal">0°</span></label>
+                <input type="range" id="hueRotate" min="0" max="360" value="0">
+              </div>
+              <div class="slider-group">
+                <label>Opacity <span class="slider-value" id="opacityVal">100%</span></label>
+                <input type="range" id="opacity" min="0" max="100" value="100">
+              </div>
+            </div>
+
+            <div>
+              <label style="font-size:.8rem;color:var(--text-secondary);font-weight:500;display:block;margin-bottom:6px;">Output Format</label>
+              <select id="outputFormat" style="width:100%;padding:8px 10px;border:1px solid var(--border-color);border-radius:6px;background:var(--bg-primary);color:var(--text-primary);font-size:.85rem;">
+                <option value="image/png">PNG</option>
+                <option value="image/jpeg">JPG</option>
+                <option value="image/webp">WebP</option>
+              </select>
+            </div>
+
+            <div class="tool-actions" style="flex-direction:column;margin-top:8px;">
+              <button class="btn btn-primary" id="downloadBtn">💾 Download</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Reset All</button>
+            </div>
+            <div id="status" class="text-center" style="color:var(--text-secondary);font-size:.85rem;"></div>
+          </div>
+
+          <div class="tool-canvas-area">
+            <div class="preview-wrapper" id="previewWrapper">
+              <canvas id="previewCanvas"></canvas>
+            </div>
+            <div id="infoRow" style="margin-top:12px;display:flex;gap:12px;font-size:.8rem;color:var(--text-secondary);padding:8px 12px;background:var(--bg-secondary);border-radius:8px;">
+              <span>📐 Output: <b id="outSize">-</b></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <!-- Adsterra Banner 300x250 (29640802) - 工具区下方,黄金尺寸高 eCPM -->
+      <div class="ad-banner-300x250">
+        <script>
+          atOptions = {
+            'key' : 'c95d26a94d4f8dc640cd33ad5ec91528',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/c95d26a94d4f8dc640cd33ad5ec91528/invoke.js"></script>
+      </div>
+
+<section class="how-to-section">
+        <h2>How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step"><div class="step-number">1</div><h4>Upload Image</h4><p>Click the upload area or drag and drop your image file.</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>Choose Preset Filter</h4><p>Click a preset filter button to apply it instantly.</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>Fine-Tune</h4><p>Use the sliders to adjust brightness, contrast, saturation, blur, and hue rotate.</p></div>
+          <div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Click Download to save your filtered image.</p></div>
+        </div>
+      </section>
+
+<h2>Detailed User Guide</h2>
+        <div class="guide-block">
+          <h3>Step 1: Upload Your Image</h3>
+          <p>Click the upload area or drag and drop an image. Supported formats: JPG, PNG, WebP, GIF, BMP. The image loads instantly in your browser — nothing is uploaded to any server.</p>
+        </div>
+        <div class="guide-block">
+          <h3>Step 2: Apply a Preset Filter</h3>
+          <p>Click any of the 15 preset filter buttons to apply it instantly. Filters are applied non-destructively — you can switch between them or reset at any time. Available presets: None, Grayscale, Sepia, Invert, Blur, Vintage, Cool, Warm, Vibrant, Polaroid, Emboss, Sharpen, Hue Shift, Saturate.</p>
+        </div>
+        <div class="guide-block">
+          <h3>Step 3: Fine-Tune with Sliders</h3>
+          <p>Each slider gives you precise control:</p>
+          <ul>
+            <li><strong>Brightness (0-300%):</strong> Darken or brighten your image</li>
+            <li><strong>Contrast (0-300%):</strong> Make colors more or less distinct</li>
+            <li><strong>Saturation (0-300%):</strong> Control color intensity (0% = grayscale)</li>
+            <li><strong>Blur (0-20px):</strong> Soften details for a dreamy effect</li>
+            <li><strong>Hue Rotate (0-360°):</strong> Shift all colors around the color wheel</li>
+            <li><strong>Opacity (0-100%):</strong> Control overall transparency</li>
+          </ul>
+        </div>
+        <div class="guide-block">
+          <h3>Step 4: Download</h3>
+          <p>Choose your output format (PNG for quality, JPG for smaller files, WebP for modern compression) and click <strong>Download</strong>. The filtered image saves directly to your device.</p>
+        </div>
+        <div class="guide-block">
+          <h3>Best Use Cases</h3>
+          <ul>
+            <li><strong>Social media posts</strong> — Apply Vintage or Vibrant filters for eye-catching Instagram/Facebook photos</li>
+            <li><strong>Product photography</strong> — Use Vibrant or Polaroid filters for e-commerce listings</li>
+            <li><strong>Portrait touch-ups</strong> — Slightly increase brightness and saturation for better skin tones</li>
+            <li><strong>Black & white conversion</strong> — Use Grayscale preset + contrast adjustment</li>
+            <li><strong>Artistic effects</strong> — CombineBlur + Saturate for dreamy, stylized looks</li>
+          </ul>
+        </div>
+        <div class="guide-block">
+          <h3>Pro Tips</h3>
+          <ul>
+            <li>Preset filters and slider adjustments are combine — apply a preset first, then fine-tune with sliders</li>
+            <li>For portraits, increase brightness +5-10% and saturation +10-20% for a natural glow</li>
+            <li>Use the Vintage filter as a base, then reduce saturation slightly for a film photography look</li>
+            <li>Blur + high saturation creates a dreamy, impressionist painting effect</li>
+            <li>Reset any slider by double-clicking the value number next to the label</li>
+            <li>Save as PNG for maximum quality; use JPG at 90%+ quality for smaller files</li>
+          </ul>
+        </div>
+
+<section class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item"><button class="faq-question">Is my image uploaded to a server?</button><div class="faq-answer">No. All filtering happens entirely in your browser using the Canvas API. Your images never leave your device. There is no server that receives or stores your files.</div></div>
+      <div class="faq-item"><button class="faq-question">What image formats are supported?</button><div class="faq-answer">We support JPG, PNG, WebP, GIF, and BMP for input. You can download the result as PNG, JPG, or WebP.</div></div>
+      <div class="faq-item"><button class="faq-question">Can I combine multiple filters?</button><div class="faq-answer">Yes! The preset filters and slider adjustments are applied together. The Canvas filter property combines all effects in a single pass. Click a preset, then adjust sliders to create your custom look.</div></div>
+      <div class="faq-item"><button class="faq-question">Do filters reduce image quality?</button><div class="faq-answer">No. Filters are applied by the browser's Canvas rendering engine without re-compressing your image. For best quality, download as PNG format.</div></div>
+      <div class="faq-item"><button class="faq-question">Which preset filter is best for portraits?</button><div class="faq-answer">The Warm filter is flattering for skin tones. For a classic look, try Vintage. For a modern, crisp look, apply the Vibrant preset and reduce saturation slightly with the slider.</div></div>
+      <div class="faq-item"><button class="faq-question">Can I use this for commercial projects?</button><div class="faq-answer">Absolutely. The output images are yours to use for any purpose — personal or commercial. No watermarks, no attribution required.</div></div>
+      <div class="faq-item"><button class="faq-question">Why do colors look different after downloading?</button><div class="faq-answer">This can happen due to color space differences between browsers and image viewers. For consistent colors, use PNG format and view in a color-managed application like Photoshop or modern browsers.</div></div>
+      </section>
+
+<section class="related-tools">
+  <h2>You Might Also Like</h2>
+  <div class="related-tools-grid">
+    <a href="/tools/compressor.html" class="related-tool-card">
+      <span class="tool-icon">🗜️</span>
+      <div class="tool-info">
+        <strong>Image Compressor</strong>
+        <span class="tool-desc">Compress filtered images for web</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/tools/converter.html" class="related-tool-card">
+      <span class="tool-icon">🔄</span>
+      <div class="tool-info">
+        <strong>Image Converter</strong>
+        <span class="tool-desc">Convert filtered images to WebP/JPG</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/tools/meme-generator.html" class="related-tool-card">
+      <span class="tool-icon">😂</span>
+      <div class="tool-info">
+        <strong>Meme Generator</strong>
+        <span class="tool-desc">Apply filters then create viral memes</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+  </div>
+</section>
+    </div>
+
+</main>
+
+  <!-- Footer: exact match image-rotator compact format -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Free AI-powered image tools that respect your privacy.</p></div>
+        <div class="footer-links"><h4>Tools</h4><a href="/tools/background-remover.html">Background Remover</a><a href="/tools/compressor.html">Compressor</a><a href="/tools/converter.html">Converter</a><a href="/tools/resizer.html">Resizer</a>
+          <a href="/tools/gif-editor.html">GIF Editor</a>
+          <a href="/tools/pdf-to-image.html">PDF to Image</a>
+        </div>
+        <div class="footer-links"><h4>More Tools</h4><a href="/tools/cropper.html">Cropper</a><a href="/tools/watermark.html">Watermark</a><a href="/tools/image-merger.html">Image Merger</a><a href="/tools/screenshot-to-image.html">Screenshot to Image</a><a href="/tools/image-filters.html">Image Filters</a><a href="/tools/svg-to-png.html">SVG to PNG</a><a href="/tools/image-compare.html">Image Compare</a><a href="/tools/print-resizer.html">Print-Ready Resizer</a><a href="/tools/meme-generator.html">Meme Generator</a>          <a href="/tools/face-blur.html">Face Blur</a>
+          <a href="/tools/heic-converter.html">HEIC Converter</a>
+          <a href="/tools/metadata-viewer.html">Metadata Viewer</a>
+          <a href="/tools/avif-support.html">AVIF Support</a>
+          <a href="/tools/image-adjust.html">Image Adjustment</a>
+          <a href="/tools/image-border.html">Image Border</a>
+          <a href="/tools/image-flip.html">Image Flip</a>
+          <a href="/tools/image-grayscale.html">Image Grayscale</a>
+          <a href="/tools/image-shadow.html">Image Shadow</a>
+          <a href="/tools/image-splitter.html">Image Splitter</a>
+          <a href="/tools/image-exif-remover.html">EXIF Remover</a><a href="/tools/circle-crop.html">Circle Crop</a><a href="/tools/favicon-generator.html">Favicon Generator</a><a href="/tools/ocr.html">OCR Text</a><a href="/tools/bulk-processor.html">Bulk Processor</a><a href="/tools/image-to-pdf.html">Image to PDF</a>          <a href="/tools/id-photo.html">ID Photo Maker</a>
+          <a href="/tools/product-white-background.html">Product White BG</a>
+          <a href="/tools/social-media-post.html">Social Media Post</a>
+          <a href="/tools/photo-restoration.html">Photo Restoration</a><a href="/tools/image-enhancer.html">Image Enhancer</a>
+        </div>
+        <div class="footer-links"><h4>Legal</h4><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms of Service</a><a href="/cookie-policy.html">Cookie Policy</a>
+        </div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved. | <a href="https://comprimefotos.com/" style="color: var(--accent); font-weight: 500;">Español: ComprimeFotos — Comprimir Imágenes Online</a></p></div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js?v=3"></script>
+  <script>
+// ===== State =====
+    let originalImg = null;
+    let activePreset = 'none';
+
+    // ===== DOM =====
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const workspace = document.getElementById('workspace');
+    const canvas = document.getElementById('previewCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const brightnessSlider = document.getElementById('brightness');
+    const contrastSlider = document.getElementById('contrast');
+    const saturationSlider = document.getElementById('saturation');
+    const blurSlider = document.getElementById('blur');
+    const hueSlider = document.getElementById('hueRotate');
+    const opacitySlider = document.getElementById('opacity');
+    const outputFormat = document.getElementById('outputFormat');
+
+    // ===== Preset Filters =====
+    const PRESETS = {
+      none:       { brightness:100, contrast:100, saturation:100, blur:0, hueRotate:0, opacity:100 },
+      grayscale:   { brightness:100, contrast:110, saturation:0,   blur:0, hueRotate:0, opacity:100 },
+      sepia:       { brightness:105, contrast:110, saturation:0,   blur:0, hueRotate:0, opacity:100, sepia: true },
+      invert:      { brightness:100, contrast:100, saturation:100, blur:0, hueRotate:0, opacity:100, invert:true },
+      blur:        { brightness:100, contrast:100, saturation:100, blur:8, hueRotate:0, opacity:100 },
+      vintage:     { brightness:110, contrast:90,  saturation:60,  blur:1, hueRotate:0, opacity:100, sepia:true },
+      cool:        { brightness:100, contrast:110, saturation:80,  blur:0, hueRotate:180, opacity:100 },
+      warm:        { brightness:105, contrast:105, saturation:120, blur:0, hueRotate:30, opacity:100 },
+      vibrant:    { brightness:105, contrast:120, saturation:180, blur:0, hueRotate:0, opacity:100 },
+      polaroid:    { brightness:108, contrast:95,  saturation:85,  blur:0, hueRotate:0, opacity:100, sepia:true },
+      emboss:      { brightness:100, contrast:150, saturation:0,   blur:0, hueRotate:0, opacity:100 },
+      sharpen:     { brightness:100, contrast:130, saturation:110, blur:0, hueRotate:0, opacity:100 },
+      'hue-rotate': { brightness:100, contrast:100, saturation:100, blur:0, hueRotate:180, opacity:100 },
+      saturate:    { brightness:100, contrast:110, saturation:250, blur:0, hueRotate:0, opacity:100 },
+    };
+
+    // ===== Init Preset Buttons =====
+    document.querySelectorAll('.filter-preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-preset-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activePreset = btn.dataset.filter;
+        applyPreset(activePreset);
+        renderPreview();
+      });
+    });
+
+    function applyPreset(name) {
+      const p = PRESETS[name];
+      if (!p) return;
+      brightnessSlider.value = p.brightness;
+      contrastSlider.value = p.contrast;
+      saturationSlider.value = p.saturation;
+      blurSlider.value = p.blur;
+      hueSlider.value = p.hueRotate;
+      opacitySlider.value = p.opacity;
+      updateSliderLabels();
+    }
+
+    function updateSliderLabels() {
+      document.getElementById('brightnessVal').textContent = brightnessSlider.value + '%';
+      document.getElementById('contrastVal').textContent = contrastSlider.value + '%';
+      document.getElementById('saturationVal').textContent = saturationSlider.value + '%';
+      document.getElementById('blurVal').textContent = blurSlider.value + 'px';
+      document.getElementById('hueVal').textContent = hueSlider.value + '°';
+      document.getElementById('opacityVal').textContent = opacitySlider.value + '%';
+    }
+
+    // ===== Slider Events =====
+    [brightnessSlider, contrastSlider, saturationSlider, blurSlider, hueSlider, opacitySlider].forEach(slider => {
+      slider.addEventListener('input', () => {
+        updateSliderLabels();
+        // Clear active preset when user manually adjusts
+        document.querySelectorAll('.filter-preset-btn').forEach(b => b.classList.remove('active'));
+        activePreset = null;
+        renderPreview();
+      });
+    });
+
+    // ===== File Upload =====
+    setupDropzone({
+      dropzoneId: 'dropzone',
+      inputId: 'fileInput',
+      onFile: async (file) => {
+        try {
+          originalImg = await ImageUtils.load(file);
+          dropzone.style.display = 'none';
+          workspace.style.display = 'block';
+          renderPreview();
+        } catch (e) {
+          ImageUtils.showToast('Failed to load image', 'error');
+        }
+      }
+    });
+
+    // ===== Reset =====
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      originalImg = null;
+      workspace.style.display = 'none';
+      dropzone.style.display = '';
+      fileInput.value = '';
+      applyPreset('none');
+      document.querySelectorAll('.filter-preset-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector('[data-filter="none"]').classList.add('active');
+      activePreset = 'none';
+    });
+
+    // ===== Download =====
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+      const mime = outputFormat.value;
+      const ext = mime === 'image/jpeg' ? 'jpg' : mime === 'image/webp' ? 'webp' : 'png';
+      ImageUtils.download(canvas, 'filtered-image.' + ext, mime);
+      ImageUtils.showToast('Image downloaded!');
+    });
+
+    // ===== Render =====
+    function renderPreview() {
+      if (!originalImg) return;
+      const w = originalImg.width;
+      const h = originalImg.height;
+      canvas.width = w;
+      canvas.height = h;
+      ctx.clearRect(0, 0, w, h);
+
+      // Build Canvas filter string
+      const b = brightnessSlider.value;
+      const c = contrastSlider.value;
+      const s = saturationSlider.value;
+      const bl = blurSlider.value;
+      const hR = hueSlider.value;
+      const o = opacitySlider.value;
+
+      let filterStr = '';
+      if (b != 100) filterStr += 'brightness(' + b + '%) ';
+      if (c != 100) filterStr += 'contrast(' + c + '%) ';
+      if (s != 100) filterStr += 'saturate(' + s + '%) ';
+      if (bl > 0) filterStr += 'blur(' + bl + 'px) ';
+      if (hR != 0) filterStr += 'hue-rotate(' + hR + 'deg) ';
+      if (o != 100) filterStr += 'opacity(' + o + '%) ';
+
+      // Handle special presets that need extra effects
+      const preset = activePreset ? PRESETS[activePreset] : null;
+      if (preset && preset.sepia) filterStr += 'sepia(100%) ';
+      if (preset && preset.invert) filterStr += 'invert(100%) ';
+
+      ctx.filter = filterStr.trim() || 'none';
+      ctx.drawImage(originalImg, 0, 0, w, h);
+      ctx.filter = 'none';
+
+      document.getElementById('outSize').textContent = w + ' x ' + h;
+    }
+
+    // Init slider labels
+    updateSliderLabels();
+  
+  // Sample image & Next Step
+  (function() {
+    var _handleFile = typeof handleFile === 'function' ? handleFile : null;
+    if (_handleFile) {
+      window.initSampleButton('https://images.unsplash.com/photo-1470252649199-925c5e8b0f4b?w=800&q=80', _handleFile);
+    }
+    // Show next-step on download click
+    var dlBtn = document.getElementById('downloadBtn') || document.querySelector('.btn-primary[onclick*="download"], .btn-secondary[onclick*="download"]');
+    if (dlBtn) {
+      dlBtn.addEventListener('click', function() { SmartImgNextStep.show(); });
+    }
+  })();
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a10314836c3dc390',t:'MTc4MjIxMzM4MQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
+
+

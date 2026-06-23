@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+
+<html lang="en" data-theme="dark">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+
+  <title>AI Background Studio – Remove BG, Border & Shadow Pipeline</title>
+
+  <meta name="description" content="Remove image backgrounds, add colored borders, and apply professional drop shadows in one automated pipeline. Perfect for product photos, profile pictures, and marketing assets. 100% browser-based.">
+
+  <meta name="keywords" content="background remover, border generator, drop shadow, product photo editor, transparent background, image studio">
+
+  <link rel="canonical" href="https://smartimgkit.com/workflows/ai-background-studio.html">
+
+  <meta name="theme-color" content="#f97316">
+
+  <meta property="og:title" content="AI Background Studio – Remove BG, Border & Shadow Pipeline">
+
+  <meta property="og:description" content="Remove backgrounds, add colored borders and apply drop shadows in one click. Batch process product photos instantly. Free & browser-based.">
+
+  <meta property="og:url" content="https://smartimgkit.com/workflows/ai-background-studio.html">
+
+  <meta property="og:type" content="website">
+
+  <meta property="og:site_name" content="SmartImgKit">
+
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/home.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+
+  <meta name="twitter:title" content="AI Background Studio – Remove BG, Border & Shadow Pipeline">
+
+  <meta name="twitter:description" content="Remove backgrounds, add borders and apply shadows in one click. 100% browser-based.">
+
+  <meta name="twitter:image" content="https://smartimgkit.com/screenshots/home.png">
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <link rel="stylesheet" href="../css/style.css?v=4">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+  <script type="application/ld+json">
+
+{"@context": "https://schema.org", "@type": "WebApplication", "name": "AI Background Studio – Remove BG, Border & Shadow Pipeline", "url": "https://smartimgkit.com/workflows/ai-background-studio.html", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "description": "Automated pipeline that removes backgrounds, adds colored borders, and applies professional drop shadows to your images."}
+
+  </script>
+
+  <script type="application/ld+json">
+
+{"@context": "https://schema.org", "@type": "HowTo", "name": "How to use AI Background Studio", "step": [{"@type": "HowToStep", "position": 1, "name": "Upload Images", "text": "Drop or select images (JPG/PNG/WebP) with solid-color backgrounds."}, {"@type": "HowToStep", "position": 2, "name": "Configure Steps", "text": "Set background removal tolerance, border color/size, and shadow style."}, {"@type": "HowToStep", "position": 3, "name": "Run Pipeline", "text": "Click Run Pipeline. All images are processed through remove-bg, border, and shadow steps."}, {"@type": "HowToStep", "position": 4, "name": "Download ZIP", "text": "Download a single ZIP with all processed images ready for use."}]}
+
+  </script>
+
+  <style>
+
+    .workflow-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1.5rem 0}.workflow-step{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:1rem;position:relative}.workflow-step .step-num{position:absolute;top:-12px;left:12px;background:#f97316;color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem}.workflow-step h4{margin:0.5rem 0 0.25rem;font-size:1rem}.workflow-step p{color:var(--text-secondary);font-size:.85rem;margin:0}
+
+    .workflow-step select,.workflow-step input[type=text],.workflow-step input[type=number]{width:100%;padding:6px 10px;border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-primary);border-radius:6px;margin-top:0.4rem;font-size:.9rem}
+
+    .workflow-step label{font-size:.75rem;color:var(--text-secondary);font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+
+    .workflow-step .badge{display:inline-block;background:var(--bg-tertiary);color:var(--text-muted);padding:2px 8px;border-radius:4px;font-size:.7rem;margin-top:0.5rem}
+
+    .workflow-arrow{display:none}
+
+    @media (min-width:780px){.workflow-step .step-num{left:50%;transform:translateX(-50%)}}
+
+    .color-row{display:flex;gap:.5rem;align-items:center;margin-top:0.4rem}.color-row input[type=color]{flex-shrink:0;width:36px;height:32px;border:1px solid var(--border-color);border-radius:6px;cursor:pointer;padding:2px;background:transparent}.color-row input[type=text]{flex:1}
+
+    .progress-bar{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);width:min(560px,90vw);background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:12px 16px;box-shadow:var(--shadow-lg);z-index:9999}
+
+    .progress-fill{height:8px;background:linear-gradient(90deg,#f97316,#fb923c);border-radius:4px;transition:width .2s ease}
+
+    .progress-text{color:var(--text-secondary);font-size:.85rem;margin-top:6px;text-align:center}
+
+    .range-wrap{display:flex;align-items:center;gap:.5rem;margin-top:0.4rem}.range-wrap input[type=range]{flex:1;accent-color:#f97316}.range-wrap span{min-width:36px;text-align:right;font-size:.85rem;color:var(--text-secondary)}
+
+    /* === AD UNITS - REMOVE BEFORE GOOGLE ADSENSE APPLICATION === */
+    .ad-vertical-right{position:fixed!important;right:0!important;top:80px!important;z-index:90;width:160px;display:none}
+    @media(min-width:1200px){.ad-vertical-right{display:block}}
+    /* === END AD UNITS === */
+
+  </style>
+
+  <script type="application/ld+json">
+
+{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What types of background can be removed?", "acceptedAnswer": {"@type": "Answer", "text": "The background remover works best with solid or near-solid color backgrounds (white, gray, colored studio backdrops). It samples corner pixels and removes similar colors within a tolerance range."}}, {"@type": "Question", "name": "Can I skip steps?", "acceptedAnswer": {"@type": "Answer", "text": "Yes — set border size to 0 to skip the border step, or set shadow blur to 0 to skip shadows."}}, {"@type": "Question", "name": "Are my images uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. All processing runs locally in your browser using the Canvas API."}}, {"@type": "Question", "name": "What format is the output?", "acceptedAnswer": {"@type": "Answer", "text": "All outputs are PNG with transparency support where applicable."}}]}
+
+  </script>
+
+</head>
+
+<body>
+
+  <header class="site-header">
+
+    <div class="container header-inner">
+
+      <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+
+      <nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover.html">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/about.html">About</a></nav>
+
+      <div class="header-actions">
+
+        <button class="theme-toggle" id="themeToggle">🌙</button>
+
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+
+  <main class="tool-page">
+
+    <div class="container">
+
+      <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/workflows/">Workflows</a><span>/</span><span>AI Background Studio</span></nav>
+
+      <div class="tool-page-header">
+
+        <h1>AI Background Studio</h1>
+
+        <p>Remove background → add colored border → apply drop shadow. Professional product photo pipeline in one click.</p>
+
+      </div>
+
+      <div class="ad-placeholder">Advertisement</div>
+
+      <div class="tool-workspace">
+
+<div class="upload-area" id="uploadArea">
+
+    <input type="file" id="fileInput" accept="image/*" multiple hidden>
+
+    <div class="upload-icon">🎨</div>
+
+    <h3>Drop images here</h3>
+
+    <p>or click to browse (multiple files supported)</p>
+
+    <p class="upload-hint">Works best with solid-color backgrounds • Up to 20 images at once</p>
+
+  </div>
+
+
+
+  <div id="workspace" style="display:none">
+
+    <div style="text-align:center;margin:1rem 0;color:var(--text-secondary)" id="fileCount">0 files selected</div>
+
+
+
+    <h3 style="margin-top:1.5rem">Pipeline Steps</h3>
+
+    <div class="workflow-steps">
+
+      <!-- Step 1: Background Removal -->
+      <div class="workflow-step">
+
+        <div class="step-num">1</div>
+
+        <h4>Remove Background</h4>
+
+        <p>Auto-detect &amp; remove solid BG</p>
+
+        <label>Tolerance</label>
+
+        <div class="range-wrap">
+          <input type="range" id="optTolerance" min="5" max="80" value="30">
+          <span id="tolVal">30</span>
+        </div>
+
+        <label style="margin-top:0.6rem;display:block">BG Color</label>
+        <select id="optBgMode">
+          <option value="auto" selected>Auto-detect from corners</option>
+          <option value="custom">Custom color</option>
+        </select>
+        <input type="color" id="optBgColor" value="#ffffff" style="display:none;width:100%;height:32px;margin-top:0.4rem">
+
+        <span class="badge">Required</span>
+
+      </div>
+
+      <!-- Step 2: Add Border -->
+      <div class="workflow-step">
+
+        <div class="step-num">2</div>
+
+        <h4>Add Border</h4>
+
+        <p>Colored padding around subject</p>
+
+        <label>Border Color</label>
+        <div class="color-row">
+          <input type="color" id="optBorderColor" value="#ffffff">
+          <input type="text" id="optBorderColorText" value="#ffffff" placeholder="#ffffff">
+        </div>
+
+        <label style="margin-top:0.6rem;display:block">Border Size (px)</label>
+        <div class="range-wrap">
+          <input type="range" id="optBorderSize" min="0" max="100" value="20">
+          <span id="borderSizeVal">20</span>
+        </div>
+
+        <label style="margin-top:0.6rem;display:block">Corner Radius</label>
+        <select id="optBorderRadius">
+          <option value="0" selected>Square corners</option>
+          <option value="8">8px rounded</option>
+          <option value="16">16px rounded</option>
+          <option value="24">24px rounded</option>
+        </select>
+
+        <span class="badge">Optional (set size=0 to skip)</span>
+
+      </div>
+
+      <!-- Step 3: Drop Shadow -->
+      <div class="workflow-step">
+
+        <div class="step-num">3</div>
+
+        <h4>Drop Shadow</h4>
+
+        <p>Professional depth effect</p>
+
+        <label>Shadow Background</label>
+        <div class="color-row">
+          <input type="color" id="optShadowBg" value="#ffffff">
+          <input type="text" id="optShadowBgText" value="#ffffff" placeholder="#ffffff">
+        </div>
+
+        <label style="margin-top:0.6rem;display:block">Blur</label>
+        <div class="range-wrap">
+          <input type="range" id="optShadowBlur" min="0" max="40" value="15">
+          <span id="shadowBlurVal">15</span>
+        </div>
+
+        <label style="margin-top:0.6rem;display:block">Offset X / Y</label>
+        <div class="range-wrap">
+          <input type="range" id="optShadowOX" min="-20" max="20" value="8">
+          <span id="shadowOXVal">8</span>
+        </div>
+        <div class="range-wrap">
+          <input type="range" id="optShadowOY" min="-0" max="30" value="8">
+          <span id="shadowOYVal">8</span>
+        </div>
+
+        <span class="badge">Optional (set blur=0 to skip)</span>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="controls" style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;margin:1.5rem 0">
+
+      <button class="btn btn-primary" id="runBtn" disabled>🚀 Run Pipeline</button>
+
+      <button class="btn btn-secondary" id="resetBtn">↺ Reset</button>
+
+    </div>
+
+  </div>
+
+      </div>
+
+      <div class="ad-placeholder">Advertisement</div>
+
+
+
+<section class="how-to-section"><h2>How to Use</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Upload Product Photos</h4><p>Drop images with solid-color backgrounds (white, gray, or any uniform color works best).</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Configure the 3 Steps</h4><p>Adjust background removal tolerance for your background color. Pick a border color and width for framing. Set shadow blur and offset for depth.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Run Pipeline</h4><p>Click "Run Pipeline". Each image goes through all 3 steps automatically: background removed, border added, shadow applied.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Download ZIP</h4><p>All processed PNGs are packaged into a single ZIP, ready for e-commerce listings, social media, or marketing materials.</p></div></div></section>
+
+
+<h2>Detailed User Guide</h2><div class="guide-block"><h3>Background Removal Algorithm</h3><p>The studio uses an intelligent corner-sampling algorithm: it analyzes pixel colors at the four corners and edges of your image to determine the dominant background color, then makes all pixels within the tolerance threshold transparent. This approach works exceptionally well for product photography with solid white/gray/colored backdrops. For complex backgrounds (people outdoors, busy scenes), increase the tolerance slider or switch to manual mode.</p></div><div class="guide-block"><h3>Choosing Tolerance</h3><p>Tolerance controls how aggressively similar pixels are removed. Lower values (10-25) are precise but may leave edge artifacts on slightly uneven lighting. Higher values (35-60) clean up gradients and soft shadows but risk eating into the subject edges. Start at 30 and adjust based on preview results.</p></div><div class="guide-block"><h3>Border Options</h3><p>The border step adds a solid-colored frame around your cutout image. Use it to create consistent product card layouts. Set size to 0 to disable. The radius option creates rounded corners for a modern app-icon look.</p></div><div class="guide-block"><h3>Shadow Effects</h3><p>The drop shadow adds realistic depth by rendering a blurred dark offset behind your image on a solid background canvas. Increase blur for softer shadows (good for floating products), decrease for sharper contact shadows. Offset X/Y control the shadow direction — positive values push shadow down-right.</p></div><div class="guide-block"><h3>Best Use Cases</h3><ul><li>E-commerce product photos: remove white studio background → add branded border → shadow on store page</li><li>Team headshots: remove office background → add company-color border → subtle shadow</li><li>App icons and assets: clean background → precise border sizing → polished presentation</li><li>Marketing collateral: batch-process dozens of product shots with identical styling</li></ul></div><div class="guide-block"><h3>Performance & Privacy</h3><p>All processing is 100% client-side using the Canvas API. No images leave your browser. Batch limit is 20 images per run to ensure stable performance across devices.</p></div>
+
+
+<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">What types of background can be removed?</button><div class="faq-answer">The algorithm works best with solid or near-solid color backgrounds (white, gray, green screen, colored paper). It detects the background color from image corners and removes matching pixels. Complex/natural backgrounds won't work well — consider using a dedicated AI background tool for those.</div></div><div class="faq-item"><button class="faq-question">Can I skip the border or shadow step?</button><div class="faq-answer">Yes. Set border size to 0 to skip the border step. Set shadow blur to 0 to skip the shadow effect.</div></div><div class="faq-item"><button class="faq-question">Are my images uploaded to a server?</button><div class="faq-answer">No. All 3 steps run entirely in your browser using the HTML5 Canvas API. Your images never leave your device.</div></div><div class="faq-item"><button class="faq-question">What format is the output?</button><div class="faq-answer">PNG with transparency where the background was removed. If you add a shadow (which requires an opaque background), the shadow area will have the specified background color.</div></div><div class="faq-item"><button class="faq-question">Why does my result look jagged?</button><div class="faq-answer">If tolerance is too low, some background pixels remain around the subject edges. Try increasing tolerance to 35-45. If tolerance is too high, it may eat into the subject — lower it slightly.</div></div><div class="faq-item"><button class="faq-question">How many images can I process at once?</button><div class="faq-answer">Up to 20 images per run. For larger batches, split into multiple runs.</div></div></section>
+
+
+<section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/background-remover.html" class="related-tool-card"><span class="tool-icon">✂️</span><div class="tool-info"><strong>Background Remover</strong><span class="tool-desc">Standalone background removal tool</span></div><span class="tool-arrow">→</span></a><a href="/tools/circle-crop.html" class="related-tool-card"><span class="tool-icon">⭕</span><div class="tool-info"><strong>Circle Crop</strong><span class="tool-desc">Circle cropping with transparent background</span></div><span class="tool-arrow">→</span></a><a href="/workflows/avatar-pipeline.html" class="related-tool-card"><span class="tool-icon">👤</span><div class="tool-info"><strong>Avatar Pipeline</strong><span class="tool-desc">Multi-size avatar generator</span></div><span class="tool-arrow">→</span></a><a href="/workflows/e-commerce-pack.html" class="related-tool-card"><span class="tool-icon">🛒</span><div class="tool-info"><strong>E-Commerce Pack</strong><span class="tool-desc">Batch resize + compress + watermark</span></div><span class="tool-arrow">→</span></a></div></section>
+
+    </div>
+
+
+
+  
+
+  </main>
+
+
+
+  <footer class="site-footer">
+
+    <div class="container">
+
+      <div class="footer-grid">
+
+        <div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Free AI-powered image tools that respect your privacy.</p></div>
+
+        <div class="footer-links"><h4>Tools</h4><a href="/tools/background-remover.html">Background Remover</a><a href="/tools/compressor.html">Compressor</a><a href="/tools/converter.html">Converter</a><a href="/tools/resizer.html">Resizer</a><a href="/tools/bulk-processor.html">Bulk Processor</a><a href="/tools/circle-crop.html">Circle Crop</a><a href="/tools/watermark.html">Watermark</a></div>
+
+        <div class="footer-links"><h4>Workflows</h4><a href="/workflows/">All Workflows</a><a href="/workflows/ai-background-studio.html">AI Background Studio</a></div>
+
+        <div class="footer-links"><h4>Legal</h4><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms of Service</a><a href="/cookie-policy.html">Cookie Policy</a></div>
+
+      </div>
+
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved. | <a href="https://comprimefotos.com/" style="color: var(--accent); font-weight: 500;">Español: ComprimeFotos — Comprimir Imágenes Online</a></p></div>
+
+    </div>
+
+  </footer>
+
+
+
+  <script src="../js/main.js?v=3"></script>
+
+  <script src="_workflow_engine.js"></script>
+
+  <script src="_bg_studio_runners.js"></script>
+
+  <script>
+
+window.WORKFLOW_CONFIG = { slug: 'ai-background-studio' };
+
+const $ = id => document.getElementById(id);
+
+const fileInput = $('fileInput'), uploadArea = $('uploadArea'), workspace = $('workspace');
+
+const runBtn = $('runBtn'), resetBtn = $('resetBtn'), fileCount = $('fileCount');
+
+let files = [];
+
+
+// ---- Range sliders live update ----
+$('optTolerance').addEventListener('input', e => { $('tolVal').textContent = e.target.value; });
+$('optBorderSize').addEventListener('input', e => { $('borderSizeVal').textContent = e.target.value; });
+$('optShadowBlur').addEventListener('input', e => { $('shadowBlurVal').textContent = e.target.value; });
+$('optShadowOX').addEventListener('input', e => { $('shadowOXVal').textContent = e.target.value; });
+$('optShadowOY').addEventListener('input', e => { $('shadowOYVal').textContent = e.target.value; });
+
+// ---- Color picker sync ----
+$('optBorderColor').addEventListener('input', e => { $('optBorderColorText').value = e.target.value; });
+$('optBorderColorText').addEventListener('input', e => { if (/^#[0-9a-fA-F]{6}$/.test(e.target.value)) $('optBorderColor').value = e.target.value; });
+$('optShadowBg').addEventListener('input', e => { $('optShadowBgText').value = e.target.value; });
+$('optShadowBgText').addEventListener('input', e => { if (/^#[0-9a-fA-F]{6}$/.test(e.target.value)) $('optShadowBg').value = e.target.value; });
+
+// BG removal mode toggle
+$('optBgMode').addEventListener('change', e => {
+  $('optBgColor').style.display = e.target.value === 'custom' ? 'block' : 'none';
+});
+
+
+// Upload
+
+uploadArea.addEventListener('click', () => fileInput.click());
+
+['dragover','dragenter'].forEach(e => uploadArea.addEventListener(e, ev => { ev.preventDefault(); uploadArea.classList.add('dragover'); }));
+
+['dragleave','drop'].forEach(e => uploadArea.addEventListener(e, () => uploadArea.classList.remove('dragover')));
+
+uploadArea.addEventListener('drop', e => {
+
+  e.preventDefault();
+
+  addFiles(Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/')));
+
+});
+
+fileInput.addEventListener('change', () => { addFiles(Array.from(fileInput.files)); fileInput.value = ''; });
+
+
+function addFiles(arr) {
+
+  const imageOnly = arr.filter(f => f.type.startsWith('image/'));
+
+  if (files.length + imageOnly.length > 20) {
+
+    alert('Max 20 images per batch. You selected ' + imageOnly.length + ' on top of ' + files.length + '.');
+
+    return;
+
+  }
+
+  files = files.concat(imageOnly);
+
+  workspace.style.display = 'block';
+
+  uploadArea.style.display = 'none';
+
+  fileCount.textContent = files.length + ' file' + (files.length === 1 ? '' : 's') + ' selected';
+
+  runBtn.disabled = files.length === 0;
+
+}
+
+
+
+resetBtn.addEventListener('click', () => {
+
+  files = [];
+
+  workspace.style.display = 'none';
+
+  uploadArea.style.display = 'block';
+
+  runBtn.disabled = true;
+
+});
+
+
+// Build steps from UI
+
+function buildSteps() {
+
+  const steps = [];
+
+  // Step 1: Remove BG
+
+  const bgMode = $('optBgMode').value;
+
+  const bgOpt = {
+
+    tolerance: parseInt($('optTolerance').value),
+
+    bgColor: bgMode === 'custom' ? $('optBgColor').value : 'auto'
+
+  };
+
+  steps.push({ id: 'removebg', label: 'Remove Background', runner: 'removeBg', options: bgOpt });
+
+  // Step 2: Add Border (skip if size=0)
+
+  const bsz = parseInt($('optBorderSize').value);
+
+  if (bsz > 0) {
+
+    steps.push({
+
+      id: 'border', label: 'Add Border (' + bsz + 'px)', runner: 'addBorder',
+
+      options: {
+
+        color: $('optBorderColorText').value || '#ffffff',
+
+        size: bsz,
+
+        radius: parseInt($('optBorderRadius').value)
+
+      }
+
+    });
+
+  }
+
+  // Step 3: Drop Shadow (skip if blur=0)
+
+  const sblur = parseInt($('optShadowBlur').value);
+
+  if (sblur > 0) {
+
+    steps.push({
+
+      id: 'shadow', label: 'Add Shadow', runner: 'addShadow',
+
+      options: {
+
+        blur: sblur,
+
+        offsetX: parseInt($('optShadowOX').value),
+
+        offsetY: parseInt($('optShadowOY').value),
+
+        shadowColor: 'rgba(0,0,0,0.35)',
+
+        bg: $('optShadowBgText').value || '#ffffff'
+
+      }
+
+    });
+
+  }
+
+  if (!steps.length) { alert('Please enable at least one step.'); return null; }
+
+  return steps;
+
+}
+
+
+
+runBtn.addEventListener('click', async () => {
+
+  if (!files.length) return;
+
+  const steps = buildSteps();
+
+  if (!steps) return;
+
+  runBtn.disabled = true;
+
+  runBtn.textContent = '⏳ Running…';
+
+  try {
+
+    await SmartImgKit.runFlow({ files, steps, zipName: 'bg-studio-' + Date.now() + '.zip' });
+
+    runBtn.textContent = '✓ Downloaded ' + files.length + ' image(s)';
+
+  } catch (err) {
+
+    alert('Pipeline error: ' + err.message);
+
+    console.error(err);
+
+    runBtn.textContent = '🚀 Run Pipeline';
+
+  }
+
+  runBtn.disabled = false;
+
+  setTimeout(() => { runBtn.textContent = '🚀 Run Pipeline'; }, 4000);
+
+});
+
+  </script>
+
+  <!-- ===== AD UNITS - REMOVE BEFORE GOOGLE ADSENSE APPLICATION ===== -->
+
+  <!-- Right vertical skyscraper ad (only on screens >= 1200px) -->
+  <aside class="ad-vertical-right" id="adVerticalRight">
+    <script async="async" data-cfasync="false" src="https://pl29741299.effectivecpmnetwork.com/5a540a2ce35c794ad7d73a726a88971c/invoke.js"></script>
+    <div id="container-5a540a2ce35c794ad7d73a726a88971c"></div>
+  </aside>
+
+  <!-- ===== END AD UNITS ===== -->
+
+</body>
+
+</html>

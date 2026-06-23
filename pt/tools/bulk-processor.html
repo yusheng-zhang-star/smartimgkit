@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="pt" data-theme="dark" data-tool-id="bulk-processor">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Processamento em Lote Online Grátis — SmartImgKit</title>
+  <meta name="description" content="Redimensione, converta e adicione marca d'água a dezenas de imagens.">
+  <meta name="keywords" content="bulk image processor, batch image resize, bulk image compress, batch convert images, bulk rename images, image watermark batch, batch image processing, free image processor online, multiple image editor, SmartImgKit bulk processor">
+  <link rel="canonical" href="https://smartimgkit.com/pt/tools/bulk-processor">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="Processamento em Lote Online Grátis — SmartImgKit">
+  <meta property="og:description" content="Redimensione, converta e adicione marca d'água a dezenas de imagens.">
+  <meta property="og:url" content="https://smartimgkit.com/pt/tools/bulk-processor">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/bulk-processor.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Processamento em Lote Online Grátis — SmartImgKit">
+  <meta name="twitter:description" content="Redimensione, converta e adicione marca d'água a dezenas de imagens.">
+  <meta name="twitter:image" content="https://smartimgkit.com/screenshots/bulk-processor.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="../css/style.css?v=3">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .tool-container{max-width:960px;margin:2rem auto;padding:0 1rem}
+    .controls{display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;justify-content:flex-start;margin:0.5rem 0}
+    .controls label{font-weight:600;font-size:0.85rem;color:var(--text-secondary);white-space:nowrap}
+    .controls select,.controls input[type=number],.controls input[type=text]{padding:7px 10px;border:1px solid var(--border-color);border-radius:var(--radius-sm);font-size:0.9rem;background:var(--bg-secondary);color:var(--text-primary);outline:none;transition:var(--transition)}
+    .controls select:focus,.controls input:focus{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-glow)}
+    .controls select{min-width:120px}
+    .controls input[type=number]{width:72px}
+    .controls input[type=text]{width:150px}
+    .controls input[type=range]{accent-color:var(--accent);background:var(--bg-tertiary);border-radius:4px;height:6px}
+    .controls input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer}
+    .controls input[type=checkbox]{accent-color:var(--accent);width:16px;height:16px;cursor:pointer}
+    .range-value{font-size:0.85rem;color:var(--text-secondary);min-width:35px;text-align:center}
+    .btn{padding:10px 24px;border:none;border-radius:var(--radius-md);font-size:0.9rem;cursor:pointer;font-weight:600;transition:var(--transition);display:inline-flex;align-items:center;gap:6px}
+    .btn-primary{background:var(--accent);color:#fff}
+    .btn-primary:hover{background:var(--accent-light);box-shadow:0 0 20px var(--accent-glow)}
+    .btn-secondary{background:var(--bg-tertiary);color:var(--text-primary);border:1px solid var(--border-color)}
+    .btn-secondary:hover{background:var(--bg-card-hover);border-color:var(--accent)}
+    .btn-success{background:var(--success);color:#fff}
+    .btn-success:hover{background:#16a34a}
+    .btn-sm{padding:6px 14px;font-size:0.82rem}
+    .btn:disabled{opacity:0.5;cursor:not-allowed;pointer-events:none}
+    .upload-area{border:2px dashed var(--border-color);border-radius:var(--radius-lg);padding:3rem 2rem;text-align:center;cursor:pointer;transition:var(--transition);background:var(--bg-card)}
+    .upload-area:hover,.upload-area.dragover{border-color:var(--accent);background:var(--bg-card-hover);box-shadow:0 0 30px var(--accent-glow)}
+    .upload-icon{font-size:3rem;margin-bottom:0.5rem}
+    .upload-area h3{font-size:1.2rem;margin:0.5rem 0}
+    .upload-area p{color:var(--text-secondary);font-size:0.9rem;margin:0.25rem 0}
+    .upload-hint{font-size:0.8rem;color:var(--text-muted)}
+    .file-list{display:flex;flex-direction:column;gap:0.4rem;margin:1rem 0;max-height:360px;overflow-y:auto;padding-right:4px}
+    .file-list::-webkit-scrollbar{width:4px}
+    .file-list::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:2px}
+    .file-item{display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0.75rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-sm);font-size:0.85rem;transition:var(--transition)}
+    .file-item:hover{background:var(--bg-card-hover)}
+    .file-item .fnum{color:var(--text-muted);font-size:0.75rem;min-width:24px}
+    .file-item .fname{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .file-item .fsize{color:var(--text-muted);font-size:0.78rem;min-width:70px;text-align:right}
+    .file-item .file-status{font-size:0.72rem;min-width:40px;text-align:center}
+    .file-item .file-status.done{color:var(--success)}
+    .file-item .file-status.wait{color:var(--text-muted)}
+    .file-item .file-status.proc{color:var(--accent)}
+    .file-item .file-compare{font-size:0.72rem;min-width:55px;text-align:center}
+    .file-item .file-compare.saved{color:var(--success)}
+    .file-item .file-compare.nosave{color:var(--text-muted)}
+    details.options-panel{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:0.75rem 1rem;margin:1rem 0}
+    details.options-panel summary{cursor:pointer;font-weight:600;font-size:0.92rem;color:var(--text-primary);padding:0.25rem 0}
+    details.options-panel summary:hover{color:var(--accent)}
+    details.options-panel[open]{padding-bottom:1rem}
+    .opt-group{border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:0.75rem 1rem;margin-top:0.75rem;background:var(--bg-secondary)}
+    .opt-group h4{font-size:0.85rem;margin:0 0 0.5rem 0;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px}
+    .preset-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-bottom:0.75rem}
+    .preset-btn{padding:8px 12px;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:var(--bg-tertiary);cursor:pointer;text-align:left;font-size:0.82rem;color:var(--text-primary);transition:var(--transition);line-height:1.4}
+    .preset-btn:hover{border-color:var(--accent);background:var(--bg-card-hover)}
+    .preset-btn.active{border-color:var(--accent);background:rgba(99,102,241,0.1);box-shadow:0 0 10px var(--accent-glow)}
+    .preset-btn strong{display:block;font-size:0.88rem}
+    .preset-btn span{font-size:0.75rem;color:var(--text-muted)}
+    .progress-bar{width:100%;height:10px;background:var(--bg-tertiary);border-radius:5px;overflow:hidden;margin:0.75rem 0}
+    .progress-fill{height:100%;background:linear-gradient(90deg,var(--gradient-from),var(--gradient-to));transition:width 0.25s;border-radius:5px}
+    .status{text-align:center;padding:0.4rem;font-size:0.88rem;color:var(--text-secondary)}
+    .file-progress{width:50px;height:4px;background:var(--bg-tertiary);border-radius:2px;overflow:hidden;flex-shrink:0}
+    .file-progress-fill{height:100%;background:var(--accent);transition:width 0.2s;border-radius:2px;width:0%}
+    .stats-bar{display:flex;flex-wrap:wrap;gap:1rem;padding:0.75rem 0;margin:0.5rem 0;border-top:1px solid var(--border-color);border-bottom:1px solid var(--border-color)}
+    .stat-item{font-size:0.82rem;color:var(--text-secondary)}
+    .stat-item strong{color:var(--text-primary);margin-right:3px}
+    .summary-table{width:100%;border-collapse:collapse;font-size:0.82rem;margin:0.5rem 0}
+    .summary-table th{text-align:left;padding:6px 8px;color:var(--text-muted);font-weight:500;border-bottom:1px solid var(--border-color)}
+    .summary-table td{padding:6px 8px;border-bottom:1px solid var(--border-color);color:var(--text-secondary)}
+    .summary-table td:last-child{text-align:right}
+    .summary-table .saved-row{background:rgba(34,197,94,0.05)}
+    .toast{position:fixed;bottom:30px;right:30px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:12px 20px;font-size:0.85rem;color:var(--text-primary);box-shadow:var(--shadow-lg);z-index:1000;opacity:0;transform:translateY(20px);transition:var(--transition);pointer-events:none}
+    .toast.show{opacity:1;transform:translateY(0);pointer-events:auto}
+    @media(max-width:640px){
+      .controls{gap:0.5rem}
+      .controls input[type=number]{width:60px}
+      .controls input[type=text]{width:120px}
+      .preset-grid{grid-template-columns:1fr 1fr}
+      .stats-bar{flex-direction:column;gap:0.4rem}
+    }
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Quantas imagens posso processar de uma vez?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Não há um limite definido. A ferramenta lida confortavelmente com 50 a 200 imagens em um notebook comum. O desempenho depende do tamanho das imagens e da memória disponível no seu navegador. Para lotes muito grandes (500+ imagens), recomendamos dividir em grupos menores."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Existe um limite de tamanho por imagem?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Não há um limite imposto, mas imagens acima de 50 MB podem deixar o processamento mais lento. Para melhor desempenho, recomendamos imagens com menos de 20 MB cada."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Minhas imagens são enviadas para um servidor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Não. Todo o processamento acontece inteiramente no seu navegador usando a Canvas API. Suas imagens nunca saem do seu computador — 100% privado e seguro."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Posso renomear os arquivos de saída em lote?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim! O recurso de renomeação em lote permite definir um prefixo seguido de números auto-incrementais (ex: produto_001.jpg, produto_002.jpg). Você também pode manter os nomes originais desativando essa opção."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quais formatos de saída são suportados?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Você pode exportar como JPG, PNG, WebP ou manter o mesmo formato do arquivo de entrada. Cada formato oferece qualidade ajustável de 10% a 100%."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "O que cada predefinição faz?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Web Optimized: 80% qualidade, máx 1200px — ideal para websites. Print Ready: 100% qualidade, máx 3000px — para impressão física. E-Commerce: 85% qualidade, fundo branco, 1000px — para anúncios. Thumbnail: 60% qualidade, máx 300px — para prévias."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Como vejo quanto espaço economizei?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Após o processamento, cada arquivo mostra seu tamanho antes/depois e a taxa de compressão economizada. A barra de estatísticas mostra o tamanho original total, o tamanho processado total e a economia total."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Esta ferramenta é gratuita?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim, completamente gratuita. Sem registro, sem chaves de API, sem limites ocultos. Todo o processamento roda localmente no seu navegador."
+      }
+    }
+  ]
+}
+</script>
+
+  <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/bulk-processor">
+  <link rel="alternate" hreflang="pt" href="https://smartimgkit.com/pt/tools/bulk-processor">
+  <link rel="alternate" hreflang="id" href="https://smartimgkit.com/id/tools/bulk-processor">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/bulk-processor">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/bulk-processor">
+<style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+</head>
+<body>
+  <!-- Adsterra Social Bar (29640799) -->
+  <script src="https://pl29741298.effectivecpmnetwork.com/70/c0/84/70c084b07dadc5b3f66fae02aa21f788.js"></script>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/">Início</a><a href="/tools/background-remover.html">Ferramentas</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/about.html">Sobre</a><a href="/contact.html">Contato</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Switch language">🇧🇷 PT</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/" hreflang="en" lang="en">🇬🇧 English</a>
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+          </div>
+        </div>
+        <button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/">Início</a><span>/</span><a href="/">Ferramentas</a><span>/</span><span>📦 Processamento Lote</span>
+      </nav>
+      <div class="tool-page-header">
+        <h1>📦 Processamento em Lote</h1>
+        <p class="tool-subtitle">Batch resize, compress, convert, rename &amp; watermark dozens of images at once — entirely in your browser.</p>
+      </div>
+
+      <!-- Adsterra Native Banner (29640800) -->
+      <div class="ad-native-banner">
+        <script async="async" data-cfasync="false" src="https://pl29741299.effectivecpmnetwork.com/5a540a2ce35c794ad7d73a726a88971c/invoke.js"></script>
+        <div id="container-5a540a2ce35c794ad7d73a726a88971c"></div>
+      </div>
+
+      <div class="tool-workspace">
+        <div class="upload-area" id="uploadArea">
+          <input type="file" id="fileInput" accept="image/*" multiple hidden>
+          <div class="upload-icon">🖼️</div>
+          <h3>Drop images here</h3>
+          <p>or click to browse (multiple files supported)</p>
+          <p class="upload-hint">Supports JPG, PNG, WebP, BMP — unlimited files</p>
+        </div>
+
+        <div id="workspace" style="display:none">
+          <div class="opt-group">
+            <h4>Quick Presets</h4>
+            <div class="preset-grid">
+              <button class="preset-btn" data-preset="web"><strong>🌐 Web Optimized</strong><span>80% quality · max 1200px</span></button>
+              <button class="preset-btn" data-preset="print"><strong>🖨️ Print Ready</strong><span>100% quality · max 3000px</span></button>
+              <button class="preset-btn" data-preset="ecom"><strong>🛒 E-Commerce</strong><span>85% quality · white bg · 1000px</span></button>
+              <button class="preset-btn" data-preset="thumb"><strong>🔲 Thumbnail</strong><span>60% quality · max 300px</span></button>
+            </div>
+          </div>
+
+          <div class="file-list" id="fileList"></div>
+
+          <div class="stats-bar" id="statsBar" style="display:none">
+            <span class="stat-item">Total original: <strong id="statOrig">0</strong></span>
+            <span class="stat-item">Total processed: <strong id="statProc">0</strong></span>
+            <span class="stat-item">Saved: <strong id="statSaved" style="color:var(--success)">0</strong></span>
+            <span class="stat-item">Compression: <strong id="statCompress" style="color:var(--success)">0%</strong></span>
+          </div>
+
+          <details class="options-panel">
+            <summary>Processing Options</summary>
+            <div style="margin-top:0.75rem">
+              <div class="opt-group">
+                <h4>Batch Rename</h4>
+                <div class="controls">
+                  <label><input type="checkbox" id="enableRename"> Rename output files</label>
+                  <label>Prefix:</label>
+                  <input type="text" id="renamePrefix" placeholder="product_" disabled>
+                  <label>Start at:</label>
+                  <input type="number" id="renameStart" value="1" min="0" max="9999" style="width:60px" disabled>
+                  <label style="font-size:0.75rem;color:var(--text-muted)">e.g. product_001.jpg</label>
+                </div>
+              </div>
+              <div class="opt-group">
+                <h4>Resize</h4>
+                <div class="controls">
+                  <label>Width (px)</label>
+                  <input type="number" id="resizeW" placeholder="auto" style="width:80px">
+                  <span>×</span>
+                  <input type="number" id="resizeH" placeholder="auto" style="width:80px">
+                  <label><input type="checkbox" id="keepRatio" checked> Keep aspect ratio</label>
+                </div>
+              </div>
+              <div class="opt-group">
+                <h4>Output Format &amp; Quality</h4>
+                <div class="controls">
+                  <label>Format</label>
+                  <select id="outFmt">
+                    <option value="same">Same as input</option>
+                    <option value="image/jpeg">JPG</option>
+                    <option value="image/png">PNG</option>
+                    <option value="image/webp">WebP</option>
+                  </select>
+                  <label>Quality</label>
+                  <input type="range" id="quality" min="10" max="100" value="85" style="width:130px">
+                  <span class="range-value" id="qLabel">85%</span>
+                </div>
+              </div>
+              <div class="opt-group">
+                <h4>Watermark</h4>
+                <div class="controls">
+                  <label>Text</label>
+                  <input type="text" id="wmText" placeholder="optional - leave blank to skip" style="width:200px">
+                </div>
+                <div class="controls">
+                  <label>Font size</label>
+                  <input type="number" id="wmSize" value="24" style="width:60px">
+                  <label>Opacity</label>
+                  <input type="range" id="wmOpacity" min="10" max="100" value="30" style="width:100px">
+                  <span class="range-value" id="opLabel">30%</span>
+                  <label>Position</label>
+                  <select id="wmPos" style="width:100px">
+                    <option value="br">Bottom-right</option>
+                    <option value="bl">Bottom-left</option>
+                    <option value="tr">Top-right</option>
+                    <option value="tl">Top-left</option>
+                    <option value="center">Center</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <div class="progress-bar" id="progBar" style="display:none"><div class="progress-fill" id="progFill" style="width:0%"></div></div>
+          <div class="status" id="statusText"></div>
+
+          <div class="controls" style="justify-content:center;gap:10px">
+            <button class="btn btn-primary" id="processBtn">⚡ Process All</button>
+            <button class="btn btn-success" id="downloadBtn" disabled>📦 Download ZIP</button>
+            <button class="btn btn-secondary" id="clearBtn">🗑️ Clear All</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ad-banner-300x250">
+        <script>atOptions={'key':'c95d26a94d4f8dc640cd33ad5ec91528','format':'iframe','height':250,'width':300,'params':{}};</script>
+        <script src="https://www.highperformanceformat.com/c95d26a94d4f8dc640cd33ad5ec91528/invoke.js"></script>
+      </div>
+
+      <section class="how-to-section">
+        <h2>How to Use the Bulk Image Processor</h2>
+        <p class="section-desc">Batch process dozens of images in under a minute. Here's how:</p>
+        <div class="how-to-steps">
+          <div class="how-to-step"><div class="step-number">1</div><h4>Drop or Select Images</h4><p>Drag and drop multiple image files, or click the upload area to browse. You can select as many files as you need.</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>Choose a Preset or Customize</h4><p>Pick a quick preset (Web Optimized, Print Ready, E-Commerce, Thumbnail) or expand "Processing Options" for full control over resize, format, quality, and watermark.</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>Configure Batch Rename</h4><p>Toggle "Rename output files" to set a naming pattern with prefix and auto-numbering (e.g. <code>product_001.jpg</code>).</p></div>
+          <div class="how-to-step"><div class="step-number">4</div><h4>Click Process All</h4><p>Click the "Process All" button. Each file shows its own progress bar, and you'll see live before/after size comparisons.</p></div>
+          <div class="how-to-step"><div class="step-number">5</div><h4>Download ZIP Archive</h4><p>Review the results, check compression savings, then click "Download ZIP" to get all processed images in one file.</p></div>
+        </div>
+      </section>
+
+      <h2>Guia Detalhada</h2>
+
+      <div class="guide-block">
+        <h3>Batch Resize</h3>
+        <p>Enter target width and/or height in the Resize section. With "Keep aspect ratio" checked (default), the tool automatically scales the other dimension. Leave both empty to keep original dimensions. This is perfect for normalizing product photos or creating uniform social media assets.</p>
+        <p><strong>Tip:</strong> If you only enter a width, the height automatically adjusts to maintain proportions — no math required.</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Batch Compress &amp; Convert</h3>
+        <p>Use the Output Format dropdown to convert all images to JPG, PNG, or WebP. JPG is best for photographs (small file size), PNG preserves transparency, and WebP offers modern compression. The Quality slider (10-100%) lets you balance file size versus visual quality — 80-85% is the sweet spot for web use.</p>
+        <p><strong>Tip:</strong> WebP can often reduce file size by 25-35% compared to JPG at the same quality level.</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Batch Watermark</h3>
+        <p>Enter watermark text, adjust font size and opacity, and choose a position (bottom-right, bottom-left, top-right, top-left, or center). Leave the text field blank to skip watermarks. Great for branding batch photos before publishing.</p>
+        <p><strong>Tip:</strong> Keep opacity between 20-40% for a professional, non-intrusive watermark.</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Batch Rename</h3>
+        <p>Toggle "Rename output files" and set a prefix and starting number. Files will be named sequentially: <code>prefix_001.ext</code>, <code>prefix_002.ext</code>, etc. The numbering is zero-padded (3 digits by default).</p>
+        <p><strong>Tip:</strong> Use descriptive prefixes like <code>product_</code>, <code>gallery_</code>, or <code>photo_</code> for easy file organization.</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Using Presets</h3>
+        <p>Click any preset button to instantly configure multiple settings at once:</p>
+        <ul>
+          <li><strong>Web Optimized</strong> — 80% quality, max 1200px width. Ideal for blog images, portfolio thumbnails, and website assets.</li>
+          <li><strong>Print Ready</strong> — 100% quality, max 3000px. Best for photo printing, high-res archiving, and professional deliverables.</li>
+          <li><strong>E-Commerce</strong> — 85% quality, max 1000px. Optimized for product listings on marketplaces like Amazon, eBay, or Shopify.</li>
+          <li><strong>Thumbnail</strong> — 60% quality, max 300px. Perfect for preview images, avatars, or gallery thumbnails.</li>
+        </ul>
+        <p>After applying a preset, you can still fine-tune individual settings in the Processing Options panel.</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Best Use Cases</h3>
+        <ul>
+          <li><strong>Website asset preparation</strong> — batch resize and compress all product photos for your e-commerce site</li>
+          <li><strong>Photo batch compression</strong> — reduce storage footprint of large photo collections</li>
+          <li><strong>Social media content</strong> — standardize image sizes and formats for multiple platforms</li>
+          <li><strong>Photography portfolio</strong> — add watermarks to protect your work while batch exporting</li>
+          <li><strong>Digital asset management</strong> — batch rename and convert archive images for consistent naming</li>
+        </ul>
+      </div>
+
+      <section class="faq-section">
+        <h2>Perguntas Frequentes</h2>
+      <div class="faq-item"><button class="faq-question">Quantas imagens posso processar de uma vez?</button><div class="faq-answer">Não há um limite definido. A ferramenta lida confortavelmente com 50 a 200 imagens em um notebook comum. O desempenho depende do tamanho das imagens e da memória disponível no seu navegador. Para lotes muito grandes (mais de 500 imagens), recomendamos dividir em lotes menores.</div></div>
+      <div class="faq-item"><button class="faq-question">Existe um limite de tamanho por imagem?</button><div class="faq-answer">Não há um limite obrigatório, mas imagens acima de 50 MB podem deixar o processo mais lento. Para melhor desempenho, recomendamos imagens com menos de 20 MB cada.</div></div>
+      <div class="faq-item"><button class="faq-question">Minhas imagens são enviadas para um servidor?</button><div class="faq-answer">Não. Todo o processamento acontece inteiramente no seu navegador usando a API Canvas. Suas imagens nunca saem do seu computador — 100% privado e seguro.</div></div>
+      <div class="faq-item"><button class="faq-question">Posso renomear os arquivos de saída em lote?</button><div class="faq-answer">Sim! O recurso de renomeação em lote permite definir um prefixo seguido de números auto-incrementais (ex.: produto_001.jpg, produto_002.jpg). Você também pode manter os nomes originais desmarcando a opção de renomear.</div></div>
+      <div class="faq-item"><button class="faq-question">Quais formatos de saída são suportados?</button><div class="faq-answer">Você pode exportar como JPG, PNG, WebP ou manter o mesmo formato do arquivo de entrada. Cada formato oferece qualidade ajustável de 10% a 100% para controle preciso entre tamanho do arquivo e qualidade.</div></div>
+      <div class="faq-item"><button class="faq-question">O que cada predefinição faz?</button><div class="faq-answer">Otimizado para Web: 80% de qualidade, máx. 1200 px — ideal para imagens de sites. Pronto para Impressão: 100% de qualidade, máx. 3000 px — melhor para impressão física. E-Commerce: 85% de qualidade, fundo branco, 1000 px — para anúncios de produtos. Miniatura: 60% de qualidade, máx. 300 px — para pré-visualizações pequenas.</div></div>
+      <div class="faq-item"><button class="faq-question">Posso ver quanto espaço economizei?</button><div class="faq-answer">Sim. Após o processamento, cada arquivo mostra seu tamanho antes/depois e a taxa de compressão economizada. A barra de estatísticas exibe o tamanho original total, o tamanho processado total e a economia total.</div></div>
+      <div class="faq-item"><button class="faq-question">Esta ferramenta é gratuita?</button><div class="faq-answer">Sim, completamente grátis. Sem cadastro, sem chaves de API, sem limites ocultos. Todo o processamento roda localmente no seu navegador, sem processamento no servidor.</div></div>
+      </section>
+
+      <section class="related-tools">
+        <h2>You Might Also Like</h2>
+        <div class="related-tools-grid">
+          <a href="/tools/compressor.html" class="related-tool-card">
+            <span class="tool-icon">🗜️</span>
+            <div class="tool-info">
+              <strong>Image Compressor</strong>
+              <span class="tool-desc">Compress single images with fine quality control</span>
+            </div>
+            <span class="tool-arrow">→</span>
+          </a>
+          <a href="/tools/converter.html" class="related-tool-card">
+            <span class="tool-icon">🔄</span>
+            <div class="tool-info">
+              <strong>Image Converter</strong>
+              <span class="tool-desc">Convert images between JPG, PNG, WebP</span>
+            </div>
+            <span class="tool-arrow">→</span>
+          </a>
+          <a href="/tools/resizer.html" class="related-tool-card">
+            <span class="tool-icon">📐</span>
+            <div class="tool-info">
+              <strong>Image Resizer</strong>
+              <span class="tool-desc">Resize a single image with precision</span>
+            </div>
+            <span class="tool-arrow">→</span>
+          </a>
+          <a href="/tools/watermark.html" class="related-tool-card">
+            <span class="tool-icon">🔏</span>
+            <div class="tool-info">
+              <strong>Watermark</strong>
+              <span class="tool-desc">Add watermark to a single image</span>
+            </div>
+            <span class="tool-arrow">→</span>
+          </a>
+          <a href="/tools/background-remover.html" class="related-tool-card">
+            <span class="tool-icon">✂️</span>
+            <div class="tool-info">
+              <strong>Background Remover</strong>
+              <span class="tool-desc">Remove backgrounds from images</span>
+            </div>
+            <span class="tool-arrow">→</span>
+          </a>
+        </div>
+      </section>
+    </div>
+  
+<section class="faq-section" style="margin-top:32px">
+  <h2>Mais Perguntas Frequentes</h2>
+  <div class="faq-item"><button class="faq-question">Operations?</button><div class="faq-answer">Resize, format conversion, watermark in one batch with ZIP.</div></div>
+  <div class="faq-item"><button class="faq-question">How many?</button><div class="faq-answer">20-50 per batch recommended.</div></div>
+  <div class="faq-item"><button class="faq-question">Is it free?</button><div class="faq-answer">Yes, completely free.</div></div>
+</section>
+    </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Ferramentas de imagem gratuitas com IA que respeitam sua privacidade.</p></div>
+        <div class="footer-links"><h4>Tools</h4><a href="/tools/background-remover.html">Background Remover</a><a href="/tools/compressor.html">Compressor</a><a href="/tools/converter.html">Converter</a><a href="/tools/resizer.html">Resizer</a>
+          <a href="/tools/gif-editor.html">GIF Editor</a>
+          <a href="/tools/pdf-to-image.html">PDF to Image</a>
+        </div>
+        <div class="footer-links"><h4>More Tools</h4><a href="/tools/cropper.html">Cropper</a><a href="/tools/watermark.html">Watermark</a><a href="/tools/image-merger.html">Image Merger</a><a href="/tools/screenshot-to-image.html">Screenshot to Image</a><a href="/tools/image-filters.html">Image Filters</a><a href="/tools/svg-to-png.html">SVG to PNG</a><a href="/tools/image-compare.html">Image Compare</a><a href="/tools/print-resizer.html">Print-Ready Resizer</a><a href="/tools/meme-generator.html">Meme Generator</a>          <a href="/tools/face-blur.html">Face Blur</a>
+          <a href="/tools/heic-converter.html">HEIC Converter</a>
+          <a href="/tools/metadata-viewer.html">Metadata Viewer</a>
+          <a href="/tools/avif-support.html">AVIF Support</a>
+          <a href="/tools/image-adjust.html">Image Adjustment</a>
+          <a href="/tools/image-border.html">Image Border</a>
+          <a href="/tools/image-flip.html">Image Flip</a>
+          <a href="/tools/image-grayscale.html">Image Grayscale</a>
+          <a href="/tools/image-shadow.html">Image Shadow</a>
+          <a href="/tools/image-splitter.html">Image Splitter</a>
+          <a href="/tools/image-exif-remover.html">EXIF Remover</a><a href="/tools/circle-crop.html">Circle Crop</a><a href="/tools/favicon-generator.html">Favicon Generator</a><a href="/tools/ocr.html">OCR Text</a><a href="/tools/bulk-processor.html">Bulk Processor</a><a href="/tools/image-to-pdf.html">Image to PDF</a><a href="/tools/image-enhancer.html">Image Enhancer</a>
+        </div>
+        <div class="footer-links"><h4>Legal</h4><a href="/privacy.html">Política de Privacidade</a><a href="/terms.html">Termos de Serviço</a><a href="/cookie-policy.html">Política de Cookies</a>
+        </div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. Todos os direitos reservados. | <a href="https://comprimefotos.com/" style="color: var(--accent); font-weight: 500;">Español: ComprimeFotos — Comprimir Imágenes Online</a></p></div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js?v=3"></script>
+  <script>
+(function() {
+  const $ = id => document.getElementById(id);
+  const fileInput = $('fileInput'), uploadArea = $('uploadArea'), workspace = $('workspace');
+  const fileList = $('fileList'), processBtn = $('processBtn'), downloadBtn = $('downloadBtn');
+  const quality = $('quality'), progBar = $('progBar'), progFill = $('progFill'), statusText = $('statusText');
+  const enableRename = $('enableRename'), renamePrefix = $('renamePrefix'), renameStart = $('renameStart');
+
+  let files = [], results = [], originalSizes = [];
+
+  /* ---------- Upload ---------- */
+  uploadArea.addEventListener('click', () => fileInput.click());
+  uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+  uploadArea.addEventListener('dragleave', () => { uploadArea.classList.remove('dragover'); });
+  uploadArea.addEventListener('drop', e => {
+    e.preventDefault(); uploadArea.classList.remove('dragover');
+    addFiles(Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/')));
+  });
+  fileInput.addEventListener('change', () => { addFiles(Array.from(fileInput.files)); fileInput.value = ''; });
+
+  function addFiles(arr) {
+    files = files.concat(arr);
+    originalSizes = originalSizes.concat(arr.map(f => f.size));
+    renderList();
+    workspace.style.display = 'block';
+    uploadArea.style.display = 'none';
+  }
+
+  function formatSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / 1048576).toFixed(1) + ' MB';
+  }
+
+  function renderList() {
+    fileList.innerHTML = '';
+    files.forEach((f, i) => {
+      const div = document.createElement('div');
+      div.className = 'file-item';
+      div.id = 'fileItem-' + i;
+      const statusText = results[i] ? 'done' : 'wait';
+      div.innerHTML =
+        '<span class="fnum">' + (i + 1) + '.</span>' +
+        '<strong class="fname">' + f.name + '</strong>' +
+        '<span class="fsize">' + formatSize(f.size) + '</span>' +
+        '<div class="file-progress" id="fp-' + i + '"><div class="file-progress-fill" id="fpf-' + i + '"></div></div>' +
+        '<span class="file-status ' + statusText + '" id="fstat-' + i + '">' + (statusText === 'done' ? '✓' : '⋯') + '</span>' +
+        '<span class="file-compare nosave" id="fcomp-' + i + '"></span>';
+      fileList.appendChild(div);
+    });
+  }
+
+  /* ---------- Rename toggle ---------- */
+  enableRename.addEventListener('change', () => {
+    renamePrefix.disabled = !enableRename.checked;
+    renameStart.disabled = !enableRename.checked;
+  });
+
+  /* ---------- Range sliders ---------- */
+  quality.addEventListener('input', () => $('qLabel').textContent = quality.value + '%');
+  $('wmOpacity').addEventListener('input', () => $('opLabel').textContent = $('wmOpacity').value + '%');
+
+  /* ---------- Presets ---------- */
+  document.querySelectorAll('.preset-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const p = btn.dataset.preset;
+      const rw = $('resizeW'), rh = $('resizeH');
+      if (p === 'web') { quality.value = 80; rw.value = 1200; rh.value = ''; $('qLabel').textContent = '80%'; }
+      else if (p === 'print') { quality.value = 100; rw.value = 3000; rh.value = ''; $('qLabel').textContent = '100%'; }
+      else if (p === 'ecom') { quality.value = 85; rw.value = 1000; rh.value = ''; $('qLabel').textContent = '85%'; }
+      else if (p === 'thumb') { quality.value = 60; rw.value = 300; rh.value = ''; $('qLabel').textContent = '60%'; }
+    });
+  });
+
+  /* ---------- Process ---------- */
+  processBtn.addEventListener('click', processAll);
+
+  async function processAll() {
+    if (!files.length) return;
+    processBtn.disabled = true;
+    downloadBtn.disabled = true;
+    $('statsBar').style.display = 'none';
+    progBar.style.display = 'block';
+    results = [];
+
+    const fmt = $('outFmt').value;
+    const q = quality.value / 100;
+    const wmText = $('wmText').value;
+    const wmSize = parseInt($('wmSize').value) || 24;
+    const wmAlpha = parseInt($('wmOpacity').value) / 100;
+    const wmPos = $('wmPos').value;
+    const tW = parseInt($('resizeW').value) || 0;
+    const tH = parseInt($('resizeH').value) || 0;
+    const keepRatio = $('keepRatio').checked;
+    const batchRename = enableRename.checked;
+
+    for (let i = 0; i < files.length; i++) {
+      statusText.textContent = 'Processing ' + (i + 1) + '/' + files.length + ': ' + files[i].name;
+      progFill.style.width = ((i / files.length) * 100) + '%';
+
+      const fstat = $('fstat-' + i);
+      const fpf = $('fpf-' + i);
+      const fcomp = $('fcomp-' + i);
+      if (fstat) { fstat.className = 'file-status proc'; fstat.textContent = '⏳'; }
+      if (fpf) fpf.style.width = '50%';
+
+      const blob = await processOne(files[i], tW, tH, keepRatio, fmt, q, wmText, wmSize, wmAlpha, wmPos);
+
+      if (fpf) fpf.style.width = '100%';
+      if (fstat) { fstat.className = 'file-status done'; fstat.textContent = '✓'; }
+
+      const origSize = originalSizes[i] || files[i].size;
+      const newSize = blob.size;
+      const ratio = origSize > 0 ? ((1 - newSize / origSize) * 100).toFixed(1) : 0;
+      if (fcomp) {
+        if (newSize < origSize) {
+          fcomp.className = 'file-compare saved';
+          fcomp.textContent = '-' + ratio + '%';
+        } else {
+          fcomp.className = 'file-compare nosave';
+          fcomp.textContent = '+' + Math.abs(ratio) + '%';
+        }
+      }
+
+      results.push({ name: files[i].name, blob });
+    }
+
+    progFill.style.width = '100%';
+    statusText.textContent = 'Done! ' + results.length + ' images processed.';
+
+    const totalOrig = originalSizes.reduce((a, b) => a + b, 0);
+    const totalNew = results.reduce((a, r) => a + r.blob.size, 0);
+    const totalSaved = totalOrig - totalNew;
+    const compressPct = totalOrig > 0 ? ((1 - totalNew / totalOrig) * 100).toFixed(1) : 0;
+
+    $('statOrig').textContent = formatSize(totalOrig);
+    $('statProc').textContent = formatSize(totalNew);
+    $('statSaved').textContent = formatSize(Math.abs(totalSaved)) + (totalSaved >= 0 ? ' saved' : ' larger');
+    $('statCompress').textContent = (totalSaved >= 0 ? '-' : '+') + Math.abs(compressPct) + '%';
+    $('statsBar').style.display = 'flex';
+
+    processBtn.disabled = false;
+    downloadBtn.disabled = false;
+  }
+
+  function processOne(file, tW, tH, keepRatio, fmt, q, wmText, wmSize, wmAlpha, wmPos) {
+    return new Promise(resolve => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = new Image();
+        img.onload = () => {
+          let w = img.width, h = img.height;
+          if (tW && tH) { w = tW; h = tH; }
+          else if (tW) { h = keepRatio ? Math.round(img.height * tW / img.width) : img.height; w = tW; }
+          else if (tH) { w = keepRatio ? Math.round(img.width * tH / img.height) : img.width; h = tH; }
+
+          const c = document.createElement('canvas');
+          c.width = w; c.height = h;
+          const ctx = c.getContext('2d');
+
+          if (fmt === 'image/jpeg' || (!fmt || fmt === 'same' && file.type === 'image/jpeg')) {
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, w, h);
+          }
+          ctx.drawImage(img, 0, 0, w, h);
+
+          if (wmText) {
+            ctx.save();
+            ctx.globalAlpha = wmAlpha;
+            ctx.font = wmSize + 'px sans-serif';
+            ctx.fillStyle = '#000';
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            const tw = ctx.measureText(wmText).width;
+            const th = wmSize * 1.2;
+            let wx = 20, wy = h - 20;
+            if (wmPos === 'tl') { wx = 20; wy = th; }
+            else if (wmPos === 'tr') { wx = w - tw - 20; wy = th; }
+            else if (wmPos === 'bl') { wx = 20; wy = h - 20; }
+            else if (wmPos === 'br') { wx = w - tw - 20; wy = h - 20; }
+            else if (wmPos === 'center') { wx = w / 2 - tw / 2; wy = h / 2 + th / 4; }
+            ctx.strokeText(wmText, wx, wy);
+            ctx.fillText(wmText, wx, wy);
+            ctx.restore();
+          }
+
+          const outFmt = fmt === 'same' ? (file.type || 'image/jpeg') : fmt;
+          c.toBlob(blob => resolve(blob), outFmt, q);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  /* ---------- Download ZIP ---------- */
+  downloadBtn.addEventListener('click', async () => {
+    if (!results.length) return;
+    downloadBtn.disabled = true;
+    statusText.textContent = 'Creating ZIP archive...';
+    const zip = new JSZip();
+    const batchRename = enableRename.checked;
+    const prefix = renamePrefix.value || 'image_';
+    const start = parseInt(renameStart.value) || 1;
+
+    results.forEach((r, i) => {
+      let name;
+      if (batchRename) {
+        const num = String(start + i).padStart(3, '0');
+        const ext = r.blob.type === 'image/png' ? '.png' : r.blob.type === 'image/webp' ? '.webp' : '.jpg';
+        name = prefix + num + ext;
+      } else {
+        name = r.name.replace(/\.[^.]+$/, '') + '.jpg';
+      }
+      zip.file(name, r.blob);
+    });
+
+    const blob = await zip.generateAsync({ type: 'blob' });
+    const a = document.createElement('a');
+    a.download = 'processed-images.zip';
+    a.href = URL.createObjectURL(blob);
+    a.click();
+    statusText.textContent = 'Downloaded!';
+    downloadBtn.disabled = false;
+  });
+
+  /* ---------- Clear ---------- */
+  $('clearBtn').addEventListener('click', () => {
+    files = []; results = []; originalSizes = [];
+    fileList.innerHTML = '';
+    workspace.style.display = 'none';
+    uploadArea.style.display = 'block';
+    progBar.style.display = 'none';
+    $('statsBar').style.display = 'none';
+    statusText.textContent = '';
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  });
+})();
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</body>
+</html>

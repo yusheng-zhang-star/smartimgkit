@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-tool-id="screenshot-to-image">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Screenshot to Image — Beautiful Screenshot Frames Free | SmartImgKit</title>
+  <meta name="description" content="Wrap your screenshots in beautiful frames with gradients, rounded corners, shadows, and browser or device mockups. Create stunning social media and presentation images. Free, no uploads, 100% browser-based.">
+  <meta name="keywords" content="screenshot to image, screenshot frame, screenshot mockup, browser mockup, device frame, beautiful screenshot, screenshot beautifier, social media screenshot, presentation screenshot">
+  <link rel="canonical" href="https://smartimgkit.com/tools/screenshot-to-image">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="Free Screenshot to Image Tool — SmartImgKit">
+  <meta property="og:description" content="Wrap screenshots in beautiful frames with gradients, rounded corners, shadows, and browser mockups. Free, no signup, 100% browser-based.">
+  <meta property="og:url" content="https://smartimgkit.com/tools/screenshot-to-image">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/screenshot-to-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free Screenshot to Image Tool — SmartImgKit">
+  <meta name="twitter:description" content="Wrap screenshots in beautiful frames with gradients, rounded corners, shadows, and browser mockups. Free, no signup, 100% browser-based.">
+  <meta name="twitter:image" content="https://smartimgkit.com/screenshots/screenshot-to-image.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <!-- Hreflang tags -->
+  <link rel="stylesheet" href="../css/style.css?v=3">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Screenshot to Image",
+  "url": "https://smartimgkit.com/tools/screenshot-to-image",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Wrap screenshots in beautiful frames with gradients, rounded corners, shadows, and browser or device mockups. Free, no signup, 100% browser-based."
+}
+</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Frame a Screenshot",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Upload Screenshot",
+      "text": "Click the upload area or drag and drop your screenshot file."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Choose Frame Style",
+      "text": "Select a background gradient, browser frame, or device mockup style."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Customize Appearance",
+      "text": "Adjust padding, corner radius, shadow, and other visual options."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "name": "Download",
+      "text": "Click Download to save your beautifully framed screenshot."
+    }
+  ]
+}
+</script>
+  <style>
+    .screenshot-workspace { display: flex; gap: 24px; flex-wrap: wrap; }
+        .screenshot-sidebar { flex: 0 0 300px; display: flex; flex-direction: column; gap: 14px; }
+        .screenshot-canvas-area { flex: 1; min-width: 300px; }
+
+        .control-group { display: flex; flex-direction: column; gap: 6px; }
+        .control-group label { font-size: .8rem; color: var(--text-secondary); font-weight: 500; }
+        .control-group select, .control-group input[type="number"] {
+          padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px;
+          background: var(--bg-primary); color: var(--text-primary); font-size: .85rem;
+        }
+        .control-group input[type="range"] { width: 100%; }
+        .control-group input[type="color"] {
+          width: 100%; height: 36px; border: 1px solid var(--border); border-radius: 6px;
+          background: var(--bg-primary); cursor: pointer; padding: 2px;
+        }
+
+        .gradient-presets { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+        .gradient-swatch {
+          width: 100%; aspect-ratio: 1; border-radius: 8px; cursor: pointer;
+          border: 2px solid transparent; transition: all .2s; position: relative;
+        }
+        .gradient-swatch:hover { transform: scale(1.1); }
+        .gradient-swatch.active { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(99,102,241,.3); }
+
+        .frame-btns { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+        .frame-btn {
+          padding: 8px; border: 1px solid var(--border); border-radius: 8px;
+          background: var(--bg-primary); color: var(--text-secondary); cursor: pointer;
+          text-align: center; font-size: .8rem; transition: all .2s;
+        }
+        .frame-btn:hover { border-color: var(--accent); color: var(--text-primary); }
+        .frame-btn.active { border-color: var(--accent); background: rgba(99,102,241,.1); color: var(--accent); }
+
+        .canvas-wrapper {
+          background: repeating-conic-gradient(var(--bg-secondary) 0% 25%, var(--bg-primary) 0% 50%) 50% / 20px 20px;
+          border: 1px solid var(--border); border-radius: 12px; padding: 16px;
+          display: flex; align-items: center; justify-content: center; min-height: 300px;
+          overflow: auto;
+        }
+        .canvas-wrapper canvas { max-width: 100%; max-height: 600px; border-radius: 4px; }
+
+        .info-row {
+          display: flex; gap: 12px; font-size: .8rem; color: var(--text-secondary);
+          padding: 8px 12px; background: var(--bg-secondary); border-radius: 8px;
+        }
+        .info-row span { display: flex; align-items: center; gap: 4px; }
+
+        @media (max-width: 768px) {
+          .screenshot-workspace { flex-direction: column; }
+          .screenshot-sidebar { flex: none; width: 100%; }
+        }
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What screenshot sources are supported?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Drag and drop, paste from clipboard (Ctrl+V), or file upload."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What output formats are available?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "PNG, JPG, and WebP."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my screenshot uploaded to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All processing happens locally."
+      }
+    }
+  ]
+}
+</script>
+<style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+</head>
+<body>
+  <!-- Adsterra Social Bar (29640799) - Popunder 替代品,移动端友好 -->
+  <script src="https://pl29741298.effectivecpmnetwork.com/70/c0/84/70c084b07dadc5b3f66fae02aa21f788.js"></script>
+
+  <!-- Header: exact match image-rotator compact format -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover.html">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/about.html">About</a><a href="/contact.html">Contact</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Switch language">🇬🇧 EN</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+          </div>
+        </div>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/">Tools</a><span>/</span><span>🖼️ Screenshot to Image</span></nav>
+      <div class="tool-page-header">
+        <h1>🖼️ Screenshot to Image</h1>
+        <p>Wrap your screenshots in beautiful frames with gradient backgrounds, rounded corners, shadows, and browser or device mockups. Perfect for social media, presentations, and documentation. 100% browser-based.</p>
+      </div>
+      <!-- Adsterra Native Banner (29640800) - 工具标题下,融入内容流 -->
+      <div class="ad-native-banner">
+        <script async="async" data-cfasync="false" src="https://pl29741299.effectivecpmnetwork.com/5a540a2ce35c794ad7d73a726a88971c/invoke.js"></script>
+        <div id="container-5a540a2ce35c794ad7d73a726a88971c"></div>
+      </div>
+      <div class="tool-workspace">
+<!-- Upload Area -->
+              <!-- Before/After Preview -->
+        <div class="before-after-preview" id="beforeAfterPreview">
+          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-images">
+            <div class="before-after-item">
+              <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&q=80" alt="Before" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
+              <div class="before-after-item-caption before">Before</div>
+            </div>
+            <div class="before-after-item">
+              <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
+                <span style="font-size:3rem;opacity:0.5;">📱</span>
+              </div>
+              <div class="before-after-item-caption after">After — processed</div>
+            </div>
+          </div>
+        </div>        <input type="file" id="fileInput" accept="image/*" style="display:none;">
+      <label for="fileInput" class="dropzone" id="dropzone">
+        <div class="dropzone-icon">📤</div>
+        <h3>Drop your screenshot here</h3>
+        <p>or click to browse. Supports JPG, PNG, WebP.</p>
+      </label>
+
+      <!-- Workspace -->
+      <div id="workspace" style="display:none">
+        <div class="screenshot-workspace">
+          <!-- Sidebar -->
+          <div class="screenshot-sidebar">
+
+            <div class="control-group">
+              <label>Frame Style</label>
+              <div class="frame-btns">
+                <button class="frame-btn active" data-frame="none">None</button>
+                <button class="frame-btn" data-frame="browser">Browser</button>
+                <button class="frame-btn" data-frame="laptop">Laptop</button>
+                <button class="frame-btn" data-frame="phone">Phone</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label>Background Gradient</label>
+              <div class="gradient-presets" id="gradientPresets"></div>
+            </div>
+
+            <div class="control-group">
+              <label>Custom Background</label>
+              <input type="color" id="bgColor" value="#6366f1">
+            </div>
+
+            <div class="control-group">
+              <label>Padding: <span id="paddingValue">64</span>px</label>
+              <input type="range" id="padding" min="0" max="200" value="64">
+            </div>
+
+            <div class="control-group">
+              <label>Corner Radius: <span id="radiusValue">16</span>px</label>
+              <input type="range" id="cornerRadius" min="0" max="60" value="16">
+            </div>
+
+            <div class="control-group">
+              <label>Shadow Blur: <span id="shadowValue">40</span>px</label>
+              <input type="range" id="shadowBlur" min="0" max="80" value="40">
+            </div>
+
+            <div class="control-group">
+              <label>Shadow Opacity: <span id="shadowOpValue">25</span>%</label>
+              <input type="range" id="shadowOpacity" min="0" max="100" value="25">
+            </div>
+
+            <div class="control-group">
+              <label>Image Scale: <span id="scaleValue">75</span>%</label>
+              <input type="range" id="imageScale" min="30" max="100" value="75">
+            </div>
+
+            <div class="control-group">
+              <label>Output Format</label>
+              <select id="outputFormat">
+                <option value="image/png">PNG</option>
+                <option value="image/jpeg">JPG</option>
+                <option value="image/webp">WebP</option>
+              </select>
+            </div>
+
+            <div class="tool-actions" style="flex-direction:column">
+              <button class="btn btn-primary" id="downloadBtn">💾 Download</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Start Over</button>
+            </div>
+            <div id="status" class="text-center" style="color:var(--text-secondary);font-size:.85rem"></div>
+          </div>
+
+          <!-- Canvas Preview -->
+          <div class="screenshot-canvas-area">
+            <div class="canvas-wrapper" id="canvasWrapper">
+              <canvas id="previewCanvas"></canvas>
+            </div>
+            <div class="info-row" id="infoRow" style="margin-top:12px">
+              <span>📐 Original: <b id="origSize">-</b></span>
+              <span>🖼️ Output: <b id="outSize">-</b></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <!-- Adsterra Banner 300x250 (29640802) - 工具区下方,黄金尺寸高 eCPM -->
+      <div class="ad-banner-300x250">
+        <script>
+          atOptions = {
+            'key' : 'c95d26a94d4f8dc640cd33ad5ec91528',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/c95d26a94d4f8dc640cd33ad5ec91528/invoke.js"></script>
+      </div>
+
+<section class="how-to-section">
+        <h2>How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step"><div class="step-number">1</div><h4>Upload Screenshot</h4><p>Click the upload area or drag and drop your screenshot file.</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>Choose Frame Style</h4><p>Select a background gradient, browser frame, or device mockup style.</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>Customize Appearance</h4><p>Adjust padding, corner radius, shadow, scale, and other visual options.</p></div>
+          <div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Click Download to save your beautifully framed screenshot.</p></div>
+        </div>
+      </section>
+
+<h2>Detailed User Guide</h2>
+
+        <div class="guide-block">
+          <h3>Step 1: Upload Your Screenshot</h3>
+          <p>Click the upload area or drag and drop an image file. Supported formats include JPG, PNG, and WebP. The screenshot loads instantly and appears in the preview canvas. Your image stays on your device — nothing is uploaded to any server.</p>
+        </div>
+
+        <div class="guide-block">
+          <h3>Step 2: Choose a Frame Style</h3>
+          <p>Select from four frame styles to present your screenshot:</p>
+          <ul>
+            <li><strong>None:</strong> Just the gradient background with rounded corners and shadow — clean and minimal</li>
+            <li><strong>Browser:</strong> A macOS-style browser window with a title bar, traffic light buttons, and an address bar</li>
+            <li><strong>Laptop:</strong> Your screenshot displayed on a laptop mockup with a realistic screen, keyboard, and trackpad</li>
+            <li><strong>Phone:</strong> Your screenshot displayed on a smartphone mockup with a bezel, notch, and home indicator</li>
+          </ul>
+        </div>
+
+        <div class="guide-block">
+          <h3>Step 3: Customize the Appearance</h3>
+          <p>Fine-tune every detail of your framed screenshot:</p>
+          <ul>
+            <li><strong>Background Gradient:</strong> Choose from 10 curated gradient presets — from cool blues to warm sunsets</li>
+            <li><strong>Custom Background:</strong> Use the color picker for a solid background color</li>
+            <li><strong>Padding:</strong> Control the space between the frame and the edge of the canvas (0-200px)</li>
+            <li><strong>Corner Radius:</strong> Round the corners of the screenshot (0-60px)</li>
+            <li><strong>Shadow:</strong> Add a soft drop shadow behind the frame with adjustable blur and opacity</li>
+            <li><strong>Image Scale:</strong> Control how large the screenshot appears within the canvas (30-100%)</li>
+          </ul>
+        </div>
+
+        <div class="guide-block">
+          <h3>Step 4: Download</h3>
+          <p>When you're happy with the result, choose your output format (PNG, JPG, or WebP) and click <strong>"Download"</strong>. The file saves immediately to your device. No watermarks, no quality loss.</p>
+        </div>
+
+        <div class="guide-block">
+          <h3>Best Use Cases</h3>
+          <ul>
+            <li><strong>Social media posts</strong> — Make your screenshots stand out on Twitter, LinkedIn, and Instagram with beautiful gradient backgrounds</li>
+            <li><strong>Blog posts & tutorials</strong> — Present UI screenshots in browser frames for professional-looking documentation</li>
+            <li><strong>Presentations</strong> — Frame app screenshots in device mockups for pitch decks and slide decks</li>
+            <li><strong>Product pages</strong> — Showcase your app or website in laptop and phone mockups for marketing materials</li>
+            <li><strong>GitHub READMEs</strong> — Add polished screenshots to your project documentation</li>
+            <li><strong>Newsletter headers</strong> — Create eye-catching visuals for email campaigns</li>
+          </ul>
+        </div>
+
+        <div class="guide-block">
+          <h3>Pro Tips</h3>
+          <ul>
+            <li>For Twitter/X, use a 16:9 aspect ratio screenshot with generous padding and a vibrant gradient background</li>
+            <li>The Browser frame style is perfect for web app screenshots — it immediately communicates "this is a website"</li>
+            <li>For mobile app screenshots, use the Phone frame to give viewers context about the screen size</li>
+            <li>A shadow blur of 30-50px with 20-30% opacity creates a natural, professional-looking depth effect</li>
+            <li>Match your gradient background to your brand colors for consistent visual identity</li>
+            <li>Use PNG format for screenshots with transparency or text — it preserves sharp edges</li>
+          </ul>
+        </div>
+
+<section class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item"><button class="faq-question">Is my screenshot uploaded to a server?</button><div class="faq-answer">No. All processing happens entirely in your browser using the Canvas API. Your screenshots never leave your device. There is no server that receives or stores your files.</div></div>
+      <div class="faq-item"><button class="faq-question">What resolution is the output?</button><div class="faq-answer">The output resolution depends on your input screenshot and the padding settings. The tool generates a high-resolution image at 1x pixel density. For retina-quality output, upload a high-resolution screenshot.</div></div>
+      <div class="faq-item"><button class="faq-question">Can I customize the gradient colors?</button><div class="faq-answer">Yes! We offer 10 curated gradient presets, and you can also use the custom background color picker to set any solid color. For full gradient customization, pick a preset that's close to what you want and adjust.</div></div>
+      <div class="faq-item"><button class="faq-question">What is the browser frame style?</button><div class="faq-answer">The Browser frame adds a macOS-style window title bar above your screenshot, complete with red, yellow, and green traffic light buttons and a thin address bar. It makes web screenshots instantly recognizable as websites.</div></div>
+      <div class="faq-item"><button class="faq-question">Can I use this for commercial projects?</button><div class="faq-answer">Absolutely. The output images are yours to use for any purpose — personal or commercial. There are no watermarks, no attribution requirements, and no usage restrictions.</div></div>
+      <div class="faq-item"><button class="faq-question">What image formats are supported for input?</button><div class="faq-answer">We support JPG, PNG, WebP, GIF, and BMP for input. The tool works best with PNG screenshots for maximum quality, but any standard image format will work.</div></div>
+      <div class="faq-item"><button class="faq-question">How do I get the best-looking result?</button><div class="faq-answer">Use a high-resolution screenshot (at least 1280px wide), add generous padding (64-100px), choose a gradient that complements your screenshot's color scheme, and add a subtle shadow (30-50px blur, 20-30% opacity). These settings create a professional, polished look.</div></div>
+      </section>
+
+<section class="related-tools">
+  <h2>You Might Also Like</h2>
+  <div class="related-tools-grid">
+    <a href="/tools/compressor.html" class="related-tool-card">
+      <span class="tool-icon">🗜️</span>
+      <div class="tool-info">
+        <strong>Image Compressor</strong>
+        <span class="tool-desc">Compress screenshots for sharing</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/tools/text-on-image.html" class="related-tool-card">
+      <span class="tool-icon">✏️</span>
+      <div class="tool-info">
+        <strong>Text on Image</strong>
+        <span class="tool-desc">Add annotations to screenshots</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/tools/watermark.html" class="related-tool-card">
+      <span class="tool-icon">🔒</span>
+      <div class="tool-info">
+        <strong>Watermark Tool</strong>
+        <span class="tool-desc">Add watermarks to screenshots</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+  </div>
+</section>
+    </div>
+
+</main>
+
+  <!-- Footer: exact match image-rotator compact format -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Free AI-powered image tools that respect your privacy.</p></div>
+        <div class="footer-links"><h4>Tools</h4><a href="/tools/background-remover.html">Background Remover</a><a href="/tools/compressor.html">Compressor</a><a href="/tools/converter.html">Converter</a><a href="/tools/resizer.html">Resizer</a>
+          <a href="/tools/gif-editor.html">GIF Editor</a>
+          <a href="/tools/pdf-to-image.html">PDF to Image</a>
+        </div>
+        <div class="footer-links"><h4>More Tools</h4><a href="/tools/cropper.html">Cropper</a><a href="/tools/watermark.html">Watermark</a><a href="/tools/image-merger.html">Image Merger</a><a href="/tools/screenshot-to-image.html">Screenshot to Image</a><a href="/tools/image-filters.html">Image Filters</a><a href="/tools/svg-to-png.html">SVG to PNG</a><a href="/tools/image-compare.html">Image Compare</a><a href="/tools/print-resizer.html">Print-Ready Resizer</a><a href="/tools/meme-generator.html">Meme Generator</a>          <a href="/tools/face-blur.html">Face Blur</a>
+          <a href="/tools/heic-converter.html">HEIC Converter</a>
+          <a href="/tools/metadata-viewer.html">Metadata Viewer</a>
+          <a href="/tools/avif-support.html">AVIF Support</a>
+          <a href="/tools/image-adjust.html">Image Adjustment</a>
+          <a href="/tools/image-border.html">Image Border</a>
+          <a href="/tools/image-flip.html">Image Flip</a>
+          <a href="/tools/image-grayscale.html">Image Grayscale</a>
+          <a href="/tools/image-shadow.html">Image Shadow</a>
+          <a href="/tools/image-splitter.html">Image Splitter</a>
+          <a href="/tools/image-exif-remover.html">EXIF Remover</a><a href="/tools/circle-crop.html">Circle Crop</a><a href="/tools/favicon-generator.html">Favicon Generator</a><a href="/tools/ocr.html">OCR Text</a><a href="/tools/bulk-processor.html">Bulk Processor</a><a href="/tools/image-to-pdf.html">Image to PDF</a>          <a href="/tools/id-photo.html">ID Photo Maker</a>
+          <a href="/tools/product-white-background.html">Product White BG</a>
+          <a href="/tools/social-media-post.html">Social Media Post</a>
+          <a href="/tools/photo-restoration.html">Photo Restoration</a><a href="/tools/image-enhancer.html">Image Enhancer</a>
+        </div>
+        <div class="footer-links"><h4>Legal</h4><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms of Service</a><a href="/cookie-policy.html">Cookie Policy</a>
+        </div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved. | <a href="https://comprimefotos.com/" style="color: var(--accent); font-weight: 500;">Español: ComprimeFotos — Comprimir Imágenes Online</a></p></div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js?v=3"></script>
+  <script>
+// ===== Gradient Presets =====
+    const GRADIENTS = [
+      { name: 'Indigo',   colors: ['#6366f1', '#8b5cf6'] },
+      { name: 'Sunset',   colors: ['#f97316', '#ec4899'] },
+      { name: 'Ocean',    colors: ['#0ea5e9', '#6366f1'] },
+      { name: 'Emerald',  colors: ['#10b981', '#06b6d4'] },
+      { name: 'Rose',     colors: ['#f43f5e', '#a855f7'] },
+      { name: 'Sky',      colors: ['#38bdf8', '#818cf8'] },
+      { name: 'Amber',    colors: ['#f59e0b', '#ef4444'] },
+      { name: 'Teal',     colors: ['#14b8a6', '#3b82f6'] },
+      { name: 'Purple',   colors: ['#a855f7', '#ec4899'] },
+      { name: 'Slate',    colors: ['#475569', '#1e293b'] },
+    ];
+
+    // ===== State =====
+    let originalImg = null;
+    let frameStyle = 'none';
+    let gradientIndex = 0;
+    let useCustomBg = false;
+
+    // ===== DOM =====
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const workspace = document.getElementById('workspace');
+    const previewCanvas = document.getElementById('previewCanvas');
+    const ctx = previewCanvas.getContext('2d');
+
+    const paddingSlider = document.getElementById('padding');
+    const paddingValue = document.getElementById('paddingValue');
+    const radiusSlider = document.getElementById('cornerRadius');
+    const radiusValue = document.getElementById('radiusValue');
+    const shadowBlurSlider = document.getElementById('shadowBlur');
+    const shadowValue = document.getElementById('shadowValue');
+    const shadowOpSlider = document.getElementById('shadowOpacity');
+    const shadowOpValue = document.getElementById('shadowOpValue');
+    const scaleSlider = document.getElementById('imageScale');
+    const scaleValue = document.getElementById('scaleValue');
+    const bgColorInput = document.getElementById('bgColor');
+    const outputFormat = document.getElementById('outputFormat');
+
+    // ===== Init Gradient Swatches =====
+    const gradientPresetsEl = document.getElementById('gradientPresets');
+    GRADIENTS.forEach((g, i) => {
+      const swatch = document.createElement('div');
+      swatch.className = 'gradient-swatch' + (i === 0 ? ' active' : '');
+      swatch.style.background = `linear-gradient(135deg, ${g.colors[0]}, ${g.colors[1]})`;
+      swatch.title = g.name;
+      swatch.dataset.index = i;
+      swatch.addEventListener('click', () => {
+        document.querySelectorAll('.gradient-swatch').forEach(s => s.classList.remove('active'));
+        swatch.classList.add('active');
+        gradientIndex = i;
+        useCustomBg = false;
+        renderPreview();
+      });
+      gradientPresetsEl.appendChild(swatch);
+    });
+
+    // ===== Frame Buttons =====
+    document.querySelectorAll('.frame-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.frame-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        frameStyle = btn.dataset.frame;
+        renderPreview();
+      });
+    });
+
+    // ===== File Upload =====
+    setupDropzone({
+      dropzoneId: 'dropzone',
+      inputId: 'fileInput',
+      onFile: async (file) => {
+        try {
+          originalImg = await ImageUtils.load(file);
+          document.getElementById('origSize').textContent = originalImg.width + ' x ' + originalImg.height;
+          dropzone.style.display = 'none';
+          workspace.style.display = 'block';
+          renderPreview();
+        } catch (e) {
+          ImageUtils.showToast('Failed to load image', 'error');
+        }
+      }
+    });
+
+    // ===== Slider Events =====
+    paddingSlider.addEventListener('input', () => { paddingValue.textContent = paddingSlider.value; renderPreview(); });
+    radiusSlider.addEventListener('input', () => { radiusValue.textContent = radiusSlider.value; renderPreview(); });
+    shadowBlurSlider.addEventListener('input', () => { shadowValue.textContent = shadowBlurSlider.value; renderPreview(); });
+    shadowOpSlider.addEventListener('input', () => { shadowOpValue.textContent = shadowOpSlider.value; renderPreview(); });
+    scaleSlider.addEventListener('input', () => { scaleValue.textContent = scaleSlider.value; renderPreview(); });
+    bgColorInput.addEventListener('input', () => { useCustomBg = true; document.querySelectorAll('.gradient-swatch').forEach(s => s.classList.remove('active')); renderPreview(); });
+
+    // ===== Reset =====
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      originalImg = null;
+      workspace.style.display = 'none';
+      dropzone.style.display = '';
+      fileInput.value = '';
+      frameStyle = 'none';
+      gradientIndex = 0;
+      useCustomBg = false;
+      paddingSlider.value = 64; paddingValue.textContent = '64';
+      radiusSlider.value = 16; radiusValue.textContent = '16';
+      shadowBlurSlider.value = 40; shadowValue.textContent = '40';
+      shadowOpSlider.value = 25; shadowOpValue.textContent = '25';
+      scaleSlider.value = 75; scaleValue.textContent = '75';
+      document.querySelectorAll('.frame-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector('[data-frame="none"]').classList.add('active');
+      document.querySelectorAll('.gradient-swatch').forEach((s, i) => {
+        s.classList.toggle('active', i === 0);
+      });
+    });
+
+    // ===== Download =====
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+      const mime = outputFormat.value;
+      const ext = mime === 'image/jpeg' ? 'jpg' : mime === 'image/webp' ? 'webp' : 'png';
+      ImageUtils.download(previewCanvas, 'screenshot-framed.' + ext, mime);
+      ImageUtils.showToast('Image downloaded!');
+    });
+
+    // ===== Render Preview =====
+    function renderPreview() {
+      if (!originalImg) return;
+
+      const pad = parseInt(paddingSlider.value);
+      const radius = parseInt(radiusSlider.value);
+      const shadowB = parseInt(shadowBlurSlider.value);
+      const shadowO = parseInt(shadowOpSlider.value) / 100;
+      const scale = parseInt(scaleSlider.value) / 100;
+
+      const imgW = originalImg.width;
+      const imgH = originalImg.height;
+
+      // Calculate dimensions based on frame style
+      let canvasW, canvasH, screenX, screenY, screenW, screenH;
+      const scaledW = Math.round(imgW * scale);
+      const scaledH = Math.round(imgH * scale);
+
+      if (frameStyle === 'browser') {
+        const titleBarH = 40;
+        const addressBarH = 36;
+        const chromeH = titleBarH + addressBarH;
+        screenW = scaledW;
+        screenH = scaledH;
+        screenX = pad;
+        screenY = pad + chromeH;
+        canvasW = scaledW + pad * 2;
+        canvasH = scaledH + chromeH + pad * 2;
+      } else if (frameStyle === 'laptop') {
+        const bezel = 16;
+        const titleBarH = 36;
+        const baseH = 60;
+        const baseSide = 60;
+        screenW = scaledW;
+        screenH = scaledH;
+        screenX = pad + bezel;
+        screenY = pad + bezel + titleBarH;
+        canvasW = scaledW + (bezel + pad) * 2;
+        canvasH = scaledH + bezel * 2 + titleBarH + baseH + pad * 2;
+      } else if (frameStyle === 'phone') {
+        const bezel = 24;
+        const notchW = Math.round(scaledW * 0.35);
+        const notchH = 28;
+        const homeH = 20;
+        screenW = scaledW;
+        screenH = scaledH;
+        screenX = pad + bezel;
+        screenY = pad + bezel + notchH;
+        canvasW = scaledW + (bezel + pad) * 2;
+        canvasH = scaledH + notchH + homeH + bezel * 2 + pad * 2;
+      } else {
+        screenW = scaledW;
+        screenH = scaledH;
+        screenX = pad;
+        screenY = pad;
+        canvasW = scaledW + pad * 2;
+        canvasH = scaledH + pad * 2;
+      }
+
+      previewCanvas.width = canvasW;
+      previewCanvas.height = canvasH;
+
+      // Clear
+      ctx.clearRect(0, 0, canvasW, canvasH);
+
+      // Draw background
+      if (useCustomBg) {
+        ctx.fillStyle = bgColorInput.value;
+        ctx.fillRect(0, 0, canvasW, canvasH);
+      } else {
+        const grad = GRADIENTS[gradientIndex];
+        const gradient = ctx.createLinearGradient(0, 0, canvasW, canvasH);
+        gradient.addColorStop(0, grad.colors[0]);
+        gradient.addColorStop(1, grad.colors[1]);
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvasW, canvasH);
+      }
+
+      // Draw frame + screenshot
+      if (frameStyle === 'browser') {
+        drawBrowserFrame(ctx, screenX, screenY, screenW, screenH, pad, radius, shadowB, shadowO);
+      } else if (frameStyle === 'laptop') {
+        drawLaptopFrame(ctx, screenX, screenY, screenW, screenH, pad, radius, shadowB, shadowO);
+      } else if (frameStyle === 'phone') {
+        drawPhoneFrame(ctx, screenX, screenY, screenW, screenH, pad, radius, shadowB, shadowO);
+      } else {
+        // No frame — just the screenshot with rounded corners and shadow
+        drawSimpleFrame(ctx, screenX, screenY, screenW, screenH, radius, shadowB, shadowO);
+      }
+
+      // Update info
+      document.getElementById('outSize').textContent = canvasW + ' x ' + canvasH;
+    }
+
+    // ===== Simple Frame (no device) =====
+    function drawSimpleFrame(ctx, x, y, w, h, radius, shadowB, shadowO) {
+      ctx.save();
+
+      // Shadow
+      if (shadowB > 0) {
+        ctx.shadowColor = 'rgba(0,0,0,' + shadowO + ')';
+        ctx.shadowBlur = shadowB;
+        ctx.shadowOffsetY = shadowB / 4;
+      }
+
+      // Rounded rect clip
+      roundedRect(ctx, x, y, w, h, radius);
+      ctx.clip();
+
+      ctx.drawImage(originalImg, x, y, w, h);
+
+      ctx.restore();
+    }
+
+    // ===== Browser Frame =====
+    function drawBrowserFrame(ctx, screenX, screenY, screenW, screenH, pad, radius, shadowB, shadowO) {
+      const titleBarH = 40;
+      const addressBarH = 36;
+      const chromeH = titleBarH + addressBarH;
+      const frameX = screenX;
+      const frameY = screenY - chromeH;
+      const frameW = screenW;
+      const frameH = chromeH + screenH;
+
+      ctx.save();
+
+      // Shadow
+      if (shadowB > 0) {
+        ctx.shadowColor = 'rgba(0,0,0,' + shadowO + ')';
+        ctx.shadowBlur = shadowB;
+        ctx.shadowOffsetY = shadowB / 4;
+      }
+
+      // Window background
+      ctx.fillStyle = '#1e1e2e';
+      roundedRect(ctx, frameX, frameY, frameW, frameH, radius);
+      ctx.fill();
+
+      // Reset shadow for inner elements
+      ctx.shadowColor = 'transparent';
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetY = 0;
+
+      // Title bar background
+      ctx.fillStyle = '#181825';
+      roundedRectTop(ctx, frameX, frameY, frameW, titleBarH, radius);
+      ctx.fill();
+
+      // Traffic light buttons
+      const btnY = frameY + titleBarH / 2;
+      const btnR = 6;
+      const btnStartX = frameX + 18;
+      // Red
+      ctx.beginPath();
+      ctx.arc(btnStartX, btnY, btnR, 0, Math.PI * 2);
+      ctx.fillStyle = '#ff5f57';
+      ctx.fill();
+      // Yellow
+      ctx.beginPath();
+      ctx.arc(btnStartX + 22, btnY, btnR, 0, Math.PI * 2);
+      ctx.fillStyle = '#febc2e';
+      ctx.fill();
+      // Green
+      ctx.beginPath();
+      ctx.arc(btnStartX + 44, btnY, btnR, 0, Math.PI * 2);
+      ctx.fillStyle = '#28c840';
+      ctx.fill();
+
+      // Address bar
+      const addrY = frameY + titleBarH;
+      ctx.fillStyle = '#1e1e2e';
+      ctx.fillRect(frameX, addrY, frameW, addressBarH);
+
+      // Address bar inner
+      const addrPad = 8;
+      const addrH = 24;
+      const addrInnerY = addrY + (addressBarH - addrH) / 2;
+      ctx.fillStyle = '#313244';
+      roundedRect(ctx, frameX + addrPad, addrInnerY, frameW - addrPad * 2, addrH, 6);
+      ctx.fill();
+
+      // Address text
+      ctx.fillStyle = '#6c7086';
+      ctx.font = '12px Inter, system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('https://example.com', frameX + frameW / 2, addrInnerY + addrH / 2);
+
+      // Screenshot content — clip to bottom rounded rect
+      ctx.save();
+      roundedRectBottom(ctx, frameX, screenY - 1, screenW, screenH + 1, radius);
+      ctx.clip();
+      ctx.drawImage(originalImg, screenX, screenY, screenW, screenH);
+      ctx.restore();
+
+      ctx.restore();
+    }
+
+    // ===== Laptop Frame =====
+    function drawLaptopFrame(ctx, screenX, screenY, screenW, screenH, pad, radius, shadowB, shadowO) {
+      const bezel = 16;
+      const titleBarH = 36;
+      const baseH = 60;
+      const baseSide = 60;
+
+      const frameX = screenX - bezel;
+      const frameY = screenY - bezel - titleBarH;
+      const frameW = screenW + bezel * 2;
+      const frameH = screenH + bezel * 2 + titleBarH;
+
+      ctx.save();
+
+      // Shadow
+      if (shadowB > 0) {
+        ctx.shadowColor = 'rgba(0,0,0,' + shadowO + ')';
+        ctx.shadowBlur = shadowB;
+        ctx.shadowOffsetY = shadowB / 4;
+      }
+
+      // Screen bezel
+      ctx.fillStyle = '#1e1e2e';
+      roundedRect(ctx, frameX, frameY, frameW, frameH, radius);
+      ctx.fill();
+
+      // Reset shadow
+      ctx.shadowColor = 'transparent';
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetY = 0;
+
+      // Title bar (within screen)
+      ctx.fillStyle = '#181825';
+      roundedRectTop(ctx, frameX, frameY, frameW, titleBarH + bezel, radius);
+      ctx.fill();
+
+      // Traffic light dots
+      const btnY = frameY + bezel + titleBarH / 2;
+      const btnR = 5;
+      const btnStartX = frameX + bezel + 14;
+      ctx.beginPath(); ctx.arc(btnStartX, btnY, btnR, 0, Math.PI * 2); ctx.fillStyle = '#ff5f57'; ctx.fill();
+      ctx.beginPath(); ctx.arc(btnStartX + 18, btnY, btnR, 0, Math.PI * 2); ctx.fillStyle = '#febc2e'; ctx.fill();
+      ctx.beginPath(); ctx.arc(btnStartX + 36, btnY, btnR, 0, Math.PI * 2); ctx.fillStyle = '#28c840'; ctx.fill();
+
+      // Screen content
+      ctx.save();
+      roundedRectBottom(ctx, screenX - 1, screenY - 1, screenW + 2, screenH + bezel + 2, Math.max(radius - 4, 4));
+      ctx.clip();
+      ctx.drawImage(originalImg, screenX, screenY, screenW, screenH);
+      ctx.restore();
+
+      // Laptop base
+      const baseY = frameY + frameH + 4;
+      const baseX = frameX - baseSide;
+      const baseW = frameW + baseSide * 2;
+
+      // Base shadow
+      ctx.fillStyle = '#0f0f1a';
+      roundedRect(ctx, baseX, baseY, baseW, baseH, 8);
+      ctx.fill();
+
+      // Base top surface
+      ctx.fillStyle = '#1e1e2e';
+      roundedRectTop(ctx, baseX, baseY, baseW, baseH - 8, 8);
+      ctx.fill();
+
+      // Trackpad
+      const tpW = baseW * 0.3;
+      const tpH = baseH * 0.5;
+      const tpX = baseX + (baseW - tpW) / 2;
+      const tpY = baseY + (baseH - tpH) / 2 - 2;
+      ctx.strokeStyle = '#313244';
+      ctx.lineWidth = 1;
+      roundedRect(ctx, tpX, tpY, tpW, tpH, 4);
+      ctx.stroke();
+
+      // Camera dot on bezel
+      ctx.beginPath();
+      ctx.arc(frameX + frameW / 2, frameY + bezel / 2, 3, 0, Math.PI * 2);
+      ctx.fillStyle = '#313244';
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    // ===== Phone Frame =====
+    function drawPhoneFrame(ctx, screenX, screenY, screenW, screenH, pad, radius, shadowB, shadowO) {
+      const bezel = 24;
+      const notchW = Math.round(screenW * 0.35);
+      const notchH = 28;
+      const homeH = 20;
+
+      const frameX = screenX - bezel;
+      const frameY = screenY - bezel - notchH;
+      const frameW = screenW + bezel * 2;
+      const frameH = screenH + notchH + homeH + bezel * 2;
+
+      ctx.save();
+
+      // Shadow
+      if (shadowB > 0) {
+        ctx.shadowColor = 'rgba(0,0,0,' + shadowO + ')';
+        ctx.shadowBlur = shadowB;
+        ctx.shadowOffsetY = shadowB / 4;
+      }
+
+      // Phone body
+      ctx.fillStyle = '#1e1e2e';
+      roundedRect(ctx, frameX, frameY, frameW, frameH, Math.max(radius, 28));
+      ctx.fill();
+
+      // Reset shadow
+      ctx.shadowColor = 'transparent';
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetY = 0;
+
+      // Side buttons (right side)
+      ctx.fillStyle = '#313244';
+      ctx.fillRect(frameX + frameW, frameY + frameH * 0.25, 3, 30);
+      ctx.fillRect(frameX + frameW, frameY + frameH * 0.35, 3, 50);
+      ctx.fillRect(frameX + frameW, frameY + frameH * 0.50, 3, 50);
+
+      // Screen content
+      ctx.save();
+      roundedRect(ctx, screenX, screenY, screenW, screenH, 0);
+      ctx.clip();
+      ctx.drawImage(originalImg, screenX, screenY, screenW, screenH);
+      ctx.restore();
+
+      // Notch (dynamic island style)
+      const notchX = screenX + (screenW - notchW) / 2;
+      const notchY = screenY - notchH + 4;
+      ctx.fillStyle = '#0f0f1a';
+      roundedRect(ctx, notchX, notchY, notchW, notchH, 14);
+      ctx.fill();
+
+      // Camera dot in notch
+      ctx.beginPath();
+      ctx.arc(notchX + notchW - 20, notchY + notchH / 2, 5, 0, Math.PI * 2);
+      ctx.fillStyle = '#1e293b';
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(notchX + notchW - 20, notchY + notchH / 2, 2, 0, Math.PI * 2);
+      ctx.fillStyle = '#334155';
+      ctx.fill();
+
+      // Home indicator
+      const homeW = screenW * 0.3;
+      const homeY = screenY + screenH + (homeH + bezel - 5) / 2;
+      ctx.fillStyle = '#6c7086';
+      roundedRect(ctx, screenX + (screenW - homeW) / 2, homeY, homeW, 4, 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    // ===== Rounded Rect Helpers =====
+    function roundedRect(ctx, x, y, w, h, r) {
+      r = Math.min(r, w / 2, h / 2);
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.arcTo(x + w, y, x + w, y + r, r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+      ctx.lineTo(x + r, y + h);
+      ctx.arcTo(x, y + h, x, y + h - r, r);
+      ctx.lineTo(x, y + r);
+      ctx.arcTo(x, y, x + r, y, r);
+      ctx.closePath();
+    }
+
+    function roundedRectTop(ctx, x, y, w, h, r) {
+      r = Math.min(r, w / 2, h);
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.arcTo(x + w, y, x + w, y + r, r);
+      ctx.lineTo(x + w, y + h);
+      ctx.lineTo(x, y + h);
+      ctx.lineTo(x, y + r);
+      ctx.arcTo(x, y, x + r, y, r);
+      ctx.closePath();
+    }
+
+    function roundedRectBottom(ctx, x, y, w, h, r) {
+      r = Math.min(r, w / 2, h);
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + w, y);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+      ctx.lineTo(x + r, y + h);
+      ctx.arcTo(x, y + h, x, y + h - r, r);
+      ctx.lineTo(x, y);
+      ctx.closePath();
+    }
+  
+  // Next Step
+  (function() {
+    var dlBtn = document.getElementById('downloadBtn') || document.querySelector('[id*="download"], [id*="Download"]');
+    if (dlBtn) {
+      dlBtn.addEventListener('click', function() { SmartImgNextStep.show(); });
+    }
+  })();
+  </script>
+</body>
+</html>
+
+

@@ -1,0 +1,103 @@
+<!-- Upload Area -->
+              <!-- Before/After Preview -->
+        <div class="before-after-preview" id="beforeAfterPreview">
+          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-images">
+            <div class="before-after-item">
+              <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=80" alt="Before" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
+              <div class="before-after-item-caption before">Before</div>
+            </div>
+            <div class="before-after-item">
+              <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
+                <span style="font-size:3rem;opacity:0.5;">🖇️</span>
+              </div>
+              <div class="before-after-item-caption after">After — processed</div>
+            </div>
+          </div>
+        </div>        <input type="file" id="fileInput" accept="image/*" style="display:none;">
+      <label for="fileInput" class="dropzone" id="dropzone">
+        <div class="dropzone-icon">📤</div>
+        <h3>Drop images here</h3>
+        <p>or click to browse. Select multiple images at once. Supports JPG, PNG, WebP.</p>
+      </label>
+
+      <!-- Workspace -->
+      <div class="tool-workspace" id="workspace" style="">
+        <div class="merger-workspace">
+          <!-- Sidebar -->
+          <div class="merger-sidebar">
+            <div class="control-group">
+              <label>Layout Mode</label>
+              <div class="layout-btns">
+                <button class="layout-btn active" data-layout="grid">
+                  <span class="layout-icon">▦</span>
+                  Grid
+                </button>
+                <button class="layout-btn" data-layout="horizontal">
+                  <span class="layout-icon">▭</span>
+                  Horizontal
+                </button>
+                <button class="layout-btn" data-layout="vertical">
+                  <span class="layout-icon">▯</span>
+                  Vertical
+                </button>
+              </div>
+            </div>
+
+            <div class="control-group" id="colsGroup">
+              <label>Columns <span id="colsValue">auto</span></label>
+              <select id="colsSelect">
+                <option value="auto">Auto</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label>Spacing: <span id="spacingValue">8</span>px</label>
+              <input type="range" id="spacingSlider" min="0" max="40" value="8">
+            </div>
+
+            <div class="control-group">
+              <label>Border Radius: <span id="radiusValue">0</span>px</label>
+              <input type="range" id="radiusSlider" min="0" max="30" value="0">
+            </div>
+
+            <div class="control-group">
+              <label>Background Color</label>
+              <input type="color" id="bgColor" value="#ffffff">
+            </div>
+
+            <div class="control-group">
+              <label>Output Format</label>
+              <select id="outputFormat">
+                <option value="image/png">PNG</option>
+                <option value="image/jpeg">JPG</option>
+                <option value="image/webp">WebP</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label>Images (<span id="imageCount">0</span>)</label>
+              <div class="image-list" id="imageList"></div>
+              <button class="add-more-btn" id="addMoreBtn">➕ Add More Images</button>
+              <input type="file" id="addMoreInput" accept="image/*" multiple style="display:none;">
+            </div>
+
+            <div class="tool-actions" style="flex-direction:column">
+              <button class="btn btn-primary" id="mergeBtn">🖼️ Merge & Download</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Start Over</button>
+            </div>
+            <div id="status" class="text-center" style="color:var(--text-secondary);font-size:.85rem"></div>
+          </div>
+
+          <!-- Canvas Preview -->
+          <div class="merger-canvas-area">
+            <div class="canvas-wrapper">
+              <canvas id="previewCanvas"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>

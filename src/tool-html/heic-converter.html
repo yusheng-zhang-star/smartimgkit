@@ -1,0 +1,71 @@
+<!-- Before/After Preview -->
+      <div class="before-after-preview" id="beforeAfterPreview" style="margin-bottom:20px;">
+        <div class="before-after-label">✨ See what this tool can do</div>
+        <div class="before-after-images">
+          <div class="before-after-item">
+            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&q=80" alt="Before: HEIC image" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
+            <div class="before-after-item-caption before">Before: HEIC</div>
+          </div>
+          <div class="before-after-item">
+            <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
+              <span style="font-size:3rem;opacity:0.5;">🖼️</span>
+            </div>
+            <div class="before-after-item-caption after">After: JPG/PNG/WebP</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-flex">
+
+        <div class="tool-sidebar">
+          <!-- Upload -->
+          <input type="file" id="fileInput" accept=".heic,.heif,image/heic,image/heif" style="display:none;">
+          <label for="fileInput" class="dropzone" id="dropzone">
+            <div class="upload-icon">📁</div>
+            <div class="upload-text">Click or drag HEIC file here</div>
+            <div class="upload-hint">.heic / .heif —Max 50MB</div>
+          </label>
+
+          <!-- Output Format -->
+          <div class="card">
+            <h3>Output Format</h3>
+            <div class="format-select">
+              <button class="format-btn active" data-fmt="jpg" onclick="setFormat('jpg',this)">JPG</button>
+              <button class="format-btn" data-fmt="png" onclick="setFormat('png',this)">PNG</button>
+              <button class="format-btn" data-fmt="webp" onclick="setFormat('webp',this)">WebP</button>
+            </div>
+          </div>
+
+          <!-- Quality -->
+          <div class="card" id="qualityCard">
+            <h3>Quality</h3>
+            <div class="slider-group">
+              <label>Quality <span class="slider-value" id="qualVal">90</span>%</label>
+              <input type="range" id="qualSlider" min="10" max="100" value="90" oninput="updateQuality()">
+            </div>
+          </div>
+
+          <!-- File Info -->
+          <div class="file-info" id="fileInfo" style="display:none;"></div>
+
+          <!-- Actions -->
+          <div class="btn-group">
+            <button class="btn btn-primary" id="convertBtn" disabled onclick="convertHeic()">▶️ Convert</button>
+            <button class="btn btn-secondary" id="resetBtn" disabled onclick="resetAll()">↺ Reset</button>
+          </div>
+
+          <div class="multi-download" id="downloadArea" style="display:none;"></div>
+        </div>
+
+        <div class="tool-canvas-area">
+          <div class="preview-wrapper" id="previewWrapper">
+            <canvas id="previewCanvas" style="display:none;"></canvas>
+            <div id="placeholderText" style="color:var(--text-secondary);text-align:center">
+              <div style="font-size:3rem;margin-bottom:12px">🖼️</div>
+              <p>Upload a HEIC file from your iPhone</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AdSense -->

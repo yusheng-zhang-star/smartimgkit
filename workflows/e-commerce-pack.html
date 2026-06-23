@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+
+<html lang="en" data-theme="dark">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="robots" content="index, follow">
+
+  <title>E-Commerce Pack – Batch Product Image Processor</title>
+
+  <meta name="description" content="Batch process product images for online stores: resize to platform specs, compress for fast loading, add store watermark, and export as ZIP. 100% browser-based.">
+
+  <meta name="keywords" content="e-commerce image, product photo batch, online store image, shopify image resize, amazon product image">
+
+  <link rel="canonical" href="https://smartimgkit.com/workflows/e-commerce-pack.html">
+
+  <meta name="theme-color" content="#6366f1">
+
+  <meta property="og:title" content="E-Commerce Pack – Batch Product Image Processor">
+
+  <meta property="og:description" content="Batch process product images for Shopify, Amazon, eBay. Resize, compress, watermark and export in one pipeline. 100% browser-based.">
+
+  <meta property="og:url" content="https://smartimgkit.com/workflows/e-commerce-pack.html">
+
+  <meta property="og:type" content="website">
+
+  <meta property="og:site_name" content="SmartImgKit">
+
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/home.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+
+  <meta name="twitter:title" content="E-Commerce Pack – Batch Product Image Processor">
+
+  <meta name="twitter:description" content="Batch process product images for Shopify, Amazon, eBay. Resize, compress, watermark and export in one pipeline.">
+
+  <meta name="twitter:image" content="https://smartimgkit.com/screenshots/home.png">
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <link rel="stylesheet" href="../css/style.css?v=4">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+  <script type="application/ld+json">
+
+{
+
+  "@context": "https://schema.org",
+
+  "@type": "WebApplication",
+
+  "name": "E-Commerce Pack – Batch Product Image Processor",
+
+  "url": "https://smartimgkit.com/workflows/e-commerce-pack.html",
+
+  "applicationCategory": "MultimediaApplication",
+
+  "operatingSystem": "Any",
+
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+
+  "description": "Batch process product images: resize to platform specs, compress, watermark, and export as ZIP."
+
+}
+
+  </script>
+
+  <script type="application/ld+json">
+
+{
+
+  "@context": "https://schema.org",
+
+  "@type": "HowTo",
+
+  "name": "How to use the E-Commerce Pack",
+
+  "step": [
+
+    {"@type": "HowToStep", "position": 1, "name": "Upload", "text": "Drop or select multiple product images (JPG/PNG/WebP)."},
+
+    {"@type": "HowToStep", "position": 2, "name": "Configure", "text": "Pick platform preset (Amazon/Shopify/eBay/Etsy), set compression quality, add watermark text, and choose export name."},
+
+    {"@type": "HowToStep", "position": 3, "name": "Run", "text": "Click Run Pipeline to process all images through resize, compress, watermark steps."},
+
+    {"@type": "HowToStep", "position": 4, "name": "Download", "text": "Download a single ZIP containing all processed product images."}
+
+  ]
+
+}
+
+  </script>
+
+  <style>
+
+    .workflow-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}.workflow-step{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:1rem;position:relative}.workflow-step .step-num{position:absolute;top:-12px;left:12px;background:var(--accent);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem}.workflow-step h4{margin:0.5rem 0 0.25rem;font-size:1rem}.workflow-step p{color:var(--text-secondary);font-size:.85rem;margin:0}
+
+    .workflow-step select,.workflow-step input[type=text],.workflow-step input[type=number],.workflow-step input[type=range]{width:100%;padding:6px 10px;border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-primary);border-radius:6px;margin-top:0.4rem;font-size:.9rem}
+
+    .workflow-step input[type=range]{padding:0}
+
+    .workflow-step label{font-size:.75rem;color:var(--text-secondary);font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+
+    .workflow-step .badge{display:inline-block;background:var(--bg-tertiary);color:var(--text-muted);padding:2px 8px;border-radius:4px;font-size:.7rem;margin-top:0.5rem}
+
+    .workflow-step .range-val{font-size:.8rem;color:var(--accent);font-weight:600;margin-left:6px}
+
+    .platform-presets{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:0.4rem}.platform-chip{display:inline-flex;align-items:center;gap:6px;background:var(--bg-tertiary);padding:6px 12px;border-radius:20px;font-size:.85rem;cursor:pointer;border:1px solid var(--border-color);user-select:none}.platform-chip.selected{border-color:var(--accent);background:rgba(99,102,241,.15)}
+
+    .progress-bar{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);width:min(560px,90vw);background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:12px 16px;box-shadow:var(--shadow-lg);z-index:9999}.progress-fill{height:8px;background:linear-gradient(90deg,var(--accent),#6366f1);border-radius:4px;transition:width .2s ease}.progress-text{color:var(--text-secondary);font-size:.85rem;margin-top:6px;text-align:center}
+
+    @media (min-width:780px){.workflow-step .step-num{left:50%;transform:translateX(-50%)}}
+
+    .preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.75rem;margin:1rem 0}.preview-thumb{width:100%;aspect-ratio:1;border-radius:8px;object-fit:cover;border:1px solid var(--border-color);background:var(--bg-tertiary)}
+
+  
+/* === AD UNITS - REMOVE BEFORE GOOGLE ADSENSE APPLICATION === */
+    .ad-vertical-right{position:fixed!important;right:0!important;top:80px!important;z-index:90;width:160px;display:none}
+    @media(min-width:1200px){.ad-vertical-right{display:block}}
+    /* === END AD UNITS === */
+</style>
+    
+
+
+  <script type="application/ld+json">
+
+{
+
+  "@context": "https://schema.org",
+
+  "@type": "FAQPage",
+
+  "mainEntity": [
+
+    {"@type": "Question", "name": "What platforms are supported?", "acceptedAnswer": {"@type": "Answer", "text": "Amazon (1000×1000), Shopify (2048×2048), eBay (1600×1600), Etsy (2000×2000), and custom sizes."}},
+
+    {"@type": "Question", "name": "Are my product images uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. All processing runs locally in your browser. Images never leave your device."}},
+
+    {"@type": "Question", "name": "Can I skip the watermark step?", "acceptedAnswer": {"@type": "Answer", "text": "Yes — leave the Watermark text field empty and the step is skipped automatically."}},
+
+    {"@type": "Question", "name": "What compression quality should I use?", "acceptedAnswer": {"@type": "Answer", "text": "82% is the default and works well for most product photos. Use 90%+ for high-quality catalogs, or 60-70% for faster page loading."}}
+
+  ]
+
+}
+
+  </script>
+
+</head>
+
+<body>
+
+  <header class="site-header">
+
+    <div class="container header-inner">
+
+      <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+
+      <nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover.html">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/about.html">About</a></nav>
+
+      <div class="header-actions">
+
+        <button class="theme-toggle" id="themeToggle">🌙</button>
+
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+
+  <main class="tool-page">
+
+    <div class="container">
+
+      <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/workflows/">Workflows</a><span>/</span><span>E-Commerce Pack</span></nav>
+
+      <div class="tool-page-header">
+
+        <h1>E-Commerce Pack</h1>
+
+        <p>Upload product photos → resize to platform specs → compress → watermark → export ZIP. One pipeline for all your store images.</p>
+
+      </div>
+
+      <div class="ad-placeholder">Advertisement</div>
+
+      <div class="tool-workspace">
+
+<div class="upload-area" id="uploadArea">
+
+    <input type="file" id="fileInput" accept="image/*" multiple hidden>
+
+    <div class="upload-icon">🛒</div>
+
+    <h3>Drop product images here</h3>
+
+    <p>or click to browse (multiple files supported)</p>
+
+    <p class="upload-hint">Supports JPG, PNG, WebP • Up to 50 images at once</p>
+
+  </div>
+
+
+
+  <div id="workspace" style="display:none">
+
+    <div style="text-align:center;margin:1rem 0;color:var(--text-secondary)" id="fileCount">0 files selected</div>
+
+
+
+    <h3 style="margin-top:1.5rem">Pipeline Steps</h3>
+
+    <div class="workflow-steps">
+
+      <div class="workflow-step">
+
+        <div class="step-num">1</div>
+
+        <h4>Platform Resize</h4>
+
+        <p>Match store requirements</p>
+
+        <label>Platform</label>
+
+        <div class="platform-presets">
+
+          <span class="platform-chip selected" data-p="amazon">Amazon</span>
+
+          <span class="platform-chip" data-p="shopify">Shopify</span>
+
+          <span class="platform-chip" data-p="ebay">eBay</span>
+
+          <span class="platform-chip" data-p="etsy">Etsy</span>
+
+          <span class="platform-chip" data-p="custom">Custom</span>
+
+        </div>
+
+        <div id="customSize" style="display:none;margin-top:0.5rem">
+
+          <label>Width</label>
+
+          <input type="number" id="optCustomW" value="1000" min="100" max="4000" style="width:48%;display:inline-block">
+
+          <label style="margin-left:4%">Height</label>
+
+          <input type="number" id="optCustomH" value="1000" min="100" max="4000" style="width:48%;display:inline-block">
+
+        </div>
+
+        <label style="margin-top:0.6rem;display:block">Background</label>
+
+        <select id="optBg">
+
+          <option value="white" selected>White (recommended)</option>
+
+          <option value="transparent">Transparent</option>
+
+          <option value="custom">Custom color</option>
+
+        </select>
+
+        <input type="color" id="optBgColor" value="#ffffff" style="display:none;width:100%;height:32px;margin-top:0.4rem">
+
+        <span class="badge">Required</span>
+
+      </div>
+
+
+
+      <div class="workflow-step">
+
+        <div class="step-num">2</div>
+
+        <h4>Compress</h4>
+
+        <p>Optimize for web</p>
+
+        <label>Quality: <span class="range-val" id="qVal">82%</span></label>
+
+        <input type="range" id="optQuality" min="30" max="100" value="82">
+
+        <span class="badge">Recommended: 75-85%</span>
+
+      </div>
+
+
+
+      <div class="workflow-step">
+
+        <div class="step-num">3</div>
+
+        <h4>Watermark</h4>
+
+        <p>Protect your photos</p>
+
+        <label>Text (leave empty to skip)</label>
+
+        <input type="text" id="optWmText" placeholder="Your Store Name" maxlength="30">
+
+        <label style="margin-top:0.5rem">Position</label>
+
+        <select id="optWmPos">
+
+          <option value="se" selected>Bottom Right</option>
+
+          <option value="s">Bottom Center</option>
+
+          <option value="center">Center</option>
+
+        </select>
+
+        <span class="badge">Optional</span>
+
+      </div>
+
+
+
+      <div class="workflow-step">
+
+        <div class="step-num">4</div>
+
+        <h4>Export</h4>
+
+        <p>Download as ZIP</p>
+
+        <label>ZIP filename</label>
+
+        <input type="text" id="optZipName" value="product-images.zip" style="font-size:.85rem">
+
+        <span class="badge">Multi-output</span>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="controls" style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;margin:1.5rem 0">
+
+      <button class="btn btn-primary" id="runBtn" disabled>🚀 Run Pipeline</button>
+
+      <button class="btn btn-secondary" id="resetBtn">↺ Reset</button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+      <section class="how-to-section"><h2>How to Use</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Drop Images</h4><p>Select multiple product photos (JPG/PNG/WebP). Up to 50 at once.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Configure 4 Steps</h4><p>Pick platform preset, compression quality, watermark text/position, and ZIP name.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Run Pipeline</h4><p>Click "Run Pipeline" to process all images through resize → compress → watermark.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Download ZIP</h4><p>All processed images are packaged into a single ZIP you can download instantly.</p></div></div></section>
+
+
+
+      <div class="guide-block"><h3>What this pipeline does</h3><p>E-Commerce Pack runs 3 operations in sequence on every uploaded product image: (1) resize to platform specifications (Amazon 1000×1000, Shopify 2048×2048, etc.) with white/transparent background, (2) compress to JPEG at configurable quality for fast page loading, (3) optionally add a text watermark for copyright protection. The result is one ZIP per run containing all processed images, ready to upload to your store.</p></div>
+
+      <div class="guide-block"><h3>Platform size guide</h3><p><strong>Amazon</strong>: recommends 1000×1000px (min 500px). <strong>Shopify</strong>: max 2048×2048px, 800×800px is standard. <strong>eBay</strong>: max 1600×1600px. <strong>Etsy</strong>: max 2000×2000px, 5:4 aspect ratio works best. Use "Custom" to set your own size.</p></div>
+
+      <div class="guide-block"><h3>Compression tips</h3><p>Quality 75-85% gives the best balance of file size and visual quality for product photos. Below 65% may show artifacts on smooth surfaces. Above 90% the file size increases significantly with minimal quality gain.</p></div>
+
+      <div class="guide-block"><h3>Best use cases</h3><ul><li>Batch preparing product photos for Shopify/Amazon/eBay stores</li><li>Resizing supplier images to platform specs</li><li>Adding store watermark to protect copyrighted product photos</li><li>Compressing high-resolution product shots for faster page loading</li></ul></div>
+
+
+
+      <section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">What platforms are supported?</button><div class="faq-answer">Amazon (1000×1000), Shopify (2048×2048), eBay (1600×1600), Etsy (2000×2000), and custom sizes.</div></div><div class="faq-item"><button class="faq-question">Are my product images uploaded to a server?</button><div class="faq-answer">No. All processing runs locally in your browser. Images never leave your device.</div></div><div class="faq-item"><button class="faq-question">Can I skip the watermark step?</button><div class="faq-answer">Yes — leave the Watermark text field empty and the step is skipped automatically.</div></div><div class="faq-item"><button class="faq-question">What compression quality should I use?</button><div class="faq-answer">82% is the default and works well for most product photos. Use 90%+ for high-quality catalogs, or 60-70% for faster page loading.</div></div></section>
+
+
+
+      <section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/bulk-processor.html" class="related-tool-card"><span class="tool-icon">📦</span><div class="tool-info"><strong>Bulk Processor</strong><span class="tool-desc">Process many images at once</span></div><span class="tool-arrow">→</span></a><a href="/tools/compressor.html" class="related-tool-card"><span class="tool-icon">🗜️</span><div class="tool-info"><strong>Compressor</strong><span class="tool-desc">Compress images individually</span></div><span class="tool-arrow">→</span></a><a href="/tools/watermark.html" class="related-tool-card"><span class="tool-icon">🔏</span><div class="tool-info"><strong>Watermark</strong><span class="tool-desc">Standalone watermark tool</span></div><span class="tool-arrow">→</span></a><a href="/tools/resizer.html" class="related-tool-card"><span class="tool-icon">📐</span><div class="tool-info"><strong>Resizer</strong><span class="tool-desc">Resize images to exact dimensions</span></div><span class="tool-arrow">→</span></a></div></section>
+
+    </div>
+
+
+
+      
+  
+
+  </main>
+
+
+
+  <footer class="site-footer">
+
+    <div class="container">
+
+      <div class="footer-grid">
+
+        <div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Free AI-powered image tools that respect your privacy.</p></div>
+
+        <div class="footer-links"><h4>Tools</h4><a href="/tools/background-remover.html">Background Remover</a><a href="/tools/compressor.html">Compressor</a><a href="/tools/converter.html">Converter</a><a href="/tools/resizer.html">Resizer</a><a href="/tools/bulk-processor.html">Bulk Processor</a></div>
+
+        <div class="footer-links"><h4>Workflows</h4><a href="/workflows/">All Workflows</a><a href="/workflows/avatar-pipeline.html">Avatar Pipeline</a><a href="/workflows/e-commerce-pack.html">E-Commerce Pack</a></div>
+
+        <div class="footer-links"><h4>Legal</h4><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms of Service</a><a href="/cookie-policy.html">Cookie Policy</a></div>
+
+      </div>
+
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved. | <a href="https://comprimefotos.com/" style="color: var(--accent); font-weight: 500;">Español: ComprimeFotos — Comprimir Imágenes Online</a></p></div>
+
+    </div>
+
+  </footer>
+
+
+
+  <script src="../js/main.js?v=3"></script>
+
+  <script src="_workflow_engine.js"></script>
+
+  <script src="_ecommerce_runners.js"></script>
+
+  <script>
+
+(function(){
+
+  const $ = id => document.getElementById(id);
+
+  const fileInput = $('fileInput'), uploadArea = $('uploadArea'), workspace = $('workspace');
+
+  const runBtn = $('runBtn'), resetBtn = $('resetBtn'), fileCount = $('fileCount');
+
+  let files = [];
+
+
+
+  // Platform chip selection
+
+  document.querySelectorAll('.platform-chip').forEach(chip => {
+
+    chip.addEventListener('click', () => {
+
+      document.querySelectorAll('.platform-chip').forEach(c => c.classList.remove('selected'));
+
+      chip.classList.add('selected');
+
+      $('customSize').style.display = chip.dataset.p === 'custom' ? 'block' : 'none';
+
+    });
+
+  });
+
+
+
+  // Quality slider display
+
+  $('optQuality').addEventListener('input', e => { $('qVal').textContent = e.target.value + '%'; });
+
+
+
+  // bgColor visibility
+
+  $('optBg').addEventListener('change', e => { $('optBgColor').style.display = e.target.value === 'custom' ? 'block' : 'none'; });
+
+
+
+  // Upload
+
+  uploadArea.addEventListener('click', () => fileInput.click());
+
+  ['dragover','dragenter'].forEach(e => uploadArea.addEventListener(e, ev => { ev.preventDefault(); uploadArea.classList.add('dragover'); }));
+
+  ['dragleave','drop'].forEach(e => uploadArea.addEventListener(e, () => uploadArea.classList.remove('dragover')));
+
+  uploadArea.addEventListener('drop', e => {
+
+    e.preventDefault();
+
+    addFiles(Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/')));
+
+  });
+
+  fileInput.addEventListener('change', () => { addFiles(Array.from(fileInput.files)); fileInput.value = ''; });
+
+
+
+  function addFiles(arr) {
+
+    const imageOnly = arr.filter(f => f.type.startsWith('image/'));
+
+    if (files.length + imageOnly.length > 50) { alert('Max 50 images per batch.'); return; }
+
+    files = files.concat(imageOnly);
+
+    workspace.style.display = 'block';
+
+    uploadArea.style.display = 'none';
+
+    fileCount.textContent = files.length + ' file' + (files.length === 1 ? '' : 's') + ' selected';
+
+    runBtn.disabled = files.length === 0;
+
+  }
+
+
+
+  resetBtn.addEventListener('click', () => {
+
+    files = [];
+
+    workspace.style.display = 'none';
+
+    uploadArea.style.display = 'block';
+
+    runBtn.disabled = true;
+
+  });
+
+
+
+  // Get selected platform
+
+  function getPlatform() {
+
+    const p = document.querySelector('.platform-chip.selected').dataset.p;
+
+    const opt = { platform: p, bg: $('optBg').value, bgColor: $('optBgColor').value };
+
+    if (p === 'custom') { opt.customW = parseInt($('optCustomW').value) || 1000; opt.customH = parseInt($('optCustomH').value) || 1000; }
+
+    return opt;
+
+  }
+
+
+
+  // Run pipeline
+
+  runBtn.addEventListener('click', async () => {
+
+    if (!files.length) return;
+
+    const wmText = $('optWmText').value.trim();
+
+    const steps = [
+
+      { id:'resize',  label:'Platform Resize', runner:'platformResize', options: getPlatform() },
+
+      { id:'compress', label:'Compress',        runner:'compress',      options: { quality: parseInt($('optQuality').value) / 100 } },
+
+    ];
+
+    if (wmText) {
+
+      steps.push({ id:'wm', label:'Watermark', runner:'watermark', options: { text: wmText, size: 28, opacity:0.35, color:'#ffffff', position: $('optWmPos').value } });
+
+    }
+
+
+
+    runBtn.disabled = true;
+
+    runBtn.textContent = '⏳ Running…';
+
+    try {
+
+      const allOutputs = [];
+
+      for (let fi = 0; fi < files.length; fi++) {
+
+        let cur = files[fi];
+
+        for (const step of steps) {
+
+          const runner = SmartImgKit.runners[step.runner];
+
+          if (!runner) throw new Error('Runner not found: ' + step.runner);
+
+          cur = await runner(cur, step.options, () => {});
+
+        }
+
+        const base = files[fi].name.replace(/\.[^.]+$/, '');
+
+        allOutputs.push({ name: base + '_processed.jpg', blob: cur });
+
+      }
+
+      const zipName = ($('optZipName').value || 'product-images.zip').replace(/[^a-zA-Z0-9._-]/g, '_');
+
+      await SmartImgKit.runners.exportZip(allOutputs, { filename: zipName }, () => {});
+
+      runBtn.textContent = '✓ Downloaded ' + allOutputs.length + ' files';
+
+    } catch (err) {
+
+      alert('Pipeline error: ' + err.message);
+
+      console.error(err);
+
+      runBtn.textContent = '🚀 Run Pipeline';
+
+    }
+
+    runBtn.disabled = false;
+
+    setTimeout(() => { runBtn.textContent = '🚀 Run Pipeline'; }, 4000);
+
+  });
+
+})();
+
+  </script>
+
+
+  <!-- ===== AD UNITS - REMOVE BEFORE GOOGLE ADSENSE APPLICATION ===== -->
+  <aside class="ad-vertical-right" id="adVerticalRight">
+    <script async="async" data-cfasync="false" src="https://pl29741299.effectivecpmnetwork.com/5a540a2ce35c794ad7d73a726a88971c/invoke.js"></script>
+    <div id="container-5a540a2ce35c794ad7d73a726a88971c"></div>
+  </aside>
+  <!-- ===== END AD UNITS ===== -->
+
+</body>
+
+</html>
+

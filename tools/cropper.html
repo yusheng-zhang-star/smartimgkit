@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-tool-id="cropper">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Image Cropper — Free Online Crop Tool | SmartImgKit</title>
+  <meta name="description" content="Crop images online for free. Free-form or preset aspect ratios for social media. Browser-based, no uploads.">
+  <meta name="keywords" content="image cropper, crop image, online crop tool, photo cropper">
+  <link rel="canonical" href="https://smartimgkit.com/tools/cropper">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="Free Image Cropper — SmartImgKit">
+  <meta property="og:description" content="Crop images with free-form or preset aspect ratios. Perfect for social media dimensions. Free, no signup, 100% browser-based.">
+  <meta property="og:url" content="https://smartimgkit.com/tools/cropper">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/cropper.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free Image Cropper — SmartImgKit">
+  <meta name="twitter:description" content="Crop images with free-form or preset aspect ratios. Perfect for social media dimensions. Free, no signup, 100% browser-based.">
+  <meta name="twitter:image" content="https://smartimgkit.com/screenshots/cropper.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <!-- Hreflang tags -->
+  <link rel="stylesheet" href="../css/style.css?v=3">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Image Cropper",
+  "url": "https://smartimgkit.com/tools/cropper",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Crop images with free-form or preset aspect ratios. Perfect for social media dimensions. Free, no signup, 100% browser-based."
+}
+</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Crop Images",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Upload Image",
+      "text": "Select the image you want to crop."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Select Crop Area",
+      "text": "Drag the overlay to move, or use handles to resize. Pick an aspect ratio preset if needed."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Download Cropped",
+      "text": "Click Crop and download the result."
+    }
+  ]
+}
+</script>
+  <style>
+    .crop-wrapper { position: relative; display: inline-block; max-width: 100%; }
+        .crop-overlay {
+          position: absolute; border: 2px dashed var(--accent); background: rgba(99,102,241,0.1);
+          cursor: move; top: 20%; left: 20%; width: 60%; height: 60%;
+        }
+        .crop-handle {
+          position: absolute; width: 12px; height: 12px; background: var(--accent); border-radius: 50%;
+        }
+        .crop-handle.nw { top: -6px; left: -6px; cursor: nw-resize; }
+        .crop-handle.ne { top: -6px; right: -6px; cursor: ne-resize; }
+        .crop-handle.sw { bottom: -6px; left: -6px; cursor: sw-resize; }
+        .crop-handle.se { bottom: -6px; right: -6px; cursor: se-resize; }
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What crop shapes are supported?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Rectangle, circle, and free-form."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I crop to exact pixel dimensions?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Use the \"Aspect ratio\" preset or set custom dimensions."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my image uploaded to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All cropping happens locally."
+      }
+    }
+  ]
+}
+</script>
+<style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+</head>
+<body>
+  <!-- Adsterra Social Bar (29640799) - Popunder 替代品,移动端友好 -->
+  <script src="https://pl29741298.effectivecpmnetwork.com/70/c0/84/70c084b07dadc5b3f66fae02aa21f788.js"></script>
+
+  <!-- Header: exact match image-rotator compact format -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover.html">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/about.html">About</a><a href="/contact.html">Contact</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Switch language">🇬🇧 EN</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+          </div>
+        </div>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/">Tools</a><span>/</span><span>🖼️ Image Cropper</span></nav>
+      <div class="tool-page-header">
+        <h1>🖼️ Image Cropper</h1>
+        <p>Crop images with preset aspect ratios or free-form selection. Perfect for social media posts.</p>
+      </div>
+      <!-- Adsterra Native Banner (29640800) - 工具标题下,融入内容流 -->
+      <div class="ad-native-banner">
+        <script async="async" data-cfasync="false" src="https://pl29741299.effectivecpmnetwork.com/5a540a2ce35c794ad7d73a726a88971c/invoke.js"></script>
+        <div id="container-5a540a2ce35c794ad7d73a726a88971c"></div>
+      </div>
+      <div class="tool-workspace">
+<!-- Before/After Preview -->
+        <div class="before-after-preview" id="beforeAfterPreview">
+          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-images">
+            <div class="before-after-item">
+              <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=80" alt="Before" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
+              <div class="before-after-item-caption before">Before</div>
+            </div>
+            <div class="before-after-item">
+              <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
+                <span style="font-size:3rem;opacity:0.5;">✂️</span>
+              </div>
+              <div class="before-after-item-caption after">After — processed</div>
+            </div>
+          </div>
+        </div>        <input type="file" id="fileInput" accept="image/*" style="display:none;">
+      <label for="fileInput" class="dropzone" id="dropzone">
+          <div class="dropzone-icon">📤</div>
+          <h3>Drop an image here</h3>
+          <p>or click to browse. Supports JPG, PNG, WebP.</p>
+      </label>
+      <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Try with a sample image</span>
+        <div class="preview-area" id="previewArea">
+          <div style="text-align:center;margin-bottom:12px">
+            <select id="ratioSelect" style="max-width:220px;display:inline-block">
+              <option value="free">Free Form</option>
+              <option value="1:1">1:1 Square</option>
+              <option value="4:3">4:3 Standard</option>
+              <option value="16:9">16:9 Widescreen</option>
+              <option value="3:2">3:2 Photo</option>
+              <option value="9:16">9:16 Story/Reel</option>
+            </select>
+          </div>
+          <div class="preview-container" style="position:relative;overflow:hidden">
+            <div class="crop-wrapper" id="cropWrapper">
+              <img id="sourceImg" style="max-width:100%;display:block">
+              <div class="crop-overlay" id="cropOverlay">
+                <div class="crop-handle nw"></div><div class="crop-handle ne"></div>
+                <div class="crop-handle sw"></div><div class="crop-handle se"></div>
+              </div>
+            </div>
+          </div>
+          <div class="tool-actions">
+            <button class="btn btn-primary" id="cropBtn">✂️ Crop</button>
+            <button class="btn btn-secondary hidden" id="downloadBtn">⬇️ Download</button>
+            <button class="btn btn-secondary" id="resetBtn">🔄 New Image</button>
+          </div>
+          <div id="status" class="text-center mt-16" style="color:var(--text-secondary)">
+      </div>
+      </div>
+      </div>
+      <!-- Adsterra Banner 300x250 (29640802) - 工具区下方,黄金尺寸高 eCPM -->
+      <div class="ad-banner-300x250">
+        <script>
+          atOptions = {
+            'key' : 'c95d26a94d4f8dc640cd33ad5ec91528',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/c95d26a94d4f8dc640cd33ad5ec91528/invoke.js"></script>
+      </div>
+
+<section class="how-to-section">
+        <h2>How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step"><div class="step-number">1</div><h4>Upload</h4><p>Select the image you want to crop.</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>Adjust Selection</h4><p>Drag the overlay to move, or use handles to resize. Pick an aspect ratio preset if needed.</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>Crop & Save</h4><p>Click Crop and download the result.</p></div>
+        </div>
+      </section>
+
+<h2>Detailed User Guide</h2>
+
+        <div class="guide-block">
+          <h3>Step 1: Upload Your Image</h3>
+          <p>Upload a <strong>JPG, PNG, or WebP</strong> image. The full image appears in the workspace with a dashed crop overlay.</p>
+          <div class="guide-screenshot">
+            <img src="../screenshots/cropper.png" alt="Cropper interface showing the crop overlay" loading="lazy">
+            <div class="guide-screenshot-caption">The cropper workspace — the dashed overlay shows the area to be kept</div>
+          </div>
+        </div>
+
+        <div class="guide-block">
+          <h3>Step 2: Adjust the Crop Area</h3>
+          <p>You can interact with the crop overlay in two ways:</p>
+          <ul>
+            <li><strong>Move:</strong> Click and drag anywhere inside the dashed overlay to reposition it over your desired area</li>
+            <li><strong>Resize:</strong> Drag the corner handles (small circles at each corner) to adjust the crop dimensions</li>
+            <li><strong>Aspect ratio presets:</strong> Use the dropdown to lock to common ratios like 1:1 (Instagram), 16:9 (widescreen), or 9:16 (Stories)</li>
+          </ul>
+          <div class="tip"><strong>Tip:</strong> When a preset ratio is selected, resizing one corner automatically adjusts the other dimension to maintain the ratio.</div>
+        </div>
+
+        <div class="guide-block">
+          <h3>Step 3: Crop & Download</h3>
+          <p>Click <strong>"Crop"</strong> to apply. The image is cropped to your selection and the overlay disappears. Click <strong>"Download"</strong> to save as a PNG.</p>
+        </div>
+
+        <div class="guide-block">
+          <h3>Best Use Cases</h3>
+          <ul>
+            <li><strong>Social media cropping</strong> — Use preset ratios to match platform requirements exactly</li>
+            <li><strong>Photo framing</strong> — Remove unwanted edges or improve composition (rule of thirds)</li>
+            <li><strong>Thumbnail creation</strong> — Crop to the most visually interesting part of an image</li>
+            <li><strong>Uniform image sets</strong> — Apply the same aspect ratio to a series of photos for consistency</li>
+          </ul>
+        </div>
+
+        <div class="guide-block">
+          <h3>Pro Tips</h3>
+          <ul>
+            <li>Cropping never reduces the quality of the remaining pixels — it simply removes unwanted areas</li>
+            <li>For portraits, place the subject's eyes along the top third line for pleasing composition</li>
+            <li>The 1:1 preset is perfect for Instagram posts; 9:16 for Stories and Reels</li>
+            <li>After cropping, you can use the Resizer tool to adjust to exact pixel dimensions</li>
+          </ul>
+        </div>
+
+<section class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item"><button class="faq-question">Can I crop to exact social media sizes?</button><div class="faq-answer">Use the preset ratios: 1:1 for Instagram posts, 9:16 for Stories/Reels, 16:9 for Twitter/X headers.</div></div>
+      <div class="faq-item"><button class="faq-question">Will the crop reduce image quality?</button><div class="faq-answer">No. Cropping simply removes pixels. The remaining area retains the original resolution and quality.</div></div>
+      <div class="faq-item"><button class="faq-question">How do I move the crop area?</button><div class="faq-answer">Drag anywhere inside the dashed overlay to move it. Drag the corner handles to resize.</div></div>
+      </section>
+
+<section class="related-tools">
+  <h2>You Might Also Like</h2>
+  <div class="related-tools-grid">
+    <a href="/tools/resizer.html" class="related-tool-card">
+      <span class="tool-icon">📐</span>
+      <div class="tool-info">
+        <strong>Image Resizer</strong>
+        <span class="tool-desc">Resize to exact dimensions after cropping</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/tools/compressor.html" class="related-tool-card">
+      <span class="tool-icon">🗜️</span>
+      <div class="tool-info">
+        <strong>Image Compressor</strong>
+        <span class="tool-desc">Compress cropped images for faster sharing</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/tools/screenshot-to-image.html" class="related-tool-card">
+      <span class="tool-icon">🖼️</span>
+      <div class="tool-info">
+        <strong>Screenshot to Image</strong>
+        <span class="tool-desc">Add beautiful frames to cropped screenshots</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+  </div>
+</section>
+    </div>
+
+</main>
+
+  <!-- Footer: exact match image-rotator compact format -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Free AI-powered image tools that respect your privacy.</p></div>
+        <div class="footer-links"><h4>Tools</h4><a href="/tools/background-remover.html">Background Remover</a><a href="/tools/compressor.html">Compressor</a><a href="/tools/converter.html">Converter</a><a href="/tools/resizer.html">Resizer</a>
+          <a href="/tools/gif-editor.html">GIF Editor</a>
+          <a href="/tools/pdf-to-image.html">PDF to Image</a>
+        </div>
+        <div class="footer-links"><h4>More Tools</h4><a href="/tools/cropper.html">Cropper</a><a href="/tools/watermark.html">Watermark</a><a href="/tools/image-merger.html">Image Merger</a><a href="/tools/screenshot-to-image.html">Screenshot to Image</a><a href="/tools/image-filters.html">Image Filters</a><a href="/tools/svg-to-png.html">SVG to PNG</a><a href="/tools/image-compare.html">Image Compare</a><a href="/tools/print-resizer.html">Print-Ready Resizer</a><a href="/tools/meme-generator.html">Meme Generator</a>          <a href="/tools/face-blur.html">Face Blur</a>
+          <a href="/tools/heic-converter.html">HEIC Converter</a>
+          <a href="/tools/metadata-viewer.html">Metadata Viewer</a>
+          <a href="/tools/avif-support.html">AVIF Support</a>
+          <a href="/tools/image-adjust.html">Image Adjustment</a>
+          <a href="/tools/image-border.html">Image Border</a>
+          <a href="/tools/image-flip.html">Image Flip</a>
+          <a href="/tools/image-grayscale.html">Image Grayscale</a>
+          <a href="/tools/image-shadow.html">Image Shadow</a>
+          <a href="/tools/image-splitter.html">Image Splitter</a>
+          <a href="/tools/image-exif-remover.html">EXIF Remover</a><a href="/tools/circle-crop.html">Circle Crop</a><a href="/tools/favicon-generator.html">Favicon Generator</a><a href="/tools/ocr.html">OCR Text</a><a href="/tools/bulk-processor.html">Bulk Processor</a><a href="/tools/image-to-pdf.html">Image to PDF</a>          <a href="/tools/id-photo.html">ID Photo Maker</a>
+          <a href="/tools/product-white-background.html">Product White BG</a>
+          <a href="/tools/social-media-post.html">Social Media Post</a>
+          <a href="/tools/photo-restoration.html">Photo Restoration</a><a href="/tools/image-enhancer.html">Image Enhancer</a>
+        </div>
+        <div class="footer-links"><h4>Legal</h4><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms of Service</a><a href="/cookie-policy.html">Cookie Policy</a>
+        </div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved. | <a href="https://comprimefotos.com/" style="color: var(--accent); font-weight: 500;">Español: ComprimeFotos — Comprimir Imágenes Online</a></p></div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js?v=3"></script>
+  <script>
+const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const previewArea = document.getElementById('previewArea');
+    const sourceImg = document.getElementById('sourceImg');
+    const cropOverlay = document.getElementById('cropOverlay');
+    const cropWrapper = document.getElementById('cropWrapper');
+    const ratioSelect = document.getElementById('ratioSelect');
+    const cropBtn = document.getElementById('cropBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const status = document.getElementById('status');
+
+    let currentFile = null;
+
+    setupDropzone({ dropzoneId: 'dropzone', inputId: 'fileInput', onFile: handleFile });
+
+    function handleFile(file) {
+      if (!file.type.startsWith('image/')) { status.textContent = 'Please select an image file.'; return; }
+      currentFile = file;
+      ImageUtils.load(file).then(img => {
+        sourceImg.src = img.src;
+        previewArea.classList.add('active');
+          document.getElementById('beforeAfterPreview') && document.getElementById('beforeAfterPreview').classList.add('hidden');
+        dropzone.classList.add('hidden');
+        status.textContent = '';
+        downloadBtn.classList.add('hidden');
+        setTimeout(initCropOverlay, 100);
+      });
+    }
+
+    function initCropOverlay() {
+      cropOverlay.style.top = '20%'; cropOverlay.style.left = '20%';
+      cropOverlay.style.width = '60%'; cropOverlay.style.height = '60%';
+      applyRatio();
+    }
+
+    ratioSelect.addEventListener('change', applyRatio);
+
+    function applyRatio() {
+      const ratio = ratioSelect.value;
+      if (ratio === 'free') return;
+      const [w, h] = ratio.split(':').map(Number);
+      const ow = cropWrapper.offsetWidth;
+      const oh = cropWrapper.offsetHeight;
+      let nw = ow * 0.6, nh = nw * (h / w);
+      if (nh > oh) { nh = oh * 0.6; nw = nh * (w / h); }
+      cropOverlay.style.width = nw + 'px';
+      cropOverlay.style.height = nh + 'px';
+    }
+
+    // Simple drag
+    let dragging = false, dragStart = { x: 0, y: 0 }, elStart = { left: 0, top: 0 };
+    cropOverlay.addEventListener('mousedown', e => {
+      if (e.target.classList.contains('crop-handle')) return;
+      dragging = true;
+      dragStart = { x: e.clientX, y: e.clientY };
+      elStart = { left: cropOverlay.offsetLeft, top: cropOverlay.offsetTop };
+    });
+    window.addEventListener('mousemove', e => {
+      if (!dragging) return;
+      const dx = e.clientX - dragStart.x, dy = e.clientY - dragStart.y;
+      cropOverlay.style.left = Math.max(0, Math.min(cropWrapper.offsetWidth - cropOverlay.offsetWidth, elStart.left + dx)) + 'px';
+      cropOverlay.style.top = Math.max(0, Math.min(cropWrapper.offsetHeight - cropOverlay.offsetHeight, elStart.top + dy)) + 'px';
+    });
+    window.addEventListener('mouseup', () => dragging = false);
+
+    // Resize handle
+    let resizing = false, resizeHandle = null, resizeStart = { x: 0, y: 0, w: 0, h: 0, l: 0, t: 0 };
+    document.querySelectorAll('.crop-handle').forEach(h => {
+      h.addEventListener('mousedown', e => {
+        e.stopPropagation();
+        resizing = true; resizeHandle = h.classList[1];
+        resizeStart = { x: e.clientX, y: e.clientY, w: cropOverlay.offsetWidth, h: cropOverlay.offsetHeight, l: cropOverlay.offsetLeft, t: cropOverlay.offsetTop };
+      });
+    });
+    window.addEventListener('mousemove', e => {
+      if (!resizing) return;
+      const dx = e.clientX - resizeStart.x, dy = e.clientY - resizeStart.y;
+      if (resizeHandle === 'se') {
+        cropOverlay.style.width = Math.max(30, resizeStart.w + dx) + 'px';
+        cropOverlay.style.height = Math.max(30, resizeStart.h + dy) + 'px';
+      }
+      if (ratioSelect.value !== 'free') applyRatio();
+    });
+    window.addEventListener('mouseup', () => resizing = false);
+
+    cropBtn.addEventListener('click', async () => {
+      if (!currentFile) return;
+      cropBtn.disabled = true; cropBtn.textContent = '🔄 Cropping...';
+      status.innerHTML = '<div class="spinner"></div>';
+      try {
+        const img = await ImageUtils.load(currentFile);
+        const scaleX = img.naturalWidth / cropWrapper.offsetWidth;
+        const scaleY = img.naturalHeight / cropWrapper.offsetHeight;
+        const sx = Math.round(cropOverlay.offsetLeft * scaleX);
+        const sy = Math.round(cropOverlay.offsetTop * scaleY);
+        const sw = Math.round(cropOverlay.offsetWidth * scaleX);
+        const sh = Math.round(cropOverlay.offsetHeight * scaleY);
+        const canvas = ImageUtils.createCanvas(sw, sh);
+        canvas.getContext('2d').drawImage(img, sx, sy, sw, sh, 0, 0, sw, sh);
+        const blob = await ImageUtils.canvasToBlob(canvas, currentFile.type, 0.95);
+        sourceImg.src = canvas.toDataURL();
+        cropOverlay.style.display = 'none';
+        downloadBtn.classList.remove('hidden');
+        downloadBtn.onclick = () => ImageUtils.download(blob, currentFile.name.replace(/\.[^.]+$/, '-cropped.png'));
+        status.textContent = 'Cropped to ' + sw + '×' + sh;
+      } catch (err) {
+        status.textContent = 'Error: ' + err.message;
+      } finally {
+        cropBtn.disabled = false; cropBtn.textContent = '✂️ Crop';
+      }
+    });
+
+    resetBtn.addEventListener('click', () => {
+      currentFile = null;
+      previewArea.classList.remove('active');
+          document.getElementById('beforeAfterPreview') && document.getElementById('beforeAfterPreview').classList.remove('hidden');
+      dropzone.classList.remove('hidden');
+      fileInput.value = ''; status.textContent = '';
+      downloadBtn.classList.add('hidden');
+      cropOverlay.style.display = '';
+    });
+  
+  // Sample image & Next Step
+  (function() {
+    var _handleFile = typeof handleFile === 'function' ? handleFile : null;
+    if (_handleFile) {
+      window.initSampleButton('https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&q=80', _handleFile);
+    }
+    // Show next-step on download click
+    var dlBtn = document.getElementById('downloadBtn') || document.querySelector('.btn-primary[onclick*="download"], .btn-secondary[onclick*="download"]');
+    if (dlBtn) {
+      dlBtn.addEventListener('click', function() { SmartImgNextStep.show(); });
+    }
+  })();
+  </script>
+</body>
+</html>
+
+

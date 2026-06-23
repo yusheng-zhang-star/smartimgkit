@@ -1,0 +1,82 @@
+<!-- Upload Area -->
+              <!-- Before/After Preview -->
+        <div class="before-after-preview" id="beforeAfterPreview">
+          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-images">
+            <div class="before-after-item">
+              <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400&q=80" alt="Before" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
+              <div class="before-after-item-caption before">Before</div>
+            </div>
+            <div class="before-after-item">
+              <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
+                <span style="font-size:3rem;opacity:0.5;">🔄</span>
+              </div>
+              <div class="before-after-item-caption after">After — processed</div>
+            </div>
+          </div>
+        </div>        <input type="file" id="fileInput" accept="image/*" style="display:none;">
+      <label for="fileInput" class="dropzone" id="dropzone">
+        <div class="dropzone-icon">📤</div>
+        <h3>Drop your image here</h3>
+        <p>or click to browse. Supports JPG, PNG, WebP, GIF, BMP.</p>
+      </label>
+      <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Try with a sample image</span>
+
+      <!-- Workspace -->
+      <div class="tool-workspace" id="workspace" style="display:none">
+        <div class="rotate-workspace">
+          <!-- Sidebar -->
+          <div class="rotate-sidebar">
+            <div class="control-group">
+              <label>Quick Rotate</label>
+              <div class="quick-actions">
+                <button class="quick-btn" id="rotateLeftBtn"><span class="btn-icon">↺</span> 90° Left</button>
+                <button class="quick-btn" id="rotateRightBtn"><span class="btn-icon">↻</span> 90° Right</button>
+                <button class="quick-btn" id="rotate180Btn"><span class="btn-icon">🔄</span> 180°</button>
+                <button class="quick-btn" id="resetAngleBtn"><span class="btn-icon">↩</span> Reset</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label>Custom Angle</label>
+              <input type="range" id="angleSlider" min="0" max="360" value="0" step="1">
+              <div class="angle-display"><span id="angleValue">0</span>°</div>
+            </div>
+
+            <div class="control-group">
+              <label>Flip</label>
+              <div class="quick-actions">
+                <button class="quick-btn" id="flipHBtn"><span class="btn-icon">↔</span> Horizontal</button>
+                <button class="quick-btn" id="flipVBtn"><span class="btn-icon">↕</span> Vertical</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label>Background Color (for rotated corners)</label>
+              <input type="color" id="bgColor" value="#ffffff" style="width:100%;height:36px;border:1px solid var(--border);border-radius:6px;background:var(--bg-primary);cursor:pointer;padding:2px;">
+            </div>
+
+            <div class="control-group">
+              <label>Output Format</label>
+              <select id="outputFormat">
+                <option value="image/png">PNG</option>
+                <option value="image/jpeg">JPG</option>
+                <option value="image/webp">WebP</option>
+              </select>
+            </div>
+
+            <div class="tool-actions" style="flex-direction:column">
+              <button class="btn btn-primary" id="downloadBtn">💾 Download</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Start Over</button>
+            </div>
+            <div id="status" class="text-center" style="color:var(--text-secondary);font-size:.85rem"></div>
+          </div>
+
+          <!-- Canvas Preview -->
+          <div class="rotate-canvas-area">
+            <div class="canvas-wrapper">
+              <canvas id="previewCanvas"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>

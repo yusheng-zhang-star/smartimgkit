@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-tool-id="image-upscaler">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Image Upscaler — Enlarge Photos Without Quality Loss | SmartImgKit</title>
+  <meta name="description" content="Upscale images to 2x, 3x, or 4x with smart interpolation and sharpening. Enlarge photos for printing, wallpapers, or high-res displays. Free, no uploads, 100% browser-based.">
+  <meta name="keywords" content="image upscaler, upscale image, enlarge photo, image enlarger, photo upscale, increase image resolution, image resize up, high resolution, upscale without losing quality">
+  <link rel="canonical" href="https://smartimgkit.com/tools/image-upscaler">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="Free Image Upscaler — Enlarge Photos | SmartImgKit">
+  <meta property="og:description" content="Upscale images to 2x, 3x, or 4x with smart interpolation and sharpening. Enlarge photos for printing or high-res displays. Free, no signup, 100% browser-based.">
+  <meta property="og:url" content="https://smartimgkit.com/tools/image-upscaler">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/image-upscaler.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free Image Upscaler — Enlarge Photos | SmartImgKit">
+  <meta name="twitter:description" content="Upscale images to 2x, 3x, or 4x with smart interpolation and sharpening. Enlarge photos for printing or high-res displays. Free, no signup, 100% browser-based.">
+  <meta name="twitter:image" content="https://smartimgkit.com/screenshots/image-upscaler.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <!-- Hreflang tags -->
+  <link rel="stylesheet" href="../css/style.css?v=3">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Image Upscaler",
+  "url": "https://smartimgkit.com/tools/image-upscaler",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Upscale images to 2x, 3x, or 4x with smart interpolation and sharpening. Free, no signup, 100% browser-based."
+}
+</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Upscale Images",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Upload Image",
+      "text": "Click the upload area or drag and drop your image file."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Choose Scale",
+      "text": "Select 2x, 3x, or 4x enlargement. Adjust sharpening strength if needed."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Preview",
+      "text": "See the upscaled result with original dimensions displayed for comparison."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "name": "Download",
+      "text": "Click Download to save the upscaled image in your preferred format."
+    }
+  ]
+}
+</script>
+  <style>
+    .upscale-workspace { display: flex; gap: 24px; flex-wrap: wrap; }
+        .upscale-sidebar { flex: 0 0 280px; display: flex; flex-direction: column; gap: 16px; }
+        .upscale-canvas-area { flex: 1; min-width: 300px; }
+
+        .scale-btns { display: flex; gap: 8px; }
+        .scale-btn {
+          flex: 1; padding: 10px 8px; border: 2px solid var(--border); border-radius: 8px;
+          background: var(--bg-primary); color: var(--text-secondary); cursor: pointer;
+          text-align: center; font-size: .85rem; font-weight: 600; transition: all .2s;
+        }
+        .scale-btn:hover { border-color: var(--accent); color: var(--text-primary); }
+        .scale-btn.active { border-color: var(--accent); background: rgba(99,102,241,.1); color: var(--accent); }
+
+        .control-group { display: flex; flex-direction: column; gap: 6px; }
+        .control-group label { font-size: .8rem; color: var(--text-secondary); font-weight: 500; }
+        .control-group select {
+          padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px;
+          background: var(--bg-primary); color: var(--text-primary); font-size: .85rem;
+        }
+        .control-group input[type="range"] { width: 100%; }
+
+        .dim-info {
+          background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px;
+          padding: 12px; font-size: .85rem;
+        }
+        .dim-info .dim-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
+        .dim-info .dim-row:last-child { margin-bottom: 0; }
+        .dim-info .dim-label { color: var(--text-secondary); }
+        .dim-info .dim-value { color: var(--text-primary); font-weight: 500; }
+        .dim-info .dim-new { color: var(--accent); font-weight: 600; }
+
+        .canvas-wrapper {
+          background: repeating-conic-gradient(var(--bg-secondary) 0% 25%, var(--bg-primary) 0% 50%) 50% / 20px 20px;
+          border: 1px solid var(--border); border-radius: 12px; padding: 16px;
+          display: flex; align-items: center; justify-content: center; min-height: 300px;
+          overflow: auto;
+        }
+        .canvas-wrapper canvas { max-width: 100%; max-height: 500px; border-radius: 4px; }
+
+        @media (max-width: 768px) {
+          .upscale-workspace { flex-direction: column; }
+          .upscale-sidebar { flex: none; width: 100%; }
+        }
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What upscale factors are supported?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "2x and 4x."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will upscaling add detail?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Basic upscaling preserves pixels. For AI-powered detail enhancement, use a dedicated tool."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my image uploaded to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All upscaling happens locally."
+      }
+    }
+  ]
+}
+</script>
+<style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+</head>
+<body>
+  <!-- Adsterra Social Bar (29640799) - Popunder 替代品,移动端友好 -->
+  <script src="https://pl29741298.effectivecpmnetwork.com/70/c0/84/70c084b07dadc5b3f66fae02aa21f788.js"></script>
+
+  <!-- Header: exact match image-rotator compact format -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover.html">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/about.html">About</a><a href="/contact.html">Contact</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Switch language">🇬🇧 EN</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+          </div>
+        </div>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/">Tools</a><span>/</span><span>🔍 Image Upscaler</span></nav>
+      <div class="tool-page-header">
+        <h1>🔍 Image Upscaler</h1>
+        <p>Enlarge images to 2x, 3x, or 4x with smart interpolation and sharpening. Perfect for printing, wallpapers, and high-resolution displays. 100% browser-based.</p>
+      </div>
+      <!-- Adsterra Native Banner (29640800) - 工具标题下,融入内容流 -->
+      <div class="ad-native-banner">
+        <script async="async" data-cfasync="false" src="https://pl29741299.effectivecpmnetwork.com/5a540a2ce35c794ad7d73a726a88971c/invoke.js"></script>
+        <div id="container-5a540a2ce35c794ad7d73a726a88971c"></div>
+      </div>
+      <div class="tool-workspace">
+<!-- Upload Area -->
+              <!-- Before/After Preview -->
+        <div class="before-after-preview" id="beforeAfterPreview">
+          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-images">
+            <div class="before-after-item">
+              <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&q=80" alt="Before" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
+              <div class="before-after-item-caption before">Before</div>
+            </div>
+            <div class="before-after-item">
+              <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
+                <span style="font-size:3rem;opacity:0.5;">🔍</span>
+              </div>
+              <div class="before-after-item-caption after">After — processed</div>
+            </div>
+          </div>
+        </div>        <input type="file" id="fileInput" accept="image/*" style="display:none;">
+      <label for="fileInput" class="dropzone" id="dropzone">
+        <div class="dropzone-icon">📤</div>
+        <h3>Drop your image here</h3>
+        <p>or click to browse. Supports JPG, PNG, WebP.</p>
+      </label>
+      <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Try with a sample image</span>
+
+      <!-- Workspace -->
+      <div id="workspace" style="display:none">
+        <div class="upscale-workspace">
+          <!-- Sidebar -->
+          <div class="upscale-sidebar">
+            <div class="control-group">
+              <label>Scale Factor</label>
+              <div class="scale-btns">
+                <button class="scale-btn active" data-scale="2">2x</button>
+                <button class="scale-btn" data-scale="3">3x</button>
+                <button class="scale-btn" data-scale="4">4x</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label>Sharpening: <span id="sharpenValue">50</span>%</label>
+              <input type="range" id="sharpenSlider" min="0" max="100" value="50">
+            </div>
+
+            <div class="control-group">
+              <label>Output Dimensions</label>
+              <div class="dim-info">
+                <div class="dim-row"><span class="dim-label">Original:</span><span class="dim-value" id="origDim">—</span></div>
+                <div class="dim-row"><span class="dim-label">Upscaled:</span><span class="dim-new" id="newDim">—</span></div>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label>Output Format</label>
+              <select id="outputFormat">
+                <option value="image/png">PNG</option>
+                <option value="image/jpeg">JPG</option>
+                <option value="image/webp">WebP</option>
+              </select>
+            </div>
+
+            <div class="tool-actions" style="flex-direction:column">
+              <button class="btn btn-primary" id="upscaleBtn">🔍 Upscale & Download</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Start Over</button>
+            </div>
+            <div id="status" class="text-center" style="color:var(--text-secondary);font-size:.85rem"></div>
+          </div>
+
+          <!-- Canvas Preview -->
+          <div class="upscale-canvas-area">
+            <div class="canvas-wrapper">
+              <canvas id="previewCanvas"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <!-- Adsterra Banner 300x250 (29640802) - 工具区下方,黄金尺寸高 eCPM -->
+      <div class="ad-banner-300x250">
+        <script>
+          atOptions = {
+            'key' : 'c95d26a94d4f8dc640cd33ad5ec91528',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/c95d26a94d4f8dc640cd33ad5ec91528/invoke.js"></script>
+      </div>
+
+<section class="how-to-section">
+        <h2>How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step"><div class="step-number">1</div><h4>Upload Image</h4><p>Click the upload area or drag and drop your image file.</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>Choose Scale</h4><p>Select 2x, 3x, or 4x enlargement. Adjust sharpening if needed.</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>Preview</h4><p>See the upscaled result with dimensions displayed for comparison.</p></div>
+          <div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Click "Upscale & Download" to save the high-resolution image.</p></div>
+        </div>
+      </section>
+
+<h2>Detailed User Guide</h2>
+
+        <div class="guide-block">
+          <h3>Step 1: Upload Your Image</h3>
+          <p>Click the upload area or drag and drop an image file. Supported formats include JPG, PNG, and WebP. The image loads instantly and a preview appears. The original dimensions are displayed in the sidebar so you know your starting point.</p>
+        </div>
+
+        <div class="guide-block">
+          <h3>Step 2: Choose Your Scale Factor</h3>
+          <p>Select how much you want to enlarge the image:</p>
+          <ul>
+            <li><strong>2x:</strong> Doubles the dimensions. A 800×600 image becomes 1600×1200. Best for most use cases — good balance of quality and file size.</li>
+            <li><strong>3x:</strong> Triples the dimensions. A 800×600 image becomes 2400×1800. Great for printing at larger sizes.</li>
+            <li><strong>4x:</strong> Quadruples the dimensions. A 800×600 image becomes 3200×2400. Best for wallpaper-sized outputs or large prints, but file sizes will be significantly larger.</li>
+          </ul>
+          <div class="tip"><strong>Tip:</strong> Higher scale factors produce larger files. If you just need a moderate size increase, 2x is usually sufficient.</div>
+        </div>
+
+        <div class="guide-block">
+          <h3>Step 3: Adjust Sharpening</h3>
+          <p>When images are enlarged, they can look slightly soft or blurry. The sharpening filter adds edge contrast to make details pop. Use the slider to control the strength:</p>
+          <ul>
+            <li><strong>0%:</strong> No sharpening — smoothest result, good for watercolor-style images</li>
+            <li><strong>50%:</strong> Balanced — good for most photos (default)</li>
+            <li><strong>100%:</strong> Maximum sharpening — best for text, line art, or screenshots</li>
+          </ul>
+          <p>The preview updates in real-time so you can find the sweet spot. Over-sharpening can introduce halos around edges, so start low and increase gradually.</p>
+        </div>
+
+        <div class="guide-block">
+          <h3>Step 4: Upscale & Download</h3>
+          <p>Click <strong>"Upscale & Download"</strong> to process the image at full resolution and save it. Choose PNG for maximum quality (especially for graphics with sharp edges), JPG for smaller file sizes, or WebP for modern efficiency.</p>
+        </div>
+
+        <div class="guide-block">
+          <h3>Best Use Cases</h3>
+          <ul>
+            <li><strong>Print preparation</strong> — Enlarge digital photos to meet minimum print resolution requirements (300 DPI)</li>
+            <li><strong>Wallpapers</strong> — Scale up images to fit high-resolution monitors (4K, 5K displays)</li>
+            <li><strong>Social media</strong> — Meet minimum dimension requirements for cover photos and banners</li>
+            <li><strong>Presentations</strong> — Ensure images look sharp on large projection screens</li>
+            <li><strong>Logo scaling</strong> — Enlarge small logos or icons for larger formats</li>
+            <li><strong>Photo restoration</strong> — Upscale old, low-resolution family photos</li>
+          </ul>
+        </div>
+
+        <div class="guide-block">
+          <h3>Pro Tips</h3>
+          <ul>
+            <li>Start with the highest-quality source image you have — upscaling can't create detail that isn't there</li>
+            <li>For photos, 2x with moderate sharpening usually gives the best results</li>
+            <li>For screenshots or text-heavy images, use higher sharpening (70-100%)</li>
+            <li>PNG format preserves sharp edges — use it for logos, icons, and screenshots</li>
+            <li>Use JPG format for photographs to keep file sizes manageable at higher scales</li>
+            <li>Very large upscales (4x on already large images) may take a few seconds to process</li>
+          </ul>
+        </div>
+
+<section class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item"><button class="faq-question">How is this different from simply resizing?</button><div class="faq-answer">Regular resizing uses basic interpolation which produces blurry results. Our upscaler uses high-quality bicubic interpolation combined with a sharpening filter that enhances edges and restores detail clarity. The result is noticeably crisper than a simple resize.</div></div>
+      <div class="faq-item"><button class="faq-question">Will my image be uploaded to a server?</button><div class="faq-answer">No. All processing happens entirely in your browser using the Canvas API. Your images never leave your device. No server ever receives or stores your files.</div></div>
+      <div class="faq-item"><button class="faq-question">Can I upscale to a custom scale factor?</button><div class="faq-answer">Currently we support 2x, 3x, and 4x as these are the most commonly needed factors. If you need a specific size, try using our Image Resizer tool after upscaling to get the exact dimensions you need.</div></div>
+      <div class="faq-item"><button class="faq-question">Does upscaling actually add detail?</button><div class="faq-answer">Upscaling cannot create detail that doesn't exist in the original image. What it does is intelligently interpolate between existing pixels and apply sharpening to maintain the perception of sharpness. The result looks better than a simple resize, but won't match a natively high-resolution photo.</div></div>
+      <div class="faq-item"><button class="faq-question">What is the sharpening filter doing?</button><div class="faq-answer">The sharpening filter is an unsharp mask technique that enhances edge contrast. It works by subtracting a blurred version of the image from the original, which makes edges appear crisper. The slider controls the intensity of this effect.</div></div>
+      <div class="faq-item"><button class="faq-question">Is there a file size or resolution limit?</button><div class="faq-answer">There's no artificial limit, but very large outputs (e.g., 4x on a 5000px image = 20000px) may be slow or run into browser memory constraints. Most typical photo upscales complete in seconds.</div></div>
+      <div class="faq-item"><button class="faq-question">Should I use PNG or JPG for upscaled images?</button><div class="faq-answer">Use PNG for images with sharp edges (logos, screenshots, text) or when quality is paramount. Use JPG for photographs where file size matters more than pixel-perfect accuracy. WebP is a good modern alternative that balances both.</div></div>
+      </section>
+
+<section class="related-tools">
+  <h2>You Might Also Like</h2>
+  <div class="related-tools-grid">
+    <a href="/tools/compressor.html" class="related-tool-card">
+      <span class="tool-icon">🗜️</span>
+      <div class="tool-info">
+        <strong>Image Compressor</strong>
+        <span class="tool-desc">Compress upscaled images for web</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/tools/converter.html" class="related-tool-card">
+      <span class="tool-icon">🔄</span>
+      <div class="tool-info">
+        <strong>Image Converter</strong>
+        <span class="tool-desc">Convert upscaled images to WebP/PNG</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/tools/watermark.html" class="related-tool-card">
+      <span class="tool-icon">🔏</span>
+      <div class="tool-info">
+        <strong>Watermark Tool</strong>
+        <span class="tool-desc">Add watermark to upscaled images</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+  </div>
+</section>
+    </div>
+
+</main>
+
+  <!-- Footer: exact match image-rotator compact format -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Free AI-powered image tools that respect your privacy.</p></div>
+        <div class="footer-links"><h4>Tools</h4><a href="/tools/background-remover.html">Background Remover</a><a href="/tools/compressor.html">Compressor</a><a href="/tools/converter.html">Converter</a><a href="/tools/resizer.html">Resizer</a>
+          <a href="/tools/gif-editor.html">GIF Editor</a>
+          <a href="/tools/pdf-to-image.html">PDF to Image</a>
+        </div>
+        <div class="footer-links"><h4>More Tools</h4><a href="/tools/cropper.html">Cropper</a><a href="/tools/watermark.html">Watermark</a><a href="/tools/image-merger.html">Image Merger</a><a href="/tools/screenshot-to-image.html">Screenshot to Image</a><a href="/tools/image-filters.html">Image Filters</a><a href="/tools/svg-to-png.html">SVG to PNG</a><a href="/tools/image-compare.html">Image Compare</a><a href="/tools/print-resizer.html">Print-Ready Resizer</a><a href="/tools/meme-generator.html">Meme Generator</a>          <a href="/tools/face-blur.html">Face Blur</a>
+          <a href="/tools/heic-converter.html">HEIC Converter</a>
+          <a href="/tools/metadata-viewer.html">Metadata Viewer</a>
+          <a href="/tools/avif-support.html">AVIF Support</a>
+          <a href="/tools/image-adjust.html">Image Adjustment</a>
+          <a href="/tools/image-border.html">Image Border</a>
+          <a href="/tools/image-flip.html">Image Flip</a>
+          <a href="/tools/image-grayscale.html">Image Grayscale</a>
+          <a href="/tools/image-shadow.html">Image Shadow</a>
+          <a href="/tools/image-splitter.html">Image Splitter</a>
+          <a href="/tools/image-exif-remover.html">EXIF Remover</a><a href="/tools/circle-crop.html">Circle Crop</a><a href="/tools/favicon-generator.html">Favicon Generator</a><a href="/tools/ocr.html">OCR Text</a><a href="/tools/bulk-processor.html">Bulk Processor</a><a href="/tools/image-to-pdf.html">Image to PDF</a>          <a href="/tools/id-photo.html">ID Photo Maker</a>
+          <a href="/tools/product-white-background.html">Product White BG</a>
+          <a href="/tools/social-media-post.html">Social Media Post</a>
+          <a href="/tools/photo-restoration.html">Photo Restoration</a><a href="/tools/image-enhancer.html">Image Enhancer</a>
+        </div>
+        <div class="footer-links"><h4>Legal</h4><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms of Service</a><a href="/cookie-policy.html">Cookie Policy</a>
+        </div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved. | <a href="https://comprimefotos.com/" style="color: var(--accent); font-weight: 500;">Español: ComprimeFotos — Comprimir Imágenes Online</a></p></div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js?v=3"></script>
+  <script>
+// ===== State =====
+    let originalImg = null;
+    let scaleFactor = 2;
+
+    // ===== DOM =====
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const workspace = document.getElementById('workspace');
+    const previewCanvas = document.getElementById('previewCanvas');
+    const ctx = previewCanvas.getContext('2d');
+    const sharpenSlider = document.getElementById('sharpenSlider');
+    const sharpenValue = document.getElementById('sharpenValue');
+    const origDim = document.getElementById('origDim');
+    const newDim = document.getElementById('newDim');
+    const outputFormat = document.getElementById('outputFormat');
+    const upscaleBtn = document.getElementById('upscaleBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const status = document.getElementById('status');
+
+    // ===== Upload =====
+    setupDropzone({ dropzoneId: 'dropzone', inputId: 'fileInput', onFile: handleFile });
+
+    async function handleFile(file) {
+      if (!file.type.startsWith('image/')) return;
+      originalImg = await ImageUtils.load(file);
+      dropzone.classList.add('hidden');
+      workspace.style.display = '';
+      updateDims();
+      renderPreview();
+    }
+
+    // ===== Scale Buttons =====
+    document.querySelectorAll('.scale-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        scaleFactor = parseInt(btn.dataset.scale);
+        updateDims();
+        renderPreview();
+      });
+    });
+
+    // ===== Sharpening =====
+    sharpenSlider.addEventListener('input', () => {
+      sharpenValue.textContent = sharpenSlider.value;
+      renderPreview();
+    });
+
+    // ===== Dimension Display =====
+    function updateDims() {
+      if (!originalImg) return;
+      const w = originalImg.naturalWidth;
+      const h = originalImg.naturalHeight;
+      origDim.textContent = `${w} × ${h}`;
+      newDim.textContent = `${w * scaleFactor} × ${h * scaleFactor}`;
+    }
+
+    // ===== Preview Render =====
+    function renderPreview() {
+      if (!originalImg) return;
+      const w = originalImg.naturalWidth;
+      const h = originalImg.naturalHeight;
+      const nw = w * scaleFactor;
+      const nh = h * scaleFactor;
+
+      previewCanvas.width = nw;
+      previewCanvas.height = nh;
+
+      // High-quality interpolation
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(originalImg, 0, 0, nw, nh);
+
+      // Apply unsharp mask sharpening
+      const strength = parseInt(sharpenSlider.value) / 100;
+      if (strength > 0) applySharpen(ctx, nw, nh, strength);
+    }
+
+    // ===== Unsharp Mask Sharpening =====
+    function applySharpen(ctx, w, h, strength) {
+      const imageData = ctx.getImageData(0, 0, w, h);
+      const data = imageData.data;
+
+      // Create blurred version
+      const blurred = new Uint8ClampedArray(data.length);
+      const kernel = [1, 2, 1, 2, 4, 2, 1, 2, 1];
+      const kSum = 16;
+
+      for (let y = 1; y < h - 1; y++) {
+        for (let x = 1; x < w - 1; x++) {
+          for (let c = 0; c < 3; c++) {
+            let sum = 0;
+            let ki = 0;
+            for (let ky = -1; ky <= 1; ky++) {
+              for (let kx = -1; kx <= 1; kx++) {
+                const idx = ((y + ky) * w + (x + kx)) * 4 + c;
+                sum += data[idx] * kernel[ki++];
+              }
+            }
+            blurred[(y * w + x) * 4 + c] = sum / kSum;
+          }
+          blurred[(y * w + x) * 4 + 3] = data[(y * w + x) * 4 + 3];
+        }
+      }
+
+      // Unsharp mask: sharpened = original + strength * (original - blurred)
+      const amount = strength * 1.5; // max 1.5x sharpening
+      for (let i = 0; i < data.length; i += 4) {
+        for (let c = 0; c < 3; c++) {
+          const diff = data[i + c] - blurred[i + c];
+          data[i + c] = Math.min(255, Math.max(0, data[i + c] + diff * amount));
+        }
+      }
+
+      ctx.putImageData(imageData, 0, 0);
+    }
+
+    // ===== Upscale & Download =====
+    upscaleBtn.addEventListener('click', async () => {
+      if (!originalImg) return;
+      upscaleBtn.disabled = true;
+      upscaleBtn.textContent = '🔄 Upscaling...';
+      status.textContent = '';
+
+      try {
+        const format = outputFormat.value;
+        const quality = format === 'image/png' ? undefined : 0.92;
+        const blob = await ImageUtils.canvasToBlob(previewCanvas, format, quality);
+        const ext = format === 'image/png' ? 'png' : format === 'image/jpeg' ? 'jpg' : 'webp';
+        ImageUtils.download(blob, `upscaled-${scaleFactor}x.${ext}`);
+        status.textContent = `✅ Image upscaled to ${scaleFactor}x and downloaded!`;
+      } catch (e) {
+        status.textContent = '❌ Error: ' + e.message;
+      }
+
+      upscaleBtn.disabled = false;
+      upscaleBtn.textContent = '🔍 Upscale & Download';
+    });
+
+    // ===== Reset =====
+    resetBtn.addEventListener('click', () => {
+      originalImg = null;
+      workspace.style.display = 'none';
+      dropzone.classList.remove('hidden');
+      fileInput.value = '';
+      status.textContent = '';
+    });
+  
+  // Sample image & Next Step
+  (function() {
+    var _handleFile = typeof handleFile === 'function' ? handleFile : null;
+    if (_handleFile) {
+      window.initSampleButton('https://images.unsplash.com/photo-1518173946687-a1e4e3e3f6be?w=800&q=80', _handleFile);
+    }
+    // Show next-step on download click
+    var dlBtn = document.getElementById('downloadBtn') || document.querySelector('.btn-primary[onclick*="download"], .btn-secondary[onclick*="download"]');
+    if (dlBtn) {
+      dlBtn.addEventListener('click', function() { SmartImgNextStep.show(); });
+    }
+  })();
+  </script>
+</body>
+</html>
+
+

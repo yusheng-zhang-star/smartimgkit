@@ -1,0 +1,133 @@
+<!-- Upload Area -->
+              <!-- Before/After Preview -->
+        <div class="before-after-preview" id="beforeAfterPreview">
+          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-images">
+            <div class="before-after-item">
+              <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=80" alt="Before" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
+              <div class="before-after-item-caption before">Before</div>
+            </div>
+            <div class="before-after-item">
+              <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
+                <span style="font-size:3rem;opacity:0.5;">✏️</span>
+              </div>
+              <div class="before-after-item-caption after">After — processed</div>
+            </div>
+          </div>
+        </div>        <input type="file" id="fileInput" accept="image/*" style="display:none;">
+      <label for="fileInput" class="dropzone" id="dropzone">
+        <div class="dropzone-icon">📤</div>
+        <h3>Drop your image here</h3>
+        <p>or click to browse. Supports JPG, PNG, WebP.</p>
+      </label>
+      <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Try with a sample image</span>
+
+      <!-- Workspace -->
+      <div class="tool-workspace" id="workspace" style="display:none">
+        <div class="text-workspace">
+          <!-- Sidebar -->
+          <div class="text-sidebar">
+            <div class="control-group">
+              <label>Text</label>
+              <textarea id="textInput" placeholder="Type your text here...">Hello World</textarea>
+            </div>
+
+            <div class="control-group">
+              <label>Font Family</label>
+              <select id="fontFamily">
+                <option value="Inter">Inter</option>
+                <option value="Roboto">Roboto</option>
+                <option value="Open Sans">Open Sans</option>
+                <option value="Montserrat">Montserrat</option>
+                <option value="Oswald">Oswald</option>
+                <option value="Bebas Neue">Bebas Neue</option>
+                <option value="Pacifico">Pacifico</option>
+                <option value="Dancing Script">Dancing Script</option>
+                <option value="Permanent Marker">Permanent Marker</option>
+                <option value="Press Start 2P">Press Start 2P</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label>Font Size: <span id="sizeValue">48</span>px</label>
+              <input type="range" id="fontSize" min="10" max="200" value="48">
+            </div>
+
+            <div class="control-group">
+              <label>Font Weight</label>
+              <select id="fontWeight">
+                <option value="400">Normal</option>
+                <option value="700" selected>Bold</option>
+              </select>
+            </div>
+
+            <div class="color-row">
+              <div class="control-group">
+                <label>Text Color</label>
+                <input type="color" id="textColor" value="#ffffff">
+              </div>
+              <div class="control-group">
+                <label>Outline Color</label>
+                <input type="color" id="outlineColor" value="#000000">
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label>Outline Width: <span id="outlineValue">2</span>px</label>
+              <input type="range" id="outlineWidth" min="0" max="10" value="2">
+            </div>
+
+            <div class="control-group">
+              <label>Shadow Blur: <span id="shadowValue">0</span>px</label>
+              <input type="range" id="shadowBlur" min="0" max="30" value="0">
+            </div>
+
+            <div class="control-group">
+              <label>Opacity: <span id="opacityValue">100</span>%</label>
+              <input type="range" id="opacity" min="10" max="100" value="100">
+            </div>
+
+            <div class="control-group">
+              <label>Rotation: <span id="rotationValue">0</span>°</label>
+              <input type="range" id="rotation" min="-180" max="180" value="0">
+            </div>
+
+            <div class="control-group">
+              <label>Quick Position</label>
+              <div class="position-grid">
+                <button class="pos-btn" data-x="0.1" data-y="0.1">↖</button>
+                <button class="pos-btn" data-x="0.5" data-y="0.1">↑</button>
+                <button class="pos-btn" data-x="0.9" data-y="0.1">↗</button>
+                <button class="pos-btn" data-x="0.1" data-y="0.5">←</button>
+                <button class="pos-btn active" data-x="0.5" data-y="0.5">⊙</button>
+                <button class="pos-btn" data-x="0.9" data-y="0.5">→</button>
+                <button class="pos-btn" data-x="0.1" data-y="0.9">↙</button>
+                <button class="pos-btn" data-x="0.5" data-y="0.9">↓</button>
+                <button class="pos-btn" data-x="0.9" data-y="0.9">↘</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label>Output Format</label>
+              <select id="outputFormat">
+                <option value="image/png">PNG</option>
+                <option value="image/jpeg">JPG</option>
+                <option value="image/webp">WebP</option>
+              </select>
+            </div>
+
+            <div class="tool-actions" style="flex-direction:column">
+              <button class="btn btn-primary" id="downloadBtn">💾 Download</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Start Over</button>
+            </div>
+            <div id="status" class="text-center" style="color:var(--text-secondary);font-size:.85rem"></div>
+          </div>
+
+          <!-- Canvas Preview -->
+          <div class="text-canvas-area">
+            <div class="canvas-wrapper" id="canvasWrapper">
+              <canvas id="previewCanvas"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>

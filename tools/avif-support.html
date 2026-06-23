@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-tool-id="avif-support">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>AVIF Support — Decode & Convert AVIF Images Free | SmartImgKit</title>
+  <meta name="description" content="Check AVIF browser support, decode AVIF images, and convert to JPG/PNG/WebP. Free, browser-based, no uploads. Tested with Chrome, Firefox, Safari.">
+  <meta name="keywords" content="AVIF support, AVIF converter, decode AVIF, AVIF to JPG, AVIF to PNG, AVIF browser support, next-gen image format, AV1 image file format">
+  <link rel="canonical" href="https://smartimgkit.com/tools/avif-support">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="Free AVIF Support Tool — SmartImgKit">
+  <meta property="og:description" content="Check AVIF browser support, decode and convert AVIF images to JPG/PNG/WebP. 100% browser-based.">
+  <meta property="og:url" content="https://smartimgkit.com/tools/avif-support">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/avif-support.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free AVIF Support Tool — SmartImgKit">
+  <meta name="twitter:description" content="Check AVIF browser support, decode and convert AVIF images to JPG/PNG/WebP. 100% browser-based.">
+  <meta name="twitter:image" content="https://smartimgkit.com/screenshots/avif-support.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <!-- Hreflang tags -->
+  <link rel="stylesheet" href="../css/style.css?v=3">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "AVIF Support",
+  "url": "https://smartimgkit.com/tools/avif-support",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Check AVIF browser support and convert AVIF images to JPG/PNG/WebP."
+}
+</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Convert AVIF Images",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Check Browser Support",
+      "text": "View your browser's AVIF support status."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Upload AVIF",
+      "text": "Click upload area or drag and drop your .avif file."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Choose Output Format",
+      "text": "Select JPG, PNG, or WebP as output."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "name": "Download",
+      "text": "Download the converted image."
+    }
+  ]
+}
+</script>
+  <style>
+    .support-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 12px; margin-bottom: 20px; }
+        .support-card {
+          background: var(--bg-primary); border:1px solid var(--border-color);
+          border-radius: 10px; padding: 14px; text-align: center;
+        }
+        .support-card .browser-icon { font-size: 2rem; margin-bottom: 6px; }
+        .support-card .browser-name { font-weight: 600; font-size: .9rem; margin-bottom: 4px; }
+        .support-card .support-status { font-size: .78rem; padding: 3px 8px; border-radius: 4px; display: inline-block; }
+        .support-yes { background: rgba(16,185,129,.12); color: #10b981; }
+        .support-no { background: rgba(239,68,68,.12); color: #ef4444; }
+        .support-unknown { background: rgba(245,158,11,.12); color: #f59e0b; }
+
+        .tool-flex { display: flex; gap: 24px; flex-wrap: wrap; }
+        .tool-sidebar { flex: 0 0 320px; display: flex; flex-direction: column; gap: 14px; }
+        .tool-canvas-area { flex: 1; min-width: 300px; }
+        @media (max-width: 768px) { .tool-flex { flex-direction: column; } .tool-sidebar { flex: none; width: 100%; } }
+
+        .preview-wrapper {
+          background: repeating-conic-gradient(var(--bg-secondary) 0% 25%, var(--bg-primary) 0% 50%) 50% / 20px 20px;
+          border:1px solid var(--border-color); border-radius: 12px; padding: 16px;
+          display: flex; align-items: center; justify-content: center; min-height: 350px; overflow: auto;
+        }
+        .preview-wrapper img, .preview-wrapper canvas { max-width: 100%; max-height: 65vh; border-radius: 4px; }
+
+        .format-select { display: flex; gap: 6px; flex-wrap: wrap; }
+        .format-btn {
+          padding: 8px 16px; border: 1px solid var(--border-color); border-radius: 8px;
+          background: var(--bg-primary); color: var(--text-secondary); cursor: pointer;
+          font-size: .82rem; font-weight: 500; transition: all .2s;
+        }
+        .format-btn:hover { border-color: var(--accent); }
+        .format-btn.active { border-color: var(--accent); background: rgba(99,102,241,.12); color: var(--accent); }
+
+        .slider-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+        .slider-group label { font-size: .78rem; color: var(--text-secondary); font-weight: 500; display: flex; justify-content: space-between; }
+        .slider-group input[type="range"] { width: 100%; accent-color: var(--accent); }
+        .slider-value { color: var(--accent); font-weight: 600; }
+
+        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+        .info-box { font-size: .8rem; color: var(--text-secondary); padding: 10px 14px; background: var(--bg-secondary); border-radius: 8px; line-height: 1.6; }
+
+        .avif-test-area {
+          background: var(--bg-primary); border:1px solid var(--border-color);
+          border-radius: 10px; padding: 16px; margin-top: 16px;
+        }
+        .avif-test-area h4 { margin-bottom: 8px; font-size: .9rem; }
+        .avif-test-result { font-size: .82rem; padding: 8px 12px; border-radius: 6px; margin-top: 8px; display: none; }
+        .test-pass { background: rgba(16,185,129,.1); color: #10b981; }
+        .test-fail { background: rgba(239,68,68,.1); color: #ef4444; }
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Which browsers support AVIF?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Chrome 85+, Firefox 93+, Safari 16.4+. Edge supports AVIF since it is Chromium."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why should I convert AVIF to JPG?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "AVIF has limited support on social media platforms and older browsers."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does converting reduce quality?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Converting AVIF to JPG at 90-100% quality preserves visual quality well."
+      }
+    }
+  ]
+}
+</script>
+<style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+</head>
+<body>
+  <!-- Adsterra Social Bar (29640799) - Popunder 替代品,移动端友好 -->
+  <script src="https://pl29741298.effectivecpmnetwork.com/70/c0/84/70c084b07dadc5b3f66fae02aa21f788.js"></script>
+
+  <!-- Header: exact match image-rotator compact format -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover.html">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/about.html">About</a><a href="/contact.html">Contact</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Switch language">🇬🇧 EN</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+          </div>
+        </div>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/">Tools</a><span>/</span><span>🖼️ AVIF Support — Decode & Convert</span></nav>
+      <div class="tool-page-header">
+        <h1>🖼️ AVIF Support — Decode & Convert</h1>
+        <p>Check your browser's AVIF support, decode AVIF images, and convert to JPG/PNG/WebP. 100% browser-based.</p>
+      </div>
+      <!-- Adsterra Native Banner (29640800) - 工具标题下,融入内容流 -->
+      <div class="ad-native-banner">
+        <script async="async" data-cfasync="false" src="https://pl29741299.effectivecpmnetwork.com/5a540a2ce35c794ad7d73a726a88971c/invoke.js"></script>
+        <div id="container-5a540a2ce35c794ad7d73a726a88971c"></div>
+      </div>
+      <div class="tool-workspace">
+<!-- Browser Support Status -->
+      <section style="margin-bottom:24px">
+        <h2>Your Browser's AVIF Support</h2>
+        <div class="support-grid" id="supportGrid">
+          <!-- Filled by JS -->
+        </div>
+      </section>
+
+      <div class="tool-flex">
+        <div class="tool-sidebar">
+          <input type="file" id="fileInput" accept=".avif,.avifs,image/avif" style="display:none;">
+          <!-- Upload -->
+          <label for="fileInput" class="dropzone" id="dropzone">
+            <div class="upload-icon">📁</div>
+            <div class="upload-text">Click or drag AVIF file here</div>
+            <div class="upload-hint">.avif / .avifs — Max 30MB</div>
+          </label>
+
+          <!-- Output Format -->
+          <div class="card">
+            <h3>Output Format</h3>
+            <div class="format-select">
+              <button class="format-btn active" data-fmt="jpg" onclick="setFormat('jpg',this)">JPG</button>
+              <button class="format-btn" data-fmt="png" onclick="setFormat('png',this)">PNG</button>
+              <button class="format-btn" data-fmt="webp" onclick="setFormat('webp',this)">WebP</button>
+            </div>
+          </div>
+
+          <!-- Quality -->
+          <div class="card" id="qualityCard">
+            <h3>Quality</h3>
+            <div class="slider-group">
+              <label>Quality <span class="slider-value" id="qualVal">90</span>%</label>
+              <input type="range" id="qualSlider" min="10" max="100" value="90" oninput="updateQuality()">
+            </div>
+          </div>
+
+          <!-- Info -->
+          <div class="info-box" id="fileInfo" style="display:none;"></div>
+
+          <!-- Actions -->
+          <div class="btn-group">
+            <button class="btn btn-primary" id="convertBtn" disabled onclick="convertAvif()">▶️ Convert</button>
+            <button class="btn btn-secondary" id="resetBtn" disabled onclick="resetAll()">↺ Reset</button>
+          </div>
+        </div>
+
+        <div class="tool-canvas-area">
+          <div class="preview-wrapper" id="previewWrapper">
+            <canvas id="previewCanvas" style="display:none;"></canvas>
+            <div id="placeholderText" style="color:var(--text-secondary);text-align:center">
+              <div style="font-size:3rem;margin-bottom:12px">🖼️</div>
+              <p>Upload an AVIF image to decode and convert</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AVIF Test Decoding -->
+      <div class="avif-test-area" id="avifTestArea">
+        <h4>🔬 Test AVIF Decoding</h4>
+        <p style="font-size:.82rem;color:var(--text-secondary);margin-bottom:10px">
+          We'll create a tiny AVIF image in memory and test if your browser can decode it.
+        </p>
+        <button class="btn btn-secondary" onclick="testAvifDecode()" style="font-size:.82rem">Run AVIF Decode Test</button>
+        <div class="avif-test-result" id="testResult"></div>
+      </div>
+
+      <!-- AdSense -->
+      </div>
+      <!-- Adsterra Banner 300x250 (29640802) - 工具区下方,黄金尺寸高 eCPM -->
+      <div class="ad-banner-300x250">
+        <script>
+          atOptions = {
+            'key' : 'c95d26a94d4f8dc640cd33ad5ec91528',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/c95d26a94d4f8dc640cd33ad5ec91528/invoke.js"></script>
+      </div>
+
+<section class="how-to-section">
+  <h2>How to Use</h2>
+  <div class="how-to-steps">
+    <div class="how-to-step"><div class="step-number">1</div><h4>Check Browser Support</h4><p>View your browser's AVIF support status.</p></div>
+    <div class="how-to-step"><div class="step-number">2</div><h4>Upload AVIF</h4><p>Click upload area or drag and drop your .avif file.</p></div>
+    <div class="how-to-step"><div class="step-number">3</div><h4>Choose Output Format</h4><p>Select JPG, PNG, or WebP as output.</p></div>
+    <div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Download the converted image.</p></div>
+  </div>
+</section>
+
+<h2>Detailed User Guide</h2>
+
+      <div class="guide-block">
+        <h3>Step 1: Check Your Browser Support</h3>
+        <p>The top of the page shows your current browser and whether it can decode AVIF.</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Step 2: Choose Output Format</h3>
+        <p>Select JPG (universal, smaller files), PNG (lossless, larger), or WebP (balanced).</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Step 3: Set Quality</h3>
+        <p>Use the quality slider (10-100%) to control output file size.</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Step 4: Upload AVIF File</h3>
+        <p>Click the upload area or drag and drop an .avif file. Max 30MB per file.</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Step 5: Convert and Download</h3>
+        <p>Click "Convert" to process, then "Download" to save.</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Browser Support Summary</h3>
+        <ul><li>Chrome 85+ — Full support</li><li>Firefox 93+ — Full support</li><li>Safari 16.4+ — Full support</li></ul>
+      </div>
+
+<section class="faq-section">
+  <h2>Frequently Asked Questions</h2>
+  <div class="faq-item"><button class="faq-question">Which browsers support AVIF?</button><div class="faq-answer">Chrome 85+, Firefox 93+, Safari 16.4+. Edge supports AVIF since it's Chromium.</div></div>
+  <div class="faq-item"><button class="faq-question">Why should I convert AVIF to JPG?</button><div class="faq-answer">AVIF has limited support on social media platforms and older browsers.</div></div>
+  <div class="faq-item"><button class="faq-question">Does converting reduce quality?</button><div class="faq-answer">Converting AVIF to JPG at 90-100% quality preserves visual quality well.</div></div>
+</section>
+
+<section class="related-tools">
+  <h2>You Might Also Like</h2>
+  <div class="related-tools-grid">
+    <a href="/tools/compressor.html" class="related-tool-card">
+      <span class="tool-icon">🗜️</span>
+      <div class="tool-info">
+        <strong>Image Compressor</strong>
+        <span class="tool-desc">Compress AVIF images after decoding</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/tools/converter.html" class="related-tool-card">
+      <span class="tool-icon">🔄</span>
+      <div class="tool-info">
+        <strong>Image Converter</strong>
+        <span class="tool-desc">Convert AVIF to JPG/PNG/WebP</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/tools/image-upscaler.html" class="related-tool-card">
+      <span class="tool-icon">🔍</span>
+      <div class="tool-info">
+        <strong>Image Upscaler</strong>
+        <span class="tool-desc">Upscale AVIF images after decoding</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+  </div>
+</section>
+    </div>
+
+</main>
+
+  <!-- Footer: exact match image-rotator compact format -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Free AI-powered image tools that respect your privacy.</p></div>
+        <div class="footer-links"><h4>Tools</h4><a href="/tools/background-remover.html">Background Remover</a><a href="/tools/compressor.html">Compressor</a><a href="/tools/converter.html">Converter</a><a href="/tools/resizer.html">Resizer</a>
+          <a href="/tools/gif-editor.html">GIF Editor</a>
+          <a href="/tools/pdf-to-image.html">PDF to Image</a>
+        </div>
+        <div class="footer-links"><h4>More Tools</h4><a href="/tools/cropper.html">Cropper</a><a href="/tools/watermark.html">Watermark</a><a href="/tools/image-merger.html">Image Merger</a><a href="/tools/screenshot-to-image.html">Screenshot to Image</a><a href="/tools/image-filters.html">Image Filters</a><a href="/tools/svg-to-png.html">SVG to PNG</a><a href="/tools/image-compare.html">Image Compare</a><a href="/tools/print-resizer.html">Print-Ready Resizer</a><a href="/tools/meme-generator.html">Meme Generator</a>          <a href="/tools/face-blur.html">Face Blur</a>
+          <a href="/tools/heic-converter.html">HEIC Converter</a>
+          <a href="/tools/metadata-viewer.html">Metadata Viewer</a>
+          <a href="/tools/avif-support.html">AVIF Support</a>
+          <a href="/tools/image-adjust.html">Image Adjustment</a>
+          <a href="/tools/image-border.html">Image Border</a>
+          <a href="/tools/image-flip.html">Image Flip</a>
+          <a href="/tools/image-grayscale.html">Image Grayscale</a>
+          <a href="/tools/image-shadow.html">Image Shadow</a>
+          <a href="/tools/image-splitter.html">Image Splitter</a>
+          <a href="/tools/image-exif-remover.html">EXIF Remover</a><a href="/tools/circle-crop.html">Circle Crop</a><a href="/tools/favicon-generator.html">Favicon Generator</a><a href="/tools/ocr.html">OCR Text</a><a href="/tools/bulk-processor.html">Bulk Processor</a><a href="/tools/image-to-pdf.html">Image to PDF</a>          <a href="/tools/id-photo.html">ID Photo Maker</a>
+          <a href="/tools/product-white-background.html">Product White BG</a>
+          <a href="/tools/social-media-post.html">Social Media Post</a>
+          <a href="/tools/photo-restoration.html">Photo Restoration</a><a href="/tools/image-enhancer.html">Image Enhancer</a>
+        </div>
+        <div class="footer-links"><h4>Legal</h4><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms of Service</a><a href="/cookie-policy.html">Cookie Policy</a>
+        </div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved. | <a href="https://comprimefotos.com/" style="color: var(--accent); font-weight: 500;">Español: ComprimeFotos — Comprimir Imágenes Online</a></p></div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js?v=3"></script>
+  <script>
+let avifFile = null;
+let avifImage = null;
+let outputFormat = 'jpg';
+
+const avifDropzone = document.getElementById('dropzone');
+const avifFileInput = document.getElementById('fileInput');
+const avifBrowseBtn = document.getElementById('browseBtn');
+const avifWorkspace = document.getElementById('workspace');
+const avifResultArea = document.getElementById('resultArea');
+const avifFormatSel = document.getElementById('formatSel');
+const avifConvertBtn = document.getElementById('convertBtn');
+const avifResetBtn = document.getElementById('resetBtn');
+const avifDownloadBtn = document.getElementById('downloadBtn');
+const avifPreview = document.getElementById('preview');
+
+avifDropzone.addEventListener('dragover', e => { e.preventDefault(); avifDropzone.classList.add('drag'); });
+avifDropzone.addEventListener('dragleave', () => { avifDropzone.classList.remove('drag'); });
+avifDropzone.addEventListener('drop', e => {
+  e.preventDefault();
+  avifDropzone.classList.remove('drag');
+  if (e.dataTransfer.files.length) handleAvifFile(e.dataTransfer.files[0]);
+});
+avifFileInput.addEventListener('change', e => { if (e.target.files[0]) handleAvifFile(e.target.files[0]); });
+avifBrowseBtn && avifBrowseBtn.addEventListener('click', () => avifFileInput.click());
+
+function handleAvifFile(file) {
+  if (!file || !file.name.toLowerCase().endsWith('.avif')) {
+    alert('Please select an AVIF file.');
+    return;
+  }
+  avifFile = file;
+  const url = URL.createObjectURL(file);
+  avifImage = new Image();
+  avifImage.onload = () => {
+    avifPreview.src = url;
+    avifDropzone.style.display = 'none';
+    avifWorkspace.style.display = 'block';
+  };
+  avifImage.onerror = () => { alert('Failed to load AVIF image.'); };
+  avifImage.src = url;
+}
+
+async function convertAvif() {
+  if (!avifFile) return;
+  avifConvertBtn.disabled = true;
+  avifResultArea.textContent = 'Converting...';
+  try {
+    const blob = await heic2any({ blob: avifFile, toType: 'image/' + outputFormat });
+    const out = Array.isArray(blob) ? blob[0] : blob;
+    const url = URL.createObjectURL(out);
+    avifResultArea.innerHTML = '<a href="' + url + '" download="converted.' + outputFormat + '">Download</a>';
+  } catch (err) {
+    avifResultArea.textContent = 'Error: ' + err.message;
+  } finally {
+    avifConvertBtn.disabled = false;
+  }
+}
+
+avifConvertBtn && avifConvertBtn.addEventListener('click', convertAvif);
+avifResetBtn && avifResetBtn.addEventListener('click', () => {
+  avifFile = null;
+  avifImage = null;
+  avifWorkspace.style.display = 'none';
+  avifDropzone.style.display = '';
+  avifResultArea.textContent = '';
+  avifFileInput.value = '';
+});
+
+  </script>
+</body>
+</html>
+
+

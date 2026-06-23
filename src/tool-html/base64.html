@@ -1,0 +1,46 @@
+<div style="text-align:center;margin-bottom:16px">
+          <button class="tab-btn active" id="encodeTab">Image → Base64</button>
+          <button class="tab-btn" id="decodeTab">Base64 → Image</button>
+        </div>
+
+        <div id="encodePanel">
+          <input type="file" id="fileInput" accept="image/*" style="display:none;">
+      <label for="fileInput" class="dropzone" id="dropzone">
+            <div class="dropzone-icon">📤</div>
+            <h3>Drop an image here</h3>
+            <p>or click to browse.</p>
+      </label>
+      <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Try with a sample image</span>
+          <div class="preview-area" id="previewArea">
+            <div class="preview-container"><img id="previewImg" alt="Preview"></div>
+            <p id="fileInfo" style="text-align:center;color:var(--text-secondary);font-size:.85rem;margin-top:8px"></p>
+            <div class="tool-actions">
+              <button class="btn btn-primary" id="encodeBtn">📋 Encode to Base64</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 New Image</button>
+            </div>
+            <div id="encodeResult" class="hidden mt-24">
+              <label style="color:var(--text-secondary);font-size:.85rem">Base64 Data URL</label>
+              <textarea class="base64-output" id="b64Output" readonly></textarea>
+              <div class="tool-actions mt-16">
+                <button class="btn btn-secondary" id="copyBtn">📋 Copy</button>
+                <button class="btn btn-secondary" id="downloadTxtBtn">⬇️ Download as .txt</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="decodePanel" class="hidden">
+          <div style="max-width:600px;margin:0 auto">
+            <label style="color:var(--text-secondary);font-size:.85rem">Paste Base64 string or Data URL</label>
+            <textarea class="base64-output" id="b64Input" placeholder="data:image/png;base64,iVBORw0KGgo..."></textarea>
+            <div class="tool-actions mt-16">
+              <button class="btn btn-primary" id="decodeBtn">🔄 Decode to Image</button>
+              <button class="btn btn-secondary hidden" id="dlImgBtn">⬇️ Download Image</button>
+            </div>
+            <div id="decodeResult" class="preview-container hidden" style="margin-top:16px">
+              <img id="decodedImg" alt="Decoded">
+            </div>
+          </div>
+        </div>
+
+        <div id="status" class="text-center mt-16" style="color:var(--text-secondary)"></div>

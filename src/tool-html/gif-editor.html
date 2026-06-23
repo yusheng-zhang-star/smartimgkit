@@ -1,0 +1,76 @@
+<div class="tool-workspace">
+
+        <!-- Before/After Preview -->
+        <div class="before-after-preview" id="beforeAfterPreview">
+          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-images">
+            <div class="before-after-item">
+              <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:3rem;">🖼️🖼️🖼️</span></div>
+              <div class="before-after-item-caption before">Before: separate images</div>
+            </div>
+            <div class="before-after-item">
+              <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🎬</span></div>
+              <div class="before-after-item-caption after">After: animated GIF</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upload -->
+        <input type="file" id="fileInput" accept="image/*" multiple style="display:none;">
+        <label for="fileInput" class="dropzone" id="dropzone">
+            <div class="dropzone-icon">🎬</div>
+            <h3>Upload Images</h3>
+            <p>Select multiple images (JPG, PNG, WebP) in the order you want them to appear</p>
+        </label>
+
+        <!-- Frames Preview -->
+        <div class="preview-area hidden" id="framesSection">
+            <h2 style="font-size:1.1rem;margin-bottom:1rem;">📋 Frames (<span id="frameCount">0</span>)</h2>
+            <div class="info-box"><p>Remove frames with the ✕ button. Adjust each frame's delay below the image.</p></div>
+            <div class="frames-grid" id="framesGrid"></div>
+        </div>
+
+        <!-- Controls -->
+        <div class="preview-area hidden" id="controlsSection">
+            <h2 style="font-size:1.1rem;margin-bottom:1rem;">⚙️ GIF Settings</h2>
+            <div class="slider-group">
+                <label>Global Frame Delay <span class="slider-value" id="globalDelayVal">500ms</span></label>
+                <input type="range" id="globalDelay" min="50" max="2000" value="500" step="50" oninput="document.getElementById('globalDelayVal').textContent=this.value+'ms'">
+            </div>
+            <div class="slider-group">
+                <label>Resize Width (px)</label>
+                <input type="number" id="resizeWidth" placeholder="auto" style="width:120px;padding:8px;border:1px solid var(--border-color);border-radius:6px;background:var(--bg-primary);color:var(--text-primary);">
+                <span style="color:var(--text-secondary);font-size:0.85rem;">leave empty for original size</span>
+            </div>
+            <div class="slider-group">
+                <label>Quality</label>
+                <select id="quality" style="padding:8px 12px;border:1px solid var(--border-color);border-radius:6px;background:var(--bg-primary);color:var(--text-primary);">
+                    <option value="10">Low (smaller file)</option>
+                    <option value="7" selected>Medium</option>
+                    <option value="3">High (larger file)</option>
+                </select>
+            </div>
+            <div class="tool-actions">
+                <button class="btn btn-primary" id="generateBtn">🎬 Generate GIF</button>
+                <button class="btn btn-secondary" id="resetBtn">Reset</button>
+            </div>
+        </div>
+
+        <!-- Progress -->
+        <div class="preview-area hidden" id="progressSection">
+            <div class="status-text" id="statusText">Preparing frames...</div>
+            <div class="progress-bar"><div class="fill" id="progressFill"></div></div>
+        </div>
+
+        <!-- Result -->
+        <div class="preview-area hidden" id="resultSection">
+            <div class="preview-gif">
+                <img id="resultGif" src="" alt="Generated GIF" style="max-width:100%;border-radius:8px;">
+            </div>
+            <div class="tool-actions" style="justify-content:center;">
+                <button class="btn btn-primary" id="downloadBtn">⬇️ Download GIF</button>
+                <button class="btn btn-secondary" id="newGifBtn">Create New GIF</button>
+            </div>
+        </div>
+
+        <!-- Guide -->

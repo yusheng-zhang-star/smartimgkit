@@ -1,0 +1,116 @@
+{
+  "id": "image-rotator",
+  "icon": "🔄",
+  "name": "Image Rotator & Flipper",
+  "slug": "image-rotator",
+  "breadcrumb_name": "Image Rotator",
+  "tagline": "Rotate images by any angle or flip them horizontally and vertically. Quick 90° rotations, custom angles, and mirror effects — all in your browser.",
+  "dropzone_text": "or click to browse. Supports JPG, PNG, WebP, GIF, BMP.",
+  "sample_image": "https://images.unsplash.com/photo-1475924156734-278096522a22?w=800&q=80",
+  "before_image": "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400&q=80",
+  "after_icon": "🔄",
+  "screenshot": "../screenshots/image-rotator.png",
+  "meta": {
+    "title": "Image Rotator & Flipper — Rotate & Flip Photos Free | SmartImgKit",
+    "description": "Rotate images by any angle or flip them horizontally and vertically. Free online tool — 90°/180°/270° rotation, custom angles, mirror effects. 100% browser-based, no uploads.",
+    "keywords": "image rotator, rotate image, flip image, mirror image, rotate photo, flip photo, image rotation, photo flipper, rotate jpg, rotate png",
+    "og_title": "Free Image Rotator & Flipper — SmartImgKit",
+    "og_description": "Rotate images by any angle or flip them horizontally and vertically. 90°/180°/270° rotation, custom angles, mirror effects. Free, no signup, 100% browser-based."
+  },
+  "json_ld": {
+    "app_name": "Image Rotator & Flipper",
+    "app_description": "Rotate images by any angle or flip them horizontally and vertically. Free, no signup, 100% browser-based.",
+    "how_to_name": "How to Rotate & Flip Images",
+    "steps": [
+      {
+        "name": "Upload Image",
+        "text": "Click the upload area or drag and drop your image file."
+      },
+      {
+        "name": "Rotate or Flip",
+        "text": "Use the quick rotation buttons (90° left/right), custom angle slider, or flip buttons (horizontal/vertical)."
+      },
+      {
+        "name": "Preview",
+        "text": "See the result instantly in the preview area. Adjust until it looks right."
+      },
+      {
+        "name": "Download",
+        "text": "Click Download to save the rotated or flipped image in your preferred format."
+      }
+    ]
+  },
+  "how_to": [
+    {
+      "title": "Upload Image",
+      "desc": "Click the upload area or drag and drop your image file."
+    },
+    {
+      "title": "Rotate or Flip",
+      "desc": "Use quick rotation buttons (90° left/right), custom angle slider, or flip buttons."
+    },
+    {
+      "title": "Preview",
+      "desc": "See the result instantly. The preview updates in real-time as you adjust."
+    },
+    {
+      "title": "Download",
+      "desc": "Click Download to save the rotated or flipped image."
+    }
+  ],
+  "faq": [
+    {
+      "q": "Does rotation reduce image quality?",
+      "a": "90° and 180° rotations are lossless — pixels are simply rearranged. Custom angle rotations use high-quality bicubic interpolation, which may introduce very slight softening at extreme angles. For most purposes, the quality is excellent."
+    },
+    {
+      "q": "Will my image be uploaded to a server?",
+      "a": "No. All processing happens entirely in your browser using the Canvas API. Your images never leave your device. There is no server that receives or stores your files."
+    },
+    {
+      "q": "What happens to the canvas size when I rotate?",
+      "a": "For 90° and 270° rotations, the canvas width and height swap to fit the rotated image perfectly. For custom angles, the canvas expands to contain the entire rotated image, and the background color fills any new space."
+    },
+    {
+      "q": "Can I rotate and flip at the same time?",
+      "a": "Yes. Set your rotation angle first, then click a flip button. The flip applies on top of the current rotation. Both transformations are combined in the final output."
+    },
+    {
+      "q": "What's the difference between rotating 180° and flipping vertically?",
+      "a": "Rotating 180° turns the image upside down (top becomes bottom, left becomes right). Flipping vertically only mirrors top-to-bottom (left stays left). They produce different results unless the image is perfectly symmetrical."
+    },
+    {
+      "q": "Can I rotate GIF images?",
+      "a": "You can upload a GIF, but only the first frame will be rotated. The output will be a static image (PNG, JPG, or WebP), not an animated GIF. For animated GIF rotation, a specialized tool is needed."
+    },
+    {
+      "q": "Is there a file size limit?",
+      "a": "There's no artificial limit, but very large images (over 50 megapixels) may be slow to process in the browser. Most photos from phones and cameras work instantly."
+    }
+  ],
+  "related_tools": [
+    {
+      "slug": "cropper",
+      "icon": "🖼️",
+      "name": "Image Cropper",
+      "desc": "Crop after rotating to perfect composition"
+    },
+    {
+      "slug": "compressor",
+      "icon": "🗜️",
+      "name": "Image Compressor",
+      "desc": "Compress rotated images for sharing"
+    },
+    {
+      "slug": "print-resizer",
+      "icon": "🖨️",
+      "name": "Print-Ready Resizer",
+      "desc": "Get exact print dimensions after rotation"
+    }
+  ],
+  "has_guide_html": true,
+  "has_tool_js": true,
+  "extra_head_css": ".rotate-workspace { display: flex; gap: 24px; flex-wrap: wrap; }\n    .rotate-sidebar { flex: 0 0 280px; display: flex; flex-direction: column; gap: 16px; }\n    .rotate-canvas-area { flex: 1; min-width: 300px; }\n\n    .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }\n    .quick-btn {\n      padding: 10px 8px; border: 2px solid var(--border); border-radius: 8px;\n      background: var(--bg-primary); color: var(--text-primary); cursor: pointer;\n      text-align: center; font-size: .85rem; transition: all .2s;\n      display: flex; align-items: center; justify-content: center; gap: 6px;\n    }\n    .quick-btn:hover { border-color: var(--accent); background: rgba(99,102,241,.08); }\n    .quick-btn:active { transform: scale(.96); }\n    .quick-btn .btn-icon { font-size: 1.1rem; }\n\n    .control-group { display: flex; flex-direction: column; gap: 6px; }\n    .control-group label { font-size: .8rem; color: var(--text-secondary); font-weight: 500; }\n    .control-group select, .control-group input[type=\"number\"] {\n      padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px;\n      background: var(--bg-primary); color: var(--text-primary); font-size: .85rem;\n    }\n    .control-group input[type=\"range\"] { width: 100%; }\n    .angle-display {\n      text-align: center; font-size: 1.2rem; font-weight: 600;\n      color: var(--accent); padding: 4px 0;\n    }\n\n    .canvas-wrapper {\n      background: repeating-conic-gradient(var(--bg-secondary) 0% 25%, var(--bg-primary) 0% 50%) 50% / 20px 20px;\n      border: 1px solid var(--border); border-radius: 12px; padding: 16px;\n      display: flex; align-items: center; justify-content: center; min-height: 300px;\n      overflow: auto;\n    }\n    .canvas-wrapper canvas { max-width: 100%; max-height: 500px; border-radius: 4px; }\n\n    @media (max-width: 768px) {\n      .rotate-workspace { flex-direction: column; }\n      .rotate-sidebar { flex: none; width: 100%; }\n    }",
+  "extra_body_start": null,
+  "extra_scripts": null
+}

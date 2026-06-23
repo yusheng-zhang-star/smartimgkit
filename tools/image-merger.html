@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-tool-id="image-merger">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Image Merger & Collage Maker — Combine Photos Free | SmartImgKit</title>
+  <meta name="description" content="Merge multiple images into one. Create photo collages, combine photos horizontally or vertically. Adjust spacing, border radius, and background color. Free, no uploads, 100% browser-based.">
+  <meta name="keywords" content="image merger, collage maker, combine photos, photo collage, merge images, join images, grid collage, picture merger">
+  <link rel="canonical" href="https://smartimgkit.com/tools/image-merger">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="Free Image Merger & Collage Maker — SmartImgKit">
+  <meta property="og:description" content="Combine multiple photos into one image. Create collages, merge horizontally or vertically. Adjust spacing, corners, and background. 100% browser-based.">
+  <meta property="og:url" content="https://smartimgkit.com/tools/image-merger">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/image-merger.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free Image Merger & Collage Maker — SmartImgKit">
+  <meta name="twitter:description" content="Combine multiple photos into one image. Create collages, merge horizontally or vertically. Adjust spacing, corners, and background. 100% browser-based.">
+  <meta name="twitter:image" content="https://smartimgkit.com/screenshots/image-merger.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <!-- Hreflang tags -->
+  <link rel="stylesheet" href="../css/style.css?v=3">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Image Merger & Collage Maker",
+  "url": "https://smartimgkit.com/tools/image-merger",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Merge multiple images into one. Create photo collages, combine photos horizontally or vertically. Free, no signup, 100% browser-based."
+}
+</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Merge Images & Create Collages",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Upload Images",
+      "text": "Select multiple images or drag and drop them into the upload area."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Choose Layout",
+      "text": "Pick a layout mode: Grid Collage, Horizontal Merge, or Vertical Merge. Adjust spacing, corners, and background."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Reorder & Customize",
+      "text": "Drag images to rearrange. Fine-tune spacing, border radius, and background color."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "name": "Download Result",
+      "text": "Click Merge & Download to save the combined image as PNG or JPG."
+    }
+  ]
+}
+</script>
+  <style>
+    .merger-workspace { display: flex; gap: 24px; flex-wrap: wrap; }
+        .merger-sidebar { flex: 0 0 280px; display: flex; flex-direction: column; gap: 16px; }
+        .merger-canvas-area { flex: 1; min-width: 300px; }
+
+        .image-list { display: flex; flex-direction: column; gap: 8px; max-height: 360px; overflow-y: auto; padding: 4px; }
+        .image-list-item {
+          display: flex; align-items: center; gap: 10px; padding: 8px 10px;
+          background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px;
+          cursor: grab; transition: box-shadow .2s, transform .15s;
+        }
+        .image-list-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,.2); }
+        .image-list-item.dragging { opacity: 0.5; transform: scale(0.96); }
+        .image-list-item.drag-over { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+        .image-list-item img { width: 48px; height: 48px; object-fit: cover; border-radius: 4px; flex-shrink: 0; }
+        .image-list-item .item-info { flex: 1; min-width: 0; }
+        .image-list-item .item-name { font-size: .8rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .image-list-item .item-size { font-size: .7rem; color: var(--text-secondary); }
+        .image-list-item .item-remove {
+          background: none; border: none; color: var(--text-secondary); cursor: pointer;
+          font-size: 1.1rem; padding: 4px; line-height: 1; border-radius: 4px; transition: background .2s;
+        }
+        .image-list-item .item-remove:hover { background: rgba(255,60,60,.2); color: #ff3c3c; }
+
+        .control-group { display: flex; flex-direction: column; gap: 6px; }
+        .control-group label { font-size: .8rem; color: var(--text-secondary); font-weight: 500; }
+        .control-group select, .control-group input[type="number"] {
+          padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px;
+          background: var(--bg-primary); color: var(--text-primary); font-size: .85rem;
+        }
+        .control-group input[type="color"] {
+          width: 100%; height: 36px; border: 1px solid var(--border); border-radius: 6px;
+          background: var(--bg-primary); cursor: pointer; padding: 2px;
+        }
+        .control-group input[type="range"] { width: 100%; }
+
+        .layout-btns { display: flex; gap: 6px; }
+        .layout-btn {
+          flex: 1; padding: 8px 4px; border: 2px solid var(--border); border-radius: 8px;
+          background: var(--bg-primary); color: var(--text-secondary); cursor: pointer;
+          text-align: center; font-size: .75rem; transition: all .2s; display: flex;
+          flex-direction: column; align-items: center; gap: 4px;
+        }
+        .layout-btn:hover { border-color: var(--accent); color: var(--text-primary); }
+        .layout-btn.active { border-color: var(--accent); background: rgba(99,102,241,.1); color: var(--accent); }
+        .layout-btn .layout-icon { font-size: 1.3rem; }
+
+        .canvas-wrapper {
+          background: repeating-conic-gradient(var(--bg-secondary) 0% 25%, var(--bg-primary) 0% 50%) 50% / 20px 20px;
+          border: 1px solid var(--border); border-radius: 12px; padding: 16px;
+          display: flex; align-items: center; justify-content: center; min-height: 300px;
+          overflow: auto;
+        }
+        .canvas-wrapper canvas { max-width: 100%; max-height: 500px; border-radius: 4px; }
+
+        .add-more-btn {
+          display: flex; align-items: center; justify-content: center; gap: 6px;
+          padding: 10px; border: 2px dashed var(--border); border-radius: 8px;
+          background: none; color: var(--text-secondary); cursor: pointer;
+          font-size: .85rem; transition: all .2s; width: 100%;
+        }
+        .add-more-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+        @media (max-width: 768px) {
+          .merger-workspace { flex-direction: column; }
+          .merger-sidebar { flex: none; width: 100%; }
+        }
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How many images can I merge?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No hard limit. 2-20 images work best for grid layouts."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What layouts are supported?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Horizontal, vertical, grid (2x2, 3x3, etc.), and custom."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my image uploaded to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All merging happens locally."
+      }
+    }
+  ]
+}
+</script>
+<style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+</head>
+<body>
+  <!-- Adsterra Social Bar (29640799) - Popunder 替代品,移动端友好 -->
+  <script src="https://pl29741298.effectivecpmnetwork.com/70/c0/84/70c084b07dadc5b3f66fae02aa21f788.js"></script>
+
+  <!-- Header: exact match image-rotator compact format -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover.html">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/about.html">About</a><a href="/contact.html">Contact</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Switch language">🇬🇧 EN</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+          </div>
+        </div>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/">Tools</a><span>/</span><span>🖼️ Image Merger & Collage</span></nav>
+      <div class="tool-page-header">
+        <h1>🖼️ Image Merger & Collage</h1>
+        <p>Combine multiple images into one. Create photo collages, merge horizontally or vertically. Adjust spacing, border radius, and background. 100% browser-based.</p>
+      </div>
+      <!-- Adsterra Native Banner (29640800) - 工具标题下,融入内容流 -->
+      <div class="ad-native-banner">
+        <script async="async" data-cfasync="false" src="https://pl29741299.effectivecpmnetwork.com/5a540a2ce35c794ad7d73a726a88971c/invoke.js"></script>
+        <div id="container-5a540a2ce35c794ad7d73a726a88971c"></div>
+      </div>
+      <div class="tool-workspace">
+<!-- Upload Area -->
+              <!-- Before/After Preview -->
+        <div class="before-after-preview" id="beforeAfterPreview">
+          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-images">
+            <div class="before-after-item">
+              <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=80" alt="Before" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
+              <div class="before-after-item-caption before">Before</div>
+            </div>
+            <div class="before-after-item">
+              <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
+                <span style="font-size:3rem;opacity:0.5;">🖇️</span>
+              </div>
+              <div class="before-after-item-caption after">After — processed</div>
+            </div>
+          </div>
+        </div>        <input type="file" id="fileInput" accept="image/*" style="display:none;">
+      <label for="fileInput" class="dropzone" id="dropzone">
+        <div class="dropzone-icon">📤</div>
+        <h3>Drop images here</h3>
+        <p>or click to browse. Select multiple images at once. Supports JPG, PNG, WebP.</p>
+      </label>
+
+      <!-- Workspace -->
+      <div id="workspace" style="">
+        <div class="merger-workspace">
+          <!-- Sidebar -->
+          <div class="merger-sidebar">
+            <div class="control-group">
+              <label>Layout Mode</label>
+              <div class="layout-btns">
+                <button class="layout-btn active" data-layout="grid">
+                  <span class="layout-icon">▦</span>
+                  Grid
+                </button>
+                <button class="layout-btn" data-layout="horizontal">
+                  <span class="layout-icon">▭</span>
+                  Horizontal
+                </button>
+                <button class="layout-btn" data-layout="vertical">
+                  <span class="layout-icon">▯</span>
+                  Vertical
+                </button>
+              </div>
+            </div>
+
+            <div class="control-group" id="colsGroup">
+              <label>Columns <span id="colsValue">auto</span></label>
+              <select id="colsSelect">
+                <option value="auto">Auto</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label>Spacing: <span id="spacingValue">8</span>px</label>
+              <input type="range" id="spacingSlider" min="0" max="40" value="8">
+            </div>
+
+            <div class="control-group">
+              <label>Border Radius: <span id="radiusValue">0</span>px</label>
+              <input type="range" id="radiusSlider" min="0" max="30" value="0">
+            </div>
+
+            <div class="control-group">
+              <label>Background Color</label>
+              <input type="color" id="bgColor" value="#ffffff">
+            </div>
+
+            <div class="control-group">
+              <label>Output Format</label>
+              <select id="outputFormat">
+                <option value="image/png">PNG</option>
+                <option value="image/jpeg">JPG</option>
+                <option value="image/webp">WebP</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label>Images (<span id="imageCount">0</span>)</label>
+              <div class="image-list" id="imageList"></div>
+              <button class="add-more-btn" id="addMoreBtn">➕ Add More Images</button>
+              <input type="file" id="addMoreInput" accept="image/*" multiple style="display:none;">
+            </div>
+
+            <div class="tool-actions" style="flex-direction:column">
+              <button class="btn btn-primary" id="mergeBtn">🖼️ Merge & Download</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Start Over</button>
+            </div>
+            <div id="status" class="text-center" style="color:var(--text-secondary);font-size:.85rem"></div>
+          </div>
+
+          <!-- Canvas Preview -->
+          <div class="merger-canvas-area">
+            <div class="canvas-wrapper">
+              <canvas id="previewCanvas"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <!-- Adsterra Banner 300x250 (29640802) - 工具区下方,黄金尺寸高 eCPM -->
+      <div class="ad-banner-300x250">
+        <script>
+          atOptions = {
+            'key' : 'c95d26a94d4f8dc640cd33ad5ec91528',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/c95d26a94d4f8dc640cd33ad5ec91528/invoke.js"></script>
+      </div>
+
+<section class="how-to-section">
+        <h2>How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step"><div class="step-number">1</div><h4>Upload Images</h4><p>Select multiple images or drag and drop them into the upload area.</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>Choose Layout</h4><p>Pick Grid Collage, Horizontal Merge, or Vertical Merge.</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>Customize</h4><p>Adjust spacing, border radius, background color. Drag to reorder images.</p></div>
+          <div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Click Merge & Download to save your combined image.</p></div>
+        </div>
+      </section>
+
+<h2>Detailed User Guide</h2>
+
+        <div class="guide-block">
+          <h3>Step 1: Upload Your Images</h3>
+          <p>Click the upload area or drag multiple images onto it. You can select several files at once from your file browser. All common formats (JPG, PNG, WebP) are supported. The images appear as thumbnails in the sidebar where you can see their filenames and dimensions.</p>
+        </div>
+
+        <div class="guide-block">
+          <h3>Step 2: Pick a Layout Mode</h3>
+          <p>Choose from three layout modes:</p>
+          <ul>
+            <li><strong>Grid Collage:</strong> Automatically arranges images in a grid. Choose the number of columns or let it auto-calculate based on image count. Great for photo collages and comparison grids.</li>
+            <li><strong>Horizontal Merge:</strong> Places images side by side from left to right. Ideal for before/after comparisons, panoramic stitching, or horizontal banners.</li>
+            <li><strong>Vertical Merge:</strong> Stacks images top to bottom. Perfect for long screenshots, vertical stories, or step-by-step tutorials.</li>
+          </ul>
+        </div>
+
+        <div class="guide-block">
+          <h3>Step 3: Reorder & Customize</h3>
+          <p>Drag any image thumbnail in the sidebar to rearrange the order. Use the controls to fine-tune your layout:</p>
+          <ul>
+            <li><strong>Spacing:</strong> Gap between images (0-40px)</li>
+            <li><strong>Border Radius:</strong> Round the corners of each image (0-30px)</li>
+            <li><strong>Background:</strong> Set the color that fills the gaps and padding</li>
+            <li><strong>Format:</strong> Choose PNG (lossless), JPG (smaller), or WebP (modern)</li>
+          </ul>
+          <div class="tip"><strong>Tip:</strong> The preview updates in real-time as you change settings. What you see is what you get.</div>
+        </div>
+
+        <div class="guide-block">
+          <h3>Step 4: Merge & Download</h3>
+          <p>When you're happy with the layout, click <strong>"Merge & Download"</strong> to generate the final image. The file downloads immediately to your device. No watermarks, no quality loss, no server uploads.</p>
+        </div>
+
+        <div class="guide-block">
+          <h3>Best Use Cases</h3>
+          <ul>
+            <li><strong>Photo collages</strong> — Combine vacation photos, family pictures, or event highlights into a single shareable image</li>
+            <li><strong>Before & after</strong> — Place two photos side by side to show edits, renovations, or transformations</li>
+            <li><strong>Social media grids</strong> — Create 3x3 Instagram grid posts from 9 separate images</li>
+            <li><strong>Comparison charts</strong> — Merge product photos horizontally for visual comparison</li>
+            <li><strong>Step-by-step tutorials</strong> — Stack screenshots vertically for how-to guides</li>
+            <li><strong>Story highlights</strong> — Combine multiple story-sized images into one tall image</li>
+          </ul>
+        </div>
+
+        <div class="guide-block">
+          <h3>Pro Tips</h3>
+          <ul>
+            <li>For the cleanest grid collage, use images with the same dimensions — the tool will resize them to fit evenly</li>
+            <li>Set spacing to 0 and radius to 0 for a seamless panoramic merge</li>
+            <li>Use a dark background color (#000000 or #1a1a2e) for a sleek collage look</li>
+            <li>For before/after comparisons, use Horizontal mode with two images and 2-4px spacing</li>
+            <li>PNG preserves transparency — if any input image has a transparent background, choose PNG output</li>
+            <li>Add more images anytime with the "Add More Images" button at the bottom of the image list</li>
+          </ul>
+        </div>
+
+<section class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item"><button class="faq-question">Is there a limit on how many images I can merge?</button><div class="faq-answer">There's no hard limit, but we recommend merging up to 20 images for best performance. Very large collages may slow down the browser preview. The final output resolution depends on your input images and the number of items.</div></div>
+      <div class="faq-item"><button class="faq-question">Will my images be uploaded to a server?</button><div class="faq-answer">No. All processing happens entirely in your browser using the Canvas API. Your images never leave your device. No server ever receives or stores your photos.</div></div>
+      <div class="faq-item"><button class="faq-question">Can I merge images of different sizes?</button><div class="faq-answer">Yes. In Grid mode, images are resized to fit equal cells. In Horizontal mode, all images are scaled to the same height. In Vertical mode, all images are scaled to the same width. The tool handles different sizes automatically.</div></div>
+      <div class="faq-item"><button class="faq-question">How do I reorder images?</button><div class="faq-answer">Simply drag and drop the image thumbnails in the sidebar list. The preview updates instantly to reflect the new order.</div></div>
+      <div class="faq-item"><button class="faq-question">What's the maximum output resolution?</button><div class="faq-answer">The output resolution depends on your input images and layout. Grid mode calculates cell size based on the largest image. Horizontal and Vertical modes preserve the original resolution of the first image as the reference. Very large outputs may be limited by browser canvas constraints.</div></div>
+      <div class="faq-item"><button class="faq-question">Can I remove an image after uploading?</button><div class="faq-answer">Yes. Each image in the sidebar has an "×" button. Click it to remove that image from the collage. You can also add more images at any time.</div></div>
+      <div class="faq-item"><button class="faq-question">Does the tool work on mobile?</button><div class="faq-answer">Yes. The interface is fully responsive. On mobile devices, the sidebar and canvas stack vertically. Touch-based reordering is also supported.</div></div>
+      </section>
+
+<section class="related-tools">
+  <h2>You Might Also Like</h2>
+  <div class="related-tools-grid">
+    <a href="/tools/compressor.html" class="related-tool-card">
+      <span class="tool-icon">🗜️</span>
+      <div class="tool-info">
+        <strong>Image Compressor</strong>
+        <span class="tool-desc">Compress your merged image</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/tools/converter.html" class="related-tool-card">
+      <span class="tool-icon">🔄</span>
+      <div class="tool-info">
+        <strong>Image Converter</strong>
+        <span class="tool-desc">Convert merged result to any format</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/tools/resizer.html" class="related-tool-card">
+      <span class="tool-icon">📐</span>
+      <div class="tool-info">
+        <strong>Image Resizer</strong>
+        <span class="tool-desc">Resize before merging for perfect fit</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+  </div>
+</section>
+    </div>
+
+</main>
+
+  <!-- Footer: exact match image-rotator compact format -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Free AI-powered image tools that respect your privacy.</p></div>
+        <div class="footer-links"><h4>Tools</h4><a href="/tools/background-remover.html">Background Remover</a><a href="/tools/compressor.html">Compressor</a><a href="/tools/converter.html">Converter</a><a href="/tools/resizer.html">Resizer</a>
+          <a href="/tools/gif-editor.html">GIF Editor</a>
+          <a href="/tools/pdf-to-image.html">PDF to Image</a>
+        </div>
+        <div class="footer-links"><h4>More Tools</h4><a href="/tools/cropper.html">Cropper</a><a href="/tools/watermark.html">Watermark</a><a href="/tools/image-merger.html">Image Merger</a><a href="/tools/screenshot-to-image.html">Screenshot to Image</a><a href="/tools/image-filters.html">Image Filters</a><a href="/tools/svg-to-png.html">SVG to PNG</a><a href="/tools/image-compare.html">Image Compare</a><a href="/tools/print-resizer.html">Print-Ready Resizer</a><a href="/tools/meme-generator.html">Meme Generator</a>          <a href="/tools/face-blur.html">Face Blur</a>
+          <a href="/tools/heic-converter.html">HEIC Converter</a>
+          <a href="/tools/metadata-viewer.html">Metadata Viewer</a>
+          <a href="/tools/avif-support.html">AVIF Support</a>
+          <a href="/tools/image-adjust.html">Image Adjustment</a>
+          <a href="/tools/image-border.html">Image Border</a>
+          <a href="/tools/image-flip.html">Image Flip</a>
+          <a href="/tools/image-grayscale.html">Image Grayscale</a>
+          <a href="/tools/image-shadow.html">Image Shadow</a>
+          <a href="/tools/image-splitter.html">Image Splitter</a>
+          <a href="/tools/image-exif-remover.html">EXIF Remover</a><a href="/tools/circle-crop.html">Circle Crop</a><a href="/tools/favicon-generator.html">Favicon Generator</a><a href="/tools/ocr.html">OCR Text</a><a href="/tools/bulk-processor.html">Bulk Processor</a><a href="/tools/image-to-pdf.html">Image to PDF</a>          <a href="/tools/id-photo.html">ID Photo Maker</a>
+          <a href="/tools/product-white-background.html">Product White BG</a>
+          <a href="/tools/social-media-post.html">Social Media Post</a>
+          <a href="/tools/photo-restoration.html">Photo Restoration</a><a href="/tools/image-enhancer.html">Image Enhancer</a>
+        </div>
+        <div class="footer-links"><h4>Legal</h4><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms of Service</a><a href="/cookie-policy.html">Cookie Policy</a>
+        </div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved. | <a href="https://comprimefotos.com/" style="color: var(--accent); font-weight: 500;">Español: ComprimeFotos — Comprimir Imágenes Online</a></p></div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js?v=3"></script>
+  <script>
+// ===== State =====
+    let images = []; // { id, file, img, name, width, height }
+    let idCounter = 0;
+    let layout = 'grid';
+    let dragSrcId = null;
+
+    // ===== DOM =====
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const workspace = document.getElementById('workspace');
+    const imageList = document.getElementById('imageList');
+    const imageCount = document.getElementById('imageCount');
+    const addMoreBtn = document.getElementById('addMoreBtn');
+    const addMoreInput = document.getElementById('addMoreInput');
+    const previewCanvas = document.getElementById('previewCanvas');
+    const ctx = previewCanvas.getContext('2d');
+    const colsSelect = document.getElementById('colsSelect');
+    const colsGroup = document.getElementById('colsGroup');
+    const spacingSlider = document.getElementById('spacingSlider');
+    const spacingValue = document.getElementById('spacingValue');
+    const radiusSlider = document.getElementById('radiusSlider');
+    const radiusValue = document.getElementById('radiusValue');
+    const bgColor = document.getElementById('bgColor');
+    const outputFormat = document.getElementById('outputFormat');
+    const mergeBtn = document.getElementById('mergeBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const status = document.getElementById('status');
+
+    // ===== Upload =====
+    setupDropzone({ dropzoneId: 'dropzone', inputId: 'fileInput', onFile: handleFiles, multiple: true });
+
+    // addMoreBtn triggers addMoreInput via label binding
+    addMoreInput.addEventListener('change', () => {
+      if (addMoreInput.files.length) handleFiles(Array.from(addMoreInput.files));
+      addMoreInput.value = '';
+    });
+
+    async function handleFiles(files) {
+      const arr = Array.isArray(files) ? files : [files];
+      for (const file of arr) {
+        if (!file.type.startsWith('image/')) continue;
+        const img = await ImageUtils.load(file);
+        images.push({ id: ++idCounter, file, img, name: file.name, width: img.naturalWidth, height: img.naturalHeight });
+      }
+      if (images.length > 0) {
+        dropzone.classList.add('hidden');
+        workspace.style.display = '';
+      }
+      renderList();
+      renderPreview();
+    }
+
+    // ===== Layout Buttons =====
+    document.querySelectorAll('.layout-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.layout-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        layout = btn.dataset.layout;
+        colsGroup.style.display = layout === 'grid' ? '' : 'none';
+        renderPreview();
+      });
+    });
+
+    // ===== Controls =====
+    spacingSlider.addEventListener('input', () => { spacingValue.textContent = spacingSlider.value; renderPreview(); });
+    radiusSlider.addEventListener('input', () => { radiusValue.textContent = radiusSlider.value; renderPreview(); });
+    bgColor.addEventListener('input', () => renderPreview());
+    colsSelect.addEventListener('change', () => renderPreview());
+
+    // ===== Image List (Drag & Drop Reorder) =====
+    function renderList() {
+      imageCount.textContent = images.length;
+      imageList.innerHTML = '';
+      images.forEach((item, idx) => {
+        const el = document.createElement('div');
+        el.className = 'image-list-item';
+        el.draggable = true;
+        el.dataset.id = item.id;
+        el.innerHTML = `
+          <img src="${URL.createObjectURL(item.file)}" alt="${item.name}">
+          <div class="item-info">
+            <div class="item-name">${item.name}</div>
+            <div class="item-size">${item.width} × ${item.height}</div>
+          </div>
+          <button class="item-remove" data-idx="${idx}" title="Remove">&times;</button>
+        `;
+
+        // Drag reorder
+        el.addEventListener('dragstart', e => { dragSrcId = item.id; el.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; });
+        el.addEventListener('dragend', () => { el.classList.remove('dragging'); document.querySelectorAll('.image-list-item').forEach(i => i.classList.remove('drag-over')); });
+        el.addEventListener('dragover', e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; el.classList.add('drag-over'); });
+        el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
+        el.addEventListener('drop', e => {
+          e.preventDefault();
+          el.classList.remove('drag-over');
+          const srcIdx = images.findIndex(i => i.id === dragSrcId);
+          const dstIdx = images.findIndex(i => i.id === item.id);
+          if (srcIdx !== -1 && dstIdx !== -1 && srcIdx !== dstIdx) {
+            const [moved] = images.splice(srcIdx, 1);
+            images.splice(dstIdx, 0, moved);
+            renderList();
+            renderPreview();
+          }
+        });
+
+        // Touch reorder (mobile)
+        let touchStartIdx = null;
+        el.addEventListener('touchstart', () => { touchStartIdx = idx; }, { passive: true });
+
+        // Remove
+        el.querySelector('.item-remove').addEventListener('click', () => {
+          images.splice(idx, 1);
+          if (images.length === 0) { workspace.style.display = 'none'; dropzone.classList.remove('hidden'); }
+          renderList();
+          renderPreview();
+        });
+
+        imageList.appendChild(el);
+      });
+    }
+
+    // ===== Preview Render =====
+    function renderPreview() {
+      if (images.length === 0) { previewCanvas.width = 0; previewCanvas.height = 0; return; }
+
+      const spacing = parseInt(spacingSlider.value);
+      const radius = parseInt(radiusSlider.value);
+      const bg = bgColor.value;
+      const colsOpt = colsSelect.value;
+
+      if (layout === 'horizontal') renderHorizontal(spacing, radius, bg);
+      else if (layout === 'vertical') renderVertical(spacing, radius, bg);
+      else renderGrid(spacing, radius, bg, colsOpt);
+    }
+
+    function drawRoundedImage(ctx, img, x, y, w, h, r) {
+      r = Math.min(r, w / 2, h / 2);
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.arcTo(x + w, y, x + w, y + r, r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+      ctx.lineTo(x + r, y + h);
+      ctx.arcTo(x, y + h, x, y + h - r, r);
+      ctx.lineTo(x, y + r);
+      ctx.arcTo(x, y, x + r, y, r);
+      ctx.closePath();
+      ctx.clip();
+      ctx.drawImage(img, x, y, w, h);
+      ctx.restore();
+    }
+
+    function renderHorizontal(spacing, radius, bg) {
+      // All images scaled to the same height (max height capped at 800)
+      const maxH = Math.min(800, Math.max(...images.map(i => i.height)));
+      const scaled = images.map(item => {
+        const h = maxH;
+        const w = Math.round(item.width * (h / item.height));
+        return { img: item.img, w, h };
+      });
+      const totalW = scaled.reduce((s, i) => s + i.w, 0) + spacing * (images.length - 1) + spacing * 2;
+      const totalH = maxH + spacing * 2;
+
+      previewCanvas.width = totalW;
+      previewCanvas.height = totalH;
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, totalW, totalH);
+
+      let x = spacing;
+      scaled.forEach(item => {
+        drawRoundedImage(ctx, item.img, x, spacing, item.w, item.h, radius);
+        x += item.w + spacing;
+      });
+    }
+
+    function renderVertical(spacing, radius, bg) {
+      const maxW = Math.min(800, Math.max(...images.map(i => i.width)));
+      const scaled = images.map(item => {
+        const w = maxW;
+        const h = Math.round(item.height * (w / item.width));
+        return { img: item.img, w, h };
+      });
+      const totalH = scaled.reduce((s, i) => s + i.h, 0) + spacing * (images.length - 1) + spacing * 2;
+      const totalW = maxW + spacing * 2;
+
+      previewCanvas.width = totalW;
+      previewCanvas.height = totalH;
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, totalW, totalH);
+
+      let y = spacing;
+      scaled.forEach(item => {
+        drawRoundedImage(ctx, item.img, spacing, y, item.w, item.h, radius);
+        y += item.h + spacing;
+      });
+    }
+
+    function renderGrid(spacing, radius, bg, colsOpt) {
+      const n = images.length;
+      let cols = colsOpt === 'auto' ? Math.ceil(Math.sqrt(n)) : parseInt(colsOpt);
+      cols = Math.max(1, Math.min(cols, n));
+      const rows = Math.ceil(n / cols);
+
+      // Calculate cell size based on largest image, capped
+      const maxDim = 600;
+      const cellW = Math.min(maxDim, Math.max(...images.map(i => i.width)));
+      const cellH = Math.min(maxDim, Math.max(...images.map(i => i.height)));
+
+      const totalW = cols * cellW + (cols + 1) * spacing;
+      const totalH = rows * cellH + (rows + 1) * spacing;
+
+      previewCanvas.width = totalW;
+      previewCanvas.height = totalH;
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, totalW, totalH);
+
+      images.forEach((item, idx) => {
+        const col = idx % cols;
+        const row = Math.floor(idx / cols);
+        const x = spacing + col * (cellW + spacing);
+        const y = spacing + row * (cellH + spacing);
+
+        // Fit image within cell preserving aspect ratio
+        const scale = Math.min(cellW / item.width, cellH / item.height);
+        const dw = Math.round(item.width * scale);
+        const dh = Math.round(item.height * scale);
+        const dx = x + Math.round((cellW - dw) / 2);
+        const dy = y + Math.round((cellH - dh) / 2);
+
+        drawRoundedImage(ctx, item.img, dx, dy, dw, dh, radius);
+      });
+    }
+
+    // ===== Merge & Download =====
+    mergeBtn.addEventListener('click', async () => {
+      if (images.length === 0) return;
+      mergeBtn.disabled = true;
+      mergeBtn.textContent = '🔄 Merging...';
+      status.textContent = '';
+
+      try {
+        const format = outputFormat.value;
+        const quality = format === 'image/png' ? undefined : 0.92;
+        const blob = await ImageUtils.canvasToBlob(previewCanvas, format, quality);
+        const ext = format === 'image/png' ? 'png' : format === 'image/jpeg' ? 'jpg' : 'webp';
+        ImageUtils.download(blob, `merged-image.${ext}`);
+        status.textContent = '✅ Image merged and downloaded!';
+      } catch (e) {
+        status.textContent = '❌ Error: ' + e.message;
+      }
+
+      mergeBtn.disabled = false;
+      mergeBtn.textContent = '🖼️ Merge & Download';
+    });
+
+    // ===== Reset =====
+    resetBtn.addEventListener('click', () => {
+      images = [];
+      workspace.style.display = 'none';
+      dropzone.classList.remove('hidden');
+      fileInput.value = '';
+      status.textContent = '';
+    });
+  
+  // Next Step
+  (function() {
+    var dlBtn = document.getElementById('downloadBtn') || document.querySelector('[id*="download"], [id*="Download"]');
+    if (dlBtn) {
+      dlBtn.addEventListener('click', function() { SmartImgNextStep.show(); });
+    }
+  })();
+  </script>
+</body>
+</html>
+
+

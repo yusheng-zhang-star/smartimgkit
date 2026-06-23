@@ -1,0 +1,69 @@
+<!-- Browser Support Status -->
+      <section style="margin-bottom:24px">
+        <h2>Your Browser's AVIF Support</h2>
+        <div class="support-grid" id="supportGrid">
+          <!-- Filled by JS -->
+        </div>
+      </section>
+
+      <div class="tool-flex">
+        <div class="tool-sidebar">
+          <input type="file" id="fileInput" accept=".avif,.avifs,image/avif" style="display:none;">
+          <!-- Upload -->
+          <label for="fileInput" class="dropzone" id="dropzone">
+            <div class="upload-icon">📁</div>
+            <div class="upload-text">Click or drag AVIF file here</div>
+            <div class="upload-hint">.avif / .avifs — Max 30MB</div>
+          </label>
+
+          <!-- Output Format -->
+          <div class="card">
+            <h3>Output Format</h3>
+            <div class="format-select">
+              <button class="format-btn active" data-fmt="jpg" onclick="setFormat('jpg',this)">JPG</button>
+              <button class="format-btn" data-fmt="png" onclick="setFormat('png',this)">PNG</button>
+              <button class="format-btn" data-fmt="webp" onclick="setFormat('webp',this)">WebP</button>
+            </div>
+          </div>
+
+          <!-- Quality -->
+          <div class="card" id="qualityCard">
+            <h3>Quality</h3>
+            <div class="slider-group">
+              <label>Quality <span class="slider-value" id="qualVal">90</span>%</label>
+              <input type="range" id="qualSlider" min="10" max="100" value="90" oninput="updateQuality()">
+            </div>
+          </div>
+
+          <!-- Info -->
+          <div class="info-box" id="fileInfo" style="display:none;"></div>
+
+          <!-- Actions -->
+          <div class="btn-group">
+            <button class="btn btn-primary" id="convertBtn" disabled onclick="convertAvif()">▶️ Convert</button>
+            <button class="btn btn-secondary" id="resetBtn" disabled onclick="resetAll()">↺ Reset</button>
+          </div>
+        </div>
+
+        <div class="tool-canvas-area">
+          <div class="preview-wrapper" id="previewWrapper">
+            <canvas id="previewCanvas" style="display:none;"></canvas>
+            <div id="placeholderText" style="color:var(--text-secondary);text-align:center">
+              <div style="font-size:3rem;margin-bottom:12px">🖼️</div>
+              <p>Upload an AVIF image to decode and convert</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AVIF Test Decoding -->
+      <div class="avif-test-area" id="avifTestArea">
+        <h4>🔬 Test AVIF Decoding</h4>
+        <p style="font-size:.82rem;color:var(--text-secondary);margin-bottom:10px">
+          We'll create a tiny AVIF image in memory and test if your browser can decode it.
+        </p>
+        <button class="btn btn-secondary" onclick="testAvifDecode()" style="font-size:.82rem">Run AVIF Decode Test</button>
+        <div class="avif-test-result" id="testResult"></div>
+      </div>
+
+      <!-- AdSense -->

@@ -1,0 +1,79 @@
+<!-- Upload / Paste Area -->
+              <!-- Before/After Preview -->
+        <div class="before-after-preview" id="beforeAfterPreview">
+          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-images">
+            <div class="before-after-item">
+              <img src="https://images.unsplash.com/photo-1493552152660-f915ab47ae9d?w=400&q=80" alt="Before" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
+              <div class="before-after-item-caption before">Before</div>
+            </div>
+            <div class="before-after-item">
+              <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
+                <span style="font-size:3rem;opacity:0.5;">🖼️</span>
+              </div>
+              <div class="before-after-item-caption after">After — processed</div>
+            </div>
+          </div>
+        </div>        <input type="file" id="fileInput" accept="image/*" style="display:none;">
+      <label for="fileInput" class="dropzone" id="dropzone">
+        <div class="dropzone-icon">📤</div>
+        <h3>Drop SVG file here</h3>
+        <p>or click to browse. Supports .svg files.</p>
+        
+      </div>
+
+      <!-- Workspace -->
+      <div class="tool-workspace" id="workspace" style="display:none">
+        <div class="svg-workspace">
+          <div class="svg-sidebar">
+            <div class="input-tabs">
+              <button class="input-tab active" data-tab="upload">Upload File</button>
+              <button class="input-tab" data-tab="paste">Paste SVG Code</button>
+            </div>
+
+            <div id="tab-upload" class="tab-panel active">
+              <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:10px;">SVG file loaded. You can also <a href="#" id="reuploadLink" style="color:var(--accent);">re-upload</a>.</p>
+            </div>
+
+            <div id="tab-paste" class="tab-panel">
+              <textarea class="svg-code-area" id="svgCodeArea" placeholder="Paste your SVG code here...&#10;&#10;<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>&#10;  <circle cx='100' cy='100' r='80' fill='%236366f1'/>&#10;</svg>"></textarea>
+              <button class="btn btn-secondary" id="applySvgCode" style="margin-top:8px;width:100%;">Apply SVG Code</button>
+            </div>
+
+            <div>
+              <label style="font-size:.8rem;color:var(--text-secondary);font-weight:500;display:block;margin-bottom:6px;">Output Format</label>
+              <select id="outputFormat" style="width:100%;padding:8px 10px;border:1px solid var(--border-color);border-radius:6px;background:var(--bg-primary);color:var(--text-primary);font-size:.85rem;">
+                <option value="image/png">PNG (Lossless)</option>
+                <option value="image/jpeg">JPG (Smaller file)</option>
+                <option value="image/webp">WebP (Modern)</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size:.8rem;color:var(--text-secondary);font-weight:500;display:block;margin-bottom:6px;">Scale Factor</label>
+              <select id="scaleFactor" style="width:100%;padding:8px 10px;border:1px solid var(--border-color);border-radius:6px;background:var(--bg-primary);color:var(--text-primary);font-size:.85rem;">
+                <option value="1">1x (Original)</option>
+                <option value="2" selected>2x (Retina)</option>
+                <option value="3">3x (High-DPI)</option>
+                <option value="4">4x (Print quality)</option>
+              </select>
+            </div>
+
+            <div class="tool-actions" style="flex-direction:column;">
+              <button class="btn btn-primary" id="downloadBtn">💾 Download</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Start Over</button>
+            </div>
+            <div id="status" class="text-center" style="color:var(--text-secondary);font-size:.85rem;"></div>
+          </div>
+
+          <div class="svg-canvas-area">
+            <div class="preview-wrapper" id="previewWrapper">
+              <canvas id="previewCanvas"></canvas>
+            </div>
+            <div class="info-row" id="infoRow">
+              <span>📐 SVG Size: <b id="svgSize">-</b></span>
+              <span>🖼️ Output: <b id="outSize">-</b></span>
+            </div>
+          </div>
+        </div>
+      </div>

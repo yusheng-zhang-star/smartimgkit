@@ -1,0 +1,90 @@
+<!-- Upload Area -->
+              <!-- Before/After Preview -->
+        <div class="before-after-preview" id="beforeAfterPreview">
+          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-images">
+            <div class="before-after-item">
+              <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=80" alt="Before" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
+              <div class="before-after-item-caption before">Before</div>
+            </div>
+            <div class="before-after-item">
+              <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
+                <span style="font-size:3rem;opacity:0.5;">🖨️</span>
+              </div>
+              <div class="before-after-item-caption after">After — processed</div>
+            </div>
+          </div>
+        </div>        <input type="file" id="fileInput" accept="image/*" style="display:none;">
+      <label for="fileInput" class="dropzone" id="dropzone">
+        <div class="dropzone-icon">📤</div>
+        <h3>Drop your image here</h3>
+        <p>or click to browse. Supports JPG, PNG, WebP.</p>
+      </label>
+      <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Try with a sample image</span>
+
+      <!-- Workspace -->
+      <div class="tool-workspace" id="workspace" style="display:none">
+        <div class="print-workspace">
+          <div class="print-sidebar">
+            <div>
+              <label style="font-size:.8rem;color:var(--text-secondary);font-weight:500;display:block;margin-bottom:8px;">Paper Size Presets</label>
+              <div class="preset-grid" id="presetGrid">
+                <button class="preset-btn" data-preset="a4">A4 (210×297mm)</button>
+                <button class="preset-btn" data-preset="letter">Letter (8.5×11")</button>
+                <button class="preset-btn" data-preset="a5">A5 (148×210mm)</button>
+                <button class="preset-btn" data-preset="4x6">4×6" (10×15cm)</button>
+                <button class="preset-btn" data-preset="5x7">5×7" (13×18cm)</button>
+                <button class="preset-btn" data-preset="business">Business Card</button>
+                <button class="preset-btn" data-preset="custom">Custom Size</button>
+              </div>
+            </div>
+
+            <div id="customSize" style="display:none;">
+              <div class="param-row">
+                <label>Width (in)</label>
+                <input type="number" id="customW" value="8.5" step="0.1" min="0.1" max="100">
+              </div>
+              <div class="param-row">
+                <label>Height (in)</label>
+                <input type="number" id="customH" value="11" step="0.1" min="0.1" max="100">
+              </div>
+            </div>
+
+            <div class="param-row">
+              <label>DPI (Quality)</label>
+              <select id="dpiSelect">
+                <option value="72">72 DPI (Draft)</option>
+                <option value="150">150 DPI (Web)</option>
+                <option value="300" selected>300 DPI (Print)</option>
+                <option value="600">600 DPI (High-End Print)</option>
+              </select>
+            </div>
+
+            <div class="param-row">
+              <label>Output Format</label>
+              <select id="outputFormat">
+                <option value="image/png">PNG (Lossless)</option>
+                <option value="image/jpeg">JPG (Print Standard)</option>
+              </select>
+            </div>
+
+            <div class="info-row" id="dimensionInfo" style="flex-direction:column;gap:6px;display:none;">
+              <span>📐 Output size: <b id="outDims">-</b></span>
+              <span>🖨️ Print size: <b id="printSize">-</b></span>
+              <span>📁 File size (est.): <b id="estSize">-</b></span>
+            </div>
+
+            <div class="tool-actions" style="flex-direction:column;margin-top:8px;">
+              <button class="btn btn-primary" id="downloadBtn">💾 Download</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Start Over</button>
+            </div>
+            <div id="status" class="text-center" style="color:var(--text-secondary);font-size:.85rem;"></div>
+          </div>
+
+          <div class="print-canvas-area">
+            <div class="preview-wrapper" id="previewWrapper">
+              <canvas id="previewCanvas"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>

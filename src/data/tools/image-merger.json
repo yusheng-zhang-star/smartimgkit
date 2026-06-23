@@ -1,0 +1,116 @@
+{
+  "id": "image-merger",
+  "icon": "🖼️",
+  "name": "Image Merger & Collage",
+  "slug": "image-merger",
+  "breadcrumb_name": "Image Merger",
+  "tagline": "Combine multiple images into one. Create photo collages, merge horizontally or vertically. Adjust spacing, border radius, and background. 100% browser-based.",
+  "dropzone_text": "or click to browse. Select multiple images at once. Supports JPG, PNG, WebP.",
+  "sample_image": "",
+  "before_image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=80",
+  "after_icon": "🖇️",
+  "screenshot": "../screenshots/image-merger.png",
+  "meta": {
+    "title": "Image Merger & Collage Maker — Combine Photos Free | SmartImgKit",
+    "description": "Merge multiple images into one. Create photo collages, combine photos horizontally or vertically. Adjust spacing, border radius, and background color. Free, no uploads, 100% browser-based.",
+    "keywords": "image merger, collage maker, combine photos, photo collage, merge images, join images, grid collage, picture merger",
+    "og_title": "Free Image Merger & Collage Maker — SmartImgKit",
+    "og_description": "Combine multiple photos into one image. Create collages, merge horizontally or vertically. Adjust spacing, corners, and background. 100% browser-based."
+  },
+  "json_ld": {
+    "app_name": "Image Merger & Collage Maker",
+    "app_description": "Merge multiple images into one. Create photo collages, combine photos horizontally or vertically. Free, no signup, 100% browser-based.",
+    "how_to_name": "How to Merge Images & Create Collages",
+    "steps": [
+      {
+        "name": "Upload Images",
+        "text": "Select multiple images or drag and drop them into the upload area."
+      },
+      {
+        "name": "Choose Layout",
+        "text": "Pick a layout mode: Grid Collage, Horizontal Merge, or Vertical Merge. Adjust spacing, corners, and background."
+      },
+      {
+        "name": "Reorder & Customize",
+        "text": "Drag images to rearrange. Fine-tune spacing, border radius, and background color."
+      },
+      {
+        "name": "Download Result",
+        "text": "Click Merge & Download to save the combined image as PNG or JPG."
+      }
+    ]
+  },
+  "how_to": [
+    {
+      "title": "Upload Images",
+      "desc": "Select multiple images or drag and drop them into the upload area."
+    },
+    {
+      "title": "Choose Layout",
+      "desc": "Pick Grid Collage, Horizontal Merge, or Vertical Merge."
+    },
+    {
+      "title": "Customize",
+      "desc": "Adjust spacing, border radius, background color. Drag to reorder images."
+    },
+    {
+      "title": "Download",
+      "desc": "Click Merge & Download to save your combined image."
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is there a limit on how many images I can merge?",
+      "a": "There's no hard limit, but we recommend merging up to 20 images for best performance. Very large collages may slow down the browser preview. The final output resolution depends on your input images and the number of items."
+    },
+    {
+      "q": "Will my images be uploaded to a server?",
+      "a": "No. All processing happens entirely in your browser using the Canvas API. Your images never leave your device. No server ever receives or stores your photos."
+    },
+    {
+      "q": "Can I merge images of different sizes?",
+      "a": "Yes. In Grid mode, images are resized to fit equal cells. In Horizontal mode, all images are scaled to the same height. In Vertical mode, all images are scaled to the same width. The tool handles different sizes automatically."
+    },
+    {
+      "q": "How do I reorder images?",
+      "a": "Simply drag and drop the image thumbnails in the sidebar list. The preview updates instantly to reflect the new order."
+    },
+    {
+      "q": "What's the maximum output resolution?",
+      "a": "The output resolution depends on your input images and layout. Grid mode calculates cell size based on the largest image. Horizontal and Vertical modes preserve the original resolution of the first image as the reference. Very large outputs may be limited by browser canvas constraints."
+    },
+    {
+      "q": "Can I remove an image after uploading?",
+      "a": "Yes. Each image in the sidebar has an \"×\" button. Click it to remove that image from the collage. You can also add more images at any time."
+    },
+    {
+      "q": "Does the tool work on mobile?",
+      "a": "Yes. The interface is fully responsive. On mobile devices, the sidebar and canvas stack vertically. Touch-based reordering is also supported."
+    }
+  ],
+  "related_tools": [
+    {
+      "slug": "compressor",
+      "icon": "🗜️",
+      "name": "Image Compressor",
+      "desc": "Compress your merged image"
+    },
+    {
+      "slug": "converter",
+      "icon": "🔄",
+      "name": "Image Converter",
+      "desc": "Convert merged result to any format"
+    },
+    {
+      "slug": "resizer",
+      "icon": "📐",
+      "name": "Image Resizer",
+      "desc": "Resize before merging for perfect fit"
+    }
+  ],
+  "has_guide_html": true,
+  "has_tool_js": true,
+  "extra_head_css": ".merger-workspace { display: flex; gap: 24px; flex-wrap: wrap; }\n    .merger-sidebar { flex: 0 0 280px; display: flex; flex-direction: column; gap: 16px; }\n    .merger-canvas-area { flex: 1; min-width: 300px; }\n\n    .image-list { display: flex; flex-direction: column; gap: 8px; max-height: 360px; overflow-y: auto; padding: 4px; }\n    .image-list-item {\n      display: flex; align-items: center; gap: 10px; padding: 8px 10px;\n      background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px;\n      cursor: grab; transition: box-shadow .2s, transform .15s;\n    }\n    .image-list-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,.2); }\n    .image-list-item.dragging { opacity: 0.5; transform: scale(0.96); }\n    .image-list-item.drag-over { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }\n    .image-list-item img { width: 48px; height: 48px; object-fit: cover; border-radius: 4px; flex-shrink: 0; }\n    .image-list-item .item-info { flex: 1; min-width: 0; }\n    .image-list-item .item-name { font-size: .8rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }\n    .image-list-item .item-size { font-size: .7rem; color: var(--text-secondary); }\n    .image-list-item .item-remove {\n      background: none; border: none; color: var(--text-secondary); cursor: pointer;\n      font-size: 1.1rem; padding: 4px; line-height: 1; border-radius: 4px; transition: background .2s;\n    }\n    .image-list-item .item-remove:hover { background: rgba(255,60,60,.2); color: #ff3c3c; }\n\n    .control-group { display: flex; flex-direction: column; gap: 6px; }\n    .control-group label { font-size: .8rem; color: var(--text-secondary); font-weight: 500; }\n    .control-group select, .control-group input[type=\"number\"] {\n      padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px;\n      background: var(--bg-primary); color: var(--text-primary); font-size: .85rem;\n    }\n    .control-group input[type=\"color\"] {\n      width: 100%; height: 36px; border: 1px solid var(--border); border-radius: 6px;\n      background: var(--bg-primary); cursor: pointer; padding: 2px;\n    }\n    .control-group input[type=\"range\"] { width: 100%; }\n\n    .layout-btns { display: flex; gap: 6px; }\n    .layout-btn {\n      flex: 1; padding: 8px 4px; border: 2px solid var(--border); border-radius: 8px;\n      background: var(--bg-primary); color: var(--text-secondary); cursor: pointer;\n      text-align: center; font-size: .75rem; transition: all .2s; display: flex;\n      flex-direction: column; align-items: center; gap: 4px;\n    }\n    .layout-btn:hover { border-color: var(--accent); color: var(--text-primary); }\n    .layout-btn.active { border-color: var(--accent); background: rgba(99,102,241,.1); color: var(--accent); }\n    .layout-btn .layout-icon { font-size: 1.3rem; }\n\n    .canvas-wrapper {\n      background: repeating-conic-gradient(var(--bg-secondary) 0% 25%, var(--bg-primary) 0% 50%) 50% / 20px 20px;\n      border: 1px solid var(--border); border-radius: 12px; padding: 16px;\n      display: flex; align-items: center; justify-content: center; min-height: 300px;\n      overflow: auto;\n    }\n    .canvas-wrapper canvas { max-width: 100%; max-height: 500px; border-radius: 4px; }\n\n    .add-more-btn {\n      display: flex; align-items: center; justify-content: center; gap: 6px;\n      padding: 10px; border: 2px dashed var(--border); border-radius: 8px;\n      background: none; color: var(--text-secondary); cursor: pointer;\n      font-size: .85rem; transition: all .2s; width: 100%;\n    }\n    .add-more-btn:hover { border-color: var(--accent); color: var(--accent); }\n\n    @media (max-width: 768px) {\n      .merger-workspace { flex-direction: column; }\n      .merger-sidebar { flex: none; width: 100%; }\n    }",
+  "extra_body_start": null,
+  "extra_scripts": null
+}

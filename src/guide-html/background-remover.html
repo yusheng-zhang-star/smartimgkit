@@ -1,0 +1,13 @@
+<h2>How the AI Background Remover Works</h2>
+        <div class="guide-block">
+          <p>This tool uses <strong>@imgly/background-removal v1.7.0</strong>, an open-source AI model that runs entirely in your web browser using <strong>WebAssembly (WASM)</strong> and <strong>ONNX Runtime</strong>. Here's what happens behind the scenes:</p>
+          <ul>
+            <li><strong>Model Loading:</strong> On first use, the AI model (40-170MB depending on quality setting) downloads to your browser's cache. This takes 10-60 seconds depending on your connection and selected model. The model is then cached for instant future use.</li>
+            <li><strong>Image Preprocessing:</strong> Your image is resized to the model's input dimensions while preserving aspect ratio, then normalized for the neural network.</li>
+            <li><strong>Semantic Segmentation:</strong> The AI model performs pixel-level classification, identifying which pixels belong to the foreground (subject) and which belong to the background. It uses a deep neural network trained on millions of images.</li>
+            <li><strong>Alpha Mask Generation:</strong> The model outputs an alpha mask (transparency map) where each pixel gets a value from 0 (fully transparent) to 255 (fully opaque).</li>
+            <li><strong>Edge Refinement:</strong> The alpha mask is refined using guided filtering to produce clean, natural edges — especially important for hair, fur, and semi-transparent areas.</li>
+            <li><strong>Composition:</strong> The original image is composited onto a transparent canvas using the generated alpha mask, producing the final transparent PNG.</li>
+          </ul>
+          <div class="tip"><strong>Privacy Note:</strong> Every step happens on your device. No image data is ever transmitted to a server. This is the most private way to use AI background removal.</div>
+        </div>

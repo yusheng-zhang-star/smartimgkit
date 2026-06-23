@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-tool-id="svg-to-png">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>SVG to PNG Converter — Vector to Raster Free | SmartImgKit</title>
+  <meta name="description" content="Convert SVG vector files to PNG, JPG, or WebP format online. High-quality rasterization at custom resolutions. Free, no uploads, 100% browser-based.">
+  <meta name="keywords" content="SVG to PNG, SVG converter, vector to raster, SVG to JPG, SVG to WebP, convert SVG online, SVG rasterize">
+  <link rel="canonical" href="https://smartimgkit.com/tools/svg-to-png">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="Free SVG to PNG Converter — SmartImgKit">
+  <meta property="og:description" content="Convert SVG vector files to PNG, JPG, or WebP format online. High-quality rasterization. Free, no signup, 100% browser-based.">
+  <meta property="og:url" content="https://smartimgkit.com/tools/svg-to-png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/svg-to-png.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free SVG to PNG Converter — SmartImgKit">
+  <meta name="twitter:description" content="Convert SVG vector files to PNG, JPG, or WebP format online. High-quality rasterization. Free, no signup, 100% browser-based.">
+  <meta name="twitter:image" content="https://smartimgkit.com/screenshots/svg-to-png.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <!-- Hreflang tags -->
+  <link rel="stylesheet" href="../css/style.css?v=3">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "SVG to PNG Converter",
+  "url": "https://smartimgkit.com/tools/svg-to-png",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Convert SVG vector files to PNG, JPG, or WebP format online. High-quality rasterization at custom resolutions."
+}
+</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Convert SVG to PNG",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Upload SVG",
+      "text": "Click the upload area or drag and drop your SVG file, or paste SVG code."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Set Options",
+      "text": "Choose output format and scale factor for high-resolution output."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Convert",
+      "text": "Click Convert to rasterize the SVG to a raster image."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "name": "Download",
+      "text": "Click Download to save your PNG/JPG/WebP file."
+    }
+  ]
+}
+</script>
+  <style>
+    .svg-workspace { display: flex; gap: 24px; flex-wrap: wrap; }
+        .svg-sidebar { flex: 0 0 320px; display: flex; flex-direction: column; gap: 14px; }
+        .svg-canvas-area { flex: 1; min-width: 300px; }
+        @media (max-width: 768px) { .svg-workspace { flex-direction: column; } .svg-sidebar { flex: none; width: 100%; } }
+
+        .input-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border-color); margin-bottom: 12px; }
+        .input-tab {
+          padding: 8px 16px; cursor: pointer; font-size: .82rem; color: var(--text-secondary);
+          border-bottom: 2px solid transparent; transition: all .2s; background: none; border-top: none; border-left: none; border-right: none;
+        }
+        .input-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+        .input-tab:hover { color: var(--text-primary); }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        .svg-code-area {
+          width: 100%; min-height: 180px; padding: 10px; border: 1px solid var(--border-color);
+          border-radius: 8px; background: var(--bg-primary); color: var(--text-primary);
+          font-family: 'Fira Code', monospace; font-size: .8rem; resize: vertical;
+        }
+
+        .param-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .param-row label { font-size: .8rem; color: var(--text-secondary); min-width: 90px; }
+        .param-row select, .param-row input[type="number"] {
+          flex: 1; padding: 7px 10px; border: 1px solid var(--border-color); border-radius: 6px;
+          background: var(--bg-primary); color: var(--text-primary); font-size: .82rem;
+        }
+
+        .preview-wrapper {
+          background: repeating-conic-gradient(var(--bg-secondary) 0% 25%, var(--bg-primary) 0% 50%) 50% / 20px 20px;
+          border: 1px solid var(--border-color); border-radius: 12px; padding: 16px;
+          display: flex; align-items: center; justify-content: center; min-height: 350px; overflow: auto;
+        }
+        .preview-wrapper canvas { max-width: 100%; max-height: 65vh; }
+
+        .info-row { display: flex; gap: 12px; font-size: .8rem; color: var(--text-secondary); padding: 8px 12px; background: var(--bg-secondary); border-radius: 8px; margin-top: 12px; }
+        .info-row span { display: flex; align-items: center; gap: 4px; }
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What SVG features are supported?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "All standard SVG features including paths, text, gradients, and filters."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What output sizes are available?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Custom width and height, with optional DPI control."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my SVG uploaded to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All conversion happens locally."
+      }
+    }
+  ]
+}
+</script>
+<style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+</head>
+<body>
+  <!-- Adsterra Social Bar (29640799) - Popunder 替代品,移动端友好 -->
+  <script src="https://pl29741298.effectivecpmnetwork.com/70/c0/84/70c084b07dadc5b3f66fae02aa21f788.js"></script>
+
+  <!-- Header: exact match image-rotator compact format -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover.html">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/about.html">About</a><a href="/contact.html">Contact</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Switch language">🇬🇧 EN</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+          </div>
+        </div>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/">Tools</a><span>/</span><span>📐 SVG to PNG Converter</span></nav>
+      <div class="tool-page-header">
+        <h1>📐 SVG to PNG Converter</h1>
+        <p>Convert SVG vector files to PNG, JPG, or WebP. High-quality rasterization at custom scale. Perfect for designers and developers. 100% browser-based.</p>
+      </div>
+      <!-- Adsterra Native Banner (29640800) - 工具标题下,融入内容流 -->
+      <div class="ad-native-banner">
+        <script async="async" data-cfasync="false" src="https://pl29741299.effectivecpmnetwork.com/5a540a2ce35c794ad7d73a726a88971c/invoke.js"></script>
+        <div id="container-5a540a2ce35c794ad7d73a726a88971c"></div>
+      </div>
+      <div class="tool-workspace">
+<!-- Upload / Paste Area -->
+              <!-- Before/After Preview -->
+        <div class="before-after-preview" id="beforeAfterPreview">
+          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-images">
+            <div class="before-after-item">
+              <img src="https://images.unsplash.com/photo-1493552152660-f915ab47ae9d?w=400&q=80" alt="Before" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
+              <div class="before-after-item-caption before">Before</div>
+            </div>
+            <div class="before-after-item">
+              <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
+                <span style="font-size:3rem;opacity:0.5;">🖼️</span>
+              </div>
+              <div class="before-after-item-caption after">After — processed</div>
+            </div>
+          </div>
+        </div>        <input type="file" id="fileInput" accept="image/*" style="display:none;">
+      <label for="fileInput" class="dropzone" id="dropzone">
+        <div class="dropzone-icon">📤</div>
+        <h3>Drop SVG file here</h3>
+        <p>or click to browse. Supports .svg files.</p>
+      </label>
+
+      <!-- Workspace -->
+      <div id="workspace" style="display:none">
+        <div class="svg-workspace">
+          <div class="svg-sidebar">
+            <div class="input-tabs">
+              <button class="input-tab active" data-tab="upload">Upload File</button>
+              <button class="input-tab" data-tab="paste">Paste SVG Code</button>
+            </div>
+
+            <div id="tab-upload" class="tab-panel active">
+              <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:10px;">SVG file loaded. You can also <a href="#" id="reuploadLink" style="color:var(--accent);">re-upload</a>.</p>
+            </div>
+
+            <div id="tab-paste" class="tab-panel">
+              <textarea class="svg-code-area" id="svgCodeArea" placeholder="Paste your SVG code here...&#10;&#10;<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>&#10;  <circle cx='100' cy='100' r='80' fill='%236366f1'/>&#10;</svg>"></textarea>
+              <button class="btn btn-secondary" id="applySvgCode" style="margin-top:8px;width:100%;">Apply SVG Code</button>
+            </div>
+
+            <div>
+              <label style="font-size:.8rem;color:var(--text-secondary);font-weight:500;display:block;margin-bottom:6px;">Output Format</label>
+              <select id="outputFormat" style="width:100%;padding:8px 10px;border:1px solid var(--border-color);border-radius:6px;background:var(--bg-primary);color:var(--text-primary);font-size:.85rem;">
+                <option value="image/png">PNG (Lossless)</option>
+                <option value="image/jpeg">JPG (Smaller file)</option>
+                <option value="image/webp">WebP (Modern)</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size:.8rem;color:var(--text-secondary);font-weight:500;display:block;margin-bottom:6px;">Scale Factor</label>
+              <select id="scaleFactor" style="width:100%;padding:8px 10px;border:1px solid var(--border-color);border-radius:6px;background:var(--bg-primary);color:var(--text-primary);font-size:.85rem;">
+                <option value="1">1x (Original)</option>
+                <option value="2" selected>2x (Retina)</option>
+                <option value="3">3x (High-DPI)</option>
+                <option value="4">4x (Print quality)</option>
+              </select>
+            </div>
+
+            <div class="tool-actions" style="flex-direction:column;">
+              <button class="btn btn-primary" id="downloadBtn">💾 Download</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Start Over</button>
+            </div>
+            <div id="status" class="text-center" style="color:var(--text-secondary);font-size:.85rem;"></div>
+          </div>
+
+          <div class="svg-canvas-area">
+            <div class="preview-wrapper" id="previewWrapper">
+              <canvas id="previewCanvas"></canvas>
+            </div>
+            <div class="info-row" id="infoRow">
+              <span>📐 SVG Size: <b id="svgSize">-</b></span>
+              <span>🖼️ Output: <b id="outSize">-</b></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <!-- Adsterra Banner 300x250 (29640802) - 工具区下方,黄金尺寸高 eCPM -->
+      <div class="ad-banner-300x250">
+        <script>
+          atOptions = {
+            'key' : 'c95d26a94d4f8dc640cd33ad5ec91528',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/c95d26a94d4f8dc640cd33ad5ec91528/invoke.js"></script>
+      </div>
+
+<section class="how-to-section">
+        <h2>How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step"><div class="step-number">1</div><h4>Upload SVG</h4><p>Drop an SVG file or paste SVG code directly.</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>Set Options</h4><p>Choose output format and scale factor for high-resolution output.</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>Convert</h4><p>The SVG is rasterized instantly in your browser.</p></div>
+          <div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Save your PNG, JPG, or WebP file.</p></div>
+        </div>
+      </section>
+
+<h2>Detailed User Guide</h2>
+        <div class="guide-block">
+          <h3>Step 1: Upload or Paste SVG</h3>
+          <p>You can either upload an <code>.svg</code> file by dragging it to the drop zone, or switch to the "Paste SVG Code" tab and paste raw SVG markup. This is useful when you have SVG code from Figma, Sketch, Adobe Illustrator, or hand-written SVG.</p>
+        </div>
+        <div class="guide-block">
+          <h3>Step 2: Choose Output Format</h3>
+          <p>Select the output format that fits your needs:</p>
+          <ul>
+            <li><strong>PNG:</strong> Lossless compression, supports transparency. Best for UI assets, logos, and icons.</li>
+            <li><strong>JPG:</strong> Smaller file size, no transparency. Best for photos and complex graphics with many colors.</li>
+            <li><strong>WebP:</strong> Modern format with excellent compression. Best for web use.</li>
+          </ul>
+        </div>
+        <div class="guide-block">
+          <h3>Step 3: Set Scale Factor</h3>
+          <p>The scale factor controls the output resolution:</p>
+          <ul>
+            <li><strong>1x:</strong> Same pixel dimensions as the SVG width/height</li>
+            <li><strong>2x:</strong> Double resolution — perfect for retina displays (@2x assets)</li>
+            <li><strong>3x:</strong> Triple resolution — for high-DPI displays</li>
+            <li><strong>4x:</strong> Quadruple resolution — for print-quality output</li>
+          </ul>
+          <p>Since SVG is a vector format, scaling up produces no quality loss. A 100×100 SVG at 4x scale produces a crisp 400×400 PNG.</p>
+        </div>
+        <div class="guide-block">
+          <h3>Step 4: Download</h3>
+          <p>Click <strong>Download</strong> to save the rasterized image. The file is generated entirely in your browser — no server processing.</p>
+        </div>
+        <div class="guide-block">
+          <h3>Best Use Cases</h3>
+          <ul>
+            <li><strong>UI/UX designers:</strong> Export SVG icons to PNG for Android/iOS app assets</li>
+            <li><strong>Web developers:</strong> Convert inline SVG to static images for <code>&lt;img&gt;</code> tags or CSS <code>background-image</code></li>
+            <li><strong>Print designers:</strong> Convert SVG logos to high-res PNG (4x scale) for print materials</li>
+            <li><strong>Presentations:</strong> Convert SVG charts/graphs to PNG for PowerPoint or Keynote</li>
+            <li><strong>Social media:</strong> Convert SVG illustrations to PNG for Instagram/Facebook posts</li>
+          </ul>
+        </div>
+        <div class="guide-block">
+          <h3>Pro Tips</h3>
+          <ul>
+            <li>For sharp @2x mobile app assets, set Scale Factor to 2x and output as PNG</li>
+            <li>If your SVG has transparency, use PNG format to preserve it</li>
+            <li>For smallest file size with good quality, use WebP format at 2x scale</li>
+            <li>SVG <code>&lt;text&gt;</code> elements may render differently across browsers — convert to PNG to lock in fonts</li>
+            <li>For print, use 4x scale + PNG for maximum quality</li>
+            <li>You can paste SVG code directly — great for quick one-off conversions without saving a file</li>
+          </ul>
+        </div>
+
+<section class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item"><button class="faq-question">Is my SVG uploaded to a server?</button><div class="faq-answer">No. All conversion happens entirely in your browser using the Canvas API. Your SVG file or code never leaves your device.</div></div>
+      <div class="faq-item"><button class="faq-question">What is the maximum SVG size supported?</button><div class="faq-answer">There is no hard file size limit. However, very large SVGs (e.g., 2000×2000+ pixels at 4x scale) may take longer to render. Most SVGs under 1MB convert instantly.</div></div>
+      <div class="faq-item"><button class="faq-question">Why does my converted image look different from the SVG?</button><div class="faq-answer">This can happen if your SVG uses external resources (linked images, fonts) or CSS styles not embedded in the SVG. For best results, use self-contained SVG code with embedded fonts or convert fonts to paths in your design tool before exporting.</div></div>
+      <div class="faq-item"><button class="faq-question">Can I convert animated SVGs (SVG + SMIL)?</button><div class="faq-answer">Animated SVGs will be converted at their initial static state. The Canvas API renders a single frame. For animated outputs, consider exporting individual frames from your animation tool.</div></div>
+      <div class="faq-item"><button class="faq-question">What scale factor should I use for web use?</button><div class="faq-answer">Use 2x scale for most web use — this ensures crisp display on retina/ high-DPI screens. Use 1x for standard displays, or 3-4x for print.</div></div>
+      <div class="faq-item"><button class="faq-question">Can I use the output for commercial projects?</button><div class="faq-answer">Yes. The output images are yours to use for any purpose. Note that font licensing may apply if your SVG uses embedded commercial fonts — check your font license.</div></div>
+      <div class="faq-item"><button class="faq-question">Does this support SVG filters and effects?</button><div class="faq-answer">Yes, most SVG filters (blur, drop shadow, color matrix) and effects are supported as long as the browser's SVG renderer supports them. Modern Chrome, Firefox, and Safari have excellent SVG support.</div></div>
+      </section>
+
+<section class="related-tools">
+  <h2>You Might Also Like</h2>
+  <div class="related-tools-grid">
+    <a href="/tools/image-upscaler.html" class="related-tool-card">
+      <span class="tool-icon">🔍</span>
+      <div class="tool-info">
+        <strong>Image Upscaler</strong>
+        <span class="tool-desc">Upscale SVG rasterization output</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/tools/compressor.html" class="related-tool-card">
+      <span class="tool-icon">🗜️</span>
+      <div class="tool-info">
+        <strong>Image Compressor</strong>
+        <span class="tool-desc">Compress converted PNG/JPG files</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/tools/converter.html" class="related-tool-card">
+      <span class="tool-icon">🔄</span>
+      <div class="tool-info">
+        <strong>Image Converter</strong>
+        <span class="tool-desc">Convert rasterized images to WebP</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+  </div>
+</section>
+    </div>
+
+</main>
+
+  <!-- Footer: exact match image-rotator compact format -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Free AI-powered image tools that respect your privacy.</p></div>
+        <div class="footer-links"><h4>Tools</h4><a href="/tools/background-remover.html">Background Remover</a><a href="/tools/compressor.html">Compressor</a><a href="/tools/converter.html">Converter</a><a href="/tools/resizer.html">Resizer</a>
+          <a href="/tools/gif-editor.html">GIF Editor</a>
+          <a href="/tools/pdf-to-image.html">PDF to Image</a>
+        </div>
+        <div class="footer-links"><h4>More Tools</h4><a href="/tools/cropper.html">Cropper</a><a href="/tools/watermark.html">Watermark</a><a href="/tools/image-merger.html">Image Merger</a><a href="/tools/screenshot-to-image.html">Screenshot to Image</a><a href="/tools/image-filters.html">Image Filters</a><a href="/tools/svg-to-png.html">SVG to PNG</a><a href="/tools/image-compare.html">Image Compare</a><a href="/tools/print-resizer.html">Print-Ready Resizer</a><a href="/tools/meme-generator.html">Meme Generator</a>          <a href="/tools/face-blur.html">Face Blur</a>
+          <a href="/tools/heic-converter.html">HEIC Converter</a>
+          <a href="/tools/metadata-viewer.html">Metadata Viewer</a>
+          <a href="/tools/avif-support.html">AVIF Support</a>
+          <a href="/tools/image-adjust.html">Image Adjustment</a>
+          <a href="/tools/image-border.html">Image Border</a>
+          <a href="/tools/image-flip.html">Image Flip</a>
+          <a href="/tools/image-grayscale.html">Image Grayscale</a>
+          <a href="/tools/image-shadow.html">Image Shadow</a>
+          <a href="/tools/image-splitter.html">Image Splitter</a>
+          <a href="/tools/image-exif-remover.html">EXIF Remover</a><a href="/tools/circle-crop.html">Circle Crop</a><a href="/tools/favicon-generator.html">Favicon Generator</a><a href="/tools/ocr.html">OCR Text</a><a href="/tools/bulk-processor.html">Bulk Processor</a><a href="/tools/image-to-pdf.html">Image to PDF</a>          <a href="/tools/id-photo.html">ID Photo Maker</a>
+          <a href="/tools/product-white-background.html">Product White BG</a>
+          <a href="/tools/social-media-post.html">Social Media Post</a>
+          <a href="/tools/photo-restoration.html">Photo Restoration</a><a href="/tools/image-enhancer.html">Image Enhancer</a>
+        </div>
+        <div class="footer-links"><h4>Legal</h4><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms of Service</a><a href="/cookie-policy.html">Cookie Policy</a>
+        </div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved. | <a href="https://comprimefotos.com/" style="color: var(--accent); font-weight: 500;">Español: ComprimeFotos — Comprimir Imágenes Online</a></p></div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js?v=3"></script>
+  <script>
+// ===== State =====
+    let svgSource = '';    // SVG string or data URL
+    let svgSize = { w: 0, h: 0 };
+
+    // ===== DOM =====
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const workspace = document.getElementById('workspace');
+    const canvas = document.getElementById('previewCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const outputFormat = document.getElementById('outputFormat');
+    const scaleFactor = document.getElementById('scaleFactor');
+    const svgCodeArea = document.getElementById('svgCodeArea');
+    const applySvgCodeBtn = document.getElementById('applySvgCode');
+
+    // ===== Tabs =====
+    document.querySelectorAll('.input-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.input-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+      });
+    });
+
+    // ===== File Upload =====
+    setupDropzone({
+      dropzoneId: 'dropzone',
+      inputId: 'fileInput',
+      onFile: async (file) => {
+        try {
+          const text = await file.text();
+          svgSource = text;
+          parseAndRender(text);
+          dropzone.style.display = 'none';
+          workspace.style.display = 'block';
+        } catch (e) {
+          ImageUtils.showToast('Failed to read SVG file', 'error');
+        }
+      }
+    });
+
+    // ===== Paste SVG Code =====
+    applySvgCodeBtn.addEventListener('click', () => {
+      const code = svgCodeArea.value.trim();
+      if (!code) { ImageUtils.showToast('Please paste SVG code first', 'error'); return; }
+      svgSource = code;
+      parseAndRender(code);
+      dropzone.style.display = 'none';
+      workspace.style.display = 'block';
+    });
+
+    // ===== Re-upload =====
+    document.getElementById('reuploadLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      dropzone.style.display = '';
+      workspace.style.display = 'none';
+      fileInput.value = '';
+    });
+
+    // ===== Parse SVG dimensions =====
+    function getSvgDimensions(svgString) {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(svgString, 'image/svg+xml');
+      const svg = doc.querySelector('svg');
+      if (!svg) return null;
+
+      let w = parseFloat(svg.getAttribute('width')) || 0;
+      let h = parseFloat(svg.getAttribute('height')) || 0;
+
+      // Try viewBox
+      const viewBox = svg.getAttribute('viewBox');
+      if ((!w || !h) && viewBox) {
+        const parts = viewBox.split(/[\s,]+/).map(Number);
+        if (parts.length === 4) { w = w || parts[2]; h = h || parts[3]; }
+      }
+      // Default if still 0
+      w = w || 300; h = h || 150;
+      return { w, h };
+    }
+
+    // ===== Render =====
+    function parseAndRender(svgString) {
+      const dims = getSvgDimensions(svgString);
+      if (!dims) { ImageUtils.showToast('Invalid SVG code', 'error'); return; }
+      svgSize = dims;
+      document.getElementById('svgSize').textContent = dims.w + ' x ' + dims.h;
+
+      const scale = parseInt(scaleFactor.value);
+      canvas.width = dims.w * scale;
+      canvas.height = dims.h * scale;
+
+      const img = new Image();
+      img.onload = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        document.getElementById('outSize').textContent = canvas.width + ' x ' + canvas.height;
+      };
+      img.onerror = () => { ImageUtils.showToast('Failed to render SVG', 'error'); };
+      // Use data URL for SVG
+      const dataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgString);
+      img.src = dataUrl;
+    }
+
+    // ===== Scale Factor Change =====
+    scaleFactor.addEventListener('change', () => {
+      if (svgSource) parseAndRender(svgSource);
+    });
+
+    // ===== Reset =====
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      svgSource = '';
+      svgSize = { w: 0, h: 0 };
+      workspace.style.display = 'none';
+      dropzone.style.display = '';
+      fileInput.value = '';
+      svgCodeArea.value = '';
+      document.getElementById('svgSize').textContent = '-';
+      document.getElementById('outSize').textContent = '-';
+    });
+
+    // ===== Download =====
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+      const mime = outputFormat.value;
+      const ext = mime === 'image/jpeg' ? 'jpg' : mime === 'image/webp' ? 'webp' : 'png';
+      // Re-render at current scale to ensure freshness
+      if (svgSource) {
+        parseAndRender(svgSource);
+        // Small delay to let canvas render
+        setTimeout(() => {
+          ImageUtils.download(canvas, 'converted.' + ext, mime);
+          ImageUtils.showToast('Image downloaded!');
+        }, 100);
+      }
+    });
+  
+  // Next Step
+  (function() {
+    var dlBtn = document.getElementById('downloadBtn') || document.querySelector('[id*="download"], [id*="Download"]');
+    if (dlBtn) {
+      dlBtn.addEventListener('click', function() { SmartImgNextStep.show(); });
+    }
+  })();
+  </script>
+</body>
+</html>
+
+

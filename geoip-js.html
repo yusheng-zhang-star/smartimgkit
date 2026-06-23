@@ -1,0 +1,27 @@
+&lt;script&gt;
+// GeoIP auto-redirect - runs once on page load
+(function(){
+  // Only redirect root, not after user has manually selected
+  if(sessionStorage.getItem('lang_choice')) return;
+  var path = window.location.pathname;
+  if(path !== '/' &amp;&amp; path !== '') return;
+  
+  // Fetch free GeoIP service
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'https://ipapi.co/json/', true);
+  xhr.onload = function(){
+    if(xhr.status === 200){
+      try{
+        var data = JSON.parse(xhr.responseText);
+        var country = (data.country_code || '').toLowerCase();
+        var es = ['es','ar','mx','co','cl','pe','ve','ec','gt','cu','bo','do','hn','py','sv','ni','cr','pa','uy','pr','gq'];
+        if(es.indexOf(country) !== -1) window.location.href = '/es/';
+        else if(country === 'br') window.location.href = '/pt/';
+        else if(country === 'id') window.location.href = '/id/';
+      }catch(e){}
+    }
+  };
+  xhr.onerror = function(){};
+  xhr.send();
+})();
+&lt;/script&gt;

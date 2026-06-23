@@ -1,0 +1,102 @@
+<!-- Upload Area -->
+              <!-- Before/After Preview -->
+        <div class="before-after-preview" id="beforeAfterPreview">
+          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-images">
+            <div class="before-after-item">
+              <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&q=80" alt="Before" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
+              <div class="before-after-item-caption before">Before</div>
+            </div>
+            <div class="before-after-item">
+              <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
+                <span style="font-size:3rem;opacity:0.5;">📱</span>
+              </div>
+              <div class="before-after-item-caption after">After — processed</div>
+            </div>
+          </div>
+        </div>        <input type="file" id="fileInput" accept="image/*" style="display:none;">
+      <label for="fileInput" class="dropzone" id="dropzone">
+        <div class="dropzone-icon">📤</div>
+        <h3>Drop your screenshot here</h3>
+        <p>or click to browse. Supports JPG, PNG, WebP.</p>
+      </label>
+
+      <!-- Workspace -->
+      <div class="tool-workspace" id="workspace" style="display:none">
+        <div class="screenshot-workspace">
+          <!-- Sidebar -->
+          <div class="screenshot-sidebar">
+
+            <div class="control-group">
+              <label>Frame Style</label>
+              <div class="frame-btns">
+                <button class="frame-btn active" data-frame="none">None</button>
+                <button class="frame-btn" data-frame="browser">Browser</button>
+                <button class="frame-btn" data-frame="laptop">Laptop</button>
+                <button class="frame-btn" data-frame="phone">Phone</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label>Background Gradient</label>
+              <div class="gradient-presets" id="gradientPresets"></div>
+            </div>
+
+            <div class="control-group">
+              <label>Custom Background</label>
+              <input type="color" id="bgColor" value="#6366f1">
+            </div>
+
+            <div class="control-group">
+              <label>Padding: <span id="paddingValue">64</span>px</label>
+              <input type="range" id="padding" min="0" max="200" value="64">
+            </div>
+
+            <div class="control-group">
+              <label>Corner Radius: <span id="radiusValue">16</span>px</label>
+              <input type="range" id="cornerRadius" min="0" max="60" value="16">
+            </div>
+
+            <div class="control-group">
+              <label>Shadow Blur: <span id="shadowValue">40</span>px</label>
+              <input type="range" id="shadowBlur" min="0" max="80" value="40">
+            </div>
+
+            <div class="control-group">
+              <label>Shadow Opacity: <span id="shadowOpValue">25</span>%</label>
+              <input type="range" id="shadowOpacity" min="0" max="100" value="25">
+            </div>
+
+            <div class="control-group">
+              <label>Image Scale: <span id="scaleValue">75</span>%</label>
+              <input type="range" id="imageScale" min="30" max="100" value="75">
+            </div>
+
+            <div class="control-group">
+              <label>Output Format</label>
+              <select id="outputFormat">
+                <option value="image/png">PNG</option>
+                <option value="image/jpeg">JPG</option>
+                <option value="image/webp">WebP</option>
+              </select>
+            </div>
+
+            <div class="tool-actions" style="flex-direction:column">
+              <button class="btn btn-primary" id="downloadBtn">💾 Download</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Start Over</button>
+            </div>
+            <div id="status" class="text-center" style="color:var(--text-secondary);font-size:.85rem"></div>
+          </div>
+
+          <!-- Canvas Preview -->
+          <div class="screenshot-canvas-area">
+            <div class="canvas-wrapper" id="canvasWrapper">
+              <canvas id="previewCanvas"></canvas>
+            </div>
+            <div class="info-row" id="infoRow" style="margin-top:12px">
+              <span>📐 Original: <b id="origSize">-</b></span>
+              <span>🖼️ Output: <b id="outSize">-</b></span>
+            </div>
+          </div>
+        </div>
+      </div>
