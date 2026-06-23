@@ -195,7 +195,7 @@
 
         <!-- Upload — multi-trigger defense: label native + inline onclick + visible button -->
         <input type="file" id="fileInput" accept=".pdf" style="display:none;">
-          <label for="fileInput" class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
+        <label for="fileInput" class="dropzone" id="dropzone">
             <div class="dropzone-icon">📄</div>
             <h3>Upload PDF File</h3>
             <p>Select a PDF file (max 100MB). Your file is processed entirely in your browser.</p>
@@ -402,12 +402,8 @@
             return false;
         }
 
-        // Upload — triple defense: label native + inline onclick + this listener
+        // Upload — label native behavior handles click; drag/drop below
         if (dropzone) {
-            dropzone.addEventListener('click', function(e) {
-                e.stopPropagation();
-                if (fileInput) fileInput.click();
-            });
             dropzone.addEventListener('dragover', function(e) { e.preventDefault(); e.stopPropagation(); dropzone.classList.add('dragover'); });
             dropzone.addEventListener('dragleave', function(e) { e.preventDefault(); dropzone.classList.remove('dragover'); });
             dropzone.addEventListener('drop', function(e) {
