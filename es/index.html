@@ -62,7 +62,8 @@
   <link rel="alternate" hreflang="id" href="https://smartimgkit.com/id/">
   <link rel="alternate" hreflang="en" href="https://smartimgkit.com/">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/">
-<style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+
+
 </head>
 <body>
 
@@ -84,12 +85,17 @@
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
         <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">☰</button>
       
-        <div class="lang-switcher" style="position:relative;">
-          <button class="lang-btn" aria-label="Switch language">🇪🇸 ES</button>
-          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
-            <a href="/" hreflang="en" lang="en">🇬🇧 English</a>
-            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
-            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+        <div class="lang-switcher" id="langSwitcher">
+          <button class="lang-btn" onclick="toggleLangDropdown()" aria-label="Select language">
+            <span class="lang-flag">🇪🇸</span>
+            <span class="lang-name">ES</span>
+            <span class="lang-arrow">▾</span>
+          </button>
+          <div class="lang-dropdown">
+            <a href="/" onclick="localStorage.setItem('lang_chosen','en')"><span>🇬🇧</span> English</a>
+            <a href="/es/" onclick="localStorage.setItem('lang_chosen','es')"><span>🇪🇸</span> Español</a>
+            <a href="/pt/" onclick="localStorage.setItem('lang_chosen','pt')"><span>🇧🇷</span> Português</a>
+            <a href="/id/" onclick="localStorage.setItem('lang_chosen','id')"><span>🇮🇩</span> Bahasa Indonesia</a>
           </div>
         </div></div>
     </div>
@@ -668,5 +674,48 @@
   </aside>
   <!-- ===== END AD UNITS ===== -->
 
+  <script>
+  function toggleLangDropdown() {
+    document.getElementById('langSwitcher').classList.toggle('open');
+  }
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.lang-switcher')) {
+      var el = document.getElementById('langSwitcher');
+      if (el) el.classList.remove('open');
+    }
+  });
+  (function() {
+    var path = window.location.pathname;
+    var btn = document.querySelector('.lang-btn');
+    if (!btn) return;
+    var flagSpan = btn.querySelector('.lang-flag');
+    var nameSpan = btn.querySelector('.lang-name');
+    if (path.indexOf('/es/') === 0) {
+      flagSpan.textContent = '🇪🇸';
+      nameSpan.textContent = 'ES';
+    } else if (path.indexOf('/pt/') === 0) {
+      flagSpan.textContent = '🇵🇧';
+      nameSpan.textContent = 'PT';
+    } else if (path.indexOf('/id/') === 0) {
+      flagSpan.textContent = '🇮🇩';
+      nameSpan.textContent = 'ID';
+    } else {
+      flagSpan.textContent = '🇬🇧';
+      nameSpan.textContent = 'EN';
+    }
+    var dropdown = document.querySelector('.lang-dropdown');
+    if (dropdown) {
+      var links = dropdown.querySelectorAll('a');
+      for (var i = 0; i < links.length; i++) {
+        var href = links[i].getAttribute('href');
+        if ((path === '/' && href === '/') || (path !== '/' && href === path)) {
+          links[i].classList.add('active');
+        } else {
+          links[i].classList.remove('active');
+        }
+      }
+    }
+  })();
+  </script>
 </body>
 </html>

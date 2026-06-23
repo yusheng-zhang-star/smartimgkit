@@ -1255,3 +1255,85 @@ input:focus, select:focus, textarea:focus {
   font-size: 0.9rem;
   margin: 0.25rem 0;
 }
+
+/* ===== Language Switcher ===== */
+.lang-switcher {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  cursor: pointer;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+.lang-btn:hover {
+  background: var(--bg-secondary);
+}
+
+.lang-btn .lang-arrow {
+  font-size: 0.65rem;
+  opacity: 0.6;
+  margin-left: 2px;
+}
+
+.lang-dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 6px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  min-width: 175px;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.lang-switcher:hover .lang-dropdown,
+.lang-switcher:focus-within .lang-dropdown,
+.lang-switcher.open .lang-dropdown {
+  display: block;
+}
+
+.lang-dropdown a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 0.82rem;
+  transition: background 0.15s;
+}
+
+.lang-dropdown a:hover {
+  background: var(--bg-secondary);
+}
+
+.lang-dropdown a.active {
+  background: var(--bg-secondary);
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .lang-btn .lang-name {
+    display: none;
+  }
+  .lang-btn .lang-arrow {
+    display: none;
+  }
+}
