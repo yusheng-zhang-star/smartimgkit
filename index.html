@@ -672,48 +672,6 @@
   </aside>
   <!-- ===== END AD UNITS ===== -->
 
-  <script>
-  function toggleLangDropdown() {
-    document.getElementById('langSwitcher').classList.toggle('open');
-  }
-  document.addEventListener('click', function(e) {
-    if (!e.target.closest('.lang-switcher')) {
-      var el = document.getElementById('langSwitcher');
-      if (el) el.classList.remove('open');
-    }
-  });
-  (function() {
-    var path = window.location.pathname;
-    var btn = document.querySelector('.lang-btn');
-    if (!btn) return;
-    var flagSpan = btn.querySelector('.lang-flag');
-    var nameSpan = btn.querySelector('.lang-name');
-    if (path.indexOf('/es/') === 0) {
-      flagSpan.textContent = '🇪🇸';
-      nameSpan.textContent = 'ES';
-    } else if (path.indexOf('/pt/') === 0) {
-      flagSpan.textContent = '🇧🇷';
-      nameSpan.textContent = 'PT';
-    } else if (path.indexOf('/id/') === 0) {
-      flagSpan.textContent = '🇮🇩';
-      nameSpan.textContent = 'ID';
-    } else {
-      flagSpan.textContent = '🇬🇧';
-      nameSpan.textContent = 'EN';
-    }
-    var dropdown = document.querySelector('.lang-dropdown');
-    if (dropdown) {
-      var links = dropdown.querySelectorAll('a');
-      for (var i = 0; i < links.length; i++) {
-        var href = links[i].getAttribute('href');
-        if ((path === '/' && href === '/') || (path !== '/' && href === path)) {
-          links[i].classList.add('active');
-        } else {
-          links[i].classList.remove('active');
-        }
-      }
-    }
-  })();
-  </script>
+  <script src="js/lang.js"></script>
 </body>
 </html>
