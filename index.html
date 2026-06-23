@@ -56,30 +56,66 @@
     @media(min-width:1200px){.ad-vertical-right{display:block}}
     /* === END AD UNITS === */
   </style>
-  <link rel="alternate" hreflang="es" href="https://comprimefotos.com/">
+  <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/">
   <link rel="alternate" hreflang="en" href="https://smartimgkit.com/">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/">
+  <link rel="alternate" hreflang="pt" href="https://smartimgkit.com/pt/">
+  <link rel="alternate" hreflang="id" href="https://smartimgkit.com/id/">
 <style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+  <script>
+    (function() {
+      // Auto language redirect based on browser language
+      // Only runs on root path "/", not on /es/, /pt/, /id/
+      if (window.location.pathname !== '/') return;
+      if (localStorage.getItem('lang_chosen')) return;
+
+      var lang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+      var langMap = {
+        'es': '/es/', 'es-es': '/es/', 'es-mx': '/es/', 'es-ar': '/es/', 'es-co': '/es/', 'es-cl': '/es/',
+        'pt': '/pt/', 'pt-br': '/pt/', 'pt-pt': '/pt/',
+        'id': '/id/', 'id-id': '/id/',
+        'zh': '/zh/', 'zh-cn': '/zh/', 'zh-tw': '/zh/',
+        'ja': '/ja/', 'ja-jp': '/ja/',
+        'ko': '/ko/', 'ko-kr': '/ko/',
+        'fr': '/fr/', 'fr-fr': '/fr/', 'fr-ca': '/fr/',
+        'de': '/de/', 'de-de': '/de/',
+        'it': '/it/', 'it-it': '/it/',
+        'ru': '/ru/', 'ru-ru': '/ru/',
+        'tr': '/tr/', 'tr-tr': '/tr/',
+        'vi': '/vi/', 'vi-vn': '/vi/',
+        'th': '/th/', 'th-th': '/th/',
+        'hi': '/hi-in/', 'hi-in': '/hi-in/'
+      };
+
+      var target = langMap[lang];
+      if (!target) {
+        var prefix = lang.split('-')[0];
+        for (var key in langMap) {
+          if (key.indexOf(prefix) === 0) { target = langMap[key]; break; }
+        }
+      }
+      if (target && target !== window.location.pathname) {
+        window.location.href = target;
+      }
+    })();
+  </script>
 </head>
 <body>
 <header class="site-header">
-    <div class="container header-inner">
-      <a href="/" class="logo">
-        <span class="logo-icon">🎨</span>
-        <span class="logo-text">SmartImgKit</span>
-      </a>
-      <nav class="main-nav">
-        <a href="/">Home</a>
-        <a href="/tools/background-remover.html">Tools</a>
-        <a href="/workflows/">Workflows</a>
-        <a href="/blog/">Blog</a>
-        <a href="/about.html">About</a>
-        <a href="/contact.html">Contact</a>
-      </nav>
-      <div class="header-actions">
-        <a href="/es/" class="lang-link" hreflang="es" lang="es" style="font-size:0.85rem;color:var(--text-secondary);text-decoration:none;padding:4px 6px;border-radius:6px;font-weight:500;">ES</a>
-        <a href="/pt/" class="lang-link" hreflang="pt" lang="pt" style="font-size:0.85rem;color:var(--text-secondary);text-decoration:none;padding:4px 6px;border-radius:6px;font-weight:500;">PT</a>
-        <a href="/id/" class="lang-link" hreflang="id" lang="id" style="font-size:0.85rem;color:var(--text-secondary);text-decoration:none;padding:4px 6px;border-radius:6px;font-weight:500;">ID</a>
+  <div class="container header-inner">
+    <a href="/" class="logo">
+      <span class="logo-icon">🎨</span>
+      <span class="logo-text">SmartImgKit</span>
+    </a>
+    <nav class="main-nav">
+      <a href="/">Home</a>
+      <a href="/tools/background-remover.html">Tools</a>
+      <a href="/workflows/">Workflows</a>
+      <a href="/blog/">Blog</a>
+      <a href="/about.html">About</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+    <div class="header-actions">
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
         <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">☰</button>
       </div>
@@ -637,6 +673,12 @@
           <a href="/cookie-policy.html">Cookie Policy</a>
           <a href="/contact.html">Contact</a>
         </div>
+      </div>
+      <div class="footer-lang" style="text-align:center;padding:10px 0 4px;font-size:0.78rem;color:var(--text-secondary);">
+        <a href="/" onclick="localStorage.setItem('lang_chosen','en')" style="margin:0 6px;color:var(--text-secondary);text-decoration:none;">EN</a>
+        <a href="/es/" onclick="localStorage.setItem('lang_chosen','es')" style="margin:0 6px;color:var(--text-secondary);text-decoration:none;">ES</a>
+        <a href="/pt/" onclick="localStorage.setItem('lang_chosen','pt')" style="margin:0 6px;color:var(--text-secondary);text-decoration:none;">PT</a>
+        <a href="/id/" onclick="localStorage.setItem('lang_chosen','id')" style="margin:0 6px;color:var(--text-secondary);text-decoration:none;">ID</a>
       </div>
       <div class="footer-bottom">
         <p>&copy; 2026 SmartImgKit. All rights reserved. | <a href="https://comprimefotos.com/" style="color: var(--accent); font-weight: 500;">Español: ComprimeFotos — Comprimir Imágenes Online</a></p>
