@@ -184,16 +184,6 @@ function initCookieConsent() {
           <span class="cookie-toggle-slider"></span>
         </label>
       </div>
-      <div class="cookie-category">
-        <div class="cookie-category-info">
-          <h4>Advertising Cookies</h4>
-          <p>Used by Google AdSense to serve personalized ads and measure ad performance. Optional.</p>
-        </div>
-        <label class="cookie-toggle">
-          <input type="checkbox" id="cookieAdvertising">
-          <span class="cookie-toggle-slider"></span>
-        </label>
-      </div>
       <div class="cookie-save-row">
         <button class="cookie-btn cookie-btn-accept" id="cookieSave">Save Preferences</button>
       </div>
