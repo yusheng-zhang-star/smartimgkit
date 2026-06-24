@@ -33,7 +33,42 @@
 
 
   <style>
-
+    .tool-workspace { display: flex; flex-direction: column; gap: 24px; }
+        .controls { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+        .controls h2 { font-size: 1.2rem; color: var(--text-primary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--accent); }
+        .control-row { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+        .control-row label { font-weight: 600; min-width: 120px; color: var(--text-secondary); font-size: 0.85rem; }
+        .control-row select, .control-row input[type="number"] { padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-primary); color: var(--text-primary); font-size: 0.85rem; }
+        .btn-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+        .pdf-info { background: var(--bg-secondary); border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; font-size: 0.9rem; color: var(--text-primary); }
+        .pdf-info strong { color: var(--accent); }
+        .pages-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; margin-top: 16px; }
+        .page-item { border: 2px solid var(--border); border-radius: 8px; overflow: hidden; background: var(--bg-primary); text-align: center; }
+        .page-item canvas { width: 100%; display: block; }
+        .page-num { padding: 8px 12px; font-weight: 600; color: var(--text-secondary); font-size: 0.85rem; border-top: 1px solid var(--border); }
+        .dl-btn { display: block; width: 100%; padding: 8px; background: var(--accent); color: white; border: none; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: all 0.2s; }
+        .dl-btn:hover { background: var(--accent-hover); }
+        .status-text { text-align: center; color: var(--text-secondary); font-size: 0.9rem; margin: 16px 0; }
+        .preview-section { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+        .preview-section h2 { font-size: 1.2rem; color: var(--text-primary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--accent); }
+        .info-box { background: rgba(99,102,241,0.1); border-left: 4px solid var(--accent); padding: 16px 20px; border-radius: 8px; margin-bottom: 24px; }
+        .info-box h3 { color: var(--accent); margin-bottom: 8px; font-size: 1rem; }
+        .info-box p, .info-box li { color: var(--text-secondary); font-size: 0.9rem; }
+        .info-box ul { margin-left: 20px; margin-top: 8px; }
+        .guide { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+        .guide h2 { font-size: 1.2rem; color: var(--text-primary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--accent); }
+        .guide ol { margin-left: 24px; }
+        .guide li { margin-bottom: 12px; color: var(--text-secondary); }
+        .guide strong { color: var(--accent); }
+        .faq { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+        .faq h2 { font-size: 1.2rem; color: var(--text-primary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--accent); }
+        .faq-item { margin-bottom: 16px; }
+        .faq-item h3 { font-size: 1rem; color: var(--text-primary); margin-bottom: 4px; }
+        .faq-item p { color: var(--text-secondary); font-size: 0.9rem; }
+        @media (max-width: 640px) {
+            .control-row { flex-direction: column; align-items: flex-start; }
+            .pages-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+        }
   </style>
   <script type="application/ld+json">
 {
