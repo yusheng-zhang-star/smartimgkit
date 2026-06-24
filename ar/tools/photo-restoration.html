@@ -93,13 +93,13 @@
         <p></p>
       </div>
       <div class="tool-workspace">
-<div class="restأوe-layout">
-          <div class="restأوe-sidebar">
+<div class="restore-layout">
+          <div class="restore-sidebar">
             <input type="file" id="fileInput" accept="image/*" style="display:none;">
-            <label fأو="fileInput" class="dropzone" id="dropzone">
+            <label for="fileInput" class="dropzone" id="dropzone">
               <div class="upload-icon" style="font-size:2.5rem;margin-bottom:12px;">📁</div>
               <div class="upload-text">انقر أو اسحب image here</div>
-              <div class="upload-hint" style="font-size:.82rem;colأو:var(--text-muted);margin-top:4px;">JPG / PNG / WebP — الحد الأقصى 20MB</div>
+              <div class="upload-hint" style="font-size:.82rem;color:var(--text-muted);margin-top:4px;">JPG / PNG / WebP — الحد الأقصى 20MB</div>
             </label>
 
             <!-- Progress Bar -->
@@ -108,19 +108,19 @@
             </div>
 
             <!-- Quick Fix Presets -->
-            <div class="card" style="background:var(--bg-card);bأوder:1px solid var(--bأوder-colأو);bأوder-radius:12px;padding:16px;">
+            <div class="card" style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:16px;">
               <h3 style="font-size:.9rem;font-weight:600;margin-bottom:10px;">⚡ Quick Fix Presets</h3>
               <div class="preset-grid">
-                <button class="preset-btn" onclick="applyPreset('auto-restأوe')" title="Auto Restأوe — applies all restأوation steps with optimal values">🔄 Auto Restأوe</button>
+                <button class="preset-btn" onclick="applyPreset('auto-restore')" title="Auto Restore — applies all restoration steps with optimal values">🔄 Auto Restore</button>
                 <button class="preset-btn" onclick="applyPreset('remove-scratches')" title="إزالة Scratches — detect and inpaint scratch-like defects">✂️ إزالة Scratches</button>
                 <button class="preset-btn" onclick="applyPreset('reduce-noise')" title="Reduce Noise — median filter to smooth grainy photos">📉 Reduce Noise</button>
                 <button class="preset-btn" onclick="applyPreset('sharpen-face')" title="Sharpen Face — unsharp mask to bring out facial details">👤 Sharpen Face</button>
-                <button class="preset-btn" onclick="applyPreset('enhance-contrast')" title="Enhance Contrast — histogram stretching fأو mأوe depth">🎯 Enhance Contrast</button>
+                <button class="preset-btn" onclick="applyPreset('enhance-contrast')" title="Enhance Contrast — histogram stretching for more depth">🎯 Enhance Contrast</button>
               </div>
             </div>
 
             <!-- Manual Controls -->
-            <div class="card" style="background:var(--bg-card);bأوder:1px solid var(--bأوder-colأو);bأوder-radius:12px;padding:16px;">
+            <div class="card" style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:16px;">
               <h3 style="font-size:.9rem;font-weight:600;margin-bottom:10px;">🎛️ Manual Controls</h3>
               <div class="slider-group">
                 <label>Denoise <span class="slider-value" id="denoiseVal">0</span></label>
@@ -147,30 +147,30 @@
                 <input type="range" id="sepiaSlider" min="0" max="100" value="0" oninput="onSliderChange()">
               </div>
               <div style="margin-top:8px;">
-                <button class="restأوe-btn secondary" onclick="resetSliders()">🔄 إعادة تعيين All</button>
+                <button class="restore-btn secondary" onclick="resetSliders()">🔄 إعادة تعيين All</button>
               </div>
             </div>
 
             <!-- Actions -->
-            <button class="restأوe-btn primary" id="downloadBtn" disabled onclick="downloadصورة()">⬇️ تحميل Restأوed Photo</button>
+            <button class="restore-btn primary" id="downloadBtn" disabled onclick="downloadImage()">⬇️ تحميل Restored Photo</button>
           </div>
 
-          <div class="restأوe-canvas-area">
+          <div class="restore-canvas-area">
             <div class="preview-box" id="previewBox">
               <canvas id="previewCanvas" style="display:none;"></canvas>
-              <div id="placeholderنص" style="colأو:var(--text-muted);font-size:.9rem;text-align:center;padding:40px 20px;">
+              <div id="placeholderText" style="color:var(--text-muted);font-size:.9rem;text-align:center;padding:40px 20px;">
                 <div style="font-size:3rem;margin-bottom:12px;">📸</div>
-                <div>رفع an old أو damaged photo to start restأوing</div>
+                <div>رفع an old أو damaged photo to start restoring</div>
               </div>
             </div>
             <div style="margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-              <label style="font-size:.82rem;colأو:var(--text-secondary);cursأو:pointer;display:flex;align-items:center;gap:6px;">
-                <input type="checkbox" id="compareToggle" onchange="toggleCompare()"> Show Befأوe/After
+              <label style="font-size:.82rem;color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;gap:6px;">
+                <input type="checkbox" id="compareToggle" onchange="toggleCompare()"> Show Before/After
               </label>
-              <span style="font-size:.75rem;colأو:var(--text-muted);">Drag slider to compare</span>
+              <span style="font-size:.75rem;color:var(--text-muted);">Drag slider to compare</span>
             </div>
             <div class="preview-box compare-slider" id="compareBox" style="display:none;margin-top:12px;">
-              <canvas id="befأوeCanvas"></canvas>
+              <canvas id="beforeCanvas"></canvas>
               <canvas id="afterCanvas" style="position:absolute;top:0;left:0;"></canvas>
               <div class="slider-handle" id="sliderHandle"></div>
             </div>

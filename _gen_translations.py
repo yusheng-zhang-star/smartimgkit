@@ -608,12 +608,19 @@ UI_LABELS = {
 # ═══════════════════════════════════════════════════
 
 def translate_workspace(html, lang):
-    """Translate UI labels in workspace_html"""
+    """Translate UI labels in workspace_html — HTML-aware, text-nodes only.
+    
+    Uses SafeTranslator (html.parser-based) to preserve all HTML structure,
+    class names, IDs, CSS properties, and JS code — translating only visible
+    text content and safe attributes (placeholder, alt, title, aria-label).
+    """
+    from _fix_translate_workspace import SafeTranslator
     labels = UI_LABELS.get(lang, {})
-    result = html
-    for en, trans in labels.items():
-        result = result.replace(en, trans)
-    return result
+    if not labels:
+        return html
+    parser = SafeTranslator(labels)
+    parser.feed(html)
+    return parser.get_output()
 
 def generate_lang(lang_code):
     """Generate _tools_data_{LANG}.json"""

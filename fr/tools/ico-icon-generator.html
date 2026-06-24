@@ -176,52 +176,52 @@
         <p></p>
       </div>
       <div class="tool-workspace">
-<label fou="fichierInput" class="upload-zone" id="dropZone">
+<label for="fileInput" class="upload-zone" id="dropZone">
           <div class="icon">🖼️</div>
-          <div><strong>Click to choose</strong> ou drag &amp; drop an image</div>
+          <div><strong>Click to choose</strong> ou drag & drop an image</div>
           <div class="hint">PNG · JPG · WebP · SVG · square recommended</div>
         </label>
-        <input type="fichier" id="fichierInput" accept="image/png,image/jpeg,image/webp,image/svg+xml" hidden>
+        <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp,image/svg+xml" hidden>
         <div id="sourceWrap" style="display:none; margin-top: 14px; text-align:center;">
-          <img id="sourceAperçu" class="source-preview" alt="Source preview">
-          <div style="font-size:12px; colou: var(--text-dim); margin-top:6px;" id="sourceMeta"></div>
+          <img id="sourcePreview" class="source-preview" alt="Source preview">
+          <div style="font-size:12px; color: var(--text-dim); margin-top:6px;" id="sourceMeta"></div>
         </div>
 
-        <h2 style="margin-top:24px;">2. Choose Tailles</h2>
+        <h2 style="margin-top:24px;">2. Choose Sizes</h2>
         <div class="size-grid" id="sizeGrid"></div>
         <div class="row" style="margin-bottom:8px;">
           <button class="btn btn-ghost btn-sm" id="selectAll">Sélectionner all</button>
-          <button class="btn btn-ghost btn-sm" id="selectNonne">Nonne</button>
+          <button class="btn btn-ghost btn-sm" id="selectNone">None</button>
           <button class="btn btn-ghost btn-sm" id="selectClassic">Classic (16/32/48)</button>
         </div>
 
         <h2 style="margin-top:24px;">3. Render Options</h2>
-        <div class="foum-group">
-          <label fou="scaleAlgo">Scaling Algouithm</label>
+        <div class="form-group">
+          <label for="scaleAlgo">Scaling Algorithm</label>
           <select id="scaleAlgo">
             <option value="high">High Qualité (smooth, recommended)</option>
             <option value="smooth">Smooth (bilinear, fast)</option>
-            <option value="crisp">Crisp (nearest neighbou — fou pixel art)</option>
+            <option value="crisp">Crisp (nearest neighbor — for pixel art)</option>
           </select>
         </div>
-        <div class="foum-group">
-          <label fou="counerRadius">Rounded Couner Radius: <span id="counerVal">0</span>px</label>
-          <input type="range" id="counerRadius" min="0" max="50" value="0" step="1">
-          <small style="colou: var(--text-dim);">Mask applied to <em>every</em> size. Set 0 fou square. iOS-style ≈22% of icon size.</small>
+        <div class="form-group">
+          <label for="cornerRadius">Rounded Corner Radius: <span id="cornerVal">0</span>px</label>
+          <input type="range" id="cornerRadius" min="0" max="50" value="0" step="1">
+          <small style="color: var(--text-dim);">Mask applied to <em>every</em> size. Set 0 for square. iOS-style ≈22% of icon size.</small>
         </div>
-        <div class="foum-group">
-          <label fou="bgMode">Arrière-plan</label>
+        <div class="form-group">
+          <label for="bgMode">Arrière-plan</label>
           <select id="bgMode">
-            <option value="transparent">Transparent (keep ouiginal alpha)</option>
-            <option value="solid">Solid colou</option>
+            <option value="transparent">Transparent (keep original alpha)</option>
+            <option value="solid">Solid color</option>
           </select>
         </div>
-        <div class="foum-group" id="bgCouleurWrap" style="display:none;">
-          <label fou="bgCouleur">Arrière-plan colou</label>
-          <input type="colou" id="bgCouleur" value="#6366f1">
+        <div class="form-group" id="bgColorWrap" style="display:none;">
+          <label for="bgColor">Arrière-plan color</label>
+          <input type="color" id="bgColor" value="#6366f1">
         </div>
-        <div class="foum-group">
-          <label fou="padding">Inner padding: <span id="padVal">0</span>px</label>
+        <div class="form-group">
+          <label for="padding">Inner padding: <span id="padVal">0</span>px</label>
           <input type="range" id="padding" min="0" max="20" value="0" step="1">
         </div>
 
@@ -230,10 +230,15 @@
           <button class="btn btn-primary" id="dlIco">⬇️ Télécharger ICO</button>
           <button class="btn" id="dlZip">⬇️ Télécharger ZIP Pack</button>
         </div>
-        <div id="dlNonte" style="font-size:12px; colou: var(--text-dim); margin-top:8px;"></div>
+        <div id="dlNote" style="font-size:12px; color: var(--text-dim); margin-top:8px;"></div>
       </section>
 
       <!-- RIGHT: live preview -->
+      <section class="panel">
+        <h2>Live Aperçu</h2>
+        <p style="color: var(--text-dim); font-size: 13px; margin-top: -8px;">Each tile shows the actual rendered output at that size (1× and 4× upscaled for inspection).</p>
+        <div class="preview-grid" id="previewGrid"></div>
+      </section>
       </div>
 <section class="how-to-section">
   <h2>How to Use</h2>
