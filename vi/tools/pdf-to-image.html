@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark" data-tool-id="pdf-to-image">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>PDF to Image — Convert PDF Pages to PNG/JPG/WebP Free | SmartImgKit</title>
+  <meta name="description" content="Convert PDF pages to high-quality images online for free. Render each page as PNG, JPG, or WebP. No upload limits, works entirely in your browser.">
+  <meta name="keywords" content="PDF to image, PDF to PNG, PDF to JPG, convert PDF pages">
+  <link rel="canonical" href="https://smartimgkit.com/vi/tools/pdf-to-image">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="PDF to Image — Convert PDF Pages to PNG/JPG/WebP Free">
+  <meta property="og:description" content="Convert PDF pages to high-quality images online for free.">
+  <meta property="og:url" content="https://smartimgkit.com/vi/tools/pdf-to-image">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/pdf-to-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="PDF to Image — Convert PDF Pages to PNG/JPG/WebP Free">
+  <meta name="twitter:description" content="Convert PDF pages to high-quality images online for free.">
+  <meta name="twitter:image" content="https://smartimgkit.com/screenshots/pdf-to-image.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate" hreflang="ar" href="https://smartimgkit.com/ar/tools/pdf-to-image">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/pdf-to-image">
+  <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/pdf-to-image">
+  <link rel="alternate" hreflang="fr" href="https://smartimgkit.com/fr/tools/pdf-to-image">
+  <link rel="alternate" hreflang="id" href="https://smartimgkit.com/id/tools/pdf-to-image">
+  <link rel="alternate" hreflang="pt" href="https://smartimgkit.com/pt/tools/pdf-to-image">
+  <link rel="alternate" hreflang="vi" href="https://smartimgkit.com/vi/tools/pdf-to-image">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/pdf-to-image">
+  <link rel="stylesheet" href="/css/style.css?v=3">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "PDF to Image",
+  "url": "https://smartimgkit.com/tools/pdf-to-image",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Convert PDF pages to PNG, JPG, or WebP images. Free, browser-based."
+}
+</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Convert PDF to Images",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Upload PDF",
+      "text": "Select your PDF file."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Choose Format",
+      "text": "Select output format and scale."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Convert",
+      "text": "Click Convert to render PDF pages as images."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "name": "Download",
+      "text": "Download each page as an image file."
+    }
+  ]
+}
+</script>
+  <style>
+    .tool-workspace { display: flex; flex-direction: column; gap: 24px; }
+        .controls { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+        .controls h2 { font-size: 1.2rem; color: var(--text-primary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--accent); }
+        .control-row { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+        .control-row label { font-weight: 600; min-width: 120px; color: var(--text-secondary); font-size: 0.85rem; }
+        .control-row select, .control-row input[type="number"] { padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-primary); color: var(--text-primary); font-size: 0.85rem; }
+        .btn-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+        .pdf-info { background: var(--bg-secondary); border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; font-size: 0.9rem; color: var(--text-primary); }
+        .pdf-info strong { color: var(--accent); }
+        .pages-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; margin-top: 16px; }
+        .page-item { border: 2px solid var(--border); border-radius: 8px; overflow: hidden; background: var(--bg-primary); text-align: center; }
+        .page-item canvas { width: 100%; display: block; }
+        .page-num { padding: 8px 12px; font-weight: 600; color: var(--text-secondary); font-size: 0.85rem; border-top: 1px solid var(--border); }
+        .dl-btn { display: block; width: 100%; padding: 8px; background: var(--accent); color: white; border: none; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: all 0.2s; }
+        .dl-btn:hover { background: var(--accent-hover); }
+        .status-text { text-align: center; color: var(--text-secondary); font-size: 0.9rem; margin: 16px 0; }
+        .preview-section { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+        .preview-section h2 { font-size: 1.2rem; color: var(--text-primary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--accent); }
+        .info-box { background: rgba(99,102,241,0.1); border-left: 4px solid var(--accent); padding: 16px 20px; border-radius: 8px; margin-bottom: 24px; }
+        .info-box h3 { color: var(--accent); margin-bottom: 8px; font-size: 1rem; }
+        .info-box p, .info-box li { color: var(--text-secondary); font-size: 0.9rem; }
+        .info-box ul { margin-left: 20px; margin-top: 8px; }
+        .guide { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+        .guide h2 { font-size: 1.2rem; color: var(--text-primary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--accent); }
+        .guide ol { margin-left: 24px; }
+        .guide li { margin-bottom: 12px; color: var(--text-secondary); }
+        .guide strong { color: var(--accent); }
+        .faq { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+        .faq h2 { font-size: 1.2rem; color: var(--text-primary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--accent); }
+        .faq-item { margin-bottom: 16px; }
+        .faq-item h3 { font-size: 1rem; color: var(--text-primary); margin-bottom: 4px; }
+        .faq-item p { color: var(--text-secondary); font-size: 0.9rem; }
+        @media (max-width: 640px) {
+            .control-row { flex-direction: column; align-items: flex-start; }
+            .pages-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+        }
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What PDF versions are supported?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "PDF 1.0 through PDF 2.0. Password-protected PDFs are not supported."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many pages can be converted?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Up to 200 pages is recommended for performance."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my PDF uploaded to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. PDF rendering happens entirely in your browser using pdf.js."
+      }
+    }
+  ]
+}
+</script>
+<style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+
+</head>
+<body>
+  <!-- Adsterra Social Bar (29640799) - Popunder 替代品,移动端友好 -->
+  <script src="https://pl29741298.effectivecpmnetwork.com/70/c0/84/70c084b07dadc5b3f66fae02aa21f788.js"></script>
+
+  <!-- Header: exact match image-rotator compact format -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/">Trang chủ</a><a href="/vi/tools/background-remover.html">Công cụ</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/about.html">Giới thiệu</a><a href="/contact.html">Liên hệ</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Đổi ngôn ngữ">🇻🇳 VI</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/" hreflang="en" lang="en">🇬🇧 English</a>
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+            <a href="/fr/" hreflang="fr" lang="fr">🇫🇷 Français</a>
+            <a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a>
+          </div>
+        </div>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/">Trang chủ</a><span>/</span><a href="/">Công cụ</a><span>/</span><span>📄 PDF to Image</span></nav>
+      <div class="tool-page-header">
+        <h1>📄 PDF to Image</h1>
+        <p>Convert PDF pages to PNG, JPG, or WebP images — free, in your browser.</p>
+      </div>
+      <!-- Adsterra Native Banner (29640800) - 工具标题下,融入内容流 -->
+      <div class="ad-native-banner">
+        <script async="async" data-cfasync="false" src="https://pl29741299.effectivecpmnetwork.com/5a540a2ce35c794ad7d73a726a88971c/invoke.js"></script>
+        <div id="container-5a540a2ce35c794ad7d73a726a88971c"></div>
+      </div>
+      <div class="tool-workspace">
+<!-- Befhoặce/After Xem trước -->
+        <div class="befhoặce-after-preview" id="befhoặceAfterXem trước">
+          <div class="befhoặce-after-label">✨ See what this tool can do</div>
+          <div class="befhoặce-after-images">
+            <div class="befhoặce-after-item">
+              <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">📄</span></div>
+              <div class="befhoặce-after-item-caption befhoặce">Befhoặce: PDF file</div>
+            </div>
+            <div class="befhoặce-after-item">
+              <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🖼️</span></div>
+              <div class="befhoặce-after-item-caption after">After: PNG/JPG images</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tải lên -->
+        <input type="file" id="fileInput" accept=".pdf" style="display:none;">
+          <label fhoặc="fileInput" class="dropzone" id="dropzone">
+            <div class="dropzone-icon">📄</div>
+            <h3>Tải lên PDF File</h3>
+            <p>Chọn a PDF file (max 100MB). Your file is processed entirely in your browser.</p>
+          </label>
+
+        <!-- PDF Info + Controls -->
+        <div class="controls hidden" id="controlsSection">
+            <h2 style="font-size:1.2rem;margin-bottom:1rem;padding-bottom:0.5rem;">⚙️ Conversion Cài đặt</h2>
+            <div class="pdf-info" id="pdfInfo"></div>
+            <div class="control-row">
+                <label>Định dạng đầu ra</label>
+                <select id="outputFhoặcmat">
+                    <option value="png">PNG (best quality)</option>
+                    <option value="jpeg">JPG (smaller file)</option>
+                    <option value="webp">WebP (modern)</option>
+                </select>
+            </div>
+            <div class="control-row">
+                <label>Scale Facthoặc</label>
+                <select id="scaleFacthoặc">
+                    <option value="1">1x (hoặciginal)</option>
+                    <option value="1.5">1.5x</option>
+                    <option value="2" selected>2x (recommended)</option>
+                    <option value="3">3x (high resolution)</option>
+                </select>
+            </div>
+            <div class="control-row">
+                <label>Page Range</label>
+                <input type="number" id="pageFrom" placeholder="From" style="width:80px;" min="1">
+                <span>to</span>
+                <input type="number" id="pageTo" placeholder="To" style="width:80px;" min="1">
+                <span style="font-size:0.85rem;">(leave blank fhoặc all pages)</span>
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-primary" id="convertBtn">📄 Chuyển đổi PDF</button>
+                <button class="btn btn-secondary" id="resetBtn">Đặt lại</button>
+            </div>
+          </div>
+
+        <!-- Status -->
+        <div class="hidden" id="statusSection">
+            <div class="status-text" id="statusVăn bản">Loading PDF...</div>
+        </div>
+
+        <!-- Kết quảs -->
+        <div class="preview-section hidden" id="resultSection">
+            <h2>🖼️ Chuyển đổied Pages (<span id="convertedCount">0</span>)</h2>
+            <div class="pages-grid" id="pagesGrid"></div>
+            <div class="btn-row" style="justify-content:center;margin-top:1.5rem;">
+                <button class="btn btn-primary" id="downloadAllBtn">⬇️ Tải xuống All as ZIP</button>
+            </div>
+        </div>
+      </div>
+      <!-- Adsterra Banner 300x250 (29640802) - 工具区下方,黄金尺寸高 eCPM -->
+      <div class="ad-banner-300x250">
+        <script>
+          atOptions = {
+            'key' : 'c95d26a94d4f8dc640cd33ad5ec91528',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/c95d26a94d4f8dc640cd33ad5ec91528/invoke.js"></script>
+      </div>
+
+<section class="how-to-section">
+  <h2>How to Use</h2>
+  <div class="how-to-steps">
+    <div class="how-to-step"><div class="step-number">1</div><h4>Upload PDF</h4><p>Select a PDF file from your device.</p></div>
+    <div class="how-to-step"><div class="step-number">2</div><h4>Choose Settings</h4><p>Select output format, DPI, and page range.</p></div>
+    <div class="how-to-step"><div class="step-number">3</div><h4>Convert</h4><p>Click "Convert to Images" and wait.</p></div>
+    <div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Download individual pages or all as a ZIP.</p></div>
+  </div>
+</section>
+
+<h2>Detailed User Guide</h2>
+
+      <div class="guide-block">
+        <h3>Step 1: Upload PDF</h3>
+        <p>Click the upload area and select a PDF file.</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Step 2: Choose Page Range</h3>
+        <p>Select "All pages" or specify a range like "1-5".</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Step 3: Choose Output Format</h3>
+        <p>Select JPG, PNG, or WebP.</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Step 4: Set Resolution</h3>
+        <p>Choose 72 DPI (screen) to 300 DPI (print quality).</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Step 5: Convert</h3>
+        <p>Click "Convert to Images". Each page is rendered to an image.</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Step 6: Download</h3>
+        <p>Click "Download All ZIP" to get all pages.</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Best Settings by Use Case</h3>
+        <ul><li>Social media — JPG, 150 DPI</li><li>Print — PNG, 300 DPI</li><li>OCR — PNG, 300 DPI</li></ul>
+      </div>
+
+<section class="faq-section">
+  <h2>Frequently Asked Questions</h2>
+  <div class="faq-item"><button class="faq-question">What PDF versions are supported?</button><div class="faq-answer">PDF 1.0 through PDF 2.0. Password-protected PDFs are not supported.</div></div>
+  <div class="faq-item"><button class="faq-question">How many pages can be converted?</button><div class="faq-answer">Up to 200 pages is recommended for performance.</div></div>
+  <div class="faq-item"><button class="faq-question">Is my PDF uploaded to a server?</button><div class="faq-answer">No. PDF rendering happens entirely in your browser using pdf.js.</div></div>
+</section>
+
+<section class="related-tools">
+  <h2>You Might Also Like</h2>
+  <div class="related-tools-grid">
+    <a href="/vi/tools/image-to-pdf.html" class="related-tool-card">
+      <span class="tool-icon">📄</span>
+      <div class="tool-info">
+        <strong>Image to PDF</strong>
+        <span class="tool-desc">Combine images back into a PDF</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/vi/tools/ocr.html" class="related-tool-card">
+      <span class="tool-icon">🔤</span>
+      <div class="tool-info">
+        <strong>OCR Image to Text</strong>
+        <span class="tool-desc">Extract text from converted pages</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/vi/tools/compressor.html" class="related-tool-card">
+      <span class="tool-icon">🗜️</span>
+      <div class="tool-info">
+        <strong>Image Compressor</strong>
+        <span class="tool-desc">Compress converted images</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+  </div>
+</section>
+    </div>
+
+</main>
+
+<footer class="site-footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Công cụ hình ảnh AI miễn phí, tôn trọng quyền riêng tư.</p></div><div class="footer-links"><h4>Công cụ</h4><a href="/vi/tools/background-remover.html">Xóa nền</a><a href="/vi/tools/compressor.html">Nén ảnh</a><a href="/vi/tools/converter.html">Chuyển đổi</a><a href="/vi/tools/resizer.html">Đổi kích thước</a><a href="/vi/tools/cropper.html">Cắt ảnh</a><a href="/vi/tools/watermark.html">Watermark</a></div><div class="footer-links"><h4>Công cụ khác</h4><a href="/vi/tools/image-upscaler.html">Phóng to ảnh</a><a href="/vi/tools/gif-editor.html">Chỉnh sửa GIF</a><a href="/vi/tools/pdf-to-image.html">PDF sang Ảnh</a><a href="/vi/tools/heic-converter.html">Chuyển đổi HEIC</a><a href="/vi/tools/meme-generator.html">Tạo Meme</a><a href="/vi/tools/face-blur.html">Làm mờ khuôn mặt</a></div><div class="footer-links"><h4>Trang web</h4><a href="/about.html">Giới thiệu</a><a href="/contact.html">Liên hệ</a><a href="/privacy.html">Bảo mật</a><a href="/terms.html">Điều khoản</a></div></div><div class="footer-bottom"><p>© 2026 SmartImgKit. Xử lý 100% cục bộ — tệp của bạn không bao giờ rời khỏi thiết bị.</p></div></div></footer>
+
+  <script src="/js/main.js?v=3"></script>
+  <script>
+(function() {
+        // Set pdf.js worker source
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('fileInput');
+        const controlsSection = document.getElementById('controlsSection');
+        const pdfInfo = document.getElementById('pdfInfo');
+        const outputFormat = document.getElementById('outputFormat');
+        const scaleFactor = document.getElementById('scaleFactor');
+        const pageFrom = document.getElementById('pageFrom');
+        const pageTo = document.getElementById('pageTo');
+        const convertBtn = document.getElementById('convertBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const statusSection = document.getElementById('statusSection');
+        const statusText = document.getElementById('statusText');
+        const resultSection = document.getElementById('resultSection');
+        const pagesGrid = document.getElementById('pagesGrid');
+        const convertedCount = document.getElementById('convertedCount');
+        const downloadAllBtn = document.getElementById('downloadAllBtn');
+
+        let pdfDoc = null;
+        let convertedPages = []; // { pageNum, dataUrl, blob }
+
+        // Upload
+        dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
+        dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+        dropzone.addEventListener('drop', e => {
+            e.preventDefault();
+            dropzone.classList.remove('dragover');
+            if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
+        });
+        fileInput.addEventListener('change', e => {
+            if (e.target.files.length > 0) handleFile(e.target.files[0]);
+        });
+
+        function handleFile(file) {
+            if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) {
+                alert('Please upload a PDF file.');
+                return;
+            }
+
+            var baPreview = document.getElementById('beforeAfterPreview');
+            if (baPreview) baPreview.classList.add('hidden');
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                loadPDF(e.target.result);
+            };
+            reader.readAsArrayBuffer(file);
+            
+            // Show controls
+            pdfInfo.innerHTML = `<strong>File:</strong> ${file.name} &nbsp;|&nbsp; <strong>Size:</strong> ${(file.size/1024/1024).toFixed(2)} MB`;
+            pageFrom.placeholder = '1';
+            pageTo.placeholder = '?';
+            controlsSection.classList.remove('hidden');
+            resultSection.classList.add('hidden');
+            convertedPages = [];
+        }
+
+        async function loadPDF(arrayBuffer) {
+            try {
+                const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+                pdfDoc = await loadingTask.promise;
+                pageTo.placeholder = pdfDoc.numPages;
+                pdfInfo.innerHTML += ` &nbsp;|&nbsp; <strong>Pages:</strong> ${pdfDoc.numPages}`;
+                statusSection.classList.add('hidden');
+            } catch (err) {
+                alert('Failed to load PDF: ' + err.message);
+            }
+        }
+
+        // Convert
+        convertBtn.addEventListener('click', async function() {
+            if (!pdfDoc) {
+                alert('Please upload a PDF first.');
+                return;
+            }
+            
+            const format = outputFormat.value;
+            const scale = parseFloat(scaleFactor.value);
+            const from = pageFrom.value ? parseInt(pageFrom.value) : 1;
+            const to = pageTo.value ? parseInt(pageTo.value) : pdfDoc.numPages;
+            
+            if (from < 1 || to > pdfDoc.numPages || from > to) {
+                alert(`Please enter a valid page range (1-${pdfDoc.numPages}).`);
+                return;
+            }
+            
+            statusSection.classList.remove('hidden');
+            resultSection.classList.add('hidden');
+            convertBtn.disabled = true;
+            convertedPages = [];
+            pagesGrid.innerHTML = '';
+            
+            const totalPages = to - from + 1;
+            
+            for (let i = from; i <= to; i++) {
+                statusText.textContent = `Converting page ${i}/${to}...`;
+                
+                try {
+                    const page = await pdfDoc.getPage(i);
+                    const viewport = page.getViewport({ scale: scale });
+                    
+                    const canvas = document.createElement('canvas');
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+                    const ctx = canvas.getContext('2d');
+                    
+                    await page.render({
+                        canvasContext: ctx,
+                        viewport: viewport
+                    }).promise;
+                    
+                    const mimeType = format === 'jpeg' ? 'image/jpeg' : (format === 'webp' ? 'image/webp' : 'image/png');
+                    const quality = format === 'jpeg' ? 0.92 : (format === 'webp' ? 0.92 : undefined);
+                    const dataUrl = canvas.toDataURL(mimeType, quality);
+                    
+                    convertedPages.push({ pageNum: i, dataUrl, canvas });
+                    
+                    // Add to grid
+                    const item = document.createElement('div');
+                    item.className = 'page-item';
+                    const previewCanvas = document.createElement('canvas');
+                    // Create a smaller preview
+                    const previewScale = Math.min(180 / canvas.width, 1);
+                    previewCanvas.width = canvas.width * previewScale;
+                    previewCanvas.height = canvas.height * previewScale;
+                    previewCanvas.getContext('2d').drawImage(canvas, 0, 0, previewCanvas.width, previewCanvas.height);
+                    item.appendChild(previewCanvas);
+                    
+                    const numDiv = document.createElement('div');
+                    numDiv.className = 'page-num';
+                    numDiv.textContent = `Page ${i}`;
+                    item.appendChild(numDiv);
+                    
+                    const dlBtn = document.createElement('button');
+                    dlBtn.className = 'dl-btn';
+                    dlBtn.textContent = 'Download';
+                    dlBtn.onclick = function() {
+                        const a = document.createElement('a');
+                        a.href = dataUrl;
+                        a.download = `page-${i}.${format === 'jpeg' ? 'jpg' : format}`;
+                        a.click();
+                    };
+                    item.appendChild(dlBtn);
+                    
+                    pagesGrid.appendChild(item);
+                    convertedCount.textContent = convertedPages.length;
+                    
+                } catch (err) {
+                    console.error(`Error converting page ${i}:`, err);
+                }
+            }
+            
+            statusText.textContent = `Done! Converted ${convertedPages.length} page(s).`;
+            resultSection.classList.remove('hidden');
+            convertBtn.disabled = false;
+        });
+
+        // Download all as ZIP
+        downloadAllBtn.addEventListener('click', async function() {
+            if (convertedPages.length === 0) return;
+            
+            statusText.textContent = 'Creating ZIP file...';
+            statusSection.classList.remove('hidden');
+            
+            // Use dynamic import for JSZip (we'll load it from CDN)
+            const JSZip = window.JSZip;
+            if (!JSZip) {
+                // Load JSZip from CDN
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js';
+                script.onload = function() {
+                    createZip(window.JSZip);
+                };
+                document.head.appendChild(script);
+            } else {
+                createZip(JSZip);
+            }
+        });
+
+        function createZip(JSZip) {
+            const zip = new JSZip();
+            const format = outputFormat.value;
+            const ext = format === 'jpeg' ? 'jpg' : format;
+            
+            convertedPages.forEach(page => {
+                const base64 = page.dataUrl.split(',')[1];
+                zip.file(`page-${page.pageNum}.${ext}`, base64, { base64: true });
+            });
+            
+            zip.generateAsync({ type: 'blob' }).then(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'pdf-pages.zip';
+                a.click();
+                URL.revokeObjectURL(url);
+                statusSection.classList.add('hidden');
+            });
+        }
+
+        // Reset
+        resetBtn.addEventListener('click', function() {
+            pdfDoc = null;
+            convertedPages = [];
+            pagesGrid.innerHTML = '';
+            controlsSection.classList.add('hidden');
+            resultSection.classList.add('hidden');
+            statusSection.classList.add('hidden');
+            fileInput.value = '';
+            var baPreview = document.getElementById('beforeAfterPreview');
+            if (baPreview) baPreview.classList.remove('hidden');
+        });
+    })();
+  </script>
+  <script src="/js/lang.js"></script>
+</body>
+</html>

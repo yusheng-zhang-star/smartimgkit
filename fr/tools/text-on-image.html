@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark" data-tool-id="text-on-image">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Text on Image — Add Text to Photos Free | SmartImgKit</title>
+  <meta name="description" content="Add text to images with custom fonts, colors, sizes, shadows, and outlines. Position text anywhere on your photo. Perfect for memes, quotes, watermarks, and social media. Free, no uploads.">
+  <meta name="keywords" content="text on image, add text to photo, image text editor, photo text overlay, meme generator, quote on image, watermark text, text overlay, put text on picture">
+  <link rel="canonical" href="https://smartimgkit.com/fr/tools/text-on-image">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="Free Text on Image Tool — SmartImgKit">
+  <meta property="og:description" content="Add text to images with custom fonts, colors, shadows, and outlines. Perfect for memes, quotes, watermarks. Free, no signup, 100% browser-based.">
+  <meta property="og:url" content="https://smartimgkit.com/fr/tools/text-on-image">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/text-on-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free Text on Image Tool — SmartImgKit">
+  <meta name="twitter:description" content="Add text to images with custom fonts, colors, shadows, and outlines. Perfect for memes, quotes, watermarks. Free, no signup, 100% browser-based.">
+  <meta name="twitter:image" content="https://smartimgkit.com/screenshots/text-on-image.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate" hreflang="ar" href="https://smartimgkit.com/ar/tools/text-on-image">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/text-on-image">
+  <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/text-on-image">
+  <link rel="alternate" hreflang="fr" href="https://smartimgkit.com/fr/tools/text-on-image">
+  <link rel="alternate" hreflang="id" href="https://smartimgkit.com/id/tools/text-on-image">
+  <link rel="alternate" hreflang="pt" href="https://smartimgkit.com/pt/tools/text-on-image">
+  <link rel="alternate" hreflang="vi" href="https://smartimgkit.com/vi/tools/text-on-image">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/text-on-image">
+  <link rel="stylesheet" href="/css/style.css?v=3">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Text on Image",
+  "url": "https://smartimgkit.com/tools/text-on-image",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Add text to images with custom fonts, colors, shadows, and outlines. Free, no signup, 100% browser-based."
+}
+</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Add Text to Images",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Upload Image",
+      "text": "Click the upload area or drag and drop your image file."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Type Your Text",
+      "text": "Enter your text in the text area. Choose font, size, color, and style."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Position & Customize",
+      "text": "Drag the text to position it on the image. Adjust shadow, outline, opacity, and rotation."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "name": "Download",
+      "text": "Click Download to save the image with text in your preferred format."
+    }
+  ]
+}
+</script>
+  <style>
+    .text-workspace { display: flex; gap: 24px; flex-wrap: wrap; }
+        .text-sidebar { flex: 0 0 300px; display: flex; flex-direction: column; gap: 14px; }
+        .text-canvas-area { flex: 1; min-width: 300px; }
+
+        .control-group { display: flex; flex-direction: column; gap: 6px; }
+        .control-group label { font-size: .8rem; color: var(--text-secondary); font-weight: 500; }
+        .control-group select, .control-group input[type="number"], .control-group textarea {
+          padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px;
+          background: var(--bg-primary); color: var(--text-primary); font-size: .85rem;
+        }
+        .control-group textarea { resize: vertical; min-height: 60px; font-family: inherit; }
+        .control-group input[type="range"] { width: 100%; }
+        .control-group input[type="color"] {
+          width: 100%; height: 36px; border: 1px solid var(--border); border-radius: 6px;
+          background: var(--bg-primary); cursor: pointer; padding: 2px;
+        }
+
+        .color-row { display: flex; gap: 8px; }
+        .color-row .control-group { flex: 1; }
+
+        .position-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        .pos-btn {
+          padding: 6px 4px; border: 1px solid var(--border); border-radius: 6px;
+          background: var(--bg-primary); color: var(--text-secondary); cursor: pointer;
+          text-align: center; font-size: .75rem; transition: all .2s;
+        }
+        .pos-btn:hover { border-color: var(--accent); color: var(--text-primary); }
+        .pos-btn.active { border-color: var(--accent); background: rgba(99,102,241,.1); color: var(--accent); }
+
+        .canvas-wrapper {
+          background: repeating-conic-gradient(var(--bg-secondary) 0% 25%, var(--bg-primary) 0% 50%) 50% / 20px 20px;
+          border: 1px solid var(--border); border-radius: 12px; padding: 16px;
+          display: flex; align-items: center; justify-content: center; min-height: 300px;
+          overflow: auto; position: relative; user-select: none;
+        }
+        .canvas-wrapper canvas { max-width: 100%; max-height: 500px; border-radius: 4px; cursor: move; }
+
+        @media (max-width: 768px) {
+          .text-workspace { flex-direction: column; }
+          .text-sidebar { flex: none; width: 100%; }
+        }
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What fonts are available?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "System fonts and Google Fonts."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What text styles are supported?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Color, size, alignment, shadow, stroke, and rotation."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my image uploaded to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All text rendering happens locally."
+      }
+    }
+  ]
+}
+</script>
+<style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+
+</head>
+<body>
+  <!-- Adsterra Social Bar (29640799) - Popunder 替代品,移动端友好 -->
+  <script src="https://pl29741298.effectivecpmnetwork.com/70/c0/84/70c084b07dadc5b3f66fae02aa21f788.js"></script>
+
+  <!-- Header: exact match image-rotator compact format -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/">Accueil</a><a href="/fr/tools/background-remover.html">Outils</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/about.html">À propos</a><a href="/contact.html">Contact</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Changer de langue">🇫🇷 FR</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/" hreflang="en" lang="en">🇬🇧 English</a>
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+            <a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a>
+            <a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a>
+          </div>
+        </div>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/">Outils</a><span>/</span><span>✏️ Text on Image</span></nav>
+      <div class="tool-page-header">
+        <h1>✏️ Text on Image</h1>
+        <p>Add custom text to your images with beautiful fonts, colors, shadows, and outlines. Drag to position, rotate, and style. Perfect for memes, quotes, watermarks, and social media. 100% browser-based.</p>
+      </div>
+      <!-- Adsterra Native Banner (29640800) - 工具标题下,融入内容流 -->
+      <div class="ad-native-banner">
+        <script async="async" data-cfasync="false" src="https://pl29741299.effectivecpmnetwork.com/5a540a2ce35c794ad7d73a726a88971c/invoke.js"></script>
+        <div id="container-5a540a2ce35c794ad7d73a726a88971c"></div>
+      </div>
+      <div class="tool-workspace">
+<!-- Télécharger Area -->
+              <!-- Befoue/After Aperçu -->
+        <div class="befoue-after-preview" id="befoueAfterAperçu">
+          <div class="befoue-after-label">✨ See what this tool can do</div>
+          <div class="befoue-after-images">
+            <div class="befoue-after-item">
+              <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=80" alt="Befoue" loading="lazy" onerrou="this.style.display='none';this.parentElement.classList.add('img-fallback')">
+              <div class="befoue-after-item-caption befoue">Befoue</div>
+            </div>
+            <div class="befoue-after-item">
+              <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);bouder-radius:8px;">
+                <span style="font-size:3rem;opacity:0.5;">✏️</span>
+              </div>
+              <div class="befoue-after-item-caption after">After — processed</div>
+            </div>
+          </div>
+        </div>        <input type="fichier" id="fichierInput" accept="image/*" style="display:none;">
+      <label fou="fichierInput" class="dropzone" id="dropzone">
+        <div class="dropzone-icon">📤</div>
+        <h3>Déposer your image here</h3>
+        <p>ou cliquez pour parcourir. Suppouts JPG, PNG, WebP.</p>
+      </label>
+      <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Try with a sample image</span>
+
+      <!-- Woukspace -->
+      <div id="woukspace" style="display:none">
+        <div class="text-woukspace">
+          <!-- Sidebar -->
+          <div class="text-sidebar">
+            <div class="control-group">
+              <label>Texte</label>
+              <textarea id="textInput" placeholder="Type your text here...">Hello Would</textarea>
+            </div>
+
+            <div class="control-group">
+              <label>Police Family</label>
+              <select id="fontFamily">
+                <option value="Inter">Inter</option>
+                <option value="Roboto">Roboto</option>
+                <option value="Open Sans">Open Sans</option>
+                <option value="Montserrat">Montserrat</option>
+                <option value="Oswald">Oswald</option>
+                <option value="Bebas Neue">Bebas Neue</option>
+                <option value="Pacifico">Pacifico</option>
+                <option value="Dancing Script">Dancing Script</option>
+                <option value="Permanent Marker">Permanent Marker</option>
+                <option value="Press Démarrer 2P">Press Démarrer 2P</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label>Police Taille: <span id="sizeValue">48</span>px</label>
+              <input type="range" id="fontTaille" min="10" max="200" value="48">
+            </div>
+
+            <div class="control-group">
+              <label>Police Weight</label>
+              <select id="fontWeight">
+                <option value="400">Nonumal</option>
+                <option value="700" selected>Bold</option>
+              </select>
+            </div>
+
+            <div class="colou-row">
+              <div class="control-group">
+                <label>Texte Couleur</label>
+                <input type="colou" id="textCouleur" value="#ffffff">
+              </div>
+              <div class="control-group">
+                <label>Outline Couleur</label>
+                <input type="colou" id="outlineCouleur" value="#000000">
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label>Outline Largeur: <span id="outlineValue">2</span>px</label>
+              <input type="range" id="outlineLargeur" min="0" max="10" value="2">
+            </div>
+
+            <div class="control-group">
+              <label>Shadow Blur: <span id="shadowValue">0</span>px</label>
+              <input type="range" id="shadowBlur" min="0" max="30" value="0">
+            </div>
+
+            <div class="control-group">
+              <label>Opacité: <span id="opacityValue">100</span>%</label>
+              <input type="range" id="opacity" min="10" max="100" value="100">
+            </div>
+
+            <div class="control-group">
+              <label>Rotation: <span id="rotationValue">0</span>°</label>
+              <input type="range" id="rotation" min="-180" max="180" value="0">
+            </div>
+
+            <div class="control-group">
+              <label>Quick Position</label>
+              <div class="position-grid">
+                <button class="pos-btn" data-x="0.1" data-y="0.1">↖</button>
+                <button class="pos-btn" data-x="0.5" data-y="0.1">↑</button>
+                <button class="pos-btn" data-x="0.9" data-y="0.1">↗</button>
+                <button class="pos-btn" data-x="0.1" data-y="0.5">←</button>
+                <button class="pos-btn active" data-x="0.5" data-y="0.5">⊙</button>
+                <button class="pos-btn" data-x="0.9" data-y="0.5">→</button>
+                <button class="pos-btn" data-x="0.1" data-y="0.9">↙</button>
+                <button class="pos-btn" data-x="0.5" data-y="0.9">↓</button>
+                <button class="pos-btn" data-x="0.9" data-y="0.9">↘</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label>Foumat de soutie</label>
+              <select id="outputFoumat">
+                <option value="image/png">PNG</option>
+                <option value="image/jpeg">JPG</option>
+                <option value="image/webp">WebP</option>
+              </select>
+            </div>
+
+            <div class="tool-actions" style="flex-direction:column">
+              <button class="btn btn-primary" id="downloadBtn">💾 Télécharger</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Démarrer Over</button>
+            </div>
+            <div id="status" class="text-center" style="colou:var(--text-secondary);font-size:.85rem"></div>
+          </div>
+
+          <!-- Canvas Aperçu -->
+          <div class="text-canvas-area">
+            <div class="canvas-wrapper" id="canvasWrapper">
+              <canvas id="previewCanvas"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <!-- Adsterra Banner 300x250 (29640802) - 工具区下方,黄金尺寸高 eCPM -->
+      <div class="ad-banner-300x250">
+        <script>
+          atOptions = {
+            'key' : 'c95d26a94d4f8dc640cd33ad5ec91528',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/c95d26a94d4f8dc640cd33ad5ec91528/invoke.js"></script>
+      </div>
+
+<section class="how-to-section">
+        <h2>How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step"><div class="step-number">1</div><h4>Upload Image</h4><p>Click the upload area or drag and drop your image file.</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>Type Your Text</h4><p>Enter text in the sidebar. Choose font, size, color, and style.</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>Position & Customize</h4><p>Drag text on the canvas to position it. Adjust shadow, outline, opacity, and rotation.</p></div>
+          <div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Click Download to save the image with your text overlay.</p></div>
+        </div>
+      </section>
+
+<h2>Detailed User Guide</h2>
+
+        <div class="guide-block">
+          <h3>Step 1: Upload Your Image</h3>
+          <p>Click the upload area or drag and drop an image file. Supported formats include JPG, PNG, and WebP. The image loads instantly and appears in the preview canvas. Your image stays on your device — nothing is uploaded to any server.</p>
+        </div>
+
+        <div class="guide-block">
+          <h3>Step 2: Enter Your Text</h3>
+          <p>Type your text in the "Text" field. You can write anything — a single word, a sentence, or even multiple lines. Then customize the appearance:</p>
+          <ul>
+            <li><strong>Font Family:</strong> Choose from 10 curated fonts — from professional (Inter, Roboto) to decorative (Pacifico, Permanent Marker)</li>
+            <li><strong>Font Size:</strong> Adjust from 10px to 200px. The preview updates in real-time</li>
+            <li><strong>Font Weight:</strong> Switch between Normal and Bold</li>
+            <li><strong>Text Color:</strong> Use the color picker to choose any color for your text</li>
+          </ul>
+        </div>
+
+        <div class="guide-block">
+          <h3>Step 3: Position & Style</h3>
+          <p>Place your text exactly where you want it:</p>
+          <ul>
+            <li><strong>Drag on canvas:</strong> Click and drag the text directly on the preview to position it precisely</li>
+            <li><strong>Quick Position:</strong> Use the 9-position grid (top-left, center, bottom-right, etc.) for fast placement</li>
+            <li><strong>Outline:</strong> Add a colored outline around your text for readability. Set the color and width (0-10px)</li>
+            <li><strong>Shadow:</strong> Add a shadow blur to make text pop off the image (0-30px)</li>
+            <li><strong>Opacity:</strong> Make text semi-transparent (10-100%) for watermarks</li>
+            <li><strong>Rotation:</strong> Rotate text from -180° to 180° for creative effects</li>
+          </ul>
+        </div>
+
+        <div class="guide-block">
+          <h3>Step 4: Download</h3>
+          <p>When you're happy with the result, choose your output format and click <strong>"Download"</strong>. The file saves immediately to your device. No watermarks, no quality loss.</p>
+        </div>
+
+        <div class="guide-block">
+          <h3>Best Use Cases</h3>
+          <ul>
+            <li><strong>Memes</strong> — Add bold, outlined text to photos for shareable memes</li>
+            <li><strong>Inspirational quotes</strong> — Overlay beautiful text on scenic photos</li>
+            <li><strong>Watermarks</strong> — Add semi-transparent text watermarks to protect your images</li>
+            <li><strong>Social media graphics</strong> — Create eye-catching text overlays for Instagram, Twitter, etc.</li>
+            <li><strong>Presentations</strong> — Add labels and captions to images for slides</li>
+            <li><strong>Event graphics</strong> — Create "Coming Soon", "Save the Date", or announcement images</li>
+          </ul>
+        </div>
+
+        <div class="guide-block">
+          <h3>Pro Tips</h3>
+          <ul>
+            <li>For maximum readability on any background, use white text with a black outline — the classic meme style</li>
+            <li>For subtle watermarks, set opacity to 30-50% and use a semi-transparent color</li>
+            <li>Pacifico and Dancing Script are great for elegant, script-style text</li>
+            <li>Bebas Neue and Oswald work well for bold, impactful headlines</li>
+            <li>Press Start 2P is perfect for retro/pixel art style</li>
+            <li>Use rotation at 15-30° for dynamic, energetic text on action photos</li>
+          </ul>
+        </div>
+
+<section class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item"><button class="faq-question">Can I add multiple text elements?</button><div class="faq-answer">Currently, the tool supports one text element per image. For multiple text layers, you can download the result and upload it again to add a second text element. We're considering multi-text support in a future update.</div></div>
+      <div class="faq-item"><button class="faq-question">Will my image be uploaded to a server?</button><div class="faq-answer">No. All processing happens entirely in your browser using the Canvas API. Your images and text never leave your device. There is no server that receives or stores your files.</div></div>
+      <div class="faq-item"><button class="faq-question">Can I use custom fonts?</button><div class="faq-answer">We offer 10 curated Google Fonts that cover a wide range of styles. Custom font uploads aren't currently supported, but we've selected fonts that work well for most use cases — from professional to decorative.</div></div>
+      <div class="faq-item"><button class="faq-question">How do I position the text precisely?</button><div class="faq-answer">You can drag the text directly on the preview canvas. For quick placement, use the 9-position grid in the sidebar. For pixel-perfect positioning, zoom in on the canvas and drag slowly.</div></div>
+      <div class="faq-item"><button class="faq-question">Does the outline work with transparent text?</button><div class="faq-answer">Yes! You can set the text color to any value, including colors with the opacity slider. The outline is drawn separately, so it will still appear even when the text fill is semi-transparent.</div></div>
+      <div class="faq-item"><button class="faq-question">What's the best text style for memes?</button><div class="faq-answer">Use white text, black outline (3-5px width), Impact or Bebas Neue font, bold weight, and large size (60-100px). Position at top or bottom of the image. This is the classic meme format that's instantly recognizable.</div></div>
+      <div class="faq-item"><button class="faq-question">Can I use this for multiline text?</button><div class="faq-answer">Yes. Type your text with line breaks in the text area, and each line will be rendered separately on the canvas with consistent spacing. This is useful for quotes or multi-line captions.</div></div>
+      </section>
+
+<section class="related-tools">
+  <h2>You Might Also Like</h2>
+  <div class="related-tools-grid">
+    <a href="/fr/tools/watermark.html" class="related-tool-card">
+      <span class="tool-icon">🔒</span>
+      <div class="tool-info">
+        <strong>Watermark Tool</strong>
+        <span class="tool-desc">Add watermarks to protect images</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/fr/tools/compressor.html" class="related-tool-card">
+      <span class="tool-icon">🗜️</span>
+      <div class="tool-info">
+        <strong>Image Compressor</strong>
+        <span class="tool-desc">Compress images after adding text</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/fr/tools/image-filters.html" class="related-tool-card">
+      <span class="tool-icon">🎨</span>
+      <div class="tool-info">
+        <strong>Image Filters</strong>
+        <span class="tool-desc">Apply filters for a polished look</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+  </div>
+</section>
+    </div>
+
+</main>
+
+<footer class="site-footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Outils d'image gratuits avec IA qui respectent votre vie privée.</p></div><div class="footer-links"><h4>Outils</h4><a href="/fr/tools/background-remover.html">Supprimer l'arrière-plan</a><a href="/fr/tools/compressor.html">Compresseur</a><a href="/fr/tools/converter.html">Convertisseur</a><a href="/fr/tools/resizer.html">Redimensionneur</a><a href="/fr/tools/cropper.html">Recadrage</a><a href="/fr/tools/watermark.html">Filigrane</a></div><div class="footer-links"><h4>Plus d'outils</h4><a href="/fr/tools/image-upscaler.html">Agrandisseur</a><a href="/fr/tools/gif-editor.html">Éditeur GIF</a><a href="/fr/tools/pdf-to-image.html">PDF vers Image</a><a href="/fr/tools/heic-converter.html">Convertisseur HEIC</a><a href="/fr/tools/meme-generator.html">Générateur de Mèmes</a><a href="/fr/tools/face-blur.html">Flouter les Visages</a></div><div class="footer-links"><h4>Site</h4><a href="/about.html">À propos</a><a href="/contact.html">Contact</a><a href="/privacy.html">Confidentialité</a><a href="/terms.html">Conditions</a></div></div><div class="footer-bottom"><p>© 2026 SmartImgKit. Traitement 100% local — vos fichiers ne quittent jamais votre appareil.</p></div></div></footer>
+
+  <script src="/js/main.js?v=3"></script>
+  <script>
+// ===== State =====
+    let originalImg = null;
+    let textX = 0.5;  // proportional position (0-1)
+    let textY = 0.5;
+    let isDragging = false;
+
+    // ===== DOM =====
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const workspace = document.getElementById('workspace');
+    const previewCanvas = document.getElementById('previewCanvas');
+    const ctx = previewCanvas.getContext('2d');
+    const canvasWrapper = document.getElementById('canvasWrapper');
+    const textInput = document.getElementById('textInput');
+    const fontFamily = document.getElementById('fontFamily');
+    const fontSize = document.getElementById('fontSize');
+    const sizeValue = document.getElementById('sizeValue');
+    const fontWeight = document.getElementById('fontWeight');
+    const textColor = document.getElementById('textColor');
+    const outlineColor = document.getElementById('outlineColor');
+    const outlineWidth = document.getElementById('outlineWidth');
+    const outlineValue = document.getElementById('outlineValue');
+    const shadowBlur = document.getElementById('shadowBlur');
+    const shadowValue = document.getElementById('shadowValue');
+    const opacity = document.getElementById('opacity');
+    const opacityValue = document.getElementById('opacityValue');
+    const rotation = document.getElementById('rotation');
+    const rotationValue = document.getElementById('rotationValue');
+    const outputFormat = document.getElementById('outputFormat');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const status = document.getElementById('status');
+
+    // ===== Upload =====
+    setupDropzone({ dropzoneId: 'dropzone', inputId: 'fileInput', onFile: handleFile });
+
+    async function handleFile(file) {
+      if (!file.type.startsWith('image/')) return;
+      originalImg = await ImageUtils.load(file);
+      textX = 0.5; textY = 0.5;
+      dropzone.classList.add('hidden');
+      workspace.style.display = '';
+      renderPreview();
+    }
+
+    // ===== Controls =====
+    const liveControls = [textInput, fontFamily, fontWeight, textColor, outlineColor];
+    liveControls.forEach(el => el.addEventListener('input', () => renderPreview()));
+
+    const sliderControls = [
+      [fontSize, sizeValue], [outlineWidth, outlineValue],
+      [shadowBlur, shadowValue], [opacity, opacityValue], [rotation, rotationValue]
+    ];
+    sliderControls.forEach(([slider, display]) => {
+      slider.addEventListener('input', () => { display.textContent = slider.value; renderPreview(); });
+    });
+
+    // ===== Quick Position =====
+    document.querySelectorAll('.pos-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.pos-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        textX = parseFloat(btn.dataset.x);
+        textY = parseFloat(btn.dataset.y);
+        renderPreview();
+      });
+    });
+
+    // ===== Drag on Canvas =====
+    previewCanvas.addEventListener('mousedown', startDrag);
+    previewCanvas.addEventListener('touchstart', startDrag, { passive: false });
+
+    function startDrag(e) {
+      e.preventDefault();
+      isDragging = true;
+      moveDrag(e);
+      document.addEventListener('mousemove', moveDrag);
+      document.addEventListener('mouseup', stopDrag);
+      document.addEventListener('touchmove', moveDrag, { passive: false });
+      document.addEventListener('touchend', stopDrag);
+    }
+
+    function moveDrag(e) {
+      if (!isDragging || !originalImg) return;
+      e.preventDefault();
+      const rect = previewCanvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      textX = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      textY = Math.max(0, Math.min(1, (clientY - rect.top) / rect.height));
+      document.querySelectorAll('.pos-btn').forEach(b => b.classList.remove('active'));
+      renderPreview();
+    }
+
+    function stopDrag() {
+      isDragging = false;
+      document.removeEventListener('mousemove', moveDrag);
+      document.removeEventListener('mouseup', stopDrag);
+      document.removeEventListener('touchmove', moveDrag);
+      document.removeEventListener('touchend', stopDrag);
+    }
+
+    // ===== Preview Render =====
+    function renderPreview() {
+      if (!originalImg) return;
+      const w = originalImg.naturalWidth;
+      const h = originalImg.naturalHeight;
+
+      previewCanvas.width = w;
+      previewCanvas.height = h;
+      ctx.drawImage(originalImg, 0, 0, w, h);
+
+      const text = textInput.value;
+      if (!text) return;
+
+      const fSize = parseInt(fontSize.value);
+      const fWeight = fontWeight.value;
+      const fFamily = fontFamily.value;
+      const tColor = textColor.value;
+      const oColor = outlineColor.value;
+      const oWidth = parseInt(outlineWidth.value);
+      const sBlur = parseInt(shadowBlur.value);
+      const alpha = parseInt(opacity.value) / 100;
+      const rot = parseInt(rotation.value) * Math.PI / 180;
+
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.font = `${fWeight} ${fSize}px "${fFamily}"`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      const px = textX * w;
+      const py = textY * h;
+
+      ctx.translate(px, py);
+      ctx.rotate(rot);
+
+      // Shadow
+      if (sBlur > 0) {
+        ctx.shadowColor = 'rgba(0,0,0,0.6)';
+        ctx.shadowBlur = sBlur;
+        ctx.shadowOffsetX = Math.round(sBlur / 4);
+        ctx.shadowOffsetY = Math.round(sBlur / 4);
+      }
+
+      // Draw multiline text
+      const lines = text.split('\n');
+      const lineHeight = fSize * 1.3;
+      const totalHeight = lineHeight * lines.length;
+      const startY = -(totalHeight / 2) + lineHeight / 2;
+
+      lines.forEach((line, i) => {
+        const ly = startY + i * lineHeight;
+
+        // Outline
+        if (oWidth > 0) {
+          ctx.strokeStyle = oColor;
+          ctx.lineWidth = oWidth * 2;
+          ctx.lineJoin = 'round';
+          ctx.miterLimit = 2;
+          ctx.strokeText(line, 0, ly);
+        }
+
+        // Fill
+        ctx.fillStyle = tColor;
+        ctx.fillText(line, 0, ly);
+      });
+
+      ctx.restore();
+    }
+
+    // ===== Download =====
+    downloadBtn.addEventListener('click', async () => {
+      if (!originalImg) return;
+      downloadBtn.disabled = true;
+      downloadBtn.textContent = '🔄 Processing...';
+      status.textContent = '';
+      try {
+        const format = outputFormat.value;
+        const quality = format === 'image/png' ? undefined : 0.92;
+        const blob = await ImageUtils.canvasToBlob(previewCanvas, format, quality);
+        const ext = format === 'image/png' ? 'png' : format === 'image/jpeg' ? 'jpg' : 'webp';
+        ImageUtils.download(blob, `text-on-image.${ext}`);
+        status.textContent = '✅ Image downloaded!';
+      } catch (e) {
+        status.textContent = '❌ Error: ' + e.message;
+      }
+      downloadBtn.disabled = false;
+      downloadBtn.textContent = '💾 Download';
+    });
+
+    // ===== Reset =====
+    resetBtn.addEventListener('click', () => {
+      originalImg = null;
+      workspace.style.display = 'none';
+      dropzone.classList.remove('hidden');
+      fileInput.value = '';
+      textInput.value = 'Hello World';
+      status.textContent = '';
+    });
+  
+  // Sample image & Next Step
+  (function() {
+    var _handleFile = typeof handleFile === 'function' ? handleFile : null;
+    if (_handleFile) {
+      window.initSampleButton('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80', _handleFile);
+    }
+    // Show next-step on download click
+    var dlBtn = document.getElementById('downloadBtn') || document.querySelector('.btn-primary[onclick*="download"], .btn-secondary[onclick*="download"]');
+    if (dlBtn) {
+      dlBtn.addEventListener('click', function() { SmartImgNextStep.show(); });
+    }
+  })();
+  </script>
+  <script src="/js/lang.js"></script>
+</body>
+</html>

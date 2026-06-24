@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark" data-tool-id="meme-generator">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Meme Generator — Create Memes Free | SmartImgKit</title>
+  <meta name="description" content="Create viral memes online with famous templates. Add custom top/bottom text with outline and positioning. Free, no uploads, 100% browser-based.">
+  <meta name="keywords" content="meme generator, create meme, meme maker, Drake meme, Distracted Boyfriend, Woman Yelling, custom meme, meme text">
+  <link rel="canonical" href="https://smartimgkit.com/vi/tools/meme-generator">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="Free Meme Generator — SmartImgKit">
+  <meta property="og:description" content="Create viral memes with famous templates. Add custom text with outline. Free, no signup, 100% browser-based.">
+  <meta property="og:url" content="https://smartimgkit.com/vi/tools/meme-generator">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/meme-generator.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free Meme Generator — SmartImgKit">
+  <meta name="twitter:description" content="Create viral memes with famous templates. Add custom text with outline. Free, no signup, 100% browser-based.">
+  <meta name="twitter:image" content="https://smartimgkit.com/screenshots/meme-generator.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate" hreflang="ar" href="https://smartimgkit.com/ar/tools/meme-generator">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/meme-generator">
+  <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/meme-generator">
+  <link rel="alternate" hreflang="fr" href="https://smartimgkit.com/fr/tools/meme-generator">
+  <link rel="alternate" hreflang="id" href="https://smartimgkit.com/id/tools/meme-generator">
+  <link rel="alternate" hreflang="pt" href="https://smartimgkit.com/pt/tools/meme-generator">
+  <link rel="alternate" hreflang="vi" href="https://smartimgkit.com/vi/tools/meme-generator">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/meme-generator">
+  <link rel="stylesheet" href="/css/style.css?v=3">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Meme Generator",
+  "url": "https://smartimgkit.com/tools/meme-generator",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Create viral memes online with famous templates. Add custom top/bottom text with outline and positioning."
+}
+</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Create a Meme",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Choose Template",
+      "text": "Select a meme template or upload your own image."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Add Text",
+      "text": "Type top and bottom text with custom font size and outline."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Position Text",
+      "text": "Drag text to position it, or use presets for top/bottom."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "name": "Download",
+      "text": "Click Download to save your meme as PNG."
+    }
+  ]
+}
+</script>
+  <style>
+    .meme-workspace { display: flex; gap: 24px; flex-wrap: wrap; }
+        .meme-sidebar { flex: 0 0 340px; display: flex; flex-direction: column; gap: 14px; }
+        .meme-canvas-area { flex: 1; min-width: 300px; }
+        @media (max-width: 768px) { .meme-workspace { flex-direction: column; } .meme-sidebar { flex: none; width: 100%; } }
+
+        .template-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .template-btn {
+          border: 2px solid var(--border-color); border-radius: 8px; padding: 6px;
+          background: var(--bg-primary); cursor: pointer; transition: all .2s;
+          display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: .65rem;
+          color: var(--text-secondary); overflow: hidden;
+        }
+        .template-btn:hover { border-color: var(--accent); }
+        .template-btn.active { border-color: var(--accent); background: rgba(99,102,241,.1); }
+        .template-btn img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 4px; }
+
+        .text-inputs { display: flex; flex-direction: column; gap: 8px; }
+        .text-inputs label { font-size: .75rem; color: var(--text-secondary); font-weight: 500; }
+        .text-inputs input[type="text"] {
+          width: 100%; padding: 8px 10px; border: 1px solid var(--border-color); border-radius: 6px;
+          background: var(--bg-primary); color: var(--text-primary); font-size: .85rem;
+        }
+
+        .param-row { display: flex; align-items: center; gap: 10px; }
+        .param-row label { font-size: .78rem; color: var(--text-secondary); min-width: 80px; }
+        .param-row input[type="range"] { flex: 1; accent-color: var(--accent); }
+        .param-row select {
+          flex: 1; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 6px;
+          background: var(--bg-primary); color: var(--text-primary); font-size: .82rem;
+        }
+
+        .preview-wrapper {
+          background: #000; border: 1px solid var(--border-color); border-radius: 12px; padding: 16px;
+          display: flex; align-items: center; justify-content: center; min-height: 350px; overflow: auto; position: relative;
+        }
+        .preview-wrapper canvas { max-width: 100%; max-height: 65vh; }
+
+        .info-row { display: flex; gap: 12px; font-size: .8rem; color: var(--text-secondary); padding: 8px 12px; background: var(--bg-secondary); border-radius: 8px; margin-top: 12px; }
+        .info-row span { display: flex; align-items: center; gap: 4px; }
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Can I use custom fonts?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Impact is default, but any installed font can be selected."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I add multiple captions?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Top and bottom captions are standard."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my image uploaded to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All meme generation happens locally."
+      }
+    }
+  ]
+}
+</script>
+<style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+
+</head>
+<body>
+  <!-- Adsterra Social Bar (29640799) - Popunder 替代品,移动端友好 -->
+  <script src="https://pl29741298.effectivecpmnetwork.com/70/c0/84/70c084b07dadc5b3f66fae02aa21f788.js"></script>
+
+  <!-- Header: exact match image-rotator compact format -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/">Trang chủ</a><a href="/vi/tools/background-remover.html">Công cụ</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/about.html">Giới thiệu</a><a href="/contact.html">Liên hệ</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Đổi ngôn ngữ">🇻🇳 VI</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/" hreflang="en" lang="en">🇬🇧 English</a>
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+            <a href="/fr/" hreflang="fr" lang="fr">🇫🇷 Français</a>
+            <a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a>
+          </div>
+        </div>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/">Trang chủ</a><span>/</span><a href="/">Công cụ</a><span>/</span><span>😂 Meme Generator</span></nav>
+      <div class="tool-page-header">
+        <h1>😂 Meme Generator</h1>
+        <p>Create viral memes with famous templates or your own image. Custom text with outline, positioning, and font size. 100% browser-based.</p>
+      </div>
+      <!-- Adsterra Native Banner (29640800) - 工具标题下,融入内容流 -->
+      <div class="ad-native-banner">
+        <script async="async" data-cfasync="false" src="https://pl29741299.effectivecpmnetwork.com/5a540a2ce35c794ad7d73a726a88971c/invoke.js"></script>
+        <div id="container-5a540a2ce35c794ad7d73a726a88971c"></div>
+      </div>
+      <div class="tool-workspace">
+<!-- Tải lên / Template Area -->
+              <!-- Befhoặce/After Xem trước -->
+        <div class="befhoặce-after-preview" id="befhoặceAfterXem trước">
+          <div class="befhoặce-after-label">✨ See what this tool can do</div>
+          <div class="befhoặce-after-images">
+            <div class="befhoặce-after-item">
+              <img src="https://images.unsplash.com/photo-1493552152660-f915ab47ae9d?w=400&q=80" alt="Befhoặce" loading="lazy" onerrhoặc="this.style.display='none';this.parentElement.classList.add('img-fallback')">
+              <div class="befhoặce-after-item-caption befhoặce">Befhoặce</div>
+            </div>
+            <div class="befhoặce-after-item">
+              <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);bhoặcder-radius:8px;">
+                <span style="font-size:3rem;opacity:0.5;">😂</span>
+              </div>
+              <div class="befhoặce-after-item-caption after">After — processed</div>
+            </div>
+          </div>
+        </div>        <input type="file" id="fileInput" accept="image/*" style="display:none;">
+      <label fhoặc="fileInput" class="dropzone" id="dropzone">
+        <div class="dropzone-icon">📤</div>
+        <h3>Thả image hoặc pick a template</h3>
+        <p>hoặc click to browse. Supphoặcts JPG, PNG, WebP.</p>
+      </label>
+      <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Try with a sample image</span>
+
+      <!-- Template Picker (visible befhoặce whoặckspace) -->
+      <div id="templateSection" style="display:none;">
+        <label style="font-size:.8rem;colhoặc:var(--text-secondary);font-weight:500;display:block;margin-bottom:8px;">Or pick a template:</label>
+        <div class="template-grid" id="templateGrid"></div>
+      </div>
+
+      <!-- Whoặckspace -->
+      <div id="whoặckspace" style="display:none">
+        <div class="meme-sidebar">
+          <div>
+            <label style="font-size:.78rem;colhoặc:var(--text-secondary);font-weight:500;display:block;margin-bottom:6px;">Văn bản</label>
+            <div class="text-inputs">
+              <div>
+                <label>Top Văn bản</label>
+                <input type="text" id="topVăn bản" placeholder="TOP TEXT" maxlength="80">
+              </div>
+              <div>
+                <label>Bottom Văn bản</label>
+                <input type="text" id="bottomVăn bản" placeholder="BOTTOM TEXT" maxlength="80">
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label style="font-size:.78rem;colhoặc:var(--text-secondary);font-weight:500;display:block;margin-bottom:6px;">Văn bản Style</label>
+            <div class="param-row">
+              <label>Phông chữ Size</label>
+              <input type="range" id="fontSize" min="20" max="120" value="60">
+            </div>
+            <div class="param-row">
+              <label>Outline</label>
+              <input type="range" id="outlineChiều rộng" min="0" max="12" value="6">
+            </div>
+            <div class="param-row">
+              <label>Văn bản Case</label>
+              <select id="textCase">
+                <option value="uppercase" selected>UPPERCASE</option>
+                <option value="capitalize">Title Case</option>
+                <option value="none">No Change</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label style="font-size:.78rem;colhoặc:var(--text-secondary);font-weight:500;display:block;margin-bottom:6px;">Output</label>
+            <select id="outputFhoặcmat" style="width:100%;padding:8px 10px;bhoặcder:1px solid var(--bhoặcder-colhoặc);bhoặcder-radius:6px;background:var(--bg-primary);colhoặc:var(--text-primary);font-size:.85rem;">
+              <option value="image/png">PNG (Recommended)</option>
+              <option value="image/jpeg">JPG (Smaller)</option>
+              <option value="image/webp">WebP (Modern)</option>
+            </select>
+          </div>
+
+          <div class="tool-actions" style="flex-direction:column;margin-top:8px;">
+            <button class="btn btn-primary" id="downloadBtn">💾 Tải xuống Meme</button>
+            <button class="btn btn-secondary" id="resetBtn">🔄 Bắt đầu Over</button>
+          </div>
+          <div id="status" class="text-center" style="colhoặc:var(--text-secondary);font-size:.85rem;"></div>
+        </div>
+
+        <div class="meme-canvas-area">
+          <div class="preview-wrapper" id="previewWrapper">
+            <canvas id="previewCanvas"></canvas>
+          </div>
+          <div class="info-row" id="infoRow" style="display:none;">
+            <span>📐 Size: <b id="outSize">-</b></span>
+          </div>
+        </div>
+      </div>
+      </div>
+      <!-- Adsterra Banner 300x250 (29640802) - 工具区下方,黄金尺寸高 eCPM -->
+      <div class="ad-banner-300x250">
+        <script>
+          atOptions = {
+            'key' : 'c95d26a94d4f8dc640cd33ad5ec91528',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/c95d26a94d4f8dc640cd33ad5ec91528/invoke.js"></script>
+      </div>
+
+<section class="how-to-section">
+        <h2>How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step"><div class="step-number">1</div><h4>Choose Template</h4><p>Pick a famous meme template or upload your own image.</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>Add Text</h4><p>Type top and bottom text. Adjust font size and outline.</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>Customize</h4><p>Change text case, outline width, and font size.</p></div>
+          <div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Save your meme as PNG, JPG, or WebP.</p></div>
+        </div>
+      </section>
+
+<h2>Detailed User Guide</h2>
+        <div class="guide-block">
+          <h3>Step 1: Choose a Template</h3>
+          <p>Click a template thumbnail to load a famous meme template, or drag and drop your own image. Supported formats: JPG, PNG, WebP, GIF, BMP. The image loads instantly in your browser.</p>
+        </div>
+        <div class="guide-block">
+          <h3>Step 2: Add Your Text</h3>
+          <p>Type your custom top and bottom text. Meme text is automatically rendered in uppercase (the classic meme look), but you can change this in Text Style settings. Each text box supports up to 80 characters.</p>
+        </div>
+        <div class="guide-block">
+          <h3>Step 3: Customize Text Style</h3>
+          <p>Fine-tune your meme text:</p>
+          <ul>
+            <li><strong>Font Size (20-120px):</strong> Make text larger or smaller to fit your image</li>
+            <li><strong>Outline Width (0-12px):</strong> The white outline that makes meme text readable on any background — classic meme style</li>
+            <li><strong>Text Case:</strong> UPPERCASE (classic), Title Case, or No Change</li>
+          </ul>
+        </div>
+        <div class="guide-block">
+          <h3>Step 4: Download</h3>
+          <p>Click <strong>Download Meme</strong> to save as PNG (recommended for quality), JPG (smaller file), or WebP (modern compression). Share your meme on social media!</p>
+        </div>
+        <div class="guide-block">
+          <h3>Best Use Cases</h3>
+          <ul>
+            <li><strong>Social media:</strong> Create viral memes for Twitter/X, Instagram, Facebook, Reddit</li>
+            <li><strong>Work presentations:</strong> Lighten the mood with a relevant meme slide</li>
+            <li><strong>Group chats:</strong> Reply with the perfect reaction meme</li>
+            <li><strong>Blog posts:</strong> Illustrate a point with humor</li>
+            <li><strong>Marketing:</strong> Create branded memes for social media campaigns</li>
+          </ul>
+        </div>
+        <div class="guide-block">
+          <h3>Pro Tips</h3>
+          <ul>
+            <li>Keep text short — the best memes have minimal text (3-5 words per line)</li>
+            <li>Outline width of 4-8px is the sweet spot for most memes</li>
+            <li>UPPERCASE is the classic meme style — it makes text more readable</li>
+            <li>For Drake and Distracted Boyfriend templates, the top text is usually the "wrong" option and bottom text is the "right" option</li>
+            <li>Download as PNG to preserve sharp edges — JPG can create artifacts around high-contrast text</li>
+            <li>You can upload your own image and use it as a custom meme template</li>
+          </ul>
+        </div>
+
+<section class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item"><button class="faq-question">Is my image uploaded to a server?</button><div class="faq-answer">No. All processing happens entirely in your browser. Your images never leave your device.</div></div>
+      <div class="faq-item"><button class="faq-question">What templates are available?</button><div class="faq-answer">Drake, Distracted Boyfriend, Woman Yelling at Cat, Two Buttons, and Custom (upload your own). More templates are coming soon!</div></div>
+      <div class="faq-item"><button class="faq-question">Can I use my own image as a template?</button><div class="faq-answer">Yes! Click the upload area or drag and drop any image. It will be used as the meme background, and you can add top/bottom text to it.</div></div>
+      <div class="faq-item"><button class="faq-question">What is the best font size?</button><div class="faq-answer">The default 60px works well for most standard memes. For tall images, increase to 80-100px. For wide images with short text, 40-50px may look better. Always preview before downloading.</div></div>
+      <div class="faq-item"><button class="faq-question">Why does my text look blurry?</button><div class="faq-answer">This can happen if the canvas is very large and the font size is small. Try increasing the font size slider, or use a taller image template.</div></div>
+      <div class="faq-item"><button class="faq-question">Can I use this for commercial purposes?</button><div class="faq-answer">You retain full rights to memes you create. Note: some meme templates may be copyrighted images — for commercial use, use your own images or properly licensed templates.</div></div>
+      <div class="faq-item"><button class="faq-question">What output format should I use?</button><div class="faq-answer">PNG is recommended for maximum quality and sharp text. JPG produces smaller files but may introduce compression artifacts around high-contrast text. WebP is a good modern alternative with excellent compression.</div></div>
+      </section>
+
+<section class="related-tools">
+  <h2>You Might Also Like</h2>
+  <div class="related-tools-grid">
+    <a href="/vi/tools/text-on-image.html" class="related-tool-card">
+      <span class="tool-icon">✏️</span>
+      <div class="tool-info">
+        <strong>Text on Image</strong>
+        <span class="tool-desc">Add custom text overlays to memes</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/vi/tools/cropper.html" class="related-tool-card">
+      <span class="tool-icon">🖼️</span>
+      <div class="tool-info">
+        <strong>Image Cropper</strong>
+        <span class="tool-desc">Crop images to perfect meme dimensions</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/vi/tools/compressor.html" class="related-tool-card">
+      <span class="tool-icon">🗜️</span>
+      <div class="tool-info">
+        <strong>Image Compressor</strong>
+        <span class="tool-desc">Compress memes for faster sharing</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+  </div>
+</section>
+    </div>
+
+</main>
+
+<footer class="site-footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Công cụ hình ảnh AI miễn phí, tôn trọng quyền riêng tư.</p></div><div class="footer-links"><h4>Công cụ</h4><a href="/vi/tools/background-remover.html">Xóa nền</a><a href="/vi/tools/compressor.html">Nén ảnh</a><a href="/vi/tools/converter.html">Chuyển đổi</a><a href="/vi/tools/resizer.html">Đổi kích thước</a><a href="/vi/tools/cropper.html">Cắt ảnh</a><a href="/vi/tools/watermark.html">Watermark</a></div><div class="footer-links"><h4>Công cụ khác</h4><a href="/vi/tools/image-upscaler.html">Phóng to ảnh</a><a href="/vi/tools/gif-editor.html">Chỉnh sửa GIF</a><a href="/vi/tools/pdf-to-image.html">PDF sang Ảnh</a><a href="/vi/tools/heic-converter.html">Chuyển đổi HEIC</a><a href="/vi/tools/meme-generator.html">Tạo Meme</a><a href="/vi/tools/face-blur.html">Làm mờ khuôn mặt</a></div><div class="footer-links"><h4>Trang web</h4><a href="/about.html">Giới thiệu</a><a href="/contact.html">Liên hệ</a><a href="/privacy.html">Bảo mật</a><a href="/terms.html">Điều khoản</a></div></div><div class="footer-bottom"><p>© 2026 SmartImgKit. Xử lý 100% cục bộ — tệp của bạn không bao giờ rời khỏi thiết bị.</p></div></div></footer>
+
+  <script src="/js/main.js?v=3"></script>
+  <script>
+// ===== Template data (drawn on canvas, no external images needed) =====
+    const TEMPLATES = {
+      drake:        { name: 'Drake', draw: drawDrake },
+      distracted:  { name: 'Distracted Boyfriend', draw: drawDistracted },
+      womanyelling: { name: 'Woman Yelling', draw: drawWomanYelling },
+      twobuttons:   { name: 'Two Buttons', draw: drawTwoButtons },
+      changing:     { name: 'Change My Mind', draw: drawChangeMyMind },
+    };
+
+    // ===== State =====
+    let bgImage = null; // background image (uploaded or template)
+    let activeTemplate = null;
+
+    // ===== DOM =====
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const templateSection = document.getElementById('templateSection');
+    const templateGrid = document.getElementById('templateGrid');
+    const workspace = document.getElementById('workspace');
+    const canvas = document.getElementById('previewCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const topTextInput = document.getElementById('topText');
+    const bottomTextInput = document.getElementById('bottomText');
+    const fontSizeSlider = document.getElementById('fontSize');
+    const outlineSlider = document.getElementById('outlineWidth');
+    const textCaseSelect = document.getElementById('textCase');
+    const outputFormat = document.getElementById('outputFormat');
+
+    // ===== Build template grid =====
+    Object.entries(TEMPLATES).forEach(([key, tpl]) => {
+      const btn = document.createElement('button');
+      btn.className = 'template-btn';
+      btn.dataset.template = key;
+      btn.innerHTML = '<span style="font-size:.7rem;padding:4px 0;">' + tpl.name + '</span>';
+      // Draw a tiny preview icon on a mini canvas
+      const miniC = document.createElement('canvas');
+      miniC.width = 80; miniC.height = 60;
+      const mCtx = miniC.getContext('2d');
+      tpl.draw(mCtx, 80, 60, '', '');
+      btn.appendChild(miniC);
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.template-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeTemplate = key;
+        // Create a blank bg image (we'll draw the template on render)
+        bgImage = null;
+        if (workspace.style.display !== 'none') renderPreview();
+      });
+      templateGrid.appendChild(btn);
+    });
+
+    // ===== File Upload =====
+    setupDropzone({
+      dropzoneId: 'dropzone',
+      inputId: 'fileInput',
+      onFile: async (file) => {
+        try {
+          bgImage = await ImageUtils.load(file);
+          activeTemplate = null;
+          document.querySelectorAll('.template-btn').forEach(b => b.classList.remove('active'));
+          dropzone.style.display = 'none';
+          templateSection.style.display = 'block';
+          workspace.style.display = 'block';
+          renderPreview();
+        } catch (e) {
+          ImageUtils.showToast('Failed to load image', 'error');
+        }
+      }
+    });
+
+    // ===== Text / Style Events =====
+    [topTextInput, bottomTextInput].forEach(el => el.addEventListener('input', () => renderPreview()));
+    [fontSizeSlider, outlineSlider, textCaseSelect].forEach(el => el.addEventListener('input', () => renderPreview()));
+
+    // ===== Reset =====
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      bgImage = null;
+      activeTemplate = null;
+      workspace.style.display = 'none';
+      templateSection.style.display = 'none';
+      dropzone.style.display = '';
+      fileInput.value = '';
+      topTextInput.value = '';
+      bottomTextInput.value = '';
+      fontSizeSlider.value = 60;
+      outlineSlider.value = 6;
+      textCaseSelect.value = 'uppercase';
+      document.querySelectorAll('.template-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('infoRow').style.display = 'none';
+    });
+
+    // ===== Download =====
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+      const mime = outputFormat.value;
+      const ext = mime === 'image/jpeg' ? 'jpg' : mime === 'image/webp' ? 'webp' : 'png';
+      ImageUtils.download(canvas, 'meme.' + ext, mime);
+      ImageUtils.showToast('Meme downloaded!');
+    });
+
+    // ===== Render =====
+    function renderPreview() {
+      const W = 800, H = 600; // standard meme canvas size
+      canvas.width = W;
+      canvas.height = H;
+      ctx.clearRect(0, 0, W, H);
+
+      // Draw background (template or uploaded image)
+      if (activeTemplate && TEMPLATES[activeTemplate]) {
+        TEMPLATES[activeTemplate].draw(ctx, W, H, topTextInput.value, bottomTextInput.value);
+      } else if (bgImage) {
+        // Fit uploaded image
+        const ratio = Math.min(W / bgImage.width, H / bgImage.height);
+        const dw = bgImage.width * ratio;
+        const dh = bgImage.height * ratio;
+        const dx = (W - dw) / 2;
+        const dy = (H - dh) / 2;
+        ctx.drawImage(bgImage, dx, dy, dw, dh);
+        // Draw text over it
+        drawMemeText(ctx, W, H, topTextInput.value, bottomTextInput.value);
+      } else {
+        // Nothing loaded yet
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, W, H);
+        drawMemeText(ctx, W, H, topTextInput.value, bottomTextInput.value);
+      }
+
+      document.getElementById('infoRow').style.display = 'flex';
+      document.getElementById('outSize').textContent = W + ' x ' + H;
+    }
+
+    // ===== Draw meme text (outline style) =====
+    function drawMemeText(ctx, W, H, topText, bottomText) {
+      const fontSize = parseInt(fontSizeSlider.value);
+      const outlineW = parseInt(outlineWidth.value);
+      const textCase = textCaseSelect.value;
+
+      function processText(t) {
+        if (!t) return '';
+        if (textCase === 'uppercase') return t.toUpperCase();
+        if (textCase === 'capitalize') return t.replace(/\b\w/g, c => c.toUpperCase());
+        return t;
+      }
+
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = 'bold ' + fontSize + 'px Impact, sans-serif';
+
+      // Top text
+      if (topText) {
+        const txt = processText(topText);
+        const y = fontSize + 20;
+        ctx.lineWidth = outlineW;
+        ctx.strokeStyle = '#000';
+        ctx.fillStyle = '#fff';
+        ctx.lineJoin = 'round';
+        // Word wrap
+        const lines = wrapText(ctx, txt, W - 40, fontSize);
+        lines.forEach((line, i) => {
+          const ly = y + i * (fontSize + 4);
+          ctx.strokeText(line, W / 2, ly);
+          ctx.fillText(line, W / 2, ly);
+        });
+      }
+
+      // Bottom text
+      if (bottomText) {
+        const txt = processText(bottomText);
+        ctx.lineWidth = outlineW;
+        ctx.strokeStyle = '#000';
+        ctx.fillStyle = '#fff';
+        const lines = wrapText(ctx, txt, W - 40, fontSize);
+        const totalH = lines.length * (fontSize + 4);
+        const startY = H - totalH + fontSize;
+        lines.forEach((line, i) => {
+          const ly = startY + i * (fontSize + 4);
+          ctx.strokeText(line, W / 2, ly);
+          ctx.fillText(line, W / 2, ly);
+        });
+      }
+    }
+
+    function wrapText(ctx, text, maxWidth, fontSize) {
+      const words = text.split(' ');
+      const lines = [];
+      let current = '';
+      for (const word of words) {
+        const test = current + (current ? ' ' : '') + word;
+        if (ctx.measureText(test).width > maxWidth && current) {
+          lines.push(current);
+          current = word;
+        } else {
+          current = test;
+        }
+      }
+      if (current) lines.push(current);
+      return lines;
+    }
+
+    // ===== Template drawing functions (simplified representations) =====
+    function drawDrake(ctx, W, H, top, bottom) {
+      // Simple Drake meme: left = dislikes (top text), right = likes (bottom text)
+      ctx.fillStyle = '#87ceeb';
+      ctx.fillRect(0, 0, W, H);
+      // Left side (dislikes)
+      ctx.fillStyle = '#ddd';
+      ctx.fillRect(0, 0, W/2, H);
+      // Right side (likes)
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(W/2, 0, W/2, H);
+      // Simple figure representations
+      ctx.fillStyle = '#8b4513';
+      ctx.beginPath(); ctx.arc(W/4, H*0.6, 60, 0, Math.PI*2); ctx.fill(); // left head
+      ctx.beginPath(); ctx.arc(W*3/4, H*0.6, 60, 0, Math.PI*2); ctx.fill(); // right head
+      // Labels
+      ctx.fillStyle = '#000';
+      ctx.font = 'bold 24px Impact';
+      ctx.textAlign = 'center';
+      ctx.fillText('DISLIKES', W/4, 30);
+      ctx.fillText('LIKES', W*3/4, 30);
+      drawMemeText(ctx, W, H, top, bottom);
+    }
+
+    function drawDistracted(ctx, W, H, top, bottom) {
+      ctx.fillStyle = '#f0e68c';
+      ctx.fillRect(0, 0, W, H);
+      // Three simple figures
+      const colors = ['#4a90d9', '#d0021b', '#4a90d9'];
+      colors.forEach((c, i) => {
+        ctx.fillStyle = c;
+        ctx.beginPath();
+        ctx.arc(W*0.25 + i*W*0.25, H*0.55, 40, 0, Math.PI*2);
+        ctx.fill();
+      });
+      drawMemeText(ctx, W, H, top, bottom);
+    }
+
+    function drawWomanYelling(ctx, W, H, top, bottom) {
+      ctx.fillStyle = '#e8e8e8';
+      ctx.fillRect(0, 0, W, H);
+      // Woman (left)
+      ctx.fillStyle = '#d0021b';
+      ctx.beginPath(); ctx.arc(W*0.3, H*0.55, 50, 0, Math.PI*2); ctx.fill();
+      // Cat (right)
+      ctx.fillStyle = '#ff6b35';
+      ctx.beginPath(); ctx.arc(W*0.7, H*0.6, 30, 0, Math.PI*2); ctx.fill();
+      drawMemeText(ctx, W, H, top, bottom);
+    }
+
+    function drawTwoButtons(ctx, W, H, top, bottom) {
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, W, H);
+      // Two buttons
+      ctx.fillStyle = '#d0021b';
+      ctx.beginPath(); ctx.arc(W/2 - 60, H/2, 30, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#4a90d9';
+      ctx.beginPath(); ctx.arc(W/2 + 60, H/2, 30, 0, Math.PI*2); ctx.fill();
+      drawMemeText(ctx, W, H, top, bottom);
+    }
+
+    function drawChangeMyMind(ctx, W, H, top, bottom) {
+      ctx.fillStyle = '#87ceeb';
+      ctx.fillRect(0, 0, W, H);
+      // Person at table
+      ctx.fillStyle = '#8b4513';
+      ctx.beginPath(); ctx.arc(W*0.7, H*0.5, 50, 0, Math.PI*2); ctx.fill();
+      drawMemeText(ctx, W, H, top, bottom);
+    }
+
+    // ===== Initial render if template selected =====
+    // (nothing to do on load)
+  
+  // Sample image & Next Step
+  (function() {
+    var _handleFile = typeof handleFile === 'function' ? handleFile : null;
+    if (_handleFile) {
+      window.initSampleButton('https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=800&q=80', _handleFile);
+    }
+    // Show next-step on download click
+    var dlBtn = document.getElementById('downloadBtn') || document.querySelector('.btn-primary[onclick*="download"], .btn-secondary[onclick*="download"]');
+    if (dlBtn) {
+      dlBtn.addEventListener('click', function() { SmartImgNextStep.show(); });
+    }
+  })();
+  </script>
+  <script src="/js/lang.js"></script>
+</body>
+</html>

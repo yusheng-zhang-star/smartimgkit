@@ -6,7 +6,7 @@
   <meta name="robots" content="index, follow">
   <title>Pemroses Batch Online Gratis — SmartImgKit</title>
   <meta name="description" content="Ubah ukuran, konversi format, dan tambahkan tanda air ke puluhan gambar.">
-  <meta name="keywords" content="bulk image processor, batch image resize, bulk image compress, batch convert images, bulk rename images, image watermark batch, batch image processing, free image processor online, multiple image editor, SmartImgKit bulk processor">
+  <meta name="keywords" content="pemrosesan massal, kompresi massal, ubah ukuran banyak, konversi massal, editor gambar massal, ubah ukuran banyak foto">
   <link rel="canonical" href="https://smartimgkit.com/id/tools/bulk-processor">
   <meta name="theme-color" content="#6366f1">
   <meta property="og:title" content="Pemroses Batch Online Gratis — SmartImgKit">
@@ -20,85 +20,95 @@
   <meta name="twitter:description" content="Ubah ukuran, konversi format, dan tambahkan tanda air ke puluhan gambar.">
   <meta name="twitter:image" content="https://smartimgkit.com/screenshots/bulk-processor.png">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate" hreflang="ar" href="https://smartimgkit.com/ar/tools/bulk-processor">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/bulk-processor">
+  <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/bulk-processor">
+  <link rel="alternate" hreflang="fr" href="https://smartimgkit.com/fr/tools/bulk-processor">
+  <link rel="alternate" hreflang="id" href="https://smartimgkit.com/id/tools/bulk-processor">
+  <link rel="alternate" hreflang="pt" href="https://smartimgkit.com/pt/tools/bulk-processor">
+  <link rel="alternate" hreflang="vi" href="https://smartimgkit.com/vi/tools/bulk-processor">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/bulk-processor">
   <link rel="stylesheet" href="/css/style.css?v=3">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+
   <style>
-    .tool-container{max-width:960px;margin:2rem auto;padding:0 1rem}
-    .controls{display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;justify-content:flex-start;margin:0.5rem 0}
-    .controls label{font-weight:600;font-size:0.85rem;color:var(--text-secondary);white-space:nowrap}
-    .controls select,.controls input[type=number],.controls input[type=text]{padding:7px 10px;border:1px solid var(--border-color);border-radius:var(--radius-sm);font-size:0.9rem;background:var(--bg-secondary);color:var(--text-primary);outline:none;transition:var(--transition)}
-    .controls select:focus,.controls input:focus{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-glow)}
-    .controls select{min-width:120px}
-    .controls input[type=number]{width:72px}
-    .controls input[type=text]{width:150px}
-    .controls input[type=range]{accent-color:var(--accent);background:var(--bg-tertiary);border-radius:4px;height:6px}
-    .controls input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer}
-    .controls input[type=checkbox]{accent-color:var(--accent);width:16px;height:16px;cursor:pointer}
-    .range-value{font-size:0.85rem;color:var(--text-secondary);min-width:35px;text-align:center}
-    .btn{padding:10px 24px;border:none;border-radius:var(--radius-md);font-size:0.9rem;cursor:pointer;font-weight:600;transition:var(--transition);display:inline-flex;align-items:center;gap:6px}
-    .btn-primary{background:var(--accent);color:#fff}
-    .btn-primary:hover{background:var(--accent-light);box-shadow:0 0 20px var(--accent-glow)}
-    .btn-secondary{background:var(--bg-tertiary);color:var(--text-primary);border:1px solid var(--border-color)}
-    .btn-secondary:hover{background:var(--bg-card-hover);border-color:var(--accent)}
-    .btn-success{background:var(--success);color:#fff}
-    .btn-success:hover{background:#16a34a}
-    .btn-sm{padding:6px 14px;font-size:0.82rem}
-    .btn:disabled{opacity:0.5;cursor:not-allowed;pointer-events:none}
-    .upload-area{border:2px dashed var(--border-color);border-radius:var(--radius-lg);padding:3rem 2rem;text-align:center;cursor:pointer;transition:var(--transition);background:var(--bg-card)}
-    .upload-area:hover,.upload-area.dragover{border-color:var(--accent);background:var(--bg-card-hover);box-shadow:0 0 30px var(--accent-glow)}
-    .upload-icon{font-size:3rem;margin-bottom:0.5rem}
-    .upload-area h3{font-size:1.2rem;margin:0.5rem 0}
-    .upload-area p{color:var(--text-secondary);font-size:0.9rem;margin:0.25rem 0}
-    .upload-hint{font-size:0.8rem;color:var(--text-muted)}
-    .file-list{display:flex;flex-direction:column;gap:0.4rem;margin:1rem 0;max-height:360px;overflow-y:auto;padding-right:4px}
-    .file-list::-webkit-scrollbar{width:4px}
-    .file-list::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:2px}
-    .file-item{display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0.75rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-sm);font-size:0.85rem;transition:var(--transition)}
-    .file-item:hover{background:var(--bg-card-hover)}
-    .file-item .fnum{color:var(--text-muted);font-size:0.75rem;min-width:24px}
-    .file-item .fname{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .file-item .fsize{color:var(--text-muted);font-size:0.78rem;min-width:70px;text-align:right}
-    .file-item .file-status{font-size:0.72rem;min-width:40px;text-align:center}
-    .file-item .file-status.done{color:var(--success)}
-    .file-item .file-status.wait{color:var(--text-muted)}
-    .file-item .file-status.proc{color:var(--accent)}
-    .file-item .file-compare{font-size:0.72rem;min-width:55px;text-align:center}
-    .file-item .file-compare.saved{color:var(--success)}
-    .file-item .file-compare.nosave{color:var(--text-muted)}
-    details.options-panel{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:0.75rem 1rem;margin:1rem 0}
-    details.options-panel summary{cursor:pointer;font-weight:600;font-size:0.92rem;color:var(--text-primary);padding:0.25rem 0}
-    details.options-panel summary:hover{color:var(--accent)}
-    details.options-panel[open]{padding-bottom:1rem}
-    .opt-group{border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:0.75rem 1rem;margin-top:0.75rem;background:var(--bg-secondary)}
-    .opt-group h4{font-size:0.85rem;margin:0 0 0.5rem 0;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px}
-    .preset-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-bottom:0.75rem}
-    .preset-btn{padding:8px 12px;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:var(--bg-tertiary);cursor:pointer;text-align:left;font-size:0.82rem;color:var(--text-primary);transition:var(--transition);line-height:1.4}
-    .preset-btn:hover{border-color:var(--accent);background:var(--bg-card-hover)}
-    .preset-btn.active{border-color:var(--accent);background:rgba(99,102,241,0.1);box-shadow:0 0 10px var(--accent-glow)}
-    .preset-btn strong{display:block;font-size:0.88rem}
-    .preset-btn span{font-size:0.75rem;color:var(--text-muted)}
-    .progress-bar{width:100%;height:10px;background:var(--bg-tertiary);border-radius:5px;overflow:hidden;margin:0.75rem 0}
-    .progress-fill{height:100%;background:linear-gradient(90deg,var(--gradient-from),var(--gradient-to));transition:width 0.25s;border-radius:5px}
-    .status{text-align:center;padding:0.4rem;font-size:0.88rem;color:var(--text-secondary)}
-    .file-progress{width:50px;height:4px;background:var(--bg-tertiary);border-radius:2px;overflow:hidden;flex-shrink:0}
-    .file-progress-fill{height:100%;background:var(--accent);transition:width 0.2s;border-radius:2px;width:0%}
-    .stats-bar{display:flex;flex-wrap:wrap;gap:1rem;padding:0.75rem 0;margin:0.5rem 0;border-top:1px solid var(--border-color);border-bottom:1px solid var(--border-color)}
-    .stat-item{font-size:0.82rem;color:var(--text-secondary)}
-    .stat-item strong{color:var(--text-primary);margin-right:3px}
-    .summary-table{width:100%;border-collapse:collapse;font-size:0.82rem;margin:0.5rem 0}
-    .summary-table th{text-align:left;padding:6px 8px;color:var(--text-muted);font-weight:500;border-bottom:1px solid var(--border-color)}
-    .summary-table td{padding:6px 8px;border-bottom:1px solid var(--border-color);color:var(--text-secondary)}
-    .summary-table td:last-child{text-align:right}
-    .summary-table .saved-row{background:rgba(34,197,94,0.05)}
-    .toast{position:fixed;bottom:30px;right:30px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:12px 20px;font-size:0.85rem;color:var(--text-primary);box-shadow:var(--shadow-lg);z-index:1000;opacity:0;transform:translateY(20px);transition:var(--transition);pointer-events:none}
-    .toast.show{opacity:1;transform:translateY(0);pointer-events:auto}
-    @media(max-width:640px){
-      .controls{gap:0.5rem}
-      .controls input[type=number]{width:60px}
-      .controls input[type=text]{width:120px}
-      .preset-grid{grid-template-columns:1fr 1fr}
-      .stats-bar{flex-direction:column;gap:0.4rem}
-    }
+        .tool-container{max-width:960px;margin:2rem auto;padding:0 1rem}
+        .controls{display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;justify-content:flex-start;margin:0.5rem 0}
+        .controls label{font-weight:600;font-size:0.85rem;color:var(--text-secondary);white-space:nowrap}
+        .controls select,.controls input[type=number],.controls input[type=text]{padding:7px 10px;border:1px solid var(--border-color);border-radius:var(--radius-sm);font-size:0.9rem;background:var(--bg-secondary);color:var(--text-primary);outline:none;transition:var(--transition)}
+        .controls select:focus,.controls input:focus{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-glow)}
+        .controls select{min-width:120px}
+        .controls input[type=number]{width:72px}
+        .controls input[type=text]{width:150px}
+        .controls input[type=range]{accent-color:var(--accent);background:var(--bg-tertiary);border-radius:4px;height:6px}
+        .controls input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer}
+        .controls input[type=checkbox]{accent-color:var(--accent);width:16px;height:16px;cursor:pointer}
+        .range-value{font-size:0.85rem;color:var(--text-secondary);min-width:35px;text-align:center}
+        .btn{padding:10px 24px;border:none;border-radius:var(--radius-md);font-size:0.9rem;cursor:pointer;font-weight:600;transition:var(--transition);display:inline-flex;align-items:center;gap:6px}
+        .btn-primary{background:var(--accent);color:#fff}
+        .btn-primary:hover{background:var(--accent-light);box-shadow:0 0 20px var(--accent-glow)}
+        .btn-secondary{background:var(--bg-tertiary);color:var(--text-primary);border:1px solid var(--border-color)}
+        .btn-secondary:hover{background:var(--bg-card-hover);border-color:var(--accent)}
+        .btn-success{background:var(--success);color:#fff}
+        .btn-success:hover{background:#16a34a}
+        .btn-sm{padding:6px 14px;font-size:0.82rem}
+        .btn:disabled{opacity:0.5;cursor:not-allowed;pointer-events:none}
+        .upload-area{border:2px dashed var(--border-color);border-radius:var(--radius-lg);padding:3rem 2rem;text-align:center;cursor:pointer;transition:var(--transition);background:var(--bg-card)}
+        .upload-area:hover,.upload-area.dragover{border-color:var(--accent);background:var(--bg-card-hover);box-shadow:0 0 30px var(--accent-glow)}
+        .upload-icon{font-size:3rem;margin-bottom:0.5rem}
+        .upload-area h3{font-size:1.2rem;margin:0.5rem 0}
+        .upload-area p{color:var(--text-secondary);font-size:0.9rem;margin:0.25rem 0}
+        .upload-hint{font-size:0.8rem;color:var(--text-muted)}
+        .file-list{display:flex;flex-direction:column;gap:0.4rem;margin:1rem 0;max-height:360px;overflow-y:auto;padding-right:4px}
+        .file-list::-webkit-scrollbar{width:4px}
+        .file-list::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:2px}
+        .file-item{display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0.75rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-sm);font-size:0.85rem;transition:var(--transition)}
+        .file-item:hover{background:var(--bg-card-hover)}
+        .file-item .fnum{color:var(--text-muted);font-size:0.75rem;min-width:24px}
+        .file-item .fname{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .file-item .fsize{color:var(--text-muted);font-size:0.78rem;min-width:70px;text-align:right}
+        .file-item .file-status{font-size:0.72rem;min-width:40px;text-align:center}
+        .file-item .file-status.done{color:var(--success)}
+        .file-item .file-status.wait{color:var(--text-muted)}
+        .file-item .file-status.proc{color:var(--accent)}
+        .file-item .file-compare{font-size:0.72rem;min-width:55px;text-align:center}
+        .file-item .file-compare.saved{color:var(--success)}
+        .file-item .file-compare.nosave{color:var(--text-muted)}
+        details.options-panel{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:0.75rem 1rem;margin:1rem 0}
+        details.options-panel summary{cursor:pointer;font-weight:600;font-size:0.92rem;color:var(--text-primary);padding:0.25rem 0}
+        details.options-panel summary:hover{color:var(--accent)}
+        details.options-panel[open]{padding-bottom:1rem}
+        .opt-group{border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:0.75rem 1rem;margin-top:0.75rem;background:var(--bg-secondary)}
+        .opt-group h4{font-size:0.85rem;margin:0 0 0.5rem 0;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px}
+        .preset-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-bottom:0.75rem}
+        .preset-btn{padding:8px 12px;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:var(--bg-tertiary);cursor:pointer;text-align:left;font-size:0.82rem;color:var(--text-primary);transition:var(--transition);line-height:1.4}
+        .preset-btn:hover{border-color:var(--accent);background:var(--bg-card-hover)}
+        .preset-btn.active{border-color:var(--accent);background:rgba(99,102,241,0.1);box-shadow:0 0 10px var(--accent-glow)}
+        .preset-btn strong{display:block;font-size:0.88rem}
+        .preset-btn span{font-size:0.75rem;color:var(--text-muted)}
+        .progress-bar{width:100%;height:10px;background:var(--bg-tertiary);border-radius:5px;overflow:hidden;margin:0.75rem 0}
+        .progress-fill{height:100%;background:linear-gradient(90deg,var(--gradient-from),var(--gradient-to));transition:width 0.25s;border-radius:5px}
+        .status{text-align:center;padding:0.4rem;font-size:0.88rem;color:var(--text-secondary)}
+        .file-progress{width:50px;height:4px;background:var(--bg-tertiary);border-radius:2px;overflow:hidden;flex-shrink:0}
+        .file-progress-fill{height:100%;background:var(--accent);transition:width 0.2s;border-radius:2px;width:0%}
+        .stats-bar{display:flex;flex-wrap:wrap;gap:1rem;padding:0.75rem 0;margin:0.5rem 0;border-top:1px solid var(--border-color);border-bottom:1px solid var(--border-color)}
+        .stat-item{font-size:0.82rem;color:var(--text-secondary)}
+        .stat-item strong{color:var(--text-primary);margin-right:3px}
+        .summary-table{width:100%;border-collapse:collapse;font-size:0.82rem;margin:0.5rem 0}
+        .summary-table th{text-align:left;padding:6px 8px;color:var(--text-muted);font-weight:500;border-bottom:1px solid var(--border-color)}
+        .summary-table td{padding:6px 8px;border-bottom:1px solid var(--border-color);color:var(--text-secondary)}
+        .summary-table td:last-child{text-align:right}
+        .summary-table .saved-row{background:rgba(34,197,94,0.05)}
+        .toast{position:fixed;bottom:30px;right:30px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:12px 20px;font-size:0.85rem;color:var(--text-primary);box-shadow:var(--shadow-lg);z-index:1000;opacity:0;transform:translateY(20px);transition:var(--transition);pointer-events:none}
+        .toast.show{opacity:1;transform:translateY(0);pointer-events:auto}
+        @media(max-width:640px){
+          .controls{gap:0.5rem}
+          .controls input[type=number]{width:60px}
+          .controls input[type=text]{width:120px}
+          .preset-grid{grid-template-columns:1fr 1fr}
+          .stats-bar{flex-direction:column;gap:0.4rem}
+        }
   </style>
   <script type="application/ld+json">
 {
@@ -172,19 +182,14 @@
   ]
 }
 </script>
-
-  <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/bulk-processor">
-  <link rel="alternate" hreflang="pt" href="https://smartimgkit.com/pt/tools/bulk-processor">
-  <link rel="alternate" hreflang="id" href="https://smartimgkit.com/id/tools/bulk-processor">
-  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/bulk-processor">
-  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/bulk-processor">
 <style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+
 </head>
 <body>
-  <!-- Adsterra Social Bar (29640799) -->
+  <!-- Adsterra Social Bar (29640799) - Popunder 替代品,移动端友好 -->
   <script src="https://pl29741298.effectivecpmnetwork.com/70/c0/84/70c084b07dadc5b3f66fae02aa21f788.js"></script>
 
-  <!-- Header -->
+  <!-- Header: exact match image-rotator compact format -->
   <header class="site-header">
     <div class="container header-inner">
       <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
@@ -198,7 +203,7 @@
             <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
           </div>
         </div>
-        <button class="theme-toggle" id="themeToggle">🌙</button>
+<button class="theme-toggle" id="themeToggle">🌙</button>
         <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
       </div>
     </div>
@@ -206,19 +211,16 @@
 
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Beranda</a><span>/</span><a href="/">Alat</a><span>/</span><span>📦 Pemroses Batch</span>
-      </nav>
+      <nav class="breadcrumb"><a href="/">Beranda</a><span>/</span><a href="/">Alat</a><span>/</span><span>📦 Pemroses Batch</span></nav>
       <div class="tool-page-header">
         <h1>📦 Pemroses Batch</h1>
-        <p class="tool-subtitle">Batch resize, compress, convert, rename &amp; watermark dozens of images at once — entirely in your browser.</p>
+        <p></p>
       </div>
-
-      <!-- Adsterra Native Banner (29640800) -->
+      <!-- Adsterra Native Banner (29640800) - 工具标题下,融入内容流 -->
       <div class="ad-native-banner">
         <script async="async" data-cfasync="false" src="https://pl29741299.effectivecpmnetwork.com/5a540a2ce35c794ad7d73a726a88971c/invoke.js"></script>
         <div id="container-5a540a2ce35c794ad7d73a726a88971c"></div>
       </div>
-
       <div class="tool-workspace">
         <div class="upload-area" id="uploadArea">
           <input type="file" id="fileInput" accept="image/*" multiple hidden>
@@ -282,7 +284,7 @@
                     <option value="image/png">PNG</option>
                     <option value="image/webp">WebP</option>
                   </select>
-                  <label>Quality</label>
+                  <label>Kualitas</label>
                   <input type="range" id="quality" min="10" max="100" value="85" style="width:130px">
                   <span class="range-value" id="qLabel">85%</span>
                 </div>
@@ -327,8 +329,21 @@
         <script>atOptions={'key':'c95d26a94d4f8dc640cd33ad5ec91528','format':'iframe','height':250,'width':300,'params':{}};</script>
         <script src="https://www.highperformanceformat.com/c95d26a94d4f8dc640cd33ad5ec91528/invoke.js"></script>
       </div>
+      <!-- Adsterra Banner 300x250 (29640802) - 工具区下方,黄金尺寸高 eCPM -->
+      <div class="ad-banner-300x250">
+        <script>
+          atOptions = {
+            'key' : 'c95d26a94d4f8dc640cd33ad5ec91528',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/c95d26a94d4f8dc640cd33ad5ec91528/invoke.js"></script>
+      </div>
 
-      <section class="how-to-section">
+<section class="how-to-section">
         <h2>How to Use the Bulk Image Processor</h2>
         <p class="section-desc">Batch process dozens of images in under a minute. Here's how:</p>
         <div class="how-to-steps">
@@ -340,46 +355,46 @@
         </div>
       </section>
 
-      <h2>Panduan Lengkap</h2>
+<h2>Panduan Lengkap</h2>
 
       <div class="guide-block">
         <h3>Batch Resize</h3>
-        <p>Enter target width and/or height in the Resize section. With "Keep aspect ratio" checked (default), the tool automatically scales the other dimension. Leave both empty to keep original dimensions. This is perfect for normalizing product photos or creating uniform social media assets.</p>
-        <p><strong>Tip:</strong> If you only enter a width, the height automatically adjusts to maintain proportions — no math required.</p>
+        <p>Masukkan lebar dan/atau tinggi target di bagian Ubah Ukuran. Dengan "Pertahankan rasio aspek" dicentang (default), alat secara otomatisly scales the other dimension. Leave both empty to keep original dimensions. This is perfect for normalizing product photos or creating uniform social media assets.</p>
+        <p><strong>Tips:</strong> Jika Anda hanya memasukkan lebar, tinggi secara otomatis menyesuaikan untuk mempertahankan proporsi — tidak perlu perhitungan.</p>
       </div>
 
       <div class="guide-block">
         <h3>Batch Compress &amp; Convert</h3>
-        <p>Use the Output Format dropdown to convert all images to JPG, PNG, or WebP. JPG is best for photographs (small file size), PNG preserves transparency, and WebP offers modern compression. The Quality slider (10-100%) lets you balance file size versus visual quality — 80-85% is the sweet spot for web use.</p>
-        <p><strong>Tip:</strong> WebP can often reduce file size by 25-35% compared to JPG at the same quality level.</p>
+        <p>Gunakan dropdown Format Output untuk mengonversi semua gambar ke JPG, PNG, atau WebP. JPG adalah pilihan terbaik untuk fotos (small file size), PNG preserves transparency, and WebP offers modern compression. The Quality slider (10-100%) lets you balance file size versus visual quality — 80-85% is the sweet spot for web use.</p>
+        <p><strong>Tips:</strong> WebP sering dapat mengurangi ukuran file hingga 25-35% dibandingkan dengan JPG pada level kualitas yang sama.</p>
       </div>
 
       <div class="guide-block">
         <h3>Batch Watermark</h3>
-        <p>Enter watermark text, adjust font size and opacity, and choose a position (bottom-right, bottom-left, top-right, top-left, or center). Leave the text field blank to skip watermarks. Great for branding batch photos before publishing.</p>
-        <p><strong>Tip:</strong> Keep opacity between 20-40% for a professional, non-intrusive watermark.</p>
+        <p>Masukkan teks watermark, sesuaikan ukuran font dan opasitas, lalu pilih posisi (kanan bawah, kiri bawah, kanan atas, kiri atast, or center). Leave the text field blank to skip watermarks. Great for branding batch photos before publishing.</p>
+        <p><strong>Tips:</strong> Jaga opasitas antara 20-40% untuk watermark yang profesional dan tidak mengganggu.</p>
       </div>
 
       <div class="guide-block">
         <h3>Batch Rename</h3>
-        <p>Toggle "Rename output files" and set a prefix and starting number. Files will be named sequentially: <code>prefix_001.ext</code>, <code>prefix_002.ext</code>, etc. The numbering is zero-padded (3 digits by default).</p>
-        <p><strong>Tip:</strong> Use descriptive prefixes like <code>product_</code>, <code>gallery_</code>, or <code>photo_</code> for easy file organization.</p>
+        <p>Aktifkan "Ganti nama file output" dan atur awalan serta nomor awal. File akan dinamai secara berurutan: <code>awalan_001.ext</code>, <code>prefix_002.ext</code>, etc. The numbering is zero-padded (3 digits by default).</p>
+        <p><strong>Tips:</strong> Gunakan awalan deskriptif seperti <code>produk_</code>, <code>galeri_</code>, atau <code>foto_</code> for easy file organization.</p>
       </div>
 
       <div class="guide-block">
         <h3>Using Presets</h3>
-        <p>Click any preset button to instantly configure multiple settings at once:</p>
+        <p>Klik tombol preset apa pun untuk langsung mengonfigurasi beberapa pengaturan sekaligus:</p>
         <ul>
           <li><strong>Web Optimized</strong> — 80% quality, max 1200px width. Ideal for blog images, portfolio thumbnails, and website assets.</li>
           <li><strong>Print Ready</strong> — 100% quality, max 3000px. Best for photo printing, high-res archiving, and professional deliverables.</li>
           <li><strong>E-Commerce</strong> — 85% quality, max 1000px. Optimized for product listings on marketplaces like Amazon, eBay, or Shopify.</li>
           <li><strong>Thumbnail</strong> — 60% quality, max 300px. Perfect for preview images, avatars, or gallery thumbnails.</li>
         </ul>
-        <p>After applying a preset, you can still fine-tune individual settings in the Processing Options panel.</p>
+        <p>Setelah menerapkan preset, Anda masih dapat menyempurnakan pengaturan individual di panel Opsi Pemrosesan.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Best Use Cases</h3>
+        <h3>Kasus Penggunaan Terbaik</h3>
         <ul>
           <li><strong>Website asset preparation</strong> — batch resize and compress all product photos for your e-commerce site</li>
           <li><strong>Photo batch compression</strong> — reduce storage footprint of large photo collections</li>
@@ -389,7 +404,7 @@
         </ul>
       </div>
 
-      <section class="faq-section">
+<section class="faq-section">
         <h2>Pertanyaan Umum</h2>
       <div class="faq-item"><button class="faq-question">Berapa banyak gambar yang bisa saya proses sekaligus?</button><div class="faq-answer">Tidak ada batas yang ditentukan. Alat ini dapat menangani 50-200 gambar dengan nyaman di laptop biasa. Kinerja tergantung pada ukuran gambar dan memori yang tersedia di browser Anda. Untuk kumpulan yang sangat besar (500+ gambar), sebaiknya dibagi menjadi beberapa kelompok yang lebih kecil.</div></div>
       <div class="faq-item"><button class="faq-question">Apakah ada batas ukuran file per gambar?</button><div class="faq-answer">Tidak ada batas yang diberlakukan, tetapi gambar di atas 50 MB dapat memperlambat pemrosesan. Untuk kinerja terbaik, kami sarankan gambar di bawah 20 MB per file.</div></div>
@@ -401,63 +416,56 @@
       <div class="faq-item"><button class="faq-question">Apakah alat ini gratis digunakan?</button><div class="faq-answer">Ya, sepenuhnya gratis. Tanpa registrasi, tanpa kunci API, tanpa batasan tersembunyi. Semua pemrosesan berjalan secara lokal di browser Anda tanpa pemrosesan di sisi server.</div></div>
       </section>
 
-      <section class="related-tools">
-        <h2>You Might Also Like</h2>
-        <div class="related-tools-grid">
-          <a href="/id/tools/compressor.html" class="related-tool-card">
-            <span class="tool-icon">🗜️</span>
-            <div class="tool-info">
-              <strong>Image Compressor</strong>
-              <span class="tool-desc">Compress single images with fine quality control</span>
-            </div>
-            <span class="tool-arrow">→</span>
-          </a>
-          <a href="/id/tools/converter.html" class="related-tool-card">
-            <span class="tool-icon">🔄</span>
-            <div class="tool-info">
-              <strong>Image Converter</strong>
-              <span class="tool-desc">Convert images between JPG, PNG, WebP</span>
-            </div>
-            <span class="tool-arrow">→</span>
-          </a>
-          <a href="/id/tools/resizer.html" class="related-tool-card">
-            <span class="tool-icon">📐</span>
-            <div class="tool-info">
-              <strong>Image Resizer</strong>
-              <span class="tool-desc">Resize a single image with precision</span>
-            </div>
-            <span class="tool-arrow">→</span>
-          </a>
-          <a href="/id/tools/watermark.html" class="related-tool-card">
-            <span class="tool-icon">🔏</span>
-            <div class="tool-info">
-              <strong>Watermark</strong>
-              <span class="tool-desc">Add watermark to a single image</span>
-            </div>
-            <span class="tool-arrow">→</span>
-          </a>
-          <a href="/id/tools/background-remover.html" class="related-tool-card">
-            <span class="tool-icon">✂️</span>
-            <div class="tool-info">
-              <strong>Background Remover</strong>
-              <span class="tool-desc">Remove backgrounds from images</span>
-            </div>
-            <span class="tool-arrow">→</span>
-          </a>
-        </div>
-      </section>
-    
-  
-<section class="faq-section" style="margin-top:32px">
-  <h2>Pertanyaan Umum Lainnya</h2>
-  <div class="faq-item"><button class="faq-question">Operations?</button><div class="faq-answer">Resize, format conversion, watermark in one batch with ZIP.</div></div>
-  <div class="faq-item"><button class="faq-question">How many?</button><div class="faq-answer">20-50 per batch recommended.</div></div>
-  <div class="faq-item"><button class="faq-question">Is it free?</button><div class="faq-answer">Yes, completely free.</div></div>
+<section class="related-tools">
+  <h2>Anda Mungkin Juga Suka</h2>
+  <div class="related-tools-grid">
+    <a href="/id/tools/compressor.html" class="related-tool-card">
+      <span class="tool-icon">🔧</span>
+      <div class="tool-info">
+        <strong>Kompresor Gambar</strong>
+        <span class="tool-desc">Kurangi ukuran file tanpa hilang kualitas</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/id/tools/converter.html" class="related-tool-card">
+      <span class="tool-icon">🔧</span>
+      <div class="tool-info">
+        <strong>Konverter Gambar</strong>
+        <span class="tool-desc">Konversi antara JPG, PNG, WebP dan lainnya</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/id/tools/resizer.html" class="related-tool-card">
+      <span class="tool-icon">🔧</span>
+      <div class="tool-info">
+        <strong>Image Resizer</strong>
+        <span class="tool-desc">Ubah dimensi gambar apa pun</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/id/tools/watermark.html" class="related-tool-card">
+      <span class="tool-icon">🔧</span>
+      <div class="tool-info">
+        <strong>Watermark</strong>
+        <span class="tool-desc">Lindungi gambar dengan watermark</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/id/tools/background-remover.html" class="related-tool-card">
+      <span class="tool-icon">🔧</span>
+      <div class="tool-info">
+        <strong>Hapus Latar Belakang</strong>
+        <span class="tool-desc">Hapus latar belakang dengan AI di browser</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+  </div>
 </section>
     </div>
-    </main>
 
-  <!-- Footer -->
+</main>
+
+<!-- Footer: exact match image-rotator compact format -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
@@ -476,7 +484,10 @@
           <a href="/id/tools/image-grayscale.html">Image Grayscale</a>
           <a href="/id/tools/image-shadow.html">Image Shadow</a>
           <a href="/id/tools/image-splitter.html">Image Splitter</a>
-          <a href="/id/tools/image-exif-remover.html">EXIF Remover</a><a href="/id/tools/circle-crop.html">Circle Crop</a><a href="/id/tools/favicon-generator.html">Favicon Generator</a><a href="/id/tools/ocr.html">OCR Text</a><a href="/id/tools/bulk-processor.html">Bulk Processor</a><a href="/id/tools/image-to-pdf.html">Image to PDF</a><a href="/id/tools/image-enhancer.html">Image Enhancer</a>
+          <a href="/id/tools/image-exif-remover.html">EXIF Remover</a><a href="/id/tools/circle-crop.html">Circle Crop</a><a href="/id/tools/favicon-generator.html">Favicon Generator</a><a href="/id/tools/ocr.html">OCR Text</a><a href="/id/tools/bulk-processor.html">Bulk Processor</a><a href="/id/tools/image-to-pdf.html">Image to PDF</a>          <a href="/id/tools/id-photo.html">ID Photo Maker</a>
+          <a href="/id/tools/product-white-background.html">Product White BG</a>
+          <a href="/id/tools/social-media-post.html">Social Media Post</a>
+          <a href="/id/tools/photo-restoration.html">Photo Restoration</a><a href="/id/tools/image-enhancer.html">Image Enhancer</a>
         </div>
         <div class="footer-links"><h4>Legal</h4><a href="/privacy.html">Kebijakan Privasi</a><a href="/terms.html">Ketentuan Layanan</a><a href="/cookie-policy.html">Kebijakan Cookie</a>
         </div>
@@ -727,7 +738,8 @@
   });
 })();
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js">
+  </script>
   <script src="/js/lang.js"></script>
 </body>
 </html>

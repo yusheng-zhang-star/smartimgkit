@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark" data-tool-id="color-palette">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Color Palette Extractor — From Image Free | SmartImgKit</title>
+  <meta name="description" content="Extract dominant colors from any image and generate CSS color palettes. Free, browser-based, no uploads.">
+  <meta name="keywords" content="color palette, extract colors, dominant colors, color scheme generator, image colors">
+  <link rel="canonical" href="https://smartimgkit.com/fr/tools/color-palette">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="Free Color Palette Extractor — SmartImgKit">
+  <meta property="og:description" content="Extract dominant colors from any image and generate CSS color palettes automatically. Free, no signup, 100% browser-based.">
+  <meta property="og:url" content="https://smartimgkit.com/fr/tools/color-palette">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/color-palette.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free Color Palette Extractor — SmartImgKit">
+  <meta name="twitter:description" content="Extract dominant colors from any image and generate CSS color palettes automatically. Free, no signup, 100% browser-based.">
+  <meta name="twitter:image" content="https://smartimgkit.com/screenshots/color-palette.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate" hreflang="ar" href="https://smartimgkit.com/ar/tools/color-palette">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/color-palette">
+  <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/color-palette">
+  <link rel="alternate" hreflang="fr" href="https://smartimgkit.com/fr/tools/color-palette">
+  <link rel="alternate" hreflang="id" href="https://smartimgkit.com/id/tools/color-palette">
+  <link rel="alternate" hreflang="pt" href="https://smartimgkit.com/pt/tools/color-palette">
+  <link rel="alternate" hreflang="vi" href="https://smartimgkit.com/vi/tools/color-palette">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/color-palette">
+  <link rel="stylesheet" href="/css/style.css?v=3">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Color Palette Extractor",
+  "url": "https://smartimgkit.com/tools/color-palette",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Extract dominant colors from any image and generate CSS color palettes automatically. Free, no signup, 100% browser-based."
+}
+</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Extract Color Palettes from Images",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Upload Image",
+      "text": "Select an image to analyze."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Extract Colors",
+      "text": "Choose how many colors to extract and click Extract Colors."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Copy Palette",
+      "text": "Click any color to copy its HEX code, or copy the CSS variables output."
+    }
+  ]
+}
+</script>
+  <style>
+    .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; margin-top: 16px; }
+        .palette-color { border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-color); cursor: pointer; transition: var(--transition); }
+        .palette-color:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+        .palette-swatch { height: 80px; }
+        .palette-info { padding: 8px 10px; background: var(--bg-card); font-size: 0.75rem; }
+        .palette-info code { font-family: monospace; color: var(--accent-light); }
+        .css-output { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px; font-family: monospace; font-size: 0.8rem; white-space: pre-wrap; color: var(--text-secondary); margin-top: 16px; }
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How many colors are extracted?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Configurable: 3-20 colors."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What extraction algorithms are supported?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "K-means clustering, median cut, and frequency-based."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my image uploaded to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All processing happens locally."
+      }
+    }
+  ]
+}
+</script>
+<style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+
+</head>
+<body>
+  <!-- Adsterra Social Bar (29640799) - Popunder 替代品,移动端友好 -->
+  <script src="https://pl29741298.effectivecpmnetwork.com/70/c0/84/70c084b07dadc5b3f66fae02aa21f788.js"></script>
+
+  <!-- Header: exact match image-rotator compact format -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/">Accueil</a><a href="/fr/tools/background-remover.html">Outils</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/about.html">À propos</a><a href="/contact.html">Contact</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Changer de langue">🇫🇷 FR</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/" hreflang="en" lang="en">🇬🇧 English</a>
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+            <a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a>
+            <a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a>
+          </div>
+        </div>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/">Outils</a><span>/</span><span>🎨 Color Palette</span></nav>
+      <div class="tool-page-header">
+        <h1>🎨 Color Palette</h1>
+        <p>Extract dominant colors from any image and get CSS-ready color codes. Perfect for designers and developers.</p>
+      </div>
+      <!-- Adsterra Native Banner (29640800) - 工具标题下,融入内容流 -->
+      <div class="ad-native-banner">
+        <script async="async" data-cfasync="false" src="https://pl29741299.effectivecpmnetwork.com/5a540a2ce35c794ad7d73a726a88971c/invoke.js"></script>
+        <div id="container-5a540a2ce35c794ad7d73a726a88971c"></div>
+      </div>
+      <div class="tool-workspace">
+<!-- Befoue/After Aperçu -->
+        <div class="befoue-after-preview" id="befoueAfterAperçu">
+          <div class="befoue-after-label">✨ See what this tool can do</div>
+          <div class="befoue-after-images">
+            <div class="befoue-after-item">
+              <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400&q=80" alt="Befoue" loading="lazy" onerrou="this.style.display='none';this.parentElement.classList.add('img-fallback')">
+              <div class="befoue-after-item-caption befoue">Befoue</div>
+            </div>
+            <div class="befoue-after-item">
+              <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);bouder-radius:8px;">
+                <span style="font-size:3rem;opacity:0.5;">🎨</span>
+              </div>
+              <div class="befoue-after-item-caption after">After — processed</div>
+            </div>
+          </div>
+        </div>        <input type="fichier" id="fichierInput" accept="image/*" style="display:none;">
+      <label fou="fichierInput" class="dropzone" id="dropzone">
+          <div class="dropzone-icon">📤</div>
+          <h3>Déposer an image here</h3>
+          <p>ou cliquez pour parcourir. Suppouts JPG, PNG, WebP.</p>
+      </label>
+      <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Try with a sample image</span>
+        <div class="preview-area" id="previewArea">
+          <div class="preview-container"><img id="previewImg" alt="Aperçu" style="max-height:300px"></div>
+          <div style="text-align:center;margin:12px 0">
+            <label style="colou:var(--text-secondary);font-size:.85rem">Number of colous: <span id="countVal">6</span></label>
+            <input type="range" id="countRange" min="3" max="12" value="6" style="max-width:200px;margin:0 auto;display:block">
+          </div>
+          <div class="tool-actions">
+            <button class="btn btn-primary" id="extractBtn">🎨 Extract Couleurs</button>
+            <button class="btn btn-secondary" id="resetBtn">🔄 New Image</button>
+          </div>
+          <div id="status" class="text-center mt-16" style="colou:var(--text-secondary)"></div>
+          <div id="paletteRésultat" class="hidden">
+            <h3 style="margin-top:24px;font-size:1.1rem">Extracted Palette</h3>
+            <div class="palette-grid" id="paletteGrid"></div>
+            <h3 style="margin-top:24px;font-size:1.1rem">CSS Variables</h3>
+            <div class="css-output" id="cssOutput"></div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <!-- Adsterra Banner 300x250 (29640802) - 工具区下方,黄金尺寸高 eCPM -->
+      <div class="ad-banner-300x250">
+        <script>
+          atOptions = {
+            'key' : 'c95d26a94d4f8dc640cd33ad5ec91528',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/c95d26a94d4f8dc640cd33ad5ec91528/invoke.js"></script>
+      </div>
+
+<section class="how-to-section">
+        <h2>How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step"><div class="step-number">1</div><h4>Upload</h4><p>Select an image to analyze.</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>Adjust Count</h4><p>Choose how many dominant colors to extract (3–12).</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>Extract & Copy</h4><p>Click Extract Colors, then click any color to copy its hex code.</p></div>
+        </div>
+      </section>
+
+<h2>Detailed User Guide</h2>
+
+        <div class="guide-block">
+          <h3>Step 1: Upload Your Image</h3>
+          <p>Upload any <strong>JPG, PNG, or WebP</strong> image. This works great with photos, artwork, screenshots, or any image with interesting colors.</p>
+          <div class="guide-screenshot">
+            <img src="/screenshots/color-palette.png" alt="Color Palette tool showing extracted colors" loading="lazy">
+            <div class="guide-screenshot-caption">Upload an image and choose how many dominant colors to extract</div>
+          </div>
+        </div>
+
+        <div class="guide-block">
+          <h3>Step 2: Choose Color Count</h3>
+          <p>Use the slider to select how many colors to extract (3–12). More colors give a richer palette; fewer colors give a more focused, minimalist scheme.</p>
+          <ul>
+            <li><strong>3-4 colors</strong> — Ideal for simple branding and minimalist designs</li>
+            <li><strong>5-6 colors</strong> — Balanced palette for most web and UI projects</li>
+            <li><strong>8-12 colors</strong> — Comprehensive palette for complex designs and illustrations</li>
+          </ul>
+        </div>
+
+        <div class="guide-block">
+          <h3>Step 3: Extract & Use</h3>
+          <p>Click <strong>"Extract Colors"</strong> to analyze the image. The tool displays:</p>
+          <ul>
+            <li>Color swatches with <strong>HEX</strong> and <strong>RGB</strong> values</li>
+            <li>Ready-to-use <strong>CSS variables</strong> that you can copy directly into your stylesheet</li>
+          </ul>
+          <p>Click any color swatch to copy its HEX code to your clipboard instantly.</p>
+          <div class="tip"><strong>Tip:</strong> The first color is usually the most dominant. Use it as your primary brand color, and the rest as accents and neutrals.</div>
+        </div>
+
+        <div class="guide-block">
+          <h3>Best Use Cases</h3>
+          <ul>
+            <li><strong>Brand color inspiration</strong> — Extract colors from a mood board or reference image</li>
+            <li><strong>Website theming</strong> — Match your site's palette to a key photograph or product image</li>
+            <li><strong>UI design</strong> — Generate accessible color schemes for apps and dashboards</li>
+            <li><strong>Art & illustration</strong> — Build harmonious color palettes from nature photos or artwork</li>
+          </ul>
+        </div>
+
+        <div class="guide-block">
+          <h3>Pro Tips</h3>
+          <ul>
+            <li>Images with strong, distinct colors produce the best palettes</li>
+            <li>Use the CSS output directly in your project's <code>:root</code> for consistent theming</li>
+            <li>Try extracting from multiple images and combining palettes for unique combinations</li>
+            <li>The algorithm finds visually dominant colors, not just statistically frequent ones</li>
+          </ul>
+        </div>
+
+<section class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item"><button class="faq-question">How accurate is the color extraction?</button><div class="faq-answer">We use a quantization algorithm to find the most visually dominant colors. Results are great for inspiration and design systems.</div></div>
+      <div class="faq-item"><button class="faq-question">What color formats are shown?</button><div class="faq-answer">Each color displays its HEX code. The CSS output section provides ready-to-use CSS custom properties.</div></div>
+      <div class="faq-item"><button class="faq-question">Can I copy a color with one click?</button><div class="faq-answer">Yes. Click any color swatch to copy its HEX code to your clipboard.</div></div>
+      </section>
+
+<section class="related-tools">
+  <h2>You Might Also Like</h2>
+  <div class="related-tools-grid">
+    <a href="/fr/tools/screenshot-to-image.html" class="related-tool-card">
+      <span class="tool-icon">🖼️</span>
+      <div class="tool-info">
+        <strong>Screenshot to Image</strong>
+        <span class="tool-desc">Frame screenshots after extracting colors</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/fr/tools/text-on-image.html" class="related-tool-card">
+      <span class="tool-icon">✏️</span>
+      <div class="tool-info">
+        <strong>Text on Image</strong>
+        <span class="tool-desc">Add text in extracted colors</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/fr/tools/image-filters.html" class="related-tool-card">
+      <span class="tool-icon">🎨</span>
+      <div class="tool-info">
+        <strong>Image Filters</strong>
+        <span class="tool-desc">Apply vintage/warm filters to color-coordinated images</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+  </div>
+</section>
+    </div>
+
+</main>
+
+<footer class="site-footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Outils d'image gratuits avec IA qui respectent votre vie privée.</p></div><div class="footer-links"><h4>Outils</h4><a href="/fr/tools/background-remover.html">Supprimer l'arrière-plan</a><a href="/fr/tools/compressor.html">Compresseur</a><a href="/fr/tools/converter.html">Convertisseur</a><a href="/fr/tools/resizer.html">Redimensionneur</a><a href="/fr/tools/cropper.html">Recadrage</a><a href="/fr/tools/watermark.html">Filigrane</a></div><div class="footer-links"><h4>Plus d'outils</h4><a href="/fr/tools/image-upscaler.html">Agrandisseur</a><a href="/fr/tools/gif-editor.html">Éditeur GIF</a><a href="/fr/tools/pdf-to-image.html">PDF vers Image</a><a href="/fr/tools/heic-converter.html">Convertisseur HEIC</a><a href="/fr/tools/meme-generator.html">Générateur de Mèmes</a><a href="/fr/tools/face-blur.html">Flouter les Visages</a></div><div class="footer-links"><h4>Site</h4><a href="/about.html">À propos</a><a href="/contact.html">Contact</a><a href="/privacy.html">Confidentialité</a><a href="/terms.html">Conditions</a></div></div><div class="footer-bottom"><p>© 2026 SmartImgKit. Traitement 100% local — vos fichiers ne quittent jamais votre appareil.</p></div></div></footer>
+
+  <script src="/js/main.js?v=3"></script>
+  <script>
+const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const previewArea = document.getElementById('previewArea');
+    const previewImg = document.getElementById('previewImg');
+    const countRange = document.getElementById('countRange');
+    const countVal = document.getElementById('countVal');
+    const extractBtn = document.getElementById('extractBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const status = document.getElementById('status');
+    const paletteResult = document.getElementById('paletteResult');
+    const paletteGrid = document.getElementById('paletteGrid');
+    const cssOutput = document.getElementById('cssOutput');
+
+    let currentFile = null;
+
+    setupDropzone({ dropzoneId: 'dropzone', inputId: 'fileInput', onFile: handleFile });
+    countRange.addEventListener('input', () => countVal.textContent = countRange.value);
+
+    function handleFile(file) {
+      if (!file.type.startsWith('image/')) { status.textContent = 'Please select an image file.'; return; }
+      currentFile = file;
+      ImageUtils.load(file).then(img => {
+        previewImg.src = img.src;
+        previewArea.classList.add('active');
+          document.getElementById('beforeAfterPreview') && document.getElementById('beforeAfterPreview').classList.add('hidden');
+        dropzone.classList.add('hidden');
+        status.textContent = '';
+        paletteResult.classList.add('hidden');
+      });
+    }
+
+    function rgbToHex(r, g, b) {
+      return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+    }
+
+    function extractColors(img, count) {
+      const canvas = ImageUtils.createCanvas(100, 100);
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, 100, 100);
+      const data = ctx.getImageData(0, 0, 100, 100).data;
+      const buckets = {};
+      for (let i = 0; i < data.length; i += 4) {
+        const r = Math.round(data[i] / 32) * 32;
+        const g = Math.round(data[i + 1] / 32) * 32;
+        const b = Math.round(data[i + 2] / 32) * 32;
+        const key = r + ',' + g + ',' + b;
+        buckets[key] = (buckets[key] || 0) + 1;
+      }
+      return Object.entries(buckets)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, count)
+        .map(([key]) => key.split(',').map(Number));
+    }
+
+    extractBtn.addEventListener('click', async () => {
+      if (!currentFile) return;
+      extractBtn.disabled = true;
+      extractBtn.textContent = '🔄 Extracting...';
+      status.innerHTML = '<div class="spinner"></div>';
+      try {
+        const img = await ImageUtils.load(currentFile);
+        const colors = extractColors(img, parseInt(countRange.value));
+        paletteGrid.innerHTML = '';
+        let css = ':root {\n';
+        colors.forEach((c, i) => {
+          const hex = rgbToHex(c[0], c[1], c[2]);
+          css += `  --color-${i + 1}: ${hex};\n`;
+          const div = document.createElement('div');
+          div.className = 'palette-color';
+          div.innerHTML = `<div class="palette-swatch" style="background:${hex}"></div><div class="palette-info"><code>${hex}</code><br>rgb(${c.join(',')})</div>`;
+          div.addEventListener('click', () => { navigator.clipboard.writeText(hex); status.textContent = hex + ' copied!'; });
+          paletteGrid.appendChild(div);
+        });
+        css += '}';
+        cssOutput.textContent = css;
+        paletteResult.classList.remove('hidden');
+        status.textContent = 'Click any color to copy its HEX code.';
+      } catch (err) {
+        status.textContent = 'Error: ' + err.message;
+      } finally {
+        extractBtn.disabled = false;
+        extractBtn.textContent = '🎨 Extract Colors';
+      }
+    });
+
+    resetBtn.addEventListener('click', () => {
+      currentFile = null;
+      previewArea.classList.remove('active');
+          document.getElementById('beforeAfterPreview') && document.getElementById('beforeAfterPreview').classList.remove('hidden');
+      dropzone.classList.remove('hidden');
+      fileInput.value = ''; status.textContent = '';
+      paletteResult.classList.add('hidden');
+    });
+  
+  // Sample image & Next Step
+  (function() {
+    var _handleFile = typeof handleFile === 'function' ? handleFile : null;
+    if (_handleFile) {
+      window.initSampleButton('https://images.unsplash.com/photo-1493552152660-f915ab47ae9d?w=800&q=80', _handleFile);
+    }
+    // Show next-step on download click
+    var dlBtn = document.getElementById('downloadBtn') || document.querySelector('.btn-primary[onclick*="download"], .btn-secondary[onclick*="download"]');
+    if (dlBtn) {
+      dlBtn.addEventListener('click', function() { SmartImgNextStep.show(); });
+    }
+  })();
+  </script>
+  <script src="/js/lang.js"></script>
+</body>
+</html>

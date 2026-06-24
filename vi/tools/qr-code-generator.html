@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark" data-tool-id="qr-code-generator">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Free QR Code Generator — Custom Colors & Logo | SmartImgKit</title>
+  <meta name="description" content="Generate free QR codes with custom colors, sizes, error correction, and optional center logo. Download as PNG, SVG, or batch ZIP. 100% in browser, no upload needed.">
+  <meta name="keywords" content="QR code generator, free QR code, custom QR code, QR with logo, WiFi QR, vCard QR, batch QR code, online QR, smartimgkit">
+  <link rel="canonical" href="https://smartimgkit.com/vi/tools/qr-code-generator">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="Free QR Code Generator — SmartImgKit">
+  <meta property="og:description" content="Generate QR codes with custom colors, error correction, and center logo. Download PNG, SVG, or batch ZIP. 100% browser-based.">
+  <meta property="og:url" content="https://smartimgkit.com/vi/tools/qr-code-generator">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/qr-code-generator.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free QR Code Generator — SmartImgKit">
+  <meta name="twitter:description" content="Generate QR codes with custom colors, error correction, and center logo. Download PNG, SVG, or batch ZIP. 100% browser-based.">
+  <meta name="twitter:image" content="https://smartimgkit.com/screenshots/qr-code-generator.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate" hreflang="ar" href="https://smartimgkit.com/ar/tools/qr-code-generator">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/qr-code-generator">
+  <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/qr-code-generator">
+  <link rel="alternate" hreflang="fr" href="https://smartimgkit.com/fr/tools/qr-code-generator">
+  <link rel="alternate" hreflang="id" href="https://smartimgkit.com/id/tools/qr-code-generator">
+  <link rel="alternate" hreflang="pt" href="https://smartimgkit.com/pt/tools/qr-code-generator">
+  <link rel="alternate" hreflang="vi" href="https://smartimgkit.com/vi/tools/qr-code-generator">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/qr-code-generator">
+  <link rel="stylesheet" href="/css/style.css?v=3">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "QR Code Generator",
+  "url": "https://smartimgkit.com/tools/qr-code-generator",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Generate free QR codes with custom colors and optional logo. Download PNG, SVG, or batch ZIP. 100% in browser."
+}
+</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Generate a QR Code",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Enter Content",
+      "text": "Type a URL, text, WiFi credentials, or vCard in the input box."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Customize",
+      "text": "Pick colors, error correction level, size, and optionally upload a center logo."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Download",
+      "text": "Click Download PNG, Download SVG, or Add to Batch and Download ZIP."
+    }
+  ]
+}
+</script>
+  <style>
+    .qr-tabs { display: flex; gap: 4px; background: var(--surface); padding: 4px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 16px; flex-wrap: wrap; }
+      .qr-tab { flex: 1; min-width: 80px; padding: 10px 14px; border: none; background: transparent; color: var(--text-secondary); font-size: 13px; font-weight: 500; cursor: pointer; border-radius: 7px; transition: all 0.2s; }
+      .qr-tab:hover { color: var(--text); }
+      .qr-tab.active { background: var(--primary); color: #fff; }
+      .qr-tab-pane { display: none; }
+      .qr-tab-pane.active { display: block; }
+      .qr-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+      @media (max-width: 720px) { .qr-grid-2 { grid-template-columns: 1fr; } }
+      .qr-form-group { margin-bottom: 14px; }
+      .qr-form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+      .qr-form-group input[type="text"], .qr-form-group input[type="url"], .qr-form-group input[type="number"], .qr-form-group input[type="password"], .qr-form-group textarea, .qr-form-group select { width: 100%; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 14px; font-family: inherit; }
+      .qr-form-group input:focus, .qr-form-group textarea:focus, .qr-form-group select:focus { outline: none; border-color: var(--primary); }
+      .qr-form-group textarea { min-height: 90px; resize: vertical; }
+      .qr-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      @media (max-width: 480px) { .qr-form-row { grid-template-columns: 1fr; } }
+      .qr-color-row { display: flex; align-items: center; gap: 10px; }
+      .qr-color-row input[type="color"] { width: 44px; height: 38px; padding: 2px; border: 1.5px solid var(--border); border-radius: 8px; background: var(--bg); cursor: pointer; }
+      .qr-color-row input[type="text"] { flex: 1; font-family: 'Courier New', monospace; }
+      .qr-preview-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 340px; }
+      .qr-canvas-box { background: #fff; padding: 16px; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+      .qr-canvas-box canvas { display: block; max-width: 100%; height: auto; }
+      .qr-info { margin-top: 12px; font-size: 12px; color: var(--text-secondary); text-align: center; }
+      .qr-info .qr-info-row { display: flex; justify-content: space-between; padding: 2px 0; }
+      .qr-info .qr-info-row strong { color: var(--text); font-weight: 600; }
+      .qr-slider-wrap { display: flex; align-items: center; gap: 10px; }
+      .qr-slider-wrap input[type="range"] { flex: 1; }
+      .qr-slider-wrap .qr-slider-val { font-family: 'Courier New', monospace; font-size: 13px; min-width: 40px; text-align: right; }
+      .qr-logo-preview { width: 48px; height: 48px; border: 1.5px dashed var(--border); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--text-secondary); margin-top: 6px; background-size: contain; background-repeat: no-repeat; background-position: center; }
+      .qr-batch-list { max-height: 200px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; padding: 8px; }
+      .qr-batch-item { display: flex; align-items: center; justify-content: space-between; padding: 6px 8px; border-radius: 4px; font-size: 13px; }
+      .qr-batch-item:nth-child(odd) { background: var(--bg); }
+      .qr-batch-item button { background: transparent; border: none; color: var(--text-secondary); cursor: pointer; padding: 0 4px; }
+      .qr-batch-item button:hover { color: #ef4444; }
+      .qr-sample-text { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+      
+      .qr-batch-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+      .qr-batch-row .qr-row-num { font-size: 12px; color: var(--text-secondary); min-width: 22px; text-align: right; }
+      .qr-batch-row input[type="text"] { flex: 1; padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; }
+      .qr-batch-row button { background: transparent; border: none; color: var(--text-secondary); cursor: pointer; padding: 4px 8px; }
+      .qr-batch-row button:hover { color: #ef4444; }
+      .qr-batch-add { display: flex; justify-content: center; padding: 10px 0; }
+      .qr-preview-mini { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; margin-top: 12px; }
+      .qr-preview-mini > div { background: #fff; padding: 4px; border-radius: 6px; text-align: center; font-size: 10px; color: #333; }
+      .qr-preview-mini img { width: 100%; height: auto; display: block; }
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is this QR code generator really free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, completely free with no usage limits and no watermarks."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my data uploaded to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All QR generation happens locally in your browser."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What error correction level should I use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use M (15%) for clean prints. Use Q or H when adding a center logo."
+      }
+    }
+  ]
+}
+</script>
+<style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+
+</head>
+<body>
+  <!-- Adsterra Social Bar (29640799) - Popunder 替代品,移动端友好 -->
+  <script src="https://pl29741298.effectivecpmnetwork.com/70/c0/84/70c084b07dadc5b3f66fae02aa21f788.js"></script>
+
+  <!-- Header: exact match image-rotator compact format -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/">Trang chủ</a><a href="/vi/tools/background-remover.html">Công cụ</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/about.html">Giới thiệu</a><a href="/contact.html">Liên hệ</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Đổi ngôn ngữ">🇻🇳 VI</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/" hreflang="en" lang="en">🇬🇧 English</a>
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+            <a href="/fr/" hreflang="fr" lang="fr">🇫🇷 Français</a>
+            <a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a>
+          </div>
+        </div>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/">Trang chủ</a><span>/</span><a href="/">Công cụ</a><span>/</span><span>📱 Free QR Code Generator</span></nav>
+      <div class="tool-page-header">
+        <h1>📱 Free QR Code Generator</h1>
+        <p>Create custom QR codes with colors, error correction, and center logo. Support for URLs, text, WiFi, vCard, and email. Batch generate as ZIP. 100% in your browser.</p>
+      </div>
+      <!-- Adsterra Native Banner (29640800) - 工具标题下,融入内容流 -->
+      <div class="ad-native-banner">
+        <script async="async" data-cfasync="false" src="https://pl29741299.effectivecpmnetwork.com/5a540a2ce35c794ad7d73a726a88971c/invoke.js"></script>
+        <div id="container-5a540a2ce35c794ad7d73a726a88971c"></div>
+      </div>
+      <div class="tool-workspace">
+<div class="qr-tabs" role="tablist">
+          <button class="qr-tab active" data-tab="url" role="tab">🔗 URL</button>
+          <button class="qr-tab" data-tab="text" role="tab">📝 Văn bản</button>
+          <button class="qr-tab" data-tab="wifi" role="tab">📶 WiFi</button>
+          <button class="qr-tab" data-tab="vcard" role="tab">👤 vCard</button>
+          <button class="qr-tab" data-tab="email" role="tab">✉️ Email</button>
+        </div>
+
+        <div class="qr-grid-2">
+          <div>
+            <div class="qr-tab-pane active" data-pane="url">
+              <div class="qr-fhoặcm-group">
+                <label fhoặc="urlInput">Website URL</label>
+                <input type="url" id="urlInput" placeholder="https://example.com" value="https://smartimgkit.com">
+              </div>
+            </div>
+            <div class="qr-tab-pane" data-pane="text">
+              <div class="qr-fhoặcm-group">
+                <label fhoặc="textInput">Plain Văn bản</label>
+                <textarea id="textInput" placeholder="Any text you want to encode..."></textarea>
+              </div>
+            </div>
+            <div class="qr-tab-pane" data-pane="wifi">
+              <div class="qr-fhoặcm-group">
+                <label fhoặc="wifiSsid">Netwhoặck Name (SSID)</label>
+                <input type="text" id="wifiSsid" placeholder="MyWiFi">
+              </div>
+              <div class="qr-fhoặcm-row">
+                <div class="qr-fhoặcm-group">
+                  <label fhoặc="wifiPasswhoặcd">Passwhoặcd</label>
+                  <input type="text" id="wifiPasswhoặcd" placeholder="optional">
+                </div>
+                <div class="qr-fhoặcm-group">
+                  <label fhoặc="wifiType">Security</label>
+                  <select id="wifiType">
+                    <option value="WPA">WPA/WPA2</option>
+                    <option value="WEP">WEP</option>
+                    <option value="nopass">None</option>
+                  </select>
+                </div>
+              </div>
+              <div class="qr-fhoặcm-group">
+                <label style="display:flex;align-items:center;gap:6px;curshoặc:pointer;text-transfhoặcm:none;letter-spacing:nhoặcmal;font-weight:400;colhoặc:var(--text);"><input type="checkbox" id="wifiHidden" style="width:auto;"> Hidden netwhoặck</label>
+              </div>
+            </div>
+            <div class="qr-tab-pane" data-pane="vcard">
+              <div class="qr-fhoặcm-row">
+                <div class="qr-fhoặcm-group">
+                  <label fhoặc="vcName">Full Name</label>
+                  <input type="text" id="vcName" placeholder="Jane Doe">
+                </div>
+                <div class="qr-fhoặcm-group">
+                  <label fhoặc="vcOrg">Organization</label>
+                  <input type="text" id="vcOrg" placeholder="Acme Inc.">
+                </div>
+              </div>
+              <div class="qr-fhoặcm-row">
+                <div class="qr-fhoặcm-group">
+                  <label fhoặc="vcTel">Phone</label>
+                  <input type="text" id="vcTel" placeholder="+1 555 123 4567">
+                </div>
+                <div class="qr-fhoặcm-group">
+                  <label fhoặc="vcEmail">Email</label>
+                  <input type="text" id="vcEmail" placeholder="jane@example.com">
+                </div>
+              </div>
+              <div class="qr-fhoặcm-group">
+                <label fhoặc="vcUrl">Website</label>
+                <input type="url" id="vcUrl" placeholder="https://example.com">
+              </div>
+            </div>
+            <div class="qr-tab-pane" data-pane="email">
+              <div class="qr-fhoặcm-group">
+                <label fhoặc="emTo">To</label>
+                <input type="text" id="emTo" placeholder="recipient@example.com">
+              </div>
+              <div class="qr-fhoặcm-group">
+                <label fhoặc="emSubj">Subject</label>
+                <input type="text" id="emSubj" placeholder="optional">
+              </div>
+              <div class="qr-fhoặcm-group">
+                <label fhoặc="emBody">Message</label>
+                <textarea id="emBody" placeholder="optional"></textarea>
+              </div>
+            </div>
+
+            <div class="qr-fhoặcm-row">
+              <div class="qr-fhoặcm-group">
+                <label>Fhoặceground Màu sắc</label>
+                <div class="qr-colhoặc-row">
+                  <input type="colhoặc" id="fgMàu sắc" value="#000000">
+                  <input type="text" id="fgMàu sắcTxt" value="#000000" maxlength="7">
+                </div>
+              </div>
+              <div class="qr-fhoặcm-group">
+                <label>Background Màu sắc</label>
+                <div class="qr-colhoặc-row">
+                  <input type="colhoặc" id="bgMàu sắc" value="#ffffff">
+                  <input type="text" id="bgMàu sắcTxt" value="#ffffff" maxlength="7">
+                </div>
+              </div>
+            </div>
+            <div class="qr-fhoặcm-row">
+              <div class="qr-fhoặcm-group">
+                <label>Errhoặc Choặcrection</label>
+                <select id="ecLevel">
+                  <option value="L">L — 7% (smallest)</option>
+                  <option value="M" selected>M — 15% (balanced)</option>
+                  <option value="Q">Q — 25% (with logo)</option>
+                  <option value="H">H — 30% (max safe)</option>
+                </select>
+              </div>
+              <div class="qr-fhoặcm-group">
+                <label>Size (px)</label>
+                <div class="qr-slider-wrap">
+                  <input type="range" id="qrSize" min="128" max="1024" step="32" value="512">
+                  <span class="qr-slider-val" id="qrSizeVal">512</span>
+                </div>
+              </div>
+            </div>
+            <div class="qr-fhoặcm-group">
+              <label fhoặc="logoInput">Center Logo (optional)</label>
+              <input type="file" id="logoInput" accept="image/*">
+              <div class="qr-logo-preview" id="logoXem trước">No logo</div>
+              <p class="qr-sample-text">Use EC level Q hoặc H when adding a logo. Recommended logo covers &lt; 30% of the QR.</p>
+            </div>
+            <div class="qr-fhoặcm-group">
+              <label>Logo Size (% of QR)</label>
+              <div class="qr-slider-wrap">
+                <input type="range" id="logoSize" min="0" max="30" step="1" value="20">
+                <span class="qr-slider-val" id="logoSizeVal">20%</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="qr-preview-wrap">
+              <div class="qr-canvas-box"><canvas id="qrCanvas" width="512" height="512"></canvas></div>
+              <div class="qr-info" id="qrInfo">
+                <div class="qr-info-row"><span>Modules:</span><strong id="qrModules">—</strong></div>
+                <div class="qr-info-row"><span>Encoded length:</span><strong id="qrLen">—</strong></div>
+                <div class="qr-info-row"><span>Output size:</span><strong id="qrOutSize">—</strong></div>
+              </div>
+            </div>
+            <div class="tool-actions" style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+              <button class="btn btn-primary" id="dlPngBtn">⬇️ Tải xuống PNG</button>
+              <button class="btn btn-secondary" id="dlSvgBtn">⬇️ Tải xuống SVG</button>
+              <button class="btn btn-secondary" id="addBatchBtn">➕ Add to Batch</button>
+            </div>
+            <div style="margin-top:18px;">
+              <label style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                <span style="font-size:12px;font-weight:600;colhoặc:var(--text-secondary);text-transfhoặcm:uppercase;letter-spacing:0.5px;">Batch QR Codes (<span id="batchCount">0</span>)</span>
+                <button class="btn btn-secondary" id="clearBatchBtn" style="padding:4px 10px;font-size:12px;">Xóa All</button>
+              </label>
+              <div class="qr-batch-list" id="batchList">
+                <div id="batchRows"></div>
+                <div class="qr-batch-add"><button class="btn btn-secondary" id="addRowBtn" style="font-size:12px;padding:4px 12px;">+ Add Row</button></div>
+              </div>
+              <button class="btn btn-primary" id="genBatchBtn" style="width:100%;margin-top:8px;">✨ Generate Batch (multi-URL → ZIP)</button>
+              <div id="batchXem trước" class="qr-preview-mini"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ad-placeholder">Advertisement</div>
+      </div>
+      <!-- Adsterra Banner 300x250 (29640802) - 工具区下方,黄金尺寸高 eCPM -->
+      <div class="ad-banner-300x250">
+        <script>
+          atOptions = {
+            'key' : 'c95d26a94d4f8dc640cd33ad5ec91528',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/c95d26a94d4f8dc640cd33ad5ec91528/invoke.js"></script>
+      </div>
+
+<section class="how-to-section">
+  <h2>How to Use</h2>
+  <div class="how-to-steps">
+    <div class="how-to-step"><div class="step-number">1</div><h4>Pick a Type</h4><p>Choose URL, plain text, WiFi credentials, vCard, or email.</p></div>
+    <div class="how-to-step"><div class="step-number">2</div><h4>Customize</h4><p>Set foreground and background colors, error correction, and output size.</p></div>
+    <div class="how-to-step"><div class="step-number">3</div><h4>Download</h4><p>Click Download PNG for raster, Download SVG for vector.</p></div>
+  </div>
+</section>
+
+<h2>Detailed User Guide</h2>
+
+      <div class="guide-block">
+        <h3>Step 1: Choose a Content Type</h3>
+        <p>Select one of: URL, Text, WiFi, vCard, or Email.</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Step 2: Fill in the Content</h3>
+        <p>Enter the relevant data for the chosen type.</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Step 3: Customize Appearance</h3>
+        <p>Adjust foreground/background colors, error correction level, and size.</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Step 4: Add a Center Logo (Optional)</h3>
+        <p>Upload a PNG, JPG, or SVG to place in the center of the QR code.</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Step 5: Download</h3>
+        <p>Click "Download PNG" for raster or "Download SVG" for vector.</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Step 6: Batch (Optional)</h3>
+        <p>Click "Add to Batch" to queue another QR code, then download all as ZIP.</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Error Correction Levels</h3>
+        <ul><li>L (7%) — Smallest code</li><li>M (15%) — Default</li><li>Q (25%) — With logo</li><li>H (30%) — Maximum robustness</li></ul>
+      </div>
+
+<section class="faq-section">
+  <h2>Frequently Asked Questions</h2>
+  <div class="faq-item"><button class="faq-question">Is this QR code generator really free?</button><div class="faq-answer">Yes, completely free with no usage limits and no watermarks.</div></div>
+  <div class="faq-item"><button class="faq-question">Is my data uploaded to a server?</button><div class="faq-answer">No. All QR generation happens locally in your browser.</div></div>
+  <div class="faq-item"><button class="faq-question">What error correction level should I use?</button><div class="faq-answer">Use M (15%) for clean prints. Use Q or H when adding a center logo.</div></div>
+</section>
+
+<section class="related-tools">
+  <h2>You Might Also Like</h2>
+  <div class="related-tools-grid">
+    <a href="/vi/tools/favicon-generator.html" class="related-tool-card">
+      <span class="tool-icon">⭐</span>
+      <div class="tool-info">
+        <strong>Favicon Generator</strong>
+        <span class="tool-desc">Generate all favicon sizes</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/vi/tools/watermark.html" class="related-tool-card">
+      <span class="tool-icon">🔏</span>
+      <div class="tool-info">
+        <strong>Watermark</strong>
+        <span class="tool-desc">Add watermark to images</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/vi/tools/image-to-pdf.html" class="related-tool-card">
+      <span class="tool-icon">📄</span>
+      <div class="tool-info">
+        <strong>Image to PDF</strong>
+        <span class="tool-desc">Convert images into a PDF</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+  </div>
+</section>
+    </div>
+
+</main>
+
+<footer class="site-footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Công cụ hình ảnh AI miễn phí, tôn trọng quyền riêng tư.</p></div><div class="footer-links"><h4>Công cụ</h4><a href="/vi/tools/background-remover.html">Xóa nền</a><a href="/vi/tools/compressor.html">Nén ảnh</a><a href="/vi/tools/converter.html">Chuyển đổi</a><a href="/vi/tools/resizer.html">Đổi kích thước</a><a href="/vi/tools/cropper.html">Cắt ảnh</a><a href="/vi/tools/watermark.html">Watermark</a></div><div class="footer-links"><h4>Công cụ khác</h4><a href="/vi/tools/image-upscaler.html">Phóng to ảnh</a><a href="/vi/tools/gif-editor.html">Chỉnh sửa GIF</a><a href="/vi/tools/pdf-to-image.html">PDF sang Ảnh</a><a href="/vi/tools/heic-converter.html">Chuyển đổi HEIC</a><a href="/vi/tools/meme-generator.html">Tạo Meme</a><a href="/vi/tools/face-blur.html">Làm mờ khuôn mặt</a></div><div class="footer-links"><h4>Trang web</h4><a href="/about.html">Giới thiệu</a><a href="/contact.html">Liên hệ</a><a href="/privacy.html">Bảo mật</a><a href="/terms.html">Điều khoản</a></div></div><div class="footer-bottom"><p>© 2026 SmartImgKit. Xử lý 100% cục bộ — tệp của bạn không bao giờ rời khỏi thiết bị.</p></div></div></footer>
+
+  <script src="/js/main.js?v=3"></script>
+  <script>
+(function() {
+  'use strict';
+
+  const $ = function(id) { return document.getElementById(id); };
+
+  // Tab switching
+  const tabs = document.querySelectorAll('.qr-tab');
+  const panes = document.querySelectorAll('.qr-tab-pane');
+  let currentTab = 'url';
+  tabs.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      currentTab = btn.dataset.tab;
+      tabs.forEach(function(b) { b.classList.toggle('active', b === btn); });
+      panes.forEach(function(p) { p.classList.toggle('active', p.dataset.pane === currentTab); });
+    });
+  });
+
+  // Inputs
+  const urlInput = $('urlInput');
+  const textInput = $('textInput');
+  const wifiSsid = $('wifiSsid');
+  const wifiPassword = $('wifiPassword');
+  const wifiType = $('wifiType');
+  const wifiHidden = $('wifiHidden');
+  const vcName = $('vcName');
+  const vcOrg = $('vcOrg');
+  const vcTel = $('vcTel');
+  const vcEmail = $('vcEmail');
+  const vcUrl = $('vcUrl');
+  const emTo = $('emTo');
+  const emSubj = $('emSubj');
+  const emBody = $('emBody');
+
+  // Color/size/EC
+  const fgColor = $('fgColor');
+  const bgColor = $('bgColor');
+  const fgColorTxt = $('fgColorTxt');
+  const bgColorTxt = $('bgColorTxt');
+  const ecLevel = $('ecLevel');
+  const qrSize = $('qrSize');
+  const qrSizeVal = $('qrSizeVal');
+  const logoInput = $('logoInput');
+  const logoPreview = $('logoPreview');
+  const logoSize = $('logoSize');
+  const logoSizeVal = $('logoSizeVal');
+
+  fgColor.addEventListener('input', function() { fgColorTxt.value = fgColor.value; });
+  fgColorTxt.addEventListener('input', function() { if (/^#[0-9a-fA-F]{6}$/.test(fgColorTxt.value)) fgColor.value = fgColorTxt.value; });
+  bgColor.addEventListener('input', function() { bgColorTxt.value = bgColor.value; });
+  bgColorTxt.addEventListener('input', function() { if (/^#[0-9a-fA-F]{6}$/.test(bgColorTxt.value)) bgColor.value = bgColorTxt.value; });
+  qrSize.addEventListener('input', function() { qrSizeVal.textContent = qrSize.value; });
+  logoSize.addEventListener('input', function() { logoSizeVal.textContent = logoSize.value + '%'; });
+
+  let logoImage = null;
+  logoInput.addEventListener('change', function() {
+    if (!logoInput.files[0]) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = new Image();
+      img.onload = function() {
+        logoImage = img;
+        logoPreview.style.backgroundImage = 'url(' + e.target.result + ')';
+        logoPreview.textContent = '';
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(logoInput.files[0]);
+  });
+
+  // Canvas and info
+  const canvas = $('qrCanvas');
+  const qrModules = $('qrModules');
+  const qrLen = $('qrLen');
+  const qrOutSize = $('qrOutSize');
+  const dlPngBtn = $('dlPngBtn');
+  const dlSvgBtn = $('dlSvgBtn');
+  const addBatchBtn = $('addBatchBtn');
+
+  function getPayload() {
+    if (currentTab === 'url') return (urlInput.value || '').trim();
+    if (currentTab === 'text') return (textInput.value || '').trim();
+    if (currentTab === 'wifi') {
+      var ssid = (wifiSsid.value || '').trim();
+      if (!ssid) return '';
+      var sec = (wifiType.value || 'WPA');
+      var pwd = (wifiPassword.value || '');
+      var hidden = wifiHidden && wifiHidden.checked ? 'true' : 'false';
+      return 'WIFI:T:' + sec + ';S:' + ssid + ';P:' + pwd + ';H:' + hidden + ';;';
+    }
+    if (currentTab === 'vcard') {
+      var name = (vcName.value || '').trim();
+      if (!name) return '';
+      return 'BEGIN:VCARD\nVERSION:3.0\nFN:' + name + '\nORG:' + (vcOrg.value || '') + '\nTEL:' + (vcTel.value || '') + '\nEMAIL:' + (vcEmail.value || '') + '\nURL:' + (vcUrl.value || '') + '\nEND:VCARD';
+    }
+    if (currentTab === 'email') {
+      var to = (emTo.value || '').trim();
+      if (!to) return '';
+      var mailto = 'mailto:' + to;
+      var params = [];
+      if (emSubj.value) params.push('subject=' + encodeURIComponent(emSubj.value));
+      if (emBody.value) params.push('body=' + encodeURIComponent(emBody.value));
+      if (params.length) mailto += '?' + params.join('&');
+      return mailto;
+    }
+    return '';
+  }
+
+  function makeQR(payload) {
+    const ec = (ecLevel.value || 'M');
+    const qr = qrcode(0, ec);
+    qr.addData(payload);
+    qr.make();
+    return qr;
+  }
+
+  function drawQRToCanvas(qr, targetCanvas, size) {
+    targetCanvas.width = size;
+    targetCanvas.height = size;
+    const moduleCount = qr.getModuleCount();
+    const cellSize = size / moduleCount;
+    const ctx = targetCanvas.getContext('2d');
+    ctx.fillStyle = bgColor.value;
+    ctx.fillRect(0, 0, size, size);
+    ctx.fillStyle = fgColor.value;
+    for (let r = 0; r < moduleCount; r++) {
+      for (let c = 0; c < moduleCount; c++) {
+        if (qr.isDark(r, c)) ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
+      }
+    }
+    if (logoImage) {
+      const pct = parseInt(logoSize.value) || 20;
+      const logoW = size * pct / 100;
+      const logoH = logoW * (logoImage.naturalHeight / logoImage.naturalWidth);
+      const x = (size - logoW) / 2;
+      const y = (size - logoH) / 2;
+      ctx.fillStyle = '#fff';
+      const pad = logoW * 0.08;
+      ctx.fillRect(x - pad, y - pad, logoW + pad * 2, logoH + pad * 2);
+      ctx.drawImage(logoImage, x, y, logoW, logoH);
+    }
+    return moduleCount;
+  }
+
+  function generate() {
+    const payload = getPayload();
+    if (!payload) { alert('Please enter content.'); return null; }
+    const size = parseInt(qrSize.value) || 512;
+    const qr = makeQR(payload);
+    const moduleCount = drawQRToCanvas(qr, canvas, size);
+    qrModules.textContent = moduleCount + 'x' + moduleCount;
+    qrLen.textContent = payload.length;
+    qrOutSize.textContent = size + 'x' + size + ' px';
+    return qr;
+  }
+
+  dlPngBtn.addEventListener('click', function() {
+    const qr = generate();
+    if (!qr) return;
+    canvas.toBlob(function(blob) {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'qrcode-' + Date.now() + '.png';
+      a.click();
+      setTimeout(function() { URL.revokeObjectURL(a.href); }, 1000);
+    });
+  });
+
+  dlSvgBtn.addEventListener('click', function() {
+    const payload = getPayload();
+    if (!payload) { alert('Please enter content.'); return; }
+    const qr = makeQR(payload);
+    const moduleCount = qr.getModuleCount();
+    let svg = '<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 ' + moduleCount + ' ' + moduleCount + '">';
+    svg += '<rect width="100%" height="100%" fill="' + bgColor.value + '"/>';
+    for (let r = 0; r < moduleCount; r++) {
+      for (let c = 0; c < moduleCount; c++) {
+        if (qr.isDark(r, c)) svg += '<rect x="' + c + '" y="' + r + '" width="1" height="1" fill="' + fgColor.value + '"/>';
+      }
+    }
+    svg += '</svg>';
+    const blob = new Blob([svg], { type: 'image/svg+xml' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'qrcode-' + Date.now() + '.svg';
+    a.click();
+    setTimeout(function() { URL.revokeObjectURL(a.href); }, 1000);
+  });
+
+  // ===== Batch multi-row input =====
+  const batchRows = $('batchRows');
+  const addRowBtn = $('addRowBtn');
+  const clearBatchBtn = $('clearBatchBtn');
+  const batchCount = $('batchCount');
+  const genBatchBtn = $('genBatchBtn');
+  const batchPreview = $('batchPreview');
+
+  function addBatchRow(value) {
+    const div = document.createElement('div');
+    div.className = 'qr-batch-row';
+    const idx = batchRows.children.length + 1;
+    const safe = (value || '').replace(/"/g, '&quot;');
+    div.innerHTML = '<span class="qr-row-num">' + idx + '.</span><input type="text" placeholder="https://example.com" value="' + safe + '"><button title="Remove">✕</button>';
+    div.querySelector('button').addEventListener('click', function() {
+      div.remove();
+      renumberRows();
+    });
+    batchRows.appendChild(div);
+    renumberRows();
+  }
+
+  function renumberRows() {
+    const rows = batchRows.querySelectorAll('.qr-batch-row');
+    rows.forEach(function(r, i) {
+      r.querySelector('.qr-row-num').textContent = (i + 1) + '.';
+    });
+    batchCount.textContent = rows.length;
+  }
+
+  function readBatchRows() {
+    const inputs = batchRows.querySelectorAll('input[type="text"]');
+    const out = [];
+    inputs.forEach(function(inp) {
+      const v = (inp.value || '').trim();
+      if (v) out.push(v);
+    });
+    return out;
+  }
+
+  addRowBtn.addEventListener('click', function() { addBatchRow(''); });
+  addBatchBtn.addEventListener('click', function() {
+    const val = getPayload();
+    if (val) addBatchRow(val);
+  });
+  clearBatchBtn.addEventListener('click', function() {
+    batchRows.innerHTML = '';
+    renumberRows();
+    batchPreview.innerHTML = '';
+  });
+
+  addBatchRow('https://smartimgkit.com');
+  addBatchRow('https://github.com');
+  addBatchRow('https://example.com');
+
+  genBatchBtn.addEventListener('click', async function() {
+    const rows = readBatchRows();
+    if (!rows.length) { alert('Please enter at least one URL or text in the batch rows.'); return; }
+    genBatchBtn.disabled = true;
+    genBatchBtn.textContent = '⏳ Generating ' + rows.length + ' QR codes...';
+    batchPreview.innerHTML = '';
+    const size = 256;
+    const zip = new JSZip();
+    const usedNames = {};
+    try {
+      for (let i = 0; i < rows.length; i++) {
+        const payload = rows[i];
+        const qr = makeQR(payload);
+        const tmpCanvas = document.createElement('canvas');
+        drawQRToCanvas(qr, tmpCanvas, size);
+        const blob = await new Promise(function(res) { tmpCanvas.toBlob(res); });
+        let name = payload.replace(/^https?:\/\//, '').replace(/[\/?&=:#%]/g, '_').slice(0, 40) || ('qr-' + (i + 1));
+        if (usedNames[name]) {
+          let suffix = 2;
+          while (usedNames[name + '-' + suffix]) suffix++;
+          name = name + '-' + suffix;
+        }
+        usedNames[name] = true;
+        zip.file(name + '.png', blob);
+        const wrap = document.createElement('div');
+        wrap.innerHTML = '<img src="' + tmpCanvas.toDataURL() + '"><div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:2px;">' + name + '</div>';
+        batchPreview.appendChild(wrap);
+      }
+      genBatchBtn.textContent = '⏳ Creating ZIP...';
+      const zipBlob = await zip.generateAsync({ type: 'blob' });
+      const a = document.createElement('a');
+      a.download = 'qr-batch-' + Date.now() + '.zip';
+      a.href = URL.createObjectURL(zipBlob);
+      a.click();
+      setTimeout(function() { URL.revokeObjectURL(a.href); }, 1000);
+      genBatchBtn.textContent = '✅ Done! ' + rows.length + ' codes generated.';
+      setTimeout(function() { genBatchBtn.textContent = '✨ Generate Batch (multi-URL → ZIP)'; genBatchBtn.disabled = false; }, 3000);
+    } catch (err) {
+      genBatchBtn.textContent = '❌ Error: ' + err.message;
+      genBatchBtn.disabled = false;
+      console.error(err);
+    }
+  });
+})();
+  </script>
+  <script src="/js/lang.js"></script>
+</body>
+</html>

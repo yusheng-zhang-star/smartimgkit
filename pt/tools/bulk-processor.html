@@ -6,7 +6,7 @@
   <meta name="robots" content="index, follow">
   <title>Processamento em Lote Online Grátis — SmartImgKit</title>
   <meta name="description" content="Redimensione, converta e adicione marca d'água a dezenas de imagens.">
-  <meta name="keywords" content="bulk image processor, batch image resize, bulk image compress, batch convert images, bulk rename images, image watermark batch, batch image processing, free image processor online, multiple image editor, SmartImgKit bulk processor">
+  <meta name="keywords" content="processamento em lote, compressão em massa, redimensionar múltiplas, converter lote, editor imagens lote, redimensionar várias fotos">
   <link rel="canonical" href="https://smartimgkit.com/pt/tools/bulk-processor">
   <meta name="theme-color" content="#6366f1">
   <meta property="og:title" content="Processamento em Lote Online Grátis — SmartImgKit">
@@ -20,85 +20,95 @@
   <meta name="twitter:description" content="Redimensione, converta e adicione marca d'água a dezenas de imagens.">
   <meta name="twitter:image" content="https://smartimgkit.com/screenshots/bulk-processor.png">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate" hreflang="ar" href="https://smartimgkit.com/ar/tools/bulk-processor">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/bulk-processor">
+  <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/bulk-processor">
+  <link rel="alternate" hreflang="fr" href="https://smartimgkit.com/fr/tools/bulk-processor">
+  <link rel="alternate" hreflang="id" href="https://smartimgkit.com/id/tools/bulk-processor">
+  <link rel="alternate" hreflang="pt" href="https://smartimgkit.com/pt/tools/bulk-processor">
+  <link rel="alternate" hreflang="vi" href="https://smartimgkit.com/vi/tools/bulk-processor">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/bulk-processor">
   <link rel="stylesheet" href="/css/style.css?v=3">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+
   <style>
-    .tool-container{max-width:960px;margin:2rem auto;padding:0 1rem}
-    .controls{display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;justify-content:flex-start;margin:0.5rem 0}
-    .controls label{font-weight:600;font-size:0.85rem;color:var(--text-secondary);white-space:nowrap}
-    .controls select,.controls input[type=number],.controls input[type=text]{padding:7px 10px;border:1px solid var(--border-color);border-radius:var(--radius-sm);font-size:0.9rem;background:var(--bg-secondary);color:var(--text-primary);outline:none;transition:var(--transition)}
-    .controls select:focus,.controls input:focus{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-glow)}
-    .controls select{min-width:120px}
-    .controls input[type=number]{width:72px}
-    .controls input[type=text]{width:150px}
-    .controls input[type=range]{accent-color:var(--accent);background:var(--bg-tertiary);border-radius:4px;height:6px}
-    .controls input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer}
-    .controls input[type=checkbox]{accent-color:var(--accent);width:16px;height:16px;cursor:pointer}
-    .range-value{font-size:0.85rem;color:var(--text-secondary);min-width:35px;text-align:center}
-    .btn{padding:10px 24px;border:none;border-radius:var(--radius-md);font-size:0.9rem;cursor:pointer;font-weight:600;transition:var(--transition);display:inline-flex;align-items:center;gap:6px}
-    .btn-primary{background:var(--accent);color:#fff}
-    .btn-primary:hover{background:var(--accent-light);box-shadow:0 0 20px var(--accent-glow)}
-    .btn-secondary{background:var(--bg-tertiary);color:var(--text-primary);border:1px solid var(--border-color)}
-    .btn-secondary:hover{background:var(--bg-card-hover);border-color:var(--accent)}
-    .btn-success{background:var(--success);color:#fff}
-    .btn-success:hover{background:#16a34a}
-    .btn-sm{padding:6px 14px;font-size:0.82rem}
-    .btn:disabled{opacity:0.5;cursor:not-allowed;pointer-events:none}
-    .upload-area{border:2px dashed var(--border-color);border-radius:var(--radius-lg);padding:3rem 2rem;text-align:center;cursor:pointer;transition:var(--transition);background:var(--bg-card)}
-    .upload-area:hover,.upload-area.dragover{border-color:var(--accent);background:var(--bg-card-hover);box-shadow:0 0 30px var(--accent-glow)}
-    .upload-icon{font-size:3rem;margin-bottom:0.5rem}
-    .upload-area h3{font-size:1.2rem;margin:0.5rem 0}
-    .upload-area p{color:var(--text-secondary);font-size:0.9rem;margin:0.25rem 0}
-    .upload-hint{font-size:0.8rem;color:var(--text-muted)}
-    .file-list{display:flex;flex-direction:column;gap:0.4rem;margin:1rem 0;max-height:360px;overflow-y:auto;padding-right:4px}
-    .file-list::-webkit-scrollbar{width:4px}
-    .file-list::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:2px}
-    .file-item{display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0.75rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-sm);font-size:0.85rem;transition:var(--transition)}
-    .file-item:hover{background:var(--bg-card-hover)}
-    .file-item .fnum{color:var(--text-muted);font-size:0.75rem;min-width:24px}
-    .file-item .fname{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .file-item .fsize{color:var(--text-muted);font-size:0.78rem;min-width:70px;text-align:right}
-    .file-item .file-status{font-size:0.72rem;min-width:40px;text-align:center}
-    .file-item .file-status.done{color:var(--success)}
-    .file-item .file-status.wait{color:var(--text-muted)}
-    .file-item .file-status.proc{color:var(--accent)}
-    .file-item .file-compare{font-size:0.72rem;min-width:55px;text-align:center}
-    .file-item .file-compare.saved{color:var(--success)}
-    .file-item .file-compare.nosave{color:var(--text-muted)}
-    details.options-panel{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:0.75rem 1rem;margin:1rem 0}
-    details.options-panel summary{cursor:pointer;font-weight:600;font-size:0.92rem;color:var(--text-primary);padding:0.25rem 0}
-    details.options-panel summary:hover{color:var(--accent)}
-    details.options-panel[open]{padding-bottom:1rem}
-    .opt-group{border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:0.75rem 1rem;margin-top:0.75rem;background:var(--bg-secondary)}
-    .opt-group h4{font-size:0.85rem;margin:0 0 0.5rem 0;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px}
-    .preset-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-bottom:0.75rem}
-    .preset-btn{padding:8px 12px;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:var(--bg-tertiary);cursor:pointer;text-align:left;font-size:0.82rem;color:var(--text-primary);transition:var(--transition);line-height:1.4}
-    .preset-btn:hover{border-color:var(--accent);background:var(--bg-card-hover)}
-    .preset-btn.active{border-color:var(--accent);background:rgba(99,102,241,0.1);box-shadow:0 0 10px var(--accent-glow)}
-    .preset-btn strong{display:block;font-size:0.88rem}
-    .preset-btn span{font-size:0.75rem;color:var(--text-muted)}
-    .progress-bar{width:100%;height:10px;background:var(--bg-tertiary);border-radius:5px;overflow:hidden;margin:0.75rem 0}
-    .progress-fill{height:100%;background:linear-gradient(90deg,var(--gradient-from),var(--gradient-to));transition:width 0.25s;border-radius:5px}
-    .status{text-align:center;padding:0.4rem;font-size:0.88rem;color:var(--text-secondary)}
-    .file-progress{width:50px;height:4px;background:var(--bg-tertiary);border-radius:2px;overflow:hidden;flex-shrink:0}
-    .file-progress-fill{height:100%;background:var(--accent);transition:width 0.2s;border-radius:2px;width:0%}
-    .stats-bar{display:flex;flex-wrap:wrap;gap:1rem;padding:0.75rem 0;margin:0.5rem 0;border-top:1px solid var(--border-color);border-bottom:1px solid var(--border-color)}
-    .stat-item{font-size:0.82rem;color:var(--text-secondary)}
-    .stat-item strong{color:var(--text-primary);margin-right:3px}
-    .summary-table{width:100%;border-collapse:collapse;font-size:0.82rem;margin:0.5rem 0}
-    .summary-table th{text-align:left;padding:6px 8px;color:var(--text-muted);font-weight:500;border-bottom:1px solid var(--border-color)}
-    .summary-table td{padding:6px 8px;border-bottom:1px solid var(--border-color);color:var(--text-secondary)}
-    .summary-table td:last-child{text-align:right}
-    .summary-table .saved-row{background:rgba(34,197,94,0.05)}
-    .toast{position:fixed;bottom:30px;right:30px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:12px 20px;font-size:0.85rem;color:var(--text-primary);box-shadow:var(--shadow-lg);z-index:1000;opacity:0;transform:translateY(20px);transition:var(--transition);pointer-events:none}
-    .toast.show{opacity:1;transform:translateY(0);pointer-events:auto}
-    @media(max-width:640px){
-      .controls{gap:0.5rem}
-      .controls input[type=number]{width:60px}
-      .controls input[type=text]{width:120px}
-      .preset-grid{grid-template-columns:1fr 1fr}
-      .stats-bar{flex-direction:column;gap:0.4rem}
-    }
+        .tool-container{max-width:960px;margin:2rem auto;padding:0 1rem}
+        .controls{display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;justify-content:flex-start;margin:0.5rem 0}
+        .controls label{font-weight:600;font-size:0.85rem;color:var(--text-secondary);white-space:nowrap}
+        .controls select,.controls input[type=number],.controls input[type=text]{padding:7px 10px;border:1px solid var(--border-color);border-radius:var(--radius-sm);font-size:0.9rem;background:var(--bg-secondary);color:var(--text-primary);outline:none;transition:var(--transition)}
+        .controls select:focus,.controls input:focus{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-glow)}
+        .controls select{min-width:120px}
+        .controls input[type=number]{width:72px}
+        .controls input[type=text]{width:150px}
+        .controls input[type=range]{accent-color:var(--accent);background:var(--bg-tertiary);border-radius:4px;height:6px}
+        .controls input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer}
+        .controls input[type=checkbox]{accent-color:var(--accent);width:16px;height:16px;cursor:pointer}
+        .range-value{font-size:0.85rem;color:var(--text-secondary);min-width:35px;text-align:center}
+        .btn{padding:10px 24px;border:none;border-radius:var(--radius-md);font-size:0.9rem;cursor:pointer;font-weight:600;transition:var(--transition);display:inline-flex;align-items:center;gap:6px}
+        .btn-primary{background:var(--accent);color:#fff}
+        .btn-primary:hover{background:var(--accent-light);box-shadow:0 0 20px var(--accent-glow)}
+        .btn-secondary{background:var(--bg-tertiary);color:var(--text-primary);border:1px solid var(--border-color)}
+        .btn-secondary:hover{background:var(--bg-card-hover);border-color:var(--accent)}
+        .btn-success{background:var(--success);color:#fff}
+        .btn-success:hover{background:#16a34a}
+        .btn-sm{padding:6px 14px;font-size:0.82rem}
+        .btn:disabled{opacity:0.5;cursor:not-allowed;pointer-events:none}
+        .upload-area{border:2px dashed var(--border-color);border-radius:var(--radius-lg);padding:3rem 2rem;text-align:center;cursor:pointer;transition:var(--transition);background:var(--bg-card)}
+        .upload-area:hover,.upload-area.dragover{border-color:var(--accent);background:var(--bg-card-hover);box-shadow:0 0 30px var(--accent-glow)}
+        .upload-icon{font-size:3rem;margin-bottom:0.5rem}
+        .upload-area h3{font-size:1.2rem;margin:0.5rem 0}
+        .upload-area p{color:var(--text-secondary);font-size:0.9rem;margin:0.25rem 0}
+        .upload-hint{font-size:0.8rem;color:var(--text-muted)}
+        .file-list{display:flex;flex-direction:column;gap:0.4rem;margin:1rem 0;max-height:360px;overflow-y:auto;padding-right:4px}
+        .file-list::-webkit-scrollbar{width:4px}
+        .file-list::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:2px}
+        .file-item{display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0.75rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-sm);font-size:0.85rem;transition:var(--transition)}
+        .file-item:hover{background:var(--bg-card-hover)}
+        .file-item .fnum{color:var(--text-muted);font-size:0.75rem;min-width:24px}
+        .file-item .fname{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .file-item .fsize{color:var(--text-muted);font-size:0.78rem;min-width:70px;text-align:right}
+        .file-item .file-status{font-size:0.72rem;min-width:40px;text-align:center}
+        .file-item .file-status.done{color:var(--success)}
+        .file-item .file-status.wait{color:var(--text-muted)}
+        .file-item .file-status.proc{color:var(--accent)}
+        .file-item .file-compare{font-size:0.72rem;min-width:55px;text-align:center}
+        .file-item .file-compare.saved{color:var(--success)}
+        .file-item .file-compare.nosave{color:var(--text-muted)}
+        details.options-panel{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:0.75rem 1rem;margin:1rem 0}
+        details.options-panel summary{cursor:pointer;font-weight:600;font-size:0.92rem;color:var(--text-primary);padding:0.25rem 0}
+        details.options-panel summary:hover{color:var(--accent)}
+        details.options-panel[open]{padding-bottom:1rem}
+        .opt-group{border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:0.75rem 1rem;margin-top:0.75rem;background:var(--bg-secondary)}
+        .opt-group h4{font-size:0.85rem;margin:0 0 0.5rem 0;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px}
+        .preset-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-bottom:0.75rem}
+        .preset-btn{padding:8px 12px;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:var(--bg-tertiary);cursor:pointer;text-align:left;font-size:0.82rem;color:var(--text-primary);transition:var(--transition);line-height:1.4}
+        .preset-btn:hover{border-color:var(--accent);background:var(--bg-card-hover)}
+        .preset-btn.active{border-color:var(--accent);background:rgba(99,102,241,0.1);box-shadow:0 0 10px var(--accent-glow)}
+        .preset-btn strong{display:block;font-size:0.88rem}
+        .preset-btn span{font-size:0.75rem;color:var(--text-muted)}
+        .progress-bar{width:100%;height:10px;background:var(--bg-tertiary);border-radius:5px;overflow:hidden;margin:0.75rem 0}
+        .progress-fill{height:100%;background:linear-gradient(90deg,var(--gradient-from),var(--gradient-to));transition:width 0.25s;border-radius:5px}
+        .status{text-align:center;padding:0.4rem;font-size:0.88rem;color:var(--text-secondary)}
+        .file-progress{width:50px;height:4px;background:var(--bg-tertiary);border-radius:2px;overflow:hidden;flex-shrink:0}
+        .file-progress-fill{height:100%;background:var(--accent);transition:width 0.2s;border-radius:2px;width:0%}
+        .stats-bar{display:flex;flex-wrap:wrap;gap:1rem;padding:0.75rem 0;margin:0.5rem 0;border-top:1px solid var(--border-color);border-bottom:1px solid var(--border-color)}
+        .stat-item{font-size:0.82rem;color:var(--text-secondary)}
+        .stat-item strong{color:var(--text-primary);margin-right:3px}
+        .summary-table{width:100%;border-collapse:collapse;font-size:0.82rem;margin:0.5rem 0}
+        .summary-table th{text-align:left;padding:6px 8px;color:var(--text-muted);font-weight:500;border-bottom:1px solid var(--border-color)}
+        .summary-table td{padding:6px 8px;border-bottom:1px solid var(--border-color);color:var(--text-secondary)}
+        .summary-table td:last-child{text-align:right}
+        .summary-table .saved-row{background:rgba(34,197,94,0.05)}
+        .toast{position:fixed;bottom:30px;right:30px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:12px 20px;font-size:0.85rem;color:var(--text-primary);box-shadow:var(--shadow-lg);z-index:1000;opacity:0;transform:translateY(20px);transition:var(--transition);pointer-events:none}
+        .toast.show{opacity:1;transform:translateY(0);pointer-events:auto}
+        @media(max-width:640px){
+          .controls{gap:0.5rem}
+          .controls input[type=number]{width:60px}
+          .controls input[type=text]{width:120px}
+          .preset-grid{grid-template-columns:1fr 1fr}
+          .stats-bar{flex-direction:column;gap:0.4rem}
+        }
   </style>
   <script type="application/ld+json">
 {
@@ -172,19 +182,14 @@
   ]
 }
 </script>
-
-  <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/bulk-processor">
-  <link rel="alternate" hreflang="pt" href="https://smartimgkit.com/pt/tools/bulk-processor">
-  <link rel="alternate" hreflang="id" href="https://smartimgkit.com/id/tools/bulk-processor">
-  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/bulk-processor">
-  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/bulk-processor">
 <style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+
 </head>
 <body>
-  <!-- Adsterra Social Bar (29640799) -->
+  <!-- Adsterra Social Bar (29640799) - Popunder 替代品,移动端友好 -->
   <script src="https://pl29741298.effectivecpmnetwork.com/70/c0/84/70c084b07dadc5b3f66fae02aa21f788.js"></script>
 
-  <!-- Header -->
+  <!-- Header: exact match image-rotator compact format -->
   <header class="site-header">
     <div class="container header-inner">
       <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
@@ -198,7 +203,7 @@
             <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
           </div>
         </div>
-        <button class="theme-toggle" id="themeToggle">🌙</button>
+<button class="theme-toggle" id="themeToggle">🌙</button>
         <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
       </div>
     </div>
@@ -206,19 +211,16 @@
 
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Início</a><span>/</span><a href="/">Ferramentas</a><span>/</span><span>📦 Processamento Lote</span>
-      </nav>
+      <nav class="breadcrumb"><a href="/">Início</a><span>/</span><a href="/">Ferramentas</a><span>/</span><span>📦 Processamento Lote</span></nav>
       <div class="tool-page-header">
         <h1>📦 Processamento em Lote</h1>
-        <p class="tool-subtitle">Batch resize, compress, convert, rename &amp; watermark dozens of images at once — entirely in your browser.</p>
+        <p></p>
       </div>
-
-      <!-- Adsterra Native Banner (29640800) -->
+      <!-- Adsterra Native Banner (29640800) - 工具标题下,融入内容流 -->
       <div class="ad-native-banner">
         <script async="async" data-cfasync="false" src="https://pl29741299.effectivecpmnetwork.com/5a540a2ce35c794ad7d73a726a88971c/invoke.js"></script>
         <div id="container-5a540a2ce35c794ad7d73a726a88971c"></div>
       </div>
-
       <div class="tool-workspace">
         <div class="upload-area" id="uploadArea">
           <input type="file" id="fileInput" accept="image/*" multiple hidden>
@@ -282,7 +284,7 @@
                     <option value="image/png">PNG</option>
                     <option value="image/webp">WebP</option>
                   </select>
-                  <label>Quality</label>
+                  <label>Qualidade</label>
                   <input type="range" id="quality" min="10" max="100" value="85" style="width:130px">
                   <span class="range-value" id="qLabel">85%</span>
                 </div>
@@ -327,8 +329,21 @@
         <script>atOptions={'key':'c95d26a94d4f8dc640cd33ad5ec91528','format':'iframe','height':250,'width':300,'params':{}};</script>
         <script src="https://www.highperformanceformat.com/c95d26a94d4f8dc640cd33ad5ec91528/invoke.js"></script>
       </div>
+      <!-- Adsterra Banner 300x250 (29640802) - 工具区下方,黄金尺寸高 eCPM -->
+      <div class="ad-banner-300x250">
+        <script>
+          atOptions = {
+            'key' : 'c95d26a94d4f8dc640cd33ad5ec91528',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/c95d26a94d4f8dc640cd33ad5ec91528/invoke.js"></script>
+      </div>
 
-      <section class="how-to-section">
+<section class="how-to-section">
         <h2>How to Use the Bulk Image Processor</h2>
         <p class="section-desc">Batch process dozens of images in under a minute. Here's how:</p>
         <div class="how-to-steps">
@@ -340,46 +355,46 @@
         </div>
       </section>
 
-      <h2>Guia Detalhada</h2>
+<h2>Guia Detalhada</h2>
 
       <div class="guide-block">
         <h3>Batch Resize</h3>
-        <p>Enter target width and/or height in the Resize section. With "Keep aspect ratio" checked (default), the tool automatically scales the other dimension. Leave both empty to keep original dimensions. This is perfect for normalizing product photos or creating uniform social media assets.</p>
-        <p><strong>Tip:</strong> If you only enter a width, the height automatically adjusts to maintain proportions — no math required.</p>
+        <p>Insira a largura e/ou altura desejada na seção Redimensionar. Com "Manter proporção" marcado (padrão), a ferramenta calcula automaticamentely scales the other dimension. Leave both empty to keep original dimensions. This is perfect for normalizing product photos or creating uniform social media assets.</p>
+        <p><strong>Dica:</strong> Se você inserir apenas a largura, a altura se ajusta automaticamente para manter as proporções — sem necessidade de cálculos.</p>
       </div>
 
       <div class="guide-block">
         <h3>Batch Compress &amp; Convert</h3>
-        <p>Use the Output Format dropdown to convert all images to JPG, PNG, or WebP. JPG is best for photographs (small file size), PNG preserves transparency, and WebP offers modern compression. The Quality slider (10-100%) lets you balance file size versus visual quality — 80-85% is the sweet spot for web use.</p>
-        <p><strong>Tip:</strong> WebP can often reduce file size by 25-35% compared to JPG at the same quality level.</p>
+        <p>Use o menu suspenso Formato de Saída para converter todas as imagens para JPG, PNG ou WebP. JPG é a melhor opção para fotografiass (small file size), PNG preserves transparency, and WebP offers modern compression. The Quality slider (10-100%) lets you balance file size versus visual quality — 80-85% is the sweet spot for web use.</p>
+        <p><strong>Dica:</strong> WebP geralmente pode reduzir o tamanho do arquivo em 25-35% em comparação com JPG no mesmo nível de qualidade.</p>
       </div>
 
       <div class="guide-block">
         <h3>Batch Watermark</h3>
-        <p>Enter watermark text, adjust font size and opacity, and choose a position (bottom-right, bottom-left, top-right, top-left, or center). Leave the text field blank to skip watermarks. Great for branding batch photos before publishing.</p>
-        <p><strong>Tip:</strong> Keep opacity between 20-40% for a professional, non-intrusive watermark.</p>
+        <p>Digite o texto da marca d'água, ajuste o tamanho da fonte e a opacidade, e escolha uma posição (inferior direito, inferior esquerdo, superior direito, superior esquerdot, or center). Leave the text field blank to skip watermarks. Great for branding batch photos before publishing.</p>
+        <p><strong>Dica:</strong> Mantenha a opacidade entre 20-40% para uma marca d'água profissional e não intrusiva.</p>
       </div>
 
       <div class="guide-block">
         <h3>Batch Rename</h3>
-        <p>Toggle "Rename output files" and set a prefix and starting number. Files will be named sequentially: <code>prefix_001.ext</code>, <code>prefix_002.ext</code>, etc. The numbering is zero-padded (3 digits by default).</p>
-        <p><strong>Tip:</strong> Use descriptive prefixes like <code>product_</code>, <code>gallery_</code>, or <code>photo_</code> for easy file organization.</p>
+        <p>Ative "Renomear arquivos de saída" e defina um prefixo e número inicial. Os arquivos serão nomeados sequencialmente: <code>prefixo_001.ext</code>, <code>prefix_002.ext</code>, etc. The numbering is zero-padded (3 digits by default).</p>
+        <p><strong>Dica:</strong> Use prefixos descritivos como <code>produto_</code>, <code>galeria_</code> ou <code>foto_</code> for easy file organization.</p>
       </div>
 
       <div class="guide-block">
         <h3>Using Presets</h3>
-        <p>Click any preset button to instantly configure multiple settings at once:</p>
+        <p>Clique em qualquer botão de predefinição para configurar vários ajustes de uma vez instantaneamente:</p>
         <ul>
           <li><strong>Web Optimized</strong> — 80% quality, max 1200px width. Ideal for blog images, portfolio thumbnails, and website assets.</li>
           <li><strong>Print Ready</strong> — 100% quality, max 3000px. Best for photo printing, high-res archiving, and professional deliverables.</li>
           <li><strong>E-Commerce</strong> — 85% quality, max 1000px. Optimized for product listings on marketplaces like Amazon, eBay, or Shopify.</li>
           <li><strong>Thumbnail</strong> — 60% quality, max 300px. Perfect for preview images, avatars, or gallery thumbnails.</li>
         </ul>
-        <p>After applying a preset, you can still fine-tune individual settings in the Processing Options panel.</p>
+        <p>Após aplicar uma predefinição, você ainda pode ajustar as configurações individuais no painel de Opções de Processamento.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Best Use Cases</h3>
+        <h3>Melhores Casos de Uso</h3>
         <ul>
           <li><strong>Website asset preparation</strong> — batch resize and compress all product photos for your e-commerce site</li>
           <li><strong>Photo batch compression</strong> — reduce storage footprint of large photo collections</li>
@@ -389,7 +404,7 @@
         </ul>
       </div>
 
-      <section class="faq-section">
+<section class="faq-section">
         <h2>Perguntas Frequentes</h2>
       <div class="faq-item"><button class="faq-question">Quantas imagens posso processar de uma vez?</button><div class="faq-answer">Não há um limite definido. A ferramenta lida confortavelmente com 50 a 200 imagens em um notebook comum. O desempenho depende do tamanho das imagens e da memória disponível no seu navegador. Para lotes muito grandes (mais de 500 imagens), recomendamos dividir em lotes menores.</div></div>
       <div class="faq-item"><button class="faq-question">Existe um limite de tamanho por imagem?</button><div class="faq-answer">Não há um limite obrigatório, mas imagens acima de 50 MB podem deixar o processo mais lento. Para melhor desempenho, recomendamos imagens com menos de 20 MB cada.</div></div>
@@ -401,63 +416,56 @@
       <div class="faq-item"><button class="faq-question">Esta ferramenta é gratuita?</button><div class="faq-answer">Sim, completamente grátis. Sem cadastro, sem chaves de API, sem limites ocultos. Todo o processamento roda localmente no seu navegador, sem processamento no servidor.</div></div>
       </section>
 
-      <section class="related-tools">
-        <h2>You Might Also Like</h2>
-        <div class="related-tools-grid">
-          <a href="/pt/tools/compressor.html" class="related-tool-card">
-            <span class="tool-icon">🗜️</span>
-            <div class="tool-info">
-              <strong>Image Compressor</strong>
-              <span class="tool-desc">Compress single images with fine quality control</span>
-            </div>
-            <span class="tool-arrow">→</span>
-          </a>
-          <a href="/pt/tools/converter.html" class="related-tool-card">
-            <span class="tool-icon">🔄</span>
-            <div class="tool-info">
-              <strong>Image Converter</strong>
-              <span class="tool-desc">Convert images between JPG, PNG, WebP</span>
-            </div>
-            <span class="tool-arrow">→</span>
-          </a>
-          <a href="/pt/tools/resizer.html" class="related-tool-card">
-            <span class="tool-icon">📐</span>
-            <div class="tool-info">
-              <strong>Image Resizer</strong>
-              <span class="tool-desc">Resize a single image with precision</span>
-            </div>
-            <span class="tool-arrow">→</span>
-          </a>
-          <a href="/pt/tools/watermark.html" class="related-tool-card">
-            <span class="tool-icon">🔏</span>
-            <div class="tool-info">
-              <strong>Watermark</strong>
-              <span class="tool-desc">Add watermark to a single image</span>
-            </div>
-            <span class="tool-arrow">→</span>
-          </a>
-          <a href="/pt/tools/background-remover.html" class="related-tool-card">
-            <span class="tool-icon">✂️</span>
-            <div class="tool-info">
-              <strong>Background Remover</strong>
-              <span class="tool-desc">Remove backgrounds from images</span>
-            </div>
-            <span class="tool-arrow">→</span>
-          </a>
-        </div>
-      </section>
-    
-  
-<section class="faq-section" style="margin-top:32px">
-  <h2>Mais Perguntas Frequentes</h2>
-  <div class="faq-item"><button class="faq-question">Operations?</button><div class="faq-answer">Resize, format conversion, watermark in one batch with ZIP.</div></div>
-  <div class="faq-item"><button class="faq-question">How many?</button><div class="faq-answer">20-50 per batch recommended.</div></div>
-  <div class="faq-item"><button class="faq-question">Is it free?</button><div class="faq-answer">Yes, completely free.</div></div>
+<section class="related-tools">
+  <h2>Você Também Pode Gostar</h2>
+  <div class="related-tools-grid">
+    <a href="/pt/tools/compressor.html" class="related-tool-card">
+      <span class="tool-icon">🔧</span>
+      <div class="tool-info">
+        <strong>Compressor de Imagem</strong>
+        <span class="tool-desc">Reduz o tamanho do arquivo sem perder qualidade</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/pt/tools/converter.html" class="related-tool-card">
+      <span class="tool-icon">🔧</span>
+      <div class="tool-info">
+        <strong>Conversor de Imagem</strong>
+        <span class="tool-desc">Converte entre JPG, PNG, WebP e mais</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/pt/tools/resizer.html" class="related-tool-card">
+      <span class="tool-icon">🔧</span>
+      <div class="tool-info">
+        <strong>Image Resizer</strong>
+        <span class="tool-desc">Altera as dimensões de qualquer imagem</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/pt/tools/watermark.html" class="related-tool-card">
+      <span class="tool-icon">🔧</span>
+      <div class="tool-info">
+        <strong>Marca D'água</strong>
+        <span class="tool-desc">Protege suas imagens com marcas d'água</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/pt/tools/background-remover.html" class="related-tool-card">
+      <span class="tool-icon">🔧</span>
+      <div class="tool-info">
+        <strong>Remover Fundo</strong>
+        <span class="tool-desc">Remove fundos com IA no seu navegador</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+  </div>
 </section>
     </div>
-    </main>
 
-  <!-- Footer -->
+</main>
+
+<!-- Footer: exact match image-rotator compact format -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
@@ -476,7 +484,10 @@
           <a href="/pt/tools/image-grayscale.html">Image Grayscale</a>
           <a href="/pt/tools/image-shadow.html">Image Shadow</a>
           <a href="/pt/tools/image-splitter.html">Image Splitter</a>
-          <a href="/pt/tools/image-exif-remover.html">EXIF Remover</a><a href="/pt/tools/circle-crop.html">Circle Crop</a><a href="/pt/tools/favicon-generator.html">Favicon Generator</a><a href="/pt/tools/ocr.html">OCR Text</a><a href="/pt/tools/bulk-processor.html">Bulk Processor</a><a href="/pt/tools/image-to-pdf.html">Image to PDF</a><a href="/pt/tools/image-enhancer.html">Image Enhancer</a>
+          <a href="/pt/tools/image-exif-remover.html">EXIF Remover</a><a href="/pt/tools/circle-crop.html">Circle Crop</a><a href="/pt/tools/favicon-generator.html">Favicon Generator</a><a href="/pt/tools/ocr.html">OCR Text</a><a href="/pt/tools/bulk-processor.html">Bulk Processor</a><a href="/pt/tools/image-to-pdf.html">Image to PDF</a>          <a href="/pt/tools/id-photo.html">ID Photo Maker</a>
+          <a href="/pt/tools/product-white-background.html">Product White BG</a>
+          <a href="/pt/tools/social-media-post.html">Social Media Post</a>
+          <a href="/pt/tools/photo-restoration.html">Photo Restoration</a><a href="/pt/tools/image-enhancer.html">Image Enhancer</a>
         </div>
         <div class="footer-links"><h4>Legal</h4><a href="/privacy.html">Política de Privacidade</a><a href="/terms.html">Termos de Serviço</a><a href="/cookie-policy.html">Política de Cookies</a>
         </div>
@@ -727,7 +738,8 @@
   });
 })();
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js">
+  </script>
   <script src="/js/lang.js"></script>
 </body>
 </html>

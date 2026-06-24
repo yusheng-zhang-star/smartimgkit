@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark" data-tool-id="image-compare">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Image Compare — Side-by-Side & Slider Free | SmartImgKit</title>
+  <meta name="description" content="Compare two images side by side or with an interactive slider. Perfect for before/after comparisons, compression quality checks. Free, no uploads, 100% browser-based.">
+  <meta name="keywords" content="image compare, before after comparison, image slider, side by side comparison, photo compare, visual diff, compression comparison">
+  <link rel="canonical" href="https://smartimgkit.com/ar/tools/image-compare">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="Free Image Compare Tool — SmartImgKit">
+  <meta property="og:description" content="Compare two images side by side or with an interactive slider. Perfect for before/after comparisons. Free, no signup, 100% browser-based.">
+  <meta property="og:url" content="https://smartimgkit.com/ar/tools/image-compare">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/image-compare.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free Image Compare Tool — SmartImgKit">
+  <meta name="twitter:description" content="Compare two images side by side or with an interactive slider. Perfect for before/after comparisons. Free, no signup, 100% browser-based.">
+  <meta name="twitter:image" content="https://smartimgkit.com/screenshots/image-compare.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate" hreflang="ar" href="https://smartimgkit.com/ar/tools/image-compare">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/image-compare">
+  <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/image-compare">
+  <link rel="alternate" hreflang="fr" href="https://smartimgkit.com/fr/tools/image-compare">
+  <link rel="alternate" hreflang="id" href="https://smartimgkit.com/id/tools/image-compare">
+  <link rel="alternate" hreflang="pt" href="https://smartimgkit.com/pt/tools/image-compare">
+  <link rel="alternate" hreflang="vi" href="https://smartimgkit.com/vi/tools/image-compare">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/image-compare">
+  <link rel="stylesheet" href="/css/style.css?v=3">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Image Compare",
+  "url": "https://smartimgkit.com/tools/image-compare",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Compare two images side by side or with an interactive slider. Perfect for before/after comparisons."
+}
+</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Compare Images",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Upload First Image",
+      "text": "Click the left upload area to add your first image."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Upload Second Image",
+      "text": "Click the right upload area to add your second image."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Choose Mode",
+      "text": "Switch between Slider, Side-by-Side, or Overlay mode."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "name": "Download",
+      "text": "Optionally download the comparison as a single image."
+    }
+  ]
+}
+</script>
+  <style>
+    .compare-layout { display: flex; gap: 20px; flex-wrap: wrap; }
+        .compare-sidebar { flex: 0 0 280px; display: flex; flex-direction: column; gap: 14px; }
+        .compare-main { flex: 1; min-width: 300px; }
+        @media (max-width: 768px) { .compare-layout { flex-direction: column; } .compare-sidebar { flex: none; width: 100%; } }
+
+        .mode-btns { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+        .mode-btn {
+          padding: 8px 4px; border: 1px solid var(--border-color); border-radius: 8px;
+          background: var(--bg-primary); color: var(--text-secondary); cursor: pointer;
+          font-size: .75rem; text-align: center; transition: all .2s;
+        }
+        .mode-btn:hover { border-color: var(--accent); color: var(--text-primary); }
+        .mode-btn.active { border-color: var(--accent); background: rgba(99,102,241,.1); color: var(--accent); }
+
+        .upload-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .upload-half {
+          border: 2px dashed var(--border-color); border-radius: 12px;
+          padding: 20px; text-align: center; cursor: pointer; transition: all .2s;
+          background: var(--bg-secondary);
+        }
+        .upload-half:hover { border-color: var(--accent); background: var(--bg-tertiary); }
+        .upload-half.loaded { border-color: var(--success); background: rgba(34,197,94,.08); }
+        .upload-half .upload-icon { font-size: 1.8rem; margin-bottom: 6px; }
+        .upload-half .upload-label { font-size: .8rem; color: var(--text-secondary); }
+        .upload-half input[type="file"] { display: none; }
+
+        .compare-preview {
+          background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px;
+          padding: 16px; display: flex; align-items: center; justify-content: center;
+          min-height: 400px; position: relative; overflow: hidden; user-select: none;
+        }
+
+        /* Slider mode */
+        .slider-container { position: relative; display: inline-block; max-width: 100%; }
+        .slider-img-bottom, .slider-img-top {
+          display: block; max-width: 100%; max-height: 65vh; border-radius: 4px;
+        }
+        .slider-img-top {
+          position: absolute; top: 0; left: 0;
+          clip-path: inset(0 50% 0 0); transition: clip-path 0.05s;
+        }
+        .slider-handle {
+          position: absolute; top: 0; bottom: 0; left: 50%; width: 4px;
+          background: var(--accent); cursor: ew-resize; z-index: 10;
+          transform: translateX(-50%);
+        }
+        .slider-handle::before {
+          content: '⟷⟶'; position: absolute; top: 50%; left: 50%;
+          transform: translate(-50%, -50%); background: var(--accent); color: white;
+          border-radius: 20px; padding: 4px 8px; font-size: .7rem;
+          white-space: nowrap; box-shadow: 0 2px 8px rgba(0,0,0,.3);
+        }
+
+        /* Side-by-side mode */
+        .sidebyside-container { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+        .sidebyside-container img { max-width: 48%; max-height: 60vh; border-radius: 8px; }
+
+        /* Overlay mode */
+        .overlay-container { position: relative; display: inline-block; }
+        .overlay-bottom, .overlay-top {
+          display: block; max-width: 100%; max-height: 65vh; border-radius: 4px;
+        }
+        .overlay-top {
+          position: absolute; top: 0; left: 0; opacity: 0.5;
+          mix-blend-mode: normal;
+        }
+        .overlay-slider { width: 100%; margin-top: 8px; accent-color: var(--accent); }
+
+        .info-row { display: flex; gap: 12px; font-size: .8rem; color: var(--text-secondary); padding: 8px 12px; background: var(--bg-secondary); border-radius: 8px; margin-top: 12px; flex-wrap: wrap; }
+        .info-row span { display: flex; align-items: center; gap: 4px; }
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How many images can I compare?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Two images side-by-side or in a slider view."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What comparison modes are supported?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Side-by-side, slider (drag to reveal), and overlay."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my image uploaded to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All processing happens locally."
+      }
+    }
+  ]
+}
+</script>
+<style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+<style>
+/* RTL & Arabic font */
+    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap');
+    body { direction: rtl; text-align: right; font-family: 'Tajawal', 'Segoe UI', sans-serif; }
+    .main-nav { flex-direction: row-reverse; }
+    .lang-switcher { margin-left: 0; margin-right: auto; }
+    .how-to-steps { flex-direction: row-reverse; }
+    .how-to-step { text-align: right; }
+    .related-tools-grid { direction: rtl; }
+    .related-tool-arrow { transform: rotate(180deg); }
+    .site-footer { text-align: right; }
+    .footer-grid { direction: rtl; }
+    .breadcrumb { direction: rtl; }
+    .faq-question { text-align: right; }
+    .btn-group { justify-content: flex-end; }
+    .tool-flex { flex-direction: row-reverse; }
+    .step-number { margin-right: 0; margin-left: 12px; }
+    h1, h2, h3, h4, h5, h6 { text-align: right; }
+    p, li, label, .upload-text, .upload-hint { text-align: right; }
+    .card h3, .info-box { text-align: right; }
+    .dropzone { text-align: center; }
+
+  </style>
+</head>
+<body>
+  <!-- Adsterra Social Bar (29640799) - Popunder 替代品,移动端友好 -->
+  <script src="https://pl29741298.effectivecpmnetwork.com/70/c0/84/70c084b07dadc5b3f66fae02aa21f788.js"></script>
+
+  <!-- Header: exact match image-rotator compact format -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/">الرئيسية</a><a href="/ar/tools/background-remover.html">الأدوات</a><a href="/workflows/">سير العمل</a><a href="/blog/">المدونة</a><a href="/about.html">حول</a><a href="/contact.html">اتصل بنا</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="تغيير اللغة">🇸🇦 العربية</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/" hreflang="en" lang="en">🇬🇧 English</a>
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+            <a href="/fr/" hreflang="fr" lang="fr">🇫🇷 Français</a>
+            <a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a>
+          </div>
+        </div>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/">الرئيسية</a><span>/</span><a href="/">الأدوات</a><span>/</span><span>📊 Image Compare</span></nav>
+      <div class="tool-page-header">
+        <h1>📊 Image Compare</h1>
+        <p>Compare two images with an interactive slider, side-by-side, or overlay mode. Perfect for before/after, compression quality checks. 100% browser-based.</p>
+      </div>
+      <!-- Adsterra Native Banner (29640800) - 工具标题下,融入内容流 -->
+      <div class="ad-native-banner">
+        <script async="async" data-cfasync="false" src="https://pl29741299.effectivecpmnetwork.com/5a540a2ce35c794ad7d73a726a88971c/invoke.js"></script>
+        <div id="container-5a540a2ce35c794ad7d73a726a88971c"></div>
+      </div>
+      <div class="tool-workspace">
+<div class="compare-layout">
+
+          <div class="compare-sidebar">
+            <div>
+              <label style="font-size:.8rem;colأو:var(--text-secondary);font-weight:500;display:block;margin-bottom:8px;">1. رفع صورةs</label>
+              <div class="upload-pair">
+                <input type="file" id="fileA" accept="image/*" style="display:none;">
+                <label fأو="fileA" class="upload-half" id="uploadA">
+                  <div class="upload-icon">📤</div>
+                  <div class="upload-label">Befأوe / صورة A</div>
+                </label>
+                <input type="file" id="fileB" accept="image/*" style="display:none;">
+                <label fأو="fileB" class="upload-half" id="uploadB">
+                  <div class="upload-icon">📤</div>
+                  <div class="upload-label">After / صورة B</div>
+                </label>
+      <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Try with a sample image</span>
+              </div>
+              <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:12px;">
+                <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtnA">🖼️ Try sample A</span>
+                <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtnB">🖼️ Try sample B</span>
+              </div>
+            </div>
+
+            <div>
+              <label style="font-size:.8rem;colأو:var(--text-secondary);font-weight:500;display:block;margin-bottom:8px;">2. Comparison Mode</label>
+              <div class="mode-btns">
+                <button class="mode-btn active" data-mode="slider">Slider</button>
+                <button class="mode-btn" data-mode="sidebyside">Side by Side</button>
+                <button class="mode-btn" data-mode="overlay">Overlay</button>
+              </div>
+            </div>
+
+            <div class="tool-actions" style="flex-direction:column;">
+              <button class="btn btn-primary" id="downloadBtn" style="display:none;">💾 تحميل Comparison</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 إعادة تعيين All</button>
+            </div>
+            <div id="status" class="text-center" style="colأو:var(--text-secondary);font-size:.85rem;"></div>
+          </div>
+
+          <div class="compare-main">
+            <div class="compare-preview" id="compareمعاينة">
+              <p style="colأو:var(--text-muted);font-size:.9rem;">رفع two images to start comparing</p>
+            </div>
+            <div class="info-row" id="infoRow" style="display:none;">
+              <span>📐 صورة A: <b id="sizeA">-</b></span>
+              <span>📐 صورة B: <b id="sizeB">-</b></span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- Adsterra Banner 300x250 (29640802) - 工具区下方,黄金尺寸高 eCPM -->
+      <div class="ad-banner-300x250">
+        <script>
+          atOptions = {
+            'key' : 'c95d26a94d4f8dc640cd33ad5ec91528',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/c95d26a94d4f8dc640cd33ad5ec91528/invoke.js"></script>
+      </div>
+
+<section class="how-to-section">
+        <h2>How to Use</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step"><div class="step-number">1</div><h4>Upload Both Images</h4><p>Click each upload area to add Image A and Image B.</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>Choose Mode</h4><p>Slider, Side-by-Side, or Overlay — pick what works best.</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>Compare</h4><p>Drag the slider or adjust overlay opacity to compare.</p></div>
+          <div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Save the comparison as a single combined image.</p></div>
+        </div>
+      </section>
+
+<h2>Detailed User Guide</h2>
+        <div class="guide-block">
+          <h3>Step 1: Upload Both Images</h3>
+          <p>Click the <strong>Before / Image A</strong> area to upload your first image, then click <strong>After / Image B</strong> for the second. Supported formats: JPG, PNG, WebP, GIF, BMP. Both images load instantly in your browser.</p>
+        </div>
+        <div class="guide-block">
+          <h3>Step 2: Choose Comparison Mode</h3>
+          <p>Three powerful comparison modes:</p>
+          <ul>
+            <li><strong>Slider:</strong> Drag the vertical slider to reveal the before/after. Best for compression comparisons and retouching before/after.</li>
+            <li><strong>Side by Side:</strong> Both images displayed next to each other. Best for quick visual comparison.</li>
+            <li><strong>Overlay:</strong> Image B overlaid on Image A with adjustable opacity. Use the slider to control transparency. Best for spotting subtle differences.</li>
+          </ul>
+        </div>
+        <div class="guide-block">
+          <h3>Step 3: Interact & Compare</h3>
+          <p>In <strong>Slider</strong> mode, drag the blue vertical bar left and right. In <strong>Overlay</strong> mode, use the opacity slider. In <strong>Side by Side</strong> mode, scroll to see both images fully.</p>
+        </div>
+        <div class="guide-block">
+          <h3>Step 4: Download</h3>
+          <p>Click <strong>Download Comparison</strong> to save a combined image (side-by-side layout) as PNG. This is useful for sharing comparison results.</p>
+        </div>
+        <div class="guide-block">
+          <h3>Best Use Cases</h3>
+          <ul>
+            <li><strong>Compression quality:</strong> Compare original vs. compressed image to check quality loss</li>
+            <li><strong>Before/after editing:</strong> Show the result of photo retouching or filters</li>
+            <li><strong>Design iterations:</strong> Compare two design versions side by side</li>
+            <li><strong>Image upscaling:</strong> Compare low-res original vs. upscaled result</li>
+            <li><strong>Background removal:</strong> Compare original vs. background-removed result</li>
+          </ul>
+        </div>
+        <div class="guide-block">
+          <h3>Pro Tips</h3>
+          <ul>
+            <li>Use Slider mode for compression comparisons — it makes quality differences immediately visible</li>
+            <li>For subtle differences, use Overlay mode with opacity around 50%</li>
+            <li>Side-by-Side mode is best when both images have very different compositions</li>
+            <li>For sharing, download the comparison and post it directly to social media</li>
+            <li>Use this tool after using our Compressor to visually verify quality before/after</li>
+          </ul>
+        </div>
+
+<section class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item"><button class="faq-question">Are my images uploaded to a server?</button><div class="faq-answer">No. All image loading and comparison happens entirely in your browser. Your images never leave your device.</div></div>
+      <div class="faq-item"><button class="faq-question">What is the best mode for compression comparison?</button><div class="faq-answer">The Slider mode is best — drag the slider slowly across details to see exactly where quality was lost during compression.</div></div>
+      <div class="faq-item"><button class="faq-question">Can I compare images of different sizes?</button><div class="faq-answer">Yes, but for the best experience, the images are displayed at their natural size. In Slider and Overlay modes, Image B is scaled to match Image A's dimensions.</div></div>
+      <div class="faq-item"><button class="faq-question">Can I download the comparison?</button><div class="faq-answer">Yes, click "Download Comparison" to save a side-by-side PNG of both images. This is useful for sharing or documenting before/after results.</div></div>
+      <div class="faq-item"><button class="faq-question">What image formats are supported?</button><div class="faq-answer">We support JPG, PNG, WebP, GIF, and BMP for input. The downloaded comparison is always PNG format.</div></div>
+      <div class="faq-item"><button class="faq-question">Is there a file size limit?</button><div class="faq-answer">There is no hard limit, but very large images (over 5000px wide) may be slow to render. For best performance, resize large images before comparing.</div></div>
+      <div class="faq-item"><button class="faq-question">Can I use this for commercial projects?</button><div class="faq-answer">Absolutely. The output images are yours to use for any purpose — personal or commercial.</div></div>
+      </section>
+
+<section class="related-tools">
+  <h2>You Might Also Like</h2>
+  <div class="related-tools-grid">
+    <a href="/ar/tools/compressor.html" class="related-tool-card">
+      <span class="tool-icon">🗜️</span>
+      <div class="tool-info">
+        <strong>Image Compressor</strong>
+        <span class="tool-desc">Compress compared images for web</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/ar/tools/converter.html" class="related-tool-card">
+      <span class="tool-icon">🔄</span>
+      <div class="tool-info">
+        <strong>Image Converter</strong>
+        <span class="tool-desc">Convert compared images to WebP/JPG</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/ar/tools/gif-editor.html" class="related-tool-card">
+      <span class="tool-icon">🎬</span>
+      <div class="tool-info">
+        <strong>GIF Editor</strong>
+        <span class="tool-desc">Create GIF from compared frames</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+  </div>
+</section>
+    </div>
+
+</main>
+
+<footer class="site-footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>أدوات صور مجانية بالذكاء الاصطناعي تحترم خصوصيتك.</p></div><div class="footer-links"><h4>الأدوات</h4><a href="/ar/tools/background-remover.html">إزالة الخلفية</a><a href="/ar/tools/compressor.html">ضاغط الصور</a><a href="/ar/tools/converter.html">محول الصور</a><a href="/ar/tools/resizer.html">تغيير الحجم</a><a href="/ar/tools/cropper.html">قص الصور</a><a href="/ar/tools/watermark.html">علامة مائية</a></div><div class="footer-links"><h4>المزيد</h4><a href="/ar/tools/image-upscaler.html">تكبير الصور</a><a href="/ar/tools/gif-editor.html">محرر GIF</a><a href="/ar/tools/pdf-to-image.html">PDF إلى صورة</a><a href="/ar/tools/heic-converter.html">محول HEIC</a><a href="/ar/tools/meme-generator.html">منشئ الميمات</a><a href="/ar/tools/face-blur.html">تمويه الوجوه</a></div><div class="footer-links"><h4>الموقع</h4><a href="/about.html">حول</a><a href="/contact.html">اتصل بنا</a><a href="/privacy.html">الخصوصية</a><a href="/terms.html">الشروط</a></div></div><div class="footer-bottom"><p>© 2026 SmartImgKit. معالجة 100% محلية — ملفاتك لا تغادر جهازك أبداً.</p></div></div></footer>
+
+  <script src="/js/main.js?v=3"></script>
+  <script>
+// ===== State =====
+    let imgA = null, imgB = null;
+    let mode = 'slider';
+
+    // ===== DOM =====
+    const uploadA = document.getElementById('uploadA');
+    const uploadB = document.getElementById('uploadB');
+    const fileAInput = document.getElementById('fileA');
+    const fileBInput = document.getElementById('fileB');
+    const preview = document.getElementById('comparePreview');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const infoRow = document.getElementById('infoRow');
+
+    // ===== Upload A =====
+    fileAInput.addEventListener('change', async () => {
+      if (fileAInput.files[0]) { imgA = await ImageUtils.load(fileAInput.files[0]); onImageLoaded(); }
+    });
+    setupDropzoneSimple(uploadA, (file) => { ImageUtils.load(file).then(img => { imgA = img; onImageLoaded(); }); });
+
+    // ===== Upload B =====
+    fileBInput.addEventListener('change', async () => {
+      if (fileBInput.files[0]) { imgB = await ImageUtils.load(fileBInput.files[0]); onImageLoaded(); }
+    });
+    setupDropzoneSimple(uploadB, (file) => { ImageUtils.load(file).then(img => { imgB = img; onImageLoaded(); }); });
+
+    function setupDropzoneSimple(el, cb) {
+      el.addEventListener('dragover', e => { e.preventDefault(); el.style.borderColor = 'var(--accent)'; });
+      el.addEventListener('dragleave', () => { el.style.borderColor = ''; });
+      el.addEventListener('drop', e => { e.preventDefault(); el.style.borderColor = ''; if (e.dataTransfer.files[0]) cb(e.dataTransfer.files[0]); });
+    }
+
+    // ===== Mode buttons =====
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        mode = btn.dataset.mode;
+        renderComparison();
+      });
+    });
+
+    // ===== On both images loaded =====
+    function onImageLoaded() {
+      if (imgA) { uploadA.classList.add('loaded'); uploadA.querySelector('.upload-label').textContent = imgA.width + '×' + imgA.height; }
+      if (imgB) { uploadB.classList.add('loaded'); uploadB.querySelector('.upload-label').textContent = imgB.width + '×' + imgB.height; }
+      if (imgA && imgB) {
+        infoRow.style.display = 'flex';
+        document.getElementById('sizeA').textContent = imgA.width + '×' + imgA.height;
+        document.getElementById('sizeB').textContent = imgB.width + '×' + imgB.height;
+        downloadBtn.style.display = '';
+        renderComparison();
+      }
+    }
+
+    // ===== Render =====
+    function renderComparison() {
+      if (!imgA || !imgB) return;
+      preview.innerHTML = '';
+
+      if (mode === 'slider') {
+        renderSlider();
+      } else if (mode === 'sidebyside') {
+        renderSideBySide();
+      } else if (mode === 'overlay') {
+        renderOverlay();
+      }
+    }
+
+    function renderSlider() {
+      const container = document.createElement('div');
+      container.className = 'slider-container';
+
+      const imgBottom = document.createElement('img');
+      imgBottom.className = 'slider-img-bottom';
+      imgBottom.src = imgB.src || imgB;
+      imgBottom.alt = 'Image B';
+
+      const imgTop = document.createElement('img');
+      imgTop.className = 'slider-img-top';
+      imgTop.src = imgA.src || imgA;
+      imgTop.alt = 'Image A';
+
+      const handle = document.createElement('div');
+      handle.className = 'slider-handle';
+
+      container.appendChild(imgBottom);
+      container.appendChild(imgTop);
+      container.appendChild(handle);
+      preview.appendChild(container);
+
+      function updateSlider(clientX) {
+        const rect = container.getBoundingClientRect();
+        let ratio = (clientX - rect.left) / rect.width;
+        ratio = Math.max(0, Math.min(1, ratio));
+        imgTop.style.clipPath = 'inset(0 ' + ((1 - ratio) * 100) + '% 0 0)';
+        handle.style.left = (ratio * 100) + '%';
+      }
+
+      container.addEventListener('mousedown', (e) => {
+        updateSlider(e.clientX);
+        const onMove = (ev) => updateSlider(ev.clientX);
+        const onUp = () => { document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); };
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+      });
+      container.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        updateSlider(e.touches[0].clientX);
+        const onMove = (ev) => updateSlider(ev.touches[0].clientX);
+        const onUp = () => { document.removeEventListener('touchmove', onMove); document.removeEventListener('touchend', onUp); };
+        document.addEventListener('touchmove', onMove, { passive: false });
+        document.addEventListener('touchend', onUp);
+      }, { passive: false });
+
+      // Init at 50%
+      setTimeout(() => {
+        const rect = container.getBoundingClientRect();
+        updateSlider(rect.left + rect.width / 2);
+      }, 50);
+    }
+
+    function renderSideBySide() {
+      const container = document.createElement('div');
+      container.className = 'sidebyside-container';
+
+      const img1 = document.createElement('img');
+      img1.src = imgA.src || imgA;
+      img1.alt = 'Image A';
+
+      const img2 = document.createElement('img');
+      img2.src = imgB.src || imgB;
+      img2.alt = 'Image B';
+
+      container.appendChild(img1);
+      container.appendChild(img2);
+      preview.appendChild(container);
+    }
+
+    function renderOverlay() {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'overlay-container';
+
+      const imgBottom = document.createElement('img');
+      imgBottom.className = 'overlay-bottom';
+      imgBottom.src = imgA.src || imgA;
+      imgBottom.alt = 'Image A';
+
+      const imgTop = document.createElement('img');
+      imgTop.className = 'overlay-top';
+      imgTop.src = imgB.src || imgB;
+      imgTop.alt = 'Image B';
+
+      const slider = document.createElement('input');
+      slider.type = 'range';
+      slider.className = 'overlay-slider';
+      slider.min = 0; slider.max = 100; slider.value = 50;
+      slider.addEventListener('input', () => { imgTop.style.opacity = slider.value / 100; });
+
+      wrapper.appendChild(imgBottom);
+      wrapper.appendChild(imgTop);
+      preview.appendChild(wrapper);
+      preview.appendChild(slider);
+    }
+
+    // ===== Reset =====
+    resetBtn.addEventListener('click', () => {
+      imgA = null; imgB = null;
+      fileAInput.value = ''; fileBInput.value = '';
+      uploadA.classList.remove('loaded');
+      uploadB.classList.remove('loaded');
+      uploadA.querySelector('.upload-label').textContent = 'Before / Image A';
+      uploadB.querySelector('.upload-label').textContent = 'After / Image B';
+      preview.innerHTML = '<p style="color:var(--text-muted);font-size:.9rem;">Upload two images to start comparing</p>';
+      infoRow.style.display = 'none';
+      downloadBtn.style.display = 'none';
+    });
+
+    // ===== Download =====
+    downloadBtn.addEventListener('click', () => {
+      if (!imgA || !imgB) return;
+      // Create side-by-side canvas
+      const w = Math.max(imgA.width, imgB.width);
+      const h = Math.max(imgA.height, imgB.height);
+      const canvas = document.createElement('canvas');
+      canvas.width = w * 2 + 20; // 20px gap
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#1a1a2e';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(imgA, 0, 0, imgA.width, imgA.height);
+      ctx.drawImage(imgB, w + 20, 0, imgB.width, imgB.height);
+      ImageUtils.download(canvas, 'comparison.png', 'image/png');
+      ImageUtils.showToast('Comparison downloaded!');
+    });
+  
+  // Sample image & Next Step
+  (function() {
+    var _handleFile = typeof handleFile === 'function' ? handleFile : null;
+    if (_handleFile) {
+      window.initSampleButton('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&q=80', _handleFile);
+    }
+    // Show next-step on download click
+    var dlBtn = document.getElementById('downloadBtn') || document.querySelector('.btn-primary[onclick*="download"], .btn-secondary[onclick*="download"]');
+    if (dlBtn) {
+      dlBtn.addEventListener('click', function() { SmartImgNextStep.show(); });
+    }
+  })();
+  </script>
+  <script src="/js/lang.js"></script>
+</body>
+</html>
