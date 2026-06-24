@@ -108,14 +108,14 @@
           </div>
         </div>
 
-        <!-- Upload — label native behavior handles click; drag/drop below -->
+        <!-- Upload — single-trigger: no label+for, pure JS control -->
         <input type="file" id="fileInput" accept=".pdf" style="display:none;">
-          <label for="fileInput" class="dropzone" id="dropzone">
-            <div class="dropzone-icon">📄</div>
-            <h3>Upload PDF File</h3>
-            <p>Select a PDF file (max 100MB). Your file is processed entirely in your browser.</p>
-            <button type="button" class="btn btn-primary" style="margin-top:16px;pointer-events:auto;" onclick="event.stopPropagation();document.getElementById('fileInput').click()">📂 Choose PDF File</button>
-          </label>
+        <div class="dropzone" id="dropzone">
+          <div class="dropzone-icon">📄</div>
+          <h3>Enviar arquivo PDF</h3>
+          <p>Selecione um arquivo PDF (máx. 100 MB). Seu arquivo é processado completamente no seu navegador.</p>
+          <button type="button" class="btn btn-primary" id="chooseFileBtn" style="margin-top:16px;">📂 Escolher arquivo PDF</button>
+        </div>
 
         <!-- PDF Info + Controls -->
         <div class="controls hidden" id="controlsSection">
@@ -290,6 +290,7 @@
 (function() {
         const dropzone = document.getElementById('dropzone');
         const fileInput = document.getElementById('fileInput');
+        const chooseFileBtn = document.getElementById('chooseFileBtn');
         const controlsSection = document.getElementById('controlsSection');
         const pdfInfo = document.getElementById('pdfInfo');
         const outputFormat = document.getElementById('outputFormat');
@@ -317,14 +318,28 @@
             return false;
         }
 
-        // Upload — label native behavior handles click; drag/drop below
+        // Upload — single-trigger: dropzone click + button click + drag/drop
         if (dropzone) {
+            // Click on empty area of dropzone → open file dialog
+            dropzone.addEventListener('click', function(e) {
+                if (e.target === chooseFileBtn || (chooseFileBtn && chooseFileBtn.contains(e.target))) {
+                    return; // button has its own handler
+                }
+                fileInput.click();
+            });
             dropzone.addEventListener('dragover', function(e) { e.preventDefault(); e.stopPropagation(); dropzone.classList.add('dragover'); });
             dropzone.addEventListener('dragleave', function(e) { e.preventDefault(); dropzone.classList.remove('dragover'); });
             dropzone.addEventListener('drop', function(e) {
                 e.preventDefault(); e.stopPropagation();
                 dropzone.classList.remove('dragover');
                 if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
+            });
+        }
+        if (chooseFileBtn) {
+            chooseFileBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                fileInput.click();
             });
         }
         if (fileInput) {
@@ -335,7 +350,7 @@
 
         function handleFile(file) {
             if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) {
-                alert('Please upload a PDF file.');
+                alert('Por favor, envie um arquivo PDF.');
                 return;
             }
 
@@ -376,7 +391,7 @@
         // Convert
         convertBtn.addEventListener('click', async function() {
             if (!pdfDoc) {
-                alert('Please upload a PDF first.');
+                alert('Por favor, envie um PDF primero.');
                 return;
             }
             
@@ -399,7 +414,7 @@
             const totalPages = to - from + 1;
             
             for (let i = from; i <= to; i++) {
-                statusText.textContent = `Converting page ${i}/${to}...`;
+                statusText.textContent = `Convertendo página ${i}/${to}...`;
                 
                 try {
                     const page = await pdfDoc.getPage(i);
@@ -456,7 +471,7 @@
                 }
             }
             
-            statusText.textContent = `Done! Converted ${convertedPages.length} page(s).`;
+            statusText.textContent = `Pronto! Convertidas ${convertedPages.length} página(s).`;
             resultSection.classList.remove('hidden');
             convertBtn.disabled = false;
         });

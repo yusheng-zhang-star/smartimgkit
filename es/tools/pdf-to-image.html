@@ -108,108 +108,108 @@
           </div>
         </div>
 
-        <!-- Upload — label native behavior handles click; drag/drop below -->
+        <!-- Upload — single-trigger: no label+for, pure JS control -->
         <input type="file" id="fileInput" accept=".pdf" style="display:none;">
-          <label for="fileInput" class="dropzone" id="dropzone">
-            <div class="dropzone-icon">📄</div>
-            <h3>Upload PDF File</h3>
-            <p>Select a PDF file (max 100MB). Your file is processed entirely in your browser.</p>
-            <button type="button" class="btn btn-primary" style="margin-top:16px;pointer-events:auto;" onclick="event.stopPropagation();document.getElementById('fileInput').click()">📂 Choose PDF File</button>
-          </label>
+        <div class="dropzone" id="dropzone">
+          <div class="dropzone-icon">📄</div>
+          <h3>Subir archivo PDF</h3>
+          <p>Selecciona un archivo PDF (máx. 100 MB). Tu archivo se procesa completamente en tu navegador.</p>
+          <button type="button" class="btn btn-primary" id="chooseFileBtn" style="margin-top:16px;">📂 Elegir archivo PDF</button>
+        </div>
 
-        <!-- PDF Info + Controls -->
+        <!-- PDF Info + Controles -->
         <div class="controls hidden" id="controlsSection">
-            <h2 style="font-size:1.2rem;margin-bottom:1rem;padding-bottom:0.5rem;">⚙️ Conversion Settings</h2>
+            <h2 style="font-size:1.2rem;margin-bottom:1rem;padding-bottom:0.5rem;">⚙️ Configuración de Conversión</h2>
             <div class="pdf-info" id="pdfInfo"></div>
             <div class="control-row">
-                <label>Output Format</label>
+                <label>Formato de Salida</label>
                 <select id="outputFormat">
-                    <option value="png">PNG (best quality)</option>
-                    <option value="jpeg">JPG (smaller file)</option>
-                    <option value="webp">WebP (modern)</option>
+                    <option value="png">PNG (mejor calidad)</option>
+                    <option value="jpeg">JPG (archivo más pequeño)</option>
+                    <option value="webp">WebP (moderno)</option>
                 </select>
             </div>
             <div class="control-row">
-                <label>Scale Factor</label>
+                <label>Factor de Escala</label>
                 <select id="scaleFactor">
                     <option value="1">1x (original)</option>
                     <option value="1.5">1.5x</option>
-                    <option value="2" selected>2x (recommended)</option>
-                    <option value="3">3x (high resolution)</option>
+                    <option value="2" selected>2x (recomendado)</option>
+                    <option value="3">3x (alta resolución)</option>
                 </select>
             </div>
             <div class="control-row">
-                <label>Page Range</label>
-                <input type="number" id="pageFrom" placeholder="From" style="width:80px;" min="1">
-                <span>to</span>
-                <input type="number" id="pageTo" placeholder="To" style="width:80px;" min="1">
-                <span style="font-size:0.85rem;">(leave blank for all pages)</span>
+                <label>Rango de Páginas</label>
+                <input type="number" id="pageFrom" placeholder="Desde" style="width:80px;" min="1">
+                <span>a</span>
+                <input type="number" id="pageTo" placeholder="Hasta" style="width:80px;" min="1">
+                <span style="font-size:0.85rem;">(dejar en blanco para todas las páginas)</span>
             </div>
             <div class="btn-row">
-                <button class="btn btn-primary" id="convertBtn">📄 Convert PDF</button>
-                <button class="btn btn-secondary" id="resetBtn">Reset</button>
+                <button class="btn btn-primary" id="convertBtn">📄 Convertir PDF</button>
+                <button class="btn btn-secondary" id="resetBtn">Restablecer</button>
             </div>
           </div>
 
-        <!-- Status -->
+        <!-- Estado -->
         <div class="hidden" id="statusSection">
-            <div class="status-text" id="statusText">Loading PDF...</div>
+            <div class="status-text" id="statusText">Cargando PDF...</div>
         </div>
 
-        <!-- Results -->
+        <!-- Resultados -->
         <div class="preview-section hidden" id="resultSection">
-            <h2>🖼️ Converted Pages (<span id="convertedCount">0</span>)</h2>
+            <h2>🖼️ Páginas Convertidas (<span id="convertedCount">0</span>)</h2>
             <div class="pages-grid" id="pagesGrid"></div>
             <div class="btn-row" style="justify-content:center;margin-top:1.5rem;">
-                <button class="btn btn-primary" id="downloadAllBtn">⬇️ Download All as ZIP</button>
+                <button class="btn btn-primary" id="downloadAllBtn">⬇️ Descargar Todo como ZIP</button>
             </div>
         </div>
       </div>
 <section class="how-to-section">
   <h2>Cómo Usar</h2>
   <div class="how-to-steps">
-    <div class="how-to-step"><div class="step-number">1</div><h4>Upload PDF</h4><p>Select a PDF file from your device.</p></div>
-    <div class="how-to-step"><div class="step-number">2</div><h4>Choose Settings</h4><p>Select output format, DPI, and page range.</p></div>
-    <div class="how-to-step"><div class="step-number">3</div><h4>Convert</h4><p>Click "Convert to Images" and wait.</p></div>
-    <div class="how-to-step"><div class="step-number">4</div><h4>Descargar</h4><p>Download individual pages or all as a ZIP.</p></div>
+    <div class="how-to-step"><div class="step-number">1</div><h4>Subir PDF</h4><p>Selecciona un archivo PDF de tu dispositivo.</p></div>
+    <div class="how-to-step"><div class="step-number">2</div><h4>Elegir Ajustes</h4><p>Selecciona formato, DPI y rango de páginas.</p></div>
+    <div class="how-to-step"><div class="step-number">3</div><h4>Convertir</h4><p>Haz clic en "Convertir a Imágenes" y espera.</p></div>
+    <div class="how-to-step"><div class="step-number">4</div><h4>Descargar</h4><p>Descarga páginas individuales o todas en ZIP.</p></div>
   </div>
 </section>
 
 <h2>Guía Detallada</h2>
 
       <div class="guide-block">
-        <h3>Step 1: Upload PDF</h3>
-        <p>Click the upload area and select a PDF file.</p>
+        <h3>Paso 1: Subir PDF</h3>
+        <p>Haz clic en el área de subida y selecciona un archivo PDF.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Step 2: Choose Page Range</h3>
-        <p>Select "All pages" or specify a range like "1-5".</p>
+        <h3>Paso 2: Elegir Rango de Páginas</h3>
+        <p>Selecciona "Todas las páginas" o especifica un rango como "1-5".</p>
       </div>
 
       <div class="guide-block">
-        <h3>Step 3: Choose Output Format</h3>
-        <p>Select JPG, PNG, or WebP.</p>
+        <h3>Paso 3: Elegir Formato de Salida</h3>
+        <p>Selecciona JPG, PNG o WebP.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Step 4: Set Resolution</h3>
-        <p>Choose 72 DPI (screen) to 300 DPI (print quality).</p>
+        <h3>Paso 4: Configurar Resolución</h3>
+        <p>Elige 72 DPI (pantalla) a 300 DPI (calidad de impresión).</p>
       </div>
 
       <div class="guide-block">
-        <h3>Step 5: Convert</h3>
-        <p>Click "Convert to Images". Each page is rendered to an image.</p>
+        <h3>Paso 5: Convertir</h3>
+        <p>Haz clic en "Convertir a Imágenes". Cada página se renderiza como una imagen.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Step 6: Download</h3>
-        <p>Click "Download All ZIP" to get all pages.</p>
+        <h3>Paso 6: Descargar</h3>
+        <p>Haz clic en "Descargar Todo ZIP" para obtener todas las páginas.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Best Settings by Use Case</h3>
-        <ul><li>Social media — JPG, 150 DPI</li><li>Print — PNG, 300 DPI</li><li>OCR — PNG, 300 DPI</li></ul>
+        <h3>Mejores Ajustes por Caso de Uso</h3>
+        <ul><li>Redes sociales — JPG, 150 DPI</li><li>Impresión — PNG, 300 DPI</li><li>OCR — PNG, 300 DPI</li></ul>
       </div>
 
 <section class="faq-section">
@@ -220,13 +220,13 @@
       </section>
 
 <section class="related-tools">
-  <h2>You Might Also Like</h2>
+  <h2>También te Puede Interesar</h2>
   <div class="related-tools-grid">
     <a href="/es/tools/image-to-pdf.html" class="related-tool-card">
       <span class="tool-icon">📄</span>
       <div class="tool-info">
         <strong>Image to PDF</strong>
-        <span class="tool-desc">Combine images back into a PDF</span>
+        <span class="tool-desc">Combinar imágenes en PDF</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
@@ -234,7 +234,7 @@
       <span class="tool-icon">🔤</span>
       <div class="tool-info">
         <strong>OCR Image to Text</strong>
-        <span class="tool-desc">Extract text from converted pages</span>
+        <span class="tool-desc">Extraer texto de páginas convertidas</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
@@ -242,7 +242,7 @@
       <span class="tool-icon">🗜️</span>
       <div class="tool-info">
         <strong>Image Compressor</strong>
-        <span class="tool-desc">Compress converted images</span>
+        <span class="tool-desc">Comprimir imágenes convertidas</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
@@ -257,11 +257,11 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Herramientas de imagen gratuitas con IA que respetan tu privacidad.</p></div>
-        <div class="footer-links"><h4>Tools</h4><a href="/es/tools/background-remover.html">Background Remover</a><a href="/es/tools/compressor.html">Compressor</a><a href="/es/tools/converter.html">Converter</a><a href="/es/tools/resizer.html">Resizer</a>
+        <div class="footer-links"><h4>Herramientas</h4><a href="/es/tools/background-remover.html">Background Remover</a><a href="/es/tools/compressor.html">Compressor</a><a href="/es/tools/converter.html">Converter</a><a href="/es/tools/resizer.html">Resizer</a>
           <a href="/es/tools/gif-editor.html">GIF Editor</a>
           <a href="/es/tools/pdf-to-image.html">PDF to Image</a>
         </div>
-        <div class="footer-links"><h4>More Tools</h4><a href="/es/tools/cropper.html">Cropper</a><a href="/es/tools/watermark.html">Watermark</a><a href="/es/tools/image-merger.html">Image Merger</a><a href="/es/tools/screenshot-to-image.html">Screenshot to Image</a><a href="/es/tools/image-filters.html">Image Filters</a><a href="/es/tools/svg-to-png.html">SVG to PNG</a><a href="/es/tools/image-compare.html">Image Compare</a><a href="/es/tools/print-resizer.html">Print-Ready Resizer</a><a href="/es/tools/meme-generator.html">Meme Generator</a>          <a href="/es/tools/face-blur.html">Face Blur</a>
+        <div class="footer-links"><h4>Más Herramientas</h4><a href="/es/tools/cropper.html">Cropper</a><a href="/es/tools/watermark.html">Watermark</a><a href="/es/tools/image-merger.html">Image Merger</a><a href="/es/tools/screenshot-to-image.html">Screenshot to Image</a><a href="/es/tools/image-filters.html">Image Filters</a><a href="/es/tools/svg-to-png.html">SVG to PNG</a><a href="/es/tools/image-compare.html">Image Compare</a><a href="/es/tools/print-resizer.html">Print-Ready Resizer</a><a href="/es/tools/meme-generator.html">Meme Generator</a>          <a href="/es/tools/face-blur.html">Face Blur</a>
           <a href="/es/tools/heic-converter.html">HEIC Converter</a>
           <a href="/es/tools/metadata-viewer.html">Metadata Viewer</a>
           <a href="/es/tools/avif-support.html">AVIF Support</a>
@@ -290,6 +290,7 @@
 (function() {
         const dropzone = document.getElementById('dropzone');
         const fileInput = document.getElementById('fileInput');
+        const chooseFileBtn = document.getElementById('chooseFileBtn');
         const controlsSection = document.getElementById('controlsSection');
         const pdfInfo = document.getElementById('pdfInfo');
         const outputFormat = document.getElementById('outputFormat');
@@ -317,14 +318,28 @@
             return false;
         }
 
-        // Upload — label native behavior handles click; drag/drop below
+        // Upload — single-trigger: dropzone click + button click + drag/drop
         if (dropzone) {
+            // Click on empty area of dropzone → open file dialog
+            dropzone.addEventListener('click', function(e) {
+                if (e.target === chooseFileBtn || (chooseFileBtn && chooseFileBtn.contains(e.target))) {
+                    return; // button has its own handler
+                }
+                fileInput.click();
+            });
             dropzone.addEventListener('dragover', function(e) { e.preventDefault(); e.stopPropagation(); dropzone.classList.add('dragover'); });
             dropzone.addEventListener('dragleave', function(e) { e.preventDefault(); dropzone.classList.remove('dragover'); });
             dropzone.addEventListener('drop', function(e) {
                 e.preventDefault(); e.stopPropagation();
                 dropzone.classList.remove('dragover');
                 if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
+            });
+        }
+        if (chooseFileBtn) {
+            chooseFileBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                fileInput.click();
             });
         }
         if (fileInput) {
