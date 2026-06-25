@@ -649,10 +649,12 @@ def generate_lang(lang_code):
         
         # Update lang-specific paths in workspace/related
         if lang_code != 'en':
-            # Replace /tools/ → /LANG/tools/ in related_html
+            # Replace href="/tools/ → href="/LANG/tools/ in related_html
+            # Using href="/tools/ avoids double-prefix bug when related_html
+            # already contains /LANG/tools/ from TOOL_TRANSLATIONS
             for field in ['related_html']:
                 if tool.get(field):
-                    tool[field] = tool[field].replace('/tools/', f'/{lang_code}/tools/')
+                    tool[field] = tool[field].replace('href="/tools/', f'href="/{lang_code}/tools/')
         
         tools.append(tool)
     
