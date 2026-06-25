@@ -55,10 +55,14 @@ entries.append(url_entry('/workflows/', priority='0.9', changefreq='weekly'))
 for wf in workflows:
     entries.append(url_entry(f'/workflows/{wf}.html', priority='0.8'))
 
-# ── Blog ──
+# ── Blog (English) ──
 entries.append(url_entry('/blog/', priority='0.8', changefreq='weekly'))
 for bp in blog_posts:
     entries.append(url_entry(f'/blog/{bp}', priority='0.8'))
+
+# ── Blog (6 languages) ──
+for lang in LANGUAGES:
+    entries.append(url_entry(f'/{lang}/blog/', priority='0.7', changefreq='weekly'))
 
 # ── Static pages ──
 entries.append(url_entry('/about', priority='0.7'))
@@ -82,5 +86,5 @@ print(f'  Total URLs: {len(entries)}')
 print(f'  English tools: {len(tool_slugs)}')
 print(f'  Lang tools: {len(LANGUAGES)} x {len(tool_slugs)} = {len(LANGUAGES) * len(tool_slugs)}')
 print(f'  Workflows: {1 + len(workflows)} (list + pages)')
-print(f'  Blog: {1 + len(blog_posts)} (list + posts)')
+print(f'  Blog: {1 + len(blog_posts)} English + {len(LANGUAGES)} lang indexes')
 print(f'  Static: 5 (about, contact, privacy, terms, cookie-policy)')
