@@ -91,17 +91,27 @@
   Cache-Control: public, max-age=0, stale-while-revalidate=3600
   CDN-Cache-Control: public, max-age=43200, stale-while-revalidate=3600
 
-# ── CSS: 7 days ──
-/css/*
+# ── CSS: 7 days (match all subpaths) ──
+/css/**
   Cache-Control: public, max-age=604800, must-revalidate
   CDN-Cache-Control: public, max-age=604800
 
-# ── JS: 7 days, immutable ──
-/js/*
+# ── JS: 7 days, immutable (match all subpaths) ──
+/js/**
   Cache-Control: public, max-age=604800, immutable
   CDN-Cache-Control: public, max-age=604800
 
-# ── Images by extension (no /* catch-all): 30 days, immutable ──
+# ── Images: 30 days, immutable (all subpaths) ──
+/images/**
+  Cache-Control: public, max-age=2592000, immutable
+  CDN-Cache-Control: public, max-age=2592000
+
+# ── Screenshots: 30 days ──
+/screenshots/**
+  Cache-Control: public, max-age=2592000, immutable
+  CDN-Cache-Control: public, max-age=2592000
+
+# ── Root-level images (just in case) ──
 /*.png
 /*.jpg
 /*.jpeg
