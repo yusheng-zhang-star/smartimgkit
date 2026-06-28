@@ -53,7 +53,7 @@ for lang in LANGUAGES:
 # ── Workflows ──
 entries.append(url_entry('/workflows/', priority='0.9', changefreq='weekly'))
 for wf in workflows:
-    entries.append(url_entry(f'/workflows/{wf}.html', priority='0.8'))
+    entries.append(url_entry(f'/workflows/{wf}', priority='0.8'))
 
 # ── Blog (English) ──
 entries.append(url_entry('/blog/', priority='0.8', changefreq='weekly'))
