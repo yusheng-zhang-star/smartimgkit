@@ -17,8 +17,13 @@
     'en': { flag: '\u{1F1EC}\u{1F1E7}', name: 'EN' },
     'es': { flag: '\u{1F1EA}\u{1F1F8}', name: 'ES' },
     'pt': { flag: '\u{1F1E7}\u{1F1F7}', name: 'PT' },
-    'id': { flag: '\u{1F1EE}\u{1F1E9}', name: 'ID' }
+    'id': { flag: '\u{1F1EE}\u{1F1E9}', name: 'ID' },
+    'fr': { flag: '\u{1F1EB}\u{1F1F7}', name: 'FR' },
+    'vi': { flag: '\u{1F1FB}\u{1F1F3}', name: 'VI' },
+    'ar': { flag: '\u{1F1F8}\u{1F1E6}', name: 'AR' }
   };
+
+  var PREFIXES = ['es', 'pt', 'id', 'fr', 'vi', 'ar'];
 
   // ── Detect current language ──────────────────────────────────────
   function getCurrentLanguage() {
@@ -28,21 +33,22 @@
     } catch(e) {}
 
     var path = window.location.pathname.replace(/\/$/, '');
-    if (/^\/es($|\/)/.test(path)) return 'es';
-    if (/^\/pt($|\/)/.test(path)) return 'pt';
-    if (/^\/id($|\/)/.test(path)) return 'id';
+    for (var i = 0; i < PREFIXES.length; i++) {
+      var p = PREFIXES[i];
+      var re = new RegExp('^\\/' + p + '($|\\/)');
+      if (re.test(path)) return p;
+    }
     return 'en';
   }
 
   // ── Strip language prefix from path ──────────────────────────────
   function getBasePath() {
     var path = window.location.pathname;
-    if (path === '/es' || path === '/es/') return '/';
-    if (path === '/pt' || path === '/pt/') return '/';
-    if (path === '/id' || path === '/id/') return '/';
-    if (path.indexOf('/es/') === 0) return path.substring(3);
-    if (path.indexOf('/pt/') === 0) return path.substring(3);
-    if (path.indexOf('/id/') === 0) return path.substring(3);
+    for (var i = 0; i < PREFIXES.length; i++) {
+      var p = PREFIXES[i];
+      if (path === '/' + p || path === '/' + p + '/') return '/';
+      if (path.indexOf('/' + p + '/') === 0) return path.substring(3 + (p.length - 2));
+    }
     return path;
   }
 
@@ -57,8 +63,15 @@
 
   // ── Navigate to language version ─────────────────────────────────
   function switchLanguage(lang) {
-    try { localStorage.setItem('lang_chosen', lang); } catch(e) {}
-    window.location.href = constructLanguageURL(lang);
+    try {
+      localStorage.setItem('lang_chosen', lang);
+      sessionStorage.setItem('lang_choice', '1');
+    } catch(e) {}
+    var target = constructLanguageURL(lang);
+    if (target === window.location.pathname || target === window.location.pathname.replace(/\/$/, '') + '/') {
+      return;
+    }
+    window.location.href = target;
   }
 
   // ── Guess language from href ─────────────────────────────────────
@@ -67,6 +80,9 @@
     if (href.indexOf('/es') === 0) return 'es';
     if (href.indexOf('/pt') === 0) return 'pt';
     if (href.indexOf('/id') === 0) return 'id';
+    if (href.indexOf('/fr') === 0) return 'fr';
+    if (href.indexOf('/vi') === 0) return 'vi';
+    if (href.indexOf('/ar') === 0) return 'ar';
     return 'en';
   }
 

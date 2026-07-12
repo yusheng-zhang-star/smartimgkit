@@ -102,16 +102,24 @@ function getConsent() {
 }
 
 function saveConsent(consent) {
-  localStorage.setItem('cookie-consent', JSON.stringify(consent));
+  try {
+    localStorage.setItem('cookie-consent', JSON.stringify(consent));
+  } catch (e) { /* localStorage blocked */ }
 }
 
+let __ga4ConfigApplied = false;
+
 function loadGA4() {
-  if (!GA4_MEASUREMENT_ID || GA4_MEASUREMENT_ID === 'G-KKYP8DMCMD') return;
+  if (!GA4_MEASUREMENT_ID) return;
+  if (GA4_MEASUREMENT_ID === 'G-KKYP8DMCMD') {
+    console.warn('[GA4] Measurement ID is still the placeholder. Replace G-KKYP8DMCMD with your real GA4 ID.');
+    return;
+  }
   if (document.getElementById('ga4-script')) return;
   const s = document.createElement('script');
   s.id = 'ga4-script';
   s.async = true;
-  s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4_MEASUREMENT_ID;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA4_MEASUREMENT_ID);
   document.head.appendChild(s);
   window.dataLayer = window.dataLayer || [];
   function gtag(){ window.dataLayer.push(arguments); }
@@ -122,7 +130,6 @@ function loadGA4() {
     'ad_user_data': 'denied',
     'ad_personalization': 'denied'
   });
-  gtag('config', GA4_MEASUREMENT_ID, { anonymize_ip: true });
 }
 
 function updateConsentState(consent) {
@@ -134,6 +141,10 @@ function updateConsentState(consent) {
     'ad_user_data': consent.advertising ? 'granted' : 'denied',
     'ad_personalization': consent.advertising ? 'granted' : 'denied'
   });
+  if (!__ga4ConfigApplied) {
+    __ga4ConfigApplied = true;
+    gtag('config', GA4_MEASUREMENT_ID, { anonymize_ip: true });
+  }
 }
 
 function applyConsent(consent) {
@@ -143,13 +154,17 @@ function applyConsent(consent) {
   }
 }
 
+let __cookieInit = false;
 function initCookieConsent() {
+  if (__cookieInit) return;
   const existing = getConsent();
   if (existing) {
+    __cookieInit = true;
     applyConsent(existing);
     return;
   }
 
+  __cookieInit = true;
   const banner = document.createElement('div');
   banner.className = 'cookie-consent';
   banner.innerHTML = `
@@ -184,6 +199,16 @@ function initCookieConsent() {
           <span class="cookie-toggle-slider"></span>
         </label>
       </div>
+      <div class="cookie-category">
+        <div class="cookie-category-info">
+          <h4>Advertising Cookies</h4>
+          <p>Used to serve personalized ads and measure ad performance. Optional.</p>
+        </div>
+        <label class="cookie-toggle">
+          <input type="checkbox" id="cookieAdvertising">
+          <span class="cookie-toggle-slider"></span>
+        </label>
+      </div>
       <div class="cookie-save-row">
         <button class="cookie-btn cookie-btn-accept" id="cookieSave">Save Preferences</button>
       </div>
@@ -211,10 +236,12 @@ function initCookieConsent() {
   }
 
   function saveCustom() {
+    const analyticsEl = document.getElementById('cookieAnalytics');
+    const advertisingEl = document.getElementById('cookieAdvertising');
     const consent = {
       essential: true,
-      analytics: document.getElementById('cookieAnalytics').checked,
-      advertising: document.getElementById('cookieAdvertising').checked,
+      analytics: !!(analyticsEl && analyticsEl.checked),
+      advertising: !!(advertisingEl && advertisingEl.checked),
       timestamp: Date.now()
     };
     saveConsent(consent);
@@ -222,12 +249,18 @@ function initCookieConsent() {
     closeBanner();
   }
 
-  document.getElementById('cookieAccept').addEventListener('click', acceptAll);
-  document.getElementById('cookieDecline').addEventListener('click', rejectAll);
-  document.getElementById('cookieCustomize').addEventListener('click', () => {
-    document.getElementById('cookieCustomPanel').classList.toggle('visible');
+  const acceptBtn = document.getElementById('cookieAccept');
+  const declineBtn = document.getElementById('cookieDecline');
+  const customizeBtn = document.getElementById('cookieCustomize');
+  const saveBtn = document.getElementById('cookieSave');
+
+  if (acceptBtn) acceptBtn.addEventListener('click', acceptAll);
+  if (declineBtn) declineBtn.addEventListener('click', rejectAll);
+  if (customizeBtn) customizeBtn.addEventListener('click', () => {
+    const panel = document.getElementById('cookieCustomPanel');
+    if (panel) panel.classList.toggle('visible');
   });
-  document.getElementById('cookieSave').addEventListener('click', saveCustom);
+  if (saveBtn) saveBtn.addEventListener('click', saveCustom);
 }
 
 /* ===== Dropzone Utilities ===== */

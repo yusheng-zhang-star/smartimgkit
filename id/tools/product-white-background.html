@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id" data-theme="dark" data-tool-id="product-white-background">
 <head>
   <meta charset="UTF-8">
@@ -28,7 +28,7 @@
   <link rel="alternate" hreflang="pt" href="https://smartimgkit.com/pt/tools/product-white-background">
   <link rel="alternate" hreflang="vi" href="https://smartimgkit.com/vi/tools/product-white-background">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/product-white-background">
-  <link rel="stylesheet" href="/css/style.css?v=3">
+  <link rel="stylesheet" href="/css/style.css?v=4">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 
@@ -98,8 +98,8 @@
   <!-- Header: exact match image-rotator compact format -->
   <header class="site-header">
     <div class="container header-inner">
-      <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
-      <nav class="main-nav"><a href="/">Beranda</a><a href="/id/tools/background-remover">Alat</a><a href="/workflows/">Workflows</a><a href="/id/blog/">Blog</a><a href="/about">Tentang</a><a href="/contact">Kontak</a></nav>
+      <a href="/id/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/id/">Beranda</a><a href="/id/tools/background-remover">Alat</a><a href="/workflows/">Workflows</a><a href="/id/blog/">Blog</a><a href="/about">Tentang</a><a href="/contact">Kontak</a></nav>
       <div class="header-actions">
         <div class="lang-switcher" style="position:relative;">
           <button class="lang-btn" aria-label="Switch language">🇮🇩 ID</button>
@@ -284,7 +284,7 @@
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
-        <div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Alat gambar gratis dengan AI yang menghormati privasi Anda.</p></div>
+        <div class="footer-brand"><a href="/id/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Alat gambar gratis dengan AI yang menghormati privasi Anda.</p></div>
         <div class="footer-links"><h4>Tools</h4><a href="/id/tools/background-remover">Background Remover</a><a href="/id/tools/compressor">Compressor</a><a href="/id/tools/converter">Converter</a><a href="/id/tools/resizer">Resizer</a>
           <a href="/id/tools/gif-editor">GIF Editor</a>
           <a href="/id/tools/pdf-to-image">PDF to Image</a>
@@ -311,7 +311,7 @@
     </div>
   </footer>
 
-  <script src="/js/main.js?v=3"></script>
+  <script src="/js/main.js?v=4"></script>
   <script>
 let files = [];
 let model = null;
@@ -524,48 +524,47 @@ processBtn.addEventListener('click', async function() {
   renderGrid();
 });
 
-downloadAllBtn.addEventListener('click', async function() {
+downloadAllBtn.addEventListener('click', function() {
   var done = files.filter(function(f) { return f.resultBlob; });
   if (!done.length) return;
   status.textContent = 'Creating ZIP...';
-  try {
-    var resp = await fetch('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js');
-    var code = await resp.text();
-    eval(code);
-    var zip = new JSZip();
-    done.forEach(function(item) {
-      var outName = (item.name || 'product').replace(/\.[^.]+$/, '') + '-white-bg.png';
-      zip.file(outName, item.resultBlob);
-    });
-    var blob = await zip.generateAsync({ type: 'blob' });
-    var a = document.createElement('a');
-    a.download = 'product-white-background-images.zip';
-    a.href = URL.createObjectURL(blob);
-    a.click();
-    URL.revokeObjectURL(a.href);
-    status.textContent = 'ZIP downloaded!';
-    setTimeout(function() { status.textContent = ''; }, 2000);
-  } catch (err) {
-    // Fallback with script tag loading
-    var script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
-    script.onload = async function() {
-      var zip = new JSZip();
-      done.forEach(function(item) {
-        var outName = (item.name || 'product').replace(/\.[^.]+$/, '') + '-white-bg.png';
-        zip.file(outName, item.resultBlob);
-      });
-      var blob = await zip.generateAsync({ type: 'blob' });
-      var a = document.createElement('a');
-      a.download = 'product-white-background-images.zip';
-      a.href = URL.createObjectURL(blob);
-      a.click();
-      URL.revokeObjectURL(a.href);
-      status.textContent = 'ZIP downloaded!';
-      setTimeout(function() { status.textContent = ''; }, 2000);
-    };
-    document.head.appendChild(script);
+  function buildAndDownloadZip() {
+    (async function() {
+      try {
+        var zip = new JSZip();
+        done.forEach(function(item) {
+          var outName = (item.name || 'product').replace(/\.[^.]+$/, '') + '-white-bg.png';
+          zip.file(outName, item.resultBlob);
+        });
+        var blob = await zip.generateAsync({ type: 'blob' });
+        var a = document.createElement('a');
+        a.download = 'product-white-background-images.zip';
+        a.href = URL.createObjectURL(blob);
+        a.click();
+        URL.revokeObjectURL(a.href);
+        status.textContent = 'ZIP downloaded!';
+        setTimeout(function() { status.textContent = ''; }, 2000);
+      } catch (err) {
+        status.textContent = 'ZIP creation failed. Please try again.';
+        setTimeout(function() { status.textContent = ''; }, 3000);
+      }
+    })();
   }
+  if (window.JSZip) { buildAndDownloadZip(); return; }
+  var existing = document.getElementById('jszip-loader');
+  if (existing) { existing.addEventListener('load', buildAndDownloadZip); return; }
+  var script = document.createElement('script');
+  script.id = 'jszip-loader';
+  script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+  script.integrity = 'sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCqOsZB8ehQReFdUkkGbkGfMvYjkDp1LkyOJt9a5O+vw==';
+  script.crossOrigin = 'anonymous';
+  script.referrerPolicy = 'no-referrer';
+  script.onload = buildAndDownloadZip;
+  script.onerror = function() {
+    status.textContent = 'Failed to load ZIP library. Check your connection.';
+    setTimeout(function() { status.textContent = ''; }, 3000);
+  };
+  document.head.appendChild(script);
 });
 
 clearBtn.addEventListener('click', function() {
