@@ -155,7 +155,7 @@ function initCookieConsent() {
   banner.innerHTML = `
     <div class="cookie-consent-inner">
       <div class="cookie-consent-text">
-        <p>We use cookies to improve your experience and serve relevant ads. You can customize your preferences or accept all cookies. <a href="/cookie-policy.html">Learn more</a></p>
+        <p>We use cookies to improve your experience and serve relevant ads. You can customize your preferences or accept all cookies. <a href="/cookie-policy">Learn more</a></p>
       </div>
       <div class="cookie-consent-actions">
         <button class="cookie-btn cookie-btn-accept" id="cookieAccept">Accept All</button>
