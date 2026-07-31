@@ -219,7 +219,292 @@
 
   <script src="/js/main.js?v=4"></script>
   <script>
+let files = [];
+let model = null;
+let processing = false;
+let selectedBg = '#ffffff';
 
+const fileInput = document.getElementById('fileInput');
+const dropzone = document.getElementById('dropzone');
+const workspace = document.getElementById('workspace');
+const productGrid = document.getElementById('productGrid');
+const processBtn = document.getElementById('processBtn');
+const downloadAllBtn = document.getElementById('downloadAllBtn');
+const addMoreBtn = document.getElementById('addMoreBtn');
+const clearBtn = document.getElementById('clearBtn');
+const progBar = document.getElementById('progBar');
+const progFill = document.getElementById('progFill');
+const status = document.getElementById('status');
+const beforeAfter = document.getElementById('beforeAfterPreview');
+const bgBtns = document.querySelectorAll('.bg-btn');
+
+// Background selector
+bgBtns.forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    bgBtns.forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    selectedBg = btn.getAttribute('data-bg');
+    // Update after image bg style
+    document.querySelectorAll('.product-card-img.after').forEach(function(img) {
+      var val = selectedBg;
+      if (val === '#ffffff') { img.className = 'product-card-img after bg-preview-white'; }
+      else if (val === 'transparent') { img.className = 'product-card-img after bg-preview-transparent'; }
+      else if (val === '#e8f4f8') { img.className = 'product-card-img after bg-preview-blue'; }
+      else if (val === '#f0f0f0') { img.className = 'product-card-img after bg-preview-gray'; }
+    });
+  });
+});
+
+fileInput.addEventListener('change', function() {
+  var arr = Array.from(fileInput.files).filter(function(f) { return f.type && f.type.startsWith('image/'); });
+  if (arr.length) addFiles(arr);
+  fileInput.value = '';
+});
+
+dropzone.addEventListener('dragover', function(e) { e.preventDefault(); dropzone.classList.add('drag'); });
+dropzone.addEventListener('dragleave', function() { dropzone.classList.remove('drag'); });
+dropzone.addEventListener('drop', function(e) {
+  e.preventDefault();
+  dropzone.classList.remove('drag');
+  var arr = Array.from(e.dataTransfer.files).filter(function(f) { return f.type && f.type.startsWith('image/'); });
+  if (arr.length) addFiles(arr);
+});
+
+function addFiles(arr) {
+  arr.forEach(function(f) {
+    files.push({ name: f.name, file: f, url: URL.createObjectURL(f), resultBlob: null, resultUrl: null, error: null });
+  });
+  dropzone.style.display = 'none';
+  workspace.style.display = 'block';
+  if (beforeAfter) beforeAfter.classList.add('hidden');
+  renderGrid();
+}
+
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+}
+
+function getBgClass(val) {
+  if (val === '#ffffff') return 'bg-preview-white';
+  if (val === 'transparent') return 'bg-preview-transparent';
+  if (val === '#e8f4f8') return 'bg-preview-blue';
+  if (val === '#f0f0f0') return 'bg-preview-gray';
+  return 'bg-preview-white';
+}
+
+function renderGrid() {
+  productGrid.innerHTML = '';
+  files.forEach(function(item, i) {
+    var card = document.createElement('div');
+    card.className = 'product-card';
+
+    var badgeClass = 'badge-pending';
+    var badgeText = '⏳ Pending';
+    if (item.error) { badgeClass = 'badge-error'; badgeText = '❌ Error'; }
+    else if (processing && !item.resultBlob && !item.error) { badgeClass = 'badge-processing'; badgeText = '⏳ Processing...'; }
+    else if (item.resultBlob) { badgeClass = 'badge-done'; badgeText = '✅ Done'; }
+
+    var outName = (item.name || 'product').replace(/\.[^.]+$/, '') + '-white-bg.png';
+    var origSize = formatSize(item.file.size);
+    var resultSize = item.resultBlob ? formatSize(item.resultBlob.size) : '—';
+
+    var bgClass = getBgClass(selectedBg);
+    var afterImg = '';
+    if (item.resultBlob && item.resultUrl) {
+      afterImg = '<img class="product-card-img after ' + bgClass + '" src="' + item.resultUrl + '" alt="' + item.name + ' with ' + selectedBg + ' background">';
+    } else {
+      afterImg = '<div class="product-card-img after ' + bgClass + '" style="display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:0.85rem;">' + (item.error ? '⚠️ Error' : '⏳') + '</div>';
+    }
+
+    var downloadBtn = '<button class="btn-sm" disabled>⬇️ Download</button>';
+    if (item.resultBlob && item.resultUrl) {
+      downloadBtn = '<a href="' + item.resultUrl + '" download="' + outName + '" class="btn-sm">⬇️ Download</a>';
+    }
+
+    card.innerHTML =
+      '<div class="product-card-header">' +
+        '<span class="product-card-name" title="' + item.name + '">' + item.name + '</span>' +
+        '<span class="product-card-badge ' + badgeClass + '">' + badgeText + '</span>' +
+        '<button class="product-card-remove" title="Remove" data-index="' + i + '">✕</button>' +
+      '</div>' +
+      '<div class="product-card-images">' +
+        '<img class="product-card-img before" src="' + item.url + '" alt="Original ' + item.name + '">' +
+        '<span class="product-card-arrow">→</span>' +
+        afterImg +
+      '</div>' +
+      '<div class="product-card-footer">' +
+        '<span class="product-card-size">' + origSize + '</span>' +
+        '<span class="product-card-size">→ ' + resultSize + '</span>' +
+        downloadBtn +
+      '</div>';
+
+    card.querySelector('.product-card-remove').addEventListener('click', function(e) {
+      e.stopPropagation();
+      URL.revokeObjectURL(item.url);
+      if (item.resultUrl) URL.revokeObjectURL(item.resultUrl);
+      files.splice(i, 1);
+      renderGrid();
+      if (files.length === 0) {
+        workspace.style.display = 'none';
+        dropzone.style.display = '';
+        if (beforeAfter) beforeAfter.classList.remove('hidden');
+      }
+    });
+
+    productGrid.appendChild(card);
+  });
+
+  var done = files.filter(function(f) { return f.resultBlob; });
+  downloadAllBtn.style.display = done.length > 1 ? 'inline-block' : 'none';
+}
+
+addMoreBtn.addEventListener('click', function() { fileInput.click(); });
+
+processBtn.addEventListener('click', async function() {
+  if (!files.length || processing) return;
+  processing = true;
+  processBtn.disabled = true;
+  progBar.style.display = 'block';
+  renderGrid();
+
+  // Load model once
+  if (!model) {
+    status.textContent = 'Loading AI model (first time may take a moment)...';
+    try {
+      var mod = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm');
+      model = mod;
+    } catch (err) {
+      status.textContent = 'Error loading AI model: ' + err.message;
+      processing = false;
+      processBtn.disabled = false;
+      return;
+    }
+  }
+
+  for (var i = 0; i < files.length; i++) {
+    if (files[i].resultBlob) {
+      progFill.style.width = (((i + 1) / files.length) * 100) + '%';
+      continue;
+    }
+    status.textContent = 'Processing ' + (i+1) + '/' + files.length + ': ' + files[i].name;
+    progFill.style.width = ((i / files.length) * 100) + '%';
+    renderGrid();
+    try {
+      var blob = await model.removeBackground(files[i].url);
+      // Composite onto selected background
+      var img = await createImageBitmap(blob);
+      var canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      var ctx = canvas.getContext('2d');
+
+      // Draw background color
+      if (selectedBg !== 'transparent') {
+        ctx.fillStyle = selectedBg;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+
+      // Draw the product image on top
+      ctx.drawImage(img, 0, 0);
+
+      var compositeBlob = await new Promise(function(resolve) {
+        canvas.toBlob(function(b) { resolve(b); }, 'image/png');
+      });
+
+      files[i].resultBlob = compositeBlob;
+      files[i].resultUrl = URL.createObjectURL(compositeBlob);
+    } catch (err) {
+      files[i].error = true;
+      status.textContent = 'Error on ' + files[i].name + ': ' + (err && err.message ? err.message : err);
+    }
+  }
+
+  progFill.style.width = '100%';
+  processing = false;
+  processBtn.disabled = false;
+  var doneCount = files.filter(function(f) { return f.resultBlob; }).length;
+  status.textContent = 'Done! ' + doneCount + ' / ' + files.length + ' processed.';
+  setTimeout(function() { progBar.style.display = 'none'; status.textContent = ''; }, 4000);
+  renderGrid();
+});
+
+downloadAllBtn.addEventListener('click', function() {
+  var done = files.filter(function(f) { return f.resultBlob; });
+  if (!done.length) return;
+  status.textContent = 'Creating ZIP...';
+  function buildAndDownloadZip() {
+    (async function() {
+      try {
+        var zip = new JSZip();
+        done.forEach(function(item) {
+          var outName = (item.name || 'product').replace(/\.[^.]+$/, '') + '-white-bg.png';
+          zip.file(outName, item.resultBlob);
+        });
+        var blob = await zip.generateAsync({ type: 'blob' });
+        var a = document.createElement('a');
+        a.download = 'product-white-background-images.zip';
+        a.href = URL.createObjectURL(blob);
+        a.click();
+        URL.revokeObjectURL(a.href);
+        status.textContent = 'ZIP downloaded!';
+        setTimeout(function() { status.textContent = ''; }, 2000);
+      } catch (err) {
+        status.textContent = 'ZIP creation failed. Please try again.';
+        setTimeout(function() { status.textContent = ''; }, 3000);
+      }
+    })();
+  }
+  if (window.JSZip) { buildAndDownloadZip(); return; }
+  var existing = document.getElementById('jszip-loader');
+  if (existing) { existing.addEventListener('load', buildAndDownloadZip); return; }
+  var script = document.createElement('script');
+  script.id = 'jszip-loader';
+  script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+  script.integrity = 'sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCqOsZB8ehQReFdUkkGbkGfMvYjkDp1LkyOJt9a5O+vw==';
+  script.crossOrigin = 'anonymous';
+  script.referrerPolicy = 'no-referrer';
+  script.onload = buildAndDownloadZip;
+  script.onerror = function() {
+    status.textContent = 'Failed to load ZIP library. Check your connection.';
+    setTimeout(function() { status.textContent = ''; }, 3000);
+  };
+  document.head.appendChild(script);
+});
+
+clearBtn.addEventListener('click', function() {
+  files.forEach(function(f) { URL.revokeObjectURL(f.url); if (f.resultUrl) URL.revokeObjectURL(f.resultUrl); });
+  files = [];
+  productGrid.innerHTML = '';
+  workspace.style.display = 'none';
+  dropzone.style.display = '';
+  progBar.style.display = 'none';
+  status.textContent = '';
+  if (beforeAfter) beforeAfter.classList.remove('hidden');
+  downloadAllBtn.style.display = 'none';
+});
+
+// Sample image button
+(function() {
+  var sampleBtn = document.getElementById('sampleBtn');
+  if (sampleBtn) {
+    sampleBtn.addEventListener('click', async function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      sampleBtn.textContent = '⏳ Loading...';
+      try {
+        var resp = await fetch('https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80');
+        var blob = await resp.blob();
+        var file = new File([blob], 'product-sample.jpg', { type: 'image/jpeg' });
+        addFiles([file]);
+        sampleBtn.textContent = '🖼️ Try with sample product photos';
+      } catch (err) {
+        sampleBtn.textContent = '🖼️ Try with sample product photos';
+      }
+    });
+  }
+})();
   </script>
   <script src="/js/lang.js"></script>
 </body>

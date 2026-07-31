@@ -421,9 +421,9 @@ function clearBgImage() {
 // Logo/overlay upload
 document.getElementById('logoFileInput').addEventListener('change', function(e) {
   if (e.target.files[0]) {
-    const reader = new FileReader();
+    reader = new FileReader();
     reader.onload = function(ev) {
-      const img = new Image();
+      img = new Image();
       img.onload = function() {
         logoImage = img;
         document.getElementById('logoControls').style.display = 'flex';
@@ -554,10 +554,10 @@ dragOverlay.addEventListener('mousedown', function(e) {
 
   // Check if clicking near logo area
   if (logoImage) {
-    const scale = parseInt(document.getElementById('logoScaler').value) / 100;
-    const lw = logoImage.width * scale;
-    const lh = logoImage.height * scale;
-    const lx = (canvasW - lw) / 2;
+    scale = parseInt(document.getElementById('logoScaler').value) / 100;
+    lw = logoImage.width * scale;
+    lh = logoImage.height * scale;
+    lx = (canvasW - lw) / 2;
     const ly = (canvasH - lh) / 2 + logoYOffset;
     // Map mouse to canvas coordinates
     const cmx = (mx / rect.width) * canvasW;
@@ -576,7 +576,7 @@ dragOverlay.addEventListener('mousedown', function(e) {
 
 document.addEventListener('mousemove', function(e) {
   if (dragMode === 'none') return;
-  const rect = dragOverlay.getBoundingClientRect();
+  rect = dragOverlay.getBoundingClientRect();
   const dy = ((e.clientY - rect.top) / rect.height) * canvasH - ((e.clientY - rect.top) / rect.height) * canvasH + (e.movementY / rect.height) * canvasH;
 
   if (dragMode === 'text') {

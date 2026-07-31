@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark" data-tool-id="signature-maker">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Tạo Chữ Ký — SmartImgKit</title>
+  <meta name="description" content="Vẽ chữ ký số của bạn và tải xuống dưới dạng PNG trong suốt. Draw, type, or upload your signature and export as transparent PNG for documents and emails.">
+  <meta name="keywords" content="signature maker, digital signature, electronic signature, signature png, transparent signature">
+  <link rel="canonical" href="https://smartimgkit.com/vi/tools/signature-maker">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="Signature Maker — Create Digital Signature Free Online">
+  <meta property="og:description" content="Vẽ chữ ký số của bạn và tải xuống dưới dạng PNG trong suốt.">
+  <meta property="og:url" content="https://smartimgkit.com/tools/signature-maker">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/signature-maker.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Signature Maker — Create Digital Signature Free Online">
+  <meta name="twitter:description" content="Vẽ chữ ký số của bạn và tải xuống dưới dạng PNG trong suốt.">
+  <meta name="twitter:image" content="https://smartimgkit.com/screenshots/signature-maker.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css?v=4">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Dancing+Script:wght@400;700&family=Great+Vibes&family=Pacifico&family=Satisfy&display=swap" rel="stylesheet">
+  <style>
+    .tool-workspace { display: flex; flex-direction: column; gap: 24px; }
+    .controls, .result-section { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+    .controls h2, .result-section h2 { font-size: 1.2rem; color: var(--text-primary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--accent); }
+    .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    .tab-btn { padding: 10px 20px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-secondary); color: var(--text-secondary); cursor: pointer; font-weight: 600; }
+    .tab-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+    .control-row { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+    .control-row label { font-weight: 600; min-width: 120px; color: var(--text-secondary); font-size: 0.85rem; }
+    .control-row input[type="text"], .control-row input[type="number"], .control-row select {
+      padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-primary);
+      color: var(--text-primary); font-size: 0.9rem; flex: 1; min-width: 200px;
+    }
+    .color-input { width: 50px; height: 36px; border: none; border-radius: 6px; cursor: pointer; background: transparent; }
+    .btn-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+    .canvas-wrapper { position: relative; background: repeating-conic-gradient(#f0f0f0 0% 25%, #fff 0% 50%) 50% / 20px 20px; border-radius: 8px; border: 1px solid var(--border); touch-action: none; }
+    canvas { display: block; border-radius: 8px; cursor: crosshair; }
+    .type-preview { min-height: 100px; display: flex; align-items: center; justify-content: center; padding: 20px; background: repeating-conic-gradient(#f0f0f0 0% 25%, #fff 0% 50%) 50% / 20px 20px; border-radius: 8px; border: 1px solid var(--border); }
+    .type-preview span { color: #000; font-size: 3rem; }
+    @media (max-width: 640px) {
+      .control-row { flex-direction: column; align-items: flex-start; }
+      .control-row label { min-width: auto; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a href="/" class="logo">
+          <span class="logo-icon">🎨</span>
+          <span class="logo-text">SmartImgKit</span>
+        </a>
+        <div class="nav-links">
+          <a href="/">Home</a>
+          <a href="/#tools">Tools</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container">
+      <div class="tool-page-header">
+        <h1>✍️ Tạo Chữ Ký</h1>
+        <p>Vẽ chữ ký số của bạn và tải xuống dưới dạng PNG trong suốt.</p>
+      </div>
+
+      <div class="tool-workspace">
+        <div class="controls">
+          <h2>⚙️ Settings</h2>
+          <div class="tabs">
+            <button class="tab-btn active" data-tab="draw">✏️ Draw</button>
+            <button class="tab-btn" data-tab="type">📝 Type</button>
+          </div>
+          <div id="draw-pane" class="tab-pane active">
+            <div class="control-row">
+              <label>Pen Color</label>
+              <input type="color" id="penColor" class="color-input" value="#000000">
+            </div>
+            <div class="control-row">
+              <label>Pen Size</label>
+              <input type="number" id="penSize" value="3" min="1" max="20">
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-secondary" id="clearBtn">🗑️ Clear</button>
+              <button class="btn btn-secondary" id="undoBtn">↩️ Undo</button>
+            </div>
+          </div>
+          <div id="type-pane" class="tab-pane">
+            <div class="control-row">
+              <label>Your Name</label>
+              <input type="text" id="sigText" placeholder="John Doe" value="John Doe">
+            </div>
+            <div class="control-row">
+              <label>Font Style</label>
+              <select id="sigFont">
+                <option value="Dancing Script">Dancing Script</option>
+                <option value="Great Vibes">Great Vibes</option>
+                <option value="Pacifico">Pacifico</option>
+                <option value="Satisfy">Satisfy</option>
+              </select>
+            </div>
+            <div class="control-row">
+              <label>Text Color</label>
+              <input type="color" id="textColor" class="color-input" value="#000000">
+            </div>
+            <div class="control-row">
+              <label>Font Size</label>
+              <input type="number" id="fontSize" value="64" min="20" max="120">
+            </div>
+          </div>
+          <div class="btn-row" style="margin-top: 24px;">
+            <button class="btn btn-primary" id="downloadPngBtn">⬇️ Download PNG (Transparent)</button>
+            <button class="btn btn-secondary" id="downloadJpgBtn">⬇️ Download JPG</button>
+            <button class="btn btn-secondary" id="downloadSvgBtn">⬇️ Download SVG</button>
+          </div>
+        </div>
+
+        <div class="result-section">
+          <h2>✍️ Your Signature</h2>
+          <div id="drawArea" class="canvas-wrapper">
+            <canvas id="sigCanvas" width="800" height="300"></canvas>
+          </div>
+          <div id="typeArea" class="type-preview" style="display:none;">
+            <span id="typeSigSpan" style="font-family: 'Dancing Script', cursive; color: #000;">John Doe</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved.</p></div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.2.0/dist/signature_pad.umd.min.js"></script>
+  <script>
+(function() {
+  const canvas = document.getElementById('sigCanvas');
+  const signaturePad = new SignaturePad(canvas, {
+    penColor: '#000000',
+    minWidth: 1,
+    maxWidth: 3,
+    backgroundColor: 'rgba(0,0,0,0)'
+  });
+
+  // Resize canvas for high DPI
+  function resizeCanvas() {
+    const ratio = Math.max(window.devicePixelRatio || 1, 1);
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * ratio;
+    canvas.height = rect.height * ratio;
+    canvas.getContext('2d').scale(ratio, ratio);
+    signaturePad.clear();
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  // Tabs
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const drawArea = document.getElementById('drawArea');
+  const typeArea = document.getElementById('typeArea');
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab + '-pane').classList.add('active');
+      if (btn.dataset.tab === 'draw') { drawArea.style.display = ''; typeArea.style.display = 'none'; }
+      else { drawArea.style.display = 'none'; typeArea.style.display = 'flex'; updateTypeSig(); }
+    });
+  });
+
+  // Draw controls
+  document.getElementById('penColor').addEventListener('input', e => signaturePad.penColor = e.target.value);
+  document.getElementById('penSize').addEventListener('input', e => {
+    signaturePad.minWidth = Math.max(0.5, parseInt(e.target.value) / 3);
+    signaturePad.maxWidth = parseInt(e.target.value);
+  });
+  document.getElementById('clearBtn').addEventListener('click', () => signaturePad.clear());
+  document.getElementById('undoBtn').addEventListener('click', () => {
+    const data = signaturePad.toData();
+    if (data.length > 0) { data.pop(); signaturePad.fromData(data); }
+  });
+
+  // Type controls
+  const sigText = document.getElementById('sigText');
+  const sigFont = document.getElementById('sigFont');
+  const textColor = document.getElementById('textColor');
+  const fontSize = document.getElementById('fontSize');
+  const typeSigSpan = document.getElementById('typeSigSpan');
+  
+  function updateTypeSig() {
+    typeSigSpan.textContent = sigText.value || 'Your Signature';
+    typeSigSpan.style.fontFamily = `'${sigFont.value}', cursive`;
+    typeSigSpan.style.color = textColor.value;
+    typeSigSpan.style.fontSize = fontSize.value + 'px';
+  }
+  [sigText, sigFont, textColor, fontSize].forEach(el => el.addEventListener('input', updateTypeSig));
+
+  function getActiveCanvas() {
+    if (drawArea.style.display !== 'none') {
+      if (signaturePad.isEmpty()) { alert('Please draw your signature first.'); return null; }
+      return canvas;
+    } else {
+      const text = sigText.value.trim();
+      if (!text) { alert('Please enter your name.'); return null; }
+      const c = document.createElement('canvas');
+      c.width = 800; c.height = 200;
+      const ctx = c.getContext('2d');
+      ctx.font = `${fontSize.value}px '${sigFont.value}', cursive`;
+      ctx.fillStyle = textColor.value;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(text, 400, 100);
+      return c;
+    }
+  }
+
+  document.getElementById('downloadPngBtn').addEventListener('click', () => {
+    c = getActiveCanvas(); if (!c) return;
+    const link = document.createElement('a');
+    link.download = 'signature.png';
+    link.href = c.toDataURL('image/png');
+    link.click();
+  });
+  document.getElementById('downloadJpgBtn').addEventListener('click', () => {
+    c = getActiveCanvas(); if (!c) return;
+    const jc = document.createElement('canvas');
+    jc.width = c.width; jc.height = c.height;
+    const jctx = jc.getContext('2d');
+    jctx.fillStyle = '#ffffff';
+    jctx.fillRect(0, 0, jc.width, jc.height);
+    jctx.drawImage(c, 0, 0);
+    link = document.createElement('a');
+    link.download = 'signature.jpg';
+    link.href = jc.toDataURL('image/jpeg', 0.95);
+    link.click();
+  });
+  document.getElementById('downloadSvgBtn').addEventListener('click', () => {
+    if (drawArea.style.display !== 'none') {
+      if (signaturePad.isEmpty()) { alert('Please draw your signature first.'); return; }
+    }
+    c = getActiveCanvas(); if (!c) return;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${c.width}" height="${c.height}">
+      <image href="${c.toDataURL('image/png')}" width="${c.width}" height="${c.height}"/>
+    </svg>`;
+    const blob = new Blob([svg], { type: 'image/svg+xml' });
+    link = document.createElement('a');
+    link.download = 'signature.svg';
+    link.href = URL.createObjectURL(blob);
+    link.click();
+  });
+})();
+  </script>
+</body>
+</html>

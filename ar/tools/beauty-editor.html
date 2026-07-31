@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-tool-id="beauty-editor">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Photo Beauty Editor — Red-eye Removal & Skin Smoothing Free</title>
+  <meta name="description" content="Remove red-eye, smooth skin, whiten teeth, and enhance portraits. Free online photo editor with beauty filters. No uploads, 100% browser-based.">
+  <meta name="keywords" content="red eye removal, beauty editor, skin smoothing, portrait editor, teeth whitening, photo retouch, free online">
+  <link rel="canonical" href="https://smartimgkit.com/tools/beauty-editor">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="Photo Beauty Editor — Red-eye Removal & Skin Smoothing">
+  <meta property="og:description" content="Remove red-eye, smooth skin, and enhance portraits. Free online.">
+  <meta property="og:url" content="https://smartimgkit.com/tools/beauty-editor">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css?v=4">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+        <div class="nav-links"><a href="/">Home</a><a href="/#tools">Tools</a></div>
+      </nav>
+    </div>
+  </header>
+  <main class="tool-page">
+    <div class="container">
+      <div class="tool-page-header">
+        <h1>✨ Beauty Editor — Portrait Retouch</h1>
+        <p>Remove red-eye, smooth skin, whiten teeth, and enhance your portraits.</p>
+      </div>
+      <div class="tool-workspace">
+        <input type="file" id="fileInput" accept="image/*" style="display:none;">
+        <label for="fileInput" class="dropzone" id="dropzone">
+          <div class="dropzone-icon">✨</div>
+          <h3>Upload Portrait Photo</h3>
+          <p>Drag & drop or click to browse. JPG, PNG, WebP.</p>
+        </label>
+        <div class="preview-area hidden" id="editSection">
+          <div style="display:flex;gap:24px;flex-wrap:wrap;">
+            <div style="flex:1;min-width:250px">
+              <div style="background:var(--bg-primary);border:1px solid var(--border);border-radius:12px;padding:20px">
+                <h3 style="font-size:1rem;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:2px solid var(--accent)">⚙️ Beauty Controls</h3>
+                <div class="slider-group" style="margin-bottom:16px">
+                  <label>Skin Smoothing <span class="slider-value" id="smoothVal">0</span></label>
+                  <input type="range" id="smoothSlider" min="0" max="100" value="0">
+                </div>
+                <div class="slider-group" style="margin-bottom:16px">
+                  <label>Red-eye Removal <span class="slider-value" id="redeyeVal">0</span></label>
+                  <input type="range" id="redeyeSlider" min="0" max="100" value="0">
+                </div>
+                <div class="slider-group" style="margin-bottom:16px">
+                  <label>Teeth Whitening <span class="slider-value" id="teethVal">0</span></label>
+                  <input type="range" id="teethSlider" min="0" max="100" value="0">
+                </div>
+                <div class="slider-group" style="margin-bottom:16px">
+                  <label>Skin Brightening <span class="slider-value" id="brightVal">0</span></label>
+                  <input type="range" id="brightSlider" min="0" max="100" value="0">
+                </div>
+                <div class="slider-group" style="margin-bottom:16px">
+                  <label>Contrast Boost <span class="slider-value" id="contrastVal">0</span></label>
+                  <input type="range" id="contrastSlider" min="0" max="100" value="0">
+                </div>
+                <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+                  <button class="btn btn-primary" id="applyBtn">✨ Apply</button>
+                  <button class="btn btn-secondary" id="downloadBtn">⬇️ Download</button>
+                  <button class="btn btn-secondary" id="resetBtn">🔄 New Photo</button>
+                </div>
+              </div>
+            </div>
+            <div style="flex:2;min-width:300px">
+              <canvas id="previewCanvas" style="max-width:100%;border-radius:8px;display:none"></canvas>
+              <div id="placeholderText" style="color:var(--text-muted);text-align:center;padding:40px">Loading...</div>
+              <div style="margin-top:12px">
+                <label style="font-size:.82rem;color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;gap:6px">
+                  <input type="checkbox" id="compareToggle" onchange="toggleCompare()"> Show Before/After
+                </label>
+              </div>
+              <div id="compareBox" style="display:none;position:relative;margin-top:12px;border-radius:8px;overflow:hidden">
+                <canvas id="beforeCanvas"></canvas>
+                <canvas id="afterCanvas" style="position:absolute;top:0;left:0"></canvas>
+                <div id="sliderHandle" style="position:absolute;top:0;bottom:0;width:4px;background:var(--accent);cursor:col-resize"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved.</p></div>
+    </div>
+  </footer>
+  <script src="/js/main.js?v=4"></script>
+  <script>
+(function(){
+  const fileInput = document.getElementById('fileInput');
+  const dropzone = document.getElementById('dropzone');
+  const editSection = document.getElementById('editSection');
+  const canvas = document.getElementById('previewCanvas');
+  const ctx = canvas.getContext('2d');
+  const placeholderText = document.getElementById('placeholderText');
+  const applyBtn = document.getElementById('applyBtn');
+  const downloadBtn = document.getElementById('downloadBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  let origImage = null;
+  let origImageData = null;
+  let isComparing = false;
+  let beforeCanvas, afterCanvas;
+
+  ['smooth','redeye','teeth','bright','contrast'].forEach(id => {
+    const slider = document.getElementById(id+'Slider');
+    const val = document.getElementById(id+'Val');
+    slider.addEventListener('input', () => { val.textContent = slider.value; });
+  });
+
+  dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
+  dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+  dropzone.addEventListener('drop', e => {
+    e.preventDefault(); dropzone.classList.remove('dragover');
+    if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+  });
+  fileInput.addEventListener('change', e => { if (e.target.files.length) handleFile(e.target.files[0]); });
+
+  function handleFile(file) {
+    if (!file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        origImage = img;
+        canvas.width = img.width; canvas.height = img.height;
+        canvas.style.display = 'block';
+        placeholderText.style.display = 'none';
+        ctx.drawImage(img, 0, 0);
+        origImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        editSection.classList.remove('hidden');
+        dropzone.classList.add('hidden');
+        resetSliders();
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function applyGaussianBlur(srcData, w, h, strength) {
+    const radius = Math.max(1, Math.round(strength / 15));
+    const src = srcData.data;
+    const dst = new Uint8ClampedArray(src);
+    const kernelSize = radius * 2 + 1;
+    const sigma = radius / 2;
+    let kernel = [];
+    let sum = 0;
+    for (let i = -radius; i <= radius; i++) {
+      const v = Math.exp(-(i*i) / (2*sigma*sigma));
+      kernel.push(v);
+      sum += v;
+    }
+    kernel = kernel.map(v => v / sum);
+    // Horizontal pass
+    const temp = new Uint8ClampedArray(src);
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        for (let c = 0; c < 3; c++) {
+          let val = 0;
+          for (let k = -radius; k <= radius; k++) {
+            const xx = Math.max(0, Math.min(w-1, x+k));
+            val += src[(y*w+xx)*4+c] * kernel[k+radius];
+          }
+          temp[(y*w+x)*4+c] = val;
+        }
+      }
+    }
+    // Vertical pass
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        for (let c = 0; c < 3; c++) {
+          let val = 0;
+          for (let k = -radius; k <= radius; k++) {
+            const yy = Math.max(0, Math.min(h-1, y+k));
+            val += temp[(yy*w+x)*4+c] * kernel[k+radius];
+          }
+          dst[(y*w+x)*4+c] = val;
+        }
+        dst[(y*w+x)*4+3] = src[(y*w+x)*4+3];
+      }
+    }
+    return new ImageData(dst, w, h);
+  }
+
+  function applyBeauty() {
+    if (!origImageData) return;
+    let imgData = new ImageData(new Uint8ClampedArray(origImageData.data), origImageData.width, origImageData.height);
+    const w = imgData.width, h = imgData.height, data = imgData.data;
+    const smooth = parseInt(document.getElementById('smoothSlider').value);
+    const redeye = parseInt(document.getElementById('redeyeSlider').value);
+    const teeth = parseInt(document.getElementById('teethSlider').value);
+    const bright = parseInt(document.getElementById('brightSlider').value);
+    const contrast = parseInt(document.getElementById('contrastSlider').value);
+
+    // Skin smoothing (bilateral-like: blur + blend with original)
+    if (smooth > 0) {
+      const blurred = applyGaussianBlur(imgData, w, h, smooth);
+      const blurData = blurred.data;
+      const amount = smooth / 100;
+      for (let i = 0; i < data.length; i += 4) {
+        // Only smooth skin-tone-like pixels
+        const r = data[i], g = data[i+1], b = data[i+2];
+        const maxC = Math.max(r, g, b), minC = Math.min(r, g, b);
+        const isSkin = r > 60 && g > 30 && b > 15 && r > g && r > b && (r - Math.min(g,b)) > 15;
+        if (isSkin) {
+          data[i]   = Math.round(data[i]   * (1-amount*0.7) + blurData[i]   * amount*0.7);
+          data[i+1] = Math.round(data[i+1] * (1-amount*0.7) + blurData[i+1] * amount*0.7);
+          data[i+2] = Math.round(data[i+2] * (1-amount*0.7) + blurData[i+2] * amount*0.7);
+        }
+      }
+    }
+
+    // Red-eye removal: reduce red in pixels that are predominantly red
+    if (redeye > 0) {
+      const threshold = 150 - redeye;
+      const amount = redeye / 100;
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i], g = data[i+1], b = data[i+2];
+        if (r > threshold && r > g * 1.3 && r > b * 1.3) {
+          const avg = (g + b) / 2;
+          data[i] = Math.round(r * (1-amount) + avg * amount);
+        }
+      }
+    }
+
+    // Teeth whitening: brighten pixels that are yellowish-white
+    if (teeth > 0) {
+      const amount = teeth / 100;
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i], g = data[i+1], b = data[i+2];
+        const isWhiteYellow = r > 180 && g > 160 && b > 100 && r > b && g > b;
+        if (isWhiteYellow) {
+          data[i]   = Math.min(255, Math.round(r + amount * 20));
+          data[i+1] = Math.min(255, Math.round(g + amount * 25));
+          data[i+2] = Math.min(255, Math.round(b + amount * 40));
+        }
+      }
+    }
+
+    // Brightness
+    if (bright > 0) {
+      const v = Math.round(bright * 2.55 * 0.5);
+      for (let i = 0; i < data.length; i += 4) {
+        data[i] = Math.min(255, data[i] + v);
+        data[i+1] = Math.min(255, data[i+1] + v);
+        data[i+2] = Math.min(255, data[i+2] + v);
+      }
+    }
+
+    // Contrast
+    if (contrast > 0) {
+      const factor = (259 * (contrast * 2.55 + 255)) / (255 * (259 - contrast * 2.55));
+      for (let i = 0; i < data.length; i += 4) {
+        data[i]   = Math.max(0, Math.min(255, Math.round(factor * (data[i] - 128) + 128)));
+        data[i+1] = Math.max(0, Math.min(255, Math.round(factor * (data[i+1] - 128) + 128)));
+        data[i+2] = Math.max(0, Math.min(255, Math.round(factor * (data[i+2] - 128) + 128)));
+      }
+    }
+
+    ctx.putImageData(imgData, 0, 0);
+  }
+
+  applyBtn.addEventListener('click', applyBeauty);
+
+  downloadBtn.addEventListener('click', () => {
+    const link = document.createElement('a');
+    link.download = 'beauty-portrait.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+
+  resetBtn.addEventListener('click', () => {
+    origImage = null; origImageData = null;
+    editSection.classList.add('hidden');
+    dropzone.classList.remove('hidden');
+    fileInput.value = '';
+  });
+
+  function resetSliders() {
+    ['smooth','redeye','teeth','bright','contrast'].forEach(id => {
+      document.getElementById(id+'Slider').value = 0;
+      document.getElementById(id+'Val').textContent = '0';
+    });
+  }
+
+  window.toggleCompare = function() {
+    isComparing = document.getElementById('compareToggle').checked;
+    document.getElementById('compareBox').style.display = isComparing ? 'block' : 'none';
+    if (isComparing) setupCompare();
+  };
+
+  function setupCompare() {
+    beforeCanvas = document.getElementById('beforeCanvas');
+    afterCanvas = document.getElementById('afterCanvas');
+    if (!origImage) return;
+    beforeCanvas.width = afterCanvas.width = canvas.width;
+    beforeCanvas.height = afterCanvas.height = canvas.height;
+    beforeCanvas.getContext('2d').drawImage(origImage, 0, 0);
+    afterCanvas.getContext('2d').drawImage(canvas, 0, 0);
+    const box = document.getElementById('compareBox');
+    const handle = document.getElementById('sliderHandle');
+    let dragging = false;
+    const moveSlider = e => {
+      const rect = box.getBoundingClientRect();
+      let x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+      x = Math.max(0, Math.min(rect.width, x));
+      afterCanvas.style.clipPath = `inset(0 ${rect.width - x}px 0 0)`;
+      handle.style.left = x + 'px';
+    };
+    box.addEventListener('mousedown', e => { dragging = true; moveSlider(e); });
+    box.addEventListener('touchstart', e => { dragging = true; moveSlider(e); });
+    document.addEventListener('mousemove', e => { if (dragging) moveSlider(e); });
+    document.addEventListener('touchmove', e => { if (dragging) moveSlider(e); });
+    document.addEventListener('mouseup', () => dragging = false);
+    document.addEventListener('touchend', () => dragging = false);
+    moveSlider({ clientX: box.getBoundingClientRect().left + box.offsetWidth/2 });
+  }
+})();
+  </script>
+</body>
+</html>

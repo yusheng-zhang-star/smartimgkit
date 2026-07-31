@@ -679,7 +679,7 @@
     downloadBtn.disabled = true;
     statusText.textContent = 'Creating ZIP archive...';
     const zip = new JSZip();
-    const batchRename = enableRename.checked;
+    batchRename = enableRename.checked;
     const prefix = renamePrefix.value || 'image_';
     const start = parseInt(renameStart.value) || 1;
 
@@ -695,7 +695,7 @@
       zip.file(name, r.blob);
     });
 
-    const blob = await zip.generateAsync({ type: 'blob' });
+    blob = await zip.generateAsync({ type: 'blob' });
     const a = document.createElement('a');
     a.download = 'processed-images.zip';
     a.href = URL.createObjectURL(blob);

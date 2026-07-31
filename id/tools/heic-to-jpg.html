@@ -376,7 +376,7 @@ convertBtn.addEventListener('click', async () => {
   convertBtn.disabled = true;
   progBar.style.display = 'block';
   const fmt = outputFormat.value;
-  const ext = fmt === 'image/jpeg' ? '.jpg' : '.png';
+  ext = fmt === 'image/jpeg' ? '.jpg' : '.png';
 
   for (let i = 0; i < files.length; i++) {
     if (files[i].convertedUrl) { // already converted
@@ -407,17 +407,17 @@ convertBtn.addEventListener('click', async () => {
 });
 
 downloadAllBtn.addEventListener('click', async () => {
-  const fmt = outputFormat.value;
-  const ext = fmt === 'image/jpeg' ? '.jpg' : '.png';
+  fmt = outputFormat.value;
+  ext = fmt === 'image/jpeg' ? '.jpg' : '.png';
   const zip = new JSZip();
   files.forEach((item, i) => {
     if (item.convertedBlob) {
-      const outName = item.name.replace(/\.(heic|heif)$/i, '') + ext;
+      outName = item.name.replace(/\.(heic|heif)$/i, '') + ext;
       zip.file(outName, item.convertedBlob);
     }
   });
   statusText.textContent = 'Membuat ZIP...';
-  const blob = await zip.generateAsync({ type: 'blob' });
+  blob = await zip.generateAsync({ type: 'blob' });
   const a = document.createElement('a');
   a.download = 'converted-images.zip';
   a.href = URL.createObjectURL(blob);

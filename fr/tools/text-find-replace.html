@@ -244,8 +244,8 @@
           if (parts.length) result += input.slice(idx - find.length);
           // simpler: use regex escape
           const escaped = find.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-          const flags = (global ? 'g' : '') + (caseSens ? '' : 'i');
-          const re = new RegExp(escaped, flags);
+          flags = (global ? 'g' : '') + (caseSens ? '' : 'i');
+          re = new RegExp(escaped, flags);
           count = (input.match(re) || []).length;
           result = input.replace(re, replace);
         } else {

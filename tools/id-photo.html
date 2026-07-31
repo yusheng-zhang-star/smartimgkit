@@ -263,7 +263,408 @@
 
   <script src="/js/main.js?v=4"></script>
   <script>
+// === ID Photo Standards Database ===
+const ID_STANDARDS = [
+  // US
+  { country: '🇺🇸 United States', type: 'Passport', w: 51, h: 51, unit: 'mm', bg: '#ffffff', note: '2×2 inches' },
+  { country: '🇺🇸 United States', type: 'Visa', w: 51, h: 51, unit: 'mm', bg: '#ffffff', note: '2×2 inches' },
+  { country: '🇺🇸 United States', type: 'Green Card', w: 51, h: 51, unit: 'mm', bg: '#ffffff', note: '2×2 inches' },
+  { country: '🇺🇸 United States', type: 'Driver License', w: 51, h: 51, unit: 'mm', bg: '#ffffff', note: '2×2 inches' },
+  // UK
+  { country: '🇬🇧 United Kingdom', type: 'Passport', w: 35, h: 45, unit: 'mm', bg: '#d4d4d4', note: 'Light gray bg' },
+  { country: '🇬🇧 United Kingdom', type: 'Visa', w: 35, h: 45, unit: 'mm', bg: '#ffffff', note: 'White bg' },
+  { country: '🇬🇧 United Kingdom', type: 'BRP', w: 35, h: 45, unit: 'mm', bg: '#ffffff', note: 'Biometric Residence' },
+  // China
+  { country: '🇨🇳 China', type: 'Passport', w: 33, h: 48, unit: 'mm', bg: '#ffffff', note: 'White bg' },
+  { country: '🇨🇳 China', type: 'ID Card', w: 26, h: 32, unit: 'mm', bg: '#ffffff', note: 'First-gen ID' },
+  { country: '🇨🇳 China', type: 'ID Card (2nd Gen)', w: 26, h: 32, unit: 'mm', bg: '#3b82f6', note: 'Blue bg' },
+  { country: '🇨🇳 China', type: 'Visa', w: 33, h: 48, unit: 'mm', bg: '#ffffff', note: 'White bg' },
+  { country: '🇨🇳 China', type: 'Driver License', w: 22, h: 32, unit: 'mm', bg: '#ffffff', note: 'White bg' },
+  { country: '🇨🇳 China', type: 'Residence Permit', w: 26, h: 32, unit: 'mm', bg: '#3b82f6', note: 'Blue bg' },
+  // Schengen / EU
+  { country: '🇪🇺 Schengen', type: 'Visa', w: 35, h: 45, unit: 'mm', bg: '#ffffff', note: 'Light bg' },
+  { country: '🇩🇪 Germany', type: 'Passport', w: 35, h: 45, unit: 'mm', bg: '#ffffff', note: 'Light bg' },
+  { country: '🇫🇷 France', type: 'Passport', w: 35, h: 45, unit: 'mm', bg: '#ffffff', note: 'Light bg' },
+  { country: '🇮🇹 Italy', type: 'Passport', w: 35, h: 45, unit: 'mm', bg: '#ffffff', note: 'Light bg' },
+  { country: '🇪🇸 Spain', type: 'Passport', w: 35, h: 45, unit: 'mm', bg: '#ffffff', note: 'Light bg' },
+  { country: '🇳🇱 Netherlands', type: 'Passport', w: 35, h: 45, unit: 'mm', bg: '#ffffff', note: 'Light bg' },
+  // India
+  { country: '🇮🇳 India', type: 'Passport', w: 35, h: 50, unit: 'mm', bg: '#ffffff', note: 'White bg' },
+  { country: '🇮🇳 India', type: 'Visa', w: 35, h: 50, unit: 'mm', bg: '#ffffff', note: 'White bg' },
+  { country: '🇮🇳 India', type: 'Aadhaar', w: 35, h: 35, unit: 'mm', bg: '#ffffff', note: 'White bg' },
+  { country: '🇮🇳 India', type: 'PAN Card', w: 25, h: 25, unit: 'mm', bg: '#ffffff', note: 'White bg' },
+  // Canada
+  { country: '🇨🇦 Canada', type: 'Passport', w: 50, h: 70, unit: 'mm', bg: '#ffffff', note: 'White bg' },
+  { country: '🇨🇦 Canada', type: 'Visa', w: 35, h: 45, unit: 'mm', bg: '#ffffff', note: 'White bg' },
+  // Japan
+  { country: '🇯🇵 Japan', type: 'Passport', w: 35, h: 45, unit: 'mm', bg: '#ffffff', note: 'White bg' },
+  { country: '🇯🇵 Japan', type: 'Visa', w: 35, h: 45, unit: 'mm', bg: '#ffffff', note: 'White bg' },
+  // Mexico
+  { country: '🇲🇽 Mexico', type: 'Passport', w: 25, h: 32, unit: 'mm', bg: '#ffffff', note: 'White bg' },
+  // Brazil
+  { country: '🇧🇷 Brazil', type: 'Passport', w: 35, h: 45, unit: 'mm', bg: '#ffffff', note: 'White bg' },
+  { country: '🇧🇷 Brazil', type: 'Visa', w: 35, h: 45, unit: 'mm', bg: '#ffffff', note: 'White bg' },
+  // Australia
+  { country: '🇦🇺 Australia', type: 'Passport', w: 35, h: 45, unit: 'mm', bg: '#ffffff', note: 'White bg' },
+  // South Korea
+  { country: '🇰🇷 South Korea', type: 'Passport', w: 35, h: 45, unit: 'mm', bg: '#ffffff', note: 'White bg' },
+  { country: '🇰🇷 South Korea', type: 'Visa', w: 35, h: 45, unit: 'mm', bg: '#ffffff', note: 'White bg' },
+  // Russia
+  { country: '🇷🇺 Russia', type: 'Passport', w: 35, h: 45, unit: 'mm', bg: '#ffffff', note: 'White bg' },
+  // Custom
+  { country: '✏️ Custom Size', type: 'Custom', w: 0, h: 0, unit: 'mm', bg: '#ffffff', note: 'Enter your own dimensions' }
+];
 
+// === State ===
+let origImage = null;
+let processedResult = null;
+let selectedBgColor = '#ffffff';
+let selectedStandard = null;
+let isGenerating = false;
+
+// === DOM Refs ===
+const fileInput = document.getElementById('fileInput');
+const dropzone = document.getElementById('dropzone');
+const previewCanvas = document.getElementById('previewCanvas');
+const previewBox = document.getElementById('previewBox');
+const placeholderText = document.getElementById('placeholderText');
+const countryList = document.getElementById('countryList');
+const sizeDetail = document.getElementById('sizeDetail');
+const photoSizeLabel = document.getElementById('photoSizeLabel');
+const photoSizeMM = document.getElementById('photoSizeMM');
+const generateBtn = document.getElementById('generateBtn');
+const downloadBtn = document.getElementById('downloadBtn');
+const resetBtn = document.getElementById('resetBtn');
+const progressBar = document.getElementById('progressBar');
+const progressFill = document.getElementById('progressFill');
+const statusMsg = document.getElementById('statusMsg');
+const customColor = document.getElementById('customColor');
+const printInfo = document.getElementById('printInfo');
+
+// === Init Country List ===
+function initCountryList() {
+  countryList.innerHTML = '';
+  ID_STANDARDS.forEach((s, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'country-btn';
+    btn.dataset.index = idx;
+    const label = s.type === 'Custom' ? '✏️ Custom Size' : s.country + ' — ' + s.type;
+    btn.textContent = label;
+    btn.addEventListener('click', () => selectStandard(idx));
+    countryList.appendChild(btn);
+  });
+}
+
+function selectStandard(idx) {
+  selectedStandard = idx;
+  document.querySelectorAll('.country-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.country-btn')[idx].classList.add('active');
+  const s = ID_STANDARDS[idx];
+  if (s.type === 'Custom') {
+    sizeDetail.innerHTML = '✏️ <strong>Custom Size</strong><br>Enter your dimensions below:<br>';
+    const row = document.createElement('div');
+    row.className = 'custom-size-row';
+    row.innerHTML = '<label>W (mm):</label><input type="number" id="customW" min="10" max="200" value="35" style="width:60px;"><label>H (mm):</label><input type="number" id="customH" min="10" max="300" value="45" style="width:60px;">';
+    sizeDetail.appendChild(row);
+    photoSizeMM.textContent = 'Custom size';
+    const bg = '#ffffff';
+    customColor.value = bg;
+    selectedBgColor = bg;
+    updateBgPresets(bg);
+  } else {
+    sizeDetail.innerHTML = '<strong>' + s.country + ' — ' + s.type + '</strong><br>📐 ' + s.w + '×' + s.h + ' ' + s.unit + (s.note ? ' · <span style="color:var(--text-primary)">' + s.note + '</span>' : '');
+    photoSizeMM.textContent = s.w + ' × ' + s.h + ' mm';
+    bg = s.bg || '#ffffff';
+    customColor.value = bg;
+    selectedBgColor = bg;
+    updateBgPresets(bg);
+  }
+  generateBtn.disabled = !origImage;
+  if (origImage) updatePreviewSize();
+}
+
+function updateBgPresets(color) {
+  document.querySelectorAll('.bg-preset-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.color === color);
+  });
+}
+
+// === Upload ===
+dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.style.borderColor = 'var(--accent)'; });
+dropzone.addEventListener('dragleave', () => dropzone.style.borderColor = '');
+dropzone.addEventListener('drop', e => { e.preventDefault(); dropzone.style.borderColor = ''; if (e.dataTransfer.files.length) loadImage(e.dataTransfer.files[0]); });
+fileInput.addEventListener('change', e => { if (e.target.files.length) loadImage(e.target.files[0]); });
+
+function loadImage(file) {
+  if (!file.type.startsWith('image/')) { showStatus('⚠️ Please upload an image file', 'red'); return; }
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      origImage = img;
+      placeholderText.style.display = 'none';
+      previewCanvas.style.display = 'block';
+      s = getStandard();
+      if (s) {
+        updatePreviewSize();
+        generateBtn.disabled = false;
+      } else {
+        generateBtn.disabled = true;
+      }
+      showStatus('✅ Photo loaded: ' + Math.round(img.width) + '×' + Math.round(img.height) + 'px', 'green');
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function getStandard() {
+  if (selectedStandard === null || selectedStandard === undefined) return null;
+  s = ID_STANDARDS[selectedStandard];
+  if (s.type === 'Custom') {
+    const cw = document.getElementById('customW');
+    const ch = document.getElementById('customH');
+    if (!cw || !ch) return null;
+    const w = parseFloat(cw.value);
+    const h = parseFloat(ch.value);
+    if (!w || !h) return null;
+    return { w, h, unit: 'mm' };
+  }
+  return s;
+}
+
+function updatePreviewSize() {
+  if (!origImage) return;
+  s = getStandard();
+  if (!s) { photoSizeLabel.textContent = 'Select a country standard'; return; }
+  const aspect = s.w / s.h;
+  let cw, ch;
+  const maxW = previewBox.clientWidth - 32;
+  const maxH = 500;
+  if (aspect >= 1) { cw = Math.min(maxW, 500); ch = cw / aspect; }
+  else { ch = Math.min(maxH, 500); cw = ch * aspect; }
+  previewCanvas.width = cw;
+  previewCanvas.height = ch;
+  const ctx = previewCanvas.getContext('2d');
+  ctx.clearRect(0, 0, cw, ch);
+  const imgAspect = origImage.width / origImage.height;
+  let dw, dh, dx, dy;
+  if (imgAspect > aspect) {
+    dh = ch;
+    dw = ch * imgAspect;
+    dx = (cw - dw) / 2;
+    dy = 0;
+  } else {
+    dw = cw;
+    dh = cw / imgAspect;
+    dx = 0;
+    dy = (ch - dh) / 2;
+  }
+  ctx.fillStyle = selectedBgColor || '#ffffff';
+  ctx.fillRect(0, 0, cw, ch);
+  ctx.drawImage(origImage, dx, dy, dw, dh);
+  photoSizeLabel.textContent = s.w + '×' + s.h + ' mm';
+  const pxW = Math.round(s.w * 11.811);
+  const pxH = Math.round(s.h * 11.811);
+  photoSizeMM.textContent = pxW + '×' + pxH + ' px @ 300 DPI';
+}
+
+// === Background Color ===
+document.querySelectorAll('.bg-preset-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const color = this.dataset.color;
+    selectedBgColor = color;
+    customColor.value = color;
+    updateBgPresets(color);
+    if (origImage && selectedStandard !== null) updatePreviewSize();
+  });
+});
+customColor.addEventListener('input', function() {
+  selectedBgColor = this.value;
+  updateBgPresets(this.value);
+  if (origImage && selectedStandard !== null) updatePreviewSize();
+});
+
+// === Generate ===
+generateBtn.addEventListener('click', generatePhoto);
+
+async function generatePhoto() {
+  if (isGenerating || !origImage) return;
+  isGenerating = true;
+  generateBtn.disabled = true;
+  generateBtn.textContent = '⏳ Processing...';
+  downloadBtn.disabled = true;
+  progressBar.style.display = 'block';
+  progressFill.style.width = '0%';
+
+  try {
+    showStatus('🚀 Loading AI background removal model...', '');
+    progressFill.style.width = '20%';
+
+    const { removeBackground } = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm');
+
+    progressFill.style.width = '40%';
+    showStatus('🧠 Removing background...', '');
+
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = origImage.width;
+    tempCanvas.height = origImage.height;
+    const tCtx = tempCanvas.getContext('2d');
+    tCtx.drawImage(origImage, 0, 0);
+    const blob = await new Promise(resolve => tempCanvas.toBlob(resolve, 'image/png'));
+
+    progressFill.style.width = '60%';
+
+    const resultBlob = await removeBackground(blob, {
+      model: 'small',
+      output: { format: 'image/png', quality: 1.0 }
+    });
+
+    progressFill.style.width = '80%';
+    showStatus('🎨 Compositing onto background...', '');
+
+    const resultUrl = URL.createObjectURL(resultBlob);
+    const resultImg = new Image();
+    await new Promise((resolve, reject) => {
+      resultImg.onload = resolve;
+      resultImg.onerror = reject;
+      resultImg.src = resultUrl;
+    });
+
+    s = getStandard();
+    if (!s) { showStatus('⚠️ Please select a country standard', 'red'); return; }
+
+    const dpi300 = 11.811;
+    const targetW = Math.round(s.w * dpi300);
+    const targetH = Math.round(s.h * dpi300);
+
+    const finalCanvas = document.createElement('canvas');
+    finalCanvas.width = targetW;
+    finalCanvas.height = targetH;
+    const fCtx = finalCanvas.getContext('2d');
+
+    fCtx.fillStyle = selectedBgColor || '#ffffff';
+    fCtx.fillRect(0, 0, targetW, targetH);
+
+    const fAspect = resultImg.width / resultImg.height;
+    const tAspect = targetW / targetH;
+    let dw, dh, dx, dy;
+    if (fAspect > tAspect) { dh = targetH; dw = dh * fAspect; dx = (targetW - dw) / 2; dy = 0; }
+    else { dw = targetW; dh = dw / fAspect; dx = 0; dy = (targetH - dh) / 2; }
+
+    fCtx.drawImage(resultImg, dx, dy, dw, dh);
+    processedResult = finalCanvas;
+
+    const boxW = previewBox.clientWidth - 32;
+    const boxH = 500;
+    let pW, pH;
+    if (targetW > targetH) { pW = Math.min(boxW, targetW); pH = pW * targetH / targetW; }
+    else { pH = Math.min(boxH, targetH); pW = pH * targetW / targetH; }
+
+    previewCanvas.width = pW;
+    previewCanvas.height = pH;
+    const pCtx = previewCanvas.getContext('2d');
+    pCtx.drawImage(finalCanvas, 0, 0, pW, pH);
+
+    photoSizeLabel.textContent = s.w + '×' + s.h + ' mm';
+    photoSizeMM.textContent = targetW + '×' + targetH + ' px @ 300 DPI';
+    downloadBtn.disabled = false;
+    progressFill.style.width = '100%';
+    showStatus('✅ ID photo generated successfully!', 'green');
+
+  } catch (err) {
+    console.error('Error:', err);
+    showStatus('⚠️ Error: ' + (err.message || 'Processing failed'), 'red');
+    progressFill.style.width = '0%';
+  } finally {
+    isGenerating = false;
+    generateBtn.disabled = false;
+    generateBtn.textContent = '✨ Generate ID Photo';
+    if (!origImage || selectedStandard === null) generateBtn.disabled = true;
+    setTimeout(() => { progressBar.style.display = 'none'; }, 2000);
+  }
+}
+
+// === Download ===
+downloadBtn.addEventListener('click', downloadPhoto);
+function downloadPhoto() {
+  if (!processedResult) return;
+  const link = document.createElement('a');
+  s = getStandard();
+  const name = s ? (s.country || 'custom').replace(/[^a-zA-Z0-9]/g, '_') + '_' + (s.type || 'photo').replace(/[^a-zA-Z0-9]/g, '_') : 'id_photo';
+  link.download = name + '.png';
+  link.href = processedResult.toDataURL('image/png');
+  link.click();
+  showStatus('⬇️ Photo downloaded!', 'green');
+}
+
+// === Reset ===
+resetBtn.addEventListener('click', resetAll);
+function resetAll() {
+  origImage = null;
+  processedResult = null;
+  selectedStandard = null;
+  isGenerating = false;
+  previewCanvas.style.display = 'none';
+  placeholderText.style.display = 'block';
+  photoSizeLabel.textContent = 'No photo loaded';
+  photoSizeMM.textContent = '';
+  generateBtn.disabled = true;
+  downloadBtn.disabled = true;
+  progressBar.style.display = 'none';
+  progressFill.style.width = '0%';
+  showStatus('', '');
+  document.querySelectorAll('.country-btn').forEach(b => b.classList.remove('active'));
+  sizeDetail.innerHTML = 'Select a country above to see size details';
+  fileInput.value = '';
+}
+
+// === Helpers ===
+function showStatus(msg, color) {
+  statusMsg.textContent = msg;
+  statusMsg.style.color = color || 'var(--text-secondary)';
+}
+
+// === Window resize ===
+window.addEventListener('resize', () => {
+  if (processedResult) {
+    boxW = previewBox.clientWidth - 32;
+    boxH = 500;
+    let pW, pH;
+    if (processedResult.width > processedResult.height) { pW = Math.min(boxW, processedResult.width); pH = pW * processedResult.height / processedResult.width; }
+    else { pH = Math.min(boxH, processedResult.height); pW = pH * processedResult.width / processedResult.height; }
+    previewCanvas.width = pW; previewCanvas.height = pH;
+    pCtx = previewCanvas.getContext('2d');
+    pCtx.drawImage(processedResult, 0, 0, pW, pH);
+  } else if (origImage) { updatePreviewSize(); }
+});
+
+// === Init ===
+initCountryList();
+
+// Mobile menu
+document.getElementById('mobileMenuBtn')?.addEventListener('click', function() {
+  document.querySelector('.main-nav').classList.toggle('open');
+});
+
+// Theme toggle
+document.getElementById('themeToggle')?.addEventListener('click', function() {
+  document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  this.textContent = document.documentElement.dataset.theme === 'dark' ? '🌙' : '☀️';
+});
+
+// FAQ toggles
+document.querySelectorAll('.faq-question').forEach(q => {
+  q.addEventListener('click', function() {
+    const answer = this.nextElementSibling;
+    const isOpen = answer.style.maxHeight && answer.style.maxHeight !== '0px';
+    document.querySelectorAll('.faq-answer').forEach(a => { a.style.maxHeight = '0'; a.style.padding = '0 16px'; });
+    if (!isOpen) {
+      answer.style.maxHeight = answer.scrollHeight + 40 + 'px';
+      answer.style.padding = '16px';
+    }
+  });
+});
   </script>
   <script src="/js/lang.js"></script>
 </body>

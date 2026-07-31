@@ -502,21 +502,21 @@
       container.addEventListener('touchstart', (e) => {
         e.preventDefault();
         updateSlider(e.touches[0].clientX);
-        const onMove = (ev) => updateSlider(ev.touches[0].clientX);
-        const onUp = () => { document.removeEventListener('touchmove', onMove); document.removeEventListener('touchend', onUp); };
+        onMove = (ev) => updateSlider(ev.touches[0].clientX);
+        onUp = () => { document.removeEventListener('touchmove', onMove); document.removeEventListener('touchend', onUp); };
         document.addEventListener('touchmove', onMove, { passive: false });
         document.addEventListener('touchend', onUp);
       }, { passive: false });
 
       // Init at 50%
       setTimeout(() => {
-        const rect = container.getBoundingClientRect();
+        rect = container.getBoundingClientRect();
         updateSlider(rect.left + rect.width / 2);
       }, 50);
     }
 
     function renderSideBySide() {
-      const container = document.createElement('div');
+      container = document.createElement('div');
       container.className = 'sidebyside-container';
 
       const img1 = document.createElement('img');
@@ -536,12 +536,12 @@
       const wrapper = document.createElement('div');
       wrapper.className = 'overlay-container';
 
-      const imgBottom = document.createElement('img');
+      imgBottom = document.createElement('img');
       imgBottom.className = 'overlay-bottom';
       imgBottom.src = imgA.src || imgA;
       imgBottom.alt = 'Image A';
 
-      const imgTop = document.createElement('img');
+      imgTop = document.createElement('img');
       imgTop.className = 'overlay-top';
       imgTop.src = imgB.src || imgB;
       imgTop.alt = 'Image B';

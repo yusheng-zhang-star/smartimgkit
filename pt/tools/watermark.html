@@ -331,7 +331,7 @@ dropzone.addEventListener('dragleave', function() { dropzone.classList.remove('d
 dropzone.addEventListener('drop', function(e) {
   e.preventDefault();
   dropzone.classList.remove('drag');
-  const arr = Array.from(e.dataTransfer.files).filter(f => f.type && f.type.startsWith('image/'));
+  arr = Array.from(e.dataTransfer.files).filter(f => f.type && f.type.startsWith('image/'));
   if (arr.length) addFiles(arr);
 });
 
@@ -348,7 +348,7 @@ function preloadImages() {
   files.forEach(function(item) {
     if (item.img) return;
     pending++;
-    const img = new Image();
+    img = new Image();
     img.onload = function() { item.img = img; if (--pending === 0) renderList(); };
     img.src = item.url;
   });
@@ -467,13 +467,13 @@ downloadAllBtn.addEventListener('click', async function() {
   const zip = new JSZip();
   files.forEach(function(item) {
     if (item.resultBlob) {
-      const ext = item.file.type === 'image/png' ? '.png' : '.jpg';
-      const outName = item.name.replace(/\.[^.]+$/, '') + '-watermarked' + ext;
+      ext = item.file.type === 'image/png' ? '.png' : '.jpg';
+      outName = item.name.replace(/\.[^.]+$/, '') + '-watermarked' + ext;
       zip.file(outName, item.resultBlob);
     }
   });
   status.textContent = 'Creating ZIP...';
-  const blob = await zip.generateAsync({ type: 'blob' });
+  blob = await zip.generateAsync({ type: 'blob' });
   const a = document.createElement('a');
   a.download = 'watermarked-images.zip';
   a.href = URL.createObjectURL(blob);
@@ -503,7 +503,7 @@ clearBtn.addEventListener('click', function() {
       sampleBtn.textContent = '⏳ Loading...';
       try {
         const resp = await fetch('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80');
-        const blob = await resp.blob();
+        blob = await resp.blob();
         const file = new File([blob], 'sample.jpg', { type: 'image/jpeg' });
         addFiles([file]);
         sampleBtn.textContent = '🖼️ Testar com imagem de exemplo';

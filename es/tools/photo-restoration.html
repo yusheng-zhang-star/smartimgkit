@@ -393,7 +393,7 @@ function medianFilter(pixels, radius) {
       }
       ri.sort((a,b)=>a-b); gi.sort((a,b)=>a-b); bi.sort((a,b)=>a-b);
       const mid = Math.floor(total / 2);
-      const idx = (y * width + x) * 4;
+      idx = (y * width + x) * 4;
       out[idx] = ri[mid];
       out[idx + 1] = gi[mid];
       out[idx + 2] = bi[mid];
@@ -405,12 +405,12 @@ function medianFilter(pixels, radius) {
 // === Scratch Removal: adaptive neighbor averaging ===
 function removeScratches(pixels, strength) {
   const { data, width, height } = pixels;
-  const out = new Uint8ClampedArray(data);
+  out = new Uint8ClampedArray(data);
   const threshold = Math.max(10, Math.round(60 - strength * 0.5));
 
   for (let y = 1; y < height - 1; y++) {
     for (let x = 1; x < width - 1; x++) {
-      const idx = (y * width + x) * 4;
+      idx = (y * width + x) * 4;
       let isScratch = false;
       const leftIdx = idx - 4;
       const rightIdx = idx + 4;
@@ -440,7 +440,7 @@ function removeScratches(pixels, strength) {
 // === Contrast: Histogram Stretching ===
 function histogramStretch(pixels, strength) {
   const { data, width, height } = pixels;
-  const out = new Uint8ClampedArray(data);
+  out = new Uint8ClampedArray(data);
   const factor = strength / 100;
   if (factor <= 0) return out;
 
@@ -460,7 +460,7 @@ function histogramStretch(pixels, strength) {
 
   const amount = Math.min(1, factor * 1.2);
   for (let i = 0; i < data.length; i += 4) {
-    const r = ((data[i] - minR) / rangeR) * 255;
+    r = ((data[i] - minR) / rangeR) * 255;
     const g = ((data[i+1] - minG) / rangeG) * 255;
     const b = ((data[i+2] - minB) / rangeB) * 255;
     out[i] = Math.round(data[i] + (r - data[i]) * amount);
@@ -473,8 +473,8 @@ function histogramStretch(pixels, strength) {
 // === Sharpen: Unsharp Mask ===
 function unsharpMask(pixels, strength) {
   const { data, width, height } = pixels;
-  const out = new Uint8ClampedArray(data);
-  const amount = (strength / 100) * 0.6;
+  out = new Uint8ClampedArray(data);
+  amount = (strength / 100) * 0.6;
   if (amount <= 0) return out;
 
   const kernel = [1, 2, 1, 2, 4, 2, 1, 2, 1];
@@ -504,12 +504,12 @@ function unsharpMask(pixels, strength) {
 // === Sepia / Warmth ===
 function applySepia(pixels, strength) {
   const { data, width, height } = pixels;
-  const out = new Uint8ClampedArray(data);
-  const amount = Math.min(1, strength / 100);
+  out = new Uint8ClampedArray(data);
+  amount = Math.min(1, strength / 100);
   if (amount <= 0) return out;
 
   for (let i = 0; i < data.length; i += 4) {
-    const r = data[i], g = data[i+1], b = data[i+2];
+    r = data[i], g = data[i+1], b = data[i+2];
     const tr = 0.393 * r + 0.769 * g + 0.189 * b;
     const tg = 0.349 * r + 0.686 * g + 0.168 * b;
     const tb = 0.272 * r + 0.534 * g + 0.131 * b;
@@ -523,8 +523,8 @@ function applySepia(pixels, strength) {
 // === Brightness ===
 function adjustBrightness(pixels, value) {
   const { data, width, height } = pixels;
-  const out = new Uint8ClampedArray(data);
-  const amount = value;
+  out = new Uint8ClampedArray(data);
+  amount = value;
   if (amount === 0) return out;
 
   for (let i = 0; i < data.length; i += 4) {
@@ -635,7 +635,7 @@ function applyPreset(name) {
 
   const map = { denoise:'denoise', scratch:'scratch', contrast:'contrast', sharpen:'sharpen', bright:'bright', sepia:'sepia' };
   Object.keys(p).forEach(key => {
-    const slider = document.getElementById(map[key] + 'Slider');
+    slider = document.getElementById(map[key] + 'Slider');
     if (slider) slider.value = p[key];
   });
   onSliderChange();
@@ -676,11 +676,11 @@ function setupCompare() {
   document.addEventListener('mousemove', moveFn);
   document.addEventListener('mouseup', () => { dragging = false; });
   box.addEventListener('touchstart', e => { dragging = true; const t = e.touches[0]; moveFn({clientX: t.clientX}); });
-  document.addEventListener('touchmove', e => { if (dragging) { const t = e.touches[0]; moveFn({clientX: t.clientX}); }});
+  document.addEventListener('touchmove', e => { if (dragging) { t = e.touches[0]; moveFn({clientX: t.clientX}); }});
   document.addEventListener('touchend', () => { dragging = false; });
   setTimeout(() => {
-    const rect = box.getBoundingClientRect();
-    const mid = Math.round(rect.width / 2);
+    rect = box.getBoundingClientRect();
+    mid = Math.round(rect.width / 2);
     afterCanvas.style.clipPath = 'inset(0 ' + (rect.width - mid) + 'px 0 0)';
     document.getElementById('sliderHandle').style.left = mid + 'px';
   }, 50);

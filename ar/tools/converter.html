@@ -385,17 +385,17 @@ convertBtn.addEventListener('click', async function() {
 });
 
 downloadAllBtn.addEventListener('click', async function() {
-  const format = formatSelect.value;
-  const ext = format.split('/')[1];
+  format = formatSelect.value;
+  ext = format.split('/')[1];
   const zip = new JSZip();
   files.forEach(function(item) {
     if (item.convertedBlob) {
-      const outName = item.name.replace(/\.[^.]+$/, '') + '.' + ext;
+      outName = item.name.replace(/\.[^.]+$/, '') + '.' + ext;
       zip.file(outName, item.convertedBlob);
     }
   });
   statusText.textContent = 'Creating ZIP...';
-  const blob = await zip.generateAsync({ type: 'blob' });
+  blob = await zip.generateAsync({ type: 'blob' });
   const a = document.createElement('a');
   a.download = 'converted-images.zip';
   a.href = URL.createObjectURL(blob);
@@ -422,7 +422,7 @@ clearBtn.addEventListener('click', function() {
       sampleBtn.textContent = '⏳ Loading...';
       try {
         const resp = await fetch('https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=80');
-        const blob = await resp.blob();
+        blob = await resp.blob();
         const file = new File([blob], 'sample.jpg', { type: 'image/jpeg' });
         addFiles([file]);
         sampleBtn.textContent = '🖼️ Try with a sample image';

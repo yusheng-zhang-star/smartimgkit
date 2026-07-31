@@ -473,7 +473,7 @@ function selectStandard(idx) {
   } else {
     sizeDetail.innerHTML = '<strong>' + s.country + ' — ' + s.type + '</strong><br>📐 ' + s.w + '×' + s.h + ' ' + s.unit + (s.note ? ' · <span style="color:var(--text-primary)">' + s.note + '</span>' : '');
     photoSizeMM.textContent = s.w + ' × ' + s.h + ' mm';
-    const bg = s.bg || '#ffffff';
+    bg = s.bg || '#ffffff';
     customColor.value = bg;
     selectedBgColor = bg;
     updateBgPresets(bg);
@@ -489,7 +489,6 @@ function updateBgPresets(color) {
 }
 
 // === Upload ===
-dropzone.addEventListener('click', () => fileInput.click());
 dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.style.borderColor = 'var(--accent)'; });
 dropzone.addEventListener('dragleave', () => dropzone.style.borderColor = '');
 dropzone.addEventListener('drop', e => { e.preventDefault(); dropzone.style.borderColor = ''; if (e.dataTransfer.files.length) loadImage(e.dataTransfer.files[0]); });
@@ -504,7 +503,7 @@ function loadImage(file) {
       origImage = img;
       placeholderText.style.display = 'none';
       previewCanvas.style.display = 'block';
-      const s = getStandard();
+      s = getStandard();
       if (s) {
         updatePreviewSize();
         generateBtn.disabled = false;
@@ -520,7 +519,7 @@ function loadImage(file) {
 
 function getStandard() {
   if (selectedStandard === null || selectedStandard === undefined) return null;
-  const s = ID_STANDARDS[selectedStandard];
+  s = ID_STANDARDS[selectedStandard];
   if (s.type === 'Custom') {
     const cw = document.getElementById('customW');
     const ch = document.getElementById('customH');
@@ -535,7 +534,7 @@ function getStandard() {
 
 function updatePreviewSize() {
   if (!origImage) return;
-  const s = getStandard();
+  s = getStandard();
   if (!s) { photoSizeLabel.textContent = 'Select a country standard'; return; }
   const aspect = s.w / s.h;
   let cw, ch;
@@ -631,7 +630,7 @@ async function generatePhoto() {
       resultImg.src = resultUrl;
     });
 
-    const s = getStandard();
+    s = getStandard();
     if (!s) { showStatus('⚠️ Please select a country standard', 'red'); return; }
 
     const dpi300 = 11.811;
@@ -690,7 +689,7 @@ downloadBtn.addEventListener('click', downloadPhoto);
 function downloadPhoto() {
   if (!processedResult) return;
   const link = document.createElement('a');
-  const s = getStandard();
+  s = getStandard();
   const name = s ? (s.country || 'custom').replace(/[^a-zA-Z0-9]/g, '_') + '_' + (s.type || 'photo').replace(/[^a-zA-Z0-9]/g, '_') : 'id_photo';
   link.download = name + '.png';
   link.href = processedResult.toDataURL('image/png');
@@ -728,13 +727,13 @@ function showStatus(msg, color) {
 // === Window resize ===
 window.addEventListener('resize', () => {
   if (processedResult) {
-    const boxW = previewBox.clientWidth - 32;
-    const boxH = 500;
+    boxW = previewBox.clientWidth - 32;
+    boxH = 500;
     let pW, pH;
     if (processedResult.width > processedResult.height) { pW = Math.min(boxW, processedResult.width); pH = pW * processedResult.height / processedResult.width; }
     else { pH = Math.min(boxH, processedResult.height); pW = pH * processedResult.width / processedResult.height; }
     previewCanvas.width = pW; previewCanvas.height = pH;
-    const pCtx = previewCanvas.getContext('2d');
+    pCtx = previewCanvas.getContext('2d');
     pCtx.drawImage(processedResult, 0, 0, pW, pH);
   } else if (origImage) { updatePreviewSize(); }
 });

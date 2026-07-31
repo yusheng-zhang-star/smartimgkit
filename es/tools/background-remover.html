@@ -300,7 +300,7 @@ dropzone.addEventListener('dragleave', () => { dropzone.classList.remove('drag')
 dropzone.addEventListener('drop', e => {
   e.preventDefault();
   dropzone.classList.remove('drag');
-  const arr = Array.from(e.dataTransfer.files).filter(f => f.type && f.type.startsWith('image/'));
+  arr = Array.from(e.dataTransfer.files).filter(f => f.type && f.type.startsWith('image/'));
   if (arr.length) addFiles(arr);
 });
 
@@ -406,12 +406,12 @@ downloadAllBtn.addEventListener('click', async function() {
   const zip = new JSZip();
   files.forEach(function(item) {
     if (item.resultBlob) {
-      const outName = item.name.replace(/\.[^.]+$/, '') + '-no-bg.png';
+      outName = item.name.replace(/\.[^.]+$/, '') + '-no-bg.png';
       zip.file(outName, item.resultBlob);
     }
   });
   status.textContent = 'Creating ZIP...';
-  const blob = await zip.generateAsync({ type: 'blob' });
+  blob = await zip.generateAsync({ type: 'blob' });
   const a = document.createElement('a');
   a.download = 'no-background-images.zip';
   a.href = URL.createObjectURL(blob);
@@ -441,7 +441,7 @@ clearBtn.addEventListener('click', function() {
       sampleBtn.textContent = '⏳ Loading...';
       try {
         const resp = await fetch('https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80');
-        const blob = await resp.blob();
+        blob = await resp.blob();
         const file = new File([blob], 'sample.jpg', { type: 'image/jpeg' });
         addFiles([file]);
         sampleBtn.textContent = '🖼️ Try with a sample image';

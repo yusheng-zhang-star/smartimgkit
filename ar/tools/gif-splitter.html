@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-tool-id="gif-splitter">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>GIF Splitter — Extract Frames from GIF & APNG Free Online</title>
+  <meta name="description" content="Split animated GIF or APNG into individual frames. Extract all frames and download as PNG images or ZIP. Free, online, no signup.">
+  <meta name="keywords" content="gif splitter, gif to frames, extract gif frames, gif to png, apng to frames, animated gif extractor">
+  <link rel="canonical" href="https://smartimgkit.com/tools/gif-splitter">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="GIF Splitter — Extract Frames from GIF & APNG">
+  <meta property="og:description" content="Split animated GIF or APNG into individual frames. Download as PNG or ZIP.">
+  <meta property="og:url" content="https://smartimgkit.com/tools/gif-splitter">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css?v=4">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .frames-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; margin-top: 1rem; }
+    .frame-item { position: relative; border: 2px solid var(--border-color); border-radius: 8px; overflow: hidden; background: var(--bg-secondary); }
+    .frame-item img { width: 100%; height: 100px; object-fit: contain; display: block; background: repeating-conic-gradient(#f0f0f0 0% 25%, #fff 0% 50%) 50% / 20px 20px; }
+    .frame-item .frame-num { position: absolute; top: 4px; left: 4px; background: var(--accent); color: white; font-size: 0.7rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+    .frame-item .frame-delay { position: absolute; bottom: 2px; right: 4px; background: rgba(0,0,0,0.7); color: white; font-size: 0.65rem; padding: 1px 5px; border-radius: 3px; }
+    .info-box { background: rgba(99,102,241,0.1); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; border-radius: 8px; margin-bottom: 1.5rem; }
+    .info-box p { color: var(--text-secondary); font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+        <div class="nav-links"><a href="/">Home</a><a href="/#tools">Tools</a></div>
+      </nav>
+    </div>
+  </header>
+  <main class="tool-page">
+    <div class="container">
+      <div class="tool-page-header">
+        <h1>🎬 GIF Splitter — Extract Frames</h1>
+        <p>Split animated GIF or APNG into individual frames. Download as PNG images or ZIP.</p>
+      </div>
+      <div class="tool-workspace">
+        <input type="file" id="fileInput" accept=".gif,.apng,image/gif,image/apng,image/png" style="display:none;">
+        <label for="fileInput" class="dropzone" id="dropzone">
+          <div class="dropzone-icon">🎬</div>
+          <h3>Upload GIF or APNG</h3>
+          <p>Drag & drop or click to browse. Animated GIF or APNG.</p>
+        </label>
+        <div class="preview-area hidden" id="framesSection">
+          <h2 style="font-size:1.1rem;margin-bottom:1rem;">📋 Extracted Frames (<span id="frameCount">0</span>)</h2>
+          <div class="info-box"><p>Each frame is saved as PNG. Click "Download All Frames" to get a ZIP file, or click individual frames to download.</p></div>
+          <div class="tool-actions" style="justify-content:center;margin-bottom:1rem;">
+            <button class="btn btn-primary" id="downloadZipBtn">📦 Download All Frames (ZIP)</button>
+            <button class="btn btn-secondary" id="resetBtn">🔄 New File</button>
+          </div>
+          <div id="status" style="text-align:center;color:var(--text-secondary);margin-bottom:1rem"></div>
+          <div class="frames-grid" id="framesGrid"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved.</p></div>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/upng-js@2.1.0/UPNG.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gifuct-js@2.1.3/dist/gifuct-js.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="/js/main.js?v=4"></script>
+  <script>
+(function(){
+  const fileInput = document.getElementById('fileInput');
+  const dropzone = document.getElementById('dropzone');
+  const framesSection = document.getElementById('framesSection');
+  const framesGrid = document.getElementById('framesGrid');
+  const frameCount = document.getElementById('frameCount');
+  const downloadZipBtn = document.getElementById('downloadZipBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const status = document.getElementById('status');
+  let frames = [];
+  let fileName = '';
+
+  dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
+  dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+  dropzone.addEventListener('drop', e => {
+    e.preventDefault(); dropzone.classList.remove('dragover');
+    if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+  });
+  fileInput.addEventListener('change', e => { if (e.target.files.length) handleFile(e.target.files[0]); });
+
+  async function handleFile(file) {
+    fileName = file.name.replace(/\.[^.]+$/, '');
+    const isGif = file.type === 'image/gif' || file.name.toLowerCase().endsWith('.gif');
+    const isApng = file.name.toLowerCase().endsWith('.apng') || (file.type === 'image/png' && !isGif);
+    
+    if (!isGif && !isApng) {
+      status.textContent = 'Please upload a GIF or APNG file.';
+      return;
+    }
+    
+    status.textContent = 'Extracting frames...';
+    framesSection.classList.remove('hidden');
+    dropzone.classList.add('hidden');
+    framesGrid.innerHTML = '';
+    frames = [];
+    
+    const buf = await file.arrayBuffer();
+    
+    if (isApng && window.UPNG) {
+      try {
+        const img = UPNG.decode(buf);
+        const rgbaFrames = UPNG.toRGBA8(img);
+        const delays = img.frames.map(fr => fr.delay || 100);
+        for (let i = 0; i < rgbaFrames.length; i++) {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width; canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          const imgData = ctx.createImageData(img.width, img.height);
+          new Uint8Array(imgData.data.buffer).set(new Uint8Array(rgbaFrames[i]));
+          ctx.putImageData(imgData, 0, 0);
+          frames.push({ canvas: canvas, delay: delays[i], index: i });
+        }
+      } catch(e) {
+        status.textContent = 'Error parsing APNG: ' + e.message;
+        return;
+      }
+    } else if (isGif) {
+      try {
+        const gif = await gifuct.parseGIF(buf);
+        for (let i = 0; i < gif.length; i++) {
+          const frame = gif[i];
+          const canvas = document.createElement('canvas');
+          canvas.width = frame.dims.width; canvas.height = frame.dims.height;
+          const ctx = canvas.getContext('2d');
+          const imgData = ctx.createImageData(frame.dims.width, frame.dims.height);
+          imgData.data.set(frame.patch);
+          ctx.putImageData(imgData, 0, 0);
+          frames.push({ canvas: canvas, delay: frame.delay || 100, index: i });
+        }
+      } catch(e) {
+        status.textContent = 'Error parsing GIF: ' + e.message;
+        return;
+      }
+    }
+    
+    renderFrames();
+    status.textContent = '';
+  }
+
+  function renderFrames() {
+    frameCount.textContent = frames.length;
+    framesGrid.innerHTML = '';
+    frames.forEach((frame, i) => {
+      const div = document.createElement('div');
+      div.className = 'frame-item';
+      div.innerHTML = '<span class="frame-num">#' + (i+1) + '</span>' +
+        '<img src="' + frame.canvas.toDataURL('image/png') + '" alt="Frame ' + (i+1) + '" style="cursor:pointer" title="Click to download">' +
+        '<span class="frame-delay">' + frame.delay + 'ms</span>';
+      div.querySelector('img').addEventListener('click', () => {
+        const link = document.createElement('a');
+        link.download = fileName + '-frame-' + (i+1).toString().padStart(3, '0') + '.png';
+        link.href = frame.canvas.toDataURL('image/png');
+        link.click();
+      });
+      framesGrid.appendChild(div);
+    });
+  }
+
+  downloadZipBtn.addEventListener('click', async () => {
+    if (frames.length === 0) return;
+    downloadZipBtn.disabled = true;
+    downloadZipBtn.textContent = '📦 Creating ZIP...';
+    const zip = new JSZip();
+    frames.forEach((frame, i) => {
+      const dataUrl = frame.canvas.toDataURL('image/png').split(',')[1];
+      zip.file(fileName + '-frame-' + (i+1).toString().padStart(3, '0') + '.png', dataUrl, { base64: true });
+    });
+    const blob = await zip.generateAsync({ type: 'blob' });
+    const link = document.createElement('a');
+    link.download = fileName + '-frames.zip';
+    link.href = URL.createObjectURL(blob);
+    link.click();
+    downloadZipBtn.disabled = false;
+    downloadZipBtn.textContent = '📦 Download All Frames (ZIP)';
+  });
+
+  resetBtn.addEventListener('click', () => {
+    frames = [];
+    framesSection.classList.add('hidden');
+    dropzone.classList.remove('hidden');
+    fileInput.value = '';
+    status.textContent = '';
+  });
+})();
+  </script>
+</body>
+</html>

@@ -401,9 +401,9 @@ downloadAllBtn.addEventListener('click', async () => {
   const zip = new JSZip();
   images.forEach(item => {
     if (item.compressedBlob) {
-      const fmt = outputFmt.value === 'same' ? item.file.type : outputFmt.value;
-      const ext = fmt === 'image/png' ? '.png' : fmt === 'image/webp' ? '.webp' : '.jpg';
-      const outName = item.name.replace(/\.(jpg|jpeg|png|webp)$/i, '') + ext;
+      fmt = outputFmt.value === 'same' ? item.file.type : outputFmt.value;
+      ext = fmt === 'image/png' ? '.png' : fmt === 'image/webp' ? '.webp' : '.jpg';
+      outName = item.name.replace(/\.(jpg|jpeg|png|webp)$/i, '') + ext;
       zip.file(outName, item.compressedBlob);
     }
   });

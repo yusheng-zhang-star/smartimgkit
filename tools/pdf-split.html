@@ -323,15 +323,15 @@
           if (r.includes('-')) { [start, end] = r.split('-').map(x => parseInt(x)); }
           else { start = end = parseInt(r); }
           if (start < 1 || end > numPages || start > end) { continue; }
-          const newPdf = await PDFDocument.create();
-          const pages = await newPdf.copyPages(srcPdf, [...Array(end - start + 1).keys()].map(x => x + start - 1));
+          newPdf = await PDFDocument.create();
+          pages = await newPdf.copyPages(srcPdf, [...Array(end - start + 1).keys()].map(x => x + start - 1));
           pages.forEach(p => newPdf.addPage(p));
           parts.push({ pdf: newPdf, name: `pages-${start}-${end}` });
         }
       } else {
         for (let i = 0; i < numPages; i++) {
-          const newPdf = await PDFDocument.create();
-          const pages = await newPdf.copyPages(srcPdf, [i]);
+          newPdf = await PDFDocument.create();
+          pages = await newPdf.copyPages(srcPdf, [i]);
           pages.forEach(p => newPdf.addPage(p));
           parts.push({ pdf: newPdf, name: `page-${i+1}` });
         }
@@ -346,7 +346,7 @@
         const zip = new window.JSZip();
         for (let i = 0; i < parts.length; i++) {
           statusSection.textContent = `Packaging ${i+1}/${parts.length}...`;
-          const bytes = await parts[i].pdf.save();
+          bytes = await parts[i].pdf.save();
           zip.file(`${fileName}-${parts[i].name}.pdf`, bytes);
         }
         statusSection.textContent = 'Creating ZIP...';

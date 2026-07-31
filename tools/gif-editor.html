@@ -177,7 +177,7 @@
         </div>
 
         <!-- Upload -->
-        <input type="file" id="fileInput" accept="image/*" multiple style="display:none;">
+        <input type="file" id="fileInput" accept="image/*,.apng" multiple style="display:none;">
         <label for="fileInput" class="dropzone" id="dropzone">
             <div class="dropzone-icon">🎬</div>
             <h3>Upload Images</h3>
@@ -209,6 +209,7 @@
                     <option value="10">Low (smaller file)</option>
                     <option value="7" selected>Medium</option>
                     <option value="3">High (larger file)</option>
+                    <option value="apng">APNG (lossless, better quality)</option>
                 </select>
             </div>
             <div class="tool-actions">
@@ -350,6 +351,8 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/upng-js@2.1.0/UPNG.min.js"></script>
   <script src="/js/main.js?v=4"></script>
   <script>
 (function(){
@@ -385,13 +388,34 @@
     fileInput.addEventListener('change', e => handleFiles(e.target.files));
 
     function handleFiles(fileList) {
-        const files = Array.from(fileList).filter(f => f.type.startsWith('image/'));
+        const files = Array.from(fileList).filter(f => f.type.startsWith('image/') || f.name.toLowerCase().endsWith('.apng'));
         if (!files.length) return;
         var ba = document.getElementById('beforeAfterPreview');
         if (ba) ba.classList.add('hidden');
         files.forEach(f => {
             var reader = new FileReader();
             reader.onload = function(evt) {
+                var fname = f.name.toLowerCase();
+                if (fname.endsWith('.apng') || (f.type === 'image/png' && window.UPNG)) {
+                    try {
+                        var buf = evt.target.result;
+                        var img = UPNG.decode(buf);
+                        var rgbaFrames = UPNG.toRGBA8(img);
+                        var delays = img.frames.map(fr => fr.delay);
+                        rgbaFrames.forEach((rgba, i) => {
+                            var c = document.createElement('canvas');
+                            c.width = img.width; c.height = img.height;
+                            var cctx = c.getContext('2d');
+                            var imgData = cctx.createImageData(img.width, img.height);
+                            new Uint8Array(imgData.data.buffer).set(new Uint8Array(rgba));
+                            cctx.putImageData(imgData, 0, 0);
+                            var delay = delays[i] || parseInt(globalDelay.value);
+                            frames.push({ file: f, imgDataUrl: c.toDataURL(), img: c, delay: delay });
+                        });
+                        renderFrames();
+                        return;
+                    } catch(e) { console.log('APNG parse failed, falling back:', e); }
+                }
                 var img = new Image();
                 img.onload = function() {
                     frames.push({ file: f, imgDataUrl: evt.target.result, img: img, delay: parseInt(globalDelay.value) });
@@ -399,7 +423,8 @@
                 };
                 img.src = evt.target.result;
             };
-            reader.readAsDataURL(f);
+            if (fname.endsWith('.apng')) reader.readAsArrayBuffer(f);
+            else reader.readAsDataURL(f);
         });
     }
 
@@ -449,12 +474,56 @@
             progressFill.style.width = pct + '%';
             statusText.textContent = 'Encoding GIF: ' + pct + '%';
         });
+        var isApng = quality.value === 'apng';
+        if (isApng) {
+            try {
+                statusText.textContent = 'Encoding APNG...';
+                var targetW = resizeWidth.value ? parseInt(resizeWidth.value) : null;
+                var outW = targetW || frames[0].img.naturalWidth;
+                var outH = targetW ? Math.round(frames[0].img.naturalHeight * (targetW / frames[0].img.naturalWidth)) : frames[0].img.naturalHeight;
+                var frameBufs = [];
+                var frameDelays = [];
+                frames.forEach((frame, idx) => {
+                    var canvas = document.createElement('canvas');
+                    var w = frame.img.naturalWidth || frame.img.width;
+                    var h = frame.img.naturalHeight || frame.img.height;
+                    if (targetW) { h = Math.round(h * (targetW / w)); w = targetW; }
+                    canvas.width = w; canvas.height = h;
+                    canvas.getContext('2d').drawImage(frame.img, 0, 0, w, h);
+                    var idata = canvas.getContext('2d').getImageData(0, 0, w, h);
+                    frameBufs.push(idata.data.buffer);
+                    frameDelays.push(frame.delay);
+                    progressFill.style.width = Math.round((idx+1) / frames.length * 50) + '%';
+                });
+                statusText.textContent = 'Compressing APNG...';
+                progressFill.style.width = '60%';
+                var apngBuf = UPNG.encode(frameBufs, outW, outH, 0, frameDelays);
+                progressFill.style.width = '100%';
+                var blob = new Blob([apngBuf], { type: 'image/apng' });
+                var url = URL.createObjectURL(blob);
+                resultGif.src = url;
+                resultSection.classList.remove('hidden');
+                progressSection.classList.add('hidden');
+                generateBtn.disabled = false;
+                downloadBtn.textContent = '⬇️ Download APNG';
+                downloadBtn.onclick = function() {
+                    var a = document.createElement('a'); a.href = url; a.download = 'smartimgkit-animation.png'; a.click();
+                };
+            } catch(err) {
+                alert('APNG export failed: ' + err.message);
+                generateBtn.disabled = false;
+                progressSection.classList.add('hidden');
+            }
+            return;
+        }
+
         gif.on('finished', function(blob) {
             var url = URL.createObjectURL(blob);
             resultGif.src = url;
             resultSection.classList.remove('hidden');
             progressSection.classList.add('hidden');
             generateBtn.disabled = false;
+            downloadBtn.textContent = '⬇️ Download GIF';
             downloadBtn.onclick = function() {
                 var a = document.createElement('a'); a.href = url; a.download = 'smartimgkit-animation.gif'; a.click();
             };

@@ -337,7 +337,7 @@ async function convertAvif() {
   try {
     const blob = await heic2any({ blob: avifFile, toType: 'image/' + outputFormat });
     const out = Array.isArray(blob) ? blob[0] : blob;
-    const url = URL.createObjectURL(out);
+    url = URL.createObjectURL(out);
     avifResultArea.innerHTML = '<a href="' + url + '" download="converted.' + outputFormat + '">Descargar</a>';
   } catch (err) {
     avifResultArea.textContent = 'Error: ' + err.message;

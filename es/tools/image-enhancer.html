@@ -463,7 +463,7 @@ function setupCompare() {
 }
 
 function moveSlider(e) {
-  const box = document.getElementById('compareBox');
+  box = document.getElementById('compareBox');
   const rect = box.getBoundingClientRect();
   let x = e.clientX - rect.left;
   x = Math.max(0, Math.min(rect.width, x));
@@ -481,9 +481,9 @@ function updateCompare() {
   const tCtx = tempCanvas.getContext('2d');
   tCtx.drawImage(origImage, 0, 0, tempCanvas.width, tempCanvas.height);
   // Apply filters
-  const bright = parseInt(document.getElementById('brightSlider').value);
-  const contrast = parseInt(document.getElementById('contrastSlider').value);
-  const saturate = parseInt(document.getElementById('saturateSlider').value);
+  bright = parseInt(document.getElementById('brightSlider').value);
+  contrast = parseInt(document.getElementById('contrastSlider').value);
+  saturate = parseInt(document.getElementById('saturateSlider').value);
   let filters = [];
   if (bright !== 0) filters.push(`brightness(${100+bright}%)`);
   if (contrast !== 0) filters.push(`contrast(${100+contrast}%)`);

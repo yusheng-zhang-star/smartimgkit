@@ -414,8 +414,8 @@ const dropzone = document.getElementById('dropzone');
         ctx.drawImage(tmpCanvas, 0, 0);
       } else if (effect === 'sharpen') {
         // Unsharp mask: blur then blend
-        const tmpCanvas = ImageUtils.createCanvas(W, H);
-        const tmpCtx = tmpCanvas.getContext('2d');
+        tmpCanvas = ImageUtils.createCanvas(W, H);
+        tmpCtx = tmpCanvas.getContext('2d');
         tmpCtx.filter = 'blur(1px)';
         tmpCtx.drawImage(originalImg, 0, 0);
         const blurData = tmpCtx.getImageData(0, 0, W, H).data;
@@ -467,7 +467,7 @@ const dropzone = document.getElementById('dropzone');
       originalImg = null;
       resultBlob = null;
       previewArea.classList.remove('active');
-      const bp = document.getElementById('beforeAfterPreview');
+      bp = document.getElementById('beforeAfterPreview');
       if (bp) bp.classList.remove('hidden');
       dropzone.classList.remove('hidden');
       fileInput.value = '';

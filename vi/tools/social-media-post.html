@@ -270,7 +270,320 @@
 
   <script src="/js/main.js?v=4"></script>
   <script>
+let canvasW = 1080, canvasH = 1080;
+let platformName = 'Instagram Post';
+let canvas = document.getElementById('mainCanvas');
+let ctx = canvas.getContext('2d');
+let bgImage = null;
+let logoImage = null;
+let isDraggingText = false;
+let isDraggingLogo = false;
+let dragStartY = 0;
+let textYOffset = 0;
+let logoYOffset = -150;
 
+// Initialize
+initCanvas();
+
+function initCanvas() {
+  canvas.width = canvasW;
+  canvas.height = canvasH;
+  renderCanvas();
+}
+
+function selectPlatform(btn, name, w, h) {
+  document.querySelectorAll('.platform-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  canvasW = w;
+  canvasH = h;
+  platformName = name;
+  canvas.width = w;
+  canvas.height = h;
+  document.getElementById('dimensionLabel').textContent = 'Current: ' + w + ' × ' + h + ' px (' + name + ')';
+  document.getElementById('placeholderText').style.display = 'none';
+  renderCanvas();
+}
+
+function selectCustomSize() {
+  const w = parseInt(document.getElementById('customW').value);
+  const h = parseInt(document.getElementById('customH').value);
+  if (!w || !h || w < 100 || h < 100 || w > 4000 || h > 4000) {
+    alert('Please enter valid dimensions between 100 and 4000.');
+    return;
+  }
+  document.querySelectorAll('.platform-btn').forEach(b => b.classList.remove('active'));
+  canvasW = w;
+  canvasH = h;
+  platformName = 'Custom ' + w + '×' + h;
+  canvas.width = w;
+  canvas.height = h;
+  document.getElementById('dimensionLabel').textContent = 'Current: ' + w + ' × ' + h + ' px (Custom)';
+  document.getElementById('placeholderText').style.display = 'none';
+  renderCanvas();
+}
+
+// Background image upload
+document.getElementById('bgFileInput').addEventListener('change', function(e) {
+  if (e.target.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      const img = new Image();
+      img.onload = function() {
+        bgImage = img;
+        renderCanvas();
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(e.target.files[0]);
+  }
+});
+
+function clearBgImage() {
+  bgImage = null;
+  document.getElementById('bgFileInput').value = '';
+  renderCanvas();
+}
+
+// Logo/overlay upload
+document.getElementById('logoFileInput').addEventListener('change', function(e) {
+  if (e.target.files[0]) {
+    reader = new FileReader();
+    reader.onload = function(ev) {
+      img = new Image();
+      img.onload = function() {
+        logoImage = img;
+        document.getElementById('logoControls').style.display = 'flex';
+        document.getElementById('logoControls2').style.display = 'flex';
+        document.getElementById('removeLogoBtn').style.display = 'inline-block';
+        renderCanvas();
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(e.target.files[0]);
+  }
+});
+
+function removeLogo() {
+  logoImage = null;
+  document.getElementById('logoFileInput').value = '';
+  document.getElementById('logoControls').style.display = 'none';
+  document.getElementById('logoControls2').style.display = 'none';
+  document.getElementById('removeLogoBtn').style.display = 'none';
+  renderCanvas();
+}
+
+function updateFontSize() {
+  document.getElementById('fontSizeVal').textContent = document.getElementById('fontSizeSlider').value;
+  renderCanvas();
+}
+
+function updateTextY() {
+  textYOffset = parseInt(document.getElementById('textYSlider').value);
+  document.getElementById('textYVal').textContent = textYOffset;
+  renderCanvas();
+}
+
+function updateLogoY() {
+  logoYOffset = parseInt(document.getElementById('logoYSlider').value);
+  document.getElementById('logoYVal').textContent = logoYOffset;
+  renderCanvas();
+}
+
+function renderCanvas() {
+  const bgColor = document.getElementById('bgColorPicker').value;
+  const text = document.getElementById('textInput').value;
+  const fontSize = parseInt(document.getElementById('fontSizeSlider').value);
+  const textColor = document.getElementById('textColorPicker').value;
+  const textAlign = document.getElementById('textAlignSelect').value;
+  const hasShadow = document.getElementById('shadowToggle').checked;
+  const hasOutline = document.getElementById('outlineToggle').checked;
+  const logoScaler = parseInt(document.getElementById('logoScaler').value);
+
+  ctx.clearRect(0, 0, canvasW, canvasH);
+
+  // Draw background
+  if (bgImage) {
+    ctx.drawImage(bgImage, 0, 0, canvasW, canvasH);
+  } else {
+    ctx.fillStyle = bgColor;
+    ctx.fillRect(0, 0, canvasW, canvasH);
+  }
+
+  // Draw logo/overlay
+  if (logoImage) {
+    const scale = logoScaler / 100;
+    const lw = logoImage.width * scale;
+    const lh = logoImage.height * scale;
+    const lx = (canvasW - lw) / 2;
+    let ly = (canvasH - lh) / 2 + logoYOffset;
+    ctx.drawImage(logoImage, lx, ly, lw, lh);
+  }
+
+  // Draw text
+  if (text) {
+    let alignX = canvasW / 2;
+    let textX = canvasW / 2;
+    if (textAlign === 'left') {
+      textX = canvasW * 0.08;
+      alignX = canvasW * 0.08;
+    } else if (textAlign === 'right') {
+      textX = canvasW * 0.92;
+      alignX = canvasW * 0.92;
+    } else {
+      textX = canvasW / 2;
+      alignX = canvasW / 2;
+    }
+    let textY = canvasH / 2 + textYOffset;
+
+    ctx.textAlign = textAlign;
+    ctx.textBaseline = 'middle';
+
+    if (hasOutline) {
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = Math.max(2, fontSize * 0.06);
+      ctx.lineJoin = 'round';
+      ctx.font = 'bold ' + fontSize + 'px Inter, sans-serif';
+      ctx.strokeText(text, textX, textY);
+    }
+
+    if (hasShadow) {
+      ctx.shadowColor = 'rgba(0,0,0,0.7)';
+      ctx.shadowBlur = fontSize * 0.25;
+      ctx.shadowOffsetX = Math.max(2, fontSize * 0.04);
+      ctx.shadowOffsetY = Math.max(2, fontSize * 0.04);
+    }
+
+    ctx.fillStyle = textColor;
+    ctx.font = 'bold ' + fontSize + 'px Inter, sans-serif';
+    ctx.fillText(text, textX, textY);
+
+    ctx.shadowColor = 'transparent';
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
+  }
+}
+
+// Drag-to-position for text (via mouse events on drag overlay)
+const dragOverlay = document.getElementById('dragOverlay');
+let dragging = false;
+let dragMode = 'none';
+let dragStartMouseY = 0;
+let dragStartTextY = 0;
+let dragStartLogoY = 0;
+
+dragOverlay.addEventListener('mousedown', function(e) {
+  const rect = dragOverlay.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  const canvasRect = canvas.getBoundingClientRect();
+
+  // Check if clicking near logo area
+  if (logoImage) {
+    scale = parseInt(document.getElementById('logoScaler').value) / 100;
+    lw = logoImage.width * scale;
+    lh = logoImage.height * scale;
+    lx = (canvasW - lw) / 2;
+    const ly = (canvasH - lh) / 2 + logoYOffset;
+    // Map mouse to canvas coordinates
+    const cmx = (mx / rect.width) * canvasW;
+    const cmy = (my / rect.height) * canvasH;
+    if (cmx >= lx && cmx <= lx + lw && cmy >= ly && cmy <= ly + lh) {
+      dragMode = 'logo';
+      document.body.style.cursor = 'grabbing';
+      return;
+    }
+  }
+
+  // Default: drag text
+  dragMode = 'text';
+  document.body.style.cursor = 'grabbing';
+});
+
+document.addEventListener('mousemove', function(e) {
+  if (dragMode === 'none') return;
+  rect = dragOverlay.getBoundingClientRect();
+  const dy = ((e.clientY - rect.top) / rect.height) * canvasH - ((e.clientY - rect.top) / rect.height) * canvasH + (e.movementY / rect.height) * canvasH;
+
+  if (dragMode === 'text') {
+    textYOffset = Math.max(-canvasH, Math.min(canvasH, textYOffset + (e.movementY / rect.height) * canvasH));
+    document.getElementById('textYSlider').value = Math.round(textYOffset);
+    document.getElementById('textYVal').textContent = Math.round(textYOffset);
+    renderCanvas();
+  } else if (dragMode === 'logo') {
+    logoYOffset = Math.max(-canvasH, Math.min(canvasH, logoYOffset + (e.movementY / rect.height) * canvasH));
+    document.getElementById('logoYSlider').value = Math.round(logoYOffset);
+    document.getElementById('logoYVal').textContent = Math.round(logoYOffset);
+    renderCanvas();
+  }
+});
+
+document.addEventListener('mouseup', function() {
+  dragMode = 'none';
+  document.body.style.cursor = '';
+});
+
+// Download
+function downloadPost() {
+  const link = document.createElement('a');
+  const safeName = platformName.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+  link.download = safeName + '-' + canvasW + 'x' + canvasH + '.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+// Reset all
+function resetAll() {
+  bgImage = null;
+  logoImage = null;
+  document.getElementById('bgFileInput').value = '';
+  document.getElementById('logoFileInput').value = '';
+  document.getElementById('logoControls').style.display = 'none';
+  document.getElementById('logoControls2').style.display = 'none';
+  document.getElementById('removeLogoBtn').style.display = 'none';
+  document.getElementById('bgColorPicker').value = '#1a1a2e';
+  document.getElementById('textInput').value = 'Your Title Here';
+  document.getElementById('fontSizeSlider').value = 48;
+  document.getElementById('fontSizeVal').textContent = '48';
+  document.getElementById('textColorPicker').value = '#ffffff';
+  document.getElementById('textAlignSelect').value = 'center';
+  document.getElementById('shadowToggle').checked = true;
+  document.getElementById('outlineToggle').checked = false;
+  document.getElementById('textYSlider').value = 0;
+  document.getElementById('textYVal').textContent = '0';
+  document.getElementById('logoScaler').value = 30;
+  document.getElementById('logoScalerVal').textContent = '30';
+  document.getElementById('logoYSlider').value = -150;
+  document.getElementById('logoYVal').textContent = '-150';
+  textYOffset = 0;
+  logoYOffset = -150;
+  renderCanvas();
+}
+
+// LogoScaler display update
+document.getElementById('logoScaler').addEventListener('input', function() {
+  document.getElementById('logoScalerVal').textContent = this.value;
+});
+
+// FAQ expand/collapse
+document.addEventListener('click', function(e) {
+  const q = e.target.closest('.faq-question');
+  if (q) {
+    const answer = q.nextElementSibling;
+    const isOpen = answer.style.maxHeight && answer.style.maxHeight !== '0px';
+    answer.style.maxHeight = isOpen ? '0px' : answer.scrollHeight + 'px';
+  }
+});
+
+// Theme toggle support
+if (document.getElementById('themeToggle')) {
+  document.getElementById('themeToggle').addEventListener('click', function() {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    this.textContent = isDark ? '☀️' : '🌙';
+  });
+}
   </script>
   <script src="/js/lang.js"></script>
 </body>
