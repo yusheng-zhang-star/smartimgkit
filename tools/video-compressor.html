@@ -270,12 +270,16 @@
     if (!f.type.startsWith('video/')) { alert('Please upload a video file.'); return; }
     file = f; fileName = f.name.replace(/\.[^.]+$/, '');
     var ba = document.getElementById('beforeAfterPreview'); if (ba) ba.classList.add('hidden');
+    statusSection.classList.remove('hidden');
+    statusSection.textContent = 'Loading video info...';
     const v = document.createElement('video');
     v.preload = 'metadata';
     v.onloadedmetadata = () => {
       videoInfo.innerHTML = `<strong>File:</strong> ${f.name} &nbsp;|&nbsp; <strong>Size:</strong> ${(f.size/1024/1024).toFixed(2)} MB &nbsp;|&nbsp; <strong>Duration:</strong> ${v.duration.toFixed(1)}s &nbsp;|&nbsp; <strong>Resolution:</strong> ${v.videoWidth}x${v.videoHeight}`;
       controlsSection.classList.remove('hidden');
+      statusSection.classList.add('hidden');
     };
+    v.onerror = () => { statusSection.textContent = '✗ Error: Unable to read video file.'; };
     v.src = URL.createObjectURL(f);
   }
   async function loadFFmpeg() {

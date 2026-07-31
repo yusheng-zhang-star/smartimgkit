@@ -1090,16 +1090,28 @@ PDF_SPLIT_JS = '''(function() {
     if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) { alert('Please upload a PDF file.'); return; }
     fileName = file.name.replace('.pdf', '');
     var ba = document.getElementById('beforeAfterPreview'); if (ba) ba.classList.add('hidden');
+    statusSection.classList.remove('hidden');
+    statusSection.textContent = 'Loading...';
     const reader = new FileReader();
     reader.onload = async (e) => {
-      fileBytes = e.target.result;
-      if (!window.PDFLib) { await loadScript('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js'); }
-      const { PDFDocument } = window.PDFLib;
-      const pdf = await PDFDocument.load(fileBytes);
-      numPages = pdf.getPageCount();
-      pdfInfo.innerHTML = `<strong>File:</strong> ${file.name} &nbsp;|&nbsp; <strong>Pages:</strong> ${numPages} &nbsp;|&nbsp; <strong>Size:</strong> ${(file.size/1024).toFixed(1)} KB`;
-      controlsSection.classList.remove('hidden');
+      try {
+        fileBytes = e.target.result;
+        if (!window.PDFLib) {
+          statusSection.textContent = 'Loading pdf-lib...';
+          await loadScript('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js');
+        }
+        statusSection.textContent = 'Parsing PDF...';
+        const { PDFDocument } = window.PDFLib;
+        const pdf = await PDFDocument.load(fileBytes);
+        numPages = pdf.getPageCount();
+        pdfInfo.innerHTML = `<strong>File:</strong> ${file.name} &nbsp;|&nbsp; <strong>Pages:</strong> ${numPages} &nbsp;|&nbsp; <strong>Size:</strong> ${(file.size/1024).toFixed(1)} KB`;
+        controlsSection.classList.remove('hidden');
+        statusSection.classList.add('hidden');
+      } catch(err) {
+        statusSection.textContent = '✗ Error: ' + err.message;
+      }
     };
+    reader.onerror = () => { statusSection.textContent = '✗ Error reading file.'; };
     reader.readAsArrayBuffer(file);
   }
 
@@ -1217,16 +1229,28 @@ def make_simple_pdf(slug, icon, title, desc, keywords, h1, subtitle, extra_contr
     if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) { alert('Please upload a PDF.'); return; }
     fileName = file.name.replace('.pdf', '');
     var ba = document.getElementById('beforeAfterPreview'); if (ba) ba.classList.add('hidden');
+    statusSection.classList.remove('hidden');
+    statusSection.textContent = 'Loading...';
     const r = new FileReader();
     r.onload = async (e) => {
-      fileBytes = e.target.result;
-      if (!window.PDFLib) { await loadScript('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js'); }
-      const { PDFDocument } = window.PDFLib;
-      const pdf = await PDFDocument.load(fileBytes);
-      numPages = pdf.getPageCount();
-      pdfInfo.innerHTML = `<strong>File:</strong> ${file.name} &nbsp;|&nbsp; <strong>Pages:</strong> ${numPages}`;
-      controlsSection.classList.remove('hidden');
+      try {
+        fileBytes = e.target.result;
+        if (!window.PDFLib) {
+          statusSection.textContent = 'Loading pdf-lib...';
+          await loadScript('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js');
+        }
+        statusSection.textContent = 'Parsing PDF...';
+        const { PDFDocument } = window.PDFLib;
+        const pdf = await PDFDocument.load(fileBytes);
+        numPages = pdf.getPageCount();
+        pdfInfo.innerHTML = `<strong>File:</strong> ${file.name} &nbsp;|&nbsp; <strong>Pages:</strong> ${numPages}`;
+        controlsSection.classList.remove('hidden');
+        statusSection.classList.add('hidden');
+      } catch(err) {
+        statusSection.textContent = '✗ Error: ' + err.message;
+      }
     };
+    r.onerror = () => { statusSection.textContent = '✗ Error reading file.'; };
     r.readAsArrayBuffer(file);
   }
   processBtn.addEventListener('click', async () => {
@@ -1453,12 +1477,16 @@ def make_video_tool(slug, icon, title, desc, keywords, h1, subtitle, extra_html,
     if (!f.type.startsWith('video/')) {{ alert('Please upload a video file.'); return; }}
     file = f; fileName = f.name.replace(/\\.[^.]+$/, '');
     var ba = document.getElementById('beforeAfterPreview'); if (ba) ba.classList.add('hidden');
+    statusSection.classList.remove('hidden');
+    statusSection.textContent = 'Loading video info...';
     const v = document.createElement('video');
     v.preload = 'metadata';
     v.onloadedmetadata = () => {{
       videoInfo.innerHTML = `<strong>File:</strong> ${{f.name}} &nbsp;|&nbsp; <strong>Size:</strong> ${{(f.size/1024/1024).toFixed(2)}} MB &nbsp;|&nbsp; <strong>Duration:</strong> ${{v.duration.toFixed(1)}}s &nbsp;|&nbsp; <strong>Resolution:</strong> ${{v.videoWidth}}x${{v.videoHeight}}`;
       controlsSection.classList.remove('hidden');
+      statusSection.classList.add('hidden');
     }};
+    v.onerror = () => {{ statusSection.textContent = '✗ Error: Unable to read video file.'; }};
     v.src = URL.createObjectURL(f);
   }}
   async function loadFFmpeg() {{
@@ -1949,11 +1977,7 @@ def build_new_tools():
         os.makedirs(tools_dir, exist_ok=True)
 
         for tool in ALL_NEW_TOOLS:
-            # 安全检查：如果已存在（理论上不应该）就跳过
             out_path = os.path.join(tools_dir, f'{tool["slug"]}.html')
-            if os.path.exists(out_path):
-                print(f'  SKIP (exists): [{lang}] {tool["slug"]}.html')
-                continue
 
             data = tool_to_data(tool, lang, lang_fields)
             html = build_one(template, data, LANGS[lang], all_langs=LANGS)
