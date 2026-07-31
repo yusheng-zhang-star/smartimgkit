@@ -55,6 +55,17 @@ BLOG_POSTS = [
     'image-resizing-social-media-guide',
 ]
 
+# Workflows
+WORKFLOW_SLUGS = [
+    'avatar-pipeline', 'e-commerce-pack', 'social-media-kit',
+    'product-image-optimizer', 'batch-watermark-protect', 'listing-image-suite',
+    'ai-background-studio', 'blog-image-pack', 'youtube-thumbnail-suite',
+    'real-estate-photo-pack', 'food-photography-bundle', 'podcast-cover-suite',
+    'email-signature-pack', 'freelancer-portfolio-pack', 'event-photography-bundle',
+    'print-ready-prep', 'app-store-screenshot-suite', 'course-tutorial-pack',
+    'resume-cv-photo',
+]
+
 
 def url_entry(loc, priority, changefreq='weekly'):
     return f'''  <url>
@@ -75,6 +86,13 @@ def generate_lang_sitemap(lang_code, lang_dir):
 
     # Blog index
     urls.append(url_entry(f'{SITE}{prefix}/blog/', '0.7', 'weekly'))
+
+    # Workflows index
+    urls.append(url_entry(f'{SITE}{prefix}/workflows/', '0.8', 'weekly'))
+
+    # Workflows
+    for slug in WORKFLOW_SLUGS:
+        urls.append(url_entry(f'{SITE}{prefix}/workflows/{slug}', '0.85', 'monthly'))
 
     # Tools
     for slug in TOOL_SLUGS:

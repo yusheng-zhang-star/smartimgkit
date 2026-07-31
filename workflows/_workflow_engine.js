@@ -1,11 +1,10 @@
 /**
- * SmartImgKit — Workflow Engine v1
+ * SmartImgKit — Workflow Engine v2
  *
  * 一个工作流 = 一组"步骤"，每个步骤是一个工具的处理函数。
- * 工作流页用 _workflow_template.html + _workflows_data.json 生成，
- * 该引擎在客户端读 window.WORKFLOW_CONFIG 并依次执行。
+ * v2 新增：并发处理池（默认并发 3）、大图自动降采样、更好的进度显示
  *
- * 步骤对象结构（由 _workflows_data.json 注入到页面）：
+ * 步骤对象结构：
  *   { id, label, description, runner: 'circleCrop' | 'filter' | 'watermark' | 'resize', options: {...} }
  *
  * runner 必须挂载到 window.SmartImgKit.runners[runnerName]，签名：
@@ -15,6 +14,13 @@
   'use strict';
 
   const SmartImgKit = (window.SmartImgKit = window.SmartImgKit || {});
+  SmartImgKit.runners = SmartImgKit.runners || {};
+
+  // -------- 配置 --------
+  const CONFIG = {
+    CONCURRENCY: 3,        // 并发处理文件数
+    MAX_IMAGE_PX: 4096,   // 超过这个尺寸自动降采样
+  };
 
   // -------- 公共工具：file/blob 互转 --------
   SmartImgKit.blobToDataURL = function (blob) {
@@ -44,6 +50,48 @@
     });
   };
 
+  // -------- 大图自动降采样（防止超大图卡死） --------
+  SmartImgKit.downscaleIfNeeded = async function (blob, maxPx = CONFIG.MAX_IMAGE_PX) {
+    if (!blob || !blob.type.startsWith('image/')) return blob;
+    const img = await SmartImgKit.loadImage(blob);
+    const maxDim = Math.max(img.naturalWidth, img.naturalHeight);
+    if (maxDim <= maxPx) return blob;
+    const scale = maxPx / maxDim;
+    const w = Math.round(img.naturalWidth * scale);
+    const h = Math.round(img.naturalHeight * scale);
+    const canvas = document.createElement('canvas');
+    canvas.width = w; canvas.height = h;
+    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+    return new Promise(resolve => canvas.toBlob(b => resolve(b), blob.type || 'image/jpeg', 0.92));
+  };
+
+  // -------- 并发控制：Promise 池 --------
+  async function runInParallel(items, concurrency, processor, onItemDone) {
+    const results = new Array(items.length);
+    let nextIdx = 0;
+    let doneCount = 0;
+
+    async function worker() {
+      while (nextIdx < items.length) {
+        const idx = nextIdx++;
+        try {
+          results[idx] = await processor(items[idx], idx);
+        } catch (e) {
+          results[idx] = { error: e, item: items[idx] };
+        }
+        doneCount++;
+        onItemDone && onItemDone(doneCount, items.length);
+      }
+    }
+
+    const workers = [];
+    for (let i = 0; i < Math.min(concurrency, items.length); i++) {
+      workers.push(worker());
+    }
+    await Promise.all(workers);
+    return results;
+  }
+
   // -------- 进度 UI --------
   function ensureProgressBar() {
     let bar = document.getElementById('wfProgBar');
@@ -57,47 +105,72 @@
     return { bar, fill: bar.querySelector('.progress-fill'), text: document.getElementById('wfProgText') };
   }
 
-  // -------- runPipeline: 跑一组文件 × 一组步骤 --------
+  // -------- runPipeline: 跑一组文件 × 一组步骤（v2 并发版） --------
   /**
    * @param {File[]} files
    * @param {Array} steps
-   * @param {Object} hooks  { onStepStart(step,i,total), onFileStart(file,i,total), onProgress(p), onDone(results) }
+   * @param {Object} hooks  { onStepStart, onFileStart, onProgress(p), onDone(results) }
+   * @param {Object} options  { concurrency: 3 }
    * @returns {Promise<Array<{name,blob}>>}
    */
-  SmartImgKit.runPipeline = async function (files, steps, hooks = {}) {
+  SmartImgKit.runPipeline = async function (files, steps, hooks = {}, options = {}) {
     if (!files || !files.length) throw new Error('No files provided');
     if (!steps || !steps.length) throw new Error('No steps provided');
 
+    const concurrency = options.concurrency || CONFIG.CONCURRENCY;
     const { bar, fill, text } = ensureProgressBar();
     bar.style.display = 'block';
-    const results = [];
-    const totalUnits = files.length * steps.length;
-    let doneUnits = 0;
 
-    for (let fi = 0; fi < files.length; fi++) {
-      const f = files[fi];
-      hooks.onFileStart && hooks.onFileStart(f, fi, files.length);
-      let cur = f;
-      for (let si = 0; si < steps.length; si++) {
+    const totalFiles = files.length;
+    const totalSteps = steps.length;
+    let doneFiles = 0;
+
+    text.textContent = `Starting ${totalFiles} file(s) × ${totalSteps} step(s) with ${concurrency} workers...`;
+
+    async function processSingleFile(file, fi) {
+      hooks.onFileStart && hooks.onFileStart(file, fi, totalFiles);
+      // 大图预处理
+      let cur = await SmartImgKit.downscaleIfNeeded(file);
+
+      for (let si = 0; si < totalSteps; si++) {
         const step = steps[si];
-        hooks.onStepStart && hooks.onStepStart(step, si, steps.length);
-        text.textContent = `[${fi + 1}/${files.length}] ${f.name} → ${step.label}`;
+        hooks.onStepStart && hooks.onStepStart(step, si, totalSteps);
+        text.textContent = `[${fi + 1}/${totalFiles}] ${file.name} → ${step.label} (${doneFiles + 1}/${totalFiles} done)`;
         const runner = SmartImgKit.runners[step.runner];
         if (!runner) throw new Error('Unknown runner: ' + step.runner);
-        const log = msg => { text.textContent = `[${fi + 1}/${files.length}] ${f.name} → ${step.label}: ${msg}`; };
+        const log = msg => { text.textContent = `[${fi + 1}/${totalFiles}] ${file.name} → ${step.label}: ${msg}`; };
         cur = await runner(cur, step.options || {}, log);
-        doneUnits++;
-        const pct = Math.round((doneUnits / totalUnits) * 100);
+      }
+
+      const dot = file.name.lastIndexOf('.');
+      const base = dot > -1 ? file.name.slice(0, dot) : file.name;
+      return { name: base + '.png', blob: cur };
+    }
+
+    const results = await runInParallel(
+      files,
+      concurrency,
+      processSingleFile,
+      (done, total) => {
+        doneFiles = done;
+        const pct = Math.round((done / total) * 100);
         fill.style.width = pct + '%';
         hooks.onProgress && hooks.onProgress(pct);
       }
-      // 输出文件名：保留原名
-      const dot = f.name.lastIndexOf('.');
-      const base = dot > -1 ? f.name.slice(0, dot) : f.name;
-      results.push({ name: base + '.png', blob: cur });
+    );
+
+    // 过滤错误
+    const okResults = results.filter(r => r && !r.error);
+    const errors = results.filter(r => r && r.error);
+
+    if (errors.length) {
+      text.textContent = `Done! ${okResults.length} OK, ${errors.length} failed.`;
+      console.warn('[Workflow] Errors:', errors);
+    } else {
+      text.textContent = `Done! ${okResults.length} image(s) processed.`;
     }
-    text.textContent = `Done! ${results.length} image(s) processed.`;
-    return results;
+
+    return okResults;
   };
 
   // -------- ZIP 批量下载（独立可复用） --------
