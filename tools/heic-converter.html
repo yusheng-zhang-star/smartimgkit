@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="dark" data-tool-id="heic-converter">
 <head>
   <meta charset="UTF-8">
@@ -369,36 +369,153 @@
   </footer>
 
   <script src="/js/main.js?v=4"></script>
+  <script src="/js/heic2any.min.js" crossorigin="anonymous"></script>
+  <script src="/js/jszip.min.js"></script>
   <script>
+const $ = id => document.getElementById(id);
 let heicFile = null;
+let outputFormat = 'jpg';
+let convertedBlob = null;
 
-    let heicArrayBuffer = null;
+const dropzone = $('dropzone');
+const fileInput = $('fileInput');
+const convertBtn = $('convertBtn');
+const resetBtn = $('resetBtn');
+const fileInfo = $('fileInfo');
+const previewCanvas = $('previewCanvas');
+const placeholderText = $('placeholderText');
+const previewWrapper = $('previewWrapper');
+const downloadArea = $('downloadArea');
+const qualityCard = $('qualityCard');
+const qualSlider = $('qualSlider');
+const qualVal = $('qualVal');
 
-    let outputFormat = 'jpg';
+let heicFiles = []; // support multiple
 
-    let convertedBlobs = [];
+dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.style.borderColor = 'var(--accent)'; });
+dropzone.addEventListener('dragleave', () => { dropzone.style.borderColor = 'var(--border-color)'; });
+dropzone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropzone.style.borderColor = 'var(--border-color)';
+  if (e.dataTransfer.files.length) handleFiles(Array.from(e.dataTransfer.files));
+});
+fileInput.addEventListener('change', e => { if (e.target.files.length) handleFiles(Array.from(e.target.files)); });
 
+function handleFiles(files) {
+  const valid = files.filter(f => f.name.toLowerCase().endsWith('.heic') || f.name.toLowerCase().endsWith('.heif') || f.type === 'image/heic' || f.type === 'image/heif');
+  if (!valid.length) return alert('Please select valid HEIC/HEIF files.');
+  heicFiles = heicFiles.concat(valid.map(f => ({ file: f, converted: null })));
+  heicFile = valid[0];
+  dropzone.style.display = 'none';
+  fileInfo.style.display = 'block';
+  fileInfo.innerHTML = `<strong>${valid.length} file(s) loaded</strong>`;
+  placeholderText.style.display = 'none';
+  previewCanvas.style.display = 'block';
+  convertBtn.disabled = false;
+  resetBtn.disabled = false;
+}
 
+function setFormat(fmt, btn) {
+  outputFormat = fmt;
+  document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  qualityCard.style.display = (fmt === 'jpg' || fmt === 'webp') ? 'block' : 'none';
+}
 
-    const dropzone = document.getElementById('dropzone');
+function updateQuality() {
+  qualVal.textContent = qualSlider.value;
+}
 
-    const fileInput = document.getElementById('fileInput');
+async function convertHeic() {
+  if (!heicFiles.length) return;
+  convertBtn.disabled = true;
+  convertBtn.textContent = 'Converting...';
+  const fmt = outputFormat === 'jpg' ? 'image/jpeg' : outputFormat === 'png' ? 'image/png' : 'image/webp';
+  const ext = outputFormat === 'jpg' ? '.jpg' : '.' + outputFormat;
 
-    dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.style.borderColor = 'var(--accent)'; });
+  for (let i = 0; i < heicFiles.length; i++) {
+    if (heicFiles[i].converted) continue;
+    try {
+      const result = await heic2any({ blob: heicFiles[i].file, toType: fmt });
+      heicFiles[i].converted = Array.isArray(result) ? result[0] : result;
+    } catch (e) {
+      console.error('Convert error:', e);
+    }
+  }
 
-    dropzone.addEventListener('dragleave', () => { dropzone.style.borderColor = 'var(--border-color)'; });
+  // Show preview of first file
+  if (heicFiles[0] && heicFiles[0].converted) {
+    const url = URL.createObjectURL(heicFiles[0].converted);
+    const img = new Image();
+    img.onload = () => {
+      previewCanvas.width = img.width;
+      previewCanvas.height = img.height;
+      const ctx = previewCanvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+    };
+    img.src = url;
+  }
 
-    dropzone.addEventListener('drop', e => {
+  // Show download links
+  downloadArea.style.display = 'block';
+  downloadArea.innerHTML = '';
+  heicFiles.forEach((item, i) => {
+    if (item.converted) {
+      const url = URL.createObjectURL(item.converted);
+      const outName = item.file.name.replace(/\.(heic|heif)$/i, '') + ext;
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = outName;
+      a.className = 'btn btn-secondary';
+      a.style.margin = '4px';
+      a.textContent = '📥 Download ' + outName;
+      downloadArea.appendChild(a);
+    }
+  });
 
-      e.preventDefault();
+  if (heicFiles.length > 1) {
+    const zipBtn = document.createElement('button');
+    zipBtn.className = 'btn btn-primary';
+    zipBtn.style.margin = '4px';
+    zipBtn.textContent = '📦 Download All (ZIP)';
+    zipBtn.onclick = async () => {
+      const zip = new JSZip();
+      heicFiles.forEach(item => {
+        if (item.converted) {
+          const outName = item.file.name.replace(/\.(heic|heif)$/i, '') + ext;
+          zip.file(outName, item.converted);
+        }
+      });
+      const blob = await zip.generateAsync({ type: 'blob' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'converted-images.zip';
+      a.click();
+    };
+    downloadArea.appendChild(zipBtn);
+  }
 
-      dropzone.style.borderColor = 'var(--border-color)';
+  convertBtn.disabled = false;
+  convertBtn.textContent = '▶️ Convert';
+}
 
-      if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
-
-    });
-
-    fileInput.addEventListener('change', e => { if (e.target.files.length) handleFile(e.target.files[0]); });
+function resetAll() {
+  heicFiles = [];
+  heicFile = null;
+  convertedBlob = null;
+  dropzone.style.display = '';
+  fileInfo.style.display = 'none';
+  fileInfo.innerHTML = '';
+  previewCanvas.style.display = 'none';
+  placeholderText.style.display = 'block';
+  downloadArea.style.display = 'none';
+  downloadArea.innerHTML = '';
+  convertBtn.disabled = true;
+  resetBtn.disabled = true;
+  fileInput.value = '';
+  const ctx = previewCanvas.getContext('2d');
+  ctx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+}
   </script>
   <script src="/js/lang.js"></script>
 </body>

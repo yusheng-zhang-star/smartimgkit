@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="dark" data-tool-id="metadata-viewer">
 <head>
   <meta charset="UTF-8">
@@ -370,14 +370,14 @@ function handleFile(file) {
     return;
   }
   currentFile = file;
-  status.textContent = 'Loading...';
+  if (status) status.textContent = 'Loading...';
   const reader = new FileReader();
   reader.onload = e => {
     currentImageDataUrl = e.target.result;
     previewImg.src = currentImageDataUrl;
     dropzone.style.display = 'none';
     resultsSection.style.display = 'block';
-    status.textContent = 'Loaded: ' + file.name;
+    if (status) status.textContent = 'Loaded: ' + file.name;
   };
   reader.readAsDataURL(file);
 }
@@ -388,7 +388,7 @@ resetBtn && resetBtn.addEventListener('click', () => {
   parsedMetadata = null;
   resultsSection.style.display = 'none';
   dropzone.style.display = '';
-  status.textContent = '';
+  if (status) status.textContent = '';
   metaSections.innerHTML = '';
   previewImg.src = '';
   fileInput.value = '';

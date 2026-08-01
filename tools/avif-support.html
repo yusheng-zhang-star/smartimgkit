@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="dark" data-tool-id="avif-support">
 <head>
   <meta charset="UTF-8">
@@ -412,7 +412,8 @@ avifBrowseBtn && avifBrowseBtn.addEventListener('click', () => avifFileInput.cli
 
 function handleAvifFile(file) {
   if (!file || !file.name.toLowerCase().endsWith('.avif')) {
-    alert('Please select an AVIF file.');
+    const resultArea = document.getElementById('testResult') || document.getElementById('resultArea');
+    if (resultArea) resultArea.innerHTML = '<span style="color:#ef4444">Please select an AVIF file (.avif).</span>';
     return;
   }
   avifFile = file;
@@ -452,6 +453,30 @@ avifResetBtn && avifResetBtn.addEventListener('click', () => {
   avifResultArea.textContent = '';
   avifFileInput.value = '';
 });
+
+async function testAvifDecode() {
+  const resultDiv = document.getElementById('testResult');
+  if (!resultDiv) return;
+  resultDiv.innerHTML = '<span style="color:var(--text-secondary)">Testing AVIF decode...</span>';
+  try {
+    // Tiny AVIF test image (1x1 pixel, color #ff0000)
+    const avifBase64 = 'AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaXNwY2ljb2VsYzJyYXZhbnQAAAAAAAAAIG1ldGEAAAAAAAAAIWhkbHIAAAAAAAAAAG1pbmYAAAAUdm1oZAAAAAEAAAAAA1wAABFkaW5mAAAAEHNyY2gAAAAAAAEAAAEAAAAUc3RibAAAAAABAAAAGG1pbmYAAAAUdm1oZAAAAAEAAAAAA1wAABFkaW5mAAAAEHNyY2gAAAAAAAEAAAEAAAB0dHJhawAAAABpcGNvAAAAY29scmRtaXJhY21pbmV0YW5wb3MAAAACAFVYAAAAU2NvbGxpYnIAAAAAAAAAAAEAAABQaXBtYQAAAAA=';
+    const binary = atob(avifBase64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    const blob = new Blob([bytes], { type: 'image/avif' });
+    const url = URL.createObjectURL(blob);
+    const img = new Image();
+    await new Promise((resolve, reject) => {
+      img.onload = resolve;
+      img.onerror = reject;
+      img.src = url;
+    });
+    resultDiv.innerHTML = '<span style="color:#10b981">✅ AVIF decode supported by your browser!</span>';
+  } catch (e) {
+    resultDiv.innerHTML = '<span style="color:#ef4444">❌ AVIF decode not supported in this browser.</span>';
+  }
+}
 
   </script>
   <script src="/js/lang.js"></script>
