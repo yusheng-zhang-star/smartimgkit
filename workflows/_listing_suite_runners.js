@@ -33,7 +33,7 @@
       if (iA > pA) { dh = p.h; dw = img.width * (p.h / img.height); dx = (p.w - dw) / 2; }
       else { dw = p.w; dh = img.height * (p.w / img.width); dy = (p.h - dh) / 2; }
       ctx.drawImage(img, dx, dy, dw, dh);
-      const b = await new Promise(res => c.toBlob(res, 'image/png'));
+      const b = await new Promise(res => c.toBlob(res, 'image/jpeg', 0.92));
       results.push({ platform: pid, blob: b });
     }
     const first = results[0] && results[0].blob;
@@ -59,7 +59,7 @@
     ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 4;
     ctx.fillText(text, c.width - fontSize, c.height - fontSize);
     ctx.shadowColor = 'transparent'; ctx.globalAlpha = 1;
-    return new Promise(res => c.toBlob(res, 'image/png'));
+    return new Promise(res => c.toBlob(res, 'image/jpeg', 0.92));
   };
 
   // 3. compress

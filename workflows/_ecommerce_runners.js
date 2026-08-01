@@ -49,7 +49,7 @@
     else { dw = tw; dh = img.height * (tw / img.width); dy = (th - dh) / 2; }
     ctx.drawImage(img, dx, dy, dw, dh);
 
-    return new Promise(resolve => c.toBlob(b => resolve(b), 'image/png'));
+    return new Promise(resolve => c.toBlob(b => resolve(b), 'image/jpeg', 0.92));
   };
 
   // ===== 2. compress =====
@@ -98,7 +98,7 @@
     ctx.fillText(text, x, y);
     ctx.shadowColor = 'transparent';
     ctx.globalAlpha = 1;
-    return new Promise(resolve => c.toBlob(b => resolve(b), 'image/png'));
+    return new Promise(resolve => c.toBlob(b => resolve(b), 'image/jpeg', 0.92));
   };
 
   // ===== 4. exportZip (called once at end, not per-step) =====

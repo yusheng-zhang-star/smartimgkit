@@ -20,8 +20,8 @@
     const c = document.createElement('canvas');
     c.width = outSize; c.height = outSize;
     const ctx = c.getContext('2d');
-    const bg = opt.bg || 'transparent';
-    if (bg === 'white') { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, outSize, outSize); }
+    const bg = opt.bg || 'white';
+    if (bg === 'white' || bg === 'transparent') { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, outSize, outSize); }
     else if (bg === 'custom' && opt.bgColor) { ctx.fillStyle = opt.bgColor; ctx.fillRect(0, 0, outSize, outSize); }
 
     const pct = (opt.sizePct || 80) / 100;
@@ -39,7 +39,7 @@
     ctx.drawImage(img, 0, 0, W, H);
     ctx.restore();
 
-    return new Promise(resolve => c.toBlob(b => resolve(b), 'image/png'));
+    return new Promise(resolve => c.toBlob(b => resolve(b), 'image/jpeg', 0.92));
   };
 
   // -------- 2. filter --------
@@ -58,7 +58,7 @@
     else if (mode === 'blur') filter = `blur(${opt.blurPx || 4}px)`;
     ctx.filter = filter;
     ctx.drawImage(img, 0, 0);
-    return new Promise(resolve => c.toBlob(b => resolve(b), 'image/png'));
+    return new Promise(resolve => c.toBlob(b => resolve(b), 'image/jpeg', 0.92));
   };
 
   // -------- 3. watermark --------
@@ -79,7 +79,7 @@
     ctx.textBaseline = 'bottom';
     ctx.fillText(text, 12, c.height - 12);
     ctx.globalAlpha = 1;
-    return new Promise(resolve => c.toBlob(b => resolve(b), 'image/png'));
+    return new Promise(resolve => c.toBlob(b => resolve(b), 'image/jpeg', 0.92));
   };
 
   // -------- 4. resize (single) --------
@@ -97,7 +97,7 @@
     if (aspect > 1) { sw = img.height; sx = (img.width - sw) / 2; }
     else if (aspect < 1) { sh = img.width; sy = (img.height - sh) / 2; }
     ctx.drawImage(img, sx, sy, sw, sh, 0, 0, size, size);
-    return new Promise(resolve => c.toBlob(b => resolve(b), 'image/png'));
+    return new Promise(resolve => c.toBlob(b => resolve(b), 'image/jpeg', 0.92));
   };
 
   console.log('[SmartImgKit] Avatar Pipeline runners loaded');

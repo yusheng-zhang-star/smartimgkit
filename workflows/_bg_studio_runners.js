@@ -108,7 +108,7 @@
     // 写回并导出
     srcCtx.putImageData(imageData, 0, 0);
 
-    return new Promise(resolve => srcC.toBlob(b => resolve(b), 'image/png'));
+    return new Promise(resolve => srcC.toBlob(b => resolve(b), 'image/jpeg', 0.92));
   };
 
   // -------- 2. addBorder --------
@@ -154,7 +154,7 @@
     // 绘制原图居中
     ctx.drawImage(img, pad, pad, W, H);
 
-    return new Promise(resolve => c.toBlob(b => resolve(b), 'image/png'));
+    return new Promise(resolve => c.toBlob(b => resolve(b), 'image/jpeg', 0.92));
   };
 
   // -------- 3. addShadow --------
@@ -193,7 +193,7 @@
     // 绘制图片（带阴影）
     ctx.drawImage(img, ext, ext, W, H);
 
-    return new Promise(resolve => c.toBlob(b => resolve(b), 'image/png'));
+    return new Promise(resolve => c.toBlob(b => resolve(b), 'image/jpeg', 0.92));
   };
 
   console.log('[SmartImgKit] AI Background Studio runners loaded');

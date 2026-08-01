@@ -24,7 +24,7 @@
     ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 4;
     ctx.fillText(text, c.width - fontSize, c.height - fontSize);
     ctx.shadowColor = 'transparent'; ctx.globalAlpha = 1;
-    return new Promise(res => c.toBlob(res, 'image/png'));
+    return new Promise(res => c.toBlob(res, 'image/jpeg', 0.92));
   };
 
   // 2. imageWatermark
@@ -40,7 +40,7 @@
     ctx.globalAlpha = opt.opacity || 0.5;
     ctx.drawImage(logo, img.width - lw - 20, img.height - lh - 20, lw, lh);
     ctx.globalAlpha = 1;
-    return new Promise(res => c.toBlob(res, 'image/png'));
+    return new Promise(res => c.toBlob(res, 'image/jpeg', 0.92));
   };
 
   // 3. stripExif
