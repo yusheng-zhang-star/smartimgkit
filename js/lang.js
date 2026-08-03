@@ -20,10 +20,11 @@
     'id': { flag: '\u{1F1EE}\u{1F1E9}', name: 'ID' },
     'fr': { flag: '\u{1F1EB}\u{1F1F7}', name: 'FR' },
     'vi': { flag: '\u{1F1FB}\u{1F1F3}', name: 'VI' },
-    'ar': { flag: '\u{1F1F8}\u{1F1E6}', name: 'AR' }
+    'ar': { flag: '\u{1F1F8}\u{1F1E6}', name: 'AR' },
+    'zh': { flag: '\u{1F1E8}\u{1F1F3}', name: 'ZH' }
   };
 
-  var PREFIXES = ['es', 'pt', 'id', 'fr', 'vi', 'ar'];
+  var PREFIXES = ['es', 'pt', 'id', 'fr', 'vi', 'ar', 'zh'];
 
   // ── Detect current language ──────────────────────────────────────
   function getCurrentLanguage() {
@@ -83,6 +84,7 @@
     if (href.indexOf('/fr') === 0) return 'fr';
     if (href.indexOf('/vi') === 0) return 'vi';
     if (href.indexOf('/ar') === 0) return 'ar';
+    if (href.indexOf('/zh') === 0) return 'zh';
     return 'en';
   }
 

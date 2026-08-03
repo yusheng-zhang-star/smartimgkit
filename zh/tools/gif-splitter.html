@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh" data-theme="dark" data-tool-id="gif-splitter">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>GIF 分割 – 免费 | SmartImgKit</title>
+  <meta name="description" content="将 GIF 分割为单帧图片。">
+  <meta name="keywords" content="gif splitter, gif to frames, extract gif frames, gif to png, apng to frames, animated gif extractor">
+  <link rel="canonical" href="https://smartimgkit.com/zh/tools/gif-splitter">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="GIF Splitter — Extract Frames from GIF & APNG">
+  <meta property="og:description" content="将 GIF 分割为单帧图片。">
+  <meta property="og:url" content="https://smartimgkit.com/tools/gif-splitter">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css?v=4">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .frames-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; margin-top: 1rem; }
+    .frame-item { position: relative; border: 2px solid var(--border-color); border-radius: 8px; overflow: hidden; background: var(--bg-secondary); }
+    .frame-item img { width: 100%; height: 100px; object-fit: contain; display: block; background: repeating-conic-gradient(#f0f0f0 0% 25%, #fff 0% 50%) 50% / 20px 20px; }
+    .frame-item .frame-num { position: absolute; top: 4px; left: 4px; background: var(--accent); color: white; font-size: 0.7rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+    .frame-item .frame-delay { position: absolute; bottom: 2px; right: 4px; background: rgba(0,0,0,0.7); color: white; font-size: 0.65rem; padding: 1px 5px; border-radius: 3px; }
+    .info-box { background: rgba(99,102,241,0.1); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; border-radius: 8px; margin-bottom: 1.5rem; }
+    .info-box p { color: var(--text-secondary); font-size: 0.9rem; }
+  </style>
+
+<style id="enrich-css">
+.selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
+.sp-item{display:flex;align-items:center;gap:8px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:999px;padding:8px 16px;font-size:0.85rem;color:var(--text-secondary);font-weight:500}
+.sp-item span.sp-icon{font-size:1rem}
+.feature-narrative{margin:2.5rem 0;padding:0 1rem}
+.feature-narrative h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.feature-narrative .fn-intro{text-align:center;max-width:680px;margin:0 auto 2rem;color:var(--text-secondary);font-size:1rem;line-height:1.6}
+.fn-block{display:flex;gap:1.5rem;align-items:flex-start;margin:1.5rem 0;padding:1.25rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.fn-block .fn-icon{font-size:2rem;flex-shrink:0;line-height:1}
+.fn-block h3{font-size:1.05rem;color:var(--text-primary);margin:0 0 0.4rem}
+.fn-block p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin:0}
+.features-grid-section{margin:2.5rem 0;padding:0 1rem}
+.features-grid-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.features-grid-section .fg-sub{text-align:center;color:var(--text-secondary);font-size:0.95rem;margin-bottom:2rem}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;max-width:1000px;margin:0 auto}
+.feature-card{background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;padding:1.25rem;transition:transform .2s,border-color .2s}
+.feature-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.feature-card .fc-icon{font-size:1.8rem;margin-bottom:0.5rem}
+.feature-card h3{font-size:1rem;color:var(--text-primary);margin:0 0 0.4rem}
+.feature-card p{color:var(--text-secondary);font-size:0.85rem;line-height:1.5;margin:0}
+.trust-badges{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:2rem 0;padding:1.5rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.trust-badge{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;min-width:120px}
+.trust-badge .tb-icon{font-size:1.6rem}
+.trust-badge .tb-title{font-size:0.85rem;font-weight:700;color:var(--text-primary)}
+.trust-badge .tb-desc{font-size:0.72rem;color:var(--text-secondary)}
+@media(max-width:640px){.fn-block{flex-direction:column}.features-grid{grid-template-columns:1fr}.trust-badges{gap:12px}.trust-badge{min-width:90px}}
+
+
+.faq-section{margin:2.5rem 0;padding:0 1rem}
+.faq-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:1rem;text-align:center}
+.faq-item{border:1px solid var(--border);border-radius:8px;margin-bottom:0.5rem;overflow:hidden;background:var(--bg-secondary)}
+.faq-question{width:100%;padding:1rem 1.25rem;background:none;border:none;text-align:left;font-size:0.95rem;font-weight:600;color:var(--text-primary);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.faq-question::after{content:'+';font-size:1.2rem;transition:transform .2s}
+.faq-item.open .faq-question::after{transform:rotate(45deg)}
+.faq-answer{padding:0 1.25rem;max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;color:var(--text-secondary);font-size:0.9rem;line-height:1.6}
+.faq-item.open .faq-answer{padding:0 1.25rem 1rem;max-height:300px}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a href="/zh/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+        <div class="nav-links"><a href="/zh/">首页</a><a href="/zh/#tools">工具</a></div>
+      </nav>
+    </div>
+  </header>
+  <main class="tool-page">
+    <div class="container">
+      <div class="tool-page-header">
+        <h1>✂️ GIF 分割</h1>
+        <p>Split animated GIF or APNG into individual frames. Download as PNG images or ZIP.</p>
+      </div>
+      <div class="tool-workspace">
+        <input type="file" id="fileInput" accept=".gif,.apng,image/gif,image/apng,image/png" style="display:none;">
+        <label for="fileInput" class="dropzone" id="dropzone">
+          <div class="dropzone-icon">🎬</div>
+          <h3>Upload GIF or APNG</h3>
+          <p>Drag & drop or click to browse. Animated GIF or APNG.</p>
+        </label>
+        <div class="preview-area hidden" id="framesSection">
+          <h2 style="font-size:1.1rem;margin-bottom:1rem;">📋 Extracted Frames (<span id="frameCount">0</span>)</h2>
+          <div class="info-box"><p>Each frame is saved as PNG. Click "Download All Frames" to get a ZIP file, or click individual frames to download.</p></div>
+          <div class="tool-actions" style="justify-content:center;margin-bottom:1rem;">
+            <button class="btn btn-primary" id="downloadZipBtn">📦 Download All Frames (ZIP)</button>
+            <button class="btn btn-secondary" id="resetBtn">🔄 New File</button>
+          </div>
+          <div id="status" style="text-align:center;color:var(--text-secondary);margin-bottom:1rem"></div>
+          <div class="frames-grid" id="framesGrid"></div>
+        </div>
+        <div class="selling-points">
+  <div class="sp-item"><span class="sp-icon">✅</span>将动画 GIF 拆分为帧</div>
+  <div class="sp-item"><span class="sp-icon">🎯</span>从 GIF 提取特定帧</div>
+  <div class="sp-item"><span class="sp-icon">🔒</span>100% 隐私 —— 浏览器端运行</div>
+</div>
+      </div>
+    </div>
+  
+      <section class="feature-narrative">
+        <h2>GIF 拆分器：将动画 GIF 拆分为帧</h2>
+        <p class="fn-intro">GIF 拆分器让你将动画 GIF 拆分为帧。全部在浏览器本地处理，无需上传、无需注册。</p>
+      <div class="fn-block">
+        <div class="fn-icon">⚡</div>
+        <div><h3>从 GIF 提取特定帧</h3><p>从 GIF 提取特定帧。这是人们使用GIF 拆分器最常见的理由之一——几秒内即可在浏览器中完成。</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">🎯</div>
+        <div><h3>将 GIF 帧转 PNG 以便编辑</h3><p>将 GIF 帧转 PNG 以便编辑。这是人们使用GIF 拆分器最常见的理由之一——几秒内即可在浏览器中完成。</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">🔒</div>
+        <div><h3>逐帧分析 GIF 动画</h3><p>逐帧分析 GIF 动画。这是人们使用GIF 拆分器最常见的理由之一——几秒内即可在浏览器中完成。</p></div>
+      </div>
+      </section>
+
+      <section class="features-grid-section">
+        <h2>GIF 拆分器所需的一切功能</h2>
+        <p class="fg-sub">让GIF 拆分器快速、私密且免费的强大功能。</p>
+        <div class="features-grid">
+        <div class="feature-card">
+          <div class="fc-icon">🎨</div>
+          <h3>实时预览</h3>
+          <p>每次调整下载前即时可见。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🎚️</div>
+          <h3>精细控制</h3>
+          <p>用精确滑块调节强度、颜色和位置。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🔄</div>
+          <h3>无损编辑</h3>
+          <p>原图绝不会被修改——下载的是新副本。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🔒</div>
+          <h3>100% 隐私</h3>
+          <p>全部编辑在浏览器本地完成。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🆓</div>
+          <h3>永久免费</h3>
+          <p>无需注册、无水印、无限制。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">⚡</div>
+          <h3>即时出图</h3>
+          <p>编辑即时生效——无需渲染队列。</p>
+        </div>
+        </div>
+      </section>
+
+<div class="trust-badges">
+  <div class="trust-badge"><div class="tb-icon">🔒</div><div class="tb-title">100% 隐私</div><div class="tb-desc">文件不离开浏览器</div></div>
+  <div class="trust-badge"><div class="tb-icon">⚡</div><div class="tb-title">浏览器端</div><div class="tb-desc">无需安装、不上传</div></div>
+  <div class="trust-badge"><div class="tb-icon">💯</div><div class="tb-title">永久免费</div><div class="tb-desc">无需注册、无水印</div></div>
+  <div class="trust-badge"><div class="tb-icon">🚀</div><div class="tb-title">无需注册</div><div class="tb-desc">即刻开始，无需账号</div></div>
+</div>
+  
+      <section class="faq-section">
+        <h2>常见问题</h2>
+<div class="faq-item"><button class="faq-question">帧是什么格式？</button><div class="faq-answer">PNG 图片，每帧一张。</div></div>
+<div class="faq-item"><button class="faq-question">可以一次下载所有帧吗？</button><div class="faq-answer">可以——打包为 ZIP。</div></div>
+<div class="faq-item"><button class="faq-question">编辑可撤销吗？</button><div class="faq-answer">可以——下载前随时重置为原图。源文件不受影响。</div></div>
+<div class="faq-item"><button class="faq-question">所有图片格式都支持吗？</button><div class="faq-answer">支持 JPG、PNG、WebP 等常见格式。</div></div>
+      </section>
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. 保留所有权利.</p></div>
+    </div>
+  </footer>
+  <script src="/js/pako.min.js"></script>
+  <script src="/js/upng.min.js"></script>
+  <script>var exports = {}; function require(){return {};}</script>
+  <script src="/js/gifuct-js.min.js"></script>
+  <script>var gifuct = exports;</script>
+  <script src="/js/jszip.min.js"></script>
+  <script src="/js/main.js?v=4"></script>
+  <script>
+(function(){
+  const fileInput = document.getElementById('fileInput');
+  const dropzone = document.getElementById('dropzone');
+  const framesSection = document.getElementById('framesSection');
+  const framesGrid = document.getElementById('framesGrid');
+  const frameCount = document.getElementById('frameCount');
+  const downloadZipBtn = document.getElementById('downloadZipBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const status = document.getElementById('status');
+  let frames = [];
+  let fileName = '';
+
+  dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
+  dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+  dropzone.addEventListener('drop', e => {
+    e.preventDefault(); dropzone.classList.remove('dragover');
+    if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+  });
+  fileInput.addEventListener('change', e => { if (e.target.files.length) handleFile(e.target.files[0]); });
+
+  async function handleFile(file) {
+    fileName = file.name.replace(/\.[^.]+$/, '');
+    const isGif = file.type === 'image/gif' || file.name.toLowerCase().endsWith('.gif');
+    const isApng = file.name.toLowerCase().endsWith('.apng') || (file.type === 'image/png' && !isGif);
+    
+    if (!isGif && !isApng) {
+      status.textContent = 'Please upload a GIF or APNG file.';
+      return;
+    }
+    
+    status.textContent = 'Extracting frames...';
+    framesSection.classList.remove('hidden');
+    dropzone.classList.add('hidden');
+    framesGrid.innerHTML = '';
+    frames = [];
+    
+    const buf = await file.arrayBuffer();
+    
+    if (isApng && window.UPNG) {
+      try {
+        const img = UPNG.decode(buf);
+        const rgbaFrames = UPNG.toRGBA8(img);
+        const delays = img.frames.map(fr => fr.delay || 100);
+        for (let i = 0; i < rgbaFrames.length; i++) {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width; canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          const imgData = ctx.createImageData(img.width, img.height);
+          new Uint8Array(imgData.data.buffer).set(new Uint8Array(rgbaFrames[i]));
+          ctx.putImageData(imgData, 0, 0);
+          frames.push({ canvas: canvas, delay: delays[i], index: i });
+        }
+      } catch(e) {
+        status.textContent = 'Error parsing APNG: ' + e.message;
+        return;
+      }
+    } else if (isGif) {
+      try {
+        const gif = await gifuct.parseGIF(buf);
+        for (let i = 0; i < gif.length; i++) {
+          const frame = gif[i];
+          const canvas = document.createElement('canvas');
+          canvas.width = frame.dims.width; canvas.height = frame.dims.height;
+          const ctx = canvas.getContext('2d');
+          const imgData = ctx.createImageData(frame.dims.width, frame.dims.height);
+          imgData.data.set(frame.patch);
+          ctx.putImageData(imgData, 0, 0);
+          frames.push({ canvas: canvas, delay: frame.delay || 100, index: i });
+        }
+      } catch(e) {
+        status.textContent = 'Error parsing GIF: ' + e.message;
+        return;
+      }
+    }
+    
+    renderFrames();
+    status.textContent = '';
+  }
+
+  function renderFrames() {
+    frameCount.textContent = frames.length;
+    framesGrid.innerHTML = '';
+    frames.forEach((frame, i) => {
+      const div = document.createElement('div');
+      div.className = 'frame-item';
+      div.innerHTML = '<span class="frame-num">#' + (i+1) + '</span>' +
+        '<img src="' + frame.canvas.toDataURL('image/png') + '" alt="Frame ' + (i+1) + '" style="cursor:pointer" title="Click to download">' +
+        '<span class="frame-delay">' + frame.delay + 'ms</span>';
+      div.querySelector('img').addEventListener('click', () => {
+        const link = document.createElement('a');
+        link.download = fileName + '-frame-' + (i+1).toString().padStart(3, '0') + '.png';
+        link.href = frame.canvas.toDataURL('image/png');
+        link.click();
+      });
+      framesGrid.appendChild(div);
+    });
+  }
+
+  downloadZipBtn.addEventListener('click', async () => {
+    if (frames.length === 0) return;
+    downloadZipBtn.disabled = true;
+    downloadZipBtn.textContent = '📦 Creating ZIP...';
+    const zip = new JSZip();
+    frames.forEach((frame, i) => {
+      const dataUrl = frame.canvas.toDataURL('image/png').split(',')[1];
+      zip.file(fileName + '-frame-' + (i+1).toString().padStart(3, '0') + '.png', dataUrl, { base64: true });
+    });
+    const blob = await zip.generateAsync({ type: 'blob' });
+    const link = document.createElement('a');
+    link.download = fileName + '-frames.zip';
+    link.href = URL.createObjectURL(blob);
+    link.click();
+    downloadZipBtn.disabled = false;
+    downloadZipBtn.textContent = '📦 Download All Frames (ZIP)';
+  });
+
+  resetBtn.addEventListener('click', () => {
+    frames = [];
+    framesSection.classList.add('hidden');
+    dropzone.classList.remove('hidden');
+    fileInput.value = '';
+    status.textContent = '';
+  });
+})();
+  </script>
+</body>
+</html>

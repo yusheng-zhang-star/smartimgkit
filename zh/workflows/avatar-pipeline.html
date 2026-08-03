@@ -1,0 +1,589 @@
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+
+<html lang="zh" data-theme="dark">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="robots" content="index, follow">
+
+  <title>头像流水线 – 多尺寸头像生成器</title>
+
+  <meta name="description" content="上传一次即可获得多种完美尺寸的头像图片：圆形裁剪、可选滤镜、水印，并在单个 ZIP 中导出 64/128/256/512 PNG。">
+
+  <meta name="keywords" content="avatar pipeline, profile picture batch, multi size avatar, circle crop batch">
+
+  <link rel="canonical" href="https://smartimgkit.com/zh/workflows/avatar-pipeline">
+
+  <meta name="theme-color" content="#a855f7">
+
+  <meta property="og:title" content="Avatar Pipeline – Multi-Size Profile Picture Generator">
+
+  <meta property="og:description" content="Batch avatar generator: circle crop, filter, watermark and export 64/128/256/512 PNGs in a single ZIP. 100% browser-based.">
+
+  <meta property="og:url" content="https://smartimgkit.com/zh/workflows/avatar-pipeline">
+
+  <meta property="og:type" content="website">
+
+  <meta property="og:site_name" content="SmartImgKit">
+
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/home.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+
+  <meta name="twitter:title" content="Avatar Pipeline – Multi-Size Profile Picture Generator">
+
+  <meta name="twitter:description" content="Batch avatar generator: circle crop, filter, watermark and export 64/128/256/512 PNGs in a single ZIP. 100% browser-based.">
+
+  <meta name="twitter:image" content="https://smartimgkit.com/screenshots/home.png">
+  
+  <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/workflows/avatar-pipeline.html">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/workflows/avatar-pipeline.html">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/workflows/avatar-pipeline.html">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <link rel="stylesheet" href="../../css/style.css?v=4">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="/js/jszip.min.js"></script>
+
+  <script type="application/ld+json">
+
+{"@context": "https://schema.org", "@type": "WebApplication", "name": "Avatar Pipeline – Multi-Size Profile Picture Generator", "url": "https://smartimgkit.com/zh/workflows/avatar-pipeline", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "description": "Run multiple images through circle crop, filter, watermark, and resize in one click. Output multiple PNG sizes in a single ZIP."}
+
+  </script>
+
+  <script type="application/ld+json">
+
+{"@context": "https://schema.org", "@type": "HowTo", "name": "How to use the Avatar Pipeline", "step": [{"@type": "HowToStep", "position": 1, "name": "Upload", "text": "Drop or select multiple avatar source images (JPG/PNG/WebP)."}, {"@type": "HowToStep", "position": 2, "name": "Configure", "text": "Set circle crop size, optional filter, optional watermark, and pick output sizes."}, {"@type": "HowToStep", "position": 3, "name": "Run", "text": "Click Run Pipeline to process all images through the 4-step chain."}, {"@type": "HowToStep", "position": 4, "name": "Download", "text": "Download a single ZIP containing all exported PNG sizes."}]}
+
+  </script>
+
+  <style>
+
+    .workflow-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:1.5rem 0}.workflow-step{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:1rem;position:relative}.workflow-step .step-num{position:absolute;top:-12px;left:12px;background:var(--accent);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem}.workflow-step h4{margin:0.5rem 0 0.25rem;font-size:1rem}.workflow-step p{color:var(--text-secondary);font-size:.85rem;margin:0}
+
+    .workflow-step select,.workflow-step input[type=text],.workflow-step input[type=number]{width:100%;padding:6px 10px;border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-primary);border-radius:6px;margin-top:0.4rem;font-size:.9rem}
+
+    .workflow-step label{font-size:.75rem;color:var(--text-secondary);font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+
+    .workflow-step .badge{display:inline-block;background:var(--bg-tertiary);color:var(--text-muted);padding:2px 8px;border-radius:4px;font-size:.7rem;margin-top:0.5rem}
+
+    .workflow-arrow{display:none}
+
+    @media (min-width:780px){.workflow-step .step-num{left:50%;transform:translateX(-50%)}}
+
+    .size-chips{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:0.5rem}.size-chip{display:inline-flex;align-items:center;gap:6px;background:var(--bg-tertiary);padding:6px 12px;border-radius:20px;font-size:.85rem;cursor:pointer;border:1px solid var(--border-color)}.size-chip input{accent-color:var(--accent)}
+
+    .progress-bar{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);width:min(560px,90vw);background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:12px 16px;box-shadow:var(--shadow-lg);z-index:9999}
+
+    .progress-fill{height:8px;background:linear-gradient(90deg,var(--accent),#a855f7);border-radius:4px;transition:width .2s ease}
+
+    .progress-text{color:var(--text-secondary);font-size:.85rem;margin-top:6px;text-align:center}
+
+  
+/* === AD UNITS - REMOVE BEFORE GOOGLE ADSENSE APPLICATION === */
+    .ad-vertical-right{position:fixed!important;right:0!important;top:80px!important;z-index:90;width:160px;display:none}
+    @media(min-width:1200px){.ad-vertical-right{display:block}}
+    /* === END AD UNITS === */
+</style>
+    
+
+
+  <script type="application/ld+json">
+
+{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How many images can I process at once?", "acceptedAnswer": {"@type": "Answer", "text": "Up to 30 images per run."}}, {"@type": "Question", "name": "Are my images uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. All 4 steps run locally in your browser."}}, {"@type": "Question", "name": "Can I skip the watermark step?", "acceptedAnswer": {"@type": "Answer", "text": "Yes — leave the Watermark text field empty and the step is skipped automatically."}}, {"@type": "Question", "name": "What size should I pick for Twitter/GitHub/Discord?", "acceptedAnswer": {"@type": "Answer", "text": "256px works for most platforms. Pick 512px for high-DPI displays and 64px for inline chat avatars."}}]}
+
+  </script>
+
+</head>
+
+<body>
+
+  <header class="site-header">
+
+    <div class="container header-inner">
+
+      <a href="/zh/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+
+      <nav class="main-nav"><a href="/zh/">首页</a><a href="/zh/tools/background-remover">工具</a><a href="/zh/workflows/">工作流</a><a href="/zh/blog/">博客</a><a href="/about">关于</a></nav>
+
+      <div class="header-actions">
+
+        <button class="theme-toggle" id="themeToggle">🌙</button>
+
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+
+  <main class="tool-page">
+
+    <div class="container">
+
+      <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/workflows/">工作流</a><span>/</span><span>头像</span></nav>
+
+      <div class="tool-page-header">
+
+        <h1>头像流水线</h1>
+
+        <p>上传一次 → 圆形裁剪 → 滤镜 → 水印 → 多尺寸导出。一键获得包含 4 种完美头像 PNG 的 ZIP。</p>
+
+      </div>
+
+      <div class="ad-placeholder">广告</div>
+
+      <div class="tool-workspace">
+
+<div class="upload-area" id="uploadArea">
+
+    <input type="file" id="fileInput" accept="image/*" multiple hidden>
+
+    <div class="upload-icon">📁</div>
+
+    <h3>将头像图片拖放到此处</h3>
+
+    <p>或点击浏览（支持多文件）</p>
+
+    <p class="upload-hint">支持 JPG、PNG、WebP • 单次最多 30 张图片</p>
+
+  </div>
+
+
+
+  <div id="workspace" style="display:none">
+
+    <div style="text-align:center;margin:1rem 0;color:var(--text-secondary)" id="fileCount">0 个文件已选择</div>
+
+
+
+    <h3 style="margin-top:1.5rem">流水线步骤</h3>
+
+    <div class="workflow-steps">
+
+      <div class="workflow-step">
+
+        <div class="step-num">1</div>
+
+        <h4>圆形裁剪</h4>
+
+        <p>制作完美圆形</p>
+
+        <label>圆形尺寸</label>
+
+        <select id="optSize">
+
+          <option value="70">70%（留边）</option>
+
+          <option value="80" selected>80%（标准）</option>
+
+          <option value="90">90%（紧凑）</option>
+
+          <option value="100">100%（满幅）</option>
+
+        </select>
+
+        <label style="margin-top:0.6rem;display:block">背景</label>
+
+        <select id="optBg">
+
+          <option value="transparent" selected>透明</option>
+
+          <option value="white">白色</option>
+
+          <option value="custom">自定义颜色</option>
+
+        </select>
+
+        <input type="color" id="optBgColor" value="#ffffff" style="display:none;width:100%;height:32px;margin-top:0.4rem">
+
+        <span class="badge">必选</span>
+
+      </div>
+
+
+
+      <div class="workflow-step">
+
+        <div class="step-num">2</div>
+
+        <h4>滤镜</h4>
+
+        <p>应用样式</p>
+
+        <label>滤镜模式</label>
+
+        <select id="optFilter">
+
+          <option value="none" selected>无（原图）</option>
+
+          <option value="sepia">棕褐（复古）</option>
+
+          <option value="grayscale">灰度</option>
+
+          <option value="blur">柔化模糊</option>
+
+        </select>
+
+        <span class="badge">可选</span>
+
+      </div>
+
+
+
+      <div class="workflow-step">
+
+        <div class="step-num">3</div>
+
+        <h4>水印</h4>
+
+        <p>添加您的签名</p>
+
+        <label>文字（留空则跳过）</label>
+
+        <input type="text" id="optWmText" placeholder="@yourhandle" maxlength="20">
+
+        <span class="badge">可选</span>
+
+      </div>
+
+
+
+      <div class="workflow-step">
+
+        <div class="step-num">4</div>
+
+        <h4>导出尺寸</h4>
+
+        <p>输出 PNG 尺寸</p>
+
+        <div class="size-chips">
+
+          <label class="size-chip"><input type="checkbox" value="64"  checked>64</label>
+
+          <label class="size-chip"><input type="checkbox" value="128" checked>128</label>
+
+          <label class="size-chip"><input type="checkbox" value="256" checked>256</label>
+
+          <label class="size-chip"><input type="checkbox" value="512" checked>512</label>
+
+        </div>
+
+        <span class="badge">多输出</span>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="controls" style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;margin:1.5rem 0">
+
+      <button class="btn btn-primary" id="runBtn" disabled>🚀 运行流水线</button>
+
+      <button class="btn btn-secondary" id="resetBtn">↺ 重置</button>
+
+    </div>
+
+  </div>
+
+      </div>
+
+      <div class="ad-placeholder">广告</div>
+
+
+
+<section class="how-to-section"><h2>使用方法</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>拖放图片</h4><p>选择多张头像源图片（JPG/PNG/WebP）。单次最多 30 张。</p></div><div class="how-to-step"><div class="step-number">2</div><h4>配置 4 个步骤</h4><p>设置圆形裁剪尺寸、可选滤镜、可选水印文字，并选择输出尺寸（64/128/256/512）。</p></div><div class="how-to-step"><div class="step-number">3</div><h4>运行流水线</h4><p>点击“运行流水线”。引擎会按顺序对每张图片执行全部 4 个步骤。</p></div><div class="how-to-step"><div class="step-number">4</div><h4>下载 ZIP</h4><p>所有 PNG（每张文件 × 所选每个尺寸）都打包到一个 ZIP，可即时下载。</p></div></div></section>
+
+
+
+<h2>详细使用指南</h2><div class="guide-block"><h3>此流水线的作用</h3><p>Avatar Pipeline runs 4 operations in sequence on every uploaded image: (1) circle crop to a perfect circle with transparent background, (2) optional filter (sepia/grayscale/blur), (3) optional watermark text, and (4) export at multiple standard avatar sizes (64/128/256/512). The result is one ZIP per run containing all combinations.</p></div><div class="guide-block"><h3>选择输出尺寸</h3><p>Most platforms expect different avatar dimensions: Discord/Slack use 128-256px, GitHub uses 460px (pick 512 for best quality), Twitter uses 400px (pick 256 or 512), Gravatar uses 1-2048px (pick 512). Select multiple sizes if you plan to upload to several platforms.</p></div><div class="guide-block"><h3>为什么要透明背景？</h3><p>透明 PNG 适用于任何平台背景（浅色或深色主题）。仅在确定目标为浅色界面时选“白色”，或为品牌背景选“自定义颜色”。</p></div><div class="guide-block"><h3>隐私与性能</h3><p>所有处理都在浏览器中完成，不会向任何服务器上传图片。批量上限为单次 30 张，以保证普通笔记本的内存稳定。</p></div><div class="guide-block"><h3>最佳用例</h3><ul><li>创建统一的社交媒体头像（Twitter、GitHub、Discord、Slack）</li><li>为企业通讯录准备团队头像</li><li>为项目生成 favicon 风格头像</li><li>分享前为个人照片加水印</li></ul></div>
+
+
+
+<section class="faq-section"><h2>常见问题</h2><div class="faq-item"><button class="faq-question">一次可以处理多少张图片？</button><div class="faq-answer">单次最多 30 张图片。如需处理更多，请分多次运行。</div></div><div class="faq-item"><button class="faq-question">我的图片会上传到服务器吗？</button><div class="faq-answer">不会。全部 4 个步骤都在浏览器本地运行，图片绝不离开您的设备。</div></div><div class="faq-item"><button class="faq-question">可以跳过水印步骤吗？</button><div class="faq-answer">可以——将水印文字字段留空，该步骤会自动跳过。</div></div><div class="faq-item"><button class="faq-question">Twitter/GitHub/Discord 应该选什么尺寸？</button><div class="faq-answer">256px 适用于大多数平台。高 DPI 屏幕选 512px，聊天内嵌头像选 64px。</div></div><div class="faq-item"><button class="faq-question">为什么输出文件以尺寸命名？</button><div class="faq-answer">每张图片按所选每个尺寸导出一次，并加 “_256px.png” 后缀，方便在 ZIP 中区分。</div></div></section>
+
+
+
+<section class="related-tools"><h2>你可能还喜欢</h2><div class="related-tools-grid"><a href="/zh/tools/circle-crop" class="related-tool-card"><span class="tool-icon">⭕</span><div class="tool-info"><strong>圆形裁剪</strong><span class="tool-desc">单图圆形裁剪工具</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/image-filters" class="related-tool-card"><span class="tool-icon">🎨</span><div class="tool-info"><strong>图像滤镜</strong><span class="tool-desc">为单张图片应用棕褐、灰度、模糊</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/watermark" class="related-tool-card"><span class="tool-icon">🔏</span><div class="tool-info"><strong>水印</strong><span class="tool-desc">独立水印工具</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/bulk-processor" class="related-tool-card"><span class="tool-icon">📦</span><div class="tool-info"><strong>批量处理器</strong><span class="tool-desc">一次处理多张图片</span></div><span class="tool-arrow">→</span></a></div></section>
+
+    </div>
+
+
+
+      
+  
+
+  </main>
+
+
+
+  <footer class="site-footer">
+
+    <div class="container">
+
+      <div class="footer-grid">
+
+        <div class="footer-brand"><a href="/zh/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>尊重您隐私的免费 AI 图像工具。</p></div>
+
+        <div class="footer-links"><h4>工具</h4><a href="/zh/tools/background-remover">抠图工具</a><a href="/zh/tools/compressor">图片压缩器</a><a href="/zh/tools/converter">图像格式转换器</a><a href="/zh/tools/resizer">图像缩放工具</a><a href="/zh/tools/bulk-processor">批量处理器</a><a href="/zh/tools/circle-crop">圆形裁剪</a><a href="/zh/tools/watermark">水印</a></div>
+
+        <div class="footer-links"><h4>工作流</h4><a href="/zh/workflows/">全部工作流</a><a href="/zh/workflows/avatar-pipeline">头像流水线</a></div>
+
+        <div class="footer-links"><h4>法律</h4><a href="/privacy">隐私政策</a><a href="/terms">服务条款</a><a href="/cookie-policy">Cookie 政策</a></div>
+
+      </div>
+
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. 保留所有权利。 | <a href="https://comprimefotos.com/" style="color: var(--accent); font-weight: 500;">Español: ComprimeFotos — Comprimir Imágenes Online</a></p></div>
+
+    </div>
+
+  </footer>
+
+
+
+  <script src="../../js/main.js?v=4"></script>
+
+  <script src="_workflow_engine.js"></script>
+
+  <script src="_avatar_runners.js"></script>
+
+  <script>
+
+window.WORKFLOW_CONFIG = {"slug": "avatar-pipeline"};
+
+const $ = id => document.getElementById(id);
+
+const fileInput = $('fileInput'), uploadArea = $('uploadArea'), workspace = $('workspace');
+
+const runBtn = $('runBtn'), resetBtn = $('resetBtn'), fileCount = $('fileCount');
+
+let files = [];
+
+
+
+// bgColor visibility
+
+$('optBg').addEventListener('change', e => {
+
+  $('optBgColor').style.display = e.target.value === 'custom' ? 'block' : 'none';
+
+});
+
+
+
+// Upload
+
+uploadArea.addEventListener('click', () => fileInput.click());
+
+['dragover','dragenter'].forEach(e => uploadArea.addEventListener(e, ev => { ev.preventDefault(); uploadArea.classList.add('dragover'); }));
+
+['dragleave','drop'].forEach(e => uploadArea.addEventListener(e, () => uploadArea.classList.remove('dragover')));
+
+uploadArea.addEventListener('drop', e => {
+
+  e.preventDefault();
+
+  addFiles(Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/')));
+
+});
+
+fileInput.addEventListener('change', () => { addFiles(Array.from(fileInput.files)); fileInput.value = ''; });
+
+
+
+function addFiles(arr) {
+
+  const imageOnly = arr.filter(f => f.type.startsWith('image/'));
+
+  if (files.length + imageOnly.length > 30) {
+
+    alert('单批最多 30 张图片。您又选择了 ' + imageOnly.length + ' 张，已有 ' + files.length + ' 张。');
+
+    return;
+
+  }
+
+  files = files.concat(imageOnly);
+
+  workspace.style.display = 'block';
+
+  uploadArea.style.display = 'none';
+
+  fileCount.textContent = files.length + ' 个文件已选择';
+
+  runBtn.disabled = files.length === 0;
+
+}
+
+
+
+resetBtn.addEventListener('click', () => {
+
+  files = [];
+
+  workspace.style.display = 'none';
+
+  uploadArea.style.display = 'block';
+
+  runBtn.disabled = true;
+
+});
+
+
+
+// Build steps from UI
+
+function buildSteps() {
+
+  const sizes = Array.from(document.querySelectorAll('.size-chip input:checked')).map(c => parseInt(c.value));
+
+  if (!sizes.length) { alert('Select at least one export size.'); return null; }
+
+  const wmText = $('optWmText').value.trim();
+
+  const steps = [
+
+    { id: 'crop', label: 'Circle Crop', runner: 'circleCrop',
+
+      options: { sizePct: parseInt($('optSize').value), offsetX: 0, offsetY: 0,
+
+                 bg: $('optBg').value, bgColor: $('optBgColor').value } },
+
+    { id: 'filter', label: 'Filter: ' + $('optFilter').value, runner: 'filter',
+
+      options: { mode: $('optFilter').value, blurPx: 4 } },
+
+    { id: 'wm', label: wmText ? 'Watermark' : 'Watermark (skip)', runner: 'watermark',
+
+      options: { text: wmText, size: 20, opacity: 0.35, color: '#ffffff' } }
+
+  ];
+
+  // Resize × N sizes (each as own step) — engine treats each as a step so progress is accurate
+
+  sizes.forEach(sz => {
+
+    steps.push({ id: 'resize-' + sz, label: 'Resize → ' + sz + 'px', runner: 'resize', options: { size: sz } });
+
+  });
+
+  return steps;
+
+}
+
+
+
+// Output filename helper: {base}_{size}.png
+
+SmartImgKit._avatarFileName = function (origName, size) {
+
+  const dot = origName.lastIndexOf('.');
+
+  const base = dot > -1 ? origName.slice(0, dot) : origName;
+
+  return base + '_' + size + 'px.png';
+
+};
+
+
+
+runBtn.addEventListener('click', async () => {
+
+  if (!files.length) return;
+
+  steps = buildSteps();
+
+  if (!steps) return;
+
+  runBtn.disabled = true;
+
+  runBtn.textContent = '⏳ 处理中…';
+
+  try {
+
+    // We need to expand each file into N output files (one per size).
+
+    // Use a custom flow: for each file, run all steps except the size-specific resize,
+
+    // then for each size do a single resize step.
+
+    const baseSteps = steps.filter(s => !s.id.startsWith('resize-'));
+
+    sizes = steps.filter(s => s.id.startsWith('resize-')).map(s => s.options.size);
+
+    const allOutputs = [];
+
+    for (let fi = 0; fi < files.length; fi++) {
+
+      const f = files[fi];
+
+      // Run base steps (crop+filter+watermark) → intermediate blob
+
+      let cur = f;
+
+      for (const step of baseSteps) {
+
+        const runner = SmartImgKit.runners[step.runner];
+
+        cur = await runner(cur, step.options, msg => {});
+
+      }
+
+      // For each size, clone by reloading and resizing (intermediate is a blob; runner reads it)
+
+      for (const sz of sizes) {
+
+        const sized = await SmartImgKit.runners.resize(cur, { size: sz }, () => {});
+
+        allOutputs.push({ name: SmartImgKit._avatarFileName(f.name, sz), blob: sized });
+
+      }
+
+    }
+
+    const zipName = 'avatars-' + Date.now() + '.zip';
+
+    await SmartImgKit.downloadZip(allOutputs, zipName);
+
+    runBtn.textContent = '✓ Downloaded ' + allOutputs.length + ' files';
+
+  } catch (err) {
+
+    alert('Pipeline error: ' + err.message);
+
+    console.error(err);
+
+    runBtn.textContent = '🚀 运行流水线';
+
+  }
+
+  runBtn.disabled = false;
+
+  setTimeout(() => { runBtn.textContent = '🚀 运行流水线'; }, 4000);
+
+});
+
+  </script>
+
+
+  <!-- ===== AD UNITS - REMOVE BEFORE GOOGLE ADSENSE APPLICATION ===== -->
+  <aside class="ad-vertical-right" id="adVerticalRight">
+    <script async="async" data-cfasync="false" src="https://pl29741299.effectivecpmnetwork.com/5a540a2ce35c794ad7d73a726a88971c/invoke.js"></script>
+    <div id="container-5a540a2ce35c794ad7d73a726a88971c"></div>
+  </aside>
+  <!-- ===== END AD UNITS ===== -->
+
+</body>
+
+</html>
+

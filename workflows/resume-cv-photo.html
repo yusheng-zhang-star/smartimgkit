@@ -227,10 +227,7 @@
       const zip = new JSZip();
       allOutputs.forEach(o => zip.file(o.name, o.blob));
       const blob = await zip.generateAsync({ type: 'blob' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'resume-cv-photo-output.zip';
-      a.click();
+      SmartImgKit._triggerDownload(blob, 'resume-cv-photo-output.zip');
       runBtn.textContent = '✅ Done!';
       setTimeout(() => { runBtn.textContent = '🚀 Run Pipeline'; runBtn.disabled = false; }, 2000);
     } catch (e) {

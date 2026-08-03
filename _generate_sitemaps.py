@@ -16,6 +16,7 @@ LANGS = [
     {'code': 'fr', 'dir': 'fr', 'name': 'French'},
     {'code': 'vi', 'dir': 'vi', 'name': 'Vietnamese'},
     {'code': 'ar', 'dir': 'ar', 'name': 'Arabic'},
+    {'code': 'zh', 'dir': 'zh', 'name': 'Chinese'},
 ]
 
 # All tool slugs (from /tools/ directory)
@@ -30,8 +31,13 @@ TOOL_SLUGS = [
     'image-merger', 'image-rotator', 'image-shadow', 'image-splitter',
     'image-to-pdf', 'image-upscaler', 'json-formatter', 'meme-generator',
     'metadata-viewer', 'ocr', 'password-generator', 'pdf-compress',
-    'pdf-delete-pages', 'pdf-extract-pages', 'pdf-merge', 'pdf-rotate',
-    'pdf-split', 'pdf-to-image', 'photo-restoration', 'print-resizer',
+    'pdf-delete-pages', 'pdf-extract-pages', 'pdf-merge', 'pdf-rotate', 'pdf-split',
+    'pdf-to-image', 'pdf-to-word', 'pdf-to-excel', 'pdf-to-ppt',
+    'word-to-pdf', 'excel-to-pdf',
+    'pdf-editor', 'pdf-annotate', 'pdf-number-pages', 'pdf-crop',
+    'pdf-organize', 'pdf-compare', 'pdf-redact',
+    'html-to-pdf', 'txt-to-pdf', 'csv-to-pdf', 'epub-to-pdf',
+    'photo-restoration', 'print-resizer',
     'product-white-background', 'qr-code-generator', 'regex-tester',
     'resizer', 'screenshot-to-image', 'signature-maker', 'social-media-post',
     'svg-to-png', 'text-diff', 'text-find-replace', 'text-on-image',

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>图像格式指南：何时使用 PNG、JPEG、WebP 或 SVG | SmartImgKit</title>
+  <meta name="description" content="对图像格式感到困惑？这是一份实战指南，帮你选对格式——JPEG 适合照片，PNG 适合透明，WebP 适合网页，SVG 适合 Logo。">
+  <meta name="keywords" content="image format guide, PNG vs JPEG, WebP vs PNG, SVG format, which image format to use, image file types explained, JPEG vs WebP, image format comparison">
+  <link rel="canonical" href="https://smartimgkit.com/zh/blog/image-format-guide">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="图像格式指南：何时使用 PNG、JPEG、WebP 或 SVG">
+  <meta property="og:description" content="对图像格式感到困惑？这是一份实战指南，帮你选对格式——JPEG 适合照片，PNG 适合透明，WebP 适合网页，SVG 适合 Logo。">
+  <meta property="og:url" content="https://smartimgkit.com/zh/blog/image-format-guide">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/home.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="图像格式指南：何时使用 PNG、JPEG、WebP 或 SVG">
+  <meta name="twitter:description" content="一份帮你选对格式的实战指南——JPEG 适合照片，PNG 适合透明，WebP 适合网页，SVG 适合 Logo。">
+  <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/blog/image-format-guide">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/blog/image-format-guide">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/blog/image-format-guide">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="../../css/style.css?v=4">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "headline": "Image Format Guide: When to Use PNG, JPEG, WebP, or SVG",
+    "description": "A real-world guide to picking the right image format — JPEG for photos, PNG for transparency, WebP for the web, SVG for logos. No theory, just what actually works.",
+        "image": "https://smartimgkit.com/screenshots/home.png",
+    "datePublished": "2026-06-06",
+    "dateModified": "2026-06-09",
+    "author": {
+      "@type": "Organization",
+      "name": "SmartImgKit Team"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "SmartImgKit",
+      "url": "https://smartimgkit.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://smartimgkit.com/favicon.svg"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://smartimgkit.com/zh/blog/image-format-guide"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://smartimgkit.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://smartimgkit.com/zh/blog/" },
+      { "@type": "ListItem", "position": 3, "name": "Image Format Guide" }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What format should I use for the web?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For most cases: WebP or AVIF for new builds, JPEG as a fallback. WebP gives 25-35% smaller files than JPEG at the same quality, and all modern browsers support it. AVIF is even smaller (50%+), but encoding is slower and not as widely supported. Yeah, I know it sounds obvious, but pick one and stick with it for your whole site."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "When should I use PNG?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "PNG when you need transparency (logos, icons, screenshots with cutouts), lossless quality (archival, print masters), or sharp text/line art. PNG handles these cases cleanly because it's lossless. For photos, PNG files are way bigger than JPEGs — a 12MP photo that fits in 2MB as JPEG might be 15MB as PNG. Use it for the right job."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is AVIF worth using in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For new sites, absolutely. AVIF is roughly 50% smaller than JPEG at the same quality and supports transparency like PNG. Browser support is now solid (Chrome 85+, Firefox 93+, Safari 16+). The trade-off: encoding is slower (3-5x JPEG), so don't use it for user-uploaded content where speed matters. By the way, this worked for me, but your CMS might be different."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I serve different formats to different browsers?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "If you care about performance, yes. The  element lets you serve AVIF to supporting browsers, WebP as a fallback, JPEG last. This is a 20-30% size win on average. The setup is annoying the first time, but worth it for image-heavy sites. Honestly, I just stick with WebP for most projects now — it's the 80/20 solution."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the difference between JPG and JPEG?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Nothing, technically. .jpg and .jpeg are the same format — Windows 95-era file systems needed 3-letter extensions, so .jpg stuck. Some software (older Adobe apps) used .jpeg. Modern operating systems don't care. Use whichever looks cleaner to you."
+      }
+    }
+  ]
+}
+</script>
+
+  <style>.ad-vertical-right{position:fixed!important;right:0!important;top:80px!important;z-index:90;width:160px;display:none}
+    @media(min-width:1200px){.ad-vertical-right{display:block}}
+    /* === END AD UNITS === */
+  </style>
+</head>
+<body>
+<header class="site-header">
+    <div class="container header-inner">
+      <a href="/zh/" class="logo">
+        <span class="logo-icon">🎨</span>
+        <span class="logo-text">SmartImgKit</span>
+      </a>
+      <nav class="main-nav">
+        <a href="/zh/">首页</a>
+        <a href="/zh/tools/background-remover">工具</a>
+        <a href="/zh/workflows/">工作流</a>
+        <a href="/zh/blog/" class="active">博客</a>
+        <a href="/about">关于</a>
+        <a href="/contact">联系我们</a>
+      </nav>
+      <div class="header-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="blog-post-page">
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="/zh/">首页</a> <span>/</span>
+        <a href="/zh/blog/">博客</a> <span>/</span>
+        <span>图像格式指南</span>
+      </nav>
+
+      <article class="blog-post">
+        <header class="blog-post-header">
+          <div class="blog-post-meta">
+            <span class="blog-card-date">2026年6月6日</span>
+            <span class="blog-card-tag">指南</span>
+            <span class="blog-card-date">9 分钟阅读</span>
+          </div>
+          <h1>图像格式指南：何时使用 PNG、JPEG、WebP 或 SVG</h1>
+          <p class="blog-post-subtitle">我以前总是把所有东西都存成 PNG 就完事了。下面讲讲为什么这主意糟透了——以及我现在到底用什么。</p>
+
+<div class="quick-answer" style="background:rgba(99,102,241,0.08);border-left:4px solid #6366f1;padding:16px 20px;margin:24px 0;border-radius:8px;">
+  <p style="margin:0;font-weight:600;color:#6366f1;margin-bottom:8px;">快速回答：</p>
+  <p style="margin:0;">照片用 JPEG，需要透明用 PNG，现代网页用 WebP，追求极致压缩用 AVIF。别想太多——选一个、导出、看文件大小。所谓“最好”的格式取决于你要交付什么。</p>
+</div>
+
+
+</header>
+
+        <nav class="toc">
+          <h3>目录</h3>
+          <ol>
+            <li><a href="#the-confusion">格式混乱是真实存在的</a></li>
+            <li><a href="#jpeg">JPEG：永不退场的主力军</a></li>
+            <li><a href="#png">PNG：透明以及你真正需要它的时候</a></li>
+            <li><a href="#webp">WebP：用得远远不够的最佳格式</a></li>
+            <li><a href="#svg">SVG：被误解的那一个</a></li>
+            <li><a href="#comparison">正面交锋：谁在哪里胜出</a></li>
+            <li><a href="#real-scenarios">真实场景：我实际用什么</a></li>
+            <li><a href="#conversion-tips">能帮你省心的转换技巧</a></li>
+            <li><a href="#faq">常见问题</a></li>
+          </ol>
+        </nav>
+        <div class="tldr-box" style="background:rgba(99,102,241,0.08);border-left:4px solid #6366f1;border-radius:6px;padding:16px 20px;margin:24px 0;">
+          <p style="margin:0 0 8px 0;font-weight:700;font-size:15px;">太长不看</p>
+          <p style="margin:0;">照片用 JPEG，带锐利边缘或透明的图形用 PNG，网页用 WebP（更小的文件、相同的画质），Logo 和图标用 SVG。这就是 80/20 法则——本指南会讲剩下的部分：前沿浏览器用 AVIF，动画用 GIF，iPhone 用 HEIC，以及每种格式真正胜出的时机。</p>
+        </div>
+
+
+        <div class="blog-post-content">
+          <section id="the-confusion">
+            <h2>1. 格式混乱是真实存在的</h2>
+            <p>不久前我在清理一个客户的 WordPress 网站。首页上每一张图片都是 PNG。不是图标或 Logo——我说的是全宽的首屏大图、几百种颜色的产品图，全都是。整个页面 14 MB。加载起来就像在用拨号上网。</p>
+            <p>我把那些 PNG 转成了合适的格式，页面体积降到了 2 MB。画质完全一样。没人注意到任何变化——只是页面加载从十二秒变成了不到两秒。</p>
+            <p>事情是这样的：图像格式并不复杂。做网页工作真正需要关心的只有四种，加上少数几种用于特定场景的格式。但我接触到的大多数人要么靠猜，要么就用手机或设计工具默认吐出来的格式。这就是为什么你会看到一张 5 MB 的截图被存成 PNG，而一张 200 KB 的 JPEG 看起来完全一样。</p>
+            <p>下面我就讲讲我用惨痛代价换来的经验。没有深奥的技术解释——只讲每种格式擅长什么、不擅长什么，以及什么时候该换一种试试。</p>
+          </section>
+
+          <section id="jpeg">
+            <h2>2. JPEG：永不退场的主力军</h2>
+            <p>JPEG 从 1992 年就存在了。按科技圈的纪年法，这算得上古老。每年都有人宣布它已死，每年它都继续活着。原因很简单：对于照片来说，它在自己的本职上依然做得非常、非常出色。</p>
+
+            <h3>JPEG 到底擅长什么</h3>
+            <p>JPEG 压缩的原理是丢弃你眼睛注意不到的细节。它把附近颜色相近的像素归为一组，当作一个块来处理。压缩得越狠，这些块就越大。在 60-80% 质量下，屏幕上几乎看不出损失。到了 40%，你会在高对比度边缘看到那些马赛克般的伪影。低于 30%，一切看起来就像印在土豆上一样。</p>
+            <p>这个取舍很残酷但很公平：对于拥有数百万种颜色的照片，能得到极小的文件体积。一张 4000×3000 的照片存成 PNG 是 6 MB，存成 85% 质量的 JPEG 大约只要 400 KB。这是 15 倍的缩减，我倒要看看谁能在手机屏幕上看出区别。</p>
+            <p>基本上任何要放到网站上的照片我都用 JPEG。博客文章头图、产品图（除非需要透明）、团队头像、落地页的首屏大图——JPEG 全能搞定。文件体积小太多了，根本没什么好争论的。</p>
+
+            <h3>JPEG 在哪里栽跟头</h3>
+            <p>文字。天哪，文字是 JPEG 的克星。因为 JPEG 压缩是把颜色按块取平均，锐利的边缘——比如一个字母清晰的边缘——会被抹糊。带文字的截图存成 JPEG，看起来就像有人在屏幕上抹了层凡士林。</p>
+            <p>带有大块纯色和清晰边界的图形（Logo、图标、图表、示意图）也会变成一坨。图表里红色色块和白色背景之间的边界？JPEG 会在周围加一圈粉红色的模糊光晕。这可不是你想要的。</p>
+            <p>而且 JPEG 不支持透明。如果你需要那种棋盘格背景，JPEG 不是你的菜。</p>
+
+            <h3>我定 JPEG 画质的经验法则</h3>
+            <p>网页上的照片：80-85% 质量。低于 70% 时我通常能在显示器上看出差别。高于 90% 几乎不会再带来额外的视觉质量提升，文件体积却会膨胀。对于想要像素级细节的产品图，我也不会超过 90%——如果顾客需要看到那种程度的细节，他们应该能放大查看，而一张稍大一点的 JPEG 仍然胜过一个巨大的 PNG。</p>
+          </section>
+
+          <section id="png">
+            <h2>2. PNG：透明以及你真正需要它的时候</h2>
+            <p>PNG 是我以前默认用的格式，我现在还看到很多人在做同样的事。表面上看很有道理：PNG 是无损的，听起来比有损的 JPEG 更好。但“无损”不等于“更好”——它的意思是“更大，而且常常没有充分的理由”。</p>
+
+            <h3>PNG 有一件事做得比其他任何格式都好</h3>
+            <p>透明。就这么简单。如果你需要图片的某些部分是透过的——放在不同背景上的 Logo、抠出来的产品图、叠加的图形——PNG 就是你的格式。PNG 的 Alpha 通道支持 256 级透明度，所以你能得到平滑的边缘、柔和的阴影和半透明的叠加层。其他任何被广泛支持的网页格式都无法把透明处理得这么干净。</p>
+            <p>另一个用途是带有大块纯色和锐利边缘的图形。截图、UI 原型图、图表、示意图——任何不希望出现 JPEG 那种文字和边框周围压缩污渍的场景。对于这些，PNG 看起来很清晰，文件体积也合理，因为没有几百万种不同的颜色需要存储。</p>
+
+            <h3>PNG 隐藏的代价</h3>
+            <p>“无损”这个标签不会告诉你的是：一张照片存成 PNG 通常比存成 JPEG 大 5-15 倍。我刚测试过——一张我桌面的照片 2000×1500，存成 PNG 是 4.7 MB，存成 85% 质量的 JPEG 是 380 KB。即使在 27 寸显示器上全屏放大，我也真的分不出哪个是哪个。</p>
+            <p>更关键的是：PNG 用的是 DEFLATE 压缩，它对图案和重复数据效果很好，但处理照片中的噪点和变化就力不从心了。这就是为什么一张 PNG 截图可能只有 300 KB，而一张 PNG 照片却有 5 MB——截图有大块相同的颜色，压缩效果好，但照片对压缩算法来说就是一堆噪点。</p>
+
+            <h3>我什么时候还会用 PNG</h3>
+            <p>带透明的 Logo 和图标。需要文字清晰可读的截图。颜色少于 256 种的图形（这种情况用 PNG-8 极佳——文件极小，画质无损）。用<a href="/zh/tools/background-remover">抠图工具</a>把产品或人物抠出来之后，PNG 是自然的输出格式，因为你需要那个 Alpha 通道。但看在页面速度的份上，别把照片存成 PNG。让它们过一遍<a href="/zh/tools/compressor">压缩器</a>，或者转成更聪明的格式。</p>
+          </section>
+
+          <section id="webp">
+            <h2>3. WebP：用得远远不够的最佳格式</h2>
+            <p>我忽视了 WebP 很多年。它感觉就像那种“技术上更先进”但永远流行不起来的格式。后来 Google 把它列为了页面速度的排名因素，我突然就不得不关心它了。</p>
+            <p>事实证明我早该换过来。</p>
+
+            <h3>WebP 有什么不同</h3>
+            <p>WebP 同时支持有损和无损压缩——基本上，它可以用一种格式同时替代 JPEG 和 PNG。对于有损照片，WebP 文件在相同视觉质量下通常比 JPEG 小 25-35%。对于无损图形和透明，WebP 文件比 PNG 小约 26%。当一页上有几十张图时，这些数字很快就会累积起来。</p>
+            <p>它的压缩也更聪明。JPEG 用的是基于分块的方式（会在严重压缩的照片里产生那些方块状伪影），而 WebP 用的是基于预测的压缩。它根据周围像素来猜测每个像素应该是什么，然后只存储差异。结果是可见的伪影更少、渐变更平滑。</p>
+
+            <h3>但有个问题（总会有问题的）</h3>
+            <p>浏览器支持曾经是个问题。Safari 直到 2020 年才支持 WebP——比 Chrome 和 Firefox 晚了好几年。不过那已经是老黄历了。到 2026 年，所有主流浏览器都支持 WebP：Chrome、Firefox、Safari、Edge，甚至三星浏览器。那些不支持的要么已经死了，要么无关紧要。</p>
+            <p>现在更大的问题在于工具链。不是每个 CMS 都能优雅地处理 WebP 上传。一些图像编辑器仍然不提供 WebP 导出选项。如果你把图片发给使用旧软件的客户，他们打开你的 WebP 可能什么都看不到。</p>
+            <p>对于我自己的项目，我已经把几乎一切都迁到了 WebP。产品图、博客配图、图标——WebP 都能搞定。文件体积的节省实在太显著了，无法忽视。当客户需要 JPEG 时，我再转回去，但只要是在网页上提供的任何东西，WebP 都是我的默认选择。</p>
+
+            <h3>WebP 对比 JPEG：快速的现实检验</h3>
+            <p>我拿同一张照片用五种方式导出。结果如下：</p>
+
+            <ol>
+              <li>JPEG 100% 质量：1.2 MB</li>
+              <li>JPEG 85% 质量：380 KB——视觉上与第 1 项完全一致</li>
+              <li>WebP 默认质量：210 KB——同样视觉上完全一致</li>
+              <li>PNG（无损）：4.7 MB——与以上各项完全一致，比 WebP 大 22 倍</li>
+              <li>JPEG 40% 质量：120 KB——能看出马赛克块</li>
+            </ol>
+
+            <p>第 2 项和第 3 项在我看来是一样的。第 3 项小了 45%。这可不是什么小众优化——在一页有 10 张产品图的页面上，这就是 3.8 MB 和 2.1 MB 的区别。你的访客能感受到。</p>
+
+            <p>如果你想转换现有的图片，<a href="/zh/tools/converter">格式转换器</a>可以一次性处理 JPEG 转 WebP 和 PNG 转 WebP。无需纠结质量设置——它会选好合理的默认值，你想要的话也可以微调。</p>
+          </section>
+
+          <section id="svg">
+            <h2>4. SVG：被误解的那一个</h2>
+            <p>SVG 与 JPEG、PNG 和 WebP 有本质区别。那些是位图格式——它们存储的是彩色像素网格。SVG 是矢量格式——它存储的是形状的数学描述。一个圆不是一堆排列成圆形的像素，它就是字面意义上的“画一个圆心在 (50,50)、半径为 40 的圆”。</p>
+            <p>这个差异改变了一切——关于你何时该用 SVG。</p>
+
+            <h3>SVG 在哪里完胜其他所有格式</h3>
+            <p>Logo。图标。简单的插画。示意图。任何由形状、线条和文字构成的图形。因为 SVG 描述的是几何而非像素，它可以缩放到任何尺寸而不损失质量。一个 50×50 的 SVG 图标和一个 5000×5000 的版本，就是同一个文件。没有模糊、没有马赛克、不用“让我重新做一个更高分辨率的版本”。</p>
+            <p>文件体积通常也小得多。一个 64×64 的简单图标存成 PNG 可能要 2-4 KB，存成 SVG 可能只要 500 字节。而且那个 SVG 适用于任何尺寸。我见过整套图标从 PNG 转成 SVG 后，总体积从 200 KB 缩到 15 KB。</p>
+
+            <h3>SVG 在哪里不是合适的工具</h3>
+            <p>照片。别试图把照片表示成 SVG。技术上是可以的——SVG 支持嵌入位图——但那样你只是把一张位图包在 SVG 容器里，毫无意义还增加了开销。</p>
+            <p>带有渐变、阴影和大量曲线的复杂插画也会产生巨大的 SVG 文件。一张全是路径和渐变的高度精细插画，存成 SVG 可能是 500 KB，但存成优化良好的 WebP 只要 80 KB。对于这些情况，位图格式在文件体积和渲染速度上都更胜一筹。</p>
+
+            <h3>我画的实际分界线</h3>
+            <p>如果我能把图像描述为“它基本上就是一些形状，可能还有点文字” → SVG。如果我会描述为“它是一张某东西的照片” → 位图（WebP 或 JPEG）。</p>
+            <p>当需要为某个对 SVG 支持不好的平台提供特定分辨率时，我也会把 SVG 转成 PNG——一些邮件客户端、社交媒体预览、老旧的演示软件。<a href="/zh/tools/converter">转换器</a>可以把 SVG 转成任意分辨率的 PNG，包括用于视网膜屏幕的 2 倍和 3 倍。</p>
+          </section>
+
+          <section id="comparison">
+            <h2>5. 正面交锋：谁在哪里胜出</h2>
+            <p>前阵子我给自己做了一张速查表，因为我老是在自我怀疑自己的选择。就是这张——没有废话，只有每个场景我实际会选的格式：</p>
+
+            <div class="comparison-table">
+              <div class="comparison-row comparison-header">
+                <div class="comparison-cell">你处理的对象</div>
+                <div class="comparison-cell">最佳格式</div>
+                <div class="comparison-cell">原因</div>
+                <div class="comparison-cell">替代方案</div>
+              </div>
+              <div class="comparison-row">
+                <div class="comparison-cell">产品图</div>
+                <div class="comparison-cell"><strong>WebP</strong></div>
+                <div class="comparison-cell">体积小、画质好</div>
+                <div class="comparison-cell">JPEG 85%</div>
+              </div>
+              <div class="comparison-row">
+                <div class="comparison-cell">博客配图</div>
+                <div class="comparison-cell"><strong>WebP</strong></div>
+                <div class="comparison-cell">速度影响 SEO</div>
+                <div class="comparison-cell">JPEG 80%</div>
+              </div>
+              <div class="comparison-row">
+                <div class="comparison-cell">带透明的 Logo</div>
+                <div class="comparison-cell"><strong>SVG</strong></div>
+                <div class="comparison-cell">无限缩放、体积极小</div>
+                <div class="comparison-cell">PNG</div>
+              </div>
+              <div class="comparison-row">
+                <div class="comparison-cell">图标</div>
+                <div class="comparison-cell"><strong>SVG</strong></div>
+                <div class="comparison-cell">文件极小</div>
+                <div class="comparison-cell">WebP</div>
+              </div>
+              <div class="comparison-row">
+                <div class="comparison-cell">截图</div>
+                <div class="comparison-cell"><strong>PNG</strong></div>
+                <div class="comparison-cell">文字保持清晰</div>
+                <div class="comparison-cell">WebP 无损</div>
+              </div>
+              <div class="comparison-row">
+                <div class="comparison-cell">带透明的照片</div>
+                <div class="comparison-cell"><strong>WebP</strong></div>
+                <div class="comparison-cell">比 PNG 小得多</div>
+                <div class="comparison-cell">PNG</div>
+              </div>
+              <div class="comparison-row">
+                <div class="comparison-cell">图表与示意图</div>
+                <div class="comparison-cell"><strong>SVG 或 PNG</strong></div>
+                <div class="comparison-cell">取决于复杂度</div>
+                <div class="comparison-cell">WebP</div>
+              </div>
+              <div class="comparison-row">
+                <div class="comparison-cell">邮件签名</div>
+                <div class="comparison-cell"><strong>PNG</strong></div>
+                <div class="comparison-cell">邮件客户端还停留在 2010 年</div>
+                <div class="comparison-cell">JPEG</div>
+              </div>
+            </div>
+
+            <p>这张表里有几点很显眼。对于大多数以照片为主的网页内容，答案都是 WebP——如果你还没用，你就是在白白浪费页面速度。SVG 对于任何本质上是形状的东西（尤其是 Logo 和图标）好得离谱。PNG 仍然有它的位置，但比大多数人以为的要窄：截图，以及把广泛兼容性看得高于一切的场合。</p>
+          </section>
+
+          <section id="real-scenarios">
+            <h2>6. 真实场景：我实际用什么</h2>
+            <p>理论是不错，但下面我来讲几个格式选择产生了可衡量差异的真实场景。</p>
+
+            <h3>运营在线商店</h3>
+            <p>去年我帮一个朋友搭了 Shopify 店铺。他们有大约 60 张产品图，全是从相机直接导出的 PNG。产品页加载要 4.2 秒——对转化率很不利。</p>
+            <p>我们这样做：把所有产品图转成 WebP（用<a href="/zh/tools/converter">转换器</a>），<a href="/zh/tools/resizer">缩放</a>到 1200×1200（Shopify 产品页显示的最大尺寸），只对 Logo 和几个需要透明的徽章图标用 PNG。页面加载降到了 1.6 秒。跳出率下降了 11%。这就是钱，实打实的。</p>
+
+            <h3>搭建一个带大量截图的博客</h3>
+            <p>你正在读的这个博客——我插入的每一张截图都是 PNG。我试过 WebP 无损，也挺好，但 PNG 对那些从博客保存图片的人来说兼容性更广。文件体积是不太理想，但截图通常足够小（300-600 KB），不会拖垮页面速度。如果博客每篇文章有几百张截图，我会毫不犹豫地换成 WebP。</p>
+
+            <h3>制作社交媒体图形</h3>
+            <p>对于 Instagram、Twitter 和 Facebook 的帖子，我默认用 90% 质量的 JPEG。社交平台反正都会对所有东西重新压缩，所以在无损 PNG 上多花字节点毫无意义——平台只会把它压成自己的格式。对于带文字叠加的内容（语录、公告），我先导出为 PNG，检查文字是否清晰，再转成 JPEG。文字需要这种最初的清晰度，哪怕平台会稍微把它弄模糊。</p>
+
+            <h3>邮件通讯</h3>
+            <p>这是唯一一个我所有东西都坚持用 PNG 的地方。邮件客户端——尤其是 Outlook——的图片渲染出了名的糟糕。邮件里对 WebP 的支持基本不存在。SVG 的支持也时好时坏。PNG 至少能在所有地方一致地渲染，而邮件里的图片通常是小小的页眉图和 Logo，所以文件体积的惩罚可以忽略不计。</p>
+
+            <h3>给客户的交付物</h3>
+            <p>当我要把最终素材发给客户时，我总会问他们需要什么。有些人想要他们设计师所用格式的源文件。另一些人只想要能直接上传到 CMS 的图片。如果我不确定，我就都发：一个用于网页的优化版 WebP、一个用于存档的 PNG，还有原始文件。前期是多了点活，但能省掉三周后那封“嘿，能不能把这个发成另一种格式”的邮件。</p>
+          </section>
+
+          <section id="conversion-tips">
+            <h2>7. 能帮你省心的转换技巧</h2>
+            <p>在格式之间转换听起来是小事。大多数情况下也确实是。但大概有 3、4 件事在我刚入门时绊倒过我。</p>
+
+            <h3>JPEG 转 WebP：小心代际损失</h3>
+            <p>如果你拿一张 JPEG（已经有损），转成 WebP（再次有损），然后有人之后又把那张 WebP 转回 JPEG，你就叠加了多轮压缩伪影。每一代都会损失细节。永远从你能拿到的最高质量源文件开始转换。如果你手上只有一张 JPEG，那就是这样——但至少在一个不会在已有伪影之上引入可见新伪影的质量级别上转换。</p>
+
+            <h3>PNG 转 JPEG：透明度问题</h3>
+            <p>JPEG 不支持透明，所以当你把一张透明的 PNG 转成 JPEG 时，透明区域会被填成白色或黑色（取决于转换器）。如果你要转换一个带透明背景的 Logo，先把它放在预期的背景色上——比如白色——再导出为 JPEG。否则你会得到一个黑矩形上的 Logo，然后纳闷哪里出了问题。</p>
+
+            <h3>SVG 转 PNG：选好分辨率</h3>
+            <p>既然 SVG 能无限缩放，你就需要决定以什么分辨率光栅化。对于普通显示器的网页用途，1 倍（SVG 的原始尺寸）就可以。对于视网膜/HiDPI 显示器，导出 2 倍或 3 倍。一个 24×24 的图标以 3 倍导出就变成 72×72。文件会更大，但在现代屏幕上看起来很锐利。</p>
+
+            <h3>批量转换：别凭感觉设置参数</h3>
+            <p>有一次我把 200 张产品图从 PNG 批量转成 JPEG，用了我自认为“够好”的质量——70%。它们看起来都比原图稍微差一点。缩略图里看不出什么，但并排对比时，细节损失是存在的。我只好以 85% 的质量把整批重做一遍。教训是：在跑批量之前，先用 2-3 张图测试你的设置。全尺寸检查一下。然后再提交。</p>
+
+            <p>如果你要处理一堆图片，<a href="/zh/tools/converter">格式转换器</a>可以处理批量操作。拖入一个文件夹，选好目标格式，搞定。它不是最令人兴奋的工具，但它是用得最多的一个——和压缩器不相上下。</p>
+
+            <h3>什么时候要保留原图</h3>
+            <p>永远保留原始文件。永远。如果你要从 RAW 或高分辨率 PNG 转换成用于网页的压缩版 WebP，把原图存到某个地方。存储很便宜。重新拍摄或重新制作一个素材很贵。我在每个项目里都有一个叫“originals”的文件夹，我回过头去找它的次数比我预想的多得多。</p>
+          </section>
+
+<section id="when-not-to">
+  <h2>什么时候不必纠结图像格式</h2>
+  <p>如果你在为高分辨率的专业印刷准备图片，JPEG 和 WebP 可能不够用——问问你的印刷商他们要什么。本指南面向的是网页和数字用途，不是商业胶印。</p>
+  <p>另外，如果你在和一位对格式有非常具体要求的设计师合作，不要去质疑他们。他们要什么就发什么。你的情况可能不同，但如果别人在负责印刷制作，就让他们来定夺。</p>
+</section>
+
+
+
+          <div class="blog-post-cta">
+            <h3>亲自试试转换器</h3>
+            <p>几秒内在 JPEG、PNG、WebP 和 SVG 之间切换——无需上传、无需账号，直接在浏览器里完成。</p>
+            <a href="/zh/tools/converter" class="btn btn-primary">打开格式转换器 →</a>
+          </div>
+        </div>
+
+
+
+
+
+          <section id="faq">
+            <h2>常见问题</h2>
+            <h3>网页该用什么格式？</h3>
+            <p>大多数情况下：新建项目用 WebP 或 AVIF，JPEG 作为兜底。WebP 在相同质量下比 JPEG 小 25-35%，所有现代浏览器都支持。AVIF 更小（50% 以上），但编码更慢、支持也没那么广。我知道这听起来很明显，但选一个然后在整个网站上坚持用下去就好。</p>
+            <h3>什么时候该用 PNG？</h3>
+            <p>需要透明（Logo、图标、带抠图的截图）、无损画质（存档、印刷母版）或锐利的文字/线条图时用 PNG。PNG 能干净地处理这些情况，因为它是无损的。对于照片，PNG 文件比 JPEG 大得多——一张 1200 万像素的照片存成 JPEG 可能只有 2MB，存成 PNG 可能要 15MB。把它用在合适的地方。</p>
+            <h3>2026 年值得用 AVIF 吗？</h3>
+            <p>对于新网站，绝对值得。AVIF 在相同质量下比 JPEG 小约 50%，并且像 PNG 一样支持透明。浏览器支持现在已经很稳了（Chrome 85+、Firefox 93+、Safari 16+）。代价是：编码更慢（是 JPEG 的 3-5 倍），所以别用在对速度有要求的用户上传内容上。顺便说一句，这招对我管用，但你的 CMS 可能不同。</p>
+            <h3>该给不同浏览器提供不同格式吗？</h3>
+            <p>如果你在意性能，应该。&lt;picture&gt; 元素让你能给支持的浏览器提供 AVIF、WebP 作为兜底、JPEG 最后兜底。这平均能省 20-30% 的体积。第一次配置是有点烦，但对于图片密集的网站值得。老实说，我现在大多数项目就只用 WebP——这是 80/20 的解决方案。</p>
+            <h3>JPG 和 JPEG 有什么区别？</h3>
+            <p>技术上没有任何区别。.jpg 和 .jpeg 是同一种格式——Windows 95 时代的文件系统需要 3 个字母的扩展名，所以 .jpg 流传下来。有些软件（较老的 Adobe 应用）用 .jpeg。现代操作系统不在乎。你用哪个顺眼就用哪个。</p>
+          </section>
+
+
+<div class="author-bio" style="background:rgba(0,0,0,0.03);border-radius:8px;padding:20px 24px;margin:40px 0 24px 0;border:1px solid rgba(0,0,0,0.08);">
+  <p style="margin:0 0 8px 0;font-weight:600;">关于作者：</p>
+  <p style="margin:0;">Priya Patel 从“WebP”这个词出现之前就开始编辑网页图形了。本指南基于对真实文件的反复试错写成。更多图像技巧请看<a href='/zh/blog/'>SmartImgKit 博客</a>。</p>
+</div>
+
+</article>
+
+      <section class="related-tools" style="margin-top: 60px;">
+        <h2>相关工具</h2>
+        <div class="related-tools-grid">
+          <a href="/zh/tools/converter" class="related-tool-card">
+            <span class="tool-icon">🔄</span>
+            <span>图像格式转换器</span>
+          </a>
+          <a href="/zh/tools/compressor" class="related-tool-card">
+            <span class="tool-icon">📦</span>
+            <span>图片压缩器</span>
+          </a>
+          <a href="/zh/tools/resizer" class="related-tool-card">
+            <span class="tool-icon">📐</span>
+            <span>图像缩放工具</span>
+          </a>
+          <a href="/zh/tools/background-remover" class="related-tool-card">
+            <span class="tool-icon">✂️</span>
+            <span>抠图工具</span>
+          </a>
+        </div>
+      </section>
+    </div>
+
+</main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/zh/" class="logo">
+            <span class="logo-icon">🎨</span>
+            <span class="logo-text">SmartImgKit</span>
+          </a>
+          <p>尊重您隐私的免费 AI 图像工具。所有处理都在浏览器中完成——不会向任何服务器上传任何内容。</p>
+        </div>
+        <div class="footer-links footer-links-multi">
+          <h4>工具</h4>
+          <a href="/zh/tools/background-remover">抠图工具</a>
+          <a href="/zh/tools/compressor">图片压缩器</a>
+          <a href="/zh/tools/converter">图像格式转换器</a>
+          <a href="/zh/tools/resizer">图像缩放工具</a>
+        </div>
+        <div class="footer-links footer-links-multi">
+          <h4>更多工具</h4>
+          <div class="footer-links-list">
+          <a href="/zh/tools/cropper">裁剪工具</a>
+          <a href="/zh/tools/watermark">水印工具</a>
+          <a href="/zh/tools/color-palette">调色板</a>
+          <a href="/zh/tools/base64">Base64</a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <h4>法律</h4>
+          <a href="/privacy">隐私政策</a>
+          <a href="/terms">服务条款</a>
+          <a href="/cookie-policy">Cookie 政策</a>
+          <a href="/contact">联系我们</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 SmartImgKit. 保留所有权利。 | <a href="https://comprimefotos.com/" style="color: var(--accent); font-weight: 500;">Español: ComprimeFotos — Comprimir Imágenes Online</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js?v=4"></script><aside class="ad-vertical-right" id="adVerticalRight">
+    <script async="async" data-cfasync="false" src="https://pl29741299.effectivecpmnetwork.com/5a540a2ce35c794ad7d73a726a88971c/invoke.js"></script>
+    <div id="container-5a540a2ce35c794ad7d73a726a88971c"></div>
+  </aside>
+  <!-- ===== END AD UNITS ===== -->
+
+</body>
+</html>

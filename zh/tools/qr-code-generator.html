@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh" data-theme="dark" data-tool-id="qr-code-generator">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>二维码生成器 – 免费 | SmartImgKit</title>
+  <meta name="description" content="即时生成二维码。免费，在线。">
+  <meta name="keywords" content="qr code generator, qr code maker, free qr code, online qr code, qr generator">
+  <link rel="canonical" href="https://smartimgkit.com/zh/tools/qr-code-generator">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="QR Code Generator — Generate QR Codes Free Online">
+  <meta property="og:description" content="即时生成二维码。免费，在线。">
+  <meta property="og:url" content="https://smartimgkit.com/tools/qr-code-generator">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/qr-code-generator.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="QR Code Generator — Generate QR Codes Free Online">
+  <meta name="twitter:description" content="即时生成二维码。免费，在线。">
+  <meta name="twitter:image" content="https://smartimgkit.com/screenshots/qr-code-generator.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css?v=4">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .tool-workspace { display: flex; flex-direction: column; gap: 24px; }
+    .controls { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+    .controls h2 { font-size: 1.2rem; color: var(--text-primary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--accent); }
+    .control-row { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+    .control-row label { font-weight: 600; min-width: 120px; color: var(--text-secondary); font-size: 0.85rem; }
+    .control-row input[type="text"], .control-row input[type="number"], .control-row select, .control-row textarea {
+      padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-primary);
+      color: var(--text-primary); font-size: 0.9rem; flex: 1; min-width: 200px;
+    }
+    .control-row textarea { min-height: 80px; resize: vertical; }
+    .color-input { width: 50px; height: 36px; border: none; border-radius: 6px; cursor: pointer; background: transparent; }
+    .btn-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+    .result-section { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 12px; padding: 24px; text-align: center; }
+    .result-section h2 { font-size: 1.2rem; color: var(--text-primary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--accent); }
+    #qrContainer { display: inline-block; padding: 20px; background: white; border-radius: 8px; margin: 16px 0; }
+    #qrContainer canvas, #qrContainer img { display: block; }
+    @media (max-width: 640px) {
+      .control-row { flex-direction: column; align-items: flex-start; }
+      .control-row label { min-width: auto; }
+    }
+  </style>
+
+<style id="enrich-css">
+.selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
+.sp-item{display:flex;align-items:center;gap:8px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:999px;padding:8px 16px;font-size:0.85rem;color:var(--text-secondary);font-weight:500}
+.sp-item span.sp-icon{font-size:1rem}
+.feature-narrative{margin:2.5rem 0;padding:0 1rem}
+.feature-narrative h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.feature-narrative .fn-intro{text-align:center;max-width:680px;margin:0 auto 2rem;color:var(--text-secondary);font-size:1rem;line-height:1.6}
+.fn-block{display:flex;gap:1.5rem;align-items:flex-start;margin:1.5rem 0;padding:1.25rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.fn-block .fn-icon{font-size:2rem;flex-shrink:0;line-height:1}
+.fn-block h3{font-size:1.05rem;color:var(--text-primary);margin:0 0 0.4rem}
+.fn-block p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin:0}
+.features-grid-section{margin:2.5rem 0;padding:0 1rem}
+.features-grid-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.features-grid-section .fg-sub{text-align:center;color:var(--text-secondary);font-size:0.95rem;margin-bottom:2rem}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;max-width:1000px;margin:0 auto}
+.feature-card{background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;padding:1.25rem;transition:transform .2s,border-color .2s}
+.feature-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.feature-card .fc-icon{font-size:1.8rem;margin-bottom:0.5rem}
+.feature-card h3{font-size:1rem;color:var(--text-primary);margin:0 0 0.4rem}
+.feature-card p{color:var(--text-secondary);font-size:0.85rem;line-height:1.5;margin:0}
+.trust-badges{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:2rem 0;padding:1.5rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.trust-badge{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;min-width:120px}
+.trust-badge .tb-icon{font-size:1.6rem}
+.trust-badge .tb-title{font-size:0.85rem;font-weight:700;color:var(--text-primary)}
+.trust-badge .tb-desc{font-size:0.72rem;color:var(--text-secondary)}
+@media(max-width:640px){.fn-block{flex-direction:column}.features-grid{grid-template-columns:1fr}.trust-badges{gap:12px}.trust-badge{min-width:90px}}
+
+
+.faq-section{margin:2.5rem 0;padding:0 1rem}
+.faq-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:1rem;text-align:center}
+.faq-item{border:1px solid var(--border);border-radius:8px;margin-bottom:0.5rem;overflow:hidden;background:var(--bg-secondary)}
+.faq-question{width:100%;padding:1rem 1.25rem;background:none;border:none;text-align:left;font-size:0.95rem;font-weight:600;color:var(--text-primary);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.faq-question::after{content:'+';font-size:1.2rem;transition:transform .2s}
+.faq-item.open .faq-question::after{transform:rotate(45deg)}
+.faq-answer{padding:0 1.25rem;max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;color:var(--text-secondary);font-size:0.9rem;line-height:1.6}
+.faq-item.open .faq-answer{padding:0 1.25rem 1rem;max-height:300px}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a href="/zh/" class="logo">
+          <span class="logo-icon">🎨</span>
+          <span class="logo-text">SmartImgKit</span>
+        </a>
+        <div class="nav-links">
+          <a href="/zh/">首页</a>
+          <a href="/zh/#tools">工具</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container">
+      <div class="tool-page-header">
+        <h1>📱 二维码生成器</h1>
+        <p>Generate QR codes instantly. Free, online, no signup.</p>
+      </div>
+
+      <div class="tool-workspace">
+        <div class="controls">
+          <h2>⚙️ QR Code Settings</h2>
+          <div class="control-row">
+            <label>Content Type</label>
+            <select id="contentType">
+              <option value="url">URL / Website</option>
+              <option value="text">Plain Text</option>
+              <option value="wifi">WiFi Network</option>
+              <option value="email">Email</option>
+              <option value="phone">Phone Number</option>
+              <option value="sms">SMS</option>
+            </select>
+          </div>
+          <div id="textFields">
+            <div class="control-row">
+              <label>URL / Text</label>
+              <textarea id="qrText" placeholder="Enter URL or text...">https://smartimgkit.com</textarea>
+            </div>
+          </div>
+        <div class="selling-points">
+  <div class="sp-item"><span class="sp-icon">✅</span>为链接和文字生成二维码</div>
+  <div class="sp-item"><span class="sp-icon">🎯</span>为网站链接创建二维码</div>
+  <div class="sp-item"><span class="sp-icon">🔒</span>100% 隐私 —— 浏览器端运行</div>
+</div>
+          <div id="wifiFields" style="display:none;">
+            <div class="control-row"><label>SSID (Name)</label><input type="text" id="wifiSsid" placeholder="MyWiFi"></div>
+            <div class="control-row"><label>Password</label><input type="text" id="wifiPassword" placeholder="password123"></div>
+            <div class="control-row">
+              <label>Encryption</label>
+              <select id="wifiEncryption">
+                <option value="WPA">WPA/WPA2</option>
+                <option value="WEP">WEP</option>
+                <option value="nopass">No Password</option>
+              </select>
+            </div>
+          </div>
+          <div id="emailFields" style="display:none;">
+            <div class="control-row"><label>Email Address</label><input type="text" id="emailTo" placeholder="example@email.com"></div>
+            <div class="control-row"><label>Subject</label><input type="text" id="emailSubject" placeholder="Hello"></div>
+          </div>
+          <div id="phoneFields" style="display:none;">
+            <div class="control-row"><label>Phone Number</label><input type="text" id="phoneNumber" placeholder="+1234567890"></div>
+          </div>
+          <div id="smsFields" style="display:none;">
+            <div class="control-row"><label>Phone Number</label><input type="text" id="smsNumber" placeholder="+1234567890"></div>
+            <div class="control-row"><label>Message</label><textarea id="smsMessage" placeholder="Your message..."></textarea></div>
+          </div>
+          <div class="control-row">
+            <label>Size (px)</label>
+            <input type="number" id="qrSize" value="300" min="100" max="1000" step="10">
+          </div>
+          <div class="control-row">
+            <label>Foreground</label>
+            <input type="color" id="fgColor" class="color-input" value="#000000">
+          </div>
+          <div class="control-row">
+            <label>Background</label>
+            <input type="color" id="bgColor" class="color-input" value="#ffffff">
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="generateBtn">🎯 Generate QR Code</button>
+            <button class="btn btn-secondary" id="downloadPngBtn">⬇️ Download PNG</button>
+            <button class="btn btn-secondary" id="downloadSvgBtn">⬇️ Download SVG</button>
+          </div>
+        </div>
+
+        <div class="result-section">
+          <h2>📱 QR Code Preview</h2>
+          <div id="qrContainer">
+            <p style="color: var(--text-secondary);">Enter content and click Generate</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+      <section class="feature-narrative">
+        <h2>二维码生成器：为链接和文字生成二维码</h2>
+        <p class="fn-intro">二维码生成器让你为链接和文字生成二维码。全部在浏览器本地处理，无需上传、无需注册。</p>
+      <div class="fn-block">
+        <div class="fn-icon">⚡</div>
+        <div><h3>为网站链接创建二维码</h3><p>为网站链接创建二维码。这是人们使用二维码生成器最常见的理由之一——几秒内即可在浏览器中完成。</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">🎯</div>
+        <div><h3>为 Wi-Fi 或联系信息生成二维码</h3><p>为 Wi-Fi 或联系信息生成二维码。这是人们使用二维码生成器最常见的理由之一——几秒内即可在浏览器中完成。</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">🔒</div>
+        <div><h3>为印刷品制作二维码</h3><p>为印刷品制作二维码。这是人们使用二维码生成器最常见的理由之一——几秒内即可在浏览器中完成。</p></div>
+      </div>
+      </section>
+
+      <section class="features-grid-section">
+        <h2>二维码生成器所需的一切功能</h2>
+        <p class="fg-sub">让二维码生成器快速、私密且免费的强大功能。</p>
+        <div class="features-grid">
+        <div class="feature-card">
+          <div class="fc-icon">✍️</div>
+          <h3>完全自定义</h3>
+          <p>控制字体、颜色、尺寸和位置。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">📐</div>
+          <h3>预设尺寸</h3>
+          <p>从社交媒体和印刷的正确尺寸开始。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🎨</div>
+          <h3>实时预览</h3>
+          <p>设计实时更新可见。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🔒</div>
+          <h3>100% 隐私</h3>
+          <p>全部设计工作在浏览器本地完成。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🆓</div>
+          <h3>永久免费</h3>
+          <p>无需注册、无水印、无限制。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">📤</div>
+          <h3>导出就绪</h3>
+          <p>即时下载可投入使用的图片。</p>
+        </div>
+        </div>
+      </section>
+
+<div class="trust-badges">
+  <div class="trust-badge"><div class="tb-icon">🔒</div><div class="tb-title">100% 隐私</div><div class="tb-desc">文件不离开浏览器</div></div>
+  <div class="trust-badge"><div class="tb-icon">⚡</div><div class="tb-title">浏览器端</div><div class="tb-desc">无需安装、不上传</div></div>
+  <div class="trust-badge"><div class="tb-icon">💯</div><div class="tb-title">永久免费</div><div class="tb-desc">无需注册、无水印</div></div>
+  <div class="trust-badge"><div class="tb-icon">🚀</div><div class="tb-title">无需注册</div><div class="tb-desc">即刻开始，无需账号</div></div>
+</div>
+  
+      <section class="faq-section">
+        <h2>常见问题</h2>
+<div class="faq-item"><button class="faq-question">二维码可定制吗？</button><div class="faq-answer">可以——尺寸、颜色和纠错等级。</div></div>
+<div class="faq-item"><button class="faq-question">可编码什么？</button><div class="faq-answer">网址、文字、电话号码等。</div></div>
+<div class="faq-item"><button class="faq-question">可以用自己的图片和字体吗？</button><div class="faq-answer">可以——上传自己的素材并使用内置字体选项。</div></div>
+<div class="faq-item"><button class="faq-question">下载有水印吗？</button><div class="faq-answer">没有。下载内容干净无水印。</div></div>
+      </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. 保留所有权利.</p></div>
+    </div>
+  </footer>
+
+  <script src="/js/qrcode.min.js"></script>
+  <script>
+(function() {
+  const contentType = document.getElementById('contentType');
+  const textFields = document.getElementById('textFields');
+  const wifiFields = document.getElementById('wifiFields');
+  const emailFields = document.getElementById('emailFields');
+  const phoneFields = document.getElementById('phoneFields');
+  const smsFields = document.getElementById('smsFields');
+  const qrContainer = document.getElementById('qrContainer');
+  const generateBtn = document.getElementById('generateBtn');
+  const downloadPngBtn = document.getElementById('downloadPngBtn');
+  const downloadSvgBtn = document.getElementById('downloadSvgBtn');
+  
+  let qrcode = null;
+
+  function hideAllFields() {
+    textFields.style.display = 'none';
+    wifiFields.style.display = 'none';
+    emailFields.style.display = 'none';
+    phoneFields.style.display = 'none';
+    smsFields.style.display = 'none';
+  }
+
+  contentType.addEventListener('change', () => {
+    hideAllFields();
+    const v = contentType.value;
+    if (v === 'url' || v === 'text') textFields.style.display = 'block';
+    else if (v === 'wifi') wifiFields.style.display = 'block';
+    else if (v === 'email') emailFields.style.display = 'block';
+    else if (v === 'phone') phoneFields.style.display = 'block';
+    else if (v === 'sms') smsFields.style.display = 'block';
+  });
+
+  function getContent() {
+    const type = contentType.value;
+    if (type === 'url' || type === 'text') return document.getElementById('qrText').value;
+    if (type === 'wifi') {
+      const ssid = document.getElementById('wifiSsid').value;
+      const pass = document.getElementById('wifiPassword').value;
+      const enc = document.getElementById('wifiEncryption').value;
+      return `WIFI:T:${enc};S:${ssid};P:${pass};;`;
+    }
+    if (type === 'email') {
+      const to = document.getElementById('emailTo').value;
+      const sub = document.getElementById('emailSubject').value;
+      return `mailto:${to}?subject=${encodeURIComponent(sub)}`;
+    }
+    if (type === 'phone') return `tel:${document.getElementById('phoneNumber').value}`;
+    if (type === 'sms') {
+      const num = document.getElementById('smsNumber').value;
+      const msg = document.getElementById('smsMessage').value;
+      return `SMSTO:${num}:${msg}`;
+    }
+    return '';
+  }
+
+  function generate() {
+    const content = getContent();
+    if (!content) { alert('Please enter some content.'); return; }
+    const size = parseInt(document.getElementById('qrSize').value) || 300;
+    const fg = document.getElementById('fgColor').value;
+    const bg = document.getElementById('bgColor').value;
+    
+    qrContainer.innerHTML = '';
+    qrcode = new QRCode(qrContainer, {
+      text: content,
+      width: size,
+      height: size,
+      colorDark: fg,
+      colorLight: bg,
+      correctLevel: QRCode.CorrectLevel.H
+    });
+  }
+
+  generateBtn.addEventListener('click', generate);
+
+  downloadPngBtn.addEventListener('click', () => {
+    const canvas = qrContainer.querySelector('canvas');
+    if (!canvas) { alert('Generate a QR code first.'); return; }
+    SmartImgKit._triggerDownload(canvas.toDataURL('image/png'), 'qrcode.png');
+  });
+
+  downloadSvgBtn.addEventListener('click', () => {
+    const img = qrContainer.querySelector('img');
+    if (!img) { alert('Generate a QR code first.'); return; }
+    const svgSrc = img.src;
+    if (svgSrc.startsWith('data:image/svg+xml')) {
+      (function() { (function() { var link = document.createElement('a');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ link.href = svgSrc; link.setAttribute('download', 'qrcode.png'); link.style.display = 'none'; document.body.appendChild(link); var _e = new MouseEvent('click', {view: window, bubbles: true, cancelable: true}); link.dispatchEvent(_e); setTimeout(function() { if(link.parentNode) link.parentNode.removeChild(link); }, 4000); })();
+      }
+    }
+  });
+
+  // Auto-generate on load
+  generate();
+})();
+  </script>
+</body>
+</html>

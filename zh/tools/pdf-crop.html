@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh" data-theme="dark" data-tool-id="pdf-crop">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>PDF 裁剪 – 免费 | SmartImgKit</title>
+  <meta name="description" content="裁剪 PDF 页面区域。可视化拖选裁剪范围，可应用到当前页或所有页。隐私优先，不上传。">
+  <meta name="keywords" content="pdf crop, crop pdf, trim pdf pages, pdf page crop">
+  <link rel="canonical" href="https://smartimgkit.com/zh/tools/pdf-crop">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="Free PDF Crop — SmartImgKit">
+  <meta property="og:description" content="裁剪 PDF 页面区域。可视化拖选裁剪范围，可应用到当前页或所有页。隐私优先，不上传。">
+  <meta property="og:url" content="https://smartimgkit.com/tools/pdf-crop">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/pdf-crop.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free PDF Crop — SmartImgKit">
+  <meta name="twitter:description" content="裁剪 PDF 页面区域。可视化拖选裁剪范围，可应用到当前页或所有页。隐私优先，不上传。">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate" hreflang="ar" href="https://smartimgkit.com/ar/tools/pdf-crop">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/pdf-crop">
+  <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/pdf-crop">
+  <link rel="alternate" hreflang="fr" href="https://smartimgkit.com/fr/tools/pdf-crop">
+  <link rel="alternate" hreflang="id" href="https://smartimgkit.com/id/tools/pdf-crop">
+  <link rel="alternate" hreflang="pt" href="https://smartimgkit.com/pt/tools/pdf-crop">
+  <link rel="alternate" hreflang="vi" href="https://smartimgkit.com/vi/tools/pdf-crop">
+  <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/pdf-crop">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/pdf-crop">
+  <link rel="stylesheet" href="/css/style.css?v=4">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  { "@context": "https://schema.org", "@type": "WebApplication", "name": "PDF Crop", "url": "https://smartimgkit.com/tools/pdf-crop", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }, "description": "Crop PDF pages online for free. 100% browser-based." }
+  </script>
+  <style>
+    .tool-container{max-width:900px;margin:1rem auto;padding:0 1rem}
+    .btn{padding:8px 18px;border:none;border-radius:8px;font-size:0.9rem;cursor:pointer;font-weight:600;transition:all .2s}
+    .btn-primary{background:#4f46e5;color:#fff}.btn-primary:hover{background:#4338ca}
+    .btn-secondary{background:#e5e7eb;color:#1f2937}.btn-secondary:hover{background:#d1d5db}
+    .btn:disabled{opacity:0.5;cursor:not-allowed}
+    .status{text-align:center;padding:0.5rem;font-size:0.85rem;color:var(--text-secondary)}
+    .canvas-wrap{background:#fff;border:1px solid var(--border-color);border-radius:8px;overflow:auto;max-height:70vh;display:flex;justify-content:center;position:relative}
+    .canvas-wrap canvas{display:block;cursor:crosshair}
+    .page-nav{display:flex;align-items:center;justify-content:center;gap:1rem;margin:0.5rem 0}
+    .crop-info{text-align:center;font-size:0.82rem;color:var(--text-secondary);margin:0.5rem 0}
+    .opt-row{display:flex;gap:1rem;align-items:center;justify-content:center;flex-wrap:wrap;margin:0.5rem 0}
+    .opt-row label{font-size:0.85rem}
+    .opt-row select{padding:4px 8px;border:1px solid var(--border-color);border-radius:6px;background:var(--bg-secondary);color:var(--text-primary)}
+  </style>
+  <style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+
+<style id="enrich-css">
+.selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
+.sp-item{display:flex;align-items:center;gap:8px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:999px;padding:8px 16px;font-size:0.85rem;color:var(--text-secondary);font-weight:500}
+.sp-item span.sp-icon{font-size:1rem}
+.feature-narrative{margin:2.5rem 0;padding:0 1rem}
+.feature-narrative h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.feature-narrative .fn-intro{text-align:center;max-width:680px;margin:0 auto 2rem;color:var(--text-secondary);font-size:1rem;line-height:1.6}
+.fn-block{display:flex;gap:1.5rem;align-items:flex-start;margin:1.5rem 0;padding:1.25rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.fn-block .fn-icon{font-size:2rem;flex-shrink:0;line-height:1}
+.fn-block h3{font-size:1.05rem;color:var(--text-primary);margin:0 0 0.4rem}
+.fn-block p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin:0}
+.features-grid-section{margin:2.5rem 0;padding:0 1rem}
+.features-grid-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.features-grid-section .fg-sub{text-align:center;color:var(--text-secondary);font-size:0.95rem;margin-bottom:2rem}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;max-width:1000px;margin:0 auto}
+.feature-card{background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;padding:1.25rem;transition:transform .2s,border-color .2s}
+.feature-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.feature-card .fc-icon{font-size:1.8rem;margin-bottom:0.5rem}
+.feature-card h3{font-size:1rem;color:var(--text-primary);margin:0 0 0.4rem}
+.feature-card p{color:var(--text-secondary);font-size:0.85rem;line-height:1.5;margin:0}
+.trust-badges{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:2rem 0;padding:1.5rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.trust-badge{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;min-width:120px}
+.trust-badge .tb-icon{font-size:1.6rem}
+.trust-badge .tb-title{font-size:0.85rem;font-weight:700;color:var(--text-primary)}
+.trust-badge .tb-desc{font-size:0.72rem;color:var(--text-secondary)}
+@media(max-width:640px){.fn-block{flex-direction:column}.features-grid{grid-template-columns:1fr}.trust-badges{gap:12px}.trust-badge{min-width:90px}}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/zh/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/zh/">首页</a><a href="/zh/tools/background-remover">工具</a><a href="/zh/workflows/">工作流</a><a href="/zh/blog/">博客</a><a href="/about">关于</a><a href="/contact">联系我们</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Switch language">🇨🇳 中文</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a><a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a><a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a><a href="/fr/" hreflang="fr" lang="fr">🇫🇷 Français</a><a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a><a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a><a href="/zh/" hreflang="zh" lang="zh">🇨🇳 中文</a>
+          </div>
+        </div>
+        <button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/">工具</a><span>/</span><span>PDF Crop</span></nav>
+      <div class="tool-page-header">
+        <h1>✂️ PDF 裁剪</h1>
+        <p>Crop PDF pages by visually selecting the area to keep. Drag to select, then apply to current or all pages. 100% in your browser.</p>
+      </div>
+      <div class="tool-workspace">
+        <div class="tool-container">
+          <input type="file" id="fileInput" accept="application/pdf" hidden>
+          <label for="fileInput" class="dropzone" id="dropzone" style="display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px dashed var(--border-color);border-radius:12px;padding:2.5rem 1rem;cursor:pointer;transition:border-color .2s;">
+            <div style="font-size:2.5rem;">✂️</div>
+            <h3 style="margin:0.5rem 0;">Drop a PDF here</h3>
+            <p style="margin:0;color:var(--text-secondary);">or click to browse</p>
+          </label>
+          <div id="cropArea" style="display:none">
+            <div class="page-nav">
+              <button class="btn btn-secondary" id="prevPage">◀ Prev</button>
+              <span id="pageInfo">Page 1 / 1</span>
+              <button class="btn btn-secondary" id="nextPage">Next ▶</button>
+            </div>
+            <p style="text-align:center;font-size:0.85rem;color:var(--text-secondary);">Drag on the page to select the crop region. The area outside the selection will be hidden.</p>
+            <div class="canvas-wrap" id="canvasWrap"><canvas id="pageCanvas"></canvas></div>
+            <div class="crop-info" id="cropInfo">No selection yet.</div>
+            <div class="opt-row">
+              <label><input type="radio" name="applyScope" value="current" checked> Current page</label>
+              <label><input type="radio" name="applyScope" value="all"> All pages (same crop)</label>
+            </div>
+            <div class="status" id="statusText"></div>
+            <div style="text-align:center">
+              <button class="btn btn-primary" id="applyBtn">⬇ Crop & Download PDF</button>
+              <button class="btn btn-secondary" id="clearSelBtn">Clear Selection</button>
+              <button class="btn btn-secondary" id="resetBtn">New File</button>
+            </div>
+          </div>
+        <div class="selling-points">
+  <div class="sp-item"><span class="sp-icon">✅</span>裁剪 PDF 页面区域</div>
+  <div class="sp-item"><span class="sp-icon">🎯</span>去除 PDF 边距</div>
+  <div class="sp-item"><span class="sp-icon">🔒</span>100% 隐私 —— 浏览器端运行</div>
+</div>
+        </div>
+      </div>
+
+      <section class="faq-section">
+        <h2>常见问题</h2>
+        <div class="faq-item"><button class="faq-question">Does cropping remove content permanently?</button><div class="faq-answer">Cropping sets the PDF crop box, which hides content outside the region when viewing. The original content may still exist in the file. For permanent removal, use the Redact tool.</div></div>
+        <div class="faq-item"><button class="faq-question">Can I crop different pages differently?</button><div class="faq-answer">Currently, you can crop the current page individually or apply the same crop to all pages. For per-page crops, crop each page and download separately, then merge.</div></div>
+        <div class="faq-item"><button class="faq-question">Is my PDF uploaded to a server?</button><div class="faq-answer">No. All processing happens locally in your browser.</div></div>
+      <div class="faq-item"><button class="faq-question">可一次裁剪所有页吗？</button><div class="faq-answer">可以——应用于当前页或每页。</div></div>
+<div class="faq-item"><button class="faq-question">裁剪是可视的吗？</button><div class="faq-answer">是的——在页面预览上拖选裁剪区域。</div></div>
+<div class="faq-item"><button class="faq-question">PDF 会上传到服务器吗？</button><div class="faq-answer">不会。全部通过 pdf-lib 和 pdf.js 在浏览器本地处理。</div></div>
+<div class="faq-item"><button class="faq-question">有页数或文件限制吗？</button><div class="faq-answer">无硬性限制。超大 PDF（100MB+）可能拖慢浏览器。</div></div>
+      </section>
+
+      
+      <section class="feature-narrative">
+        <h2>PDF 裁剪：裁剪 PDF 页面区域</h2>
+        <p class="fn-intro">PDF 裁剪让你裁剪 PDF 页面区域。全部在浏览器本地处理，无需上传、无需注册。</p>
+      <div class="fn-block">
+        <div class="fn-icon">⚡</div>
+        <div><h3>去除 PDF 边距</h3><p>去除 PDF 边距。这是人们使用PDF 裁剪最常见的理由之一——几秒内即可在浏览器中完成。</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">🎯</div>
+        <div><h3>裁剪扫描页多余边框</h3><p>裁剪扫描页多余边框。这是人们使用PDF 裁剪最常见的理由之一——几秒内即可在浏览器中完成。</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">🔒</div>
+        <div><h3>聚焦页面特定区域</h3><p>聚焦页面特定区域。这是人们使用PDF 裁剪最常见的理由之一——几秒内即可在浏览器中完成。</p></div>
+      </div>
+      </section>
+
+      <section class="features-grid-section">
+        <h2>PDF 裁剪所需的一切功能</h2>
+        <p class="fg-sub">让PDF 裁剪快速、私密且免费的强大功能。</p>
+        <div class="features-grid">
+        <div class="feature-card">
+          <div class="fc-icon">⚡</div>
+          <h3>即时处理</h3>
+          <p>PDF 上传瞬间即在浏览器内处理。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🔒</div>
+          <h3>100% 隐私</h3>
+          <p>PDF 从不离开你的设备——不上传服务器。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">📝</div>
+          <h3>文本型输出</h3>
+          <p>转换产出真实、可搜索、可选中的文本。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">📄</div>
+          <h3>一站式 PDF 套件</h3>
+          <p>合并、拆分、编辑、批注、转换——25+ PDF 工具。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🆓</div>
+          <h3>永久免费</h3>
+          <p>无需注册、无水印、无页数限制。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🌐</div>
+          <h3>跨平台</h3>
+          <p>Windows、Mac、Linux、iOS、Android 可用。</p>
+        </div>
+        </div>
+      </section>
+
+<div class="trust-badges">
+  <div class="trust-badge"><div class="tb-icon">🔒</div><div class="tb-title">100% 隐私</div><div class="tb-desc">文件不离开浏览器</div></div>
+  <div class="trust-badge"><div class="tb-icon">⚡</div><div class="tb-title">浏览器端</div><div class="tb-desc">无需安装、不上传</div></div>
+  <div class="trust-badge"><div class="tb-icon">💯</div><div class="tb-title">永久免费</div><div class="tb-desc">无需注册、无水印</div></div>
+  <div class="trust-badge"><div class="tb-icon">🚀</div><div class="tb-title">无需注册</div><div class="tb-desc">即刻开始，无需账号</div></div>
+</div>
+      <section class="related-tools">
+        <h2>You Might Also Like</h2>
+        <div class="related-tools-grid">
+          <a href="/zh/tools/pdf-redact" class="related-tool-card"><span class="tool-icon">⬛</span><div class="tool-info"><strong>Redact PDF</strong><span class="tool-desc">Black out sensitive info</span></div><span class="tool-arrow">→</span></a>
+          <a href="/zh/tools/pdf-organize" class="related-tool-card"><span class="tool-icon">📋</span><div class="tool-info"><strong>PDF Organize</strong><span class="tool-desc">Reorder pages</span></div><span class="tool-arrow">→</span></a>
+          <a href="/zh/tools/pdf-rotate" class="related-tool-card"><span class="tool-icon">🔄</span><div class="tool-info"><strong>PDF Rotate</strong><span class="tool-desc">Rotate pages</span></div><span class="tool-arrow">→</span></a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="/zh/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>尊重您隐私的免费 AI 图像工具。</p></div>
+        <div class="footer-links"><h4>Top Tools</h4><a href="/zh/tools/background-remover">Background Remover</a><a href="/zh/tools/compressor">Compressor</a><a href="/zh/tools/converter">Converter</a><a href="/zh/tools/resizer">Resizer</a></div>
+        <div class="footer-links"><h4>法律</h4><a href="/privacy">隐私政策</a><a href="/terms">服务条款</a><a href="/cookie-policy">Cookie 政策</a><a href="/contact">联系我们</a></div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. 保留所有权利.</p></div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js?v=4"></script>
+  <script src="/js/pdf.min.js?v=3.11.174"></script>
+  <script src="/js/pdf-lib.min.js"></script>
+  <script>
+  (function() {
+    'use strict';
+    pdfjsLib.GlobalWorkerOptions.workerSrc = '/js/pdf.worker.min.js';
+    var fileInput = document.getElementById('fileInput');
+    var dropzone = document.getElementById('dropzone');
+    var cropArea = document.getElementById('cropArea');
+    var canvas = document.getElementById('pageCanvas');
+    var ctx = canvas.getContext('2d');
+    var statusText = document.getElementById('statusText');
+    var pageInfo = document.getElementById('pageInfo');
+    var cropInfo = document.getElementById('cropInfo');
+
+    var pdfBytes = null, pdfDoc = null, currentPage = 1, numPages = 0, scale = 1.5;
+    var baseImage = null; // rendered page as ImageData for redraw
+    var selStart = null, selEnd = null, isDragging = false;
+
+    function setStatus(msg) { statusText.textContent = msg; }
+
+    fileInput.addEventListener('change', function(e) { if (e.target.files[0]) handleFile(e.target.files[0]); });
+    dropzone.addEventListener('dragover', function(e) { e.preventDefault(); dropzone.style.borderColor = '#4f46e5'; });
+    dropzone.addEventListener('dragleave', function(e) { dropzone.style.borderColor = ''; });
+    dropzone.addEventListener('drop', function(e) { e.preventDefault(); dropzone.style.borderColor = ''; if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
+
+    async function handleFile(f) {
+      if (f.type !== 'application/pdf' && !f.name.toLowerCase().endsWith('.pdf')) { setStatus('⚠️ Please select a PDF file.'); return; }
+      setStatus('⏳ Loading PDF…');
+      try {
+        pdfBytes = await f.arrayBuffer();
+        pdfDoc = await pdfjsLib.getDocument({ data: new Uint8Array(pdfBytes.slice(0)) }).promise;
+        numPages = pdfDoc.numPages; currentPage = 1;
+        cropArea.style.display = 'block'; dropzone.style.display = 'none';
+        selStart = null; selEnd = null;
+        await renderPage();
+        setStatus('');
+      } catch (err) { setStatus('❌ ' + err.message); }
+    }
+
+    async function renderPage() {
+      var page = await pdfDoc.getPage(currentPage);
+      var viewport = page.getViewport({ scale: scale });
+      canvas.width = viewport.width; canvas.height = viewport.height;
+      ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+      await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+      baseImage = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      drawSelection();
+      pageInfo.textContent = 'Page ' + currentPage + ' / ' + numPages;
+    }
+
+    function drawSelection() {
+      if (!baseImage) return;
+      ctx.putImageData(baseImage, 0, 0);
+      if (selStart && selEnd) {
+        var x = Math.min(selStart.x, selEnd.x), y = Math.min(selStart.y, selEnd.y);
+        var w = Math.abs(selEnd.x - selStart.x), h = Math.abs(selEnd.y - selStart.y);
+        // Dim outside
+        ctx.fillStyle = 'rgba(0,0,0,0.5)';
+        ctx.fillRect(0, 0, canvas.width, y); // top
+        ctx.fillRect(0, y + h, canvas.width, canvas.height - y - h); // bottom
+        ctx.fillRect(0, y, x, h); // left
+        ctx.fillRect(x + w, y, canvas.width - x - w, h); // right
+        // Border
+        ctx.strokeStyle = '#4f46e5'; ctx.lineWidth = 2;
+        ctx.strokeRect(x, y, w, h);
+        // Info
+        var realW = Math.round(w / scale), realH = Math.round(h / scale);
+        cropInfo.textContent = 'Selected: ' + realW + ' × ' + realH + ' pt (at ' + Math.round(x/scale) + ', ' + Math.round(y/scale) + ')';
+      } else {
+        cropInfo.textContent = 'No selection yet.';
+      }
+    }
+
+    function getPos(e) {
+      var rect = canvas.getBoundingClientRect();
+      return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    }
+    canvas.addEventListener('mousedown', function(e) { isDragging = true; selStart = getPos(e); selEnd = selStart; });
+    canvas.addEventListener('mousemove', function(e) { if (isDragging) { selEnd = getPos(e); drawSelection(); } });
+    canvas.addEventListener('mouseup', function() { isDragging = false; drawSelection(); });
+    canvas.addEventListener('mouseleave', function() { isDragging = false; });
+
+    document.getElementById('prevPage').addEventListener('click', function() { if (currentPage > 1) { currentPage--; selStart = null; selEnd = null; renderPage(); } });
+    document.getElementById('nextPage').addEventListener('click', function() { if (currentPage < numPages) { currentPage++; selStart = null; selEnd = null; renderPage(); } });
+    document.getElementById('clearSelBtn').addEventListener('click', function() { selStart = null; selEnd = null; drawSelection(); });
+
+    document.getElementById('applyBtn').addEventListener('click', async function() {
+      if (!selStart || !selEnd) { setStatus('⚠️ Draw a selection on the page first.'); return; }
+      setStatus('⏳ Cropping PDF…');
+      try {
+        var { PDFDocument } = window.PDFLib;
+        var doc = await PDFDocument.load(pdfBytes);
+        var pages = doc.getPages();
+        var scope = document.querySelector('input[name=applyScope]:checked').value;
+        var x = Math.min(selStart.x, selEnd.x) / scale;
+        var y = Math.min(selStart.y, selEnd.y) / scale;
+        var w = Math.abs(selEnd.x - selStart.x) / scale;
+        var h = Math.abs(selEnd.y - selStart.y) / scale;
+        // pdf-lib crop box: y is from bottom, but setCropBox uses the same coordinate as mediabox (bottom-left origin)
+        // Our canvas y is top-left. So crop bottom = pageHeight - (y + h)
+        var applyTo = scope === 'all' ? pages.map(function(_, i) { return i; }) : [currentPage - 1];
+        applyTo.forEach(function(idx) {
+          var page = pages[idx];
+          var ph = page.getHeight();
+          var cropY = ph - (y + h);
+          page.setCropBox(x, cropY, w, h);
+        });
+        var outBytes = await doc.save();
+        var blob = new Blob([outBytes], { type: 'application/pdf' });
+        SmartImgKit._triggerDownload(blob, 'cropped.pdf');
+        setStatus('✅ Cropped PDF downloaded!');
+      } catch (err) { setStatus('❌ ' + err.message); }
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', function() {
+      pdfBytes = null; pdfDoc = null; selStart = null; selEnd = null;
+      fileInput.value = ''; cropArea.style.display = 'none'; dropzone.style.display = 'flex';
+      dropzone.innerHTML = '<div style="font-size:2.5rem;">✂️</div><h3 style="margin:0.5rem 0;">Drop a PDF here</h3><p style="margin:0;color:var(--text-secondary);">or click to browse</p>';
+      setStatus('');
+    });
+  })();
+  </script>
+  <script src="/js/lang.js"></script>
+</body>
+</html>

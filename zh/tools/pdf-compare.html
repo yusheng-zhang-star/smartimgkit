@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh" data-theme="dark" data-tool-id="pdf-compare">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>PDF 对比 – 免费 | SmartImgKit</title>
+  <meta name="description" content="并排对比两个 PDF 的页面差异。逐页渲染并标记相同/不同。隐私优先，不上传。">
+  <meta name="keywords" content="pdf compare, compare pdf, pdf diff, compare two pdfs, pdf comparison">
+  <link rel="canonical" href="https://smartimgkit.com/zh/tools/pdf-compare">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="Free PDF Compare — SmartImgKit">
+  <meta property="og:description" content="并排对比两个 PDF 的页面差异。逐页渲染并标记相同/不同。隐私优先，不上传。">
+  <meta property="og:url" content="https://smartimgkit.com/tools/pdf-compare">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/pdf-compare.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free PDF Compare — SmartImgKit">
+  <meta name="twitter:description" content="并排对比两个 PDF 的页面差异。逐页渲染并标记相同/不同。隐私优先，不上传。">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate" hreflang="ar" href="https://smartimgkit.com/ar/tools/pdf-compare">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/pdf-compare">
+  <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/pdf-compare">
+  <link rel="alternate" hreflang="fr" href="https://smartimgkit.com/fr/tools/pdf-compare">
+  <link rel="alternate" hreflang="id" href="https://smartimgkit.com/id/tools/pdf-compare">
+  <link rel="alternate" hreflang="pt" href="https://smartimgkit.com/pt/tools/pdf-compare">
+  <link rel="alternate" hreflang="vi" href="https://smartimgkit.com/vi/tools/pdf-compare">
+  <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/pdf-compare">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/pdf-compare">
+  <link rel="stylesheet" href="/css/style.css?v=4">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  { "@context": "https://schema.org", "@type": "WebApplication", "name": "PDF Compare", "url": "https://smartimgkit.com/tools/pdf-compare", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }, "description": "Compare two PDFs side by side. 100% browser-based." }
+  </script>
+  <style>
+    .tool-container{max-width:1100px;margin:1rem auto;padding:0 1rem}
+    .btn{padding:8px 18px;border:none;border-radius:8px;font-size:0.9rem;cursor:pointer;font-weight:600;transition:all .2s}
+    .btn-primary{background:#4f46e5;color:#fff}.btn-primary:hover{background:#4338ca}
+    .btn-secondary{background:#e5e7eb;color:#1f2937}.btn-secondary:hover{background:#d1d5db}
+    .btn:disabled{opacity:0.5;cursor:not-allowed}
+    .status{text-align:center;padding:0.5rem;font-size:0.85rem;color:var(--text-secondary)}
+    .upload-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}
+    @media(max-width:768px){.upload-row{grid-template-columns:1fr}}
+    .upload-box{border:2px dashed var(--border-color);border-radius:12px;padding:1.5rem 1rem;text-align:center;cursor:pointer;transition:border-color .2s}
+    .upload-box:hover{border-color:#4f46e5}
+    .upload-box.loaded{border-style:solid;border-color:#22c55e;background:rgba(34,197,94,0.05)}
+    .compare-area{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:1rem}
+    @media(max-width:768px){.compare-area{grid-template-columns:1fr}}
+    .compare-col{background:var(--bg-secondary);border-radius:8px;overflow:hidden}
+    .compare-col h4{margin:0;padding:0.5rem;font-size:0.85rem;text-align:center;background:var(--bg-primary)}
+    .compare-scroll{overflow-y:auto;max-height:70vh;display:flex;flex-direction:column;align-items:center;gap:8px;padding:8px}
+    .compare-scroll canvas{display:block;border:1px solid var(--border-color);border-radius:4px;background:#fff}
+    .page-nav{display:flex;align-items:center;justify-content:center;gap:1rem;margin:0.5rem 0}
+    .diff-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:0.72rem;font-weight:600}
+    .diff-same{background:#dcfce7;color:#166534}
+    .diff-diff{background:#fee2e2;color:#991b1b}
+  </style>
+  <style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+
+<style id="enrich-css">
+.selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
+.sp-item{display:flex;align-items:center;gap:8px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:999px;padding:8px 16px;font-size:0.85rem;color:var(--text-secondary);font-weight:500}
+.sp-item span.sp-icon{font-size:1rem}
+.feature-narrative{margin:2.5rem 0;padding:0 1rem}
+.feature-narrative h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.feature-narrative .fn-intro{text-align:center;max-width:680px;margin:0 auto 2rem;color:var(--text-secondary);font-size:1rem;line-height:1.6}
+.fn-block{display:flex;gap:1.5rem;align-items:flex-start;margin:1.5rem 0;padding:1.25rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.fn-block .fn-icon{font-size:2rem;flex-shrink:0;line-height:1}
+.fn-block h3{font-size:1.05rem;color:var(--text-primary);margin:0 0 0.4rem}
+.fn-block p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin:0}
+.features-grid-section{margin:2.5rem 0;padding:0 1rem}
+.features-grid-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.features-grid-section .fg-sub{text-align:center;color:var(--text-secondary);font-size:0.95rem;margin-bottom:2rem}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;max-width:1000px;margin:0 auto}
+.feature-card{background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;padding:1.25rem;transition:transform .2s,border-color .2s}
+.feature-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.feature-card .fc-icon{font-size:1.8rem;margin-bottom:0.5rem}
+.feature-card h3{font-size:1rem;color:var(--text-primary);margin:0 0 0.4rem}
+.feature-card p{color:var(--text-secondary);font-size:0.85rem;line-height:1.5;margin:0}
+.trust-badges{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:2rem 0;padding:1.5rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.trust-badge{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;min-width:120px}
+.trust-badge .tb-icon{font-size:1.6rem}
+.trust-badge .tb-title{font-size:0.85rem;font-weight:700;color:var(--text-primary)}
+.trust-badge .tb-desc{font-size:0.72rem;color:var(--text-secondary)}
+@media(max-width:640px){.fn-block{flex-direction:column}.features-grid{grid-template-columns:1fr}.trust-badges{gap:12px}.trust-badge{min-width:90px}}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/zh/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/zh/">首页</a><a href="/zh/tools/background-remover">工具</a><a href="/zh/workflows/">工作流</a><a href="/zh/blog/">博客</a><a href="/about">关于</a><a href="/contact">联系我们</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Switch language">🇨🇳 中文</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a><a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a><a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a><a href="/fr/" hreflang="fr" lang="fr">🇫🇷 Français</a><a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a><a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a><a href="/zh/" hreflang="zh" lang="zh">🇨🇳 中文</a>
+          </div>
+        </div>
+        <button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/">工具</a><span>/</span><span>PDF Compare</span></nav>
+      <div class="tool-page-header">
+        <h1>🔍 PDF 对比</h1>
+        <p>Compare two PDF files side by side with synchronized scrolling. Visual page-by-page comparison. 100% in your browser.</p>
+      </div>
+      <div class="tool-workspace">
+        <div class="tool-container">
+          <div class="upload-row">
+            <div class="upload-box" id="box1">
+              <input type="file" id="file1" accept="application/pdf" hidden>
+              <div style="font-size:2rem;">📄</div>
+              <h3 style="margin:0.5rem 0;font-size:1rem;">PDF A (Original)</h3>
+              <p style="margin:0;color:var(--text-secondary);font-size:0.8rem;" id="label1">Click to select</p>
+            </div>
+            <div class="upload-box" id="box2">
+              <input type="file" id="file2" accept="application/pdf" hidden>
+              <div style="font-size:2rem;">📄</div>
+              <h3 style="margin:0.5rem 0;font-size:1rem;">PDF B (Modified)</h3>
+              <p style="margin:0;color:var(--text-secondary);font-size:0.8rem;" id="label2">Click to select</p>
+            </div>
+          </div>
+        <div class="selling-points">
+  <div class="sp-item"><span class="sp-icon">✅</span>并排对比两个 PDF</div>
+  <div class="sp-item"><span class="sp-icon">🎯</span>找出合同版本间差异</div>
+  <div class="sp-item"><span class="sp-icon">🔒</span>100% 隐私 —— 浏览器端运行</div>
+</div>
+          <div style="text-align:center">
+            <button class="btn btn-primary" id="compareBtn" disabled>🔍 Compare PDFs</button>
+            <button class="btn btn-secondary" id="resetBtn">Reset</button>
+          </div>
+          <div class="status" id="statusText"></div>
+          <div id="resultArea"></div>
+        </div>
+      </div>
+
+      <section class="faq-section">
+        <h2>常见问题</h2>
+        <div class="faq-item"><button class="faq-question">How does the comparison work?</button><div class="faq-answer">Both PDFs are rendered to images side by side with synchronized scrolling. Pages are compared pixel-by-pixel and a badge indicates if each page pair is identical or different.</div></div>
+        <div class="faq-item"><button class="faq-question">What if the PDFs have different page counts?</button><div class="faq-answer">The tool renders all pages from both PDFs. Pages beyond the shorter PDF's count are marked as "missing" in the other column.</div></div>
+        <div class="faq-item"><button class="faq-question">Is my PDF uploaded to a server?</button><div class="faq-answer">No. Both PDFs are rendered locally in your browser. Nothing is uploaded.</div></div>
+      <div class="faq-item"><button class="faq-question">差异如何显示？</button><div class="faq-answer">每对页面标记相同或不同。</div></div>
+<div class="faq-item"><button class="faq-question">对比是可视的吗？</button><div class="faq-answer">是的——逐页渲染并按像素对比。</div></div>
+<div class="faq-item"><button class="faq-question">PDF 会上传到服务器吗？</button><div class="faq-answer">不会。全部通过 pdf-lib 和 pdf.js 在浏览器本地处理。</div></div>
+<div class="faq-item"><button class="faq-question">有页数或文件限制吗？</button><div class="faq-answer">无硬性限制。超大 PDF（100MB+）可能拖慢浏览器。</div></div>
+      </section>
+
+      
+      <section class="feature-narrative">
+        <h2>PDF 对比：并排对比两个 PDF</h2>
+        <p class="fn-intro">PDF 对比让你并排对比两个 PDF。全部在浏览器本地处理，无需上传、无需注册。</p>
+      <div class="fn-block">
+        <div class="fn-icon">⚡</div>
+        <div><h3>找出合同版本间差异</h3><p>找出合同版本间差异。这是人们使用PDF 对比最常见的理由之一——几秒内即可在浏览器中完成。</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">🎯</div>
+        <div><h3>对比修订版与原始文档</h3><p>对比修订版与原始文档。这是人们使用PDF 对比最常见的理由之一——几秒内即可在浏览器中完成。</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">🔒</div>
+        <div><h3>核实 PDF 草稿间更改</h3><p>核实 PDF 草稿间更改。这是人们使用PDF 对比最常见的理由之一——几秒内即可在浏览器中完成。</p></div>
+      </div>
+      </section>
+
+      <section class="features-grid-section">
+        <h2>PDF 对比所需的一切功能</h2>
+        <p class="fg-sub">让PDF 对比快速、私密且免费的强大功能。</p>
+        <div class="features-grid">
+        <div class="feature-card">
+          <div class="fc-icon">⚡</div>
+          <h3>即时处理</h3>
+          <p>PDF 上传瞬间即在浏览器内处理。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🔒</div>
+          <h3>100% 隐私</h3>
+          <p>PDF 从不离开你的设备——不上传服务器。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">📝</div>
+          <h3>文本型输出</h3>
+          <p>转换产出真实、可搜索、可选中的文本。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">📄</div>
+          <h3>一站式 PDF 套件</h3>
+          <p>合并、拆分、编辑、批注、转换——25+ PDF 工具。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🆓</div>
+          <h3>永久免费</h3>
+          <p>无需注册、无水印、无页数限制。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🌐</div>
+          <h3>跨平台</h3>
+          <p>Windows、Mac、Linux、iOS、Android 可用。</p>
+        </div>
+        </div>
+      </section>
+
+<div class="trust-badges">
+  <div class="trust-badge"><div class="tb-icon">🔒</div><div class="tb-title">100% 隐私</div><div class="tb-desc">文件不离开浏览器</div></div>
+  <div class="trust-badge"><div class="tb-icon">⚡</div><div class="tb-title">浏览器端</div><div class="tb-desc">无需安装、不上传</div></div>
+  <div class="trust-badge"><div class="tb-icon">💯</div><div class="tb-title">永久免费</div><div class="tb-desc">无需注册、无水印</div></div>
+  <div class="trust-badge"><div class="tb-icon">🚀</div><div class="tb-title">无需注册</div><div class="tb-desc">即刻开始，无需账号</div></div>
+</div>
+      <section class="related-tools">
+        <h2>You Might Also Like</h2>
+        <div class="related-tools-grid">
+          <a href="/zh/tools/pdf-merge" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>PDF Merge</strong><span class="tool-desc">Combine PDFs</span></div><span class="tool-arrow">→</span></a>
+          <a href="/zh/tools/pdf-split" class="related-tool-card"><span class="tool-icon">✂️</span><div class="tool-info"><strong>PDF Split</strong><span class="tool-desc">Split PDF</span></div><span class="tool-arrow">→</span></a>
+          <a href="/zh/tools/pdf-organize" class="related-tool-card"><span class="tool-icon">📋</span><div class="tool-info"><strong>PDF Organize</strong><span class="tool-desc">Reorder pages</span></div><span class="tool-arrow">→</span></a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="/zh/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>尊重您隐私的免费 AI 图像工具。</p></div>
+        <div class="footer-links"><h4>Top Tools</h4><a href="/zh/tools/background-remover">Background Remover</a><a href="/zh/tools/compressor">Compressor</a><a href="/zh/tools/converter">Converter</a><a href="/zh/tools/resizer">Resizer</a></div>
+        <div class="footer-links"><h4>法律</h4><a href="/privacy">隐私政策</a><a href="/terms">服务条款</a><a href="/cookie-policy">Cookie 政策</a><a href="/contact">联系我们</a></div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. 保留所有权利.</p></div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js?v=4"></script>
+  <script src="/js/pdf.min.js?v=3.11.174"></script>
+  <script>
+  (function() {
+    'use strict';
+    pdfjsLib.GlobalWorkerOptions.workerSrc = '/js/pdf.worker.min.js';
+    var statusText = document.getElementById('statusText');
+    var resultArea = document.getElementById('resultArea');
+    var file1 = document.getElementById('file1');
+    var file2 = document.getElementById('file2');
+    var box1 = document.getElementById('box1');
+    var box2 = document.getElementById('box2');
+    var compareBtn = document.getElementById('compareBtn');
+    var pdfA = null, pdfB = null;
+
+    function setStatus(msg) { statusText.textContent = msg; }
+
+    box1.addEventListener('click', function() { file1.click(); });
+    box2.addEventListener('click', function() { file2.click(); });
+
+    file1.addEventListener('change', function(e) {
+      var f = e.target.files[0]; if (!f) return;
+      var reader = new FileReader();
+      reader.onload = async function(ev) {
+        try { pdfA = await pdfjsLib.getDocument({ data: new Uint8Array(ev.target.result) }).promise; }
+        catch(err) { setStatus('❌ PDF A error: ' + err.message); return; }
+        document.getElementById('label1').textContent = f.name + ' (' + pdfA.numPages + ' pages)';
+        box1.classList.add('loaded');
+        checkReady();
+      };
+      reader.readAsArrayBuffer(f);
+    });
+    file2.addEventListener('change', function(e) {
+      var f = e.target.files[0]; if (!f) return;
+      var reader = new FileReader();
+      reader.onload = async function(ev) {
+        try { pdfB = await pdfjsLib.getDocument({ data: new Uint8Array(ev.target.result) }).promise; }
+        catch(err) { setStatus('❌ PDF B error: ' + err.message); return; }
+        document.getElementById('label2').textContent = f.name + ' (' + pdfB.numPages + ' pages)';
+        box2.classList.add('loaded');
+        checkReady();
+      };
+      reader.readAsArrayBuffer(f);
+    });
+
+    function checkReady() { compareBtn.disabled = !(pdfA && pdfB); }
+
+    async function renderPageToCanvas(pdf, pageNum, scale) {
+      var page = await pdf.getPage(pageNum);
+      var viewport = page.getViewport({ scale: scale });
+      var canvas = document.createElement('canvas');
+      canvas.width = viewport.width; canvas.height = viewport.height;
+      var ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+      await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+      return canvas;
+    }
+
+    function canvasesEqual(c1, c2) {
+      if (c1.width !== c2.width || c1.height !== c2.height) return false;
+      try {
+        var d1 = c1.getContext('2d').getImageData(0, 0, c1.width, c1.height).data;
+        var d2 = c2.getContext('2d').getImageData(0, 0, c2.width, c2.height).data;
+        // Sample-based comparison for performance (check every 4th pixel)
+        for (var i = 0; i < d1.length; i += 16) {
+          if (Math.abs(d1[i] - d2[i]) > 10 || Math.abs(d1[i+1] - d2[i+1]) > 10 || Math.abs(d1[i+2] - d2[i+2]) > 10) return false;
+        }
+        return true;
+      } catch(e) { return false; }
+    }
+
+    compareBtn.addEventListener('click', async function() {
+      if (!pdfA || !pdfB) return;
+      compareBtn.disabled = true;
+      setStatus('⏳ Rendering pages for comparison…');
+      try {
+        var scale = 1.0;
+        var maxPages = Math.max(pdfA.numPages, pdfB.numPages);
+        var sameCount = 0, diffCount = 0;
+
+        var html = '<div class="compare-area"><div class="compare-col"><h4>PDF A (' + pdfA.numPages + 'p)</h4><div class="compare-scroll" id="scrollA"></div></div><div class="compare-col"><h4>PDF B (' + pdfB.numPages + 'p)</h4><div class="compare-scroll" id="scrollB"></div></div></div>';
+        resultArea.innerHTML = html;
+        var scrollA = document.getElementById('scrollA');
+        var scrollB = document.getElementById('scrollB');
+
+        for (var i = 1; i <= maxPages; i++) {
+          setStatus('⏳ Rendering page ' + i + ' of ' + maxPages + '…');
+          var canvasA = null, canvasB = null;
+          if (i <= pdfA.numPages) canvasA = await renderPageToCanvas(pdfA, i, scale);
+          if (i <= pdfB.numPages) canvasB = await renderPageToCanvas(pdfB, i, scale);
+
+          // Wrapper for A
+          var wrapA = document.createElement('div'); wrapA.style.textAlign = 'center';
+          var labelA = document.createElement('div'); labelA.style.fontSize = '0.75rem'; labelA.style.color = 'var(--text-secondary)'; labelA.textContent = 'Page ' + i + (canvasA ? '' : ' (missing)');
+          if (canvasA) { var cA = document.createElement('canvas'); cA.width = canvasA.width; cA.height = canvasA.height; cA.getContext('2d').drawImage(canvasA, 0, 0); wrapA.appendChild(cA); }
+          else { var ph = document.createElement('div'); ph.style.cssText = 'width:300px;height:400px;border:1px dashed #999;display:flex;align-items:center;justify-content:center;color:#999;font-size:0.8rem;'; ph.textContent = 'No page'; wrapA.appendChild(ph); }
+          wrapA.appendChild(labelA);
+          scrollA.appendChild(wrapA);
+
+          // Wrapper for B
+          var wrapB = document.createElement('div'); wrapB.style.textAlign = 'center';
+          var badge = document.createElement('span');
+          var labelB = document.createElement('div'); labelB.style.fontSize = '0.75rem'; labelB.style.color = 'var(--text-secondary)';
+          if (canvasA && canvasB) {
+            var same = canvasesEqual(canvasA, canvasB);
+            badge.className = 'diff-badge ' + (same ? 'diff-same' : 'diff-diff');
+            badge.textContent = same ? '✓ Identical' : '✗ Different';
+            if (same) sameCount++; else diffCount++;
+          } else {
+            badge.className = 'diff-badge diff-diff'; badge.textContent = '✗ Page count differs';
+            diffCount++;
+          }
+          labelB.textContent = 'Page ' + i + (canvasB ? '' : ' (missing)') + ' ';
+          labelB.appendChild(badge);
+          if (canvasB) { var cB = document.createElement('canvas'); cB.width = canvasB.width; cB.height = canvasB.height; cB.getContext('2d').drawImage(canvasB, 0, 0); wrapB.appendChild(cB); }
+          else { var ph2 = document.createElement('div'); ph2.style.cssText = 'width:300px;height:400px;border:1px dashed #999;display:flex;align-items:center;justify-content:center;color:#999;font-size:0.8rem;'; ph2.textContent = 'No page'; wrapB.appendChild(ph2); }
+          wrapB.appendChild(labelB);
+          scrollB.appendChild(wrapB);
+        }
+
+        // Sync scroll
+        var syncing = false;
+        scrollA.addEventListener('scroll', function() { if (!syncing) { syncing = true; scrollB.scrollTop = scrollA.scrollTop; requestAnimationFrame(function() { syncing = false; }); } });
+        scrollB.addEventListener('scroll', function() { if (!syncing) { syncing = true; scrollA.scrollTop = scrollB.scrollTop; requestAnimationFrame(function() { syncing = false; }); } });
+
+        setStatus('✅ Comparison complete: ' + sameCount + ' identical, ' + diffCount + ' different out of ' + maxPages + ' pages.');
+      } catch (err) {
+        console.error(err);
+        setStatus('❌ Error: ' + err.message);
+      } finally {
+        compareBtn.disabled = false;
+      }
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', function() {
+      pdfA = null; pdfB = null; file1.value = ''; file2.value = '';
+      box1.classList.remove('loaded'); box2.classList.remove('loaded');
+      document.getElementById('label1').textContent = 'Click to select';
+      document.getElementById('label2').textContent = 'Click to select';
+      resultArea.innerHTML = ''; setStatus(''); compareBtn.disabled = true;
+    });
+  })();
+  </script>
+  <script src="/js/lang.js"></script>
+</body>
+</html>

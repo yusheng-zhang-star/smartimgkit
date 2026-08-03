@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh" data-theme="dark" data-tool-id="signature-maker">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>签名制作 – 免费 | SmartImgKit</title>
+  <meta name="description" content="手绘数字签名并下载为透明 PNG。">
+  <meta name="keywords" content="signature maker, digital signature, electronic signature, signature png, transparent signature">
+  <link rel="canonical" href="https://smartimgkit.com/zh/tools/signature-maker">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="Signature Maker — Create Digital Signature Free Online">
+  <meta property="og:description" content="手绘数字签名并下载为透明 PNG。">
+  <meta property="og:url" content="https://smartimgkit.com/tools/signature-maker">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/signature-maker.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Signature Maker — Create Digital Signature Free Online">
+  <meta name="twitter:description" content="手绘数字签名并下载为透明 PNG。">
+  <meta name="twitter:image" content="https://smartimgkit.com/screenshots/signature-maker.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css?v=4">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Dancing+Script:wght@400;700&family=Great+Vibes&family=Pacifico&family=Satisfy&display=swap" rel="stylesheet">
+  <style>
+    .tool-workspace { display: flex; flex-direction: column; gap: 24px; }
+    .controls, .result-section { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+    .controls h2, .result-section h2 { font-size: 1.2rem; color: var(--text-primary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--accent); }
+    .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    .tab-btn { padding: 10px 20px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-secondary); color: var(--text-secondary); cursor: pointer; font-weight: 600; }
+    .tab-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+    .control-row { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+    .control-row label { font-weight: 600; min-width: 120px; color: var(--text-secondary); font-size: 0.85rem; }
+    .control-row input[type="text"], .control-row input[type="number"], .control-row select {
+      padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-primary);
+      color: var(--text-primary); font-size: 0.9rem; flex: 1; min-width: 200px;
+    }
+    .color-input { width: 50px; height: 36px; border: none; border-radius: 6px; cursor: pointer; background: transparent; }
+    .btn-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+    .canvas-wrapper { position: relative; background: repeating-conic-gradient(#f0f0f0 0% 25%, #fff 0% 50%) 50% / 20px 20px; border-radius: 8px; border: 1px solid var(--border); touch-action: none; }
+    canvas { display: block; border-radius: 8px; cursor: crosshair; }
+    .type-preview { min-height: 100px; display: flex; align-items: center; justify-content: center; padding: 20px; background: repeating-conic-gradient(#f0f0f0 0% 25%, #fff 0% 50%) 50% / 20px 20px; border-radius: 8px; border: 1px solid var(--border); }
+    .type-preview span { color: #000; font-size: 3rem; }
+    @media (max-width: 640px) {
+      .control-row { flex-direction: column; align-items: flex-start; }
+      .control-row label { min-width: auto; }
+    }
+  </style>
+
+<style id="enrich-css">
+.selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
+.sp-item{display:flex;align-items:center;gap:8px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:999px;padding:8px 16px;font-size:0.85rem;color:var(--text-secondary);font-weight:500}
+.sp-item span.sp-icon{font-size:1rem}
+.feature-narrative{margin:2.5rem 0;padding:0 1rem}
+.feature-narrative h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.feature-narrative .fn-intro{text-align:center;max-width:680px;margin:0 auto 2rem;color:var(--text-secondary);font-size:1rem;line-height:1.6}
+.fn-block{display:flex;gap:1.5rem;align-items:flex-start;margin:1.5rem 0;padding:1.25rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.fn-block .fn-icon{font-size:2rem;flex-shrink:0;line-height:1}
+.fn-block h3{font-size:1.05rem;color:var(--text-primary);margin:0 0 0.4rem}
+.fn-block p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin:0}
+.features-grid-section{margin:2.5rem 0;padding:0 1rem}
+.features-grid-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.features-grid-section .fg-sub{text-align:center;color:var(--text-secondary);font-size:0.95rem;margin-bottom:2rem}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;max-width:1000px;margin:0 auto}
+.feature-card{background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;padding:1.25rem;transition:transform .2s,border-color .2s}
+.feature-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.feature-card .fc-icon{font-size:1.8rem;margin-bottom:0.5rem}
+.feature-card h3{font-size:1rem;color:var(--text-primary);margin:0 0 0.4rem}
+.feature-card p{color:var(--text-secondary);font-size:0.85rem;line-height:1.5;margin:0}
+.trust-badges{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:2rem 0;padding:1.5rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.trust-badge{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;min-width:120px}
+.trust-badge .tb-icon{font-size:1.6rem}
+.trust-badge .tb-title{font-size:0.85rem;font-weight:700;color:var(--text-primary)}
+.trust-badge .tb-desc{font-size:0.72rem;color:var(--text-secondary)}
+@media(max-width:640px){.fn-block{flex-direction:column}.features-grid{grid-template-columns:1fr}.trust-badges{gap:12px}.trust-badge{min-width:90px}}
+
+
+.faq-section{margin:2.5rem 0;padding:0 1rem}
+.faq-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:1rem;text-align:center}
+.faq-item{border:1px solid var(--border);border-radius:8px;margin-bottom:0.5rem;overflow:hidden;background:var(--bg-secondary)}
+.faq-question{width:100%;padding:1rem 1.25rem;background:none;border:none;text-align:left;font-size:0.95rem;font-weight:600;color:var(--text-primary);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.faq-question::after{content:'+';font-size:1.2rem;transition:transform .2s}
+.faq-item.open .faq-question::after{transform:rotate(45deg)}
+.faq-answer{padding:0 1.25rem;max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;color:var(--text-secondary);font-size:0.9rem;line-height:1.6}
+.faq-item.open .faq-answer{padding:0 1.25rem 1rem;max-height:300px}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a href="/zh/" class="logo">
+          <span class="logo-icon">🎨</span>
+          <span class="logo-text">SmartImgKit</span>
+        </a>
+        <div class="nav-links">
+          <a href="/zh/">首页</a>
+          <a href="/zh/#tools">工具</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container">
+      <div class="tool-page-header">
+        <h1>✍️ 签名制作</h1>
+        <p>Draw your digital signature and download as transparent PNG. Free, online.</p>
+      </div>
+
+      <div class="tool-workspace">
+        <div class="controls">
+          <h2>⚙️ Settings</h2>
+          <div class="tabs">
+            <button class="tab-btn active" data-tab="draw">✏️ Draw</button>
+            <button class="tab-btn" data-tab="type">📝 Type</button>
+          </div>
+          <div id="draw-pane" class="tab-pane active">
+            <div class="control-row">
+              <label>Pen Color</label>
+              <input type="color" id="penColor" class="color-input" value="#000000">
+            </div>
+            <div class="control-row">
+              <label>Pen Size</label>
+              <input type="number" id="penSize" value="3" min="1" max="20">
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-secondary" id="clearBtn">🗑️ Clear</button>
+              <button class="btn btn-secondary" id="undoBtn">↩️ Undo</button>
+            </div>
+          </div>
+        <div class="selling-points">
+  <div class="sp-item"><span class="sp-icon">✅</span>绘制并导出你的签名</div>
+  <div class="sp-item"><span class="sp-icon">🎯</span>为文档创建数字签名</div>
+  <div class="sp-item"><span class="sp-icon">🔒</span>100% 隐私 —— 浏览器端运行</div>
+</div>
+          <div id="type-pane" class="tab-pane">
+            <div class="control-row">
+              <label>Your Name</label>
+              <input type="text" id="sigText" placeholder="John Doe" value="John Doe">
+            </div>
+            <div class="control-row">
+              <label>Font Style</label>
+              <select id="sigFont">
+                <option value="Dancing Script">Dancing Script</option>
+                <option value="Great Vibes">Great Vibes</option>
+                <option value="Pacifico">Pacifico</option>
+                <option value="Satisfy">Satisfy</option>
+              </select>
+            </div>
+            <div class="control-row">
+              <label>Text Color</label>
+              <input type="color" id="textColor" class="color-input" value="#000000">
+            </div>
+            <div class="control-row">
+              <label>Font Size</label>
+              <input type="number" id="fontSize" value="64" min="20" max="120">
+            </div>
+          </div>
+          <div class="btn-row" style="margin-top: 24px;">
+            <button class="btn btn-primary" id="downloadPngBtn">⬇️ Download PNG (Transparent)</button>
+            <button class="btn btn-secondary" id="downloadJpgBtn">⬇️ Download JPG</button>
+            <button class="btn btn-secondary" id="downloadSvgBtn">⬇️ Download SVG</button>
+          </div>
+        </div>
+
+        <div class="result-section">
+          <h2>✍️ Your Signature</h2>
+          <div id="drawArea" class="canvas-wrapper">
+            <canvas id="sigCanvas" width="800" height="300"></canvas>
+          </div>
+          <div id="typeArea" class="type-preview" style="display:none;">
+            <span id="typeSigSpan" style="font-family: 'Dancing Script', cursive; color: #000;">John Doe</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+      <section class="feature-narrative">
+        <h2>签名制作器：绘制并导出你的签名</h2>
+        <p class="fn-intro">签名制作器让你绘制并导出你的签名。全部在浏览器本地处理，无需上传、无需注册。</p>
+      <div class="fn-block">
+        <div class="fn-icon">⚡</div>
+        <div><h3>为文档创建数字签名</h3><p>为文档创建数字签名。这是人们使用签名制作器最常见的理由之一——几秒内即可在浏览器中完成。</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">🎯</div>
+        <div><h3>用个人签名签署 PDF</h3><p>用个人签名签署 PDF。这是人们使用签名制作器最常见的理由之一——几秒内即可在浏览器中完成。</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">🔒</div>
+        <div><h3>生成干净的签名 PNG</h3><p>生成干净的签名 PNG。这是人们使用签名制作器最常见的理由之一——几秒内即可在浏览器中完成。</p></div>
+      </div>
+      </section>
+
+      <section class="features-grid-section">
+        <h2>签名制作器所需的一切功能</h2>
+        <p class="fg-sub">让签名制作器快速、私密且免费的强大功能。</p>
+        <div class="features-grid">
+        <div class="feature-card">
+          <div class="fc-icon">✍️</div>
+          <h3>完全自定义</h3>
+          <p>控制字体、颜色、尺寸和位置。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">📐</div>
+          <h3>预设尺寸</h3>
+          <p>从社交媒体和印刷的正确尺寸开始。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🎨</div>
+          <h3>实时预览</h3>
+          <p>设计实时更新可见。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🔒</div>
+          <h3>100% 隐私</h3>
+          <p>全部设计工作在浏览器本地完成。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🆓</div>
+          <h3>永久免费</h3>
+          <p>无需注册、无水印、无限制。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">📤</div>
+          <h3>导出就绪</h3>
+          <p>即时下载可投入使用的图片。</p>
+        </div>
+        </div>
+      </section>
+
+<div class="trust-badges">
+  <div class="trust-badge"><div class="tb-icon">🔒</div><div class="tb-title">100% 隐私</div><div class="tb-desc">文件不离开浏览器</div></div>
+  <div class="trust-badge"><div class="tb-icon">⚡</div><div class="tb-title">浏览器端</div><div class="tb-desc">无需安装、不上传</div></div>
+  <div class="trust-badge"><div class="tb-icon">💯</div><div class="tb-title">永久免费</div><div class="tb-desc">无需注册、无水印</div></div>
+  <div class="trust-badge"><div class="tb-icon">🚀</div><div class="tb-title">无需注册</div><div class="tb-desc">即刻开始，无需账号</div></div>
+</div>
+  
+      <section class="faq-section">
+        <h2>常见问题</h2>
+<div class="faq-item"><button class="faq-question">可用鼠标或手写笔吗？</button><div class="faq-answer">可以——均支持，移动端还支持触摸。</div></div>
+<div class="faq-item"><button class="faq-question">签名是什么格式？</button><div class="faq-answer">透明 PNG，可放置于任何文档。</div></div>
+<div class="faq-item"><button class="faq-question">可以用自己的图片和字体吗？</button><div class="faq-answer">可以——上传自己的素材并使用内置字体选项。</div></div>
+<div class="faq-item"><button class="faq-question">下载有水印吗？</button><div class="faq-answer">没有。下载内容干净无水印。</div></div>
+      </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. 保留所有权利.</p></div>
+    </div>
+  </footer>
+
+  <script src="/js/signature_pad.umd.min.js"></script>
+  <script>
+(function() {
+  const canvas = document.getElementById('sigCanvas');
+  const signaturePad = new SignaturePad(canvas, {
+    penColor: '#000000',
+    minWidth: 1,
+    maxWidth: 3,
+    backgroundColor: 'rgba(0,0,0,0)'
+  });
+
+  // Resize canvas for high DPI
+  function resizeCanvas() {
+    const ratio = Math.max(window.devicePixelRatio || 1, 1);
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * ratio;
+    canvas.height = rect.height * ratio;
+    canvas.getContext('2d').scale(ratio, ratio);
+    signaturePad.clear();
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  // Tabs
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const drawArea = document.getElementById('drawArea');
+  const typeArea = document.getElementById('typeArea');
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab + '-pane').classList.add('active');
+      if (btn.dataset.tab === 'draw') { drawArea.style.display = ''; typeArea.style.display = 'none'; }
+      else { drawArea.style.display = 'none'; typeArea.style.display = 'flex'; updateTypeSig(); }
+    });
+  });
+
+  // Draw controls
+  document.getElementById('penColor').addEventListener('input', e => signaturePad.penColor = e.target.value);
+  document.getElementById('penSize').addEventListener('input', e => {
+    signaturePad.minWidth = Math.max(0.5, parseInt(e.target.value) / 3);
+    signaturePad.maxWidth = parseInt(e.target.value);
+  });
+  document.getElementById('clearBtn').addEventListener('click', () => signaturePad.clear());
+  document.getElementById('undoBtn').addEventListener('click', () => {
+    const data = signaturePad.toData();
+    if (data.length > 0) { data.pop(); signaturePad.fromData(data); }
+  });
+
+  // Type controls
+  const sigText = document.getElementById('sigText');
+  const sigFont = document.getElementById('sigFont');
+  const textColor = document.getElementById('textColor');
+  const fontSize = document.getElementById('fontSize');
+  const typeSigSpan = document.getElementById('typeSigSpan');
+  
+  function updateTypeSig() {
+    typeSigSpan.textContent = sigText.value || 'Your Signature';
+    typeSigSpan.style.fontFamily = `'${sigFont.value}', cursive`;
+    typeSigSpan.style.color = textColor.value;
+    typeSigSpan.style.fontSize = fontSize.value + 'px';
+  }
+  [sigText, sigFont, textColor, fontSize].forEach(el => el.addEventListener('input', updateTypeSig));
+
+  function getActiveCanvas() {
+    if (drawArea.style.display !== 'none') {
+      if (signaturePad.isEmpty()) { alert('Please draw your signature first.'); return null; }
+      return canvas;
+    } else {
+      const text = sigText.value.trim();
+      if (!text) { alert('Please enter your name.'); return null; }
+      const c = document.createElement('canvas');
+      c.width = 800; c.height = 200;
+      const ctx = c.getContext('2d');
+      ctx.font = `${fontSize.value}px '${sigFont.value}', cursive`;
+      ctx.fillStyle = textColor.value;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(text, 400, 100);
+      return c;
+    }
+  }
+
+  document.getElementById('downloadPngBtn').addEventListener('click', () => {
+    c = getActiveCanvas(); if (!c) return;
+    SmartImgKit._triggerDownload(c.toDataURL('image/png'), 'signature.png');
+  });
+  document.getElementById('downloadJpgBtn').addEventListener('click', () => {
+    c = getActiveCanvas(); if (!c) return;
+    const jc = document.createElement('canvas');
+    jc.width = c.width; jc.height = c.height;
+    const jctx = jc.getContext('2d');
+    jctx.fillStyle = '#ffffff';
+    jctx.fillRect(0, 0, jc.width, jc.height);
+    jctx.drawImage(c, 0, 0);
+    (function() { (function() { var link = document.createElement('a');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ link.href = jc.toDataURL('image/jpeg', 0.95); link.setAttribute('download', 'signature.svg'); link.style.display = 'none'; document.body.appendChild(link); var _e = new MouseEvent('click', {view: window, bubbles: true, cancelable: true}); link.dispatchEvent(_e); setTimeout(function() { if(link.parentNode) link.parentNode.removeChild(link); }, 4000); })();
+  });
+})();
+  </script>
+</body>
+</html>

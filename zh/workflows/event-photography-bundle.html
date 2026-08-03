@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>活动摄影套件 — 免费多尺寸图片工作流 | SmartImgKit</title>
+  <meta name="description" content="批量处理活动照片：压缩、加水印、调整尺寸以用于网页展示和客户交付。">
+  <meta name="keywords" content="event photography bundle, image workflow, batch image processing, smartimgkit">
+  <link rel="canonical" href="https://smartimgkit.com/zh/workflows/event-photography-bundle">
+  <meta name="theme-color" content="#a855f7">
+  <meta property="og:title" content="Event Photography Bundle | SmartImgKit">
+  <meta property="og:description" content="Batch process event photos: compress, watermark, and resize for web delivery and client previews. 100% browser-based.">
+  <meta property="og:url" content="https://smartimgkit.com/zh/workflows/event-photography-bundle">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Event Photography Bundle | SmartImgKit">
+  <meta name="twitter:description" content="Batch process event photos: compress, watermark, and resize for web delivery and client previews. 100% browser-based.">
+  <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/workflows/event-photography-bundle.html">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/workflows/event-photography-bundle.html">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/workflows/event-photography-bundle.html">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="../../css/style.css?v=4">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="/js/jszip.min.js"></script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Event Photography Bundle", "url": "https://smartimgkit.com/zh/workflows/event-photography-bundle", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "description": "Batch process event photos: compress, watermark, and resize for web delivery and client previews. 100% browser-based."}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "HowTo", "name": "How to use Event Photography Bundle", "step": [{"@type": "HowToStep", "position": 1, "name": "Upload event photos (batch)", "text": "Upload event photos (batch)"}, {"@type": "HowToStep", "position": 2, "name": "Add studio watermark", "text": "Add studio watermark"}, {"@type": "HowToStep", "position": 3, "name": "Compress for delivery", "text": "Compress for delivery"}, {"@type": "HowToStep", "position": 4, "name": "Download ZIP", "text": "Download ZIP"}]}</script>
+  <style>
+    .workflow-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:1.5rem 0}
+    .workflow-step{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:1rem;position:relative}
+    .workflow-step .step-num{position:absolute;top:-12px;left:12px;background:var(--accent);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem}
+    .workflow-step h4{margin:0.5rem 0 0.25rem;font-size:1rem}
+    .workflow-step p{color:var(--text-secondary);font-size:.85rem;margin:0}
+    .workflow-step select,.workflow-step input[type=text],.workflow-step input[type=number]{width:100%;padding:6px 10px;border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-primary);border-radius:6px;margin-top:0.4rem;font-size:.9rem}
+    .workflow-step label{font-size:.75rem;color:var(--text-secondary);font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+    .workflow-step .badge{display:inline-block;background:var(--bg-tertiary);color:var(--text-muted);padding:2px 8px;border-radius:4px;font-size:.7rem;margin-top:0.5rem}
+    .size-chips{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:0.5rem}
+    .size-chip{display:inline-flex;align-items:center;gap:6px;background:var(--bg-tertiary);padding:6px 12px;border-radius:20px;font-size:.85rem;cursor:pointer;border:1px solid var(--border-color)}
+    .size-chip input{accent-color:var(--accent)}
+    .progress-bar{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);width:min(560px,90vw);background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:12px 16px;box-shadow:var(--shadow-lg);z-index:9999}
+    .progress-fill{height:8px;background:linear-gradient(90deg,var(--accent),#a855f7);border-radius:4px;transition:width .2s ease}
+    .progress-text{color:var(--text-secondary);font-size:.85rem;margin-top:6px;text-align:center}
+    .upload-area{border:2px dashed var(--border-color);border-radius:16px;padding:3rem 2rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg-secondary)}
+    .upload-area:hover{border-color:var(--accent);background:rgba(168,85,247,.05)}
+    .upload-area.drag{border-color:var(--accent);background:rgba(168,85,247,.1)}
+    .upload-icon{font-size:3rem;margin-bottom:.5rem}
+    .upload-hint{color:var(--text-muted);font-size:.8rem;margin-top:.5rem}
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How many images can I process at once?", "acceptedAnswer": {"@type": "Answer", "text": "Up to 30 images per run depending on your device and browser."}}, {"@type": "Question", "name": "Are my images uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. All processing runs locally in your browser. Images never leave your device."}}, {"@type": "Question", "name": "Can I skip optional steps?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Leave watermark text empty or set filter to None to skip those steps automatically."}}]}</script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/zh/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/zh/">首页</a><a href="/zh/tools/background-remover">工具</a><a href="/zh/workflows/">工作流</a><a href="/zh/blog/">博客</a><a href="/about">关于</a></nav>
+      <div class="header-actions">
+        <button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/workflows/">工作流</a><span>/</span><span>活动摄影套件</span></nav>
+      <div class="tool-page-header">
+        <h1>📸 活动摄影套件</h1>
+        <p>一次上传，批量处理活动照片。免费、浏览器端处理。</p>
+      </div>
+      <div class="ad-placeholder">广告</div>
+      <div class="tool-workspace">
+
+<div class="upload-area" id="uploadArea">
+    <input type="file" id="fileInput" accept="image/*" multiple hidden>
+    <div class="upload-icon">📸</div>
+    <h3>将图片拖放到此处</h3>
+    <p>或点击浏览（支持多文件）</p>
+    <p class="upload-hint">支持 JPG、PNG、WebP • 单次最多 30 张图片</p>
+</div>
+
+<div id="workspace" style="display:none">
+    <div style="text-align:center;margin:1rem 0;color:var(--text-secondary)" id="fileCount">0 个文件已选择</div>
+    <h3 style="margin-top:1.5rem">流水线步骤</h3>
+    <div class="workflow-steps">
+
+      <div class="workflow-step">
+        <div class="step-num">1</div>
+        <h4>水印 / 品牌</h4>
+        <p>添加文字水印</p>
+        <label>文字（留空=跳过）</label>
+        <input type="text" id="optWmText" placeholder="@yourbrand" maxlength="30">
+        <label style="margin-top:0.6rem;display:block">不透明度</label>
+        <select id="optWmOpacity">
+          <option value="0.2">20%（淡）</option>
+          <option value="0.35" selected>35%（中）</option>
+          <option value="0.5">50%（强）</option>
+        </select>
+        <span class="badge">可选</span>
+      </div>
+      <div class="workflow-step">
+        <div class="step-num">2</div>
+        <h4>压缩</h4>
+        <p>优化文件大小</p>
+        <label>质量</label>
+        <select id="optQuality">
+          <option value="70">70%（极小）</option>
+          <option value="80" selected>80%（均衡）</option>
+          <option value="90">90%（高质量）</option>
+          <option value="95">95%（最高）</option>
+        </select>
+        <span class="badge">必选</span>
+      </div>
+      <div class="workflow-step">
+        <div class="step-num">3</div>
+        <h4>导出尺寸</h4>
+        <p>输出图片尺寸</p>
+        <div class="size-chips"><label class="size-chip"><input type="checkbox" value="2000" checked>完整（2000px）</label><label class="size-chip"><input type="checkbox" value="1200" checked>图库（1200px）</label><label class="size-chip"><input type="checkbox" value="800" checked>预览（800px）</label></div>
+        <span class="badge">多输出</span>
+      </div>
+    </div>
+    <div class="controls" style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;margin:1.5rem 0">
+      <button class="btn btn-primary" id="runBtn" disabled>🚀 运行流水线</button>
+      <button class="btn btn-secondary" id="resetBtn">↺ 重置</button>
+    </div>
+</div>
+
+      </div>
+      <div class="ad-placeholder">广告</div>
+
+      <section class="how-to-section">
+        <h2>此工作流如何运作</h2>
+        <p>此工作流串联 3 个处理步骤：上传一次，每张图片依次经过 水印 → 压缩 → 多尺寸导出，最后得到一个包含所有输出的 ZIP。</p>
+        <ol>
+          <li><strong>上传活动照片（批量）</strong></li><li><strong>添加工作室水印</strong></li><li><strong>为交付压缩</strong></li><li><strong>下载 ZIP</strong></li>
+        </ol>
+      </section>
+
+      <section class="faq-section">
+        <h2>常见问题</h2>
+        <div class="faq-item"><button class="faq-question">一次可以处理多少张图片？</button><div class="faq-answer">最多 30 张图片，取决于您的设备和浏览器。</div></div>
+        <div class="faq-item"><button class="faq-question">我的图片会上传到服务器吗？</button><div class="faq-answer">不会。所有处理都在您的浏览器本地完成。</div></div>
+        <div class="faq-item"><button class="faq-question">可以跳过可选步骤吗？</button><div class="faq-answer">可以。将水印文字留空或将滤镜设为“无”即可。</div></div>
+      </section>
+
+      <section class="related-section">
+        <h2>相关工作流</h2>
+        <div class="related-tools-grid">
+          <a href="/zh/workflows/avatar-pipeline" class="related-tool-card"><span class="tool-icon">👤</span><div class="tool-info"><strong>头像流水线</strong><span class="tool-desc">圆形裁剪 + 多尺寸头像</span></div><span class="tool-arrow">→</span></a>
+          <a href="/zh/workflows/social-media-kit" class="related-tool-card"><span class="tool-icon">📱</span><div class="tool-info"><strong>社交媒体套件</strong><span class="tool-desc">为所有平台自动裁剪</span></div><span class="tool-arrow">→</span></a>
+          <a href="/zh/workflows/e-commerce-pack" class="related-tool-card"><span class="tool-icon">🛒</span><div class="tool-info"><strong>电商图片包</strong><span class="tool-desc">商品图片批量流水线</span></div><span class="tool-arrow">→</span></a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="/zh/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>尊重您隐私的免费 AI 图像工具。</p></div>
+        <div class="footer-links"><h4>工具</h4><a href="/zh/tools/background-remover">抠图工具</a><a href="/zh/tools/compressor">图片压缩器</a><a href="/zh/tools/converter">图像格式转换器</a></div>
+        <div class="footer-links"><h4>工作流</h4><a href="/zh/workflows/">全部工作流</a></div>
+        <div class="footer-links"><h4>法律</h4><a href="/privacy">隐私</a><a href="/terms">条款</a></div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. 保留所有权利。</p></div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js?v=4"></script>
+  <script src="_workflow_engine.js"></script>
+  <script src="_avatar_runners.js"></script>
+  <script src="_product_opt_runners.js"></script>
+  <script>
+(function() {
+  const $ = id => document.getElementById(id);
+  const uploadArea = $('uploadArea');
+  const fileInput = $('fileInput');
+  const workspace = $('workspace');
+  const fileCount = $('fileCount');
+  const runBtn = $('runBtn');
+  const resetBtn = $('resetBtn');
+  let files = [];
+
+  uploadArea.addEventListener('click', () => fileInput.click());
+  uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('drag'); });
+  uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag'));
+  uploadArea.addEventListener('drop', e => {
+    e.preventDefault(); uploadArea.classList.remove('drag');
+    if (e.dataTransfer.files.length) { handleFiles(Array.from(e.dataTransfer.files)); }
+  });
+  fileInput.addEventListener('change', e => { if (e.target.files.length) handleFiles(Array.from(e.target.files)); });
+
+  function handleFiles(f) {
+    files = f.filter(x => x.type.startsWith('image/'));
+    if (!files.length) return;
+    fileCount.textContent = files.length + ' file(s) selected';
+    uploadArea.style.display = 'none';
+    workspace.style.display = 'block';
+    runBtn.disabled = false;
+  }
+
+  resetBtn.addEventListener('click', () => {
+    files = []; fileInput.value = '';
+    uploadArea.style.display = 'block';
+    workspace.style.display = 'none';
+    runBtn.disabled = true;
+  });
+
+  function buildSteps() {
+    const wmText = $('optWmText') ? $('optWmText').value.trim() : '';
+    const quality = $('optQuality') ? parseInt($('optQuality').value) : 82;
+    const filterMode = $('optFilter') ? $('optFilter').value : 'none';
+    const wmOpacity = $('optWmOpacity') ? parseFloat($('optWmOpacity').value) : 0.35;
+
+    const steps = [];
+    steps.push({ id: 'watermark', label: 'Watermark', runner: 'watermark', options: {'text': wmText, 'size': 18, 'opacity': wmOpacity, 'color': '#ffffff'} });
+    steps.push({ id: 'compress', label: 'Compress', runner: 'compress', options: {'quality': quality} });
+    return steps;
+  }
+
+  runBtn.addEventListener('click', async () => {
+    if (!files.length) return;
+    const baseSteps = buildSteps();
+    const sizes = Array.from(document.querySelectorAll('.size-chip input:checked')).map(x => parseInt(x.value));
+    if (!sizes.length) { alert('Please select at least one output size.'); return; }
+
+    runBtn.disabled = true; runBtn.textContent = '⏳ 处理中…';
+    try {
+      const allOutputs = [];
+      for (let fi = 0; fi < files.length; fi++) {
+        let cur = files[fi];
+        for (const step of baseSteps) {
+          if ((step.runner === 'watermark' && !step.options.text) ||
+              (step.runner === 'filter' && step.options.mode === 'none')) continue;
+          const runner = SmartImgKit.runners[step.runner];
+          if (runner) cur = await runner(cur, step.options, msg => {});
+        }
+        for (const sz of sizes) {
+          const sized = await SmartImgKit.runners.resize(cur, { size: sz }, () => {});
+          const dot = files[fi].name.lastIndexOf('.');
+          const base = dot > -1 ? files[fi].name.slice(0, dot) : files[fi].name;
+          allOutputs.push({ name: base + '_' + sz + 'px.jpg', blob: sized });
+        }
+      }
+      const zip = new JSZip();
+      allOutputs.forEach(o => zip.file(o.name, o.blob));
+      const blob = await zip.generateAsync({ type: 'blob' });
+      SmartImgKit._triggerDownload(blob, 'event-photography-bundle-output.zip');
+      runBtn.textContent = '✅ Done!';
+      setTimeout(() => { runBtn.textContent = '🚀 运行流水线'; runBtn.disabled = false; }, 2000);
+    } catch (e) {
+      alert('Error: ' + e.message);
+      runBtn.textContent = '🚀 运行流水线'; runBtn.disabled = false;
+    }
+  });
+})();
+  </script>
+</body>
+</html>

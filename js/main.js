@@ -397,3 +397,141 @@ window.initSampleButton = function(sampleUrl, onFile) {
 initTheme();
 initCookieConsent();
 
+/* ===== Reliable Download Trigger (global) ===== */
+window.SmartImgKit = window.SmartImgKit || {};
+SmartImgKit._triggerDownload = function (blob, filename) {
+  if (!filename.includes('.')) filename += '.zip';
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.setAttribute('download', filename);
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  const evt = new MouseEvent('click', { view: window, bubbles: true, cancelable: true });
+  a.dispatchEvent(evt);
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+    if (a.parentNode) a.parentNode.removeChild(a);
+  }, 4000);
+};
+SmartImgKit._downloadBlob = function (blob, filename, type) {
+  if (type && !filename.includes('.')) {
+    const extMap = { 'application/pdf': '.pdf', 'image/jpeg': '.jpg', 'image/png': '.png', 'image/gif': '.gif', 'application/zip': '.zip', 'video/mp4': '.mp4', 'audio/mpeg': '.mp3', 'image/webp': '.webp' };
+    filename += (extMap[type] || '');
+  }
+  SmartImgKit._triggerDownload(blob, filename);
+};
+
+
+/* ===== Homepage Tools Search & Category Pills ===== */
+(function initToolsSearch() {
+  var searchInput = document.getElementById('toolSearch');
+  if (!searchInput) return;
+  var grid = document.querySelector('.tools-grid');
+  if (!grid) return;
+  var toolCards = Array.prototype.slice.call(grid.querySelectorAll('.tool-card'));
+  var catHeaders = Array.prototype.slice.call(grid.querySelectorAll('.tools-category-header'));
+  var subHeaders = Array.prototype.slice.call(grid.querySelectorAll('.tools-subcategory-header'));
+  var pills = Array.prototype.slice.call(document.querySelectorAll('.cat-pill'));
+  var noResults = document.getElementById('noResults');
+  var siteHeader = document.querySelector('.site-header');
+  var nav = document.querySelector('.tools-nav');
+
+  function adjustNavTop() {
+    if (siteHeader && nav) nav.style.top = siteHeader.offsetHeight + 'px';
+  }
+  adjustNavTop();
+  window.addEventListener('resize', adjustNavTop);
+
+  var searchTimer;
+  searchInput.addEventListener('input', function () {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(doSearch, 100);
+  });
+
+  function doSearch() {
+    var q = searchInput.value.trim().toLowerCase();
+    if (!q) {
+      toolCards.forEach(function (c) { c.style.display = ''; });
+      catHeaders.forEach(function (h) { h.style.display = ''; });
+      subHeaders.forEach(function (h) { h.style.display = ''; });
+      if (noResults) noResults.style.display = 'none';
+      return;
+    }
+    var visible = 0;
+    toolCards.forEach(function (card) {
+      var text = (card.textContent || '').toLowerCase();
+      var match = text.indexOf(q) !== -1;
+      card.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+    catHeaders.forEach(function (h) {
+      var cat = h.getAttribute('data-cat-key');
+      var any = toolCards.some(function (c) {
+        return c.getAttribute('data-cat') === cat && c.style.display !== 'none';
+      });
+      h.style.display = any ? '' : 'none';
+    });
+    subHeaders.forEach(function (h) {
+      var cat = h.getAttribute('data-cat-key');
+      var sub = h.getAttribute('data-sub-key');
+      var any = toolCards.some(function (c) {
+        return c.getAttribute('data-cat') === cat &&
+               c.getAttribute('data-sub') === sub &&
+               c.style.display !== 'none';
+      });
+      h.style.display = any ? '' : 'none';
+    });
+    if (noResults) noResults.style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  function setActivePill(cat) {
+    pills.forEach(function (p) {
+      p.classList.toggle('active', p.getAttribute('data-cat') === cat);
+    });
+  }
+
+  pills.forEach(function (pill) {
+    pill.addEventListener('click', function (e) {
+      e.preventDefault();
+      var offset = (siteHeader ? siteHeader.offsetHeight : 0) +
+                   (nav ? nav.offsetHeight : 0) + 12;
+      var target;
+      if (pill.getAttribute('data-cat') === 'all') {
+        target = document.getElementById('tools');
+      } else {
+        target = document.querySelector(pill.getAttribute('href'));
+      }
+      if (target) {
+        var y = target.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+      setActivePill(pill.getAttribute('data-cat'));
+    });
+  });
+
+  /* Scroll-spy: highlight the pill for the category currently at the top */
+  function getTopOffset() {
+    return (siteHeader ? siteHeader.offsetHeight : 0) +
+           (nav ? nav.offsetHeight : 0) + 30;
+  }
+  function updateActiveOnScroll() {
+    var offset = getTopOffset();
+    var current = 'all';
+    for (var i = 0; i < catHeaders.length; i++) {
+      var h = catHeaders[i];
+      if (h.style.display === 'none') continue;
+      var top = h.getBoundingClientRect().top;
+      if (top - offset <= 5) {
+        current = h.getAttribute('data-cat-key') || 'all';
+      }
+    }
+    setActivePill(current);
+  }
+  var scrollTimer;
+  window.addEventListener('scroll', function () {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(updateActiveOnScroll, 60);
+  }, { passive: true });
+  updateActiveOnScroll();
+})();

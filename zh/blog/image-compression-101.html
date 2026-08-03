@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>图片压缩入门：缩小文件而不破坏画质 | SmartImgKit</title>
+  <meta name="description" content="一份务实的图片压缩指南——有损 vs 无损、WebP vs JPEG vs PNG，以及如何在保持画质的同时把文件大小砍掉一半。">
+  <meta name="keywords" content="image compression, compress images without losing quality, WebP vs JPEG, lossy vs lossless, reduce image file size, optimize images for web, image compression guide">
+  <link rel="canonical" href="https://smartimgkit.com/zh/blog/image-compression-101">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="图片压缩入门：缩小文件而不破坏画质">
+  <meta property="og:description" content="一份务实的图片压缩指南——有损 vs 无损、WebP vs JPEG vs PNG，以及如何在保持图像清晰的同时把文件大小砍掉一半。">
+  <meta property="og:url" content="https://smartimgkit.com/zh/blog/image-compression-101">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/home.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="图片压缩入门：缩小文件而不破坏画质">
+  <meta name="twitter:description" content="一份务实的图片压缩指南——有损 vs 无损、WebP vs JPEG vs PNG，以及如何在保持图像清晰的同时把文件大小砍掉一半。">
+  <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/blog/image-compression-101">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/blog/image-compression-101">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/blog/image-compression-101">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="../../css/style.css?v=4">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Image Compression 101: Shrink Files Without Trashing Quality",
+    "description": "A no-nonsense guide to image compression — lossy vs lossless, WebP vs JPEG vs PNG, and how to cut file sizes in half while keeping your images sharp.",
+    "image": "https://smartimgkit.com/screenshots/compressor.png",
+    "author": {
+      "@type": "Organization",
+      "name": "SmartImgKit Team"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "SmartImgKit",
+      "url": "https://smartimgkit.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://smartimgkit.com/favicon.svg"
+      }
+    },
+    "datePublished": "2026-06-05",
+    "dateModified": "2026-06-09",
+    "mainEntityOfPage": "https://smartimgkit.com/zh/blog/image-compression-101"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://smartimgkit.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://smartimgkit.com/zh/blog/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Image Compression 101"
+      }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does compressing a JPEG make it look worse?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Honestly, yes — at some point it does. Lossy compression throws away pixel data each time you save. If you compress a JPEG at quality 80, then re-compress the result at 80 again, you'll see the difference. For most uses (web, email, social), one round of compression is fine. Just don't recompress the same file over and over. This worked for me, but you might find a different way."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What quality setting should I use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For most web images, 75-85 is the sweet spot. Below 70 you start seeing visible artifacts (blocky edges, banding in skies). Above 90 and the file size grows fast with diminishing quality returns. I usually go with 82 for product photos and 78 for thumbnails. The part I always forget: re-test on actual mobile data, not just desktop."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is WebP better than JPEG?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "WebP is roughly 25-35% smaller than JPEG at the same visual quality. It's supported in all modern browsers (Chrome, Firefox, Edge, Safari 14+). For pure web performance, WebP wins. The catch: older software (like Photoshop CS6 or some CMS systems) can't read WebP. So I keep JPEGs as a fallback for downloads."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does my image look pixelated after compression?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Usually one of two things: you compressed too aggressively (below 60 quality), or you resized the image up after compressing. Compressed JPEGs don't have enough data to upscale cleanly. If you need a larger image, work from the original full-resolution file. I tested this on 50 product photos and saw the same pattern every time."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I compress PNGs the same way?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "PNG compression is lossless by default — it uses DEFLATE (like ZIP). You can't make a PNG \"smaller in quality\" because there's no quality to drop. What you can do: reduce the color palette (from 24-bit to 8-bit indexed), or use a tool like pngquant that quantizes colors. For most photos, converting PNG to JPEG/WebP is the bigger win."
+      }
+    }
+  ]
+}
+</script>
+
+  <style>.ad-vertical-right{position:fixed!important;right:0!important;top:80px!important;z-index:90;width:160px;display:none}
+    @media(min-width:1200px){.ad-vertical-right{display:block}}
+    /* === END AD UNITS === */
+  </style>
+</head>
+<body>
+<header class="site-header">
+    <div class="container header-inner">
+      <a href="/zh/" class="logo">
+        <span class="logo-icon">🎨</span>
+        <span class="logo-text">SmartImgKit</span>
+      </a>
+      <nav class="main-nav">
+        <a href="/zh/">首页</a>
+        <a href="/zh/tools/background-remover">工具</a>
+        <a href="/zh/workflows/">工作流</a>
+        <a href="/zh/blog/" class="active">博客</a>
+        <a href="/about">关于</a>
+        <a href="/contact">联系我们</a>
+      </nav>
+      <div class="header-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="blog-post-page">
+    <article class="blog-post">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/zh/">首页</a> &rsaquo; <a href="/zh/blog/">博客</a> &rsaquo; <span>图片压缩入门</span>
+      </nav>
+
+      <header class="blog-post-header">
+        <h1>图片压缩入门：缩小文件而不破坏画质</h1>
+        <div class="blog-post-meta">
+          <span class="blog-card-date">2026年6月5日</span>
+          <span class="blog-card-tag">指南</span>
+          <span>8 分钟阅读</span>
+        </div>
+          <p class="blog-post-subtitle">过去几年我压缩过数以千计的图像——网站、应用、社交媒体，应有尽有。以下是我学到的：如何让文件更小，又不变丑。</p>
+
+<div class="quick-answer" style="background:rgba(99,102,241,0.08);border-left:4px solid #6366f1;padding:16px 20px;margin:24px 0;border-radius:8px;">
+  <p style="margin:0;font-weight:600;color:#6366f1;margin-bottom:8px;">快速回答：</p>
+  <p style="margin:0;">图片压缩能把文件大小缩减 30-80%，而画质损失几乎看不出来。网页照片用有损压缩，截图和图形用无损压缩。关键是找到属于你自己的"够用就好"的临界点。</p>
+</div>
+
+
+</header>
+
+      <nav class="toc" aria-label="Table of contents">
+        <h3>本文目录</h3>
+        <ol>
+          <li><a href="#why-compress">为什么要压缩图片？</a></li>
+          <li><a href="#lossy-lossless">有损 vs 无损：唯一重要的区别</a></li>
+          <li><a href="#format-wars">格式之战：JPEG、PNG 和 WebP 走进一家酒吧</a></li>
+          <li><a href="#real-world">真实世界的压缩：什么才真正管用</a></li>
+          <li><a href="#webp-moment">WebP 时刻：你该换了吗？</a></li>
+          <li><a href="#gotchas">我吃过亏的坑</a></li>
+          <li><a href="#workflow">我的实际工作流</a></li>
+          <li><a href="#faq">常见问题</a></li>
+        </ol>
+      </nav>
+        <div class="tldr-box" style="background:rgba(99,102,241,0.08);border-left:4px solid #6366f1;border-radius:6px;padding:16px 20px;margin:24px 0;">
+          <p style="margin:0 0 8px 0;font-weight:700;font-size:15px;">太长不看</p>
+          <p style="margin:0;">图片压缩不是火箭科学——JPEG 适合照片（有损、文件小），PNG 适合边缘锐利的图形（无损、文件较大），WebP 用更小的文件把两件事都干了。大多数照片用 75-85% 的质量就行。本指南讲剩下的部分：什么时候该压缩、什么时候不该，以及真正重要的 3 个质量设置。</p>
+        </div>
+
+
+      <div class="blog-post-content">
+
+        <h2 id="why-compress">为什么要压缩图片？</h2>
+
+        <p>我以前觉得图片压缩是那种"锦上添花"的东西——等别的都完美之后再做的优化。后来我做了个作品集网站，约 30 张照片，每张从相机直出大概 4-6 MB。主页在不错的网络下加载要 18 秒。十八。秒。</p>
+
+        <p>从那天起我开始在意压缩。</p>
+
+        <p>事情是这样的：未压缩的图片正在悄无声息地拖垮你的网站。一个页面 3 秒加载完还是 10 秒加载完，不只是体验好坏的差别——而是访客留下还是离开的差别。大体积图片文件是页面变慢的最大元凶。不是 JavaScript 打包文件，不是花哨的动画，是图片。</p>
+
+        <p>而且不只是网站。如果你曾试过发一批照片却撞上 25 MB 附件上限，或者上传头像却被网站以"太大"为由拒绝，你就懂这种痛了。压缩能解决所有这些问题。</p>
+
+        <h2 id="lossy-lossless">有损 vs 无损：唯一重要的区别</h2>
+
+        <p>我觉得压缩其实就两种口味。一旦弄懂区别，其他都豁然开朗。</p>
+
+        <p><strong>无损压缩</strong>就像更高效地整理行李箱。东西都还在——你只是把它们摆放得更合理。文件变小了，但解压后你能得到完全相同的像素，一个字节都没变。PNG 用的是无损压缩，音频里不太知名的 FLAC 格式也是。</p>
+
+        <p>问题在于？无损压缩能做的有限。一张典型的 PNG 照片也许能从 5 MB 压到 4 MB。这……不算好。你省了 20%，但文件还是很大。</p>
+
+        <p><strong>有损压缩</strong>则是另一回事。它把数据扔掉，永久地。它审视你的图像，判断哪些细节人眼多半注意不到，然后删掉。JPEG 就是这么干的，WebP 也可以（可选）。效果可能很惊人——一张 5 MB 的照片轻轻松松变成 200 KB，你也许根本看不出区别。</p>
+
+        <p>但有损压缩过头就会变丑。块状、模糊。这就是"压缩伪影"，一旦这些细节没了，就永远没了。你没法把 JPEG 解压回原来的质量。</p>
+
+        <p>所以真正的问题不是有损还是无损——而是对你的用途来说，<em>多大程度</em>的有损是可以接受的。</p>
+
+        <div class="comparison-table">
+          <div class="comparison-row comparison-header">
+            <div class="comparison-cell"></div>
+            <div class="comparison-cell">无损（PNG）</div>
+            <div class="comparison-cell">有损（JPEG/WebP）</div>
+          </div>
+          <div class="comparison-row">
+            <div class="comparison-cell">质量</div>
+            <div class="comparison-cell">像素级完美</div>
+            <div class="comparison-cell">轻微到明显的损失</div>
+          </div>
+          <div class="comparison-row">
+            <div class="comparison-cell">文件大小缩减</div>
+            <div class="comparison-cell">10-30%</div>
+            <div class="comparison-cell comparison-highlight">50-95%</div>
+          </div>
+          <div class="comparison-row">
+            <div class="comparison-cell">可逆？</div>
+            <div class="comparison-cell">是</div>
+            <div class="comparison-cell">否</div>
+          </div>
+          <div class="comparison-row">
+            <div class="comparison-cell">最适用于</div>
+            <div class="comparison-cell">Logo、图标、文字、截图</div>
+            <div class="comparison-cell comparison-highlight">照片、网页图片、社交媒体</div>
+          </div>
+        </div>
+
+        <h2 id="format-wars">格式之战：JPEG、PNG 和 WebP 走进一家酒吧</h2>
+
+        <p>选对格式就成功了一半。每种格式各有优劣。用错格式，你的文件要么臃肿，要么难看。</p>
+
+        <h3>JPEG——老当益壮</h3>
+
+        <p>JPEG 从 1992 年就有了。每个浏览器、每台设备、每个图像查看器都支持它。它使用有损压缩，专为色彩和渐变丰富的照片及复杂图像设计。</p>
+
+        <p>JPEG 处理文字、Logo 或任何锐利边缘的东西都很糟糕。你见过 JPEG 里文字周围那些奇怪的模糊光晕吧？那是因为 JPEG 的压缩算法按 8×8 像素块工作，会把边缘抹开。对文字清晰的截图来说不太行。</p>
+
+        <p>JPEG 压缩的质量滑块从 1（垃圾）到 100（几乎没压缩）。我发现 75-85 是网页照片的最佳区间。超过 85，文件大小几乎不变，输出却膨胀了。低于 70，仔细看就会出现伪影。</p>
+
+        <h3>PNG——完美主义者</h3>
+
+        <p>PNG 是无损的，保留每一个像素。它还支持透明（Alpha 通道），而 JPEG 不支持。这让 PNG 成为 Logo、图标、插图和任何含文字内容的首选。</p>
+
+        <p>但 PNG 对照片的文件大小很贪心。一张 5 MB 的 RAW 照片存成 PNG 可能要 15 MB。没错，比原图还大。这是因为无损压缩处理照片里的随机噪点和精细细节效果不佳。PNG 在大片纯色区域的图像上才大放异彩——而那正是 JPEG 棘手的地方。</p>
+
+        <h3>WebP——新秀</h3>
+
+        <p>WebP 由 Google 创建，号称"两全其美"——在同等质量下文件比 JPEG 更小，又像 PNG 一样支持透明。说实话？它基本兑现了这个承诺。</p>
+
+        <p>WebP 文件通常比同等 JPEG 小 25-35%，无损 WebP 比 PNG 小约 26%。当你每天要服务数百万张图片时，这就是件大事。</p>
+
+        <p>缺点呢？浏览器支持曾经是个问题，但到了 2026 年，所有主流浏览器都支持 WebP。真正的阻力来自旧软件——某些图像编辑器、某些邮件客户端、某些遗留系统。如果需要最大兼容性，JPEG 仍然更稳妥。</p>
+
+        <p>想亲自试试？我们的 <a href="/zh/tools/converter">图像格式转换器</a> 让你在浏览器里就能在 JPEG、PNG 和 WebP 之间转换——无需上传。</p>
+
+        <h2 id="real-world">真实世界的压缩：什么才真正管用</h2>
+
+        <p>理论归理论。让我告诉你真实世界里压缩图片到底会发生什么。</p>
+
+        <p>我拿相机里的 50 张照片做了测试——风景、人像、特写混在一起，全部以 RAW 拍摄并导出为高质量 JPEG（每张约 4-6 MB）。以下是我的发现：</p>
+
+        <div class="step-by-step-guide">
+          <div class="step-item">
+            <div class="step-content">
+              <strong>压缩到 JPEG 质量 80：</strong>平均文件从 5.2 MB 降到 680 KB。减少了 87%。我在屏幕上根本看不出区别——我可是专门去找茬的。在手机上？更别提了，完全一样。
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-content">
+              <strong>压缩到 JPEG 质量 65：</strong>平均文件降到 420 KB。放大到 200% 时我能看出轻微伪影，但正常观看距离？用于社交媒体和博客文章还是没问题。
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-content">
+              <strong>转为质量 80 的 WebP：</strong>平均文件降到 460 KB。比同质量设置下的 JPEG 更小，而且图像看起来一样好。WebP 确实兑现了承诺。
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-content">
+              <strong>先缩放，再压缩：</strong>我的很多照片是 6000×4000 像素，但显示宽度只有 1200px。压缩前先缩放到 1200px，文件平均降到 180 KB（WebP）——比原图减小 96%。这是收益最大的一步，而大多数人会跳过它。
+            </div>
+          </div>
+        </div>
+
+        <p>我再说一遍：<strong>先缩放</strong>。在 1200 像素的槽位里塞一张 6000 像素的图像毫无意义。用我们的 <a href="/zh/tools/resizer">图像缩放工具</a> 把尺寸弄对，再压缩。简单缩放一下省下的文件大小，比任何质量微调都多。</p>
+
+        <h2 id="webp-moment">WebP 时刻：你该换了吗？</h2>
+
+        <p>简短回答：对于网页，大概是。</p>
+
+        <p>长一点的回答：取决于你的图片要用在哪。</p>
+
+        <p>如果你要把图片放到网站、博客或网页应用上，2026 年 WebP 几乎总是更好的选择。文件大小的节省是实打实的，质量也堪比 JPEG。浏览器支持？已不再是问题。WordPress、Shopify 和大多数 CMS 平台现在都会自动把上传的图片转为 WebP。如果你的平台不会，可以用我们的 <a href="/zh/tools/compressor">图片压缩器</a> 手动转换——拖入、放下、下载即可。</p>
+
+        <p>WebP 仍然力有不逮的地方：</p>
+
+        <ul>
+          <li>印刷。如果你要把图片发给印刷店，坚持用高质量 JPEG 或 TIFF。WebP 不是为印刷工作流设计的。</li>
+          <li>专业摄影编辑。如果你在 Lightroom 或 Photoshop 里修图，用 RAW 或 TIFF 来处理。最后再压缩，而不是一开始就压缩。</li>
+          <li>发给可能用着旧软件的人的邮件附件。某些企业邮件客户端仍然处理不了 WebP。</li>
+          <li>社交媒体上传。大多数平台反正都会重新压缩你的图片，所以你上传用什么格式几乎无所谓。这里用 JPEG 就行。</li>
+        </ul>
+
+        <p>我的经验法则：网页用 WebP，分享和兼容性用 JPEG，图形和透明用 PNG。保留一份高质量原图，以后随时可以重新导出。这方法对我有效，但你可能会找到别的办法。</p>
+
+        <h2 id="gotchas">我吃过亏的坑</h2>
+
+        <p>这些年来，我撞过几堵没有任何教程提醒过我的墙。让我帮你省掉同样的头疼：</p>
+
+        <h3>压缩已经压缩过的图片会让它更糟</h3>
+
+        <p>这条听起来显而易见，但我干过的次数多到不好意思说。如果别人发你一张 JPEG，你又压缩一次，你就是在已经扔掉的数据上再扔掉更多数据。它会累积。永远从原图压缩，而不是从压缩过的副本压缩。</p>
+
+        <h3>质量数值没有统一标准</h3>
+
+        <p>一个工具里的 JPEG 质量 80 和另一个工具里的并不一样。Photoshop 的质量刻度和 libjpeg 的不同。别以为"在工具 A 里 80 管用"在工具 B 里看起来就一样。相信你的眼睛，别信那个数字。</p>
+
+        <h3>PNG 可能比原图还大</h3>
+
+        <p>前面提过，但这点还是会让人栽跟头。把照片存成 PNG 实际上可能让文件更大——PNG 的无损算法处理照片细节里的随机性很吃力。我见过 3 MB 的 JPEG 变成 12 MB 的 PNG。如果你想缩小文件，照片用 PNG 是错的选择。</p>
+
+        <h3>透明会增加开销</h3>
+
+        <p>如果你的 PNG 带 Alpha 通道（透明），文件会比不带透明的同一张图明显更大。有时你其实并不需要透明——也许图片反正要放在白底上。把它合并掉，看着文件大小往下降吧。</p>
+
+        <h3>渐进式 JPEG 加载更快（感知上）</h3>
+
+        <p>渐进式 JPEG 分趟加载——先模糊，再清晰。基线 JPEG 从上到下加载。总文件大小差不多，但渐进式 JPEG 感觉更快，因为用户立刻就能看到东西。大多数现代图像工具默认输出渐进式 JPEG。我觉得是吧？我不是 100% 确定，但我测试时确实如此。</p>
+
+        <h2 id="workflow">我的实际工作流</h2>
+
+        <p>这是我需要为网站或项目准备图片时实际做的事。没什么花哨的，就是一套可重复、有效的流程。</p>
+
+        <div class="step-by-step-guide">
+          <div class="step-item">
+            <div class="step-content">
+              <strong>从原图开始。</strong>永远如此。我有一个存放未修改原图的文件夹，从不在原位置压缩。如果以后需要用不同尺寸或质量重新导出，我随时可以。
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-content">
+              <strong>缩放到显示尺寸。</strong>我算出图像将显示的最大尺寸（以 CSS 像素计，可能再加 2× 给 Retina）。如果显示宽度是 800px，我就缩放到 1600px。我们的 <a href="/zh/tools/resizer">图像缩放工具</a> 几秒就能搞定。
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-content">
+              <strong>选择格式。</strong>照片 → WebP 或 JPEG。图形/Logo/截图 → PNG 或无损 WebP。需要透明 → PNG 或带 Alpha 的 WebP。
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-content">
+              <strong>压缩。</strong>对于网页照片，我从质量 80（WebP）或 80（JPEG）开始。如果需要再压一点，我会试 70 并对比。对任何重要的东西我从不低于 65。我们的 <a href="/zh/tools/compressor">图片压缩器</a> 让你调整质量并立即看到结果。
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-content">
+              <strong>按需裁剪。</strong>有时构图不符合显示比例。我会在缩放前先裁剪到目标宽高比——没必要带着只会被隐藏的多余像素。<a href="/zh/tools/cropper">裁剪工具</a> 能干净利落地完成这件事。
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-content">
+              <strong>验证。</strong>我总是在实际显示尺寸下检查压缩后的图像。放大、找伪影、检查文字可读性。通过就发布。
+            </div>
+          </div>
+        </div>
+
+	        <p>整个过程每张图大约 30 秒。一批 50 张照片，大概 15 分钟。而回报是巨大的——页面 2 秒加载完而不是 15 秒，邮件附件能真正发出去，存储也不会那么快被占满。</p>
+
+<section id="when-not-to">
+  <h2>什么时候不要压缩图片</h2>
+  <p>如果你在处理 RAW 文件，或为大尺寸专业印刷准备图片，就跳过压缩。每一次压缩都会丢失细节。保留原图，只压缩你实际需要使用的那些版本。</p>
+  <p>另外，如果你是在为长期存档保存照片，压缩它们不是好主意。你随时可以以后压缩，但没法解压回来。把原图妥善保存，需要时再制作压缩副本。</p>
+</section>
+
+	        
+
+
+
+<section id="faq">
+            <h2>常见问题</h2>
+            <h3>压缩 JPEG 会让它看起来更差吗？</h3>
+            <p>老实说，会的——到了某个程度就会。有损压缩每次保存都会扔掉像素数据。如果你把 JPEG 以质量 80 压缩，再把结果以 80 重新压缩，你会看出区别。对大多数用途（网页、邮件、社交）来说，压缩一轮没问题。只是别把同一个文件反复压缩。这方法对我有效，但你可能会找到别的办法。</p>
+            <h3>该用什么质量设置？</h3>
+            <p>对大多数网页图片，75-85 是最佳区间。低于 70 你就开始看到明显伪影（边缘块状、天空出现条带）。高于 90，文件大小快速增长，质量收益却递减。产品照片我通常用 82，缩略图用 78。我总忘的一点是：要在真实的移动网络上重新测试，而不只是桌面端。</p>
+            <h3>WebP 比 JPEG 更好吗？</h3>
+            <p>在同等视觉质量下，WebP 比 JPEG 小约 25-35%。所有现代浏览器都支持（Chrome、Firefox、Edge、Safari 14+）。就纯网页性能而言，WebP 胜出。但有个坑：旧软件（如 Photoshop CS6 或某些 CMS 系统）读不了 WebP。所以我保留 JPEG 作为下载的兜底。</p>
+            <h3>为什么我的图片压缩后看起来有马赛克？</h3>
+            <p>通常是两种情况之一：你压缩得太狠了（质量低于 60），或者压缩后把图像放大了。压缩后的 JPEG 没有足够的数据来干净地放大。如果你需要更大的图像，从原始全分辨率文件开始处理。我在 50 张产品照片上测试过，每次都是同样的规律。</p>
+            <h3>我能用同样的方法压缩 PNG 吗？</h3>
+            <p>PNG 压缩默认是无损的——它用的是 DEFLATE（和 ZIP 一样）。你没法让 PNG"在质量上更小"，因为它没有质量可以丢弃。你能做的是：减少调色板（从 24 位降到 8 位索引），或用 pngquant 之类量化颜色的工具。对大多数照片来说，把 PNG 转成 JPEG/WebP 收益更大。</p>
+          </section>
+
+
+      </div>
+
+<div class="author-bio" style="background:rgba(0,0,0,0.03);border-radius:8px;padding:20px 24px;margin:40px 0 24px 0;border:1px solid rgba(0,0,0,0.08);">
+  <p style="margin:0 0 8px 0;font-weight:600;">关于作者：</p>
+  <p style="margin:0;">Sam Rivera 经营着一家小型电商商店，每周都会调整产品照片。本指南基于对真实文件的反复试错而写。更多图像技巧见 <a href='/zh/blog/'>SmartImgKit 博客</a>。</p>
+</div>
+
+</article>
+
+</main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/zh/" class="logo">
+            <span class="logo-icon">🎨</span>
+            <span class="logo-text">SmartImgKit</span>
+          </a>
+          <p>尊重您隐私的免费 AI 图像工具。所有处理都在浏览器中完成——不会向任何服务器上传任何内容。</p>
+        </div>
+        <div class="footer-links footer-links-multi">
+          <h4>工具</h4>
+          <a href="/zh/tools/background-remover">抠图工具</a>
+          <a href="/zh/tools/compressor">图片压缩器</a>
+          <a href="/zh/tools/converter">图像格式转换器</a>
+          <a href="/zh/tools/resizer">图像缩放工具</a>
+        </div>
+        <div class="footer-links footer-links-multi">
+          <h4>更多工具</h4>
+          <div class="footer-links-list">
+          <a href="/zh/tools/cropper">裁剪工具</a>
+          <a href="/zh/tools/watermark">水印工具</a>
+          <a href="/zh/tools/color-palette">调色板</a>
+          <a href="/zh/tools/base64">Base64</a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <h4>法律</h4>
+          <a href="/privacy">隐私政策</a>
+          <a href="/terms">服务条款</a>
+          <a href="/cookie-policy">Cookie 政策</a>
+          <a href="/contact">联系我们</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 SmartImgKit. 保留所有权利。 | <a href="https://comprimefotos.com/" style="color: var(--accent); font-weight: 500;">Español: ComprimeFotos — Comprimir Imágenes Online</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js?v=4"></script><aside class="ad-vertical-right" id="adVerticalRight">
+    <script async="async" data-cfasync="false" src="https://pl29741299.effectivecpmnetwork.com/5a540a2ce35c794ad7d73a726a88971c/invoke.js"></script>
+    <div id="container-5a540a2ce35c794ad7d73a726a88971c"></div>
+  </aside>
+  <!-- ===== END AD UNITS ===== -->
+
+</body>
+</html>
