@@ -14,15 +14,20 @@
   'use strict';
 
   var LANGS = {
-    'en': { flag: '\u{1F1EC}\u{1F1E7}', name: 'EN' },
-    'es': { flag: '\u{1F1EA}\u{1F1F8}', name: 'ES' },
-    'pt': { flag: '\u{1F1E7}\u{1F1F7}', name: 'PT' },
-    'id': { flag: '\u{1F1EE}\u{1F1E9}', name: 'ID' },
-    'fr': { flag: '\u{1F1EB}\u{1F1F7}', name: 'FR' },
-    'vi': { flag: '\u{1F1FB}\u{1F1F3}', name: 'VI' },
-    'ar': { flag: '\u{1F1F8}\u{1F1E6}', name: 'AR' },
-    'zh': { flag: '\u{1F1E8}\u{1F1F3}', name: 'ZH' }
+    'en': { flag: 'gb', name: 'EN', native: 'English' },
+    'es': { flag: 'es', name: 'ES', native: 'Espa\u00f1ol' },
+    'pt': { flag: 'pt', name: 'PT', native: 'Portugu\u00eas' },
+    'id': { flag: 'id', name: 'ID', native: 'Bahasa Indonesia' },
+    'fr': { flag: 'fr', name: 'FR', native: 'Fran\u00e7ais' },
+    'vi': { flag: 'vn', name: 'VI', native: 'Ti\u1EBFng Vi\u1EC7t' },
+    'ar': { flag: 'sa', name: 'AR', native: '\u0627\u0644\u0639\u0631\u0628\u064A\u0629' },
+    'zh': { flag: 'cn', name: 'ZH', native: '\u4E2D\u6587' }
   };
+
+  var FLAG_CDN = 'https://flagcdn.com/w40/';
+
+  // Ordered list of language codes for dropdown rendering
+  var LANG_ORDER = ['en', 'es', 'pt', 'id', 'fr', 'vi', 'ar', 'zh'];
 
   var PREFIXES = ['es', 'pt', 'id', 'fr', 'vi', 'ar', 'zh'];
 
@@ -94,53 +99,70 @@
     var info = LANGS[lang];
     if (!info) return;
 
+    var flagUrl = FLAG_CDN + info.flag + '.png';
     var buttons = document.querySelectorAll('.lang-btn');
     for (var i = 0; i < buttons.length; i++) {
-      var btn = buttons[i];
-      var flagSpan = btn.querySelector('.lang-flag');
-      var nameSpan = btn.querySelector('.lang-name');
-
-      if (flagSpan && nameSpan) {
-        flagSpan.textContent = info.flag;
-        nameSpan.textContent = info.name;
-      } else {
-        // Plain button format (tool pages)
-        btn.innerHTML = info.flag + ' ' + info.name;
-      }
+      buttons[i].innerHTML =
+        '<img class="lang-flag-img" src="' + flagUrl + '" alt="" loading="lazy" width="24" height="16"> ' +
+        '<span class="lang-name">' + info.name + '</span>' +
+        '<span class="lang-arrow">\u25BE</span>';
+      buttons[i].setAttribute('aria-label', 'Switch to ' + info.native);
     }
   }
 
-  // ── Fix all dropdown links ───────────────────────────────────────
-  function updateDropdownLinks() {
-    var dropdowns = document.querySelectorAll('.lang-dropdown');
-    for (var d = 0; d < dropdowns.length; d++) {
-      var links = dropdowns[d].querySelectorAll('a');
-      for (var i = 0; i < links.length; i++) {
-        var link = links[i];
-        var lang = link.getAttribute('hreflang');
-        if (!lang) {
-          lang = langFromHref(link.getAttribute('href') || '');
+  // ── Rebuild all dropdowns from scratch (single source of truth) ───
+  function rebuildDropdowns() {
+    var currentLang = getCurrentLanguage();
+    var switchers = document.querySelectorAll('.lang-switcher');
+
+    for (var s = 0; s < switchers.length; s++) {
+      var switcher = switchers[s];
+      // Ensure it has an id for toggleLangDropdown
+      if (!switcher.id) switcher.id = 'langSwitcher';
+
+      // Ensure the button has onclick handler
+      var btn = switcher.querySelector('.lang-btn');
+      if (btn && !btn.getAttribute('onclick')) {
+        btn.setAttribute('onclick', 'toggleLangDropdown()');
+      }
+
+      // Find or create the dropdown container
+      var dropdown = switcher.querySelector('.lang-dropdown');
+      if (!dropdown) {
+        dropdown = document.createElement('div');
+        dropdown.className = 'lang-dropdown';
+        switcher.appendChild(dropdown);
+      }
+      // Remove any inline style that might force display:none!important
+      dropdown.removeAttribute('style');
+      // Also remove inline style from switcher itself
+      switcher.removeAttribute('style');
+
+      // Clear existing content and rebuild with ALL 8 languages
+      dropdown.innerHTML = '';
+      for (var i = 0; i < LANG_ORDER.length; i++) {
+        var code = LANG_ORDER[i];
+        var info = LANGS[code];
+        if (!info) continue;
+
+        var link = document.createElement('a');
+        link.setAttribute('hreflang', code);
+        link.href = constructLanguageURL(code);
+        if (code === currentLang) {
+          link.classList.add('active-lang');
         }
-        if (!lang || !LANGS[lang]) continue;
+        var flagUrl = FLAG_CDN + info.flag + '.png';
+        link.innerHTML = '<img class="lang-flag-img" src="' + flagUrl + '" alt="" loading="lazy" width="24" height="16"> ' + info.native;
 
-        // Fix href to point to translated version of current page
-        link.href = constructLanguageURL(lang);
-
-        // Replace onclick with proper switch
-        link.removeAttribute('onclick');
+        // Attach switch handler
         (function(l) {
           link.addEventListener('click', function(e) {
             e.preventDefault();
             switchLanguage(l);
           });
-        })(lang);
+        })(code);
 
-        // Mark active language
-        if (lang === getCurrentLanguage()) {
-          link.classList.add('active-lang');
-        } else {
-          link.classList.remove('active-lang');
-        }
+        dropdown.appendChild(link);
       }
     }
   }
@@ -221,10 +243,35 @@
     }
   });
 
+  // ── Inject a lang-switcher if the page doesn't have one ──────────
+  function injectSwitcher() {
+    if (document.querySelector('.lang-switcher')) return;
+
+    var headerActions = document.querySelector('.header-actions');
+    if (!headerActions) return;
+
+    var currentLang = getCurrentLanguage();
+    var info = LANGS[currentLang] || LANGS['en'];
+    var flagUrl = FLAG_CDN + info.flag + '.png';
+
+    var switcher = document.createElement('div');
+    switcher.className = 'lang-switcher';
+    switcher.id = 'langSwitcher';
+    switcher.innerHTML =
+      '<button class="lang-btn" onclick="toggleLangDropdown()" aria-label="Switch language">' +
+      '<img class="lang-flag-img" src="' + flagUrl + '" alt="" loading="lazy" width="24" height="16"> ' +
+      '<span class="lang-name">' + info.name + '</span>' +
+      '<span class="lang-arrow">\u25BE</span>' +
+      '</button>';
+
+    headerActions.insertBefore(switcher, headerActions.firstChild);
+  }
+
   // ── Initialize on DOM ready ──────────────────────────────────────
   document.addEventListener('DOMContentLoaded', function() {
+    injectSwitcher();
     updateLangButton();
-    updateDropdownLinks();
+    rebuildDropdowns();
     updateFooterLinks();
     rewriteLocalLinks();
   });
