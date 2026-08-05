@@ -1,4 +1,4 @@
-/**
+﻿﻿﻿﻿﻿﻿﻿﻿/**
  * SmartImgKit - Main JavaScript
  * Handles: Theme toggle, mobile menu, FAQ accordions, dropzone, cookie consent, utilities
  */
@@ -401,6 +401,17 @@ initCookieConsent();
 window.SmartImgKit = window.SmartImgKit || {};
 SmartImgKit._triggerDownload = function (blob, filename) {
   if (!filename.includes('.')) filename += '.zip';
+  // Support dataURL strings (e.g. from canvas.toDataURL) by converting to Blob
+  if (typeof blob === 'string' && blob.startsWith('data:')) {
+    var commaIdx = blob.indexOf(',');
+    var meta = blob.substring(5, commaIdx);
+    var mime = meta.split(';')[0] || 'application/octet-stream';
+    var byteString = atob(blob.substring(commaIdx + 1));
+    var ab = new ArrayBuffer(byteString.length);
+    var ia = new Uint8Array(ab);
+    for (var i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
+    blob = new Blob([ab], { type: mime });
+  }
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;

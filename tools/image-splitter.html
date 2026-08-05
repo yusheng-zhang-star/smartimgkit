@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" data-theme="dark" data-tool-id="image-splitter">
 <head>
   <meta charset="UTF-8">
@@ -530,8 +530,7 @@ const dropzone = document.getElementById('dropzone');
         const zip = new JSZip();
         pieceBlobs.forEach(p => { zip.file(p.name, p.blob); });
         const content = await zip.generateAsync({ type: 'blob' });
-        const url = URL.createObjectURL(content);
-        SmartImgKit._triggerDownload(url, (currentFile.name || 'image').replace(/\.[^.]+$/, '') + '_split.zip'); setTimeout(() => URL.revokeObjectURL(url), 1000);
+        SmartImgKit._triggerDownload(content, (currentFile.name || 'image').replace(/\.[^.]+$/, '') + '_split.zip');
         status.textContent = 'ZIP downloaded!';
       } catch (err) {
         status.textContent = 'Error creating ZIP: ' + err.message;
