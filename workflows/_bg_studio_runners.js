@@ -196,5 +196,4 @@
     return new Promise(resolve => c.toBlob(b => resolve(b), 'image/jpeg', 0.92));
   };
 
-  console.log('[SmartImgKit] AI Background Studio runners loaded');
-})();
+  })();

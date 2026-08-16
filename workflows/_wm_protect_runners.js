@@ -63,5 +63,4 @@
     return blob;
   };
 
-  console.log('[SmartImgKit] Batch Watermark & Protect runners loaded');
-})();
+  })();

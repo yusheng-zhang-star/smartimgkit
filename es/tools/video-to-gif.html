@@ -298,7 +298,7 @@
     try {
       const { createFFmpeg, fetchFile } = await loadFFmpeg();
       const ffmpeg = createFFmpeg({ log: true });
-      ffmpeg.setLogger(({ message }) => { console.log(message); });
+      ffmpeg.setLogger(({ message }) => { });
       ffmpeg.setProgress(({ ratio }) => { statusSection.textContent = `Processing... ${Math.round(ratio*100)}%`; });
       if (!ffmpeg.isLoaded()) { statusSection.textContent = 'Loading ffmpeg core (25MB, first time only)...'; await ffmpeg.load(); }
       statusSection.textContent = 'Reading file...';
@@ -313,7 +313,7 @@
       resultSection.classList.remove('hidden');
       resultContent.innerHTML = `<img src="${URL.createObjectURL(new Blob([data.buffer], {type:'image/gif'}))}" style="max-width:100%;border-radius:8px;"><br><button class="btn btn-primary" style="margin-top:16px;" onclick="window.__downloadBlob__(${JSON.stringify([...data])}, '${fileName}.gif', 'image/gif')">⬇️ Download GIF</button>`;
       statusSection.textContent = '✓ GIF created!';
-    } catch(e) { console.error(e); statusSection.textContent = '✗ Error: ' + e.message; }
+    } catch(e) { statusSection.textContent = '✗ Error: ' + e.message; }
     processBtn.disabled = false;
   });
   resetBtn.addEventListener('click', () => { file = null; controlsSection.classList.add('hidden'); statusSection.classList.add('hidden'); resultSection.classList.add('hidden'); fileInput.value = ''; var ba = document.getElementById('beforeAfterPreview'); if (ba) ba.classList.remove('hidden'); });

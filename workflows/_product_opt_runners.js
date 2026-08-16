@@ -51,5 +51,4 @@
     return blob;
   };
 
-  console.log('[SmartImgKit] Product Image Optimizer runners loaded');
-})();
+  })();

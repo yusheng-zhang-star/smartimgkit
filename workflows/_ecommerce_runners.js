@@ -116,5 +116,4 @@
     return blob;
   };
 
-  console.log('[SmartImgKit] E-Commerce Pack runners loaded');
-})();
+  })();

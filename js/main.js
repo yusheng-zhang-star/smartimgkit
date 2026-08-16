@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿/**
+/**
  * SmartImgKit - Main JavaScript
  * Handles: Theme toggle, mobile menu, FAQ accordions, dropzone, cookie consent, utilities
  */
@@ -112,7 +112,6 @@ let __ga4ConfigApplied = false;
 function loadGA4() {
   if (!GA4_MEASUREMENT_ID) return;
   if (GA4_MEASUREMENT_ID === 'G-KKYP8DMCMD') {
-    console.warn('[GA4] Measurement ID is still the placeholder. Replace G-KKYP8DMCMD with your real GA4 ID.');
     return;
   }
   if (document.getElementById('ga4-script')) return;
@@ -388,7 +387,6 @@ window.initSampleButton = function(sampleUrl, onFile) {
       if (onFile) onFile(file);
     } catch (err) {
       btn.textContent = '🖼️ Try with a sample image';
-      console.error('Sample load error:', err);
     }
   });
 };

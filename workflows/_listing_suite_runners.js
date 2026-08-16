@@ -93,5 +93,4 @@
     return blob;
   };
 
-  console.log('[SmartImgKit] Listing Image Suite runners loaded');
-})();
+  })();

@@ -165,8 +165,7 @@
 
     if (errors.length) {
       text.textContent = `Done! ${okResults.length} OK, ${errors.length} failed.`;
-      console.warn('[Workflow] Errors:', errors);
-    } else {
+      } else {
       text.textContent = `Done! ${okResults.length} image(s) processed.`;
     }
 
@@ -217,5 +216,4 @@
     document.dispatchEvent(evt);
   };
 
-  console.log('[SmartImgKit] Workflow Engine v1 loaded');
-})();
+  })();

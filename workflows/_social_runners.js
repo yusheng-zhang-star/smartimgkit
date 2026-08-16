@@ -96,5 +96,4 @@
     return blob;
   };
 
-  console.log('[SmartImgKit] Social Media Kit runners loaded');
-})();
+  })();
