@@ -22,16 +22,38 @@
     return script;
   }
 
-  function buildInvokeScript(unit) {
+  function buildInvokeScript(unit, slot) {
     var script = document.createElement('script');
     script.type = 'text/javascript';
+    script.async = true;
     script.src = ADSTERRA_BASE + '/' + unit.key + '/invoke.js';
+
+    var done = false;
+    function finish(ok) {
+      if (done) return;
+      done = true;
+      clearTimeout(timer);
+      if (!ok) {
+        slot.classList.add('ad-load-failed');
+      }
+    }
+
+    var timer = setTimeout(function () {
+      finish(false);
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    }, 6000);
+
+    script.onload = function () { finish(true); };
+    script.onerror = function () { finish(false); };
+
     return script;
   }
 
   function loadBanner(slot, unit) {
     slot.appendChild(buildOptionsScript(unit));
-    slot.appendChild(buildInvokeScript(unit));
+    slot.appendChild(buildInvokeScript(unit, slot));
   }
 
   function pickHeaderUnit() {
