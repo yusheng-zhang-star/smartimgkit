@@ -91,7 +91,7 @@ document.querySelectorAll('.faq-question').forEach(btn => {
 });
 
 /* ===== Cookie Consent (GDPR Compliant) ===== */
-const GA4_MEASUREMENT_ID = 'G-KKYP8DMCMD'; // Replace with your real GA4 ID
+const GA4_MEASUREMENT_ID = 'G-KKYP8DMCMD';
 
 function getConsent() {
   try {
@@ -111,9 +111,6 @@ let __ga4ConfigApplied = false;
 
 function loadGA4() {
   if (!GA4_MEASUREMENT_ID) return;
-  if (GA4_MEASUREMENT_ID === 'G-KKYP8DMCMD') {
-    return;
-  }
   if (document.getElementById('ga4-script')) return;
   const s = document.createElement('script');
   s.id = 'ga4-script';
@@ -132,7 +129,7 @@ function loadGA4() {
 }
 
 function updateConsentState(consent) {
-  if (!GA4_MEASUREMENT_ID || GA4_MEASUREMENT_ID === 'G-KKYP8DMCMD') return;
+  if (!GA4_MEASUREMENT_ID) return;
   function gtag(){ window.dataLayer.push(arguments); }
   gtag('consent', 'update', {
     'analytics_storage': consent.analytics ? 'granted' : 'denied',
