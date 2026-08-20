@@ -282,6 +282,31 @@ let modelLoadedOnce = false;
 let processing = false;
 
 const fileInput = document.getElementById('fileInput');
+
+// ===== Toast helper for prominent processing feedback =====
+(function(){
+  if (window._bgToast) return;
+  var toastEl = document.createElement('div');
+  toastEl.id = '_bgToast';
+  toastEl.style.cssText = 'display:none;position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:9999;max-width:520px;width:calc(100% - 32px);padding:14px 18px;border-radius:12px;background:#1e293b;color:#fff;font-size:0.95rem;line-height:1.5;box-shadow:0 10px 25px rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.1);text-align:center;';
+  document.body.appendChild(toastEl);
+  var hideTimer = null;
+  window._bgToast = function(msg, type, autoHideMs) {
+    toastEl.innerHTML = msg || '';
+    // type: info / success / warn / error
+    toastEl.style.background = (type === 'success') ? '#065f46' : (type === 'error') ? '#991b1b' : (type === 'warn') ? '#92400e' : '#1e293b';
+    toastEl.style.display = 'block';
+    if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+    if (autoHideMs && autoHideMs > 0) {
+      hideTimer = setTimeout(function() { toastEl.style.display = 'none'; }, autoHideMs);
+    }
+  };
+  window._bgToastHide = function(delay) {
+    if (hideTimer) { clearTimeout(hideTimer); }
+    hideTimer = setTimeout(function() { toastEl.style.display = 'none'; }, delay || 2500);
+  };
+})();
+
 const dropzone = document.getElementById('dropzone');
 const workspace = document.getElementById('workspace');
 const previewList = document.getElementById('previewList');
@@ -365,7 +390,8 @@ removeBtn.addEventListener('click', async function() {
 
   // Load model once
   if (!model) {
-    status.textContent = 'Loading AI model (first time may take a moment)...';
+    status.textContent = '⏳ Chargement du modèle IA (première utilisation télécharge ~30Mo, peut prendre 30–60s selon votre connexion)...';
+    _bgToast('Suppression du fond en cours... Premier téléchargement du modèle IA (~30Mo), veuillez patienter.', 'info');
     try {
       const mod = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm');
       // The package exports a default function. Try both named and default export.
@@ -378,16 +404,21 @@ removeBtn.addEventListener('click', async function() {
       }
     } catch (err) {
       console.error('Background remover model load failed:', err);
-      status.textContent = 'Failed to load AI model: ' + err.message + ' Please try again or check your network.';
+      var _hint = ' (Si cette erreur persiste, actualisez la page : le moteur IA doit télécharger un modèle unique de ~30Mo).';
+      var _errMsg = (err && err.message ? err.message : String(err));
+      if (_errMsg.indexOf('no available backend') > -1 || _errMsg.indexOf('publicPath') > -1 || _errMsg.indexOf('dynamically imported') > -1) { _errMsg = _errMsg + _hint; }
+      status.textContent = '❌ Échec du chargement du modèle IA. Vérifiez votre connexion puis actualisez. Détail : ' + _errMsg;
+      _bgToast('❌ Échec du chargement du modèle IA. Vérifiez votre connexion puis actualisez. Détail : ' + _errMsg, 'error', 8000);
       processing = false;
       removeBtn.disabled = false;
       return;
     }
   }
+  if (model) { _bgToast('✅ Modèle IA prêt ! Traitement de vos images en cours...', 'success', 3500); }
 
   for (let i = 0; i < files.length; i++) {
     if (files[i].resultBlob) { progFill.style.width = (((i + 1) / files.length) * 100) + '%'; continue; }
-    status.textContent = 'Removing background ' + (i+1) + '/' + files.length + ': ' + files[i].name + ' (first run downloads AI model, please wait)...';
+    status.textContent = ('🔄 Suppression du fond {idx}/{total} : {name} — veuillez patienter...').replace('{idx}', (i+1)).replace('{total}', files.length).replace('{name}', files[i].name);
     progFill.style.width = ((i / files.length) * 100) + '%';
     renderList();
     try {
@@ -405,9 +436,9 @@ removeBtn.addEventListener('click', async function() {
       var progressTimer = setInterval(function() {
         var elapsed = Math.round((Date.now() - startTime) / 1000);
         if (isFirstRun && elapsed < 15) {
-          status.textContent = 'Downloading AI model... (' + elapsed + 's)';
+          status.textContent = ('⬇️  Téléchargement du modèle IA (~30Mo)... ({elapsed}s)').replace('{elapsed}', elapsed);
         } else {
-          status.textContent = 'Processing ' + files[i].name + '... (' + elapsed + 's)';
+          status.textContent = ('🧠 Traitement de l'image... ({elapsed}s)').replace('{name}', files[i].name).replace('{elapsed}', elapsed);
         }
       }, 2000);
       var startTime = Date.now();
@@ -421,10 +452,13 @@ removeBtn.addEventListener('click', async function() {
       files[i].resultUrl = URL.createObjectURL(blob);
     } catch (err) {
       clearInterval(progressTimer);
-      status.textContent = 'Error on ' + files[i].name + ': ' + (err && err.message ? err.message : err);
+      var _errMsg2 = (err && err.message ? err.message : String(err));
+      if (_errMsg2.indexOf('no available backend') > -1 || _errMsg2.indexOf('publicPath') > -1 || _errMsg2.indexOf('dynamically imported') > -1) { _errMsg2 = _errMsg2 + (" (Si cette erreur persiste, actualisez la page : le moteur IA doit télécharger un modèle unique de ~30Mo)."); }
+      status.textContent = ('❌ Erreur sur {name} : ').replace('{name}', files[i].name) + _errMsg2;
+      _bgToast(('❌ Erreur sur {name} : ').replace('{name}', files[i].name) + _errMsg2, 'error', 7000);
       // Show error in the file item too
       if (files[i]) {
-        files[i].error = err.message || String(err);
+        files[i].error = _errMsg2 || (err.message || String(err));
       }
 
     }
@@ -435,9 +469,11 @@ removeBtn.addEventListener('click', async function() {
   const doneCount = files.filter(function(f) { return f.resultBlob; }).length;
   const errCount = files.filter(function(f) { return f.error; }).length;
   if (errCount > 0) {
-    status.textContent = 'Completed with errors: ' + doneCount + ' succeeded, ' + errCount + ' failed.';
+    status.textContent = ('✅ Terminé avec erreurs : {ok} réussi(s), {err} échoué(s).').replace('{ok}', doneCount).replace('{err}', errCount);
+  _bgToast(('✅ Terminé avec erreurs : {ok} réussi(s), {err} échoué(s).').replace('{ok}', doneCount).replace('{err}', errCount), 'warn', 5000);
   } else {
-    status.textContent = 'Done! ' + doneCount + ' / ' + files.length + ' processed.';
+    status.textContent = ('🎉 Terminé ! {ok} / {total} images traitées.').replace('{ok}', doneCount).replace('{total}', files.length);
+  _bgToast(('🎉 Terminé ! {ok} / {total} images traitées.').replace('{ok}', doneCount).replace('{total}', files.length), 'success', 4000);
   }
   setTimeout(function() { progBar.style.display = 'none'; status.textContent = ''; }, 4000);
   renderList();
@@ -451,7 +487,8 @@ downloadAllBtn.addEventListener('click', async function() {
       zip.file(outName, item.resultBlob);
     }
   });
-  status.textContent = 'Creating ZIP...';
+  status.textContent = '📦 Création de l'archive ZIP...';
+  _bgToast('📦 Création de l'archive ZIP...', 'info', 2500);
   blob = await zip.generateAsync({ type: 'blob' });
   const a = document.createElement('a');
   a.download = 'no-background-images.zip';
@@ -494,5 +531,139 @@ clearBtn.addEventListener('click', function() {
   <script src="/js/lang.js"></script>
 <script src="/js/ad-loader.js?v=4"></script>
 <script src="/js/result-modal.js"></script>
+
+<!-- Result Modal Hook -->
+<script>
+(function(){
+  function tryHook(){
+    if (typeof openResultModal !== 'function') return;
+
+    // Helper: get result blob from page scope
+    function getResultBlob(){
+      try { if (typeof resultBlob !== 'undefined' && resultBlob) return resultBlob; } catch(e){}
+      try { if (typeof convertedBlob !== 'undefined' && convertedBlob) return convertedBlob; } catch(e){}
+      try { if (typeof outputBlob !== 'undefined' && outputBlob) return outputBlob; } catch(e){}
+      try { if (typeof processedBlob !== 'undefined' && processedBlob) return processedBlob; } catch(e){}
+      try { if (typeof blob !== 'undefined' && blob && !(blob instanceof File)) return blob; } catch(e){}
+      return null;
+    }
+    function getOriginalFile(){
+      try { if (typeof currentFile !== 'undefined' && currentFile) return currentFile; } catch(e){}
+      try { if (typeof originalFile !== 'undefined' && originalFile) return originalFile; } catch(e){}
+      try { if (typeof origFile !== 'undefined' && origFile) return origFile; } catch(e){}
+      try { if (typeof originalImg !== 'undefined' && originalImg && originalImg instanceof File) return originalImg; } catch(e){}
+      return null;
+    }
+    function fmtSize(n){
+      if (!n) return '0 B';
+      if (n < 1024) return Math.round(n) + ' B';
+      if (n < 1024*1024) return (n/1024).toFixed(n<10240?1:0) + ' KB';
+      return (n/1024/1024).toFixed(2) + ' MB';
+    }
+    function getFileName(origFile, resultBlob){
+      if (origFile && origFile.name) {
+        var parts = origFile.name.split('.');
+        var base = parts.slice(0,-1).join('.') || origFile.name;
+        var ext = parts.length>1 ? parts.pop() : 'png';
+        return base + '-optimized.' + ext;
+      }
+      return 'optimized-image.png';
+    }
+
+    // Hook single download buttons
+    var dlBtns = document.querySelectorAll('#downloadBtn, .btn-primary[id*="download"], button[id*="download"], a.btn[id*="download"], .download-btn, button[onclick*="download"], a[onclick*="download"]');
+    dlBtns.forEach(function(btn){
+      if (btn.getAttribute('data-rm-hooked')) return;
+      btn.setAttribute('data-rm-hooked','1');
+      btn.addEventListener('click', function(){
+        var rb = getResultBlob();
+        if (!rb) return;
+        var of = getOriginalFile();
+        var origSize = of ? (of.size || 0) : 0;
+        var optSize = rb.size || 0;
+        var saveRate = '0%';
+        if (origSize > 0 && optSize > 0) {
+          var s = Math.round((1 - optSize/origSize)*1000)/10;
+          saveRate = (s > 0 ? s : 0) + '%';
+        }
+        openResultModal({
+          origSize: fmtSize(origSize),
+          optSize: fmtSize(optSize),
+          saveRate: saveRate,
+          originalBlob: of,
+          resultBlob: rb,
+          fileName: getFileName(of, rb)
+        });
+      });
+    });
+
+    // Hook batch download-all buttons
+    var dlAllBtns = document.querySelectorAll('#downloadAllBtn, #downloadAll, button[id*="downloadAll"], a[id*="downloadAll"]');
+    dlAllBtns.forEach(function(btn){
+      if (btn.getAttribute('data-rm-hooked')) return;
+      btn.setAttribute('data-rm-hooked','1');
+      btn.addEventListener('click', function(){
+        // For batch tools, open modal with first result if single file
+        var filesArr = null;
+        try { if (typeof files !== 'undefined' && files) filesArr = files; } catch(e){}
+        if (!filesArr) {
+          try { if (typeof window.files !== 'undefined') filesArr = window.files; } catch(e){}
+        }
+        if (!filesArr) {
+          try {
+            var list = document.querySelectorAll('.file-item');
+            if (list && list.length === 1) {
+              var rb = getResultBlob();
+              var of = getOriginalFile();
+              if (rb && of) {
+                var origSize2 = of.size || 0;
+                var optSize2 = rb.size || 0;
+                var sr2 = '0%';
+                if (origSize2 > 0 && optSize2 > 0) {
+                  var ss = Math.round((1 - optSize2/origSize2)*1000)/10;
+                  sr2 = (ss > 0 ? ss : 0) + '%';
+                }
+                openResultModal({
+                  origSize: fmtSize(origSize2),
+                  optSize: fmtSize(optSize2),
+                  saveRate: sr2,
+                  originalBlob: of,
+                  resultBlob: rb,
+                  fileName: getFileName(of, rb)
+                });
+              }
+              return;
+            }
+          } catch(e){}
+        }
+        if (filesArr && filesArr.length === 1 && filesArr[0].resultBlob) {
+          var rb = filesArr[0].resultBlob;
+          var of = filesArr[0].file;
+          var origSize2 = of ? (of.size || 0) : 0;
+          var optSize2 = rb.size || 0;
+          var sr2 = '0%';
+          if (origSize2 > 0 && optSize2 > 0) {
+            var ss = Math.round((1 - optSize2/origSize2)*1000)/10;
+            sr2 = (ss > 0 ? ss : 0) + '%';
+          }
+          openResultModal({
+            origSize: fmtSize(origSize2),
+            optSize: fmtSize(optSize2),
+            saveRate: sr2,
+            originalBlob: of,
+            resultBlob: rb,
+            fileName: getFileName(of, rb)
+          });
+        }
+        // For multi-file batch, skip modal (ZIP download is the primary action)
+      });
+    });
+  }
+
+  if (document.readyState !== 'loading') { tryHook(); setTimeout(tryHook, 1500); setTimeout(tryHook, 3500); }
+  else { document.addEventListener('DOMContentLoaded', function(){ tryHook(); setTimeout(tryHook, 1500); setTimeout(tryHook, 3500); }); }
+})();
+</script>
+
 </body>
 </html>
