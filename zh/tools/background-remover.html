@@ -169,6 +169,7 @@
 .trust-badge .tb-desc{font-size:0.72rem;color:var(--text-secondary)}
 @media(max-width:640px){.fn-block{flex-direction:column}.features-grid{grid-template-columns:1fr}.trust-badges{gap:12px}.trust-badge{min-width:90px}}
 </style>
+<meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
 </head>
 <body>
   <!-- Header: exact match image-rotator compact format -->
@@ -212,7 +213,10 @@
       </label>
       <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Try with a sample image</span>
 
-        <div class="tool-container" id="workspace" style="display:none">
+        
+
+<div style="margin:14px 0;padding:12px 16px;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;font-size:0.9rem;color:#92400e;"><strong>💡 首次使用：</strong>需要下载约 30MB AI 模型，可能需要 30-60 秒，取决于网速。</div>
+<div class="tool-container" id="workspace" style="display:none">
           <div class="controls">
             <button class="btn btn-primary" id="removeBtn">🪄 Remove Backgrounds</button>
             <button class="btn btn-secondary hidden" id="downloadAllBtn">⬇️ Download All (ZIP)</button>
@@ -425,6 +429,7 @@
   <script>
 let files = [];
 let model = null;
+let modelLoadedOnce = false;
 let processing = false;
 
 const fileInput = document.getElementById('fileInput');
@@ -479,6 +484,8 @@ function renderList() {
     if (item.resultBlob) {
       info += '<p><span class="badge badge-done">✅ Done</span> Output: ' + formatSize(item.resultBlob.size) + '</p>';
       dl = '<a href="' + item.resultUrl + '" download="' + outName + '" class="btn btn-secondary" style="padding:4px 10px;font-size:0.8rem;align-self:center">Download</a>';
+    } else if (item.error) {
+      info += '<p style="color:#ef4444"><span class="badge" style="background:#fee2e2;color:#991b1b">❌ Error</span> ' + item.error + '</p>';
     } else if (processing) {
       info += '<p><span class="badge badge-processing">⏳ Processing...</span></p>';
     } else {
@@ -512,9 +519,17 @@ removeBtn.addEventListener('click', async function() {
     status.textContent = 'Loading AI model (first time may take a moment)...';
     try {
       const mod = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm');
-      model = mod;
+      // The package exports a default function. Try both named and default export.
+      if (typeof mod.removeBackground === 'function') {
+        model = mod.removeBackground;
+      } else if (typeof mod.default === 'function') {
+        model = mod.default;
+      } else {
+        throw new Error('Could not find removeBackground function. Available keys: ' + Object.keys(mod).join(', '));
+      }
     } catch (err) {
-      status.textContent = 'Failed to load model: ' + err.message;
+      console.error('Background remover model load failed:', err);
+      status.textContent = 'Failed to load AI model: ' + err.message + ' Please try again or check your network.';
       processing = false;
       removeBtn.disabled = false;
       return;
@@ -523,7 +538,7 @@ removeBtn.addEventListener('click', async function() {
 
   for (let i = 0; i < files.length; i++) {
     if (files[i].resultBlob) { progFill.style.width = (((i + 1) / files.length) * 100) + '%'; continue; }
-    status.textContent = 'Removing background ' + (i+1) + '/' + files.length + ': ' + files[i].name;
+    status.textContent = 'Removing background ' + (i+1) + '/' + files.length + ': ' + files[i].name + ' (first run downloads AI model, please wait)...';
     progFill.style.width = ((i / files.length) * 100) + '%';
     renderList();
     try {
@@ -535,11 +550,33 @@ removeBtn.addEventListener('click', async function() {
         img.onerror = reject;
         img.src = imgUrl;
       });
-      const blob = await model.removeBackground(imgUrl);
+      // Allow up to 120s for first run (model download + inference), 60s for subsequent
+      var isFirstRun = !modelLoadedOnce;
+      var timeoutMs = isFirstRun ? 120000 : 60000;
+      var progressTimer = setInterval(function() {
+        var elapsed = Math.round((Date.now() - startTime) / 1000);
+        if (isFirstRun && elapsed < 15) {
+          status.textContent = 'Downloading AI model... (' + elapsed + 's)';
+        } else {
+          status.textContent = 'Processing ' + files[i].name + '... (' + elapsed + 's)';
+        }
+      }, 2000);
+      var startTime = Date.now();
+      const blob = await Promise.race([
+        model(imgUrl),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Processing timed out after ' + (timeoutMs/1000) + 's. Please try again with a smaller image or check your network.')), timeoutMs))
+      ]);
+      clearInterval(progressTimer);
+      modelLoadedOnce = true;
       files[i].resultBlob = blob;
       files[i].resultUrl = URL.createObjectURL(blob);
     } catch (err) {
+      clearInterval(progressTimer);
       status.textContent = 'Error on ' + files[i].name + ': ' + (err && err.message ? err.message : err);
+      // Show error in the file item too
+      if (files[i]) {
+        files[i].error = err.message || String(err);
+      }
 
     }
   }
@@ -547,7 +584,12 @@ removeBtn.addEventListener('click', async function() {
   processing = false;
   removeBtn.disabled = false;
   const doneCount = files.filter(function(f) { return f.resultBlob; }).length;
-  status.textContent = 'Done! ' + doneCount + ' / ' + files.length + ' processed.';
+  const errCount = files.filter(function(f) { return f.error; }).length;
+  if (errCount > 0) {
+    status.textContent = 'Completed with errors: ' + doneCount + ' succeeded, ' + errCount + ' failed.';
+  } else {
+    status.textContent = 'Done! ' + doneCount + ' / ' + files.length + ' processed.';
+  }
   setTimeout(function() { progBar.style.display = 'none'; status.textContent = ''; }, 4000);
   renderList();
 });

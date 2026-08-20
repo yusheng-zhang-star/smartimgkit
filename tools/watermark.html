@@ -151,6 +151,7 @@
 .trust-badge .tb-desc{font-size:0.72rem;color:var(--text-secondary)}
 @media(max-width:640px){.fn-block{flex-direction:column}.features-grid{grid-template-columns:1fr}.trust-badges{gap:12px}.trust-badge{min-width:90px}}
 </style>
+<meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
 </head>
 <body>
   <!-- Header: exact match image-rotator compact format -->
@@ -612,6 +613,27 @@ applyBtn.addEventListener('click', async function() {
   }
   progFill.style.width = '100%';
   status.textContent = 'Done! ' + files.filter(function(f) { return f.resultBlob; }).length + ' watermarked.';
+
+  // Single-file: trigger result modal once (batch handled by downloadAll hook)
+  if (typeof openResultModal === 'function' && files.length === 1 && files[0] && files[0].resultBlob) {
+    var _f = files[0];
+    var _origSize = _f.size || (_f.file && _f.file.size) || 0;
+    var _optSize = _f.resultBlob.size || 0;
+    var _saveRate = '0%';
+    if (_origSize > 0 && _optSize > 0) {
+      var _s = Math.round((1 - _optSize / _origSize) * 1000) / 10;
+      _saveRate = (_s > 0 ? _s : 0) + '%';
+    }
+    var _fname = _f.name ? _f.name.replace(/\.[^.]+$/, '') + '-watermarked.png' : 'watermarked-image.png';
+    openResultModal({
+      origSize: _origSize > 0 ? _origSize : 'Unknown',
+      optSize: _optSize,
+      saveRate: _saveRate,
+      originalBlob: _f.file || null,
+      resultBlob: _f.resultBlob,
+      fileName: _fname
+    });
+  }
   setTimeout(function() { progBar.style.display = 'none'; status.textContent = ''; }, 4000);
   applyBtn.disabled = false;
   renderList();
@@ -669,6 +691,103 @@ clearBtn.addEventListener('click', function() {
   <script src="/js/lang.js"></script>
 <script src="/js/ad-loader.js?v=4"></script>
 <script src="/js/result-modal.js"></script>
+
+<!-- Result Modal Hook -->
+<script>
+(function(){
+  function tryHook(){
+    if (typeof openResultModal !== 'function') return;
+
+    // Helper: get result blob from page scope
+    function getResultBlob(){
+      try { if (typeof resultBlob !== 'undefined' && resultBlob) return resultBlob; } catch(e){}
+      try { if (typeof convertedBlob !== 'undefined' && convertedBlob) return convertedBlob; } catch(e){}
+      try { if (typeof outputBlob !== 'undefined' && outputBlob) return outputBlob; } catch(e){}
+      try { if (typeof processedBlob !== 'undefined' && processedBlob) return processedBlob; } catch(e){}
+      return null;
+    }
+    function getOriginalFile(){
+      try { if (typeof currentFile !== 'undefined' && currentFile) return currentFile; } catch(e){}
+      try { if (typeof originalFile !== 'undefined' && originalFile) return originalFile; } catch(e){}
+      try { if (typeof origFile !== 'undefined' && origFile) return origFile; } catch(e){}
+      return null;
+    }
+    function getFileName(origFile, resultBlob){
+      if (origFile && origFile.name) {
+        var base = origFile.name.replace(/\.[^.]+$/, '');
+        var ext = origFile.name.split('.').pop() || 'png';
+        return base + '-optimized.' + ext;
+      }
+      return 'optimized-image.png';
+    }
+
+    // Hook single download buttons
+    var dlBtns = document.querySelectorAll('#downloadBtn, .btn-primary[id*="download"], button[id*="download"]');
+    dlBtns.forEach(function(btn){
+      if (btn.getAttribute('data-rm-hooked')) return;
+      btn.setAttribute('data-rm-hooked','1');
+      btn.addEventListener('click', function(){
+        var rb = getResultBlob();
+        if (!rb) return;
+        var of = getOriginalFile();
+        var origSize = of ? (of.size || 0) : 0;
+        var optSize = rb.size || 0;
+        var saveRate = '0%';
+        if (origSize > 0 && optSize > 0) {
+          var s = Math.round((1 - optSize/origSize)*1000)/10;
+          saveRate = (s > 0 ? s : 0) + '%';
+        }
+        openResultModal({
+          origSize: origSize > 0 ? origSize : 'Unknown',
+          optSize: optSize,
+          saveRate: saveRate,
+          originalBlob: of,
+          resultBlob: rb,
+          fileName: getFileName(of, rb)
+        });
+      });
+    });
+
+    // Hook batch download-all buttons
+    var dlAllBtns = document.querySelectorAll('#downloadAllBtn, #downloadAll, button[id*="downloadAll"]');
+    dlAllBtns.forEach(function(btn){
+      if (btn.getAttribute('data-rm-hooked')) return;
+      btn.setAttribute('data-rm-hooked','1');
+      btn.addEventListener('click', function(){
+        // For batch tools, open modal with first result if single file
+        var files = null;
+        try { if (typeof files !== 'undefined' && files) files = files; } catch(e){}
+        if (!files) {
+          try { if (typeof window.files !== 'undefined') files = window.files; } catch(e){}
+        }
+        if (files && files.length === 1 && files[0].resultBlob) {
+          var rb = files[0].resultBlob;
+          var of = files[0].file;
+          var origSize = of ? (of.size || 0) : 0;
+          var optSize = rb.size || 0;
+          var saveRate = '0%';
+          if (origSize > 0 && optSize > 0) {
+            var s = Math.round((1 - optSize/origSize)*1000)/10;
+            saveRate = (s > 0 ? s : 0) + '%';
+          }
+          openResultModal({
+            origSize: origSize > 0 ? origSize : 'Unknown',
+            optSize: optSize,
+            saveRate: saveRate,
+            originalBlob: of,
+            resultBlob: rb,
+            fileName: getFileName(of, rb)
+          });
+        }
+        // For multi-file batch, skip modal (ZIP download is the primary action)
+      });
+    });
+  }
+
+  if (document.readyState !== 'loading') { tryHook(); setTimeout(tryHook, 1500); }
+  else { document.addEventListener('DOMContentLoaded', function(){ tryHook(); setTimeout(tryHook, 1500); }); }
+})();
+</script>
 
 </body>
 </html>

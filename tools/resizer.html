@@ -137,6 +137,7 @@
 .trust-badge .tb-desc{font-size:0.72rem;color:var(--text-secondary)}
 @media(max-width:640px){.fn-block{flex-direction:column}.features-grid{grid-template-columns:1fr}.trust-badges{gap:12px}.trust-badge{min-width:90px}}
 </style>
+<meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
 </head>
 <body>
   <!-- Header: exact match image-rotator compact format -->
@@ -488,6 +489,23 @@ const dropzone = document.getElementById('dropzone');
         previewImg.src = canvas.toDataURL();
         downloadBtn.classList.remove('hidden');
         status.textContent = 'Resized to ' + w + '×' + h;
+
+        // Open result modal with processing results
+        if (typeof openResultModal === 'function') {
+          var origSize = currentFile.size;
+          var optSize = blob.size;
+          var saveRate = origSize > 0 ? Math.round((1 - optSize / origSize) * 1000) / 10 + '%' : '0%';
+          var ext = currentFile.name.split('.').pop() || 'png';
+          var base = currentFile.name.replace(/\.[^.]+$/, '');
+          openResultModal({
+            origSize: origSize,
+            optSize: optSize,
+            saveRate: saveRate,
+            originalBlob: currentFile,
+            resultBlob: blob,
+            fileName: base + '-resized.' + ext
+          });
+        }
       } catch (err) {
         status.textContent = 'Error: ' + err.message;
       } finally {
@@ -527,8 +545,7 @@ const dropzone = document.getElementById('dropzone');
   })();
   </script>
   <script src="/js/lang.js"></script>
-<script src="/js/ad-loader.js?v=4"></script>
 <script src="/js/result-modal.js"></script>
-
+<script src="/js/ad-loader.js?v=4"></script>
 </body>
 </html>
