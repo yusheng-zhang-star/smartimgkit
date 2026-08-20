@@ -396,6 +396,20 @@ removeBtn.addEventListener('click', async function() {
     status.textContent = '⏳ Carregando modelo de IA (primeiro uso baixa ~30MB, pode levar 30–60s dependendo da sua rede)...';
     _bgToast('Iniciando remoção de fundo... Primeiro uso baixando ~30MB do modelo de IA, aguarde.', 'info');
     try {
+      // Pre-configure ONNX Runtime WASM paths to avoid blob-import failures
+      // (see: onnxruntime-web needs wasmPaths set before first session creation)
+      try {
+        const ortMod = await import('https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/+esm');
+        const ort = ortMod.default || ortMod;
+        if (ort && ort.env && ort.env.wasm) {
+          ort.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/dist/';
+          ort.env.wasm.simd = true;
+          ort.env.wasm.numThreads = 1;
+          console.log('[BG-RM] ONNX Runtime configured with CDN wasmPaths');
+        }
+      } catch (ortErr) {
+        console.warn('[BG-RM] Could not pre-configure ONNX Runtime:', ortErr.message);
+      }
       const mod = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm');
       // The package exports a default function. Try both named and default export.
       if (typeof mod.removeBackground === 'function') {
