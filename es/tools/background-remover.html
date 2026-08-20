@@ -1,6 +1,30 @@
 <!DOCTYPE html>
 <html lang="es" data-theme="dark" data-tool-id="background-remover">
 <head>
+
+<!-- Preload ONNX Runtime WASM files for instant cache hit -->
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/dist/ort-wasm-simd.wasm" as="fetch" crossorigin="anonymous">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/dist/ort-wasm-simd.threads.wasm" as="fetch" crossorigin="anonymous">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/dist/ort-wasm-simd.jsep.js" as="script" crossorigin="anonymous">
+
+<!-- Preload ONNX Runtime Web (non-ESM) with WASM path config -->
+<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/dist/ort.min.js" defer></script>
+<script>
+  // Configure ONNX Runtime wasmPaths globally before any ESM import
+  window.addEventListener('load', function() {
+    if (window.ort && window.ort.env && window.ort.env.wasm) {
+      try {
+        window.ort.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/dist/';
+        window.ort.env.wasm.simd = true;
+        window.ort.env.wasm.numThreads = 1;
+        window.__ortConfigured = true;
+      } catch(e) {}
+    }
+  });
+</script>
+
+
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="index, follow">
@@ -138,6 +162,23 @@
         
 
 <div style="margin:14px 0;padding:12px 16px;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;font-size:0.9rem;color:#92400e;"><strong>💡 Primer uso:</strong> Descarga un modelo de IA de ~30MB. Puede tardar 30–60 segundos según la velocidad de conexión.</div>
+
+<!-- Model Loading Progress UI -->
+<div id="modelLoader" style="margin:16px auto;max-width:640px;padding:16px 20px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:12px;text-align:left;">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+    <div id="modelLoaderIcon" style="font-size:1.4rem;">🤖</div>
+    <div style="flex:1;">
+      <div id="modelLoaderTitle" style="font-weight:600;color:#0369a1;font-size:0.95rem;">Cargando modelo de IA...</div>
+      <div id="modelLoaderSub" style="font-size:0.82rem;color:#0369a1;">Descarga inicial del motor de IA + pesos de red neuronal (~30MB)</div>
+    </div>
+    <div id="modelLoaderPct" style="font-weight:700;color:#0284c7;font-size:1.2rem;min-width:48px;text-align:right;">0%</div>
+  </div>
+  <div style="background:#e0f2fe;border-radius:20px;height:10px;overflow:hidden;">
+    <div id="modelLoaderBar" style="background:linear-gradient(90deg,#0ea5e9,#6366f1);height:100%;width:0%;border-radius:20px;transition:width .4s ease;"></div>
+  </div>
+  <div id="modelLoaderStatus" style="margin-top:8px;font-size:0.8rem;color:#0284c7;">⏳ Inicializando motor de IA...</div>
+  <div id="modelLoaderTimer" style="font-size:0.75rem;color:#94a3b8;margin-top:4px;">Tiempo: 0s</div>
+</div>
 <div class="tool-container" id="workspace" style="display:none">
           <div class="controls">
             <button class="btn btn-primary" id="removeBtn">🪄 Remove Backgrounds</button>
@@ -314,6 +355,9 @@ const dropzone = document.getElementById('dropzone');
 const workspace = document.getElementById('workspace');
 const previewList = document.getElementById('previewList');
 const removeBtn = document.getElementById('removeBtn');
+removeBtn.disabled = true;
+removeBtn.style.opacity = '0.6';
+removeBtn.style.cursor = 'not-allowed';
 const downloadAllBtn = document.getElementById('downloadAllBtn');
 const addMoreBtn = document.getElementById('addMoreBtn');
 const clearBtn = document.getElementById('clearBtn');
@@ -383,6 +427,178 @@ function renderList() {
 }
 
 addMoreBtn.addEventListener('click', function() { fileInput.click(); });
+// ===== Preload AI model on page load (not on click) =====
+var _modelLoaderBar = null;
+var _modelLoaderPct = null;
+var _modelLoaderStatus = null;
+var _modelLoaderTimer = null;
+var _modelLoaderIcon = null;
+var _modelLoaderTitle = null;
+var _modelLoaderStartedAt = Date.now();
+var _modelProgressInterval = null;
+
+function _initModelLoaderUI() {
+  _modelLoaderBar = document.getElementById('modelLoaderBar');
+  _modelLoaderPct = document.getElementById('modelLoaderPct');
+  _modelLoaderStatus = document.getElementById('modelLoaderStatus');
+  _modelLoaderTimer = document.getElementById('modelLoaderTimer');
+  _modelLoaderIcon = document.getElementById('modelLoaderIcon');
+  _modelLoaderTitle = document.getElementById('modelLoaderTitle');
+}
+
+function _setModelProgress(pct, statusText) {
+  if (_modelLoaderBar) _modelLoaderBar.style.width = pct + '%';
+  if (_modelLoaderPct) _modelLoaderPct.textContent = pct + '%';
+  if (_modelLoaderStatus && statusText) _modelLoaderStatus.textContent = statusText;
+}
+
+function _startModelProgressTimer() {
+  _modelLoaderStartedAt = Date.now();
+  if (_modelProgressInterval) clearInterval(_modelProgressInterval);
+  _modelProgressInterval = setInterval(function() {
+    var elapsed = Math.round((Date.now() - _modelLoaderStartedAt) / 1000);
+    if (_modelLoaderTimer) _modelLoaderTimer.textContent = '用时 ' + elapsed + ' 秒';
+  }, 500);
+}
+
+function _hideModelLoader() {
+  if (_modelProgressInterval) { clearInterval(_modelProgressInterval); _modelProgressInterval = null; }
+  var el = document.getElementById('modelLoader');
+  if (el) {
+    el.style.transition = 'opacity .4s ease';
+    el.style.opacity = '0';
+    setTimeout(function() { if (el && el.parentNode) el.style.display = 'none'; }, 400);
+  }
+}
+
+function _showModelLoaderError(title, msg) {
+  if (_modelLoaderBar) _modelLoaderBar.style.background = '#dc2626';
+  if (_modelLoaderPct) _modelLoaderPct.textContent = '⚠️';
+  if (_modelLoaderTitle) _modelLoaderTitle.textContent = title;
+  if (_modelLoaderStatus) _modelLoaderStatus.innerHTML = '<span style="color:#991b1b">' + msg + '</span>';
+  if (_modelLoaderIcon) _modelLoaderIcon.textContent = '⚠️';
+  removeBtn.disabled = false;
+  removeBtn.style.opacity = '1';
+  removeBtn.style.cursor = 'pointer';
+  removeBtn.textContent = '🔄 刷新重试';
+  removeBtn.onclick = function() { location.reload(); };
+}
+
+// Start preloading immediately
+_initModelLoaderUI();
+_startModelProgressTimer();
+_setModelProgress(5, '⏳ 正在预加载 AI 引擎文件...');
+
+// Preload in background (after DOM is ready)
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', _preloadModel);
+} else {
+  _preloadModel();
+}
+
+async function _preloadModel() {
+  try {
+    _setModelProgress(10, '⏳ 正在加载 AI 引擎模块...');
+
+    // Wait a tick for the <script defer> ORT to execute
+    await new Promise(function(r) { setTimeout(r, 100); });
+
+    _setModelProgress(20, '⏳ 正在初始化 ONNX Runtime WASM 后端...');
+
+    // Configure global ORT instance first
+    if (window.ort && window.ort.env && window.ort.env.wasm) {
+      try {
+        window.ort.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/dist/';
+        window.ort.env.wasm.simd = true;
+        window.ort.env.wasm.numThreads = 1;
+        console.log('[BG-RM] Global ORT configured with CDN wasmPaths');
+      } catch(e) { console.warn('[BG-RM] Global ORT config failed:', e); }
+    }
+
+    _setModelProgress(40, '⬇️ 正在下载神经网络模型...');
+
+    // Import @imgly/background-removal (includes onnxruntime-web bundled)
+    const mod = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm');
+
+    _setModelProgress(70, '🔧 正在配置 AI 引擎...');
+
+    // Configure the BUNDLED onnxruntime-web's wasmPaths
+    var bundledOrt = mod.ort || mod.onnxruntime || mod.ORT || null;
+    if (bundledOrt && bundledOrt.env && bundledOrt.env.wasm) {
+      try {
+        bundledOrt.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/dist/';
+        bundledOrt.env.wasm.simd = true;
+        bundledOrt.env.wasm.numThreads = 1;
+        console.log('[BG-RM] Bundled ORT configured with CDN wasmPaths');
+      } catch(e) { console.warn('[BG-RM] Bundled ORT config failed:', e); }
+    } else {
+      // Try to find ORT in nested structures
+      var keys = Object.keys(mod);
+      console.log('[BG-RM] Looking for ORT in module keys:', keys);
+      for (var i = 0; i < keys.length; i++) {
+        var candidate = mod[keys[i]];
+        if (candidate && typeof candidate === 'object' && candidate.env && candidate.env.wasm) {
+          try {
+            candidate.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/dist/';
+            candidate.env.wasm.simd = true;
+            candidate.env.wasm.numThreads = 1;
+            console.log('[BG-RM] Found and configured ORT via key:', keys[i]);
+          } catch(e) {}
+        }
+      }
+    }
+
+    // Extract the removeBackground function
+    if (typeof mod.removeBackground === 'function') {
+      model = mod.removeBackground;
+    } else if (typeof mod.default === 'function') {
+      model = mod.default;
+    } else {
+      throw new Error('Could not find removeBackground function. Available keys: ' + Object.keys(mod).join(', '));
+    }
+
+        _setModelProgress(90, '🧠 Warming up AI engine (first WASM compile + model load)...');
+
+    // Warm up: process a tiny 1x1 PNG to trigger WASM compilation + model download
+    try {
+      const warmupPng = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
+      const warmupResult = await model(warmupPng);
+      if (warmupResult && warmupResult instanceof Blob) {
+        console.log('[BG-RM] Warmup successful, WASM compiled and model ready');
+      }
+    } catch (warmupErr) {
+      console.warn('[BG-RM] Warmup failed (non-fatal):', warmupErr);
+    }
+
+    _setModelProgress(100, '✅ AI Model Ready!');
+    if (_modelLoaderPct) _modelLoaderPct.textContent = '✅';
+    if (_modelLoaderIcon) _modelLoaderIcon.textContent = '✅';
+    if (_modelLoaderTitle) _modelLoaderTitle.textContent = 'AI 模型已就绪！';
+    if (_modelLoaderStatus) _modelLoaderStatus.textContent = '✅ 现在可以上传图片并点击「去除背景」了';
+
+    // Enable the Remove button
+    removeBtn.disabled = false;
+    removeBtn.style.opacity = '1';
+    removeBtn.style.cursor = 'pointer';
+
+    _bgToast('✅ AI 模型加载完成！现在可以上传图片并点击「去除背景」了。', 'success', 4000);
+
+    // Hide loader after a brief celebration
+    setTimeout(_hideModelLoader, 2000);
+
+  } catch (err) {
+    console.error('[BG-RM] Model preload failed:', err);
+    var errMsg = (err && err.message) ? err.message : String(err);
+    var userMsg = errMsg;
+    if (errMsg.indexOf('no available backend') > -1 || errMsg.indexOf('publicPath') > -1 || errMsg.indexOf('dynamically imported') > -1 || errMsg.indexOf('Failed to fetch') > -1) {
+      userMsg = 'AI 引擎 WASM 模块加载失败 — 请检查网络连接后刷新页面重试。';
+    }
+    _showModelLoaderError('❌ AI 模型加载失败', userMsg);
+    _bgToast('❌ AI 模型加载失败：' + userMsg, 'error', 8000);
+    status.textContent = '❌ AI 模型加载失败：' + userMsg;
+  }
+}
+
 
 removeBtn.addEventListener('click', async function() {
   if (!files.length || processing) return;
@@ -391,51 +607,17 @@ removeBtn.addEventListener('click', async function() {
   progBar.style.display = 'block';
   renderList();
 
-  // Load model once
+  // Model is preloaded on page load. If still loading, wait.
   if (!model) {
-    status.textContent = '⏳ Cargando modelo de IA (la primera vez descarga ~30MB, puede tardar 30–60s según tu red)...';
-    _bgToast('Iniciando eliminación de fondo... Primera descarga de ~30MB del modelo de IA, por favor espera.', 'info');
-    try {
-      // Pre-configure ONNX Runtime WASM paths to avoid blob-import failures
-      // (see: onnxruntime-web needs wasmPaths set before first session creation)
-      try {
-        const ortMod = await import('https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/+esm');
-        const ort = ortMod.default || ortMod;
-        if (ort && ort.env && ort.env.wasm) {
-          ort.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/dist/';
-          ort.env.wasm.simd = true;
-          ort.env.wasm.numThreads = 1;
-          console.log('[BG-RM] ONNX Runtime configured with CDN wasmPaths');
-        }
-      } catch (ortErr) {
-        console.warn('[BG-RM] Could not pre-configure ONNX Runtime:', ortErr.message);
-      }
-      const mod = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm');
-      // The package exports a default function. Try both named and default export.
-      if (typeof mod.removeBackground === 'function') {
-        model = mod.removeBackground;
-      } else if (typeof mod.default === 'function') {
-        model = mod.default;
-      } else {
-        throw new Error('Could not find removeBackground function. Available keys: ' + Object.keys(mod).join(', '));
-      }
-    } catch (err) {
-      console.error('Background remover model load failed:', err);
-      var _hint = ' (Si este error persiste, actualiza la página: el motor de IA necesita descargar un modelo único de ~30MB).';
-      var _errMsg = (err && err.message ? err.message : String(err));
-      if (_errMsg.indexOf('no available backend') > -1 || _errMsg.indexOf('publicPath') > -1 || _errMsg.indexOf('dynamically imported') > -1) { _errMsg = _errMsg + _hint; }
-      status.textContent = '❌ No se pudo cargar el modelo de IA. Revisa tu conexión y actualiza la página. Detalle: ' + _errMsg;
-      _bgToast('❌ No se pudo cargar el modelo de IA. Revisa tu conexión y actualiza la página. Detalle: ' + _errMsg, 'error', 8000);
-      processing = false;
-      removeBtn.disabled = false;
-      return;
-    }
+    status.textContent = '⏳ AI 模型仍在加载中，请稍候...';
+    _bgToast('⏳ AI 模型正在加载中，请稍候几秒后重试。', 'warn', 3000);
+    processing = false;
+    removeBtn.disabled = false;
+    return;
   }
-  if (model) { _bgToast('✅ ¡Modelo de IA listo! Procesando tus imágenes...', 'success', 3500); }
-
   for (let i = 0; i < files.length; i++) {
     if (files[i].resultBlob) { progFill.style.width = (((i + 1) / files.length) * 100) + '%'; continue; }
-    status.textContent = ('🔄 Quitando fondo {idx}/{total}: {name} — por favor espera...').replace('{idx}', (i+1)).replace('{total}', files.length).replace('{name}', files[i].name);
+    status.textContent = ('🔄 Removing background {idx}/{total}: {name}, please wait...').replace('{idx}', (i+1)).replace('{total}', files.length).replace('{name}', files[i].name);
     progFill.style.width = ((i / files.length) * 100) + '%';
     renderList();
     try {
@@ -447,15 +629,14 @@ removeBtn.addEventListener('click', async function() {
         img.onerror = reject;
         img.src = imgUrl;
       });
-      // Allow up to 120s for first run (model download + inference), 60s for subsequent
       var isFirstRun = !modelLoadedOnce;
       var timeoutMs = isFirstRun ? 120000 : 60000;
       var progressTimer = setInterval(function() {
         var elapsed = Math.round((Date.now() - startTime) / 1000);
         if (isFirstRun && elapsed < 15) {
-          status.textContent = ('⬇️  Descargando modelo de IA (~30MB)... ({elapsed}s)').replace('{elapsed}', elapsed);
+          status.textContent = ('⬇️ Downloading AI model (~30MB)... {elapsed}s elapsed').replace('{elapsed}', elapsed);
         } else {
-          status.textContent = ('🧠 Procesando imagen... ({elapsed}s)').replace('{name}', files[i].name).replace('{elapsed}', elapsed);
+          status.textContent = ('🧠 Processing image... {elapsed}s elapsed').replace('{elapsed}', elapsed);
         }
       }, 2000);
       var startTime = Date.now();
@@ -470,14 +651,12 @@ removeBtn.addEventListener('click', async function() {
     } catch (err) {
       clearInterval(progressTimer);
       var _errMsg2 = (err && err.message ? err.message : String(err));
-      if (_errMsg2.indexOf('no available backend') > -1 || _errMsg2.indexOf('publicPath') > -1 || _errMsg2.indexOf('dynamically imported') > -1) { _errMsg2 = _errMsg2 + (" (Si este error persiste, actualiza la página: el motor de IA necesita descargar un modelo único de ~30MB)."); }
-      status.textContent = ('❌ Error al procesar {name}: ').replace('{name}', files[i].name) + _errMsg2;
-      _bgToast(('❌ Error al procesar {name}: ').replace('{name}', files[i].name) + _errMsg2, 'error', 7000);
-      // Show error in the file item too
+      if (_errMsg2.indexOf('no available backend') > -1 || _errMsg2.indexOf('publicPath') > -1 || _errMsg2.indexOf('dynamically imported') > -1) { _errMsg2 = _errMsg2 + ' (If this error persists, please refresh the page — the AI engine needs a one-time ~30MB model file download)'; }
+      status.textContent = ('❌ Error processing {name}: ').replace('{name}', files[i].name) + _errMsg2;
+      _bgToast(('❌ Error processing {name}: ').replace('{name}', files[i].name) + _errMsg2, 'error', 7000);
       if (files[i]) {
         files[i].error = _errMsg2 || (err.message || String(err));
       }
-
     }
   }
   progFill.style.width = '100%';
