@@ -2,26 +2,7 @@
 <html lang="ar" dir="rtl" data-theme="dark" data-tool-id="background-remover">
 <head>
 
-<!-- Preload ONNX Runtime WASM files for instant cache hit -->
-<link rel="preload" href="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/dist/ort-wasm-simd.wasm" as="fetch" crossorigin="anonymous">
-<link rel="preload" href="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/dist/ort-wasm-simd.threads.wasm" as="fetch" crossorigin="anonymous">
-<link rel="preload" href="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/dist/ort-wasm-simd.jsep.js" as="script" crossorigin="anonymous">
 
-<!-- Preload ONNX Runtime Web (non-ESM) with WASM path config -->
-<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/dist/ort.min.js" defer></script>
-<script>
-  // Configure ONNX Runtime wasmPaths globally before any ESM import
-  window.addEventListener('load', function() {
-    if (window.ort && window.ort.env && window.ort.env.wasm) {
-      try {
-        window.ort.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/dist/';
-        window.ort.env.wasm.simd = true;
-        window.ort.env.wasm.numThreads = 1;
-        window.__ortConfigured = true;
-      } catch(e) {}
-    }
-  });
-</script>
 
 
 
@@ -395,7 +376,7 @@ dropzone.addEventListener('dragleave', () => { dropzone.classList.remove('drag')
 dropzone.addEventListener('drop', e => {
   e.preventDefault();
   dropzone.classList.remove('drag');
-  arr = Array.from(e.dataTransfer.files).filter(f => f.type && f.type.startsWith('image/'));
+  const arr = Array.from(e.dataTransfer.files).filter(f => f.type && f.type.startsWith('image/'));
   if (arr.length) addFiles(arr);
 });
 
@@ -476,7 +457,7 @@ function _startModelProgressTimer() {
   if (_modelProgressInterval) clearInterval(_modelProgressInterval);
   _modelProgressInterval = setInterval(function() {
     var elapsed = Math.round((Date.now() - _modelLoaderStartedAt) / 1000);
-    if (_modelLoaderTimer) _modelLoaderTimer.textContent = '用时 ' + elapsed + ' 秒';
+    if (_modelLoaderTimer) _modelLoaderTimer.textContent = 'Elapsed: ' + elapsed + 's';
   }, 500);
 }
 
@@ -492,21 +473,21 @@ function _hideModelLoader() {
 
 function _showModelLoaderError(title, msg) {
   if (_modelLoaderBar) _modelLoaderBar.style.background = '#dc2626';
-  if (_modelLoaderPct) _modelLoaderPct.textContent = '⚠️';
+  if (_modelLoaderPct) _modelLoaderPct.textContent = '!';
   if (_modelLoaderTitle) _modelLoaderTitle.textContent = title;
   if (_modelLoaderStatus) _modelLoaderStatus.innerHTML = '<span style="color:#991b1b">' + msg + '</span>';
-  if (_modelLoaderIcon) _modelLoaderIcon.textContent = '⚠️';
+  if (_modelLoaderIcon) _modelLoaderIcon.textContent = '!';
   removeBtn.disabled = false;
   removeBtn.style.opacity = '1';
   removeBtn.style.cursor = 'pointer';
-  removeBtn.textContent = '🔄 刷新重试';
+  removeBtn.textContent = 'تحديث الصفحة';
   removeBtn.onclick = function() { location.reload(); };
 }
 
 // Start preloading immediately
 _initModelLoaderUI();
 _startModelProgressTimer();
-_setModelProgress(5, '⏳ 正在预加载 AI 引擎文件...');
+_setModelProgress(5, 'جاري تهيئة محرك الذكاء الاصطناعي...');
 
 // Preload in background (after DOM is ready)
 if (document.readyState === 'loading') {
@@ -517,90 +498,51 @@ if (document.readyState === 'loading') {
 
 async function _preloadModel() {
   try {
-    _setModelProgress(10, '⏳ 正在加载 AI 引擎模块...');
+    _setModelProgress(10, 'جاري تحميل وحدة محرك الذكاء الاصطناعي...');
 
-    // Wait a tick for the <script defer> ORT to execute
-    await new Promise(function(r) { setTimeout(r, 100); });
+    // Let the browser breathe before the heavy import
+    await new Promise(function(r) { setTimeout(r, 50); });
 
-    _setModelProgress(20, '⏳ 正在初始化 ONNX Runtime WASM 后端...');
+    _setModelProgress(30, 'جاري تنزيل نموذج الذكاء الاصطناعي + ملفات WASM (~30 ميجابايت)...');
 
-    // Configure global ORT instance first
-    if (window.ort && window.ort.env && window.ort.env.wasm) {
-      try {
-        window.ort.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/dist/';
-        window.ort.env.wasm.simd = true;
-        window.ort.env.wasm.numThreads = 1;
-        console.log('[BG-RM] Global ORT configured with CDN wasmPaths');
-      } catch(e) { console.warn('[BG-RM] Global ORT config failed:', e); }
-    }
-
-    _setModelProgress(40, '⬇️ 正在下载神经网络模型...');
-
-    // Import @imgly/background-removal (includes onnxruntime-web bundled)
+    // Import @imgly/background-removal. It bundles its own ORT and loads
+    // WASM/model assets from staticimgly.com by default. DO NOT configure
+    // external ORT wasmPaths - it conflicts with the library and breaks loading.
     const mod = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm');
 
-    _setModelProgress(70, '🔧 正在配置 AI 引擎...');
-
-    // Configure the BUNDLED onnxruntime-web's wasmPaths
-    var bundledOrt = mod.ort || mod.onnxruntime || mod.ORT || null;
-    if (bundledOrt && bundledOrt.env && bundledOrt.env.wasm) {
-      try {
-        bundledOrt.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/dist/';
-        bundledOrt.env.wasm.simd = true;
-        bundledOrt.env.wasm.numThreads = 1;
-        console.log('[BG-RM] Bundled ORT configured with CDN wasmPaths');
-      } catch(e) { console.warn('[BG-RM] Bundled ORT config failed:', e); }
-    } else {
-      // Try to find ORT in nested structures
-      var keys = Object.keys(mod);
-      console.log('[BG-RM] Looking for ORT in module keys:', keys);
-      for (var i = 0; i < keys.length; i++) {
-        var candidate = mod[keys[i]];
-        if (candidate && typeof candidate === 'object' && candidate.env && candidate.env.wasm) {
-          try {
-            candidate.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/dist/';
-            candidate.env.wasm.simd = true;
-            candidate.env.wasm.numThreads = 1;
-            console.log('[BG-RM] Found and configured ORT via key:', keys[i]);
-          } catch(e) {}
-        }
-      }
-    }
-
-    // Extract the removeBackground function
+    // Extract the removeBackground function (named or default export)
     if (typeof mod.removeBackground === 'function') {
       model = mod.removeBackground;
     } else if (typeof mod.default === 'function') {
       model = mod.default;
     } else {
-      throw new Error('Could not find removeBackground function. Available keys: ' + Object.keys(mod).join(', '));
+      throw new Error('removeBackground not found. Module keys: ' + Object.keys(mod).join(', '));
     }
 
-        _setModelProgress(90, '🧠 Warming up AI engine (first WASM compile + model load)...');
+    _setModelProgress(60, 'جاري التحميل المسبق لموارد النموذج...');
 
-    // Warm up: process a tiny 1x1 PNG to trigger WASM compilation + model download
-    try {
-      const warmupPng = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
-      const warmupResult = await model(warmupPng);
-      if (warmupResult && warmupResult instanceof Blob) {
-        console.log('[BG-RM] Warmup successful, WASM compiled and model ready');
-      }
-    } catch (warmupErr) {
-      console.warn('[BG-RM] Warmup failed (non-fatal):', warmupErr);
+    // Use the library preload() to fetch all WASM + ONNX model files upfront
+    if (typeof mod.preload === 'function') {
+      await mod.preload({
+        progress: function(key, current, total) {
+          var pct = 60 + Math.min(35, Math.round((current / total) * 35));
+          _setModelProgress(pct, 'جاري تنزيل ' + key + ': ' + current + '/' + total);
+        }
+      });
     }
 
-    _setModelProgress(100, '✅ AI Model Ready!');
-    if (_modelLoaderPct) _modelLoaderPct.textContent = '✅';
-    if (_modelLoaderIcon) _modelLoaderIcon.textContent = '✅';
-    if (_modelLoaderTitle) _modelLoaderTitle.textContent = 'AI 模型已就绪！';
-    if (_modelLoaderStatus) _modelLoaderStatus.textContent = '✅ 现在可以上传图片并点击「去除背景」了';
+    _setModelProgress(100, 'نموذج الذكاء الاصطناعي جاهز!');
+    if (_modelLoaderPct) _modelLoaderPct.textContent = 'OK';
+    if (_modelLoaderIcon) _modelLoaderIcon.textContent = 'OK';
+    if (_modelLoaderTitle) _modelLoaderTitle.textContent = 'نموذج الذكاء الاصطناعي جاهز!';
+    if (_modelLoaderStatus) _modelLoaderStatus.textContent = 'قم بتحميل صورة وانقر على إزالة الخلفية';
 
     // Enable the Remove button
     removeBtn.disabled = false;
     removeBtn.style.opacity = '1';
     removeBtn.style.cursor = 'pointer';
 
-    _bgToast('✅ AI 模型加载完成！现在可以上传图片并点击「去除背景」了。', 'success', 4000);
+    _bgToast('AI model loaded! قم بتحميل صورة وانقر على إزالة الخلفية.', 'success', 4000);
 
     // Hide loader after a brief celebration
     setTimeout(_hideModelLoader, 2000);
@@ -608,16 +550,14 @@ async function _preloadModel() {
   } catch (err) {
     console.error('[BG-RM] Model preload failed:', err);
     var errMsg = (err && err.message) ? err.message : String(err);
-    var userMsg = errMsg;
-    if (errMsg.indexOf('no available backend') > -1 || errMsg.indexOf('publicPath') > -1 || errMsg.indexOf('dynamically imported') > -1 || errMsg.indexOf('Failed to fetch') > -1) {
-      userMsg = 'AI 引擎 WASM 模块加载失败 — 请检查网络连接后刷新页面重试。';
+    if (errMsg.indexOf('Failed to fetch') > -1 || errMsg.indexOf('network') > -1) {
+      errMsg = 'خطأ في الشبكة عند تحميل محرك الذكاء الاصطناعي. يرجى التحقق من اتصالك وتحديث الصفحة.';
     }
-    _showModelLoaderError('❌ AI 模型加载失败', userMsg);
-    _bgToast('❌ AI 模型加载失败：' + userMsg, 'error', 8000);
-    status.textContent = '❌ AI 模型加载失败：' + userMsg;
+    _showModelLoaderError('فشل تحميل نموذج الذكاء الاصطناعي', errMsg);
+    _bgToast('فشل تحميل نموذج الذكاء الاصطناعي: ' + errMsg, 'error', 8000);
+    status.textContent = 'فشل تحميل نموذج الذكاء الاصطناعي: ' + errMsg;
   }
 }
-
 
 removeBtn.addEventListener('click', async function() {
   if (!files.length || processing) return;
@@ -650,15 +590,15 @@ removeBtn.addEventListener('click', async function() {
       });
       var isFirstRun = !modelLoadedOnce;
       var timeoutMs = isFirstRun ? 120000 : 60000;
+      var startTime = Date.now();
       var progressTimer = setInterval(function() {
         var elapsed = Math.round((Date.now() - startTime) / 1000);
         if (isFirstRun && elapsed < 15) {
-          status.textContent = ('⬇️ Downloading AI model (~30MB)... {elapsed}s elapsed').replace('{elapsed}', elapsed);
+          status.textContent = ('⬇️ جاري تنزيل AI model (~30MB)... {elapsed}s elapsed').replace('{elapsed}', elapsed);
         } else {
           status.textContent = ('🧠 Processing image... {elapsed}s elapsed').replace('{elapsed}', elapsed);
         }
       }, 2000);
-      var startTime = Date.now();
       const blob = await Promise.race([
         model(imgUrl),
         new Promise((_, reject) => setTimeout(() => reject(new Error('Processing timed out after ' + (timeoutMs/1000) + 's. Please try again with a smaller image or check your network.')), timeoutMs))
@@ -698,13 +638,13 @@ downloadAllBtn.addEventListener('click', async function() {
   const zip = new JSZip();
   files.forEach(function(item) {
     if (item.resultBlob) {
-      outName = item.name.replace(/\.[^.]+$/, '') + '-no-bg.png';
+      const outName = item.name.replace(/\.[^.]+$/, '') + '-no-bg.png';
       zip.file(outName, item.resultBlob);
     }
   });
   status.textContent = '📦 جاري إنشاء ملف ZIP...';
   _bgToast('📦 جاري إنشاء ملف ZIP...', 'info', 2500);
-  blob = await zip.generateAsync({ type: 'blob' });
+  const zipBlob = await zip.generateAsync({ type: 'blob' });
   const a = document.createElement('a');
   a.download = 'no-background-images.zip';
   a.href = URL.createObjectURL(blob);
@@ -734,8 +674,8 @@ clearBtn.addEventListener('click', function() {
       sampleBtn.textContent = '⏳ Loading...';
       try {
         const resp = await fetch('https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80');
-        blob = await resp.blob();
-        const file = new File([blob], 'sample.jpg', { type: 'image/jpeg' });
+        const sampleBlob = await resp.blob();
+        const file = new File([sampleBlob], 'sample.jpg', { type: 'image/jpeg' });
         addFiles([file]);
         sampleBtn.textContent = '🖼️ Try with a sample image';
       } catch (err) { sampleBtn.textContent = '🖼️ Try with a sample image'; }
