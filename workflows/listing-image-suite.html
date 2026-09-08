@@ -460,11 +460,11 @@
 
     const wmText = $('optWmText').value.trim();
 
-    const steps = [
-
-      { id:'resize', label:'Platform Resize', runner:'platformResize', options: { platforms } },
-
-    ];
+    // 步骤顺序：先单输出处理（watermark），最后多输出裁剪（platformResize）
+    // 修复：之前 platformResize 在前导致后续 watermark/compress 只作用于第一个平台
+    // compress 质量直接传给 platformResize，避免重复编码损失
+    const quality = parseInt($('optQuality').value) / 100;
+    const steps = [];
 
     if (wmText) {
 
@@ -472,7 +472,8 @@
 
     }
 
-    steps.push({ id:'compress', label:'Compress', runner:'compress', options: { quality: parseInt($('optQuality').value) / 100 } });
+    // 多输出步骤必须放在最后，质量直接传入
+    steps.push({ id:'resize', label:'Platform Resize', runner:'platformResize', options: { platforms, quality } });
 
     runBtn.disabled = true;
 
@@ -481,32 +482,57 @@
     try {
 
       const allOutputs = [];
+      const errors = [];
 
       for (let fi = 0; fi < files.length; fi++) {
 
-        let cur = files[fi];
+        try {
 
-        for (const step of steps) {
+          // 大图自动降采样，防止超大图卡死
+          let cur = await SmartImgKit.downscaleIfNeeded(files[fi]);
 
-          const runner = SmartImgKit.runners[step.runner];
+          for (const step of steps) {
 
-          if (!runner) throw new Error('Runner not found: ' + step.runner);
+            const runner = SmartImgKit.runners[step.runner];
 
-          cur = await runner(cur, step.options, () => {});
+            if (!runner) throw new Error('Runner not found: ' + step.runner);
+
+            cur = await runner(cur, step.options, () => {});
+
+          }
+
+          const base = files[fi].name.replace(/\.[^.]+$/, '');
+
+          if (cur._multi) {
+
+            for (const m of cur._multi) allOutputs.push({ name: base + '_' + m.platform + '.jpg', blob: m.blob });
+
+          } else {
+
+            allOutputs.push({ name: base + '_processed.jpg', blob: cur });
+
+          }
+
+        } catch (e) {
+
+          errors.push({ name: files[fi].name, error: e });
 
         }
 
-        const base = files[fi].name.replace(/\.[^.]+$/, '');
+        // 进度显示
+        runBtn.textContent = `⏳ ${fi + 1}/${files.length} done`;
 
-        if (cur._multi) {
+      }
 
-          for (const m of cur._multi) allOutputs.push({ name: base + '_' + m.platform + '.jpg', blob: m.blob });
+      if (!allOutputs.length) {
 
-        } else {
+        alert('All files failed. Check console for details.');
 
-          allOutputs.push({ name: base + '_processed.jpg', blob: cur });
+        runBtn.textContent = '🚀 Run Pipeline';
 
-        }
+        runBtn.disabled = false;
+
+        return;
 
       }
 
@@ -514,7 +540,15 @@
 
       await SmartImgKit.runners.exportZip(allOutputs, { filename: zipName }, () => {});
 
-      runBtn.textContent = '✓ Downloaded ' + allOutputs.length + ' files';
+      if (errors.length) {
+
+        runBtn.textContent = `✓ ${allOutputs.length} OK, ${errors.length} failed`;
+
+      } else {
+
+        runBtn.textContent = '✓ Downloaded ' + allOutputs.length + ' files';
+
+      }
 
     } catch (err) {
 
