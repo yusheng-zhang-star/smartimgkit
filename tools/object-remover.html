@@ -32,6 +32,17 @@
       background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
     }
     .or-canvas-wrap canvas { position: absolute; top: 0; left: 0; max-width: 100%; max-height: 500px; }
+    .or-original-preview {
+      position: absolute; top: 0; left: 0; max-width: 100%; max-height: 500px;
+      display: none; z-index: 15; pointer-events: none;
+    }
+    .or-original-preview.visible { display: block; }
+    .or-compare-badge {
+      position: absolute; top: 12px; left: 12px; z-index: 25;
+      background: rgba(0,0,0,0.7); color: #fff; padding: 4px 12px;
+      border-radius: 6px; font-size: .8rem; font-weight: 600; display: none;
+    }
+    .or-compare-badge.visible { display: block; }
     .or-drop-overlay {
       position: absolute; inset: 0;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -99,6 +110,8 @@
 
       <div class="or-workspace">
         <div class="or-canvas-wrap" id="canvasWrap">
+          <img class="or-original-preview" id="originalPreview" alt="original">
+          <div class="or-compare-badge" id="compareBadge">📷 Original</div>
           <div class="or-drop-overlay" id="dropOverlay">
             <div class="or-drop-icon">🖼️</div>
             <h3>Drop your image here</h3>
@@ -122,6 +135,7 @@
           <button class="btn btn-secondary" id="btnUndo">↩️ Undo</button>
           <button class="btn btn-primary" id="btnRun" disabled>✨ Remove Object</button>
           <button class="btn btn-secondary" id="btnDownload" disabled>💾 Download</button>
+          <button class="btn btn-secondary" id="btnCompare" disabled>👁️ Hold to Compare</button>
         </div>
 
         <div class="or-progress-wrap" id="progressWrap">
@@ -262,6 +276,10 @@ self.onmessage=function(e){var m=e.data;if(m.type==='init')init(m);if(m.type==='
     var sizeVal = document.getElementById('sizeVal');
     var statusDot = document.getElementById('statusDot');
     var statusText = document.getElementById('statusText');
+    var originalPreview = document.getElementById('originalPreview');
+    var compareBadge = document.getElementById('compareBadge');
+    var btnCompare = document.getElementById('btnCompare');
+    var originalDataURL = null;
     var progressWrap = document.getElementById('progressWrap');
     var progressFill = document.getElementById('progressFill');
     var progressLabel = document.getElementById('progressLabel');
@@ -298,6 +316,7 @@ self.onmessage=function(e){var m=e.data;if(m.type==='init')init(m);if(m.type==='
       onResult: function(r) {
         btnRun.disabled = false;
         btnDownload.disabled = false;
+        btnCompare.disabled = false;
         setStatus('ok', 'Done! Object removed in ' + Math.round(r.elapsedMs) + 'ms');
       },
       onError: function(msg) {
@@ -311,6 +330,9 @@ self.onmessage=function(e){var m=e.data;if(m.type==='init')init(m);if(m.type==='
       if (!file || !file.type.startsWith('image/')) return;
       dropOverlay.classList.add('hidden');
       setStatus('busy', 'Loading image...');
+      var reader = new FileReader();
+      reader.onload = function(e) { originalDataURL = e.target.result; originalPreview.src = originalDataURL; };
+      reader.readAsDataURL(file);
       inpainter.loadImage(file).then(function() {
         if (inpainter.isReady()) {
           btnRun.disabled = false;
@@ -344,6 +366,25 @@ self.onmessage=function(e){var m=e.data;if(m.type==='init')init(m);if(m.type==='
     btnClear.addEventListener('click', function() { inpainter.clearMask(); });
     btnUndo.addEventListener('click', function() { inpainter.undo(); });
     btnDownload.addEventListener('click', function() { inpainter.download('object-removed.png'); });
+
+
+    // 对比原图：按住显示原图，松开显示结果
+    function showOriginal() {
+      if (!originalDataURL) return;
+      originalPreview.classList.add('visible');
+      compareBadge.classList.add('visible');
+      btnCompare.textContent = '📷 Showing Original';
+    }
+    function hideOriginal() {
+      originalPreview.classList.remove('visible');
+      compareBadge.classList.remove('visible');
+      btnCompare.textContent = '👁️ Hold to Compare';
+    }
+    btnCompare.addEventListener('mousedown', showOriginal);
+    btnCompare.addEventListener('mouseup', hideOriginal);
+    btnCompare.addEventListener('mouseleave', hideOriginal);
+    btnCompare.addEventListener('touchstart', function(e) { e.preventDefault(); showOriginal(); });
+    btnCompare.addEventListener('touchend', function(e) { e.preventDefault(); hideOriginal(); });
 
     btnRun.addEventListener('click', function() {
       if (!inpainter.isReady()) { setStatus('err', 'Model still loading...'); return; }
