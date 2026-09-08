@@ -453,10 +453,10 @@ let model = null;
 let modelLoadedOnce = false;
 let processing = false;
 
-// Background removal config: use library v1.4.5 with model data hosted on unpkg
-// (staticimgly.com is no longer serving model files for v1.7.0)
+// Background removal config: use library v1.7.0 with model data on staticimgly.com
+// (CSP connect-src now includes blob: to allow WASM blob URL loading)
 const BG_REMOVAL_CONFIG = {
-  publicPath: 'https://unpkg.com/@imgly/background-removal-data@1.4.5/dist/',
+  publicPath: 'https://staticimgly.com/@imgly/background-removal-data/1.7.0/dist/',
   model: 'small'
 };
 
@@ -640,9 +640,9 @@ async function _preloadModel() {
 
     _setModelProgress(30, 'Downloading AI model + WASM files (~30MB)...');
 
-    // Import @imgly/background-removal v1.4.5. WASM/model assets loaded from unpkg
-    // via publicPath config (staticimgly.com v1.7.0 files are no longer available).
-    const mod = await import('https://esm.sh/@imgly/background-removal@1.4.5');
+    // Import @imgly/background-removal v1.7.0. WASM/model assets loaded from staticimgly.com
+    // via publicPath config (CSP fixed to allow blob: for WASM loading).
+    const mod = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm');
 
     // Extract the removeBackground function (named or default export)
     if (typeof mod.removeBackground === 'function') {
