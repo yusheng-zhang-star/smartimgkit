@@ -33,7 +33,8 @@
       if (iA > pA) { dh = p.h; dw = img.width * (p.h / img.height); dx = (p.w - dw) / 2; }
       else { dw = p.w; dh = img.height * (p.w / img.width); dy = (p.h - dh) / 2; }
       ctx.drawImage(img, dx, dy, dw, dh);
-      const b = await new Promise(res => c.toBlob(res, 'image/jpeg', 0.92));
+      const q = Math.max(0.1, Math.min(1, opt.quality || 0.92));
+      const b = await new Promise(res => c.toBlob(res, 'image/jpeg', q));
       results.push({ platform: pid, blob: b });
     }
     const first = results[0] && results[0].blob;
