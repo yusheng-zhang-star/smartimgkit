@@ -236,6 +236,24 @@
     </div>
     <div id="modelLoaderStatus" style="margin-top:8px;font-size:0.8rem;color:#0284c7;">⏳ Initializing AI engine...</div>
     <div id="modelLoaderTimer" style="font-size:0.75rem;color:#94a3b8;margin-top:4px;">Elapsed: 0s</div>
+    <div id="modelSelectorWrap" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid #bae6fd;">
+      <div style="font-size:0.82rem;color:#0369a1;margin-bottom:6px;font-weight:600;">AI Model Quality</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="_modelOpt" data-model="small" style="flex:1;min-width:90px;padding:8px 10px;border:1px solid #bae6fd;border-radius:8px;background:#fff;color:#0369a1;font-size:0.8rem;cursor:pointer;">
+          <div style="font-weight:600;">⚡ Fast</div>
+          <div style="font-size:0.7rem;color:#64748b;margin-top:2px;">~30MB · quick</div>
+        </button>
+        <button class="_modelOpt" data-model="medium" style="flex:1;min-width:90px;padding:8px 10px;border:2px solid #0ea5e9;border-radius:8px;background:#f0f9ff;color:#0369a1;font-size:0.8rem;cursor:pointer;font-weight:600;">
+          <div style="font-weight:600;">⭐ Balanced</div>
+          <div style="font-size:0.7rem;color:#64748b;margin-top:2px;">~60MB · better</div>
+        </button>
+        <button class="_modelOpt" data-model="large" style="flex:1;min-width:90px;padding:8px 10px;border:1px solid #bae6fd;border-radius:8px;background:#fff;color:#0369a1;font-size:0.8rem;cursor:pointer;">
+          <div style="font-weight:600;">🏆 Best</div>
+          <div style="font-size:0.7rem;color:#64748b;margin-top:2px;">~150MB · best</div>
+        </button>
+      </div>
+      <div id="modelSwitchHint" style="font-size:0.72rem;color:#94a3b8;margin-top:6px;">Switching model will reload the AI engine (~10-30s)</div>
+    </div>
   </div>
 </div>
 <div class="tool-container" id="workspace" style="display:none">
@@ -457,7 +475,7 @@ let processing = false;
 // (CSP connect-src now includes blob: to allow WASM blob URL loading)
 const BG_REMOVAL_CONFIG = {
   publicPath: 'https://staticimgly.com/@imgly/background-removal-data/1.7.0/dist/',
-  model: 'small'
+  model: 'medium'
 };
 
 const fileInput = document.getElementById('fileInput');
@@ -600,9 +618,16 @@ function _hideModelLoader() {
   if (_modelProgressInterval) { clearInterval(_modelProgressInterval); _modelProgressInterval = null; }
   var el = document.getElementById('modelLoader');
   if (el) {
-    el.style.transition = 'opacity .4s ease';
-    el.style.opacity = '0';
-    setTimeout(function() { if (el && el.parentNode) el.style.display = 'none'; }, 400);
+    // 隐藏加载内容但保留模型选择器
+    var loaderContent = document.getElementById('modelLoaderContent');
+    if (loaderContent) loaderContent.style.display = 'none';
+    var selWrap = document.getElementById('modelSelectorWrap');
+    if (selWrap) {
+      selWrap.style.display = '';
+      selWrap.style.marginTop = '0';
+      selWrap.style.paddingTop = '0';
+      selWrap.style.borderTop = 'none';
+    }
   }
 }
 
@@ -630,6 +655,89 @@ if (document.readyState === 'loading') {
 } else {
   _preloadModel();
 }
+
+// ===== Model switching =====
+var _currentModel = BG_REMOVAL_CONFIG.model;
+var _modelModule = null;
+
+function _updateModelSelectorUI() {
+  var btns = document.querySelectorAll('._modelOpt');
+  btns.forEach(function(btn) {
+    var m = btn.getAttribute('data-model');
+    if (m === _currentModel) {
+      btn.style.border = '2px solid #0ea5e9';
+      btn.style.background = '#f0f9ff';
+      btn.style.fontWeight = '600';
+    } else {
+      btn.style.border = '1px solid #bae6fd';
+      btn.style.background = '#fff';
+      btn.style.fontWeight = 'normal';
+    }
+  });
+}
+
+async function _switchModel(newModel) {
+  if (newModel === _currentModel) return;
+  if (typeof _switchingModel !== 'undefined' && _switchingModel) return;
+  _switchingModel = true;
+
+  // 禁用按钮
+  removeBtn.disabled = true;
+  removeBtn.style.opacity = '0.6';
+  removeBtn.style.cursor = 'not-allowed';
+
+  // 显示加载器
+  var loader = document.getElementById('modelLoader');
+  if (loader) loader.style.display = '';
+  _showModelLoader();
+  _setModelProgress(5, 'Switching to ' + newModel + ' model...');
+
+  _currentModel = newModel;
+  BG_REMOVAL_CONFIG.model = newModel;
+  _updateModelSelectorUI();
+
+  try {
+    // 重新 preload 新模型
+    if (_modelModule && typeof _modelModule.preload === 'function') {
+      _setModelProgress(30, 'Downloading ' + newModel + ' model...');
+      await _modelModule.preload({
+        publicPath: BG_REMOVAL_CONFIG.publicPath,
+        model: newModel,
+        progress: function(key, current, total) {
+          var pct = 30 + Math.min(65, Math.round((current / total) * 65));
+          _setModelProgress(pct, 'Downloading ' + key + ': ' + current + '/' + total);
+        }
+      });
+    }
+
+    _setModelProgress(100, newModel.charAt(0).toUpperCase() + newModel.slice(1) + ' model ready!');
+    if (_modelLoaderTitle) _modelLoaderTitle.textContent = 'AI Model Ready!';
+    if (_modelLoaderStatus) _modelLoaderStatus.textContent = 'Upload an image and click Remove Background';
+    if (_modelLoaderPct) _modelLoaderPct.textContent = 'OK';
+
+    removeBtn.disabled = false;
+    removeBtn.style.opacity = '1';
+    removeBtn.style.cursor = 'pointer';
+
+    _bgToast('Switched to ' + newModel + ' model.', 'success', 3000);
+    setTimeout(_hideModelLoader, 2000);
+  } catch (err) {
+    console.error('[BG-RM] Model switch failed:', err);
+    _showModelLoaderError('Model Switch Failed', err.message || 'Unknown error');
+  }
+  _switchingModel = false;
+}
+
+// 绑定模型选择按钮
+document.addEventListener('DOMContentLoaded', function() {
+  var btns = document.querySelectorAll('._modelOpt');
+  btns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var m = btn.getAttribute('data-model');
+      _switchModel(m);
+    });
+  });
+});
 
 async function _preloadModel() {
   try {
@@ -667,11 +775,16 @@ async function _preloadModel() {
       });
     }
 
+    _modelModule = mod;
     _setModelProgress(100, 'AI Model Ready!');
     if (_modelLoaderPct) _modelLoaderPct.textContent = 'OK';
     if (_modelLoaderIcon) _modelLoaderIcon.textContent = 'OK';
     if (_modelLoaderTitle) _modelLoaderTitle.textContent = 'AI Model Ready!';
     if (_modelLoaderStatus) _modelLoaderStatus.textContent = 'Upload an image and click Remove Background';
+    // 显示模型选择器
+    var selWrap = document.getElementById('modelSelectorWrap');
+    if (selWrap) selWrap.style.display = '';
+    _updateModelSelectorUI();
 
     // Enable the Remove button
     removeBtn.disabled = false;
