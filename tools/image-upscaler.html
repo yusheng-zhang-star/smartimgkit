@@ -596,12 +596,16 @@
     }
 
     // ===== Lazy load UpscalerJS model =====
-    async function ensureUpscaler() {
-      if (upscaler || modelLoading) return upscaler;
+    let currentModelScale = null;
+    async function ensureUpscaler(scale) {
+      const modelKey = 'x' + scale;
+      if (upscaler && currentModelScale === scale) return upscaler;
+      if (modelLoading) return null;
       modelLoading = true;
       try {
-        status.textContent = '🧠 Loading AI model (first time only, ~15MB)...';
-        upscaler = new Upscaler({ model: window.ESRGANSlim });
+        status.textContent = '🧠 Loading AI ' + scale + 'x model (first time only)...';
+        upscaler = new Upscaler({ model: window.ESRGANSlim[modelKey] });
+        currentModelScale = scale;
         status.textContent = '';
       } catch (e) {
         status.textContent = '❌ Model load failed: ' + e.message;
@@ -614,11 +618,11 @@
 
     // ===== AI Upscale =====
     async function aiUpscale(sourceCanvas) {
-      const model = await ensureUpscaler();
+      const model = await ensureUpscaler(scaleFactor);
       if (!model) throw new Error('AI model not available');
 
       // 限制输入尺寸，避免放大后超过 8192
-      const maxInputDim = 1024; // 4x -> 4096
+      const maxInputDim = scaleFactor === 4 ? 1024 : 2048;
       let w = sourceCanvas.width, h = sourceCanvas.height;
       let workCanvas = sourceCanvas;
       if (w > maxInputDim || h > maxInputDim) {
@@ -657,20 +661,7 @@
       resultCanvas.height = outH;
       resultCanvas.getContext('2d').putImageData(new ImageData(rgba, outW, outH), 0, 0);
 
-      // 如果用户选 2x，从 4x 缩小到 2x
-      if (scaleFactor === 2) {
-        const targetW = Math.round(originalImg.naturalWidth * 2);
-        const targetH = Math.round(originalImg.naturalHeight * 2);
-        const downCanvas = document.createElement('canvas');
-        downCanvas.width = targetW;
-        downCanvas.height = targetH;
-        const dctx = downCanvas.getContext('2d');
-        dctx.imageSmoothingEnabled = true;
-        dctx.imageSmoothingQuality = 'high';
-        dctx.drawImage(resultCanvas, 0, 0, targetW, targetH);
-        return downCanvas;
-      }
-      return resultCanvas;
+return resultCanvas;
     }
 
     // ===== Post-process (sharpen) =====
