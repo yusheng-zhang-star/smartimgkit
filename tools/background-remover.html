@@ -453,6 +453,13 @@ let model = null;
 let modelLoadedOnce = false;
 let processing = false;
 
+// Background removal config: use library v1.4.5 with model data hosted on unpkg
+// (staticimgly.com is no longer serving model files for v1.7.0)
+const BG_REMOVAL_CONFIG = {
+  publicPath: 'https://unpkg.com/@imgly/background-removal-data@1.4.5/dist/',
+  model: 'small'
+};
+
 const fileInput = document.getElementById('fileInput');
 
 // ===== Toast helper for prominent processing feedback =====
@@ -633,10 +640,9 @@ async function _preloadModel() {
 
     _setModelProgress(30, 'Downloading AI model + WASM files (~30MB)...');
 
-    // Import @imgly/background-removal. It bundles its own ORT and loads
-    // WASM/model assets from staticimgly.com by default. DO NOT configure
-    // external ORT wasmPaths - it conflicts with the library and breaks loading.
-    const mod = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm');
+    // Import @imgly/background-removal v1.4.5. WASM/model assets loaded from unpkg
+    // via publicPath config (staticimgly.com v1.7.0 files are no longer available).
+    const mod = await import('https://esm.sh/@imgly/background-removal@1.4.5');
 
     // Extract the removeBackground function (named or default export)
     if (typeof mod.removeBackground === 'function') {
@@ -652,6 +658,8 @@ async function _preloadModel() {
     // Use the library preload() to fetch all WASM + ONNX model files upfront
     if (typeof mod.preload === 'function') {
       await mod.preload({
+        publicPath: BG_REMOVAL_CONFIG.publicPath,
+        model: BG_REMOVAL_CONFIG.model,
         progress: function(key, current, total) {
           var pct = 60 + Math.min(35, Math.round((current / total) * 35));
           _setModelProgress(pct, 'Downloading ' + key + ': ' + current + '/' + total);
@@ -728,7 +736,7 @@ removeBtn.addEventListener('click', async function() {
         }
       }, 2000);
       const blob = await Promise.race([
-        model(imgUrl),
+        model(imgUrl, BG_REMOVAL_CONFIG),
         new Promise((_, reject) => setTimeout(() => reject(new Error('Processing timed out after ' + (timeoutMs/1000) + 's. Please try again with a smaller image or check your network.')), timeoutMs))
       ]);
       clearInterval(progressTimer);
