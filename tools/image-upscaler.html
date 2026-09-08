@@ -604,7 +604,12 @@
       modelLoading = true;
       try {
         status.textContent = '🧠 Loading AI ' + scale + 'x model (first time only)...';
-        upscaler = new Upscaler({ model: window.ESRGANSlim[modelKey] });
+        const rawModel = window.ESRGANSlim[modelKey];
+        const modelDef = {
+          ...rawModel,
+          path: 'https://cdn.jsdelivr.net/npm/@upscalerjs/esrgan-slim@1.0.0-beta.10/' + rawModel._internals.path,
+        };
+        upscaler = new Upscaler({ model: modelDef });
         currentModelScale = scale;
         status.textContent = '';
       } catch (e) {
