@@ -692,7 +692,10 @@ async function _switchModel(newModel) {
   // 显示加载器
   var loader = document.getElementById('modelLoader');
   if (loader) loader.style.display = '';
-  _showModelLoader();
+  var loaderContent = document.getElementById('modelLoaderContent');
+  if (loaderContent) loaderContent.style.display = '';
+  // 重置进度条颜色
+  if (_modelLoaderBar) _modelLoaderBar.style.background = 'linear-gradient(90deg,#0ea5e9,#6366f1)';
   _setModelProgress(5, 'Switching to ' + newModel + ' model...');
 
   _currentModel = newModel;
