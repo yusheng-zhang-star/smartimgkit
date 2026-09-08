@@ -512,11 +512,12 @@
     </div>
   </footer>
 
+  <!-- UpscalerJS (AI super-resolution) -->
+  <script src="https://cdn.jsdelivr.net/npm/upscaler@1.0.0-beta.14/dist/browser/umd/upscaler.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@upscalerjs/esrgan-slim@1.0.0-beta.10/dist/umd/index.min.js"></script>
   <script src="/js/main.js?v=7"></script>
-  <script type="module">
+  <script>
 // ===== AI Upscaler with Real-ESRGAN (UpscalerJS) =====
-import Upscaler from 'https://esm.sh/upscaler@1.0.0-beta.14?deps=@upscalerjs/esrgan-slim@1.0.0-beta.10';
-import model from 'https://esm.sh/@upscalerjs/esrgan-slim@1.0.0-beta.10';
 
 // ===== State =====
     let originalImg = null;
@@ -600,7 +601,7 @@ import model from 'https://esm.sh/@upscalerjs/esrgan-slim@1.0.0-beta.10';
       modelLoading = true;
       try {
         status.textContent = '🧠 Loading AI model (first time only, ~15MB)...';
-        upscaler = new Upscaler({ model: model });
+        upscaler = new Upscaler({ model: window.ESRGANSlim4x });
         status.textContent = '';
       } catch (e) {
         status.textContent = '❌ Model load failed: ' + e.message;
