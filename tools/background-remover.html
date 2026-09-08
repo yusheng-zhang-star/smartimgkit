@@ -618,13 +618,16 @@ function _hideModelLoader() {
   if (_modelProgressInterval) { clearInterval(_modelProgressInterval); _modelProgressInterval = null; }
   var el = document.getElementById('modelLoader');
   if (el) {
-    // 隐藏加载内容但保留模型选择器
-    var loaderContent = document.getElementById('modelLoaderContent');
-    if (loaderContent) loaderContent.style.display = 'none';
+    // 把模型选择器移出 content，然后隐藏 content
     var selWrap = document.getElementById('modelSelectorWrap');
+    var loaderContent = document.getElementById('modelLoaderContent');
+    if (selWrap && loaderContent && selWrap.parentNode === loaderContent) {
+      loaderContent.parentNode.insertBefore(selWrap, loaderContent.nextSibling);
+    }
+    if (loaderContent) loaderContent.style.display = 'none';
     if (selWrap) {
       selWrap.style.display = '';
-      selWrap.style.marginTop = '0';
+      selWrap.style.marginTop = '8px';
       selWrap.style.paddingTop = '0';
       selWrap.style.borderTop = 'none';
     }
