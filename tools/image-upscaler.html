@@ -5,19 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="index, follow">
   <title>Image Upscaler — Enlarge Photos Without Quality Loss | SmartImgKit</title>
-  <meta name="description" content="Upscale images to 2x, 3x, or 4x with smart interpolation and sharpening. Enlarge photos for printing, wallpapers, or high-res displays. Free, no uploads, 100% browser-based.">
+  <meta name="description" content="Upscale images 2x or 4x with AI super-resolution (Real-ESRGAN). Enlarge photos without quality loss. Free, no uploads, 100% browser-based.">
   <meta name="keywords" content="image upscaler, upscale image, enlarge photo, image enlarger, photo upscale, increase image resolution, image resize up, high resolution, upscale without losing quality">
   <link rel="canonical" href="https://smartimgkit.com/tools/image-upscaler">
   <meta name="theme-color" content="#6366f1">
   <meta property="og:title" content="Free Image Upscaler — Enlarge Photos | SmartImgKit">
-  <meta property="og:description" content="Upscale images to 2x, 3x, or 4x with smart interpolation and sharpening. Enlarge photos for printing or high-res displays. Free, no signup, 100% browser-based.">
+  <meta property="og:description" content="Upscale images 2x or 4x with AI super-resolution (Real-ESRGAN). Enlarge photos without quality loss. Free, no signup, 100% browser-based.">
   <meta property="og:url" content="https://smartimgkit.com/tools/image-upscaler">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SmartImgKit">
   <meta property="og:image" content="https://smartimgkit.com/screenshots/image-upscaler.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Free Image Upscaler — Enlarge Photos | SmartImgKit">
-  <meta name="twitter:description" content="Upscale images to 2x, 3x, or 4x with smart interpolation and sharpening. Enlarge photos for printing or high-res displays. Free, no signup, 100% browser-based.">
+  <meta name="twitter:description" content="Upscale images 2x or 4x with AI super-resolution (Real-ESRGAN). Enlarge photos without quality loss. Free, no signup, 100% browser-based.">
   <meta name="twitter:image" content="https://smartimgkit.com/screenshots/image-upscaler.png">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="alternate" hreflang="ar" href="https://smartimgkit.com/ar/tools/image-upscaler">
@@ -217,7 +217,7 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/">Tools</a><span>/</span><span>🔍 Image Upscaler</span></nav>
       <div class="tool-page-header">
         <h1>🔍 Image Upscaler</h1>
-        <p>Enlarge images to 2x, 3x, or 4x with smart interpolation and sharpening. Perfect for printing, wallpapers, and high-resolution displays. 100% browser-based.</p>
+        <p>Enlarge images 2x or 4x with AI super-resolution powered by Real-ESRGAN. Recover details and sharpen edges automatically. 100% browser-based, your images never leave your device.</p>
       </div>
       <div class="tool-workspace">
 <!-- Upload Area -->
@@ -230,8 +230,8 @@
               <div class="before-after-item-caption before">Before</div>
             </div>
         <div class="selling-points">
-  <div class="sp-item"><span class="sp-icon">✅</span>Upscale images up to 4x with AI</div>
-  <div class="sp-item"><span class="sp-icon">🎯</span>Enlarge low-resolution photos for printing</div>
+  <div class="sp-item"><span class="sp-icon">🧠</span>Real-ESRGAN AI super-resolution</div>
+  <div class="sp-item"><span class="sp-icon">🎯</span>Recover lost details and sharp edges</div>
   <div class="sp-item"><span class="sp-icon">🔒</span>100% private — runs in your browser</div>
 </div>
             <div class="before-after-item">
@@ -257,9 +257,8 @@
             <div class="control-group">
               <label>Scale Factor</label>
               <div class="scale-btns">
-                <button class="scale-btn active" data-scale="2">2x</button>
-                <button class="scale-btn" data-scale="3">3x</button>
-                <button class="scale-btn" data-scale="4">4x</button>
+                <button class="scale-btn active" data-scale="2">2x (Fast)</button>
+                <button class="scale-btn" data-scale="4">4x (Best)</button>
               </div>
             </div>
 
@@ -286,7 +285,7 @@
             </div>
 
             <div class="tool-actions" style="flex-direction:column">
-              <button class="btn btn-primary" id="upscaleBtn">🔍 Upscale & Download</button>
+              <button class="btn btn-primary" id="upscaleBtn">🧠 AI Upscale & Download</button>
               <button class="btn btn-secondary" id="resetBtn">🔄 Start Over</button>
             </div>
             <div id="status" class="text-center" style="color:var(--text-secondary);font-size:.85rem"></div>
@@ -514,10 +513,17 @@
   </footer>
 
   <script src="/js/main.js?v=7"></script>
-  <script>
+  <script type="module">
+// ===== AI Upscaler with Real-ESRGAN (UpscalerJS) =====
+import Upscaler from 'https://esm.sh/upscaler@1.0.0-beta.14?deps=@upscalerjs/esrgan-slim@1.0.0-beta.10';
+import model from 'https://esm.sh/@upscalerjs/esrgan-slim@1.0.0-beta.10';
+
 // ===== State =====
     let originalImg = null;
     let scaleFactor = 2;
+    let upscaler = null;
+    let modelLoading = false;
+    let lastResultCanvas = null;
 
     // ===== DOM =====
     const dropzone = document.getElementById('dropzone');
@@ -544,6 +550,8 @@
       workspace.style.display = '';
       updateDims();
       renderPreview();
+      // 预加载模型（后台）
+      ensureUpscaler();
     }
 
     // ===== Scale Buttons =====
@@ -560,7 +568,7 @@
     // ===== Sharpening =====
     sharpenSlider.addEventListener('input', () => {
       sharpenValue.textContent = sharpenSlider.value;
-      renderPreview();
+      if (lastResultCanvas) applyPostProcess();
     });
 
     // ===== Dimension Display =====
@@ -572,37 +580,117 @@
       newDim.textContent = `${w * scaleFactor} × ${h * scaleFactor}`;
     }
 
-    // ===== Preview Render =====
+    // ===== Preview Render (simple resize for preview) =====
     function renderPreview() {
       if (!originalImg) return;
-      w = originalImg.naturalWidth;
-      h = originalImg.naturalHeight;
+      const w = originalImg.naturalWidth;
+      const h = originalImg.naturalHeight;
       const nw = w * scaleFactor;
       const nh = h * scaleFactor;
-
       previewCanvas.width = nw;
       previewCanvas.height = nh;
-
-      // High-quality interpolation
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = 'high';
       ctx.drawImage(originalImg, 0, 0, nw, nh);
-
-      // Apply unsharp mask sharpening
-      const strength = parseInt(sharpenSlider.value) / 100;
-      if (strength > 0) applySharpen(ctx, nw, nh, strength);
     }
 
-    // ===== Unsharp Mask Sharpening =====
+    // ===== Lazy load UpscalerJS model =====
+    async function ensureUpscaler() {
+      if (upscaler || modelLoading) return upscaler;
+      modelLoading = true;
+      try {
+        status.textContent = '🧠 Loading AI model (first time only, ~15MB)...';
+        upscaler = new Upscaler({ model: model });
+        status.textContent = '';
+      } catch (e) {
+        status.textContent = '❌ Model load failed: ' + e.message;
+        upscaler = null;
+      } finally {
+        modelLoading = false;
+      }
+      return upscaler;
+    }
+
+    // ===== AI Upscale =====
+    async function aiUpscale(sourceCanvas) {
+      const model = await ensureUpscaler();
+      if (!model) throw new Error('AI model not available');
+
+      // 限制输入尺寸，避免放大后超过 8192
+      const maxInputDim = 1024; // 4x -> 4096
+      let w = sourceCanvas.width, h = sourceCanvas.height;
+      let workCanvas = sourceCanvas;
+      if (w > maxInputDim || h > maxInputDim) {
+        const s = Math.min(maxInputDim / w, maxInputDim / h);
+        workCanvas = document.createElement('canvas');
+        workCanvas.width = Math.round(w * s);
+        workCanvas.height = Math.round(h * s);
+        workCanvas.getContext('2d').drawImage(sourceCanvas, 0, 0, workCanvas.width, workCanvas.height);
+      }
+
+      // 模型默认 4x，如果用户选 2x，先 4x 再缩小
+      const tensor = await model.upscale(workCanvas, {
+        output: 'tensor',
+        patchSize: 128,
+        padding: 8,
+        progress: (p) => {
+          status.textContent = `🧠 AI Upscaling... ${Math.round(p * 100)}%`;
+        }
+      });
+
+      const data = await tensor.data();
+      const outW = tensor.shape[1];
+      const outH = tensor.shape[0];
+
+      // float32 [0,1] -> RGBA uint8
+      const rgba = new Uint8ClampedArray(outW * outH * 4);
+      for (let i = 0, j = 0; i < data.length; i += 3, j += 4) {
+        rgba[j] = Math.min(255, Math.max(0, Math.round(data[i] * 255)));
+        rgba[j+1] = Math.min(255, Math.max(0, Math.round(data[i+1] * 255)));
+        rgba[j+2] = Math.min(255, Math.max(0, Math.round(data[i+2] * 255)));
+        rgba[j+3] = 255;
+      }
+
+      const resultCanvas = document.createElement('canvas');
+      resultCanvas.width = outW;
+      resultCanvas.height = outH;
+      resultCanvas.getContext('2d').putImageData(new ImageData(rgba, outW, outH), 0, 0);
+
+      // 如果用户选 2x，从 4x 缩小到 2x
+      if (scaleFactor === 2) {
+        const targetW = Math.round(originalImg.naturalWidth * 2);
+        const targetH = Math.round(originalImg.naturalHeight * 2);
+        const downCanvas = document.createElement('canvas');
+        downCanvas.width = targetW;
+        downCanvas.height = targetH;
+        const dctx = downCanvas.getContext('2d');
+        dctx.imageSmoothingEnabled = true;
+        dctx.imageSmoothingQuality = 'high';
+        dctx.drawImage(resultCanvas, 0, 0, targetW, targetH);
+        return downCanvas;
+      }
+      return resultCanvas;
+    }
+
+    // ===== Post-process (sharpen) =====
+    function applyPostProcess() {
+      if (!lastResultCanvas) return;
+      const w = lastResultCanvas.width;
+      const h = lastResultCanvas.height;
+      previewCanvas.width = w;
+      previewCanvas.height = h;
+      ctx.drawImage(lastResultCanvas, 0, 0);
+      const strength = parseInt(sharpenSlider.value) / 100;
+      if (strength > 0) applySharpen(ctx, w, h, strength);
+    }
+
+    // ===== Unsharp Mask =====
     function applySharpen(ctx, w, h, strength) {
       const imageData = ctx.getImageData(0, 0, w, h);
       const data = imageData.data;
-
-      // Create blurred version
       const blurred = new Uint8ClampedArray(data.length);
       const kernel = [1, 2, 1, 2, 4, 2, 1, 2, 1];
       const kSum = 16;
-
       for (let y = 1; y < h - 1; y++) {
         for (let x = 1; x < w - 1; x++) {
           for (let c = 0; c < 3; c++) {
@@ -610,8 +698,7 @@
             let ki = 0;
             for (let ky = -1; ky <= 1; ky++) {
               for (let kx = -1; kx <= 1; kx++) {
-                const idx = ((y + ky) * w + (x + kx)) * 4 + c;
-                sum += data[idx] * kernel[ki++];
+                sum += data[((y + ky) * w + (x + kx)) * 4 + c] * kernel[ki++];
               }
             }
             blurred[(y * w + x) * 4 + c] = sum / kSum;
@@ -619,16 +706,12 @@
           blurred[(y * w + x) * 4 + 3] = data[(y * w + x) * 4 + 3];
         }
       }
-
-      // Unsharp mask: sharpened = original + strength * (original - blurred)
-      const amount = strength * 1.5; // max 1.5x sharpening
+      const amount = strength * 1.5;
       for (let i = 0; i < data.length; i += 4) {
         for (let c = 0; c < 3; c++) {
-          const diff = data[i + c] - blurred[i + c];
-          data[i + c] = Math.min(255, Math.max(0, data[i + c] + diff * amount));
+          data[i + c] = Math.min(255, Math.max(0, data[i + c] + (data[i + c] - blurred[i + c]) * amount));
         }
       }
-
       ctx.putImageData(imageData, 0, 0);
     }
 
@@ -636,33 +719,44 @@
     upscaleBtn.addEventListener('click', async () => {
       if (!originalImg) return;
       upscaleBtn.disabled = true;
-      upscaleBtn.textContent = '🔄 Upscaling...';
+      upscaleBtn.textContent = '🧠 Processing...';
       status.textContent = '';
 
       try {
+        // 用原图做 AI 放大
+        const srcCanvas = document.createElement('canvas');
+        srcCanvas.width = originalImg.naturalWidth;
+        srcCanvas.height = originalImg.naturalHeight;
+        srcCanvas.getContext('2d').drawImage(originalImg, 0, 0);
+
+        lastResultCanvas = await aiUpscale(srcCanvas);
+        applyPostProcess();
+
         const format = outputFormat.value;
         const quality = format === 'image/png' ? undefined : 0.92;
         const blob = await ImageUtils.canvasToBlob(previewCanvas, format, quality);
         const ext = format === 'image/png' ? 'png' : format === 'image/jpeg' ? 'jpg' : 'webp';
-        ImageUtils.download(blob, `upscaled-${scaleFactor}x.${ext}`);
-        status.textContent = `✅ Image upscaled to ${scaleFactor}x and downloaded!`;
+        ImageUtils.download(blob, `ai-upscaled-${scaleFactor}x.${ext}`);
+        status.textContent = `✅ AI upscaled to ${scaleFactor}x (${lastResultCanvas.width}×${lastResultCanvas.height})!`;
       } catch (e) {
         status.textContent = '❌ Error: ' + e.message;
+        console.error(e);
       }
 
       upscaleBtn.disabled = false;
-      upscaleBtn.textContent = '🔍 Upscale & Download';
+      upscaleBtn.textContent = '🧠 AI Upscale & Download';
     });
 
     // ===== Reset =====
     resetBtn.addEventListener('click', () => {
       originalImg = null;
+      lastResultCanvas = null;
       workspace.style.display = 'none';
       dropzone.classList.remove('hidden');
       fileInput.value = '';
       status.textContent = '';
     });
-  
+
   // Sample image & Next Step
   (function() {
     var _handleFile = typeof handleFile === 'function' ? handleFile : null;
