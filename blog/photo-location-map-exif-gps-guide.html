@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>How to Find Where a Photo Was Taken (And Remove GPS Data) — SmartImgKit Blog</title>
+  <meta name="description" content="Learn how to find where a photo was taken using EXIF GPS data, view photos on an interactive map, and batch remove location metadata to protect privacy. Complete guide with free tools.">
+  <meta name="keywords" content="where was this photo taken, photo location map, find photo location, exif gps, remove gps from photo, batch exif remover, photo privacy, geotag viewer">
+  <link rel="canonical" href="https://smartimgkit.com/blog/photo-location-map-exif-gps-guide">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="How to Find Where a Photo Was Taken — Complete Guide">
+  <meta property="og:description" content="Discover how to extract GPS coordinates from photos, view them on a map, and protect your privacy by removing EXIF data. Free tools included.">
+  <meta property="og:url" content="https://smartimgkit.com/blog/photo-location-map-exif-gps-guide">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/home.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="How to Find Where a Photo Was Taken">
+  <meta name="twitter:description" content="Extract GPS from photos, view on map, and remove EXIF data. Free tools inside.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css?v=10">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "How to Find Where a Photo Was Taken (And Remove GPS Data)",
+  "description": "Learn how to find where a photo was taken using EXIF GPS data, view photos on an interactive map, and batch remove location metadata.",
+  "author": {"@type": "Organization", "name": "SmartImgKit"},
+  "publisher": {"@type": "Organization", "name": "SmartImgKit"},
+  "datePublished": "2026-09-10",
+  "dateModified": "2026-09-10",
+  "mainEntityOfPage": "https://smartimgkit.com/blog/photo-location-map-exif-gps-guide"
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "How do I find where a photo was taken?", "acceptedAnswer": {"@type": "Answer", "text": "Upload the photo to a GPS EXIF viewer tool. It reads the embedded GPS coordinates from the photo's EXIF metadata and displays the location on an interactive map. This works entirely in your browser with no upload to a server."}},
+    {"@type": "Question", "name": "Can you get GPS coordinates from a photo?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, if the photo was taken with GPS enabled (most smartphones do this by default). The latitude and longitude are stored in the EXIF metadata. You can extract them using an EXIF viewer or photo location map tool."}},
+    {"@type": "Question", "name": "How do I remove GPS location from photos?", "acceptedAnswer": {"@type": "Answer", "text": "Use an EXIF remover tool to strip all metadata including GPS coordinates. For multiple photos, use a batch EXIF remover that can process dozens of images at once and download them as a ZIP."}},
+    {"@type": "Question", "name": "Do screenshots have GPS data?", "acceptedAnswer": {"@type": "Answer", "text": "No. Screenshots and images downloaded from social media typically have EXIF metadata stripped. Only original photos taken with a camera or phone usually contain GPS location data."}},
+    {"@type": "Question", "name": "Is it safe to share photos online?", "acceptedAnswer": {"@type": "Answer", "text": "Photos with embedded GPS data can reveal your home, workplace, and daily routine. Always remove EXIF metadata before sharing photos publicly, especially on social media and marketplaces."}}
+  ]
+}
+  </script>
+  <style>
+    .blog-article { max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+    .blog-header { text-align: center; margin-bottom: 2.5rem; }
+    .blog-header .tag { display: inline-block; background: var(--accent); color: white; padding: 4px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; }
+    .blog-header h1 { font-size: 2.2rem; color: var(--text-primary); line-height: 1.2; margin-bottom: 1rem; }
+    .blog-header .meta { color: var(--text-secondary); font-size: 0.9rem; }
+    .blog-header .meta span { margin: 0 8px; }
+    .blog-content { color: var(--text-secondary); line-height: 1.8; font-size: 1rem; }
+    .blog-content h2 { font-size: 1.6rem; color: var(--text-primary); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); }
+    .blog-content h3 { font-size: 1.25rem; color: var(--text-primary); margin: 2rem 0 0.8rem; }
+    .blog-content p { margin-bottom: 1.2rem; }
+    .blog-content ul, .blog-content ol { margin-bottom: 1.2rem; padding-left: 1.5rem; }
+    .blog-content li { margin-bottom: 0.5rem; }
+    .blog-content strong { color: var(--text-primary); }
+    .blog-content a { color: var(--accent); text-decoration: none; font-weight: 600; }
+    .blog-content a:hover { text-decoration: underline; }
+    .callout { background: var(--bg-secondary); border-left: 4px solid var(--accent); padding: 1.25rem 1.5rem; border-radius: 0 10px 10px 0; margin: 1.5rem 0; }
+    .callout.warning { border-left-color: #f59e0b; }
+    .callout.danger { border-left-color: #ef4444; }
+    .callout.success { border-left-color: #22c55e; }
+    .callout-title { font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; font-size: 1rem; }
+    .step-box { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; }
+    .step-number { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: var(--accent); color: white; border-radius: 50%; font-weight: 700; font-size: 0.9rem; margin-right: 10px; }
+    .step-title { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; }
+    .tool-card { display: flex; gap: 1rem; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; margin: 1rem 0; align-items: flex-start; transition: border-color .2s; }
+    .tool-card:hover { border-color: var(--accent); }
+    .tool-card .icon { font-size: 2rem; flex-shrink: 0; }
+    .tool-card h4 { color: var(--text-primary); margin: 0 0 0.3rem; font-size: 1rem; }
+    .tool-card p { color: var(--text-secondary); font-size: 0.88rem; margin: 0; }
+    .tool-card .cta { display: inline-block; margin-top: 0.6rem; color: var(--accent); font-weight: 600; font-size: 0.85rem; }
+    .comparison-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
+    .comparison-table th, .comparison-table td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+    .comparison-table th { background: var(--bg-secondary); color: var(--text-primary); font-weight: 600; }
+    .comparison-table td { color: var(--text-secondary); }
+    .comparison-table .yes { color: #22c55e; font-weight: 600; }
+    .comparison-table .no { color: #ef4444; }
+    .faq-item { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 10px; overflow: hidden; }
+    .faq-question { width: 100%; padding: 16px 20px; background: none; border: none; text-align: left; font-size: 0.95rem; font-weight: 600; color: var(--text-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+    .faq-answer { padding: 0 20px 16px; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; display: none; }
+    .related-posts { margin-top: 3rem; padding-top: 2rem; border-top: 2px solid var(--border); }
+    .related-posts h3 { color: var(--text-primary); margin-bottom: 1.5rem; text-align: center; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+    .related-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; text-decoration: none; transition: transform .2s, border-color .2s; }
+    .related-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+    .related-card h4 { color: var(--text-primary); font-size: 0.95rem; margin: 0 0 0.5rem; }
+    .related-card p { color: var(--text-secondary); font-size: 0.82rem; margin: 0; }
+    @media(max-width:640px) {
+      .blog-header h1 { font-size: 1.6rem; }
+      .blog-content h2 { font-size: 1.3rem; }
+      .comparison-table { font-size: 0.8rem; }
+      .comparison-table th, .comparison-table td { padding: 8px 10px; }
+    }
+  </style>
+<style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+<meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/about">About</a><a href="/contact">Contact</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Switch language">🇬🇧 EN</button>
+          <div class="lang-dropdown" style="position:absolute;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+            <a href="/fr/" hreflang="fr" lang="fr">🇫🇷 Français</a>
+            <a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a>
+            <a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a>
+          </div>
+        </div>
+        <button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <article class="blog-article">
+      <header class="blog-header">
+        <span class="tag">Tutorial · Privacy</span>
+        <h1>How to Find Where a Photo Was Taken (And Remove GPS Data to Protect Your Privacy)</h1>
+        <div class="meta">
+          <span>📅 September 10, 2026</span>
+          <span>·</span>
+          <span>⏱️ 8 min read</span>
+          <span>·</span>
+          <span>👤 SmartImgKit Team</span>
+        </div>
+      </header>
+
+      <div class="blog-content">
+        <p>Every time you take a photo with your smartphone, it secretly records <strong>exactly where you were</strong> — down to a few meters. That sunset photo from your vacation? It has your GPS coordinates embedded. The picture of your new home? It reveals your address.</p>
+
+        <p>In this guide, we'll show you <strong>how to find where a photo was taken</strong> using EXIF GPS data, how to visualize your photos on an interactive map, and — crucially — <strong>how to remove that location data</strong> before sharing photos online.</p>
+
+        <div class="callout warning">
+          <div class="callout-title">⚠️ Why this matters</div>
+          <p>Stalkers, burglars, and identity thieves can use photo GPS data to find your home, track your routine, and know when you're away. A 2023 study found that <strong>over 70% of social media photos</strong> still contain removable location data.</p>
+        </div>
+
+        <h2>What is EXIF GPS Data?</h2>
+
+        <p>EXIF (Exchangeable Image File Format) is metadata embedded in image files by cameras and smartphones. It includes:</p>
+
+        <ul>
+          <li><strong>GPS coordinates</strong> — latitude and longitude of where the photo was taken</li>
+          <li><strong>Camera info</strong> — make, model, lens, serial number</li>
+          <li><strong>Settings</strong> — aperture, shutter speed, ISO, focal length</li>
+          <li><strong>Date & time</strong> — exact timestamp of the shot</li>
+          <li><strong>Software</strong> — apps used to edit or export the image</li>
+        </ul>
+
+        <p>When location services are enabled (which is the default on both iPhone and Android), your phone records GPS coordinates in every photo you take.</p>
+
+        <h2>How to Find Where a Photo Was Taken</h2>
+
+        <p>There are several ways to extract GPS coordinates from a photo. Here's the easiest method that works entirely in your browser:</p>
+
+        <div class="step-box">
+          <div class="step-title"><span class="step-number">1</span>Use a Photo Location Map Tool</div>
+          <p>Go to <a href="/tools/photo-map">SmartImgKit Photo Location Map</a> and upload your photo. The tool reads the EXIF data directly in your browser — <strong>no upload to any server</strong>.</p>
+        </div>
+
+        <div class="step-box">
+          <div class="step-title"><span class="step-number">2</span>View the Location on an Interactive Map</div>
+          <p>Within seconds, you'll see the exact GPS coordinates plotted on an OpenStreetMap view. Click the marker to see a photo thumbnail and precise coordinates.</p>
+        </div>
+
+        <div class="step-box">
+          <div class="step-title"><span class="step-number">3</span>Explore & Share</div>
+          <p>You can generate a shareable link, export a GPX file for Google Maps/Strava, or upload multiple photos to see your entire travel route on one map.</p>
+        </div>
+
+        <div class="callout success">
+          <div class="callout-title">✅ Pro tip: Batch upload your vacation photos</div>
+          <p>Upload an entire album of travel photos to see your complete journey visualized on a map. It's a beautiful way to relive your trips — and completely free.</p>
+        </div>
+
+        <h2>New: Photo Location Map — See Your Photos on a Map</h2>
+
+        <p>We're excited to launch our <strong>Photo Location Map</strong> tool — a powerful new way to explore the geographic story behind your photos.</p>
+
+        <div class="tool-card">
+          <div class="icon">📍</div>
+          <div>
+            <h4>Photo Location Map</h4>
+            <p>Upload photos and instantly see where they were taken on an interactive map. Supports batch upload, photo popups, GPX export, and shareable links. 100% private — photos never leave your browser.</p>
+            <a href="/tools/photo-map" class="cta">Try Photo Location Map →</a>
+          </div>
+        </div>
+
+        <h3>Key Features</h3>
+
+        <ul>
+          <li><strong>Interactive map</strong> powered by OpenStreetMap — no API key needed</li>
+          <li><strong>Batch upload</strong> — drop dozens of photos at once</li>
+          <li><strong>Photo popups</strong> — click any marker to see the photo and coordinates</li>
+          <li><strong>GPX export</strong> — open in Google Maps, Strava, Garmin, and more</li>
+          <li><strong>Shareable links</strong> — send your photo map to friends</li>
+          <li><strong>Privacy-first</strong> — all processing local, zero server uploads</li>
+        </ul>
+
+        <h2>How to Remove GPS & EXIF Data from Photos</h2>
+
+        <p>Before sharing photos on social media, marketplaces, or forums, <strong>always remove EXIF metadata</strong>. Here's how:</p>
+
+        <h3>For a Single Photo</h3>
+
+        <p>Use our <a href="/tools/image-exif-remover">EXIF Remover</a> tool. Upload your image, click "Remove EXIF," and download the clean version. All metadata — including GPS — is stripped while preserving visual quality.</p>
+
+        <h3>For Multiple Photos (Batch)</h3>
+
+        <p>Got an album to clean? Use our new <strong>Batch EXIF Remover</strong>:</p>
+
+        <div class="tool-card">
+          <div class="icon">📦</div>
+          <div>
+            <h4>Batch EXIF Remover</h4>
+            <p>Strip EXIF and GPS data from dozens of images at once. Preserves original format (JPEG/PNG/WebP), shows per-file progress, and downloads everything as a convenient ZIP. Free and private.</p>
+            <a href="/tools/batch-exif-remover" class="cta">Try Batch EXIF Remover →</a>
+          </div>
+        </div>
+
+        <h3>Step-by-Step: Batch Remove EXIF</h3>
+
+        <ol>
+          <li>Go to <a href="/tools/batch-exif-remover">Batch EXIF Remover</a></li>
+          <li>Drag and drop multiple images (up to 50 recommended)</li>
+          <li>Click "Process All" — each image is processed locally</li>
+          <li>Download individual clean images or click "Download ZIP" for all</li>
+        </ol>
+
+        <h2>Single vs Batch EXIF Removal: Which to Use?</h2>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>EXIF Remover (Single)</th>
+              <th>Batch EXIF Remover</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Images per session</td>
+              <td>1</td>
+              <td>Unlimited (50 recommended)</td>
+            </tr>
+            <tr>
+              <td>Preserve original format</td>
+              <td class="no">PNG only</td>
+              <td class="yes">JPEG/PNG/WebP</td>
+            </tr>
+            <tr>
+              <td>ZIP download</td>
+              <td class="no">No</td>
+              <td class="yes">Yes</td>
+            </tr>
+            <tr>
+              <td>Per-file progress</td>
+              <td class="no">No</td>
+              <td class="yes">Yes</td>
+            </tr>
+            <tr>
+              <td>Best for</td>
+              <td>Quick single photo</td>
+              <td>Albums & batches</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>When You Should Remove EXIF Data</h2>
+
+        <div class="callout danger">
+          <div class="callout-title">🚫 Always remove EXIF before sharing:</div>
+          <ul style="margin:0; padding-left:1.2rem;">
+            <li>Photos of your home or apartment</li>
+            <li>Pictures of your kids at school or home</li>
+            <li>Real estate listings (don't reveal your address before sale)</li>
+            <li>Workplace photos (could expose sensitive locations)</li>
+            <li>Any photo shared publicly on social media</li>
+            <li>eBay/Facebook Marketplace listings</li>
+          </ul>
+        </div>
+
+        <h2>When GPS Data is Actually Useful</h2>
+
+        <p>It's not all about privacy — GPS data in photos can be incredibly useful:</p>
+
+        <ul>
+          <li><strong>Travel memory mapping</strong> — see your vacation route on a map</li>
+          <li><strong>Real estate</strong> — verify property locations</li>
+          <li><strong>Photography organization</strong> — sort photos by location</li>
+          <li><strong>Field research</strong> — scientists and researchers geotag specimens</li>
+          <li><strong>Fitness & outdoor</strong> — GPX export for Strava and Garmin</li>
+        </ul>
+
+        <p>The key is <strong>control</strong>: know when GPS data is there, and choose when to remove it.</p>
+
+        <h2>How to Disable GPS on Your Phone</h2>
+
+        <h3>iPhone</h3>
+        <ol>
+          <li>Go to <strong>Settings → Privacy & Security → Location Services</strong></li>
+          <li>Scroll to <strong>Camera</strong></li>
+          <li>Select <strong>Never</strong> to disable geotagging</li>
+        </ol>
+
+        <h3>Android</h3>
+        <ol>
+          <li>Open <strong>Camera app → Settings</strong></li>
+          <li>Toggle off <strong>Location tags</strong> or <strong>Save location</strong></li>
+        </ol>
+
+        <div class="callout">
+          <div class="callout-title">💡 Our recommendation</div>
+          <p>Keep GPS enabled while traveling (for photo mapping), but always run photos through a <a href="/tools/batch-exif-remover">batch EXIF remover</a> before posting online. You get the best of both worlds.</p>
+        </div>
+
+        <h2>Frequently Asked Questions</h2>
+
+        <div class="faq-item">
+          <button class="faq-question">How do I find where a photo was taken?<span>▼</span></button>
+          <div class="faq-answer">Upload the photo to a GPS EXIF viewer tool like <a href="/tools/photo-map">SmartImgKit Photo Location Map</a>. It reads the embedded GPS coordinates from the photo's EXIF metadata and displays the location on an interactive map. This works entirely in your browser with no upload to a server.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">Can you get GPS coordinates from a photo?<span>▼</span></button>
+          <div class="faq-answer">Yes, if the photo was taken with GPS enabled (most smartphones do this by default). The latitude and longitude are stored in the EXIF metadata. You can extract them using an EXIF viewer or photo location map tool.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">How do I remove GPS location from photos?<span>▼</span></button>
+          <div class="faq-answer">Use an EXIF remover tool to strip all metadata including GPS coordinates. For multiple photos, use a <a href="/tools/batch-exif-remover">batch EXIF remover</a> that can process dozens of images at once and download them as a ZIP.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">Do screenshots have GPS data?<span>▼</span></button>
+          <div class="faq-answer">No. Screenshots and images downloaded from social media typically have EXIF metadata stripped. Only original photos taken with a camera or phone usually contain GPS location data.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">Is it safe to share photos online?<span>▼</span></button>
+          <div class="faq-answer">Photos with embedded GPS data can reveal your home, workplace, and daily routine. Always remove EXIF metadata before sharing photos publicly, especially on social media and marketplaces.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">Does removing EXIF reduce photo quality?<span>▼</span></button>
+          <div class="faq-answer">No. EXIF data is separate from the image pixels. Removing it doesn't affect visual quality at all. Our tools preserve original format and quality while stripping only metadata.</div>
+        </div>
+
+        <h2>Wrap Up</h2>
+
+        <p>Your photos tell a story — and sometimes that story includes exactly where you were. Whether you want to <strong>explore your photo locations on a map</strong> or <strong>protect your privacy by removing GPS data</strong>, SmartImgKit has you covered with free, private, browser-based tools.</p>
+
+        <p>Try them today:</p>
+
+        <ul>
+          <li>📍 <a href="/tools/photo-map"><strong>Photo Location Map</strong></a> — see where your photos were taken</li>
+          <li>📦 <a href="/tools/batch-exif-remover"><strong>Batch EXIF Remover</strong></a> — strip metadata from multiple images</li>
+          <li>🗑️ <a href="/tools/image-exif-remover"><strong>EXIF Remover</strong></a> — quick single-image cleanup</li>
+          <li>📊 <a href="/tools/metadata-viewer"><strong>Metadata Viewer</strong></a> — inspect all EXIF data</li>
+        </ul>
+
+        <p>All tools are <strong>100% free</strong>, require <strong>no signup</strong>, and process images <strong>locally in your browser</strong>. Your photos never leave your device.</p>
+      </div>
+
+      <div class="related-posts">
+        <h3>📚 More Articles</h3>
+        <div class="related-grid">
+          <a href="/blog/how-to-remove-background-from-image-free" class="related-card">
+            <h4>How to Remove Background from Image Free</h4>
+            <p>Complete guide to background removal with AI tools.</p>
+          </a>
+          <a href="/blog/how-to-compress-image-without-losing-quality" class="related-card">
+            <h4>How to Compress Image Without Losing Quality</h4>
+            <p>Best practices for reducing file size while keeping quality.</p>
+          </a>
+          <a href="/blog/how-to-upscale-image-without-losing-quality" class="related-card">
+            <h4>How to Upscale Image Without Losing Quality</h4>
+            <p>AI upscaling techniques and tools explained.</p>
+          </a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved.</p></div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js?v=7"></script>
+  <script>
+    // FAQ toggle
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const answer = btn.nextElementSibling;
+        const arrow = btn.querySelector('span');
+        answer.style.display = answer.style.display === 'none' ? 'block' : 'none';
+        arrow.textContent = answer.style.display === 'none' ? '▼' : '▲';
+      });
+    });
+  </script>
+  <script src="/js/lang.js"></script>
+  <script src="/js/ad-loader.js?v=4"></script>
+</body>
+</html>
