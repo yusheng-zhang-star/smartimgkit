@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>手机壁纸生成器 - iPhone/Android免费 | SmartImgKit</title>
+<meta name="description" content="一张图自动生成适合iPhone和Android的手机壁纸，包含锁屏和主屏两个版本。免费、快速、浏览器本地处理。">
+<link rel="canonical" href="https://smartimgkit.com/zh/workflows/phone-wallpaper-generator">
+<meta name="theme-color" content="#8b5cf6">
+<meta property="og:title" content="手机壁纸生成器">
+<meta property="og:description" content="一张图生成所有手机尺寸壁纸。">
+<meta property="og:url" content="https://smartimgkit.com/zh/workflows/phone-wallpaper-generator">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SmartImgKit">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/js/jszip.min.js"></script>
+<meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<style>
+.workflow-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1.5rem 0}
+.workflow-step{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:1rem}
+.workflow-step label{font-size:.75rem;color:var(--text-secondary);font-weight:600;display:block;margin-top:.5rem}
+.workflow-step select{width:100%;padding:6px 10px;border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-primary);border-radius:6px;margin-top:.4rem;font-size:.9rem}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">首页</a><a href="/tools/background-remover">工具</a><a href="/workflows/">工作流</a><a href="/blog/">博客</a><a href="/about">关于</a></nav>
+<div class="header-actions"><button class="theme-toggle" id="themeToggle">🌙</button></div>
+</div></header>
+<main class="tool-page"><div class="container">
+<nav class="breadcrumb"><a href="/">首页</a><span>/</span><a href="/zh/workflows/">工作流</a><span>/</span><span>手机壁纸生成器</span></nav>
+<div class="tool-page-header">
+<h1>手机壁纸生成器</h1>
+<p>一张图 → 自动裁切为 iPhone/Android 各尺寸壁纸。包含锁屏版（顶部渐变保护时间显示）和主屏版。</p>
+</div>
+<div class="tool-workspace">
+<div class="upload-area" id="uploadArea">
+<input type="file" id="fileInput" accept="image/*" hidden>
+<div class="upload-icon">📱</div>
+<h3>上传你的图片</h3><p>或点击选择</p><p class="upload-hint">横图或竖图均可</p>
+</div>
+<div id="workspace" style="display:none">
+<div style="text-align:center;margin:1rem 0;color:var(--text-secondary)" id="fileCount"></div>
+<div class="workflow-steps">
+<div class="workflow-step"><h4>1. 设备</h4><label>手机型号</label>
+<select id="optDevice"><option value="all" selected>全部机型（ZIP打包）</option><option value="iphone15promax">iPhone 15 Pro Max</option><option value="iphone15">iPhone 15/14</option><option value="iphonese">iPhone SE</option><option value="android">Android（1080×2400）</option></select></div>
+<div class="workflow-step"><h4>2. 版本</h4><label>输出</label>
+<select id="optVersions"><option value="both" selected>锁屏+主屏</option><option value="home">仅主屏</option><option value="lock">仅锁屏</option></select></div>
+<div class="workflow-step"><h4>3. 焦点位置</h4><label>保留位置</label>
+<select id="optFocus"><option value="center" selected>居中</option><option value="top">靠上</option><option value="bottom">靠下</option></select></div>
+<div class="workflow-step"><h4>4. 格式</h4><label>格式</label>
+<select id="optFmt"><option value="jpg" selected>JPG</option><option value="png">PNG</option></select></div>
+</div>
+<div style="text-align:center;margin:1.5rem 0">
+<button class="btn btn-primary" id="runBtn" disabled>🚀 生成壁纸</button>
+<button class="btn btn-secondary" id="resetBtn">↺ 重置</button>
+</div>
+<div id="resultStats" style="text-align:center;color:var(--text-secondary);font-size:.9rem"></div>
+</div></div>
+<section class="how-to-section"><h2>使用方法</h2>
+<div class="how-to-steps">
+<div class="how-to-step"><div class="step-number">1</div><h4>上传图片</h4><p>任何图片——横图、竖图、方图。</p></div>
+<div class="how-to-step"><div class="step-number">2</div><h4>选择设备</h4><p>选你的手机型号，或全部打包。</p></div>
+<div class="how-to-step"><div class="step-number">3</div><h4>生成</h4><p>自动按屏幕比例裁切。</p></div>
+<div class="how-to-step"><div class="step-number">4</div><h4>设为壁纸</h4><p>保存到手机，设为锁屏/主屏。</p></div>
+</div></section>
+</div></main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved.</p></div></div></footer>
+<script src="../../js/main.js?v=7"></script>
+<script src="/js/ad-loader.js?v=4"></script>
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const fileInput=$('fileInput'),uploadArea=$('uploadArea'),workspace=$('workspace');
+const runBtn=$('runBtn'),resetBtn=$('resetBtn'),fileCount=$('fileCount');
+let file=null;
+const DEVICES={iphone15promax:{w:1290,h:2796,name:'iPhone15ProMax'},iphone15:{w:1179,h:2556,name:'iPhone15'},iphonese:{w:750,h:1334,name:'iPhoneSE'},android:{w:1080,h:2400,name:'Android'}};
+uploadArea.addEventListener('click',()=>fileInput.click());
+['dragover','dragenter'].forEach(e=>uploadArea.addEventListener(e,ev=>{ev.preventDefault();uploadArea.classList.add('dragover');}));
+['dragleave','drop'].forEach(e=>uploadArea.addEventListener(e,()=>uploadArea.classList.remove('dragover')));
+uploadArea.addEventListener('drop',e=>{e.preventDefault();const f=e.dataTransfer.files[0];if(f&&f.type.startsWith('image/'))addFile(f);});
+fileInput.addEventListener('change',()=>{if(fileInput.files[0])addFile(fileInput.files[0]);fileInput.value='';});
+function addFile(f){file=f;workspace.style.display='block';uploadArea.style.display='none';fileCount.textContent=f.name;runBtn.disabled=false;}
+resetBtn.addEventListener('click',()=>{file=null;workspace.style.display='none';uploadArea.style.display='block';runBtn.disabled=true;$('resultStats').textContent='';});
+runBtn.addEventListener('click',async()=>{
+if(!file)return;
+const deviceKey=$('optDevice').value,versions=$('optVersions').value,focus=$('optFocus').value,fmt=$('optFmt').value;
+runBtn.disabled=true;runBtn.textContent='⏳ 生成中…';
+const img=await createImageBitmap(file);
+const targets=deviceKey==='all'?Object.values(DEVICES):[DEVICES[deviceKey]];
+const outputs=[];
+for(const dev of targets){
+if(versions==='both'||versions==='home'){
+const c=document.createElement('canvas');c.width=dev.w;c.height=dev.h;
+const ctx=c.getContext('2d');
+const s=Math.max(dev.w/img.width,dev.h/img.height);
+let oy=0;if(focus==='top')oy=dev.h-img.height*s;else if(focus==='center')oy=(dev.h-img.height*s)/2;
+ctx.drawImage(img,(dev.w-img.width*s)/2,oy,img.width*s,img.height*s);
+const blob=await new Promise(r=>c.toBlob(r,fmt==='png'?'image/png':'image/jpeg',0.92));
+outputs.push({name:dev.name+'_主屏.'+fmt,blob});
+}
+if(versions==='both'||versions==='lock'){
+const c=document.createElement('canvas');c.width=dev.w;c.height=dev.h;
+const ctx=c.getContext('2d');
+const s=Math.max(dev.w/img.width,dev.h/img.height);
+let oy=0;if(focus==='top')oy=dev.h-img.height*s;else if(focus==='center')oy=(dev.h-img.height*s)/2;
+ctx.drawImage(img,(dev.w-img.width*s)/2,oy,img.width*s,img.height*s);
+const g=ctx.createLinearGradient(0,0,0,dev.h*0.35);
+g.addColorStop(0,'rgba(0,0,0,0.55)');g.addColorStop(1,'rgba(0,0,0,0)');
+ctx.fillStyle=g;ctx.fillRect(0,0,dev.w,dev.h*0.35);
+const blob=await new Promise(r=>c.toBlob(r,fmt==='png'?'image/png':'image/jpeg',0.92));
+outputs.push({name:dev.name+'_锁屏.'+fmt,blob});
+}
+}
+if(targets.length>1){
+const zip=new JSZip();outputs.forEach(o=>zip.file(o.name,o.blob));
+const blob=await zip.generateAsync({type:'blob'});
+const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='phone-wallpapers.zip';a.click();
+}else{outputs.forEach(o=>{const a=document.createElement('a');a.href=URL.createObjectURL(o.blob);a.download=o.name;a.click();});}
+$('resultStats').textContent=`✓ ${outputs.length} 张壁纸已生成`;
+runBtn.textContent='✓ 完成';setTimeout(()=>{runBtn.textContent='🚀 生成壁纸';},4000);runBtn.disabled=false;
+});
+})();
+</script>
+</body></html>

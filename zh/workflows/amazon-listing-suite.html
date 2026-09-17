@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>Amazon商品图生成器 - 主图白底+场景图 免费 | SmartImgKit</title>
+<meta name="description" content="一键生成Amazon商品主图（2000x2000纯白底）和副图（场景图），满足Amazon图片规范。完全在浏览器本地处理。">
+<link rel="canonical" href="https://smartimgkit.com/zh/workflows/amazon-listing-suite">
+<meta name="theme-color" content="#ff9900">
+<meta property="og:title" content="Amazon商品图生成器">
+<meta property="og:description" content="一键生成Amazon合规商品图。">
+<meta property="og:url" content="https://smartimgkit.com/zh/workflows/amazon-listing-suite">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SmartImgKit">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/js/jszip.min.js"></script>
+<meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<style>
+.workflow-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1.5rem 0}
+.workflow-step{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:1rem}
+.workflow-step label{font-size:.75rem;color:var(--text-secondary);font-weight:600;display:block;margin-top:.5rem}
+.workflow-step select{width:100%;padding:6px 10px;border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-primary);border-radius:6px;margin-top:.4rem;font-size:.9rem}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">首页</a><a href="/tools/background-remover">工具</a><a href="/workflows/">工作流</a><a href="/blog/">博客</a><a href="/about">关于</a></nav>
+<div class="header-actions"><button class="theme-toggle" id="themeToggle">🌙</button></div>
+</div></header>
+<main class="tool-page"><div class="container">
+<nav class="breadcrumb"><a href="/">首页</a><span>/</span><a href="/zh/workflows/">工作流</a><span>/</span><span>Amazon商品图套件</span></nav>
+<div class="tool-page-header">
+<h1>Amazon商品图套件</h1>
+<p>上传产品图 → 自动生成 2000×2000 纯白底主图 + 场景副图。满足Amazon图片规范，一键导出ZIP。</p>
+</div>
+<div class="tool-workspace">
+<div class="upload-area" id="uploadArea">
+<input type="file" id="fileInput" accept="image/*" multiple hidden>
+<div class="upload-icon">📦</div>
+<h3>拖拽产品图到这里</h3><p>或点击选择（支持多张）</p><p class="upload-hint">每张图生成主图+副图</p>
+</div>
+<div id="workspace" style="display:none">
+<div style="text-align:center;margin:1rem 0;color:var(--text-secondary)" id="fileCount"></div>
+<div class="workflow-steps">
+<div class="workflow-step"><h4>1. 输出尺寸</h4><label>尺寸</label>
+<select id="optSize"><option value="2000" selected>2000×2000（Amazon推荐）</option><option value="1600">1600×1600（最小缩放）</option><option value="1000">1000×1000</option></select></div>
+<div class="workflow-step"><h4>2. 主图背景</h4><label>背景色</label>
+<select id="optBg"><option value="#ffffff" selected>纯白</option><option value="#f5f5f5">浅灰</option></select></div>
+<div class="workflow-step"><h4>3. 包含副图</h4><label>选项</label>
+<select id="optLifestyle"><option value="both" selected>主图+副图</option><option value="main">仅主图</option></select></div>
+<div class="workflow-step"><h4>4. 导出</h4><label>ZIP名</label>
+<input type="text" id="optZip" value="amazon-listing.zip"></div>
+</div>
+<div style="text-align:center;margin:1.5rem 0">
+<button class="btn btn-primary" id="runBtn" disabled>🚀 生成商品图</button>
+<button class="btn btn-secondary" id="resetBtn">↺ 重置</button>
+</div>
+<div id="resultStats" style="text-align:center;color:var(--text-secondary);font-size:.9rem"></div>
+</div></div>
+<section class="how-to-section"><h2>使用方法</h2>
+<div class="how-to-steps">
+<div class="how-to-step"><div class="step-number">1</div><h4>上传产品图</h4><p>拖入产品照片。每张生成一组图。</p></div>
+<div class="how-to-step"><div class="step-number">2</div><h4>选择尺寸</h4><p>2000×2000 是Amazon推荐尺寸。</p></div>
+<div class="how-to-step"><div class="step-number">3</div><h4>生成</h4><p>主图自动白底居中，副图保持原图。</p></div>
+<div class="how-to-step"><div class="step-number">4</div><h4>上传卖家后台</h4><p>下载ZIP后上传到Amazon listing。</p></div>
+</div></section>
+<div class="guide-block"><h3>Amazon图片规范</h3><p>主图必须：纯白背景（RGB 255,255,255）、产品占画面85%、无文字/Logo/水印。副图可以展示使用场景、尺寸细节。本工作流自动满足主图白底要求，同时保留你的场景图。</p></div>
+<section class="related-tools"><h2>相关工具</h2>
+<div class="related-tools-grid">
+<a href="/tools/background-remover" class="related-tool-card"><span class="tool-icon">✂️</span><div><strong>AI去背景</strong><span>去除产品背景</span></div></a>
+</div></section>
+</div></main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved.</p></div></div></footer>
+<script src="../../js/main.js?v=7"></script>
+<script src="/js/ad-loader.js?v=4"></script>
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const fileInput=$('fileInput'),uploadArea=$('uploadArea'),workspace=$('workspace');
+const runBtn=$('runBtn'),resetBtn=$('resetBtn'),fileCount=$('fileCount');
+let files=[];
+uploadArea.addEventListener('click',()=>fileInput.click());
+['dragover','dragenter'].forEach(e=>uploadArea.addEventListener(e,ev=>{ev.preventDefault();uploadArea.classList.add('dragover');}));
+['dragleave','drop'].forEach(e=>uploadArea.addEventListener(e,()=>uploadArea.classList.remove('dragover')));
+uploadArea.addEventListener('drop',e=>{e.preventDefault();addFiles(Array.from(e.dataTransfer.files).filter(f=>f.type.startsWith('image/')));});
+fileInput.addEventListener('change',()=>{addFiles(Array.from(fileInput.files));fileInput.value='';});
+function addFiles(arr){files=files.concat(arr.filter(f=>f.type.startsWith('image/')));workspace.style.display='block';uploadArea.style.display='none';fileCount.textContent=files.length+' 张图片';runBtn.disabled=!files.length;}
+resetBtn.addEventListener('click',()=>{files=[];workspace.style.display='none';uploadArea.style.display='block';runBtn.disabled=true;$('resultStats').textContent='';});
+function centerOnWhite(img,size,bg){const c=document.createElement('canvas');c.width=size;c.height=size;const ctx=c.getContext('2d');ctx.fillStyle=bg;ctx.fillRect(0,0,size,size);const s=Math.min(size/img.width,size/img.height)*0.85;const w=img.width*s,h=img.height*s;ctx.drawImage(img,(size-w)/2,(size-h)/2,w,h);return c;}
+runBtn.addEventListener('click',async()=>{
+if(!files.length)return;
+const size=parseInt($('optSize').value),bg=$('optBg').value,lifestyle=$('optLifestyle').value;
+const zipName=($('optZip').value||'listing.zip').replace(/[^a-zA-Z0-9._-]/g,'_');
+runBtn.disabled=true;runBtn.textContent='⏳ 生成中…';
+const outputs=[];
+for(let i=0;i<files.length;i++){try{
+const img=await createImageBitmap(files[i]);
+const base=files[i].name.replace(/\.[^.]+$/,'');
+const mc=centerOnWhite(img,size,bg);
+const mb=await new Promise(r=>mc.toBlob(r,'image/jpeg',0.95));
+outputs.push({name:base+'_主图.jpg',blob:mb});
+if(lifestyle==='both'){
+const lc=document.createElement('canvas');lc.width=size;lc.height=size;
+const lctx=lc.getContext('2d');
+const s=Math.max(size/img.width,size/img.height);
+lctx.drawImage(img,(size-img.width*s)/2,(size-img.height*s)/2,img.width*s,img.height*s);
+const lb=await new Promise(r=>lc.toBlob(r,'image/jpeg',0.92));
+outputs.push({name:base+'_副图.jpg',blob:lb});
+}
+runBtn.textContent=`⏳ ${i+1}/${files.length}`;
+}catch(e){}}
+const zip=new JSZip();outputs.forEach(o=>zip.file(o.name,o.blob));
+const blob=await zip.generateAsync({type:'blob'});
+const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=zipName;a.click();
+$('resultStats').textContent=`✓ 已生成 ${outputs.length} 张图`;
+runBtn.textContent='✓ 完成';setTimeout(()=>{runBtn.textContent='🚀 生成商品图';},4000);runBtn.disabled=false;
+});
+})();
+</script>
+</body></html>

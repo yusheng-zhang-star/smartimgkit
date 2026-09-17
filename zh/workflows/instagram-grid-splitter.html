@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>Instagram九宫格切图 - 一键切图免费 | SmartImgKit</title>
+<meta name="description" content="一张图自动切成3x3九宫格，制作无缝Instagram和小红书九宫格拼图。免费、快速、浏览器本地处理。">
+<link rel="canonical" href="https://smartimgkit.com/zh/workflows/instagram-grid-splitter">
+<meta name="theme-color" content="#e4405f">
+<meta property="og:title" content="Instagram九宫格切图">
+<meta property="og:description" content="一张图切3x3，制作无缝九宫格。">
+<meta property="og:url" content="https://smartimgkit.com/zh/workflows/instagram-grid-splitter">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SmartImgKit">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/js/jszip.min.js"></script>
+<meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<style>
+.workflow-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1.5rem 0}
+.workflow-step{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:1rem}
+.workflow-step label{font-size:.75rem;color:var(--text-secondary);font-weight:600;display:block;margin-top:.5rem}
+.workflow-step select{width:100%;padding:6px 10px;border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-primary);border-radius:6px;margin-top:.4rem;font-size:.9rem}
+#preview{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;max-width:400px;margin:1rem auto}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">首页</a><a href="/tools/background-remover">工具</a><a href="/workflows/">工作流</a><a href="/blog/">博客</a><a href="/about">关于</a></nav>
+<div class="header-actions"><button class="theme-toggle" id="themeToggle">🌙</button></div>
+</div></header>
+<main class="tool-page"><div class="container">
+<nav class="breadcrumb"><a href="/">首页</a><span>/</span><a href="/zh/workflows/">工作流</a><span>/</span><span>九宫格切图</span></nav>
+<div class="tool-page-header">
+<h1>Instagram九宫格切图</h1>
+<p>一张图 → 3×3 九宫格拼图。制作无缝的 Instagram 和小红书九宫格主页效果，无需下载App。</p>
+</div>
+<div class="tool-workspace">
+<div class="upload-area" id="uploadArea">
+<input type="file" id="fileInput" accept="image/*" hidden>
+<div class="upload-icon">🔲</div>
+<h3>上传一张方形图片</h3><p>或点击选择</p><p class="upload-hint">推荐 1080×1080 或更大</p>
+</div>
+<div id="workspace" style="display:none">
+<div style="text-align:center;margin:1rem 0;color:var(--text-secondary)" id="fileCount"></div>
+<div class="workflow-steps">
+<div class="workflow-step"><h4>1. 网格布局</h4><label>布局</label>
+<select id="optGrid"><option value="3" selected>3×3（9格）</option><option value="2">2×2（4格）</option><option value="4">4×4（16格）</option></select></div>
+<div class="workflow-step"><h4>2. 上传顺序</h4><label>顺序</label>
+<select id="optOrder"><option value="tr" selected>右上→左下（Instagram标准）</option><option value="tl">左上→右下</option></select></div>
+<div class="workflow-step"><h4>3. 格式</h4><label>格式</label>
+<select id="optFmt"><option value="jpg" selected>JPG（更小）</option><option value="png">PNG（无损）</option></select></div>
+<div class="workflow-step"><h4>4. 导出</h4><label>ZIP名</label>
+<input type="text" id="optZip" value="instagram-grid.zip"></div>
+</div>
+<div style="text-align:center;margin:1.5rem 0">
+<button class="btn btn-primary" id="runBtn" disabled>🚀 开始切图</button>
+<button class="btn btn-secondary" id="resetBtn">↺ 重置</button>
+</div>
+<div id="preview"></div>
+</div></div>
+<section class="how-to-section"><h2>使用方法</h2>
+<div class="how-to-steps">
+<div class="how-to-step"><div class="step-number">1</div><h4>上传方图</h4><p>方形图效果最好。横图/竖图会自动居中裁剪为方形。</p></div>
+<div class="how-to-step"><div class="step-number">2</div><h4>选择网格</h4><p>3×3 是经典 Instagram 九宫格。</p></div>
+<div class="how-to-step"><div class="step-number">3</div><h4>切图下载</h4><p>获取按编号命名的ZIP包。</p></div>
+<div class="how-to-step"><div class="step-number">4</div><h4>按顺序发布</h4><p>倒序上传（最后一格先发），九宫格才会正确排列。</p></div>
+</div></section>
+<section class="related-tools"><h2>相关工具</h2>
+<div class="related-tools-grid">
+<a href="/workflows/social-media-kit" class="related-tool-card"><span class="tool-icon">📱</span><div><strong>社交媒体套件</strong><span>多平台尺寸</span></div></a>
+</div></section>
+</div></main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved.</p></div></div></footer>
+<script src="../../js/main.js?v=7"></script>
+<script src="/js/ad-loader.js?v=4"></script>
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const fileInput=$('fileInput'),uploadArea=$('uploadArea'),workspace=$('workspace');
+const runBtn=$('runBtn'),resetBtn=$('resetBtn'),fileCount=$('fileCount');
+let file=null;
+uploadArea.addEventListener('click',()=>fileInput.click());
+['dragover','dragenter'].forEach(e=>uploadArea.addEventListener(e,ev=>{ev.preventDefault();uploadArea.classList.add('dragover');}));
+['dragleave','drop'].forEach(e=>uploadArea.addEventListener(e,()=>uploadArea.classList.remove('dragover')));
+uploadArea.addEventListener('drop',e=>{e.preventDefault();const f=e.dataTransfer.files[0];if(f&&f.type.startsWith('image/'))addFile(f);});
+fileInput.addEventListener('change',()=>{if(fileInput.files[0])addFile(fileInput.files[0]);fileInput.value='';});
+async function addFile(f){file=f;workspace.style.display='block';uploadArea.style.display='none';fileCount.textContent=f.name;runBtn.disabled=false;
+const img=await createImageBitmap(f);const grid=3;const pv=$('preview');
+for(let r=0;r<3;r++)for(let c=0;c<3;c++){const cv=document.createElement('canvas');const tw=Math.floor(img.width/3),th=Math.floor(img.height/3);cv.width=tw;cv.height=th;cv.getContext('2d').drawImage(img,c*tw,r*th,tw,th,0,0,tw,th);pv.appendChild(cv);}}
+resetBtn.addEventListener('click',()=>{file=null;workspace.style.display='none';uploadArea.style.display='block';runBtn.disabled=true;$('preview').innerHTML='';});
+runBtn.addEventListener('click',async()=>{
+if(!file)return;
+const grid=parseInt($('optGrid').value),order=$('optOrder').value,fmt=$('optFmt').value;
+const zipName=($('optZip').value||'grid.zip').replace(/[^a-zA-Z0-9._-]/g,'_');
+runBtn.disabled=true;runBtn.textContent='⏳ 切图中…';
+const img=await createImageBitmap(file);
+const tw=Math.floor(img.width/grid),th=Math.floor(img.height/grid);
+const outputs=[];
+for(let r=0;r<grid;r++)for(let c=0;c<grid;c++){
+const cv=document.createElement('canvas');cv.width=tw;cv.height=th;
+cv.getContext('2d').drawImage(img,c*tw,r*th,tw,th,0,0,tw,th);
+const blob=await new Promise(res=>cv.toBlob(res,fmt==='png'?'image/png':'image/jpeg',0.92));
+const rn=order==='tr'?grid-r:r+1,cn=order==='tr'?grid-c:c+1;
+outputs.push({name:`r${rn}_c${cn}.${fmt}`,blob});
+}
+const zip=new JSZip();outputs.forEach(o=>zip.file(o.name,o.blob));
+const blob=await zip.generateAsync({type:'blob'});
+const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=zipName;a.click();
+runBtn.textContent='✓ '+outputs.length+' 格';setTimeout(()=>{runBtn.textContent='🚀 开始切图';},4000);runBtn.disabled=false;
+});
+})();
+</script>
+</body></html>
