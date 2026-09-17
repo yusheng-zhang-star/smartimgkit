@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>Phone Wallpaper Maker – iPhone & Android Sizes Free | SmartImgKit</title>
+<meta name="description" content="Turn any photo into a perfect phone wallpaper. Auto-crop to iPhone 15, Android, and all major screen sizes. Lock screen and home screen versions. Free, browser-based.">
+<meta name="keywords" content="phone wallpaper maker, iphone wallpaper, android wallpaper, wallpaper generator, lock screen wallpaper">
+<link rel="canonical" href="https://smartimgkit.com/workflows/phone-wallpaper-generator">
+<meta name="theme-color" content="#8b5cf6">
+<meta property="og:title" content="Phone Wallpaper Maker – iPhone & Android">
+<meta property="og:description" content="Turn any photo into a perfect phone wallpaper for all screen sizes.">
+<meta property="og:url" content="https://smartimgkit.com/workflows/phone-wallpaper-generator">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SmartImgKit">
+<meta property="og:image" content="https://smartimgkit.com/screenshots/home.png">
+<link rel="alternate" hreflang="en" href="https://smartimgkit.com/workflows/phone-wallpaper-generator">
+<link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/workflows/phone-wallpaper-generator">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/js/jszip.min.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Phone Wallpaper Maker","url":"https://smartimgkit.com/workflows/phone-wallpaper-generator","applicationCategory":"MultimediaApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Turn any photo into a perfect phone wallpaper for iPhone and Android."}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"What sizes are included?","acceptedAnswer":{"@type":"Answer","text":"iPhone 15 Pro Max (1290x2796), iPhone 15 (1179x2556), iPhone SE (750x1334), and Android (1080x2400)."}},
+{"@type":"Question","name":"Should I use lock screen or home screen version?","acceptedAnswer":{"@type":"Answer","text":"Lock screen has a gradient at top for clock readability. Home screen is the full image."}},
+{"@type":"Question","name":"Is this free?","acceptedAnswer":{"@type":"Answer","text":"Yes. Free, no signup, all processing in your browser."}}
+]}
+</script>
+<meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<style>
+.workflow-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1.5rem 0}
+.workflow-step{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:1rem}
+.workflow-step label{font-size:.75rem;color:var(--text-secondary);font-weight:600;text-transform:uppercase;letter-spacing:.5px;display:block;margin-top:.5rem}
+.workflow-step select{width:100%;padding:6px 10px;border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-primary);border-radius:6px;margin-top:.4rem;font-size:.9rem}
+</style>
+</head>
+<body>
+<header class="site-header">
+<div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/about">About</a></nav>
+<div class="header-actions">
+<button class="theme-toggle" id="themeToggle">🌙</button>
+<button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+</div>
+</div>
+</header>
+<main class="tool-page">
+<div class="container">
+<nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/workflows/">Workflows</a><span>/</span><span>Phone Wallpaper Maker</span></nav>
+<div class="tool-page-header">
+<h1>Phone Wallpaper Maker</h1>
+<p>Turn any photo into a perfect phone wallpaper. Auto-crop to iPhone and Android screen sizes, with lock screen and home screen versions.</p>
+</div>
+<div class="ad-placeholder">Advertisement</div>
+<div class="tool-workspace">
+<div class="upload-area" id="uploadArea">
+<input type="file" id="fileInput" accept="image/*" hidden>
+<div class="upload-icon">📱</div>
+<h3>Drop your photo</h3>
+<p>or click to browse</p>
+<p class="upload-hint">Best: landscape or portrait photo</p>
+</div>
+<div id="workspace" style="display:none">
+<div style="text-align:center;margin:1rem 0;color:var(--text-secondary)" id="fileCount"></div>
+<div class="workflow-steps">
+<div class="workflow-step">
+<h4>1. Device</h4>
+<p>Target phone</p>
+<label>Model</label>
+<select id="optDevice">
+<option value="all" selected>All phones (ZIP)</option>
+<option value="iphone15promax">iPhone 15 Pro Max</option>
+<option value="iphone15">iPhone 15 / 14</option>
+<option value="iphonese">iPhone SE</option>
+<option value="android">Android (1080×2400)</option>
+</select>
+</div>
+<div class="workflow-step">
+<h4>2. Versions</h4>
+<p>Lock + Home</p>
+<label>Output</label>
+<select id="optVersions">
+<option value="both" selected>Lock + Home screen</option>
+<option value="home">Home only</option>
+<option value="lock">Lock only</option>
+</select>
+</div>
+<div class="workflow-step">
+<h4>3. Focus</h4>
+<p>What to keep</p>
+<label>Position</label>
+<select id="optFocus">
+<option value="center" selected>Center</option>
+<option value="top">Top</option>
+<option value="bottom">Bottom</option>
+</select>
+</div>
+<div class="workflow-step">
+<h4>4. Export</h4>
+<p>Download</p>
+<label>Format</label>
+<select id="optFmt">
+<option value="jpg" selected>JPG</option>
+<option value="png">PNG</option>
+</select>
+</div>
+</div>
+<div style="text-align:center;margin:1.5rem 0">
+<button class="btn btn-primary" id="runBtn" disabled>🚀 Generate Wallpapers</button>
+<button class="btn btn-secondary" id="resetBtn">↺ Reset</button>
+</div>
+<div id="resultStats" style="text-align:center;color:var(--text-secondary);font-size:.9rem"></div>
+</div>
+</div>
+<section class="how-to-section"><h2>How to Use</h2>
+<div class="how-to-steps">
+<div class="how-to-step"><div class="step-number">1</div><h4>Upload Photo</h4><p>Any photo — landscape, portrait, or square.</p></div>
+<div class="how-to-step"><div class="step-number">2</div><h4>Pick Device</h4><p>Choose your phone or get all sizes in a ZIP.</p></div>
+<div class="how-to-step"><div class="step-number">3</div><h4>Generate</h4><p>Images are cover-cropped to match screen dimensions.</p></div>
+<div class="how-to-step"><div class="step-number">4</div><h4>Set as Wallpaper</h4><p>Save to your phone and set as lock/home screen.</p></div>
+</div></section>
+<div class="guide-block"><h3>Lock vs Home screen</h3><p>Lock screen wallpapers benefit from a dark gradient at the top so the clock and notifications stay readable. Home screen wallpapers show the full image behind app icons. This tool generates both so you can pick the version that looks best.</p></div>
+<div class="guide-block"><h3>Share your wallpapers</h3><p>Beautiful wallpapers are highly shareable on social media. Create wallpapers from your travel photos, AI art, or nature shots and post them — users love collecting custom phone backgrounds.</p></div>
+<section class="faq-section"><h2>FAQ</h2>
+<div class="faq-item"><button class="faq-question">Why is my photo cropped?</button><div class="faq-answer">Phone screens are tall and narrow. Cover-cropping ensures your photo fills the screen without black bars. Use the focus option to choose which part stays visible.</div></div>
+<div class="faq-item"><button class="faq-question">Can I use this for tablets?</button><div class="faq-answer">For iPad or other tablets, use the <a href="/tools/resizer">Resizer</a> tool with custom dimensions. This workflow targets phone screens specifically.</div></div>
+</section>
+<section class="related-tools"><h2>Related</h2>
+<div class="related-tools-grid">
+<a href="/tools/cropper" class="related-tool-card"><span class="tool-icon">✂️</span><div><strong>Cropper</strong><span>Manual crop</span></div></a>
+<a href="/workflows/instagram-grid-splitter" class="related-tool-card"><span class="tool-icon">🔲</span><div><strong>Grid Splitter</strong><span>Split for social</span></div></a>
+</div></section>
+</div>
+</main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved.</p></div></div></footer>
+<script src="../js/main.js?v=7"></script>
+<script src="/js/ad-loader.js?v=4"></script>
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const fileInput=$('fileInput'),uploadArea=$('uploadArea'),workspace=$('workspace');
+const runBtn=$('runBtn'),resetBtn=$('resetBtn'),fileCount=$('fileCount');
+let file=null;
+const DEVICES={
+iphone15promax:{w:1290,h:2796,name:'iPhone15ProMax'},
+iphone15:{w:1179,h:2556,name:'iPhone15'},
+iphonese:{w:750,h:1334,name:'iPhoneSE'},
+android:{w:1080,h:2400,name:'Android'}
+};
+uploadArea.addEventListener('click',()=>fileInput.click());
+['dragover','dragenter'].forEach(e=>uploadArea.addEventListener(e,ev=>{ev.preventDefault();uploadArea.classList.add('dragover');}));
+['dragleave','drop'].forEach(e=>uploadArea.addEventListener(e,()=>uploadArea.classList.remove('dragover')));
+uploadArea.addEventListener('drop',e=>{e.preventDefault();const f=e.dataTransfer.files[0];if(f&&f.type.startsWith('image/'))addFile(f);});
+fileInput.addEventListener('change',()=>{if(fileInput.files[0])addFile(fileInput.files[0]);fileInput.value='';});
+function addFile(f){file=f;workspace.style.display='block';uploadArea.style.display='none';fileCount.textContent=f.name;runBtn.disabled=false;}
+resetBtn.addEventListener('click',()=>{file=null;workspace.style.display='none';uploadArea.style.display='block';runBtn.disabled=true;$('resultStats').textContent='';});
+runBtn.addEventListener('click',async()=>{
+if(!file)return;
+const deviceKey=$('optDevice').value;
+const versions=$('optVersions').value;
+const focus=$('optFocus').value;
+const fmt=$('optFmt').value;
+runBtn.disabled=true;runBtn.textContent='⏳ Generating…';
+const img=await createImageBitmap(file);
+const targets=deviceKey==='all'?Object.values(DEVICES):[DEVICES[deviceKey]];
+const outputs=[];
+for(const dev of targets){
+// Home screen (full cover)
+if(versions==='both'||versions==='home'){
+const canvas=document.createElement('canvas');canvas.width=dev.w;canvas.height=dev.h;
+const ctx=canvas.getContext('2d');
+const scale=Math.max(dev.w/img.width,dev.h/img.height);
+const dw=img.width*scale,dh=img.height*scale;
+let oy=0;if(focus==='top')oy=(dev.h-dh);else if(focus==='center')oy=(dev.h-dh)/2;
+ctx.drawImage(img,(dev.w-dw)/2,oy,dw,dh);
+const blob=await new Promise(r=>canvas.toBlob(r,fmt==='png'?'image/png':'image/jpeg',0.92));
+outputs.push({name:`${dev.name}_home.${fmt}`,blob});
+}
+// Lock screen (dark gradient top)
+if(versions==='both'||versions==='lock'){
+const canvas=document.createElement('canvas');canvas.width=dev.w;canvas.height=dev.h;
+const ctx=canvas.getContext('2d');
+const scale=Math.max(dev.w/img.width,dev.h/img.height);
+const dw=img.width*scale,dh=img.height*scale;
+let oy=0;if(focus==='top')oy=(dev.h-dh);else if(focus==='center')oy=(dev.h-dh)/2;
+ctx.drawImage(img,(dev.w-dw)/2,oy,dw,dh);
+// Dark gradient top for clock
+const grad=ctx.createLinearGradient(0,0,0,dev.h*0.35);
+grad.addColorStop(0,'rgba(0,0,0,0.55)');grad.addColorStop(1,'rgba(0,0,0,0)');
+ctx.fillStyle=grad;ctx.fillRect(0,0,dev.w,dev.h*0.35);
+const blob=await new Promise(r=>canvas.toBlob(r,fmt==='png'?'image/png':'image/jpeg',0.92));
+outputs.push({name:`${dev.name}_lock.${fmt}`,blob});
+}
+}
+if(targets.length>1){
+const zip=new JSZip();outputs.forEach(o=>zip.file(o.name,o.blob));
+const blob=await zip.generateAsync({type:'blob'});
+const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='phone-wallpapers.zip';a.click();
+}else{
+outputs.forEach((o,i)=>{const a=document.createElement('a');a.href=URL.createObjectURL(o.blob);a.download=o.name;a.click();});
+}
+$('resultStats').textContent=`✓ ${outputs.length} wallpapers ready`;
+runBtn.textContent='✓ Done';setTimeout(()=>{runBtn.textContent='🚀 Generate Wallpapers';},4000);runBtn.disabled=false;
+});
+})();
+</script>
+</body>
+</html>

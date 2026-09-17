@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>Before After Comparison Image Maker – Side by Side Free | SmartImgKit</title>
+<meta name="description" content="Create before/after comparison images in one click. Perfect for photo editing, renovation, fitness, and marketing. Side-by-side or top-bottom split. Browser-based.">
+<meta name="keywords" content="before after image, side by side photo, comparison photo maker, before and after collage, photo comparison">
+<link rel="canonical" href="https://smartimgkit.com/workflows/before-after-comparison">
+<meta name="theme-color" content="#10b981">
+<meta property="og:title" content="Before After Comparison Image Maker">
+<meta property="og:description" content="Create professional before/after comparison images in seconds.">
+<meta property="og:url" content="https://smartimgkit.com/workflows/before-after-comparison">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SmartImgKit">
+<meta property="og:image" content="https://smartimgkit.com/screenshots/home.png">
+<link rel="alternate" hreflang="en" href="https://smartimgkit.com/workflows/before-after-comparison">
+<link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/workflows/before-after-comparison">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<style>
+.workflow-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1.5rem 0}
+.workflow-step{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:1rem}
+.workflow-step label{font-size:.75rem;color:var(--text-secondary);font-weight:600;text-transform:uppercase;letter-spacing:.5px;display:block;margin-top:.5rem}
+.workflow-step select{width:100%;padding:6px 10px;border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-primary);border-radius:6px;margin-top:.4rem;font-size:.9rem}
+.dual-upload{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}
+.dual-upload .drop{border:2px dashed var(--border-color);border-radius:12px;padding:2rem 1rem;text-align:center;cursor:pointer;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.dual-upload .drop.has-img{border-style:solid;border-color:var(--accent)}
+.dual-upload img{max-width:100%;max-height:200px;border-radius:8px}
+</style>
+</head>
+<body>
+<header class="site-header">
+<div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/about">About</a></nav>
+<div class="header-actions">
+<button class="theme-toggle" id="themeToggle">🌙</button>
+<button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+</div>
+</div>
+</header>
+<main class="tool-page">
+<div class="container">
+<nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/workflows/">Workflows</a><span>/</span><span>Before/After Comparison</span></nav>
+<div class="tool-page-header">
+<h1>Before/After Comparison Maker</h1>
+<p>Drop two photos → get a professional side-by-side comparison image. Perfect for design portfolios, renovation, fitness progress, and marketing case studies.</p>
+</div>
+<div class="ad-placeholder">Advertisement</div>
+<div class="tool-workspace">
+<div class="dual-upload">
+<div class="drop" id="dropBefore">
+<input type="file" id="fileBefore" accept="image/*" hidden>
+<div style="font-size:2rem">📷</div><h4>Before</h4><p>Click to upload</p>
+</div>
+<div class="drop" id="dropAfter">
+<input type="file" id="fileAfter" accept="image/*" hidden>
+<div style="font-size:2rem">✨</div><h4>After</h4><p>Click to upload</p>
+</div>
+</div>
+<div id="workspace" style="display:none">
+<div class="workflow-steps">
+<div class="workflow-step">
+<h4>1. Layout</h4>
+<p>How to split</p>
+<label>Orientation</label>
+<select id="optLayout">
+<option value="horizontal" selected>Left–Right (side by side)</option>
+<option value="vertical">Top–Bottom</option>
+</select>
+</div>
+<div class="workflow-step">
+<h4>2. Labels</h4>
+<p>Add text</p>
+<label>Labels</label>
+<select id="optLabels">
+<option value="on" selected>Show BEFORE / AFTER</option>
+<option value="off">No labels</option>
+</select>
+</div>
+<div class="workflow-step">
+<h4>3. Divider</h4>
+<p>Separator line</p>
+<label>Divider</label>
+<select id="optDivider">
+<option value="white" selected>White line</option>
+<option value="black">Black line</option>
+<option value="none">No line</option>
+</select>
+</div>
+<div class="workflow-step">
+<h4>4. Output</h4>
+<p>Final image</p>
+<label>Format</label>
+<select id="optFmt">
+<option value="jpg" selected>JPG</option>
+<option value="png">PNG</option>
+</select>
+</div>
+</div>
+<div style="text-align:center;margin:1.5rem 0">
+<button class="btn btn-primary" id="runBtn" disabled>🚀 Generate Comparison</button>
+<button class="btn btn-secondary" id="resetBtn">↺ Reset</button>
+</div>
+<div id="previewWrap" style="text-align:center;margin-top:1rem"></div>
+</div>
+</div>
+<section class="how-to-section"><h2>How to Use</h2>
+<div class="how-to-steps">
+<div class="how-to-step"><div class="step-number">1</div><h4>Upload Both</h4><p>Pick your Before and After images.</p></div>
+<div class="how-to-step"><div class="step-number">2</div><h4>Choose Layout</h4><p>Side-by-side for most cases, top-bottom for vertical content.</p></div>
+<div class="how-to-step"><div class="step-number">3</div><h4>Generate</h4><p>Images are auto-aligned to matching dimensions.</p></div>
+<div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Get a single comparison image ready to share.</p></div>
+</div></section>
+<div class="guide-block"><h3>Who uses this</h3><p>Photographers showing retouching work, designers showing redlines, fitness coaches showing client transformations, contractors showing renovation results, and beauty brands showing product effects. The comparison format is proven to boost engagement on Instagram and Behance.</p></div>
+<div class="guide-block"><h3>Better than Canva</h3><p>Canva's comparison templates require drag-and-drop and alignment. This tool auto-aligns both images to the same size (cover-cropping to match), adds the divider and labels, and exports in one click. Free, no account, no watermark.</p></div>
+<section class="faq-section"><h2>FAQ</h2>
+<div class="faq-item"><button class="faq-question">What if my two images are different sizes?</button><div class="faq-answer">The tool automatically cover-crops both images to match the larger dimension, so they line up perfectly in the comparison.</div></div>
+<div class="faq-item"><button class="faq-question">Can I add custom labels?</button><div class="faq-answer">The labels say BEFORE and AFTER by default. For fully custom text, use our <a href="/tools/text-on-image">Text on Image</a> tool after generating.</div></div>
+</section>
+<section class="related-tools"><h2>Related</h2>
+<div class="related-tools-grid">
+<a href="/tools/image-filters" class="related-tool-card"><span class="tool-icon">🎨</span><div><strong>Image Filters</strong><span>Create the "after" look</span></div></a>
+<a href="/workflows/social-media-kit" class="related-tool-card"><span class="tool-icon">📱</span><div><strong>Social Media Kit</strong><span>Post your result</span></div></a>
+</div></section>
+</div>
+</main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved.</p></div></div></footer>
+<script src="../js/main.js?v=7"></script>
+<script src="/js/ad-loader.js?v=4"></script>
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+let beforeImg=null, afterImg=null;
+['Before','After'].forEach(side=>{
+const drop=$('drop'+side),input=$('file'+side);
+drop.addEventListener('click',()=>input.click());
+['dragover','dragenter'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.add('dragover');}));
+drop.addEventListener('drop',e=>{e.preventDefault();const f=e.dataTransfer.files[0];if(f)loadImg(side,f);});
+input.addEventListener('change',()=>{if(input.files[0])loadImg(side,input.files[0]);input.value='';});
+});
+async function loadImg(side,file){
+const img=await createImageBitmap(file);
+if(side==='Before'){beforeImg={img,file};showPreview('dropBefore',file);}
+else{afterImg={img,file};showPreview('dropAfter',file);}
+if(beforeImg&&afterImg){$('workspace').style.display='block';$('runBtn').disabled=false;}
+}
+function showPreview(dropId,file){
+const drop=$(dropId);drop.classList.add('has-img');
+const url=URL.createObjectURL(file);
+drop.innerHTML=`<img src="${url}" style="max-height:140px">`;
+}
+$('resetBtn').addEventListener('click',()=>{
+beforeImg=null;afterImg=null;
+$('dropBefore').innerHTML='<div style="font-size:2rem">📷</div><h4>Before</h4><p>Click to upload</p>';
+$('dropAfter').innerHTML='<div style="font-size:2rem">✨</div><h4>After</h4><p>Click to upload</p>';
+$('dropBefore').classList.remove('has-img');$('dropAfter').classList.remove('has-img');
+$('workspace').style.display='none';$('runBtn').disabled=true;$('previewWrap').innerHTML='';
+});
+$('runBtn').addEventListener('click',async()=>{
+if(!beforeImg||!afterImg)return;
+const layout=$('optLayout').value;
+const labels=$('optLabels').value;
+const divider=$('optDivider').value;
+const fmt=$('optFmt').value;
+$('runBtn').disabled=true;$('runBtn').textContent='⏳ Generating…';
+const b=beforeImg.img,a=afterImg.img;
+// Match dimensions to larger
+const W=Math.max(b.width,a.width),H=Math.max(b.height,a.height);
+const canvas=document.createElement('canvas');
+if(layout==='horizontal'){canvas.width=W*2;canvas.height=H;}
+else{canvas.width=W;canvas.height=H*2;}
+const ctx=canvas.getContext('2d');
+function drawCover(img,x,y,w,h){
+const scale=Math.max(w/img.width,h/img.height);
+const dw=img.width*scale,dh=img.height*scale;
+ctx.drawImage(img,x+(w-dw)/2,y+(h-dh)/2,dw,dh);
+}
+if(layout==='horizontal'){
+drawCover(b,0,0,W,H);drawCover(a,W,0,W,H);
+if(divider!=='none'){ctx.fillStyle=divider==='black'?'#000':'#fff';ctx.fillRect(W-2,0,4,H);}
+if(labels==='on'){
+ctx.font='bold 48px Inter,sans-serif';ctx.textAlign='center';ctx.fillStyle='#fff';
+ctx.shadowColor='rgba(0,0,0,.5)';ctx.shadowBlur=8;
+ctx.fillText('BEFORE',W/2,H-40);ctx.fillText('AFTER',W*1.5,H-40);
+}
+}else{
+drawCover(b,0,0,W,H);drawCover(a,0,H,W,H);
+if(divider!=='none'){ctx.fillStyle=divider==='black'?'#000':'#fff';ctx.fillRect(0,H-2,W,4);}
+if(labels==='on'){
+ctx.font='bold 48px Inter,sans-serif';ctx.textAlign='center';ctx.fillStyle='#fff';
+ctx.shadowColor='rgba(0,0,0,.5)';ctx.shadowBlur=8;
+ctx.fillText('BEFORE',W/2,H-40);ctx.fillText('AFTER',W/2,H*1.5-40);
+}
+}
+const blob=await new Promise(r=>canvas.toBlob(r,fmt==='png'?'image/png':'image/jpeg',0.92));
+const url=URL.createObjectURL(blob);
+$('previewWrap').innerHTML=`<img src="${url}" style="max-width:100%;border-radius:12px">`;
+const a=document.createElement('a');a.href=url;a.download=`before-after.${fmt}`;a.click();
+$('runBtn').textContent='✓ Downloaded';setTimeout(()=>{$('runBtn').textContent='🚀 Generate Comparison';},4000);$('runBtn').disabled=false;
+});
+})();
+</script>
+</body>
+</html>

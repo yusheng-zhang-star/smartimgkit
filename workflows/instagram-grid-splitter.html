@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>Instagram Grid Splitter – 3x3 Photo Cutter Free | SmartImgKit</title>
+<meta name="description" content="Split one photo into a 3x3 Instagram grid. Create seamless mosaic feeds on Instagram and Xiaohongshu. Free, fast, 100% browser-based.">
+<meta name="keywords" content="instagram grid, instagram 3x3, photo splitter, instagram mosaic, nine grid, xiaohongshu grid, feed layout">
+<link rel="canonical" href="https://smartimgkit.com/workflows/instagram-grid-splitter">
+<meta name="theme-color" content="#e4405f">
+<meta property="og:title" content="Instagram Grid Splitter – 3x3 Photo Cutter">
+<meta property="og:description" content="Split one photo into 3x3 Instagram grid. Create seamless mosaic feeds.">
+<meta property="og:url" content="https://smartimgkit.com/workflows/instagram-grid-splitter">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SmartImgKit">
+<meta property="og:image" content="https://smartimgkit.com/screenshots/home.png">
+<link rel="alternate" hreflang="en" href="https://smartimgkit.com/workflows/instagram-grid-splitter">
+<link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/workflows/instagram-grid-splitter">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/js/jszip.min.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Instagram Grid Splitter","url":"https://smartimgkit.com/workflows/instagram-grid-splitter","applicationCategory":"MultimediaApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Split one photo into a 3x3 Instagram grid mosaic."}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"How do I post the grid on Instagram?","acceptedAnswer":{"@type":"Answer","text":"Upload the tiles in reverse order (bottom-right first, top-left last) so they appear in the correct grid layout."}},
+{"@type":"Question","name":"What size should my original photo be?","acceptedAnswer":{"@type":"Answer","text":"Use a square photo at least 1080x1080 for 3x3. Each tile will be 360x360."}},
+{"@type":"Question","name":"Does this work for Xiaohongshu?","acceptedAnswer":{"@type":"Answer","text":"Yes. The same 3x3 tiles work for Xiaohongshu (RedNote) 9-grid posts."}}
+]}
+</script>
+<meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<style>
+.workflow-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1.5rem 0}
+.workflow-step{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:1rem}
+.workflow-step label{font-size:.75rem;color:var(--text-secondary);font-weight:600;text-transform:uppercase;letter-spacing:.5px;display:block;margin-top:.5rem}
+.workflow-step select,.workflow-step input[type=text]{width:100%;padding:6px 10px;border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-primary);border-radius:6px;margin-top:.4rem;font-size:.9rem}
+</style>
+</head>
+<body>
+<header class="site-header">
+<div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/about">About</a></nav>
+<div class="header-actions">
+<button class="theme-toggle" id="themeToggle">🌙</button>
+<button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+</div>
+</div>
+</header>
+<main class="tool-page">
+<div class="container">
+<nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/workflows/">Workflows</a><span>/</span><span>Instagram Grid Splitter</span></nav>
+<div class="tool-page-header">
+<h1>Instagram Grid Splitter</h1>
+<p>One photo → 3×3 mosaic tiles. Create seamless Instagram feeds and Xiaohongshu 9-grid posts in seconds. No app needed.</p>
+</div>
+<div class="ad-placeholder">Advertisement</div>
+<div class="tool-workspace">
+<div class="upload-area" id="uploadArea">
+<input type="file" id="fileInput" accept="image/*" hidden>
+<div class="upload-icon">🔲</div>
+<h3>Drop one square photo</h3>
+<p>or click to browse</p>
+<p class="upload-hint">Best: 1080×1080 or larger</p>
+</div>
+<div id="workspace" style="display:none">
+<div style="text-align:center;margin:1rem 0;color:var(--text-secondary)" id="fileCount"></div>
+<div class="workflow-steps">
+<div class="workflow-step">
+<h4>1. Grid Layout</h4>
+<p>Rows × Columns</p>
+<label>Layout</label>
+<select id="optGrid">
+<option value="3" selected>3×3 (9 tiles)</option>
+<option value="2">2×2 (4 tiles)</option>
+<option value="4">4×4 (16 tiles)</option>
+</select>
+</div>
+<div class="workflow-step">
+<h4>2. Order</h4>
+<p>Upload sequence</p>
+<label>Order</label>
+<select id="optOrder">
+<option value="tr" selected>Top-right to bottom-left (IG standard)</option>
+<option value="tl">Top-left to bottom-right</option>
+</select>
+</div>
+<div class="workflow-step">
+<h4>3. Format</h4>
+<p>Output type</p>
+<label>Format</label>
+<select id="optFmt">
+<option value="jpg" selected>JPG (smaller)</option>
+<option value="png">PNG (lossless)</option>
+</select>
+</div>
+<div class="workflow-step">
+<h4>4. Export</h4>
+<p>Download ZIP</p>
+<label>ZIP name</label>
+<input type="text" id="optZip" value="instagram-grid.zip">
+</div>
+</div>
+<div style="text-align:center;margin:1.5rem 0">
+<button class="btn btn-primary" id="runBtn" disabled>🚀 Split Grid</button>
+<button class="btn btn-secondary" id="resetBtn">↺ Reset</button>
+</div>
+<div id="preview" style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;max-width:400px;margin:1rem auto"></div>
+</div>
+</div>
+<section class="how-to-section"><h2>How to Use</h2>
+<div class="how-to-steps">
+<div class="how-to-step"><div class="step-number">1</div><h4>Upload Square Photo</h4><p>A square image works best. Landscape/portrait will be center-cropped to square.</p></div>
+<div class="how-to-step"><div class="step-number">2</div><h4>Choose Grid Size</h4><p>3×3 is the classic Instagram grid.</p></div>
+<div class="how-to-step"><div class="step-number">3</div><h4>Split & Download</h4><p>Get a ZIP with numbered tiles.</p></div>
+<div class="how-to-step"><div class="step-number">4</div><h4>Post in Order</h4><p>Upload tiles in reverse order (last tile first) so the grid appears correctly.</p></div>
+</div></section>
+<div class="guide-block"><h3>Why creators love this</h3><p>A 3×3 grid creates a larger visual impact than single posts. Brands, artists, and travel accounts use it to tell a story across 9 posts. Most apps charge $2-5 for this feature or require a subscription. Here it's free and runs entirely in your browser.</p></div>
+<div class="guide-block"><h3>Pro tips</h3><ul><li>Use a high-res original (2000×2000+) so each tile stays sharp</li><li>Plan your composition — the center tile is the most viewed</li><li>Post all 9 tiles within a few days so the grid stays intact</li></ul></div>
+<section class="faq-section"><h2>FAQ</h2>
+<div class="faq-item"><button class="faq-question">How do I get the order right?</button><div class="faq-answer">For Instagram, upload the bottom-right tile first and work backwards to top-left. The tool names files row_col so you know which is which.</div></div>
+<div class="faq-item"><button class="faq-question">Can I split non-square images?</button><div class="faq-answer">Yes, but we center-crop to square automatically. For best results, crop to square before uploading.</div></div>
+</section>
+<section class="related-tools"><h2>Related</h2>
+<div class="related-tools-grid">
+<a href="/workflows/social-media-kit" class="related-tool-card"><span class="tool-icon">📱</span><div><strong>Social Media Kit</strong><span>Multi-platform sizes</span></div></a>
+<a href="/tools/cropper" class="related-tool-card"><span class="tool-icon">✂️</span><div><strong>Cropper</strong><span>Manual cropping</span></div></a>
+<a href="/workflows/blog-image-pack" class="related-tool-card"><span class="tool-icon">📝</span><div><strong>Blog Image Pack</strong><span>Blog-ready images</span></div></a>
+</div></section>
+</div>
+</main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved.</p></div></div></footer>
+<script src="../js/main.js?v=7"></script>
+<script src="/js/ad-loader.js?v=4"></script>
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const fileInput=$('fileInput'),uploadArea=$('uploadArea'),workspace=$('workspace');
+const runBtn=$('runBtn'),resetBtn=$('resetBtn'),fileCount=$('fileCount');
+let file=null;
+uploadArea.addEventListener('click',()=>fileInput.click());
+['dragover','dragenter'].forEach(e=>uploadArea.addEventListener(e,ev=>{ev.preventDefault();uploadArea.classList.add('dragover');}));
+['dragleave','drop'].forEach(e=>uploadArea.addEventListener(e,()=>uploadArea.classList.remove('dragover')));
+uploadArea.addEventListener('drop',e=>{e.preventDefault();const f=e.dataTransfer.files[0];if(f&&f.type.startsWith('image/'))addFile(f);});
+fileInput.addEventListener('change',()=>{if(fileInput.files[0])addFile(fileInput.files[0]);fileInput.value='';});
+async function addFile(f){
+file=f;workspace.style.display='block';uploadArea.style.display='none';
+fileCount.textContent=f.name+' • '+Math.round(f.size/1024)+'KB';
+runBtn.disabled=false;
+// preview grid
+const img=await createImageBitmap(f);
+const grid=parseInt($('optGrid').value);
+const preview=$('preview');
+preview.style.gridTemplateColumns=`repeat(${grid},1fr)`;
+preview.innerHTML='';
+const tileSize=Math.min(360,Math.floor(img.width/grid));
+for(let r=0;r<grid;r++)for(let c=0;c<grid;c++){
+const canvas=document.createElement('canvas');
+const tw=Math.floor(img.width/grid),th=Math.floor(img.height/grid);
+canvas.width=tw;canvas.height=th;
+const ctx=canvas.getContext('2d');
+ctx.drawImage(img,c*tw,r*th,tw,th,0,0,tw,th);
+preview.appendChild(canvas);
+}
+}
+resetBtn.addEventListener('click',()=>{file=null;workspace.style.display='none';uploadArea.style.display='block';runBtn.disabled=true;$('preview').innerHTML='';});
+runBtn.addEventListener('click',async()=>{
+if(!file)return;
+const grid=parseInt($('optGrid').value);
+const order=$('optOrder').value;
+const fmt=$('optFmt').value;
+const zipName=($('optZip').value||'grid.zip').replace(/[^a-zA-Z0-9._-]/g,'_');
+runBtn.disabled=true;runBtn.textContent='⏳ Splitting…';
+const img=await createImageBitmap(file);
+const tw=Math.floor(img.width/grid),th=Math.floor(img.height/grid);
+const outputs=[];
+for(let r=0;r<grid;r++)for(let c=0;c<grid;c++){
+const canvas=document.createElement('canvas');canvas.width=tw;canvas.height=th;
+const ctx=canvas.getContext('2d');
+ctx.drawImage(img,c*tw,r*th,tw,th,0,0,tw,th);
+const blob=await new Promise(res=>canvas.toBlob(res,fmt==='png'?'image/png':'image/jpeg',0.92));
+const rn=order==='tr'?grid-r:r+1;
+const cn=order==='tr'?grid-c:c+1;
+outputs.push({name:`r${rn}_c${cn}.${fmt}`,blob});
+}
+const zip=new JSZip();outputs.forEach(o=>zip.file(o.name,o.blob));
+const blob=await zip.generateAsync({type:'blob'});
+const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=zipName;a.click();
+runBtn.textContent='✓ '+outputs.length+' tiles';setTimeout(()=>{runBtn.textContent='🚀 Split Grid';},4000);runBtn.disabled=false;
+});
+})();
+</script>
+</body>
+</html>
