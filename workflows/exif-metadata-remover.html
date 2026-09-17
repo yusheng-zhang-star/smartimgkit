@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>Remove EXIF Data from Photos – Strip Metadata Free | SmartImgKit</title>
+<meta name="description" content="Strip EXIF metadata, GPS location, and camera info from your photos before sharing online. Free, browser-based, batch support. Protect your privacy.">
+<link rel="canonical" href="https://smartimgkit.com/workflows/exif-metadata-remover">
+<meta name="theme-color" content="#0ea5e9">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="/js/jszip.min.js"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<style>
+.file-list{margin:1rem 0}
+.file-item{display:flex;align-items:center;gap:1rem;padding:.5rem;background:#1e293b;border-radius:8px;margin:.25rem 0}
+.file-item img{width:60px;height:60px;object-fit:cover;border-radius:6px}
+.badge{padding:2px 8px;border-radius:4px;font-size:.75rem;background:#10b981;color:#000}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/api">API</a><a href="/about">About</a></nav>
+</div></header>
+<main class="tool-page"><div class="container">
+<nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/workflows/">Workflows</a><span>/</span><span>EXIF Metadata Remover</span></nav>
+<div class="tool-page-header"><h1>EXIF Metadata Remover</h1><p>Strip GPS location, camera model, date, and other metadata from your photos before sharing. Your photos may reveal where and when you took them — remove it in one click.</p></div>
+<div class="upload-area" id="uploadArea"><input type="file" id="fileInput" accept="image/*" multiple hidden><div class="upload-icon">🛡️</div><h3>Drop photos to clean</h3><p>or click to browse (batch)</p></div>
+<div id="controls" style="display:none">
+<div class="file-list" id="fileList"></div>
+<button class="btn btn-primary" id="cleanBtn">Clean & Download ZIP</button>
+</div>
+<p style="color:#94a3b8;margin-top:1rem">🔒 Files are processed in your browser. Metadata never reaches our servers.</p>
+</div></main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit.</p></div></div></footer>
+<script>
+const $=id=>document.getElementById(id);let files=[];
+$('uploadArea').onclick=()=>$('fileInput').click();
+$('fileInput').onchange=e=>{
+  files=Array.from(e.target.files);
+  $('fileList').innerHTML=files.map((f,i)=>
+    `<div class="file-item"><img src="${URL.createObjectURL(f)}"><div><strong>${f.name}</strong><br><small style="color:#94a3b8">${(f.size/1024).toFixed(0)} KB</small></div><span class="badge">ready</span></div>`
+  ).join('');
+  $('controls').style.display='block';
+};
+$('cleanBtn').onclick=async()=>{
+  $('cleanBtn').disabled=true;$('cleanBtn').textContent='Cleaning…';
+  const zip=new JSZip();
+  for(const f of files){
+    const blob=await new Promise(r=>{
+      const img=new Image();
+      img.onload=()=>{
+        const c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;
+        c.getContext('2d').drawImage(img,0,0);
+        c.toBlob(r,'image/jpeg',0.92);
+      };
+      img.src=URL.createObjectURL(f);
+    });
+    zip.file(f.name.replace(/\.[^.]+$/,'')+'-clean.jpg',blob);
+  }
+  const blob=await zip.generateAsync({type:'blob'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='clean-photos.zip';a.click();
+  $('cleanBtn').disabled=false;$('cleanBtn').textContent='Clean & Download ZIP';
+};
+</script>
+</body></html>

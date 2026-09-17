@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>Long Screenshot Stitcher – Stitch Screenshots Together Free Online | SmartImgKit</title>
+<meta name="description" content="Stitch multiple screenshots into one long image online free. Perfect for tutorials, chat screenshots, and web pages. Browser-based, no upload.">
+<link rel="canonical" href="https://smartimgkit.com/workflows/long-screenshot-stitcher">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<style>
+.preview{text-align:center;margin:1rem 0}
+.preview canvas{max-width:100%;border-radius:8px}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/api">API</a><a href="/about">About</a></nav>
+</div></header>
+<main class="tool-page"><div class="container">
+<nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/workflows/">Workflows</a><span>/</span><span>Long Screenshot Stitcher</span></nav>
+<div class="tool-page-header"><h1>Long Screenshot Stitcher</h1><p>Combine multiple screenshots into one tall image. Perfect for tutorials, chat logs, and web page captures. No upload, free.</p></div>
+<div class="upload-area" id="uploadArea"><input type="file" id="fileInput" accept="image/*" multiple hidden><div class="upload-icon">📱</div><h3>Drop screenshots (in order)</h3><p>or click to browse</p><p class="upload-hint">Top to bottom order matters</p></div>
+<div id="controls" style="display:none">
+<label style="color:#94a3b8">Gap between images: <span id="gapVal">0</span>px</label>
+<input type="range" id="gap" min="0" max="50" value="0" style="width:100%">
+<button class="btn btn-primary" id="genBtn" style="margin-top:1rem">Stitch & Download</button>
+<div class="preview"><canvas id="canvas"></canvas></div>
+</div>
+<p style="color:#94a3b8;margin-top:1rem">🔒 Your screenshots never leave your device.</p>
+</div></main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit.</p></div></div></footer>
+<script>
+const $=id=>document.getElementById(id);let imgs=[];
+$('uploadArea').onclick=()=>$('fileInput').click();
+$('fileInput').onchange=async e=>{
+imgs=[];
+for(const f of e.target.files){
+  const src=await new Promise(r=>{const fr=new FileReader();fr.onload=()=>r(fr.result);fr.readAsDataURL(f);});
+  const im=await new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.src=src;});
+  imgs.push(im);
+}
+$('controls').style.display='block';draw();
+};
+$('gap').oninput=()=>{$('gapVal').textContent=$('gap').value;draw();};
+function draw(){if(!imgs.length)return;
+const w=Math.max(...imgs.map(i=>i.width));const gap=+$('gap').value;
+const h=imgs.reduce((s,i)=>s+i.height,0)+gap*(imgs.length-1);
+const c=$('canvas'),ctx=c.getContext('2d');c.width=w;c.height=h;
+let y=0;
+for(const im of imgs){ctx.drawImage(im,0,y);y+=im.height+gap;}
+}
+$('genBtn').onclick=()=>{const a=document.createElement('a');a.href=$('canvas').toDataURL('image/png');a.download='long-screenshot.png';a.click();};
+</script>
+</body></html>

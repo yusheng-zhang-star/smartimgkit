@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>Find Duplicate Images Online – Remove Similar Photos Free | SmartImgKit</title>
+<meta name="description" content="Find duplicate and similar photos in your browser. Uses perceptual hashing to detect near-identical images. Free, no upload, batch support.">
+<link rel="canonical" href="https://smartimgkit.com/workflows/duplicate-image-finder">
+<meta name="theme-color" content="#10b981">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<style>
+.group{margin:1rem 0;padding:1rem;background:#1e293b;border-radius:12px}
+.group h4{color:#fbbf24;margin-bottom:.5rem}
+.group img{width:120px;height:120px;object-fit:cover;border-radius:8px;margin:.25rem}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/api">API</a><a href="/about">About</a></nav>
+</div></header>
+<main class="tool-page"><div class="container">
+<nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/workflows/">Workflows</a><span>/</span><span>Duplicate Image Finder</span></nav>
+<div class="tool-page-header"><h1>Duplicate Image Finder</h1><p>Find duplicate and visually similar photos on your device. Uses perceptual hashing — finds resized, compressed, and slightly edited duplicates too.</p></div>
+<div class="upload-area" id="uploadArea"><input type="file" id="fileInput" accept="image/*" multiple hidden><div class="upload-icon">🗂️</div><h3>Drop images to compare</h3><p>or click to browse (batch)</p></div>
+<div id="controls" style="display:none">
+<label style="color:#94a3b8">Similarity threshold: <span id="thVal">85%</span></label>
+<input type="range" id="th" min="50" max="99" value="85" style="width:100%">
+<button class="btn btn-primary" id="findBtn" style="margin-top:1rem">Find Duplicates</button>
+<div id="results"></div>
+</div>
+<p style="color:#94a3b8;margin-top:1rem">🔒 Your photos never leave your device.</p>
+</div></main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit.</p></div></div></footer>
+<script>
+const $=id=>document.getElementById(id);let files=[];
+$('uploadArea').onclick=()=>$('fileInput').click();
+$('fileInput').onchange=e=>{files=Array.from(e.target.files);$('controls').style.display='block';};
+$('th').oninput=()=>$('thVal').textContent=$('th').value+'%';
+async function phash(file){
+  return new Promise((resolve)=>{
+    const img=new Image();
+    img.onload=()=>{
+      const c=document.createElement('canvas');c.width=8;c.height=8;
+      const ctx=c.getContext('2d');ctx.drawImage(img,0,0,8,8);
+      const d=ctx.getImageData(0,0,8,8).data;
+      const gray=[];
+      for(let i=0;i<64;i++)gray.push(0.299*d[i*4]+0.587*d[i*4+1]+0.114*d[i*4+2]);
+      const avg=gray.reduce((a,b)=>a+b,0)/64;
+      resolve(gray.map(v=>v>avg?1:0).join(''));
+    };
+    img.src=URL.createObjectURL(file);
+  });
+}
+$('findBtn').onclick=async()=>{
+  $('findBtn').disabled=true;$('findBtn').textContent='Scanning…';
+  const hashes=await Promise.all(files.map(phash));
+  const th=+$('th').value;
+  const groups=[];const used=new Set();
+  for(let i=0;i<files.length;i++){
+    if(used.has(i))continue;
+    const g=[i];used.add(i);
+    for(let j=i+1;j<files.length;j++){
+      if(used.has(j))continue;
+      let diff=0;for(let k=0;k<64;k++)if(hashes[i][k]!==hashes[j][k])diff++;
+      const sim=Math.round((1-diff/64)*100);
+      if(sim>=th){g.push(j);used.add(j);}
+    }
+    if(g.length>1)groups.push(g);
+  }
+  if(!groups.length){$('results').innerHTML='<p style="color:#10b981">No duplicates found! 🎉</p>';}
+  else{
+    $('results').innerHTML=groups.map((g,i)=>
+      `<div class="group"><h4>Group ${i+1} (${g.length} similar images)</h4>${g.map(idx=>`<img src="${URL.createObjectURL(files[idx])}" title="${files[idx].name}">`).join('')}</div>`
+    ).join('');
+  }
+  $('findBtn').disabled=false;$('findBtn').textContent='Find Duplicates';
+};
+</script>
+</body></html>

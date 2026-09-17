@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>Slice Image into Grid – Cut Image into Pieces Free | SmartImgKit</title>
+<meta name="description" content="Cut any image into a grid of equal tiles. Perfect for design assets, social media collages, and sprite sheets. Free, browser-based, export as ZIP.">
+<link rel="canonical" href="https://smartimgkit.com/workflows/design-slicer">
+<meta name="theme-color" content="#8b5cf6">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="/js/jszip.min.js"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<style>
+.grid-preview{display:grid;gap:2px;margin:1rem 0}
+.grid-preview img{width:100%;border:1px solid #334155}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin:1rem 0}
+.controls label{font-size:.8rem;color:#94a3b8}
+.controls input{width:100%;padding:6px;background:#0f172a;color:#f1f5f9;border:1px solid #334155;border-radius:6px}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/api">API</a><a href="/about">About</a></nav>
+</div></header>
+<main class="tool-page"><div class="container">
+<nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/workflows/">Workflows</a><span>/</span><span>Design Slicer</span></nav>
+<div class="tool-page-header"><h1>Design Slicer</h1><p>Cut any image into a grid of equal tiles. Perfect for UI design assets, social media collages, and sprite sheets. Export as a ZIP.</p></div>
+<div class="upload-area" id="uploadArea"><input type="file" id="fileInput" accept="image/*" hidden><div class="upload-icon">✂️</div><h3>Drop your design image</h3><p>or click to browse</p></div>
+<div id="controls" style="display:none">
+<div class="controls">
+<div><label>Columns: <span id="cVal">3</span></label><input type="range" id="cols" min="1" max="10" value="3"></div>
+<div><label>Rows: <span id="rVal">3</span></label><input type="range" id="rows" min="1" max="10" value="3"></div>
+</div>
+<div class="grid-preview" id="preview"></div>
+<button class="btn btn-primary" id="dlBtn">Download ZIP</button>
+</div>
+<p style="color:#94a3b8;margin-top:1rem">🔒 Your design never leaves your device.</p>
+</div></main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit.</p></div></div></footer>
+<script>
+const $=id=>document.getElementById(id);let img=null;
+$('uploadArea').onclick=()=>$('fileInput').click();
+$('fileInput').onchange=e=>{const f=e.target.files[0];if(f){img=new Image();img.onload=()=>{draw();$('controls').style.display='block';};img.src=URL.createObjectURL(f);}};
+$('cols').oninput=()=>{$('cVal').textContent=$('cols').value;draw();};
+$('rows').oninput=()=>{$('rVal').textContent=$('rows').value;draw();};
+function draw(){if(!img)return;
+const cols=+$('cols').value,rows=+$('rows').value;
+const tw=Math.floor(img.width/cols),th=Math.floor(img.height/rows);
+$('preview').style.gridTemplateColumns=`repeat(${cols},1fr)`;
+$('preview').innerHTML='';
+for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
+  const cv=document.createElement('canvas');cv.width=tw;cv.height=th;
+  cv.getContext('2d').drawImage(img,c*tw,r*th,tw,th,0,0,tw,th);
+  const im=new Image();im.src=cv.toDataURL();$('preview').appendChild(im);
+}
+}
+$('dlBtn').onclick=async()=>{
+  const cols=+$('cols').value,rows=+$('rows').value;
+  const tw=Math.floor(img.width/cols),th=Math.floor(img.height/rows);
+  const zip=new JSZip();let n=1;
+  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
+    const cv=document.createElement('canvas');cv.width=tw;cv.height=th;
+    cv.getContext('2d').drawImage(img,c*tw,r*th,tw,th,0,0,tw,th);
+    const blob=await new Promise(res=>cv.toBlob(res,'image/png'));
+    zip.file(`tile-${String(n++).padStart(2,'0')}.png`,blob);
+  }
+  const blob=await zip.generateAsync({type:'blob'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='slices.zip';a.click();
+};
+</script>
+</body></html>

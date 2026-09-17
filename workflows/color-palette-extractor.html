@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>Color Palette Extractor – Extract Colors from Image Free | SmartImgKit</title>
+<meta name="description" content="Extract a color palette from any image. Get HEX codes, CSS variables, and color names. Perfect for designers and developers. Free, no upload.">
+<link rel="canonical" href="https://smartimgkit.com/workflows/color-palette-extractor">
+<meta name="theme-color" content="#8b5cf6">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<style>
+.swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1rem;margin:1.5rem 0}
+.swatch{border-radius:12px;overflow:hidden;border:1px solid #334155}
+.swatch .color{height:100px}
+.swatch .info{padding:.5rem;background:#1e293b;font-size:.8rem}
+.copy-btn{margin-top:1rem}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/api">API</a><a href="/about">About</a></nav>
+</div></header>
+<main class="tool-page"><div class="container">
+<nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/workflows/">Workflows</a><span>/</span><span>Color Palette Extractor</span></nav>
+<div class="tool-page-header"><h1>Color Palette Extractor</h1><p>Extract the dominant color palette from any image. Get HEX codes, CSS variables, and Tailwind-style swatches. Perfect for designers and developers.</p></div>
+<div class="upload-area" id="uploadArea"><input type="file" id="fileInput" accept="image/*" hidden><div class="upload-icon">🎨</div><h3>Drop an image</h3><p>or click to browse</p></div>
+<div id="controls" style="display:none">
+<div class="swatches" id="swatches"></div>
+<textarea id="cssOut" readonly style="width:100%;height:100px;background:#0f172a;color:#a5f3fc;border:1px solid #334155;border-radius:8px;padding:1rem;font-family:monospace"></textarea>
+<button class="btn btn-primary copy-btn" id="copyBtn">Copy CSS Variables</button>
+</div>
+<p style="color:#94a3b8;margin-top:1rem">🔒 Your image never leaves your device.</p>
+</div></main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit.</p></div></div></footer>
+<script>
+const $=id=>document.getElementById(id);
+$('uploadArea').onclick=()=>$('fileInput').click();
+$('fileInput').onchange=e=>{
+  const f=e.target.files[0];if(!f)return;
+  const img=new Image();
+  img.onload=()=>{
+    const c=document.createElement('canvas');const s=100;
+    c.width=s;c.height=s*img.height/img.width;
+    const ctx=c.getContext('2d');ctx.drawImage(img,0,0,c.width,c.height);
+    const data=ctx.getImageData(0,0,c.width,c.height).data;
+    // Simple color quantization
+    const map={};
+    for(let i=0;i<data.length;i+=4){
+      const r=data[i]>>4,g=data[i+1]>>4,b=data[i+2]>>4;
+      const k=`${r},${g},${b}`;map[k]=(map[k]||0)+1;
+    }
+    const sorted=Object.entries(map).sort((a,b)=>b[1]-a[1]).slice(0,8);
+    const colors=sorted.map(([k])=>{
+      const[r,g,b]=k.split(',').map(Number);
+      return `#${((r*17)<<16|(g*17)<<8|(b*17)).toString(16).padStart(6,'0')}`;
+    });
+    $('swatches').innerHTML=colors.map((hex,i)=>
+      `<div class="swatch"><div class="color" style="background:${hex}"></div><div class="info">${hex}<br><small>color-${i+1}</small></div></div>`).join('');
+    $('cssOut').value=colors.map((h,i)=>`--color-${i+1}: ${h};`).join('\n');
+    $('controls').style.display='block';
+  };
+  img.src=URL.createObjectURL(f);
+};
+$('copyBtn').onclick=()=>{navigator.clipboard.writeText($('cssOut').value);$('copyBtn').textContent='Copied!';setTimeout(()=>$('copyBtn').textContent='Copy CSS Variables',1500);};
+</script>
+</body></html>

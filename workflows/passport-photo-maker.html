@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>Passport Photo Maker – Visa & ID Photo Sizes Free | SmartImgKit</title>
+<meta name="description" content="Make passport, visa, and ID photos online. US 2x2, Schengen 35x45mm, Japan 45x45mm. Replace background with white/blue/red. Free, no upload.">
+<link rel="canonical" href="https://smartimgkit.com/workflows/passport-photo-maker">
+<meta name="theme-color" content="#ef4444">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<style>
+.sizes{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.5rem;margin:1rem 0}
+.size-btn{padding:.6rem;background:#1e293b;border:1px solid #334155;border-radius:8px;cursor:pointer;color:#f1f5f9;font-size:.85rem}
+.size-btn.active{border-color:#ef4444;background:#7f1d1d}
+.preview{text-align:center;margin:1rem 0}
+.preview canvas{max-width:300px;border-radius:8px}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/api">API</a><a href="/about">About</a></nav>
+</div></header>
+<main class="tool-page"><div class="container">
+<nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/workflows/">Workflows</a><span>/</span><span>Passport Photo Maker</span></nav>
+<div class="tool-page-header"><h1>Passport Photo Maker</h1><p>Cut your photo to official passport and visa dimensions. Replace the background with white, blue, or red. Save a trip to the photo studio.</p></div>
+<div class="upload-area" id="uploadArea"><input type="file" id="fileInput" accept="image/*" hidden><div class="upload-icon">🪪</div><h3>Upload your portrait photo</h3><p>or click to browse</p></div>
+<div id="controls" style="display:none">
+<label style="color:#94a3b8;font-size:.85rem">Select photo size:</label>
+<div class="sizes" id="sizes">
+<button class="size-btn" data-w="600" data-h="600">US Visa 2×2 in</button>
+<button class="size-btn" data-w="350" data-h="450">Schengen 35×45mm</button>
+<button class="size-btn" data-w="450" data-h="450">Japan 45×45mm</button>
+<button class="size-btn" data-w="295" data-h="413">China 1寸 25×35mm</button>
+<button class="size-btn" data-w="413" data-h="579">China 2寸 35×49mm</button>
+</div>
+<label style="color:#94a3b8;font-size:.85rem">Background color:</label>
+<div style="display:flex;gap:.5rem;margin:.5rem 0">
+<button class="size-btn bg-btn active" data-c="#ffffff" style="width:40px;height:40px;background:#ffffff"></button>
+<button class="size-btn bg-btn" data-c="#4a90d9" style="width:40px;height:40px;background:#4a90d9"></button>
+<button class="size-btn bg-btn" data-c="#d93025" style="width:40px;height:40px;background:#d93025"></button>
+</div>
+<div class="preview"><canvas id="canvas"></canvas></div>
+<button class="btn btn-primary" id="dlBtn">Download Photo</button>
+</div>
+<p style="color:#94a3b8;margin-top:1rem">🔒 Your photo never leaves your device. Verify official requirements before submitting.</p>
+</div></main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit.</p></div></div></footer>
+<script>
+const $=id=>document.getElementById(id);let img=null,size={w:600,h:600},bg='#ffffff';
+$('uploadArea').onclick=()=>$('fileInput').click();
+$('fileInput').onchange=e=>{const f=e.target.files[0];if(f){img=new Image();img.onload=()=>{draw();$('controls').style.display='block';};img.src=URL.createObjectURL(f);}};
+document.querySelectorAll('.size-btn[data-w]').forEach(b=>b.onclick=()=>{document.querySelectorAll('.size-btn[data-w]').forEach(x=>x.classList.remove('active'));b.classList.add('active');size={w:+b.dataset.w,h:+b.dataset.h};draw();});
+document.querySelectorAll('.bg-btn').forEach(b=>b.onclick=()=>{document.querySelectorAll('.bg-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');bg=b.dataset.c;draw();});
+function draw(){if(!img)return;const c=$('canvas'),ctx=c.getContext('2d');c.width=size.w;c.height=size.h;
+ctx.fillStyle=bg;ctx.fillRect(0,0,size.w,size.h);
+const ir=img.width/img.height,tr=size.w/size.h;let dw,dh;
+if(ir>tr){dw=size.w;dh=size.w/ir;}else{dh=size.h;dw=size.h*ir;}
+ctx.drawImage(img,(size.w-dw)/2,(size.h-dh)/2,dw,dh);
+}
+$('dlBtn').onclick=()=>{const a=document.createElement('a');a.href=$('canvas').toDataURL('image/jpeg',0.95);a.download='passport-photo.jpg';a.click();};
+</script>
+</body></html>
