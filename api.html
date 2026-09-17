@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>API Documentation - Free Image Processing API | SmartImgKit</title>
+<meta name="description" content="Free image processing API. Compress, convert, resize, watermark. Browser-based, no key required. Developer friendly.">
+<link rel="canonical" href="https://smartimgkit.com/api">
+<meta name="theme-color" content="#6366f1">
+<meta property="og:title" content="SmartImgKit API">
+<meta property="og:description" content="Free image processing API for developers.">
+<meta property="og:url" content="https://smartimgkit.com/api">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<style>
+.api-page{max-width:860px;margin:0 auto;padding:2rem 1rem}
+.endpoint{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:1.5rem;margin:1rem 0}
+.method{display:inline-block;padding:4px 12px;border-radius:6px;font-weight:700;font-size:.8rem;margin-right:.5rem}
+.get{background:#10b981;color:#fff}
+.post{background:#3b82f6;color:#fff}
+code{background:var(--bg-tertiary);padding:2px 6px;border-radius:4px;font-family:monospace;font-size:.9em}
+pre{background:#0f172a;padding:1rem;border-radius:8px;overflow-x:auto;color:#e2e8f0;font-size:.85rem;line-height:1.6}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/about">About</a></nav>
+<div class="header-actions"><button class="theme-toggle" id="themeToggle">🌙</button></div>
+</div></header>
+<main class="tool-page"><div class="container">
+<article class="api-page">
+<h1>SmartImgKit API</h1>
+<p>Free image processing API for developers. No API key required. All processing runs in the user's browser, which means zero server costs for you and complete privacy for your users.</p>
+
+<div class="endpoint">
+<h2>1. URL Parameter API (Instant)</h2>
+<p>Load any tool with a pre-filled image URL. Perfect for integrations where you want to send users directly to a tool with their image already loaded.</p>
+<pre>https://smartimgkit.com/tools/compressor?url=https://example.com/photo.jpg
+https://smartimgkit.com/tools/resizer?url=https://example.com/photo.jpg&w=800
+https://smartimgkit.com/tools/converter?url=https://example.com/photo.jpg&to=webp</pre>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>url</code> — Image URL to auto-load (CORS-permitted images work best)</li>
+<li><code>w</code>, <code>h</code> — Target dimensions (resizer only)</li>
+<li><code>to</code> — Target format: webp, jpeg, png (converter only)</li>
+</ul>
+</div>
+
+<div class="endpoint">
+<h2>2. Image Info API</h2>
+<p>Get image metadata (dimensions, format, file size) as JSON.</p>
+<p><span class="method get">GET</span><code>/api/info?url=IMAGE_URL</code></p>
+<pre>curl "https://smartimgkit.com/api/info?url=https://example.com/photo.jpg"
+
+{
+  "width": 1920,
+  "height": 1080,
+  "type": "image/jpeg",
+  "size": 2458392,
+  "ok": true
+}</pre>
+</div>
+
+<div class="endpoint">
+<h2>3. JavaScript SDK (Browser)</h2>
+<p>Embed image processing directly in your web app using our open-source browser-based approach. No server needed.</p>
+<pre>&lt;script src="https://smartimgkit.com/js/imkit-sdk.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  // Compress an image file to WebP
+  const blob = await IMKit.compress(file, { format: 'webp', quality: 0.8 });
+  // blob is the compressed image — send it anywhere
+&lt;/script&gt;</pre>
+<p>The SDK is a thin wrapper around Canvas API and WebCodecs. Your users' images never touch our servers.</p>
+</div>
+
+<div class="endpoint">
+<h2>Pricing & Rate Limits</h2>
+<ul>
+<li><strong>Free forever</strong> — no API key, no signup, no credit card</li>
+<li><strong>No rate limits</strong> — because processing happens client-side</li>
+<li><strong>No file size limit</strong> — same as the main tools</li>
+</ul>
+<p>We believe image processing should be free and private. If you need higher-volume server-side processing, consider self-hosting our open-source engine.</p>
+</div>
+
+<div class="endpoint">
+<h2>What's Not Included</h2>
+<p>We don't offer server-side AI processing (background removal, super-resolution) via API yet. Those require GPU infrastructure and will be a paid tier. For now, use the browser tools directly.</p>
+</div>
+
+<p style="margin-top:2rem"><a href="/tools/compressor" class="btn btn-primary">Try the Compressor →</a></p>
+</article>
+</div></main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved.</p></div></div></footer>
+<script src="/js/main.js?v=7"></script>
+<script src="/js/ad-loader.js?v=4"></script>
+</body></html>
