@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>截图美化工具 - 代码截图加阴影圆角免费 | SmartImgKit</title>
+<meta name="description" content="将代码截图美化，加圆角、阴影、渐变背景。适合博客、推文、GitHub README。纯浏览器处理，免费。">
+<link rel="canonical" href="https://smartimgkit.com/zh/workflows/screenshot-beautifier">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<style>
+.preview-box{background:#1e293b;border-radius:16px;padding:3rem;margin:1rem 0;text-align:center}
+.preview-box canvas{max-width:100%;border-radius:8px}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:1rem 0}
+.controls label{font-size:.8rem;color:#94a3b8;display:block;margin-bottom:.3rem}
+.controls select,.controls input{width:100%;padding:6px;background:#0f172a;color:#f1f5f9;border:1px solid #334155;border-radius:6px}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">首页</a><a href="/tools/background-remover">工具</a><a href="/workflows/">工作流</a><a href="/blog/">博客</a><a href="/api">API</a><a href="/about">关于</a></nav>
+</div></header>
+<main class="tool-page"><div class="container">
+<nav class="breadcrumb"><a href="/">首页</a><span>/</span><a href="/zh/workflows/">工作流</a><span>/</span><span>截图美化</span></nav>
+<div class="tool-page-header"><h1>截图美化工具</h1><p>将普通代码截图变成精美图片，加圆角、阴影、渐变背景。适合博客、推文、GitHub README。</p></div>
+<div class="upload-area" id="uploadArea"><input type="file" id="fileInput" accept="image/*" hidden><div class="upload-icon">📸</div><h3>拖入截图</h3><p>或点击选择</p></div>
+<div id="controls" style="display:none">
+<div class="controls">
+<div><label>背景</label><select id="bg">
+<option value="linear-gradient(135deg,#667eea,#764ba2)">紫色渐变</option>
+<option value="linear-gradient(135deg,#f093fb,#f5576c)">粉色渐变</option>
+<option value="linear-gradient(135deg,#4facfe,#00f2fe)">蓝色渐变</option>
+<option value="linear-gradient(135deg,#43e97b,#38f9d7)">绿色渐变</option>
+<option value="linear-gradient(135deg,#fa709a,#fee140)">夕阳渐变</option>
+<option value="#0f172a">深色</option>
+</select></div>
+<div><label>边距：<span id="padVal">40</span>px</label><input type="range" id="pad" min="10" max="100" value="40"></div>
+<div><label>圆角：<span id="radVal">12</span>px</label><input type="range" id="rad" min="0" max="30" value="12"></div>
+<div><label>阴影：<span id="shVal">30</span>px</label><input type="range" id="sh" min="0" max="60" value="30"></div>
+</div>
+<div class="preview-box"><canvas id="canvas"></canvas></div>
+<button class="btn btn-primary" id="dlBtn">下载PNG</button>
+</div>
+<p style="color:#94a3b8;margin-top:1rem">🔒 您的截图不会离开设备。</p>
+</div></main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit</p></div></div></footer>
+<script>
+const $=id=>document.getElementById(id);let img=null;
+$('uploadArea').onclick=()=>$('fileInput').click();
+$('fileInput').onchange=e=>{const f=e.target.files[0];if(f){const r=new FileReader();r.onload=()=>{img=new Image();img.onload=()=>{draw();$('controls').style.display='block';};img.src=r.result;};r.readAsDataURL(f);}};
+function draw(){if(!img)return;const pad=+$('pad').value,rad=+$('rad').value,sh=+$('sh').value;const c=$('canvas'),ctx=c.getContext('2d');const w=img.width+pad*2+sh*2,h=img.height+pad*2+sh*2;c.width=w;c.height=h;const g=ctx.createLinearGradient(0,0,w,h);const bg=$('bg').value;if(bg.startsWith('linear')){const m=bg.match(/#([0-9a-f]+)/gi);g.addColorStop(0,m[0]);g.addColorStop(1,m[1]);ctx.fillStyle=g;}else{ctx.fillStyle=bg;}ctx.fillRect(0,0,w,h);ctx.shadowColor='rgba(0,0,0,.4)';ctx.shadowBlur=sh;ctx.shadowOffsetY=sh/3;ctx.fillStyle='#1e293b';ctx.beginPath();const x=pad+sh/2,y=pad+sh/2,iw=img.width,ih=img.height;ctx.moveTo(x+rad,y);ctx.arcTo(x+iw,y,x+iw,y+ih,rad);ctx.arcTo(x+iw,y+ih,x,y+ih,rad);ctx.arcTo(x,y+ih,x,y,rad);ctx.arcTo(x,y,x+iw,y,rad);ctx.fill();ctx.shadowColor='transparent';ctx.save();ctx.beginPath();ctx.moveTo(x+rad,y);ctx.arcTo(x+iw,y,x+iw,y+ih,rad);ctx.arcTo(x+iw,y+ih,x,y+ih,rad);ctx.arcTo(x,y+ih,x,y,rad);ctx.arcTo(x,y,x+iw,y,rad);ctx.clip();ctx.drawImage(img,x,y,iw,ih);ctx.restore();}
+['pad','rad','sh','bg'].forEach(id=>$(id).oninput=draw);
+$('pad').oninput=()=>{$('padVal').textContent=$('pad').value;draw();};
+$('rad').oninput=()=>{$('radVal').textContent=$('rad').value;draw();};
+$('sh').oninput=()=>{$('shVal').textContent=$('sh').value;draw();};
+$('dlBtn').onclick=()=>{const a=document.createElement('a');a.href=$('canvas').toDataURL('image/png');a.download='screenshot-beautified.png';a.click();};
+</script>
+</body></html>

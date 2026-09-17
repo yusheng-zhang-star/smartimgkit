@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>设计稿切图器 - 图片切割成网格免费在线 | SmartImgKit</title>
+<meta name="description" content="将一张大图按网格切割成多个小图。适合UI切图、社交媒体拼图、雪碧图。导出ZIP，纯浏览器处理。">
+<link rel="canonical" href="https://smartimgkit.com/zh/workflows/design-slicer">
+<meta name="theme-color" content="#8b5cf6">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="/js/jszip.min.js"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<style>
+.grid-preview{display:grid;gap:2px;margin:1rem 0}
+.grid-preview img{width:100%;border:1px solid #334155}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin:1rem 0}
+.controls label{font-size:.8rem;color:#94a3b8}
+.controls input{width:100%;padding:6px;background:#0f172a;color:#f1f5f9;border:1px solid #334155;border-radius:6px}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">首页</a><a href="/tools/background-remover">工具</a><a href="/workflows/">工作流</a><a href="/blog/">博客</a><a href="/api">API</a><a href="/about">关于</a></nav>
+</div></header>
+<main class="tool-page"><div class="container">
+<nav class="breadcrumb"><a href="/">首页</a><span>/</span><a href="/zh/workflows/">工作流</a><span>/</span><span>设计稿切图器</span></nav>
+<div class="tool-page-header"><h1>设计稿切图器</h1><p>将一张大图按网格切割成多个小图。适合UI切图、社交媒体拼图、雪碧图导出。打包为ZIP下载。</p></div>
+<div class="upload-area" id="uploadArea"><input type="file" id="fileInput" accept="image/*" hidden><div class="upload-icon">✂️</div><h3>拖入设计图</h3><p>或点击选择</p></div>
+<div id="controls" style="display:none">
+<div class="controls">
+<div><label>列数：<span id="cVal">3</span></label><input type="range" id="cols" min="1" max="10" value="3"></div>
+<div><label>行数：<span id="rVal">3</span></label><input type="range" id="rows" min="1" max="10" value="3"></div>
+</div>
+<div class="grid-preview" id="preview"></div>
+<button class="btn btn-primary" id="dlBtn">下载ZIP</button>
+</div>
+<p style="color:#94a3b8;margin-top:1rem">🔒 您的设计图不会离开设备。</p>
+</div></main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit</p></div></div></footer>
+<script>
+const $=id=>document.getElementById(id);let img=null;
+$('uploadArea').onclick=()=>$('fileInput').click();
+$('fileInput').onchange=e=>{const f=e.target.files[0];if(f){img=new Image();img.onload=()=>{draw();$('controls').style.display='block';};img.src=URL.createObjectURL(f);}};
+$('cols').oninput=()=>{$('cVal').textContent=$('cols').value;draw();};
+$('rows').oninput=()=>{$('rVal').textContent=$('rows').value;draw();};
+function draw(){if(!img)return;const cols=+$('cols').value,rows=+$('rows').value;const tw=Math.floor(img.width/cols),th=Math.floor(img.height/rows);$('preview').style.gridTemplateColumns=`repeat(${cols},1fr)`;$('preview').innerHTML='';for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const cv=document.createElement('canvas');cv.width=tw;cv.height=th;cv.getContext('2d').drawImage(img,c*tw,r*th,tw,th,0,0,tw,th);const im=new Image();im.src=cv.toDataURL();$('preview').appendChild(im);}}
+$('dlBtn').onclick=async()=>{const cols=+$('cols').value,rows=+$('rows').value;const tw=Math.floor(img.width/cols),th=Math.floor(img.height/rows);const zip=new JSZip();let n=1;for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const cv=document.createElement('canvas');cv.width=tw;cv.height=th;cv.getContext('2d').drawImage(img,c*tw,r*th,tw,th,0,0,tw,th);const blob=await new Promise(res=>cv.toBlob(res,'image/png'));zip.file(`tile-${String(n++).padStart(2,'0')}.png`,blob);}const blob=await zip.generateAsync({type:'blob'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='slices.zip';a.click();};
+</script>
+</body></html>

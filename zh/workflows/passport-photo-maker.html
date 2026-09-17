@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>证件照制作工具 - 护照签证尺寸免费在线 | SmartImgKit</title>
+<meta name="description" content="在线制作护照、签证、证件照。美国2x2寸、申根35x45mm、中国一寸二寸。自动换背景色。免费，不上传。">
+<link rel="canonical" href="https://smartimgkit.com/zh/workflows/passport-photo-maker">
+<meta name="theme-color" content="#ef4444">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<style>
+.sizes{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.5rem;margin:1rem 0}
+.size-btn{padding:.6rem;background:#1e293b;border:1px solid #334155;border-radius:8px;cursor:pointer;color:#f1f5f9;font-size:.85rem}
+.size-btn.active{border-color:#ef4444;background:#7f1d1d}
+.preview{text-align:center;margin:1rem 0}
+.preview canvas{max-width:300px;border-radius:8px}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">首页</a><a href="/tools/background-remover">工具</a><a href="/workflows/">工作流</a><a href="/blog/">博客</a><a href="/api">API</a><a href="/about">关于</a></nav>
+</div></header>
+<main class="tool-page"><div class="container">
+<nav class="breadcrumb"><a href="/">首页</a><span>/</span><a href="/zh/workflows/">工作流</a><span>/</span><span>证件照制作</span></nav>
+<div class="tool-page-header"><h1>证件照制作</h1><p>将照片裁剪成标准护照、签证尺寸。自动更换白/蓝/红背景。省去照相馆的麻烦。</p></div>
+<div class="upload-area" id="uploadArea"><input type="file" id="fileInput" accept="image/*" hidden><div class="upload-icon">🪪</div><h3>上传正面照</h3><p>或点击选择</p></div>
+<div id="controls" style="display:none">
+<label style="color:#94a3b8;font-size:.85rem">选择尺寸：</label>
+<div class="sizes" id="sizes">
+<button class="size-btn" data-w="600" data-h="600">美签 2×2寸</button>
+<button class="size-btn" data-w="350" data-h="450">申根 35×45mm</button>
+<button class="size-btn" data-w="450" data-h="450">日本 45×45mm</button>
+<button class="size-btn" data-w="295" data-h="413">中国一寸 25×35mm</button>
+<button class="size-btn" data-w="413" data-h="579">中国二寸 35×49mm</button>
+</div>
+<label style="color:#94a3b8;font-size:.85rem">背景颜色：</label>
+<div style="display:flex;gap:.5rem;margin:.5rem 0">
+<button class="size-btn bg-btn active" data-c="#ffffff" style="width:40px;height:40px;background:#ffffff"></button>
+<button class="size-btn bg-btn" data-c="#4a90d9" style="width:40px;height:40px;background:#4a90d9"></button>
+<button class="size-btn bg-btn" data-c="#d93025" style="width:40px;height:40px;background:#d93025"></button>
+</div>
+<div class="preview"><canvas id="canvas"></canvas></div>
+<button class="btn btn-primary" id="dlBtn">下载照片</button>
+</div>
+<p style="color:#94a3b8;margin-top:1rem">🔒 您的照片不会离开设备。提交前请确认官方要求。</p>
+</div></main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit</p></div></div></footer>
+<script>
+const $=id=>document.getElementById(id);let img=null,size={w:600,h:600},bg='#ffffff';
+$('uploadArea').onclick=()=>$('fileInput').click();
+$('fileInput').onchange=e=>{const f=e.target.files[0];if(f){img=new Image();img.onload=()=>{draw();$('controls').style.display='block';};img.src=URL.createObjectURL(f);}};
+document.querySelectorAll('.size-btn[data-w]').forEach(b=>b.onclick=()=>{document.querySelectorAll('.size-btn[data-w]').forEach(x=>x.classList.remove('active'));b.classList.add('active');size={w:+b.dataset.w,h:+b.dataset.h};draw();});
+document.querySelectorAll('.bg-btn').forEach(b=>b.onclick=()=>{document.querySelectorAll('.bg-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');bg=b.dataset.c;draw();});
+function draw(){if(!img)return;const c=$('canvas'),ctx=c.getContext('2d');c.width=size.w;c.height=size.h;ctx.fillStyle=bg;ctx.fillRect(0,0,size.w,size.h);const ir=img.width/img.height,tr=size.w/size.h;let dw,dh;if(ir>tr){dw=size.w;dh=dw/ir;}else{dh=size.h;dw=dh*ir;}ctx.drawImage(img,(size.w-dw)/2,(size.h-dh)/2,dw,dh);}
+$('dlBtn').onclick=()=>{const a=document.createElement('a');a.href=$('canvas').toDataURL('image/jpeg',0.95);a.download='passport-photo.jpg';a.click();};
+</script>
+</body></html>

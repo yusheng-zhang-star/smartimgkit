@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>圆形头像制作器 - 免费裁剪圆形头像在线 | SmartImgKit</title>
+<meta name="description" content="将照片裁剪成完美圆形头像，透明背景PNG。适合Discord、Teams、Slack等平台。免费，不上传。">
+<link rel="canonical" href="https://smartimgkit.com/zh/workflows/circular-avatar-cropper">
+<meta name="theme-color" content="#f59e0b">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<style>
+.preview{text-align:center;margin:1rem 0}
+.preview canvas{border-radius:50%;max-width:300px;border:1px solid #334155}
+.controls{margin:1rem 0}
+.controls label{font-size:.8rem;color:#94a3b8}
+.controls input{width:100%;padding:6px;background:#0f172a;color:#f1f5f9;border:1px solid #334155;border-radius:6px}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">首页</a><a href="/tools/background-remover">工具</a><a href="/workflows/">工作流</a><a href="/blog/">博客</a><a href="/api">API</a><a href="/about">关于</a></nav>
+</div></header>
+<main class="tool-page"><div class="container">
+<nav class="breadcrumb"><a href="/">首页</a><span>/</span><a href="/zh/workflows/">工作流</a><span>/</span><span>圆形头像制作</span></nav>
+<div class="tool-page-header"><h1>圆形头像制作器</h1><p>将照片裁剪成完美圆形，透明背景PNG。适合Discord、Teams、Slack等显示圆形头像的平台。</p></div>
+<div class="upload-area" id="uploadArea"><input type="file" id="fileInput" accept="image/*" hidden><div class="upload-icon">⭕</div><h3>上传照片</h3><p>或点击选择</p></div>
+<div id="controls" style="display:none">
+<div class="controls">
+<label>缩放：<span id="zVal">100%</span></label>
+<input type="range" id="zoom" min="50" max="200" value="100">
+<label style="margin-top:.5rem">输出尺寸：<span id="sVal">512</span>px</label>
+<input type="range" id="size" min="100" max="1024" step="64" value="512">
+</div>
+<div class="preview"><canvas id="canvas"></canvas></div>
+<button class="btn btn-primary" id="dlBtn">下载PNG</button>
+</div>
+<p style="color:#94a3b8;margin-top:1rem">🔒 您的照片不会离开设备。</p>
+</div></main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit</p></div></div></footer>
+<script>
+const $=id=>document.getElementById(id);let img=null;
+$('uploadArea').onclick=()=>$('fileInput').click();
+$('fileInput').onchange=e=>{const f=e.target.files[0];if(f){img=new Image();img.onload=()=>{draw();$('controls').style.display='block';};img.src=URL.createObjectURL(f);}};
+$('zoom').oninput=()=>{$('zVal').textContent=$('zoom').value+'%';draw();};
+$('size').oninput=()=>{$('sVal').textContent=$('size').value;draw();};
+function draw(){if(!img)return;const S=+$('size').value,zoom=+$('zoom').value/100;const c=$('canvas'),ctx=c.getContext('2d');c.width=S;c.height=S;ctx.clearRect(0,0,S,S);ctx.save();ctx.beginPath();ctx.arc(S/2,S/2,S/2,0,Math.PI*2);ctx.clip();const ir=img.width/img.height;let dw,dh;if(ir>1){dw=S*zoom;dh=dw/ir;}else{dh=S*zoom;dw=dh*ir;}ctx.drawImage(img,(S-dw)/2,(S-dh)/2,dw,dh);ctx.restore();}
+$('dlBtn').onclick=()=>{const a=document.createElement('a');a.href=$('canvas').toDataURL('image/png');a.download='circular-avatar.png';a.click();};
+</script>
+</body></html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>图片配色提取器 - 从图片提取HEX颜色免费 | SmartImgKit</title>
+<meta name="description" content="从任意图片提取配色方案，输出HEX色值和CSS变量。设计师和开发者必备。纯浏览器处理，不上传。">
+<link rel="canonical" href="https://smartimgkit.com/zh/workflows/color-palette-extractor">
+<meta name="theme-color" content="#8b5cf6">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<style>
+.swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1rem;margin:1.5rem 0}
+.swatch{border-radius:12px;overflow:hidden;border:1px solid #334155}
+.swatch .color{height:100px}
+.swatch .info{padding:.5rem;background:#1e293b;font-size:.8rem}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">首页</a><a href="/tools/background-remover">工具</a><a href="/workflows/">工作流</a><a href="/blog/">博客</a><a href="/api">API</a><a href="/about">关于</a></nav>
+</div></header>
+<main class="tool-page"><div class="container">
+<nav class="breadcrumb"><a href="/">首页</a><span>/</span><a href="/zh/workflows/">工作流</a><span>/</span><span>图片配色提取器</span></nav>
+<div class="tool-page-header"><h1>图片配色提取器</h1><p>从任意图片提取主色调，输出HEX色值和CSS变量。设计师和开发者必备工具。</p></div>
+<div class="upload-area" id="uploadArea"><input type="file" id="fileInput" accept="image/*" hidden><div class="upload-icon">🎨</div><h3>拖入图片</h3><p>或点击选择</p></div>
+<div id="controls" style="display:none">
+<div class="swatches" id="swatches"></div>
+<textarea id="cssOut" readonly style="width:100%;height:100px;background:#0f172a;color:#a5f3fc;border:1px solid #334155;border-radius:8px;padding:1rem;font-family:monospace"></textarea>
+<button class="btn btn-primary" id="copyBtn" style="margin-top:1rem">复制CSS变量</button>
+</div>
+<p style="color:#94a3b8;margin-top:1rem">🔒 您的图片不会离开设备。</p>
+</div></main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit</p></div></div></footer>
+<script>
+const $=id=>document.getElementById(id);
+$('uploadArea').onclick=()=>$('fileInput').click();
+$('fileInput').onchange=e=>{const f=e.target.files[0];if(!f)return;const img=new Image();img.onload=()=>{const c=document.createElement('canvas');const s=100;c.width=s;c.height=s*img.height/img.width;const ctx=c.getContext('2d');ctx.drawImage(img,0,0,c.width,c.height);const data=ctx.getImageData(0,0,c.width,c.height).data;const map={};for(let i=0;i<data.length;i+=4){const r=data[i]>>4,g=data[i+1]>>4,b=data[i+2]>>4;const k=`${r},${g},${b}`;map[k]=(map[k]||0)+1;}const sorted=Object.entries(map).sort((a,b)=>b[1]-a[1]).slice(0,8);const colors=sorted.map(([k])=>{const[r,g,b]=k.split(',').map(Number);return `#${((r*17)<<16|(g*17)<<8|(b*17)).toString(16).padStart(6,'0')}`;});$('swatches').innerHTML=colors.map((hex,i)=>`<div class="swatch"><div class="color" style="background:${hex}"></div><div class="info">${hex}<br><small>color-${i+1}</small></div></div>`).join('');$('cssOut').value=colors.map((h,i)=>`--color-${i+1}: ${h};`).join('\n');$('controls').style.display='block';};img.src=URL.createObjectURL(f);};
+$('copyBtn').onclick=()=>{navigator.clipboard.writeText($('cssOut').value);$('copyBtn').textContent='已复制！';setTimeout(()=>$('copyBtn').textContent='复制CSS变量',1500);};
+</script>
+</body></html>

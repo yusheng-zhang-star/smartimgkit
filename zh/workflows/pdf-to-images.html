@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>PDF转图片 - PDF每一页导出为PNG免费在线 | SmartImgKit</title>
+<meta name="description" content="将PDF每一页转换为PNG或JPEG图片。批量导出ZIP包。纯浏览器处理，不上传文件，隐私安全。">
+<link rel="canonical" href="https://smartimgkit.com/zh/workflows/pdf-to-images">
+<meta name="theme-color" content="#f43f5e">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="/js/jszip.min.js"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<style>
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.5rem;margin:1rem 0}
+.preview-grid canvas{width:100%;border:1px solid #334155;border-radius:6px}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:1rem 0}
+.controls label{font-size:.8rem;color:#94a3b8}
+.controls select{width:100%;padding:6px;background:#0f172a;color:#f1f5f9;border:1px solid #334155;border-radius:6px}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">首页</a><a href="/tools/background-remover">工具</a><a href="/workflows/">工作流</a><a href="/blog/">博客</a><a href="/api">API</a><a href="/about">关于</a></nav>
+</div></header>
+<main class="tool-page"><div class="container">
+<nav class="breadcrumb"><a href="/">首页</a><span>/</span><a href="/zh/workflows/">工作流</a><span>/</span><span>PDF转图片</span></nav>
+<div class="tool-page-header"><h1>PDF转图片</h1><p>将PDF每一页转换为PNG或JPEG。批量导出为ZIP。文件在浏览器本地处理，不上传服务器。</p></div>
+<div class="upload-area" id="uploadArea"><input type="file" id="fileInput" accept=".pdf" hidden><div class="upload-icon">📄</div><h3>拖入PDF文件</h3><p>或点击选择</p></div>
+<div id="controls" style="display:none">
+<div class="controls">
+<div><label>输出格式</label><select id="fmt"><option value="image/png">PNG</option><option value="image/jpeg">JPEG</option></select></div>
+<div><label>缩放：<span id="sVal">2x</span></label><input type="range" id="scale" min="1" max="3" step="0.5" value="2"></div>
+</div>
+<button class="btn btn-primary" id="convBtn">开始转换</button>
+<div class="preview-grid" id="grid"></div>
+<button class="btn btn-primary" id="dlBtn" style="display:none">下载ZIP</button>
+</div>
+<p style="color:#94a3b8;margin-top:1rem">🔒 您的PDF不会离开设备。</p>
+</div></main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit</p></div></div></footer>
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+const $=id=>document.getElementById(id);let pdf=null,canvases=[];
+$('uploadArea').onclick=()=>$('fileInput').click();
+$('fileInput').onchange=async e=>{const f=e.target.files[0];if(!f)return;const buf=await f.arrayBuffer();pdf=await pdfjsLib.getDocument({data:buf}).promise;$('controls').style.display='block';alert(`已加载：${pdf.numPages} 页`);};
+$('scale').oninput=()=>$('sVal').textContent=$('scale').value+'x';
+$('convBtn').onclick=async()=>{if(!pdf)return;$('convBtn').disabled=true;$('convBtn').textContent='转换中…';canvases=[];$('grid').innerHTML='';const scale=+$('scale').value;const fmt=$('fmt').value;for(let i=1;i<=pdf.numPages;i++){const page=await pdf.getPage(i);const vp=page.getViewport({scale:scale});const c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;await page.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;canvases.push(c);const w=document.createElement('canvas');w.width=200;w.height=200*c.height/c.width;w.getContext('2d').drawImage(c,0,0,w.width,w.height);$('grid').appendChild(w);}$('dlBtn').style.display='inline-block';$('convBtn').disabled=false;$('convBtn').textContent='开始转换';};
+$('dlBtn').onclick=async()=>{const zip=new JSZip();const fmt=$('fmt').value;for(let i=0;i<canvases.length;i++){const blob=await new Promise(r=>canvases[i].toBlob(r,fmt,fmt==='image/jpeg'?0.92:undefined));const ext=fmt==='image/png'?'png':'jpg';zip.file(`page-${String(i+1).padStart(3,'0')}.${ext}`,blob);}const blob=await zip.generateAsync({type:'blob'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='pdf-pages.zip';a.click();};
+</script>
+</body></html>

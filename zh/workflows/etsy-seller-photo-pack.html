@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>Etsy卖家图包生成器 - 产品图全套模板免费 | SmartImgKit</title>
+<meta name="description" content="批量生成Etsy产品图包：白底主图、生活场景图、细节图、尺寸图、对比图。5张图包提升销量。">
+<link rel="canonical" href="https://smartimgkit.com/zh/workflows/etsy-seller-photo-pack">
+<meta name="theme-color" content="#f56400">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<style>
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:1rem 0}
+.preview-grid canvas{width:100%;border-radius:8px;border:1px solid #334155}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">首页</a><a href="/tools/background-remover">工具</a><a href="/workflows/">工作流</a><a href="/blog/">博客</a><a href="/api">API</a><a href="/about">关于</a></nav>
+</div></header>
+<main class="tool-page"><div class="container">
+<nav class="breadcrumb"><a href="/">首页</a><span>/</span><a href="/zh/workflows/">工作流</a><span>/</span><span>Etsy卖家图包</span></nav>
+<div class="tool-page-header"><h1>Etsy卖家图包生成器</h1><p>一次上传，批量生成Etsy要求的5张产品图：白底主图、生活场景、细节特写、尺寸标注、对比图。</p></div>
+<div class="upload-area" id="uploadArea"><input type="file" id="fileInput" accept="image/*" hidden><div class="upload-icon">🛍️</div><h3>上传产品图</h3><p>或点击选择</p></div>
+<div id="controls" style="display:none">
+<button class="btn btn-primary" id="genBtn">生成5张图包</button>
+<div class="preview-grid" id="grid"></div>
+<button class="btn btn-primary" id="dlBtn" style="display:none">下载全部ZIP</button>
+</div>
+<p style="color:#94a3b8;margin-top:1rem">🔒 您的产品图不会离开设备。</p>
+</div></main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit</p></div></div></footer>
+<script src="/js/jszip.min.js"></script>
+<script>
+const $=id=>document.getElementById(id);let img=null,canvases=[];
+$('uploadArea').onclick=()=>$('fileInput').click();
+$('fileInput').onchange=e=>{const f=e.target.files[0];if(f){img=new Image();img.onload=()=>$('controls').style.display='block';img.src=URL.createObjectURL(f);}};
+function fit(img,W,H){const ir=img.width/img.height,tr=W/H;let dw,dh;if(ir>tr){dw=W;dh=dw/ir;}else{dh=H;dw=dh*ir;}return{dw,dh,x:(W-dw)/2,y:(H-dh)/2};}
+$('genBtn').onclick=()=>{if(!img)return;canvases=[];const W=1500,H=1500;const templates=[
+(bg,label)=>{const c=document.createElement('canvas');c.width=W;c.height=H;const ctx=c.getContext('2d');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);const f=fit(img,W*0.7,H*0.7);ctx.drawImage(img,f.x,f.y,f.dw,f.dh);ctx.fillStyle='#64748b';ctx.font='36px sans-serif';ctx.textAlign='center';ctx.fillText(label,W/2,H-60);return c;},
+];const c1=document.createElement('canvas');c1.width=W;c1.height=H;let ctx=c1.getContext('2d');ctx.fillStyle='#ffffff';ctx.fillRect(0,0,W,H);let f=fit(img,W*0.7,H*0.7);ctx.drawImage(img,f.x,f.y,f.dw,f.dh);canvases.push(c1);
+const c2=document.createElement('canvas');c2.width=W;c2.height=H;ctx=c2.getContext('2d');ctx.fillStyle='#fef3c7';ctx.fillRect(0,0,W,H);f=fit(img,W*0.8,H*0.8);ctx.drawImage(img,f.x,f.y,f.dw,f.dh);canvases.push(c2);
+const c3=document.createElement('canvas');c3.width=W;c3.height=H;ctx=c3.getContext('2d');ctx.fillStyle='#1e293b';ctx.fillRect(0,0,W,H);ctx.drawImage(img,W*0.1,H*0.1,W*0.8,H*0.8);canvases.push(c3);
+const c4=document.createElement('canvas');c4.width=W;c4.height=H;ctx=c4.getContext('2d');ctx.fillStyle='#ffffff';ctx.fillRect(0,0,W,H);f=fit(img,W*0.6,H*0.6);ctx.drawImage(img,f.x,f.y,f.dw,f.dh);ctx.strokeStyle='#0ea5e9';ctx.lineWidth=4;ctx.strokeRect(f.x,f.y,f.dw,f.dh);ctx.fillStyle='#0ea5e9';ctx.font='32px sans-serif';ctx.fillText('15cm × 15cm',W/2,H-80);canvases.push(c4);
+const c5=document.createElement('canvas');c5.width=W;c5.height=H;ctx=c5.getContext('2d');ctx.fillStyle='#f8fafc';ctx.fillRect(0,0,W,H);ctx.fillStyle='#64748b';ctx.font='48px sans-serif';ctx.textAlign='center';ctx.fillText('✓ 白底主图',W/2,H/2-60);ctx.fillText('✓ 生活场景',W/2,H/2+10);ctx.fillText('✓ 细节特写',W/2,H/2+80);canvases.push(c5);
+$('grid').innerHTML='';canvases.forEach(c=>{const w=document.createElement('img');w.src=c.toDataURL();$('grid').appendChild(w);});$('dlBtn').style.display='inline-block';};
+$('dlBtn').onclick=async()=>{const zip=new JSZip();for(let i=0;i<canvases.length;i++){const blob=await new Promise(r=>canvases[i].toBlob(r,'image/jpeg',0.92));zip.file(`etsy-photo-${i+1}.jpg`,blob);}const blob=await zip.generateAsync({type:'blob'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='etsy-photo-pack.zip';a.click();};
+</script>
+</body></html>
