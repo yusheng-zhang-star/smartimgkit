@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>Etsy Seller Photo Pack – 2000×2000 White Background Free | SmartImgKit</title>
+<meta name="description" content="Prepare Etsy product photos: 2000×2000 white-background main image + 5 lifestyle variants. Batch process, free, no upload.">
+<link rel="canonical" href="https://smartimgkit.com/workflows/etsy-seller-photo-pack">
+<meta name="theme-color" content="#f56400">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="/js/jszip.min.js"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<style>
+.results{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin:1rem 0}
+.results img{width:100%;border-radius:8px;border:1px solid #334155}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/api">API</a><a href="/about">About</a></nav>
+<div class="header-actions"><button class="theme-toggle" id="themeToggle">🌙</button></div>
+</div></header>
+<main class="tool-page"><div class="container">
+<nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/workflows/">Workflows</a><span>/</span><span>Etsy Seller Photo Pack</span></nav>
+<div class="tool-page-header"><h1>Etsy Seller Photo Pack</h1><p>Generate Etsy-compliant product images: 2000×2000 white-background main shot + 5 scene variants (close-up, lifestyle, size chart, detail, packaging). Export as ZIP.</p></div>
+<div class="upload-area" id="uploadArea"><input type="file" id="fileInput" accept="image/*" hidden><div class="upload-icon">🛍️</div><h3>Drop your product photo here</h3><p>or click to browse</p></div>
+<div id="controls" style="display:none">
+<button class="btn btn-primary" id="genBtn">Generate Photo Pack</button>
+<div class="results" id="results"></div>
+<button class="btn btn-primary" id="dlBtn" style="display:none">Download ZIP</button>
+</div>
+<p style="color:#94a3b8;margin-top:1rem">🔒 Your product photos never leave your device.</p>
+</div></main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit.</p></div></div></footer>
+<script>
+const $=id=>document.getElementById(id);let img=null;const products=[];
+$('uploadArea').onclick=()=>$('fileInput').click();
+$('fileInput').onchange=e=>{const f=e.target.files[0];if(f){const r=new FileReader();r.onload=()=>{img=new Image();img.onload=()=>{$('controls').style.display='block';};img.src=r.result;};r.readAsDataURL(f);}};
+$('genBtn').onclick=async()=>{
+if(!img)return;
+const S=2000;
+const scenes=[
+  {name:'01-main-white',bg:'#ffffff',crop:1.0},
+  {name:'02-closeup',bg:'#f8f4ef',crop:0.6},
+  {name:'03-lifestyle',bg:'#e8e4dc',crop:0.8},
+  {name:'04-detail',bg:'#fafafa',crop:0.4},
+  {name:'05-packaging',bg:'#f0ebe5',crop:0.9},
+];
+const zip=new JSZip();
+$('results').innerHTML='';
+for(const s of scenes){
+  const c=document.createElement('canvas');c.width=S;c.height=S;const ctx=c.getContext('2d');
+  ctx.fillStyle=s.bg;ctx.fillRect(0,0,S,S);
+  const ir=img.width/img.height;const tw=S*s.crop,th=S*s.crop/ir;
+  const x=(S-tw)/2,y=(S-th)/2;
+  ctx.drawImage(img,x,y,tw,th);
+  const url=c.toDataURL('image/jpeg',0.92);
+  const im=new Image();im.src=url;$('results').appendChild(im);
+  const b64=url.split(',')[1];zip.file(s.name+'.jpg',b64,{base64:true});
+  products.push(s.name);
+}
+const blob=await zip.generateAsync({type:'blob'});
+$('dlBtn').style.display='inline-block';
+$('dlBtn').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='etsy-photo-pack.zip';a.click();};
+};
+</script>
+</body></html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>PDF to Images – Convert PDF Pages to PNG Free | SmartImgKit</title>
+<meta name="description" content="Convert every page of a PDF to PNG images in your browser. Perfect for slides, notes, social media. Batch export as ZIP. No upload, free.">
+<link rel="canonical" href="https://smartimgkit.com/workflows/pdf-to-images">
+<meta name="theme-color" content="#ef4444">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<script src="/js/jszip.min.js"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<style>
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin:1rem 0}
+.preview-grid img{width:100%;border-radius:8px;border:1px solid #334155}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:1rem 0}
+.controls label{font-size:.8rem;color:#94a3b8;display:block;margin-bottom:.3rem}
+.controls input,.controls select{width:100%;padding:6px;background:#0f172a;color:#f1f5f9;border:1px solid #334155;border-radius:6px}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/api">API</a><a href="/about">About</a></nav>
+<div class="header-actions"><button class="theme-toggle" id="themeToggle">🌙</button></div>
+</div></header>
+<main class="tool-page"><div class="container">
+<nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/workflows/">Workflows</a><span>/</span><span>PDF to Images</span></nav>
+<div class="tool-page-header"><h1>PDF to Images</h1><p>Convert every page of a PDF into high-quality PNG images. Export all pages as a ZIP. Perfect for course slides, research papers, and social media.</p></div>
+<div class="upload-area" id="uploadArea"><input type="file" id="fileInput" accept=".pdf" hidden><div class="upload-icon">📄</div><h3>Drop your PDF here</h3><p>or click to browse</p></div>
+<div id="controls" style="display:none">
+<div class="controls">
+<div><label>Scale: <span id="scaleVal">2.0</span>×</label><input type="range" id="scale" min="1" max="4" step="0.5" value="2"></div>
+<div><label>Format</label><select id="fmt"><option value="png">PNG</option><option value="jpeg">JPEG</option></select></div>
+</div>
+<button class="btn btn-primary" id="genBtn">Convert All Pages</button>
+<div class="preview-grid" id="grid"></div>
+<button class="btn btn-primary" id="dlBtn" style="display:none">Download ZIP</button>
+</div>
+<p style="color:#94a3b8;margin-top:1rem">🔒 Your PDF never leaves your device.</p>
+</div></main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit.</p></div></div></footer>
+<script>
+const $=id=>document.getElementById(id);let pdfBytes=null;
+pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+$('uploadArea').onclick=()=>$('fileInput').click();
+$('fileInput').onchange=e=>{const f=e.target.files[0];if(f){pdfBytes=f;$('controls').style.display='block';}};
+$('scale').oninput=()=>$('scaleVal').textContent=$('scale').value;
+$('genBtn').onclick=async()=>{
+if(!pdfBytes)return;
+$('genBtn').disabled=true;$('genBtn').textContent='Converting…';
+const buf=await pdfBytes.arrayBuffer();
+const pdf=await pdfjsLib.getDocument(buf).promise;
+const scale=+$('scale').value;const fmt=$('fmt').value;
+const zip=new JSZip();$('grid').innerHTML='';
+for(let i=1;i<=pdf.numPages;i++){
+  const page=await pdf.getPage(i);
+  const vp=page.getViewport({scale});
+  const c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;
+  await page.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;
+  const mime=fmt==='png'?'image/png':'image/jpeg';
+  const blob=await new Promise(r=>c.toBlob(r,mime,0.92));
+  const ext=fmt==='png'?'png':'jpg';
+  zip.file(`page-${String(i).padStart(3,'0')}.${ext}`,blob);
+  const im=document.createElement('img');im.src=URL.createObjectURL(blob);$('grid').appendChild(im);
+}
+const zipBlob=await zip.generateAsync({type:'blob'});
+$('dlBtn').style.display='inline-block';
+$('dlBtn').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(zipBlob);a.download='pdf-pages.zip';a.click();};
+$('genBtn').disabled=false;$('genBtn').textContent='Convert All Pages';
+};
+</script>
+</body></html>

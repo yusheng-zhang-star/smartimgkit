@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>GIF Maker – Create Animated GIF from Images Free | SmartImgKit</title>
+<meta name="description" content="Create animated GIFs from multiple images in your browser. Adjust frame rate, loop, quality. Perfect for social media, memes, demos. Free, no upload.">
+<link rel="canonical" href="https://smartimgkit.com/workflows/gif-maker">
+<meta name="theme-color" content="#6366f1">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<style>
+.frames{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0}
+.frames img{width:100px;height:100px;object-fit:cover;border-radius:6px;border:1px solid #334155}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:1rem 0}
+.controls label{font-size:.8rem;color:#94a3b8;display:block;margin-bottom:.3rem}
+.controls input,.controls select{width:100%;padding:6px;background:#0f172a;color:#f1f5f9;border:1px solid #334155;border-radius:6px}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/api">API</a><a href="/about">About</a></nav>
+<div class="header-actions"><button class="theme-toggle" id="themeToggle">🌙</button></div>
+</div></header>
+<main class="tool-page"><div class="container">
+<nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/workflows/">Workflows</a><span>/</span><span>GIF Maker</span></nav>
+<div class="tool-page-header"><h1>GIF Maker</h1><p>Turn multiple images into an animated GIF. Perfect for memes, product demos, and social posts. All processing in your browser.</p></div>
+<div class="upload-area" id="uploadArea"><input type="file" id="fileInput" accept="image/*" multiple hidden><div class="upload-icon">🎞️</div><h3>Drop multiple images</h3><p>or click to browse (order matters!)</p></div>
+<div id="controls" style="display:none">
+<div class="frames" id="frames"></div>
+<div class="controls">
+<div><label>Frame Delay: <span id="delayVal">500</span>ms</label><input type="range" id="delay" min="100" max="2000" step="100" value="500"></div>
+<div><label>Width: <span id="wVal">600</span>px</label><input type="range" id="w" min="200" max="1200" step="50" value="600"></div>
+<div><label>Quality: <span id="qVal">10</span></label><input type="range" id="q" min="1" max="30" value="10"></div>
+</div>
+<button class="btn btn-primary" id="genBtn">Generate GIF</button>
+<div id="preview" style="text-align:center;margin:1rem 0"></div>
+<button class="btn btn-primary" id="dlBtn" style="display:none">Download GIF</button>
+</div>
+<p style="color:#94a3b8;margin-top:1rem">🔒 Your images never leave your device.</p>
+</div></main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit.</p></div></div></footer>
+<script>
+const $=id=>document.getElementById(id);let imgs=[];
+$('uploadArea').onclick=()=>$('fileInput').click();
+$('fileInput').onchange=async e=>{
+imgs=[];
+for(const f of e.target.files){
+  const src=await new Promise(r=>{const fr=new FileReader();fr.onload=()=>r(fr.result);fr.readAsDataURL(f);});
+  const im=await new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.src=src;});
+  imgs.push(im);
+}
+$('frames').innerHTML='';
+imgs.forEach(im=>{const t=document.createElement('img');t.src=im.src;$('frames').appendChild(t);});
+$('controls').style.display='block';
+};
+$('delay').oninput=()=>$('delayVal').textContent=$('delay').value;
+$('w').oninput=()=>$('wVal').textContent=$('w').value;
+$('q').oninput=()=>$('qVal').textContent=$('q').value;
+$('genBtn').onclick=()=>{
+if(!imgs.length)return;
+$('genBtn').disabled=true;$('genBtn').textContent='Generating…';
+const w=+$('w').value,h=Math.round(w*imgs[0].height/imgs[0].width);
+const gif=new GIF({workers:2,quality:+$('q').value,width:w,height:h,workerScript:'https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js'});
+imgs.forEach(im=>{
+  const c=document.createElement('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d');
+  ctx.drawImage(im,0,0,w,h);
+  gif.addFrame(c,{delay:+$('delay').value});
+});
+gif.on('finished',blob=>{
+  const url=URL.createObjectURL(blob);
+  $('preview').innerHTML=`<img src="${url}" style="max-width:100%;border-radius:8px">`;
+  $('dlBtn').style.display='inline-block';
+  $('dlBtn').onclick=()=>{const a=document.createElement('a');a.href=url;a.download='animation.gif';a.click();};
+  $('genBtn').disabled=false;$('genBtn').textContent='Generate GIF';
+});
+gif.render();
+};
+</script>
+</body></html>
