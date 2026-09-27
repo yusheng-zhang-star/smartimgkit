@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-tool-id="photo-map">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Photo Location Map — View Where Photos Were Taken | SmartImgKit</title>
+  <meta name="description" content="Upload photos and see where they were taken on an interactive map with photo thumbnails. Extract GPS coordinates from EXIF data, view photo locations, and share. Free, private, browser-based.">
+  <meta name="keywords" content="photo location map, where was this photo taken, photo GPS viewer, EXIF GPS location, photo map, geotag viewer, photo location finder, photo map markers">
+  <link rel="canonical" href="https://smartimgkit.com/tools/photo-map">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="Photo Location Map — See Where Your Photos Were Taken">
+  <meta property="og:description" content="Upload photos and instantly see where they were taken on an interactive map with photo thumbnails. Free, private, no upload to server.">
+  <meta property="og:url" content="https://smartimgkit.com/tools/photo-map">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/home.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Photo Location Map — See Where Your Photos Were Taken">
+  <meta name="twitter:description" content="Upload photos and instantly see where they were taken on an interactive map with photo thumbnails.">
+  <meta name="twitter:image" content="https://smartimgkit.com/screenshots/home.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/photo-map">
+  <link rel="stylesheet" href="/css/style.css?v=10">
+  <link href="../js/maplibre-gl.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Photo Location Map",
+  "url": "https://smartimgkit.com/tools/photo-map",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "View photo GPS locations on an interactive map with photo thumbnails. Extract EXIF coordinates and see where photos were taken."
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Find Where a Photo Was Taken",
+  "step": [
+    {"@type": "HowToStep", "position": 1, "name": "Upload Photos", "text": "Drag and drop or select photos from your device."},
+    {"@type": "HowToStep", "position": 2, "name": "View on Map", "text": "GPS coordinates are extracted from EXIF and shown as photo thumbnails on an interactive map."},
+    {"@type": "HowToStep", "position": 3, "name": "Explore & Share", "text": "Click photo markers to view details, share the map, or export GPX."}
+  ]
+}
+  </script>
+  <style>
+    .tool-hero { text-align: center; padding: 48px 24px 32px; }
+    .tool-hero h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 12px; background: linear-gradient(135deg, var(--gradient-from), var(--gradient-to)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .tool-hero p { color: var(--text-secondary); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+    .tool-body { max-width: 1200px; margin: 0 auto; padding: 0 24px 48px; }
+    .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+    .stat-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; text-align: center; }
+    .stat-number { font-size: 1.8rem; font-weight: 700; color: var(--accent); }
+    .stat-label { font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+    .map-layout { display: grid; grid-template-columns: 1fr 320px; gap: 16px; min-height: 500px; position: relative; }
+    @media(max-width: 900px) { .map-layout { grid-template-columns: 1fr; } .stats-bar { grid-template-columns: repeat(2, 1fr); } }
+    .map-wrapper { position: relative; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); height: 520px; background: var(--bg-secondary); }
+    #map { width: 100%; height: 100%; }
+    .dropzone-map { position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 10; background: var(--bg-secondary); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: opacity 0.2s; }
+    .dropzone-map.dragover { background: var(--bg-tertiary); border: 2px dashed var(--accent); }
+    .dropzone-map .icon { font-size: 3rem; margin-bottom: 16px; }
+    .dropzone-map h3 { font-size: 1.2rem; margin-bottom: 8px; }
+    .dropzone-map p { color: var(--text-secondary); margin-bottom: 12px; }
+    .dropzone-map .formats { font-size: 0.8rem; color: var(--text-muted); }
+    .photo-sidebar { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; }
+    .photo-sidebar h3 { font-size: 1rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .photo-list { flex: 1; overflow-y: auto; max-height: 400px; }
+    .photo-item { display: flex; gap: 12px; padding: 10px; border-radius: 8px; cursor: pointer; margin-bottom: 8px; border: 1px solid transparent; transition: all 0.2s; }
+    .photo-item:hover { background: var(--bg-card-hover); }
+    .photo-item.active { border-color: var(--accent); background: var(--accent-glow); }
+    .photo-item img { width: 48px; height: 48px; object-fit: cover; border-radius: 6px; flex-shrink: 0; }
+    .photo-item-info { flex: 1; min-width: 0; }
+    .photo-item-name { font-size: 0.85rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .photo-item-coords { font-size: 0.75rem; color: var(--text-secondary); margin-top: 2px; }
+    .photo-item-date { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+    .photo-item.nogps { opacity: 0.5; }
+    .sidebar-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-color); }
+    .btn { padding: 10px 16px; border-radius: 8px; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 0.2s; border: none; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-primary { background: var(--accent); color: white; }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-secondary { background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border-color); }
+    .btn-secondary:hover { background: var(--bg-card-hover); }
+    .btn-secondary:disabled { opacity: 0.4; cursor: not-allowed; }
+    .faq-section { max-width: 800px; margin: 48px auto; padding: 0 24px; }
+    .faq-section h2 { font-size: 1.5rem; margin-bottom: 24px; text-align: center; }
+    .faq-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
+    .faq-question { padding: 16px 20px; cursor: pointer; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+    .faq-answer { padding: 0 20px 16px; color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; display: none; }
+    .faq-item.open .faq-answer { display: block; }
+    .related-tools { max-width: 1200px; margin: 48px auto; padding: 0 24px; }
+    .related-tools h2 { font-size: 1.5rem; margin-bottom: 24px; text-align: center; }
+    .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+    .tool-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px; text-decoration: none; transition: all 0.2s; }
+    .tool-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .tool-card .icon { font-size: 2rem; margin-bottom: 12px; }
+    .tool-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+    .tool-card p { font-size: 0.9rem; color: var(--text-secondary); }
+
+    /* MapLibre Photo Marker Styles */
+    .photo-marker { cursor: pointer; transition: transform 0.2s; }
+    .photo-marker img { width: 48px; height: 48px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 12px rgba(0,0,0,0.5); object-fit: cover; display: block; }
+    .photo-marker:hover img { transform: scale(1.15); border-color: #818cf8; }
+    .photo-marker.selected img { width: 60px; height: 60px; border-color: #6366f1; box-shadow: 0 0 0 4px rgba(99,102,241,0.3), 0 4px 16px rgba(0,0,0,0.5); }
+
+    /* MapLibre Popup Styles - match dark theme */
+    .maplibregl-popup-content { background: var(--bg-card) !important; color: var(--text-primary) !important; border-radius: 12px !important; padding: 0 !important; border: 1px solid var(--border-color) !important; box-shadow: 0 10px 40px rgba(0,0,0,0.4) !important; max-width: 260px !important; }
+    .maplibregl-popup-content img.popup-img { width: 100%; height: 170px; object-fit: cover; border-radius: 12px 12px 0 0; display: block; }
+    .popup-info { padding: 14px; }
+    .popup-info h4 { margin: 0 0 8px 0; color: var(--accent); font-size: 14px; font-weight: 600; word-break: break-all; }
+    .popup-info p { margin: 3px 0; font-size: 12px; color: var(--text-secondary); }
+    .maplibregl-popup-close-button { color: var(--text-primary) !important; font-size: 20px !important; padding: 4px 8px !important; z-index: 10; background: rgba(0,0,0,0.3) !important; border-radius: 0 12px 0 0 !important; }
+    .maplibregl-popup-tip { border-top-color: var(--bg-card) !important; }
+    .maplibregl-popup-anchor-bottom .maplibregl-popup-tip { border-top-color: var(--bg-card) !important; }
+    .maplibregl-popup-anchor-top .maplibregl-popup-tip { border-bottom-color: var(--bg-card) !important; }
+
+    /* Map loading indicator */
+    .map-loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: var(--text-secondary); z-index: 5; pointer-events: none; }
+    .map-loading .spinner { width: 40px; height: 40px; border: 3px solid var(--border-color); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 12px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Poster Modal */
+    .poster-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+    .poster-modal.open { display: flex; }
+    .poster-modal-content { background: var(--bg-card); border-radius: 16px; padding: 24px; max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; border: 1px solid var(--border-color); }
+    .poster-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .poster-modal-header h3 { font-size: 1.3rem; margin: 0; }
+    .poster-close { background: none; border: none; color: var(--text-secondary); font-size: 1.5rem; cursor: pointer; padding: 4px 8px; }
+    .poster-close:hover { color: var(--text-primary); }
+    .poster-style-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+    .poster-style-option { border: 2px solid var(--border-color); border-radius: 10px; padding: 12px; cursor: pointer; text-align: center; transition: all 0.2s; background: var(--bg-secondary); }
+    .poster-style-option:hover { border-color: var(--accent); }
+    .poster-style-option.active { border-color: var(--accent); background: var(--accent-glow); }
+    .poster-style-option .style-preview { width: 100%; height: 60px; border-radius: 6px; margin-bottom: 8px; }
+    .poster-style-option .style-name { font-size: 0.85rem; font-weight: 500; }
+    .poster-preview-container { text-align: center; margin-bottom: 20px; }
+    .poster-preview-container canvas { max-width: 100%; max-height: 500px; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+    .poster-actions { display: flex; gap: 12px; justify-content: center; }
+    .poster-actions .btn { min-width: 160px; }
+    .poster-generating { text-align: center; padding: 40px; color: var(--text-secondary); }
+    .poster-generating .spinner { width: 40px; height: 40px; border: 3px solid var(--border-color); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo">🎨 SmartImgKit</a>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/tools/">Tools</a>
+        <a href="/workflows/">Workflows</a>
+        <a href="/blog/">Blog</a>
+        <a href="/about/">About</a>
+        <a href="/contact/">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="tool-hero">
+    <h1>📍 Photo Location Map</h1>
+    <p>Upload your photos and instantly see where they were taken on an interactive map — with photo thumbnails as markers. GPS coordinates are extracted directly from EXIF data — 100% private, nothing uploaded to any server.</p>
+  </section>
+
+  <div class="tool-body">
+    <!-- Stats -->
+    <div class="stats-bar">
+      <div class="stat-card"><div class="stat-number" id="statTotal">0</div><div class="stat-label">Photos</div></div>
+      <div class="stat-card"><div class="stat-number" id="statGPS">0</div><div class="stat-label">With GPS</div></div>
+      <div class="stat-card"><div class="stat-number" id="statNoGPS">0</div><div class="stat-label">No GPS</div></div>
+      <div class="stat-card"><div class="stat-number" id="statLocations">0</div><div class="stat-label">Locations</div></div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div style="text-align:center; margin-bottom:20px;">
+      <button onclick="loadSampleData()" style="background:linear-gradient(135deg, var(--gradient-from), var(--gradient-to)); color:white; border:none; padding:12px 28px; border-radius:10px; font-size:1rem; font-weight:600; cursor:pointer; box-shadow:0 4px 12px rgba(99,102,241,0.3);">
+        ✨ Try with sample data (4 cities + 1 no-GPS)
+      </button>
+      <span style="margin-left:12px; color:var(--text-muted); font-size:0.85rem;">No photos? Click to test instantly</span>
+    </div>
+
+    <!-- Map + Sidebar -->
+    <div class="map-layout">
+      <div class="map-wrapper">
+        <div id="map"></div>
+        <div class="map-loading" id="mapLoading">
+          <div class="spinner"></div>
+          <div>Loading map...</div>
+        </div>
+        <!-- Upload Overlay -->
+        <div class="dropzone-map" id="dropzone">
+          <div class="icon">📸</div>
+          <h3>Drop photos here or click to browse</h3>
+          <p>We'll extract GPS coordinates and plot them on the map</p>
+          <div class="formats">Supports JPG, JPEG, PNG, HEIC, WebP — Multiple files OK</div>
+          <input type="file" id="fileInput" accept="image/*" multiple style="display:none">
+        </div>
+      </div>
+      <div class="photo-sidebar">
+        <h3>📷 Photos <span id="photoCount" style="margin-left:auto; background:var(--bg-tertiary); padding:2px 8px; border-radius:12px; font-size:0.8rem;">0</span></h3>
+        <div class="photo-list" id="photoList">
+          <p style="color:var(--text-muted); text-align:center; padding:20px; font-size:0.9rem;">No photos yet. Upload some to get started!</p>
+        </div>
+        <div class="sidebar-actions">
+          <button class="btn btn-primary" id="posterBtn" disabled>🎨 Create Poster</button>
+          <button class="btn btn-primary" id="shareBtn" disabled>🔗 Share Map</button>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <button class="btn btn-secondary" id="gpxBtn" disabled style="flex:1;">📥 Export GPX</button>
+            <button class="btn btn-secondary" id="gpxHelpBtn" style="padding:10px 14px; min-width:auto;" title="What is GPX?">?</button>
+          </div>
+          <button class="btn btn-secondary" id="resetBtn">🔄 Reset</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GPX Help Modal -->
+  <div class="poster-modal" id="gpxHelpModal">
+    <div class="poster-modal-content" style="max-width:600px;">
+      <div class="poster-modal-header">
+        <h3>📥 What is a GPX file?</h3>
+        <button class="poster-close" onclick="document.getElementById('gpxHelpModal').classList.remove('open')">&times;</button>
+      </div>
+      <div style="line-height:1.8; color:var(--text-secondary);">
+        <p style="color:var(--text-primary); font-size:1.05rem;"><strong>GPX</strong> (GPS Exchange Format) is a standard file format that stores GPS coordinates — in this case, the locations where your photos were taken.</p>
+
+        <h4 style="color:var(--text-primary); margin:20px 0 10px;">🖥️ Open on computer</h4>
+        <ul style="padding-left:20px; margin:0;">
+          <li><strong>Google Earth Pro</strong> (free) → File → Open → select .gpx</li>
+          <li><strong>GPS Visualizer</strong> → <a href="https://www.gpsvisualizer.com/" target="_blank" style="color:var(--accent);">gpsvisualizer.com</a> (upload & view online)</li>
+          <li><strong>QGIS</strong> (professional GIS software)</li>
+        </ul>
+
+        <h4 style="color:var(--text-primary); margin:20px 0 10px;">📱 Open on phone</h4>
+        <ul style="padding-left:20px; margin:0;">
+          <li><strong>Google Earth</strong> app → Menu → Projects → Import</li>
+          <li><strong>Organic Maps</strong> / <strong>Maps.me</strong> → Import GPX</li>
+          <li><strong>Strava</strong> / <strong>Komoot</strong> → Upload as route</li>
+        </ul>
+
+        <h4 style="color:var(--text-primary); margin:20px 0 10px;">📝 What's inside?</h4>
+        <p style="margin:0;">Each photo becomes a <strong>&lt;wpt&gt;</strong> (waypoint) with its latitude, longitude, filename, and timestamp. You can open it in any text editor to see the raw data.</p>
+
+        <div style="background:var(--bg-secondary); padding:14px 18px; border-radius:10px; margin-top:20px; font-size:0.9rem;">
+          💡 <strong>Tip:</strong> Import the GPX into Google Earth to see all your photo locations pinned on a satellite map — great for reliving your trip!
+        </div>
+      </div>
+      <div style="text-align:center; margin-top:24px;">
+        <button class="btn btn-primary" onclick="document.getElementById('gpxHelpModal').classList.remove('open')">Got it</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Poster Modal -->
+  <div class="poster-modal" id="posterModal">
+    <div class="poster-modal-content">
+      <div class="poster-modal-header">
+        <h3>🎨 Create Your Photo Map Poster</h3>
+        <button class="poster-close" onclick="closePosterModal()">&times;</button>
+      </div>
+      <div class="poster-style-selector">
+        <div class="poster-style-option active" data-style="minimal" onclick="selectPosterStyle('minimal')">
+          <div class="style-preview" style="background: linear-gradient(135deg, #ffffff, #f0f0f0);"></div>
+          <div class="style-name">Minimal White</div>
+        </div>
+        <div class="poster-style-option" data-style="vintage" onclick="selectPosterStyle('vintage')">
+          <div class="style-preview" style="background: linear-gradient(135deg, #f5e6c8, #e8d4a8);"></div>
+          <div class="style-name">Vintage Paper</div>
+        </div>
+        <div class="poster-style-option" data-style="dark" onclick="selectPosterStyle('dark')">
+          <div class="style-preview" style="background: linear-gradient(135deg, #1a1a2e, #16213e);"></div>
+          <div class="style-name">Modern Dark</div>
+        </div>
+      </div>
+      <div class="poster-preview-container" id="posterPreviewContainer">
+        <div class="poster-generating">
+          <div class="spinner"></div>
+          <div>Generating poster preview...</div>
+        </div>
+      </div>
+      <div class="poster-actions">
+        <button class="btn btn-primary" onclick="downloadPoster()">⬇️ Download PNG</button>
+        <button class="btn btn-secondary" onclick="closePosterModal()">Close</button>
+      </div>
+    </div>
+  </div>
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <div class="faq-question">How does photo location map work? <span>+</span></div>
+      <div class="faq-answer">When you upload a photo, our tool reads the EXIF metadata embedded in the image file. Most smartphones and digital cameras automatically record GPS coordinates when a photo is taken. We extract these coordinates and display them as photo thumbnails on an interactive map powered by OpenFreeMap & OpenStreetMap.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">Are my photos uploaded to a server? <span>+</span></div>
+      <div class="faq-answer">No! All processing happens directly in your browser. Your photos never leave your device. This means your location data stays completely private and secure.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">Why don't some photos show GPS data? <span>+</span></div>
+      <div class="faq-answer">Photos may lack GPS data if location services were disabled on the camera/phone, if the photo was edited and metadata was stripped, or if the camera doesn't have GPS capability. You can check our EXIF viewer tool to see all metadata in a photo.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">Can I share my photo map? <span>+</span></div>
+      <div class="faq-answer">Yes! Click the "Share Map" button to generate a shareable link. The link includes the GPS coordinates so recipients can see the same map view. Note: photos themselves are not shared, only the locations.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">What makes this photo map different? <span>+</span></div>
+      <div class="faq-answer">Unlike simple map viewers, our tool displays your actual photo thumbnails as map markers. Click any marker to see a larger preview with full details. It's like seeing your travel photos pinned exactly where they were taken!</div>
+    </div>
+  </section>
+
+  <!-- Related Tools -->
+  <section class="related-tools">
+    <h2>Related Tools</h2>
+    <div class="tools-grid">
+      <a href="/tools/metadata-viewer" class="tool-card"><div class="icon">🔍</div><h3>EXIF Metadata Viewer</h3><p>View all metadata embedded in your photos including camera settings, GPS, and more.</p></a>
+      <a href="/tools/image-exif-remover" class="tool-card"><div class="icon">🛡️</div><h3>EXIF Remover</h3><p>Strip all metadata from your photos to protect your privacy before sharing online.</p></a>
+      <a href="/tools/batch-exif-remover" class="tool-card"><div class="icon">📦</div><h3>Batch EXIF Remover</h3><p>Remove metadata from multiple photos at once and download as a ZIP file.</p></a>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2026 SmartImgKit. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="../js/piexif.min.js"></script>
+  <script src="../js/maplibre-gl.js"></script>
+  <script>
+    // State
+    let photos = [];
+    let selectedIndex = -1;
+    let map = null;
+    let markers = [];
+    let mapInitialized = false;
+
+    // DOM Elements
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const photoList = document.getElementById('photoList');
+    const photoCount = document.getElementById('photoCount');
+    const shareBtn = document.getElementById('shareBtn');
+    const gpxBtn = document.getElementById('gpxBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const mapLoading = document.getElementById('mapLoading');
+
+    // Stats
+    const statTotal = document.getElementById('statTotal');
+    const statGPS = document.getElementById('statGPS');
+    const statNoGPS = document.getElementById('statNoGPS');
+    const statLocations = document.getElementById('statLocations');
+
+    // Event Listeners
+    dropzone.addEventListener('click', () => fileInput.click());
+    dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+    dropzone.addEventListener('drop', (e) => { e.preventDefault(); dropzone.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
+    fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+    shareBtn.addEventListener('click', shareMap);
+    gpxBtn.addEventListener('click', exportGPX);
+    resetBtn.addEventListener('click', resetAll);
+    document.getElementById('gpxHelpBtn').addEventListener('click', function() {
+      document.getElementById('gpxHelpModal').classList.add('open');
+    });
+
+    // FAQ toggle
+    document.querySelectorAll('.faq-question').forEach(q => {
+      q.addEventListener('click', () => q.parentElement.classList.toggle('open'));
+    });
+
+    // Initialize MapLibre map
+    function initMap() {
+      if (typeof maplibregl === 'undefined') {
+        console.error('MapLibre not loaded');
+        mapLoading.innerHTML = '<div style="color:#f87171;">⚠️ Map library failed to load. Please refresh.</div>';
+        return;
+      }
+
+      try {
+        map = new maplibregl.Map({
+          container: 'map',
+          style: 'https://tiles.openfreemap.org/styles/liberty',
+          center: [0, 20],
+          zoom: 1,
+          preserveDrawingBuffer: true
+        });
+
+        map.addControl(new maplibregl.NavigationControl(), 'top-right');
+
+        map.on('load', () => {
+          mapInitialized = true;
+          mapLoading.style.display = 'none';
+          console.log('Map loaded');
+          // If photos already loaded, add markers
+          if (photos.length > 0) {
+            addMarkersToMap();
+          }
+        });
+
+        map.on('error', (e) => {
+          console.log('Map error:', e.error ? e.error.message : 'unknown');
+        });
+
+        // Hide loading after 8 seconds even if style not fully loaded
+        setTimeout(() => {
+          if (!mapInitialized) {
+            mapLoading.style.display = 'none';
+            console.log('Map loading timeout - markers will still work');
+            if (photos.length > 0) addMarkersToMap();
+          }
+        }, 8000);
+
+      } catch(e) {
+        console.error('Map init error:', e);
+        mapLoading.innerHTML = '<div style="color:#f87171;">⚠️ Failed to initialize map.</div>';
+      }
+    }
+
+    // Handle file uploads
+    async function handleFiles(files) {
+      const fileArray = Array.from(files).filter(f => f.type.startsWith('image/'));
+      if (fileArray.length === 0) return;
+
+      dropzone.style.display = 'none';
+
+      for (const file of fileArray) {
+        try {
+          let lat = null, lon = null, date = null;
+          
+          const dataUrl = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (e) => resolve(e.target.result);
+            reader.onerror = () => resolve(null);
+            reader.readAsDataURL(file);
+          });
+          
+          if (dataUrl && typeof piexif !== 'undefined') {
+            try {
+              const exif = piexif.load(dataUrl);
+              if (exif && exif.GPS) {
+                const gps = exif.GPS;
+                const latRef = gps[1] || gps.GPSLatitudeRef;
+                const latDms = gps[2] || gps.GPSLatitude;
+                const lonRef = gps[3] || gps.GPSLongitudeRef;
+                const lonDms = gps[4] || gps.GPSLongitude;
+                
+                if (latDms && lonDms && latDms.length >= 3 && lonDms.length >= 3) {
+                  lat = (latDms[0][0]/latDms[0][1]) + (latDms[1][0]/latDms[1][1])/60 + (latDms[2][0]/latDms[2][1])/3600;
+                  lon = (lonDms[0][0]/lonDms[0][1]) + (lonDms[1][0]/lonDms[1][1])/60 + (lonDms[2][0]/lonDms[2][1])/3600;
+                  if (latRef === 'S' || latRef === 's') lat = -lat;
+                  if (lonRef === 'W' || lonRef === 'w') lon = -lon;
+                }
+              }
+              if (exif && exif.Exif) {
+                date = exif.Exif[36867] || exif.Exif.DateTimeOriginal || null;
+              }
+            } catch(e) {
+              console.log('piexifjs error for', file.name, ':', e);
+            }
+          }
+          
+          const hasGPS = lat !== null && lon !== null && !isNaN(lat) && !isNaN(lon);
+          
+          const photo = {
+            name: file.name,
+            file: file,
+            url: URL.createObjectURL(file),
+            lat: hasGPS ? lat : null,
+            lon: hasGPS ? lon : null,
+            date: date,
+            hasGPS: hasGPS
+          };
+          photos.push(photo);
+        } catch (e) {
+          photos.push({
+            name: file.name,
+            file: file,
+            url: URL.createObjectURL(file),
+            lat: null,
+            lon: null,
+            date: null,
+            hasGPS: false
+          });
+        }
+      }
+
+      updateUI();
+      addMarkersToMap();
+    }
+
+    // Add photo markers to map
+    function addMarkersToMap() {
+      if (!map) return;
+
+      // Remove existing markers
+      markers.forEach(m => m.remove());
+      markers = [];
+
+      const gpsPhotos = photos.filter(p => p.hasGPS);
+      if (gpsPhotos.length === 0) return;
+
+      gpsPhotos.forEach((photo, idx) => {
+        const photoIndex = photos.indexOf(photo);
+        
+        // Create marker element with photo thumbnail
+        const el = document.createElement('div');
+        el.className = 'photo-marker';
+        el.innerHTML = '<img src="' + photo.url + '" alt="' + photo.name + '">';
+
+        // Create popup
+        const popup = new maplibregl.Popup({
+          offset: 30,
+          closeButton: true,
+          closeOnClick: false,
+          closeOnMove: false,
+          maxWidth: '260px'
+        }).setHTML(
+          '<img class="popup-img" src="' + photo.url + '">' +
+          '<div class="popup-info">' +
+            '<h4>' + photo.name + '</h4>' +
+            '<p>📍 ' + photo.lat.toFixed(4) + ', ' + photo.lon.toFixed(4) + '</p>' +
+            (photo.date ? '<p>📅 ' + new Date(photo.date).toLocaleDateString() + '</p>' : '') +
+          '</div>'
+        );
+
+        const marker = new maplibregl.Marker({ element: el })
+          .setLngLat([photo.lon, photo.lat])
+          .setPopup(popup)
+          .addTo(map);
+
+        // Click handler
+        el.addEventListener('click', function() {
+          selectPhoto(photoIndex);
+        });
+
+        markers.push(marker);
+      });
+
+      // Fit bounds to show all markers
+      if (gpsPhotos.length > 0) {
+        const bounds = gpsPhotos.map(p => [p.lon, p.lat]);
+        const minLon = Math.min(...bounds.map(b => b[0]));
+        const maxLon = Math.max(...bounds.map(b => b[0]));
+        const minLat = Math.min(...bounds.map(b => b[1]));
+        const maxLat = Math.max(...bounds.map(b => b[1]));
+        const lonPad = (maxLon - minLon) * 0.2 + 1;
+        const latPad = (maxLat - minLat) * 0.2 + 1;
+        
+        try {
+          map.fitBounds([
+            [minLon - lonPad, minLat - latPad],
+            [maxLon + lonPad, maxLat + latPad]
+          ], { padding: 60, animate: false });
+        } catch(e) {
+          console.log('fitBounds failed:', e);
+        }
+      }
+    }
+
+    // Update UI
+    function updateUI() {
+      const gpsPhotos = photos.filter(p => p.hasGPS);
+      const noGPSPhotos = photos.filter(p => !p.hasGPS);
+      const uniqueLocations = new Set(gpsPhotos.map(p => p.lat.toFixed(4) + ',' + p.lon.toFixed(4)));
+
+      statTotal.textContent = photos.length;
+      statGPS.textContent = gpsPhotos.length;
+      statNoGPS.textContent = noGPSPhotos.length;
+      statLocations.textContent = uniqueLocations.size;
+      photoCount.textContent = photos.length;
+
+      shareBtn.disabled = gpsPhotos.length === 0;
+      gpxBtn.disabled = gpsPhotos.length === 0;
+      posterBtn.disabled = gpsPhotos.length === 0;
+
+      if (photos.length === 0) {
+        photoList.innerHTML = '<p style="color:var(--text-muted); text-align:center; padding:20px; font-size:0.9rem;">No photos yet. Upload some to get started!</p>';
+        return;
+      }
+
+      photoList.innerHTML = photos.map((p, i) => `
+        <div class="photo-item ${p.hasGPS ? '' : 'nogps'} ${i === selectedIndex ? 'active' : ''}" onclick="selectPhoto(${i})">
+          <img src="${p.url}" alt="${p.name}">
+          <div class="photo-item-info">
+            <div class="photo-item-name">${p.name}</div>
+            <div class="photo-item-coords">${p.hasGPS ? p.lat.toFixed(4) + ', ' + p.lon.toFixed(4) : 'No GPS data'}</div>
+            <div class="photo-item-date">${p.date ? new Date(p.date).toLocaleDateString() : 'Unknown date'}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Select photo
+    window.selectPhoto = function(index) {
+      selectedIndex = index;
+      updateUI();
+      
+      // Update marker selected state
+      document.querySelectorAll('.photo-marker').forEach(m => m.classList.remove('selected'));
+      const gpsPhotos = photos.filter(p => p.hasGPS);
+      const gpsIndex = gpsPhotos.indexOf(photos[index]);
+      if (gpsIndex >= 0 && markers[gpsIndex]) {
+        markers[gpsIndex].getElement().classList.add('selected');
+      }
+      
+      if (photos[index].hasGPS && map) {
+        map.flyTo({ 
+          center: [photos[index].lon, photos[index].lat], 
+          zoom: 12, 
+          essential: true 
+        });
+        // Open popup after flyTo
+        const popup = markers[gpsIndex].getPopup();
+        map.once('moveend', function() {
+          if (popup && !popup.isOpen()) {
+            popup.addTo(map);
+          }
+        });
+      }
+    };
+
+    // Share map
+    function shareMap() {
+      const gpsPhotos = photos.filter(p => p.hasGPS);
+      if (gpsPhotos.length === 0) return;
+
+      const lats = gpsPhotos.map(p => p.lat);
+      const lons = gpsPhotos.map(p => p.lon);
+      const centerLat = (Math.min(...lats) + Math.max(...lats)) / 2;
+      const centerLon = (Math.min(...lons) + Math.max(...lons)) / 2;
+      
+      const shareUrl = `${window.location.origin}${window.location.pathname}?lat=${centerLat.toFixed(6)}&lon=${centerLon.toFixed(6)}`;
+      
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          alert('Map link copied to clipboard!\n\n' + shareUrl);
+        });
+      } else {
+        prompt('Copy this link to share:', shareUrl);
+      }
+    }
+
+    // Export GPX
+    function exportGPX() {
+      const gpsPhotos = photos.filter(p => p.hasGPS);
+      if (gpsPhotos.length === 0) return;
+
+      let gpx = '<?xml version="1.0" encoding="UTF-8"?>\n';
+      gpx += '<gpx version="1.1" creator="SmartImgKit" xmlns="http://www.topografix.com/GPX/1/1">\n';
+      
+      gpsPhotos.forEach((p, i) => {
+        gpx += `  <wpt lat="${p.lat}" lon="${p.lon}">\n`;
+        gpx += `    <name>${p.name}</name>\n`;
+        if (p.date) gpx += `    <time>${new Date(p.date).toISOString()}</time>\n`;
+        gpx += '  </wpt>\n';
+      });
+      
+      gpx += '</gpx>';
+
+      const blob = new Blob([gpx], { type: 'application/gpx+xml' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'photo-locations.gpx';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // Reset
+    function resetAll() {
+      photos.forEach(p => URL.revokeObjectURL(p.url));
+      photos = [];
+      selectedIndex = -1;
+      markers.forEach(m => m.remove());
+      markers = [];
+      dropzone.style.display = 'flex';
+      fileInput.value = '';
+      if (map) {
+        map.flyTo({ center: [0, 20], zoom: 1, essential: true });
+      }
+      updateUI();
+    }
+
+    // Load sample data for testing
+    window.loadSampleData = function(e) {
+      if (e) e.stopPropagation();
+      dropzone.style.display = 'none';
+      
+      var samples = [
+        { name: 'jinan_spring.jpg', lat: 36.639, lon: 117.1425, date: '2026-09-10T10:00:00' },
+        { name: 'beijing_forbidden_city.jpg', lat: 39.9163, lon: 116.3972, date: '2026-09-08T14:30:00' },
+        { name: 'shanghai_bund.jpg', lat: 31.2397, lon: 121.4900, date: '2026-09-05T18:00:00' },
+        { name: 'guangzhou_canton_tower.jpg', lat: 23.1066, lon: 113.3245, date: '2026-09-02T20:00:00' },
+        { name: 'no_gps_screenshot.png', lat: null, lon: null, date: null }
+      ];
+      
+      samples.forEach(function(s, i) {
+        var canvas = document.createElement('canvas');
+        canvas.width = 200;
+        canvas.height = 200;
+        var ctx = canvas.getContext('2d');
+        var colors = ['#4682B4', '#CD853F', '#2E8B57', '#DC143C', '#708090'];
+        ctx.fillStyle = colors[i % colors.length];
+        ctx.fillRect(0, 0, 200, 200);
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 24px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(s.name.charAt(0).toUpperCase(), 100, 100);
+        
+        photos.push({
+          name: s.name,
+          url: canvas.toDataURL('image/jpeg'),
+          lat: s.lat,
+          lon: s.lon,
+          date: s.date,
+          hasGPS: s.lat !== null
+        });
+      });
+      
+      updateUI();
+      addMarkersToMap();
+    };
+
+    // Check for shared location or sample data in URL
+    function checkSharedLocation() {
+      const params = new URLSearchParams(window.location.search);
+      const lat = params.get('lat');
+      const lon = params.get('lon');
+      const sample = params.get('sample');
+      
+      if (sample === '1') {
+        setTimeout(function() { loadSampleData(); }, 800);
+      } else if (lat && lon && map) {
+        dropzone.style.display = 'none';
+        map.flyTo({ center: [parseFloat(lon), parseFloat(lat)], zoom: 12, essential: true });
+      }
+    }
+
+    // ========== POSTER GENERATION ==========
+    let currentPosterStyle = 'minimal';
+    let posterCanvas = null;
+
+    const posterStyles = {
+      minimal: {
+        bg: '#ffffff',
+        textColor: '#1a1a1a',
+        subTextColor: '#666666',
+        accentColor: '#6366f1',
+        borderColor: '#e0e0e0',
+        titleFont: 'Georgia, serif',
+        bodyFont: 'Arial, sans-serif'
+      },
+      vintage: {
+        bg: '#f5e6c8',
+        textColor: '#5c4033',
+        subTextColor: '#8b7355',
+        accentColor: '#8b4513',
+        borderColor: '#c9a86c',
+        titleFont: 'Georgia, serif',
+        bodyFont: 'Georgia, serif'
+      },
+      dark: {
+        bg: '#0f0f1a',
+        textColor: '#ffffff',
+        subTextColor: '#9ca3af',
+        accentColor: '#818cf8',
+        borderColor: '#374151',
+        titleFont: 'Arial, sans-serif',
+        bodyFont: 'Arial, sans-serif'
+      }
+    };
+
+    // Open poster modal
+    document.getElementById('posterBtn').addEventListener('click', function() {
+      const gpsPhotos = photos.filter(p => p.hasGPS);
+      if (gpsPhotos.length === 0) return;
+      document.getElementById('posterModal').classList.add('open');
+      generatePoster();
+    });
+
+    function closePosterModal() {
+      document.getElementById('posterModal').classList.remove('open');
+    }
+
+    function selectPosterStyle(style) {
+      currentPosterStyle = style;
+      document.querySelectorAll('.poster-style-option').forEach(el => {
+        el.classList.toggle('active', el.dataset.style === style);
+      });
+      generatePoster();
+    }
+
+    // Generate poster with Canvas
+    async function generatePoster() {
+      const container = document.getElementById('posterPreviewContainer');
+      container.innerHTML = '<div class="poster-generating"><div class="spinner"></div><div>Generating poster...</div></div>';
+
+      try {
+        const gpsPhotos = photos.filter(p => p.hasGPS);
+        if (gpsPhotos.length === 0) {
+          container.innerHTML = '<div class="poster-generating">No GPS photos to create poster</div>';
+          return;
+        }
+
+        const style = posterStyles[currentPosterStyle];
+        const W = 2000;
+        const H = gpsPhotos.length === 1 ? 3000 : 3900;
+        const canvas = document.createElement('canvas');
+        canvas.width = W;
+        canvas.height = H;
+        const ctx = canvas.getContext('2d');
+
+        // Pre-load all photos
+        const loadedPhotos = await Promise.all(gpsPhotos.map(photo => {
+          return new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => resolve(img);
+            img.onerror = () => resolve(null);
+            img.src = photo.url;
+          });
+        }));
+
+        // Get map image from MapLibre
+        let mapImg = null;
+        try {
+          const mapCanvas = map.getCanvas();
+          mapImg = new Image();
+          mapImg.crossOrigin = 'anonymous';
+          mapImg.src = mapCanvas.toDataURL('image/png');
+          await new Promise((resolve, reject) => {
+            mapImg.onload = resolve;
+            mapImg.onerror = reject;
+          });
+        } catch(e) {
+          console.log('Map export failed:', e);
+        }
+
+        // Background
+        ctx.fillStyle = style.bg;
+        ctx.fillRect(0, 0, W, H);
+
+        // Decorative border
+        ctx.strokeStyle = style.borderColor;
+        ctx.lineWidth = 4;
+        ctx.strokeRect(60, 60, W - 120, H - 120);
+        ctx.lineWidth = 1;
+        ctx.strokeRect(80, 80, W - 160, H - 160);
+
+        if (gpsPhotos.length === 1) {
+          // ========== SINGLE PHOTO LAYOUT ==========
+          generateSinglePhotoPoster(ctx, W, H, style, gpsPhotos[0], loadedPhotos[0], mapImg);
+        } else {
+          // ========== MULTI PHOTO LAYOUT ==========
+          generateMultiPhotoPoster(ctx, W, H, style, gpsPhotos, loadedPhotos, mapImg);
+        }
+
+        posterCanvas = canvas;
+        container.innerHTML = '';
+        container.appendChild(canvas);
+
+      } catch(e) {
+        console.error('Poster generation error:', e);
+        container.innerHTML = '<div class="poster-generating" style="color:#f87171;">Failed to generate poster. Please try again.</div>';
+      }
+    }
+
+    // Single photo poster layout
+    function generateSinglePhotoPoster(ctx, W, H, style, photo, photoImg, mapImg) {
+      // Title
+      ctx.fillStyle = style.textColor;
+      ctx.font = 'bold 64px ' + style.titleFont;
+      ctx.textAlign = 'center';
+      ctx.fillText('Where This Moment Happened', W / 2, 200);
+
+      // Accent line
+      ctx.strokeStyle = style.accentColor;
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(W / 2 - 80, 240);
+      ctx.lineTo(W / 2 + 80, 240);
+      ctx.stroke();
+
+      // Large photo preview
+      const photoW = 1400;
+      const photoH = 1000;
+      const photoX = (W - photoW) / 2;
+      const photoY = 300;
+
+      // Photo shadow
+      ctx.shadowColor = 'rgba(0,0,0,0.3)';
+      ctx.shadowBlur = 30;
+      ctx.shadowOffsetY = 10;
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(photoX - 20, photoY - 20, photoW + 40, photoH + 40);
+      ctx.shadowColor = 'transparent';
+
+      // Photo image (cover fit)
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(photoX, photoY, photoW, photoH);
+      ctx.clip();
+      if (photoImg) {
+        const scale = Math.max(photoW / photoImg.width, photoH / photoImg.height);
+        const dw = photoImg.width * scale;
+        const dh = photoImg.height * scale;
+        ctx.drawImage(photoImg, photoX + (photoW - dw) / 2, photoY + (photoH - dh) / 2, dw, dh);
+      } else {
+        ctx.fillStyle = style.accentColor;
+        ctx.fillRect(photoX, photoY, photoW, photoH);
+      }
+      ctx.restore();
+
+      // Location name
+      const displayName = photo.name
+        .replace(/\.[^/.]+$/, '')
+        .replace(/[_-]/g, ' ')
+        .replace(/\b\w/g, c => c.toUpperCase());
+      
+      ctx.fillStyle = style.textColor;
+      ctx.font = 'bold 56px ' + style.titleFont;
+      ctx.textAlign = 'center';
+      ctx.fillText(displayName, W / 2, photoY + photoH + 100);
+
+      // Coordinates and date
+      ctx.fillStyle = style.subTextColor;
+      ctx.font = '28px ' + style.bodyFont;
+      const coordText = `📍 ${photo.lat.toFixed(4)}°, ${photo.lon.toFixed(4)}°`;
+      ctx.fillText(coordText, W / 2, photoY + photoH + 155);
+
+      if (photo.date) {
+        const dateText = `📅 ${new Date(photo.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
+        ctx.fillText(dateText, W / 2, photoY + photoH + 200);
+      }
+
+      // Map section
+      const mapY = photoY + photoH + 280;
+      const mapH = 550;
+      const mapX = 200;
+      const mapW = W - 400;
+
+      // Map background
+      ctx.fillStyle = style.bg === '#0f0f1a' ? '#1a1a2e' : '#e8e8e8';
+      ctx.fillRect(mapX, mapY, mapW, mapH);
+
+      // Draw map image
+      if (mapImg) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(mapX, mapY, mapW, mapH);
+        ctx.clip();
+        ctx.globalAlpha = 0.9;
+        const scale = Math.max(mapW / mapImg.width, mapH / mapImg.height);
+        const dw = mapImg.width * scale;
+        const dh = mapImg.height * scale;
+        ctx.drawImage(mapImg, mapX + (mapW - dw) / 2, mapY + (mapH - dh) / 2, dw, dh);
+        ctx.globalAlpha = 1;
+        ctx.restore();
+      }
+
+      // Map border
+      ctx.strokeStyle = style.borderColor;
+      ctx.lineWidth = 3;
+      ctx.strokeRect(mapX, mapY, mapW, mapH);
+
+      // Large marker on map
+      const markerX = mapX + mapW / 2;
+      const markerY = mapY + mapH / 2;
+      const markerR = 70;
+
+      // Marker shadow
+      ctx.shadowColor = 'rgba(0,0,0,0.4)';
+      ctx.shadowBlur = 20;
+      ctx.shadowOffsetY = 6;
+      ctx.beginPath();
+      ctx.arc(markerX, markerY, markerR, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+      ctx.shadowColor = 'transparent';
+
+      // Marker photo
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(markerX, markerY, markerR - 6, 0, Math.PI * 2);
+      ctx.clip();
+      if (photoImg) {
+        ctx.drawImage(photoImg, markerX - markerR + 6, markerY - markerR + 6, (markerR - 6) * 2, (markerR - 6) * 2);
+      }
+      ctx.restore();
+
+      // "You are here" label
+      ctx.fillStyle = style.accentColor;
+      ctx.font = 'bold 24px ' + style.bodyFont;
+      ctx.textAlign = 'center';
+      ctx.fillText('📍 PHOTO TAKEN HERE', markerX, markerY + markerR + 40);
+
+      // Footer
+      ctx.fillStyle = style.subTextColor;
+      ctx.font = '24px ' + style.bodyFont;
+      ctx.textAlign = 'center';
+      ctx.fillText('Created with SmartImgKit Photo Location Map', W / 2, H - 120);
+      ctx.fillStyle = style.accentColor;
+      ctx.font = 'bold 28px ' + style.bodyFont;
+      ctx.fillText('smartimgkit.com', W / 2, H - 80);
+    }
+
+    // Multi photo poster layout (enriched version)
+    function generateMultiPhotoPoster(ctx, W, H, style, gpsPhotos, loadedPhotos, mapImg) {
+      // Helper: truncate text
+      function truncate(text, maxWidth) {
+        let t = text;
+        if (ctx.measureText(t).width > maxWidth) {
+          while (ctx.measureText(t + '...').width > maxWidth && t.length > 0) t = t.slice(0, -1);
+          t += '...';
+        }
+        return t;
+      }
+
+      // Helper: get display name from filename
+      function getDisplayName(photo) {
+        return photo.name.replace(/\.[^/.]+$/, '').replace(/[_-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+      }
+
+      // Pre-calculate stats (used in multiple sections)
+      const uniqueLocations = new Set(gpsPhotos.map(p => p.lat.toFixed(3) + ',' + p.lon.toFixed(3))).size;
+      const totalDistance = calculateTotalDistance(gpsPhotos);
+      const travelDays = getTravelDays(gpsPhotos);
+
+      // ========== HEADER SECTION ==========
+      // Title
+      ctx.fillStyle = style.textColor;
+      ctx.font = 'bold 80px ' + style.titleFont;
+      ctx.textAlign = 'center';
+      ctx.fillText('My Photo Map Journey', W / 2, 200);
+
+      // Subtitle with date range
+      ctx.fillStyle = style.subTextColor;
+      ctx.font = '34px ' + style.bodyFont;
+      ctx.fillText(getDateRange(gpsPhotos), W / 2, 265);
+
+      // Decorative double line
+      ctx.strokeStyle = style.accentColor;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(W / 2 - 120, 310);
+      ctx.lineTo(W / 2 + 120, 310);
+      ctx.stroke();
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(W / 2 - 80, 325);
+      ctx.lineTo(W / 2 + 80, 325);
+      ctx.stroke();
+
+      // Inspirational quote
+      ctx.fillStyle = style.subTextColor;
+      ctx.font = 'italic 26px ' + style.bodyFont;
+      ctx.fillText('"Take only memories, leave only footprints"', W / 2, 380);
+
+      // ========== FEATURED PHOTO SECTION ==========
+      const featuredIdx = 0; // First photo as featured
+      const featuredPhoto = gpsPhotos[featuredIdx];
+      const featuredImg = loadedPhotos[featuredIdx];
+      const featY = 420;
+      const featH = 650;
+      const featX = 120;
+      const featW = W - 240;
+
+      // Featured photo shadow
+      ctx.shadowColor = 'rgba(0,0,0,0.35)';
+      ctx.shadowBlur = 40;
+      ctx.shadowOffsetY = 12;
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(featX - 15, featY - 15, featW + 30, featH + 30);
+      ctx.shadowColor = 'transparent';
+
+      // Featured image (cover fit)
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(featX, featY, featW, featH);
+      ctx.clip();
+      if (featuredImg) {
+        const scale = Math.max(featW / featuredImg.width, featH / featuredImg.height);
+        const dw = featuredImg.width * scale;
+        const dh = featuredImg.height * scale;
+        ctx.drawImage(featuredImg, featX + (featW - dw) / 2, featY + (featH - dh) / 2, dw, dh);
+      } else {
+        ctx.fillStyle = style.accentColor;
+        ctx.fillRect(featX, featY, featW, featH);
+      }
+      ctx.restore();
+
+      // Gradient overlay at bottom for text readability
+      const grad = ctx.createLinearGradient(0, featY + featH - 180, 0, featY + featH);
+      grad.addColorStop(0, 'rgba(0,0,0,0)');
+      grad.addColorStop(1, 'rgba(0,0,0,0.7)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(featX, featY + featH - 180, featW, 180);
+
+      // Featured photo label
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 36px ' + style.titleFont;
+      ctx.textAlign = 'left';
+      ctx.fillText('⭐ Featured Moment', featX + 30, featY + featH - 100);
+
+      // Featured photo name
+      ctx.font = 'bold 28px ' + style.bodyFont;
+      ctx.fillText(truncate(getDisplayName(featuredPhoto), featW - 60), featX + 30, featY + featH - 55);
+
+      // Featured date & coords
+      ctx.font = '22px ' + style.bodyFont;
+      ctx.fillStyle = 'rgba(255,255,255,0.9)';
+      let featMeta = `📍 ${featuredPhoto.lat.toFixed(4)}°, ${featuredPhoto.lon.toFixed(4)}°`;
+      if (featuredPhoto.date) {
+        featMeta += '  •  📅 ' + new Date(featuredPhoto.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      }
+      ctx.fillText(featMeta, featX + 30, featY + featH - 20);
+
+      // ========== JOURNEY STORY TEXT SECTION ==========
+      const storyY = featY + featH + 40;
+      const storyX = 120;
+      const storyW = W - 240;
+
+      // Section label
+      ctx.fillStyle = style.accentColor;
+      ctx.font = 'bold 24px ' + style.bodyFont;
+      ctx.textAlign = 'left';
+      ctx.fillText('✍️  THE JOURNEY', storyX, storyY);
+
+      // Story title
+      ctx.fillStyle = style.textColor;
+      ctx.font = 'bold 38px ' + style.titleFont;
+      ctx.fillText('A Tale of ' + uniqueLocations + ' Places', storyX, storyY + 45);
+
+      // Story paragraph (auto-generated based on data)
+      const storyLines = generateJourneyStory(gpsPhotos, uniqueLocations, totalDistance, travelDays);
+      ctx.fillStyle = style.subTextColor;
+      ctx.font = '24px ' + style.bodyFont;
+      ctx.textAlign = 'left';
+      let storyTextY = storyY + 90;
+      storyLines.forEach(line => {
+        ctx.fillText(line, storyX, storyTextY);
+        storyTextY += 38;
+      });
+
+      // Decorative divider
+      ctx.strokeStyle = style.borderColor;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([8, 6]);
+      ctx.beginPath();
+      ctx.moveTo(storyX, storyTextY + 10);
+      ctx.lineTo(storyX + storyW, storyTextY + 10);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // ========== MAP SECTION ==========
+      const mapX = 120;
+      const mapY = storyTextY + 40;
+      const mapW = W - 240;
+      const mapH = 750;
+
+      // Map background
+      ctx.fillStyle = style.bg === '#0f0f1a' ? '#1a1a2e' : '#e8e8e8';
+      ctx.fillRect(mapX, mapY, mapW, mapH);
+
+      // Draw map image
+      if (mapImg) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(mapX, mapY, mapW, mapH);
+        ctx.clip();
+        ctx.globalAlpha = 0.85;
+        const mscale = Math.max(mapW / mapImg.width, mapH / mapImg.height);
+        const mdw = mapImg.width * mscale;
+        const mdh = mapImg.height * mscale;
+        ctx.drawImage(mapImg, mapX + (mapW - mdw) / 2, mapY + (mapH - mdh) / 2, mdw, mdh);
+        ctx.globalAlpha = 1;
+        ctx.restore();
+      }
+
+      // Map border
+      ctx.strokeStyle = style.borderColor;
+      ctx.lineWidth = 3;
+      ctx.strokeRect(mapX, mapY, mapW, mapH);
+
+      // Map title badge
+      ctx.fillStyle = style.accentColor;
+      ctx.fillRect(mapX + 30, mapY + 30, 280, 56);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 26px ' + style.bodyFont;
+      ctx.textAlign = 'left';
+      ctx.fillText('🗺️  Journey Map', mapX + 50, mapY + 67);
+
+      // Calculate marker positions
+      const bounds = getMapBounds(gpsPhotos);
+      const markerPositions = gpsPhotos.map(photo => ({
+        x: mapX + ((photo.lon - bounds.minLon) / (bounds.maxLon - bounds.minLon)) * mapW,
+        y: mapY + ((bounds.maxLat - photo.lat) / (bounds.maxLat - bounds.minLat)) * mapH
+      }));
+
+      // Draw route lines
+      if (markerPositions.length > 1) {
+        ctx.strokeStyle = style.accentColor;
+        ctx.lineWidth = 5;
+        ctx.setLineDash([18, 12]);
+        ctx.globalAlpha = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(markerPositions[0].x, markerPositions[0].y);
+        for (let i = 1; i < markerPositions.length; i++) {
+          ctx.lineTo(markerPositions[i].x, markerPositions[i].y);
+        }
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.globalAlpha = 1;
+      }
+
+      // Draw photo markers with location labels
+      gpsPhotos.forEach((photo, idx) => {
+        const pos = markerPositions[idx];
+        const radius = 65;
+
+        // Shadow
+        ctx.shadowColor = 'rgba(0,0,0,0.5)';
+        ctx.shadowBlur = 18;
+        ctx.shadowOffsetY = 5;
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+        ctx.shadowColor = 'transparent';
+
+        // Photo
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, radius - 4, 0, Math.PI * 2);
+        ctx.clip();
+        const pImg = loadedPhotos[idx];
+        if (pImg) {
+          ctx.drawImage(pImg, pos.x - radius + 4, pos.y - radius + 4, (radius - 4) * 2, (radius - 4) * 2);
+        } else {
+          ctx.fillStyle = style.accentColor;
+          ctx.fillRect(pos.x - radius + 4, pos.y - radius + 4, (radius - 4) * 2, (radius - 4) * 2);
+        }
+        ctx.restore();
+
+        // Number badge
+        const badgeR = 26;
+        const bx = pos.x + radius - 2;
+        const by = pos.y - radius + 2;
+        ctx.fillStyle = style.accentColor;
+        ctx.beginPath();
+        ctx.arc(bx, by, badgeR, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 26px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText((idx + 1).toString(), bx, by);
+
+        // Location name label below marker
+        const labelName = truncate(getDisplayName(photo), 180);
+        ctx.fillStyle = 'rgba(0,0,0,0.65)';
+        const labelW = ctx.measureText(labelName).width + 24;
+        const labelX = pos.x - labelW / 2;
+        const labelY = pos.y + radius + 12;
+        ctx.fillRect(labelX, labelY, labelW, 36);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 18px ' + style.bodyFont;
+        ctx.textAlign = 'center';
+        ctx.fillText(labelName, pos.x, labelY + 24);
+      });
+
+      // ========== LOCATIONS LIST SECTION ==========
+      const locY = mapY + mapH + 50;
+      const locX = 120;
+      const locW = W - 240;
+
+      // Section label
+      ctx.fillStyle = style.accentColor;
+      ctx.font = 'bold 24px ' + style.bodyFont;
+      ctx.textAlign = 'left';
+      ctx.fillText('📍  PLACES VISITED', locX, locY);
+
+      // Location chips
+      let chipY = locY + 40;
+      let chipX = locX;
+      const chipPadding = 24;
+      const chipHeight = 48;
+      ctx.font = 'bold 20px ' + style.bodyFont;
+
+      gpsPhotos.forEach((photo, idx) => {
+        const locName = getDisplayName(photo);
+        const chipText = (idx + 1) + '. ' + truncate(locName, 150);
+        const chipW = ctx.measureText(chipText).width + chipPadding * 2;
+
+        if (chipX + chipW > locX + locW) {
+          chipX = locX;
+          chipY += chipHeight + 12;
+        }
+
+        // Chip background
+        ctx.fillStyle = style.bg === '#0f0f1a' ? '#1e1e3a' : '#f0f0f0';
+        ctx.beginPath();
+        const cr = 24;
+        ctx.moveTo(chipX + cr, chipY);
+        ctx.lineTo(chipX + chipW - cr, chipY);
+        ctx.quadraticCurveTo(chipX + chipW, chipY, chipX + chipW, chipY + cr);
+        ctx.lineTo(chipX + chipW, chipY + chipHeight - cr);
+        ctx.quadraticCurveTo(chipX + chipW, chipY + chipHeight, chipX + chipW - cr, chipY + chipHeight);
+        ctx.lineTo(chipX + cr, chipY + chipHeight);
+        ctx.quadraticCurveTo(chipX, chipY + chipHeight, chipX, chipY + chipHeight - cr);
+        ctx.lineTo(chipX, chipY + cr);
+        ctx.quadraticCurveTo(chipX, chipY, chipX + cr, chipY);
+        ctx.closePath();
+        ctx.fill();
+
+        // Chip border
+        ctx.strokeStyle = style.accentColor;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Chip text
+        ctx.fillStyle = style.textColor;
+        ctx.textAlign = 'center';
+        ctx.fillText(chipText, chipX + chipW / 2, chipY + 31);
+
+        chipX += chipW + 14;
+      });
+
+      // ========== PHOTO GALLERY SECTION ==========
+      const galY = chipY + chipHeight + 50;
+      const galX = 120;
+      const galW = W - 240;
+
+      // Section title
+      ctx.fillStyle = style.textColor;
+      ctx.font = 'bold 40px ' + style.titleFont;
+      ctx.textAlign = 'left';
+      ctx.fillText('📸  All Moments', galX, galY);
+
+      ctx.fillStyle = style.subTextColor;
+      ctx.font = '24px ' + style.bodyFont;
+      ctx.fillText(gpsPhotos.length + ' photos captured across your journey', galX, galY + 40);
+
+      // Photo grid - 2 rows
+      const thumbSize = 260;
+      const thumbGap = 30;
+      const perRow = Math.min(5, gpsPhotos.length);
+      const actualGap = (galW - perRow * thumbSize) / (perRow - 1);
+      const rows = Math.ceil(gpsPhotos.length / perRow);
+
+      gpsPhotos.forEach((photo, idx) => {
+        const row = Math.floor(idx / perRow);
+        const col = idx % perRow;
+        const tx = galX + col * (thumbSize + actualGap);
+        const ty = galY + 70 + row * (thumbSize + 100);
+
+        // Number badge
+        ctx.fillStyle = style.accentColor;
+        ctx.beginPath();
+        ctx.arc(tx + 28, ty + 28, 26, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 24px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText((idx + 1).toString(), tx + 28, ty + 28);
+
+        // Thumbnail with rounded corners
+        ctx.save();
+        ctx.beginPath();
+        const r = 14;
+        ctx.moveTo(tx + r, ty);
+        ctx.lineTo(tx + thumbSize - r, ty);
+        ctx.quadraticCurveTo(tx + thumbSize, ty, tx + thumbSize, ty + r);
+        ctx.lineTo(tx + thumbSize, ty + thumbSize - r);
+        ctx.quadraticCurveTo(tx + thumbSize, ty + thumbSize, tx + thumbSize - r, ty + thumbSize);
+        ctx.lineTo(tx + r, ty + thumbSize);
+        ctx.quadraticCurveTo(tx, ty + thumbSize, tx, ty + thumbSize - r);
+        ctx.lineTo(tx, ty + r);
+        ctx.quadraticCurveTo(tx, ty, tx + r, ty);
+        ctx.closePath();
+        ctx.clip();
+
+        const pImg = loadedPhotos[idx];
+        if (pImg) {
+          const scale = Math.max(thumbSize / pImg.width, thumbSize / pImg.height);
+          const dw = pImg.width * scale;
+          const dh = pImg.height * scale;
+          ctx.drawImage(pImg, tx + (thumbSize - dw) / 2, ty + (thumbSize - dh) / 2, dw, dh);
+        } else {
+          ctx.fillStyle = style.accentColor;
+          ctx.fillRect(tx, ty, thumbSize, thumbSize);
+        }
+        ctx.restore();
+
+        // Thumbnail border
+        ctx.strokeStyle = style.borderColor;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(tx + r, ty);
+        ctx.lineTo(tx + thumbSize - r, ty);
+        ctx.quadraticCurveTo(tx + thumbSize, ty, tx + thumbSize, ty + r);
+        ctx.lineTo(tx + thumbSize, ty + thumbSize - r);
+        ctx.quadraticCurveTo(tx + thumbSize, ty + thumbSize, tx + thumbSize - r, ty + thumbSize);
+        ctx.lineTo(tx + r, ty + thumbSize);
+        ctx.quadraticCurveTo(tx, ty + thumbSize, tx, ty + thumbSize - r);
+        ctx.lineTo(tx, ty + r);
+        ctx.quadraticCurveTo(tx, ty, tx + r, ty);
+        ctx.closePath();
+        ctx.stroke();
+
+        // Photo name
+        ctx.fillStyle = style.textColor;
+        ctx.font = 'bold 20px ' + style.bodyFont;
+        ctx.textAlign = 'center';
+        ctx.fillText(truncate(getDisplayName(photo), thumbSize), tx + thumbSize / 2, ty + thumbSize + 32);
+
+        // Date
+        if (photo.date) {
+          ctx.fillStyle = style.subTextColor;
+          ctx.font = '17px ' + style.bodyFont;
+          ctx.fillText(new Date(photo.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }), tx + thumbSize / 2, ty + thumbSize + 58);
+        }
+
+        // Coordinates
+        ctx.fillStyle = style.subTextColor;
+        ctx.font = '15px ' + style.bodyFont;
+        ctx.fillText(`${photo.lat.toFixed(2)}°, ${photo.lon.toFixed(2)}°`, tx + thumbSize / 2, ty + thumbSize + 82);
+      });
+
+      // ========== STATS SECTION ==========
+      const galleryBottom = galY + 70 + rows * (thumbSize + 100);
+      const statsY = galleryBottom + 40;
+
+      // Stats background card
+      ctx.fillStyle = style.bg === '#0f0f1a' ? '#1a1a2e' : '#f5f5f5';
+      ctx.fillRect(120, statsY - 30, W - 240, 200);
+      ctx.strokeStyle = style.borderColor;
+      ctx.lineWidth = 2;
+      ctx.strokeRect(120, statsY - 30, W - 240, 200);
+
+      const stats = [
+        { value: gpsPhotos.length, label: 'PHOTOS', icon: '📸' },
+        { value: uniqueLocations, label: 'LOCATIONS', icon: '📍' },
+        { value: totalDistance.toLocaleString(), label: 'KM TRAVELED', icon: '🚗' },
+        { value: travelDays, label: 'DAYS', icon: '📅' },
+        { value: gpsPhotos.length > 1 ? (totalDistance / travelDays).toFixed(0) : '0', label: 'AVG KM/DAY', icon: '📊' },
+        { value: gpsPhotos.length > 1 ? '#' + gpsPhotos.length : 'SOLO', label: 'STOPS', icon: '🏁' }
+      ];
+
+      const statWidth = (W - 300) / 6;
+      stats.forEach((stat, i) => {
+        const sx = 150 + i * statWidth;
+        // Icon
+        ctx.font = '32px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText(stat.icon, sx + statWidth / 2, statsY + 20);
+        // Value
+        ctx.fillStyle = style.accentColor;
+        ctx.font = 'bold 48px ' + style.bodyFont;
+        ctx.fillText(stat.value.toString(), sx + statWidth / 2, statsY + 80);
+        // Label
+        ctx.fillStyle = style.subTextColor;
+        ctx.font = 'bold 18px ' + style.bodyFont;
+        ctx.fillText(stat.label, sx + statWidth / 2, statsY + 120);
+      });
+
+      // ========== TRAVEL REFLECTION SECTION ==========
+      const reflectY = statsY + 220;
+      ctx.fillStyle = style.accentColor;
+      ctx.font = 'bold 24px ' + style.bodyFont;
+      ctx.textAlign = 'center';
+      ctx.fillText('💭  FINAL THOUGHT', W / 2, reflectY);
+
+      // Reflection quote
+      const reflections = [
+        '"We travel not to escape life, but for life not to escape us."',
+        '"The journey of a thousand miles begins with a single step."',
+        '"Travel is the only thing you buy that makes you richer."',
+        '"Life is short and the world is wide. Better get going."',
+        '"Collect moments, not things. Memories last forever."',
+        '"Wherever you go, go with all your heart."'
+      ];
+      const reflection = reflections[Math.floor(Math.random() * reflections.length)];
+
+      ctx.fillStyle = style.textColor;
+      ctx.font = 'italic 30px Georgia, serif';
+      ctx.textAlign = 'center';
+      // Wrap text
+      const words = reflection.split(' ');
+      let line = '';
+      let refY = reflectY + 50;
+      const maxWidth = W - 400;
+      words.forEach(word => {
+        const testLine = line + word + ' ';
+        if (ctx.measureText(testLine).width > maxWidth && line !== '') {
+          ctx.fillText(line, W / 2, refY);
+          line = word + ' ';
+          refY += 42;
+        } else {
+          line = testLine;
+        }
+      });
+      ctx.fillText(line, W / 2, refY);
+
+      // ========== FOOTER ==========
+      ctx.fillStyle = style.subTextColor;
+      ctx.font = '26px ' + style.bodyFont;
+      ctx.textAlign = 'center';
+      ctx.fillText('Created with SmartImgKit Photo Location Map', W / 2, H - 110);
+      ctx.fillStyle = style.accentColor;
+      ctx.font = 'bold 32px ' + style.bodyFont;
+      ctx.fillText('smartimgkit.com', W / 2, H - 65);
+    }
+
+    function generateJourneyStory(photos, numLocations, distance, days) {
+      const dateRange = getDateRange(photos);
+      const firstPhoto = photos[0];
+      const lastPhoto = photos[photos.length - 1];
+      const firstName = firstPhoto.name.replace(/\.[^/.]+$/, '').replace(/[_-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+      const lastName = lastPhoto.name.replace(/\.[^/.]+$/, '').replace(/[_-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+
+      const lines = [];
+      lines.push(`Over ${days} day${days > 1 ? 's' : ''}, this journey captured ${photos.length} photos across ${numLocations} unique locations.`);
+      lines.push(`From ${firstName} to ${lastName}, every frame tells a story of exploration and discovery.`);
+      if (distance > 0) {
+        lines.push(`Covering approximately ${distance.toLocaleString()} kilometers, each kilometer brought new perspectives.`);
+      }
+      lines.push(`These moments, frozen in time, now live forever on this map — a visual diary of your adventure.`);
+      return lines;
+    }
+
+    function getTravelDays(photos) {
+      const dates = photos.filter(p => p.date).map(p => new Date(p.date).toDateString());
+      const unique = new Set(dates);
+      return unique.size > 0 ? unique.size : 1;
+    }
+
+    function getDateRange(photos) {
+      const dates = photos.filter(p => p.date).map(p => new Date(p.date));
+      if (dates.length === 0) return 'Photo Journey';
+      const min = new Date(Math.min(...dates));
+      const max = new Date(Math.max(...dates));
+      const fmt = d => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      if (min.toDateString() === max.toDateString()) return fmt(min);
+      return fmt(min) + ' — ' + fmt(max);
+    }
+
+    function getMapBounds(photos) {
+      const lats = photos.map(p => p.lat);
+      const lons = photos.map(p => p.lon);
+      const minLat = Math.min(...lats);
+      const maxLat = Math.max(...lats);
+      const minLon = Math.min(...lons);
+      const maxLon = Math.max(...lons);
+      const latPad = (maxLat - minLat) * 0.15 + 0.5;
+      const lonPad = (maxLon - minLon) * 0.15 + 0.5;
+      return {
+        minLat: minLat - latPad,
+        maxLat: maxLat + latPad,
+        minLon: minLon - lonPad,
+        maxLon: maxLon + lonPad
+      };
+    }
+
+    function calculateTotalDistance(photos) {
+      if (photos.length < 2) return 0;
+      let total = 0;
+      for (let i = 1; i < photos.length; i++) {
+        total += haversineDistance(photos[i-1].lat, photos[i-1].lon, photos[i].lat, photos[i].lon);
+      }
+      return Math.round(total);
+    }
+
+    function haversineDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
+
+    function downloadPoster() {
+      if (!posterCanvas) return;
+      const link = document.createElement('a');
+      link.download = 'photo-map-poster-' + currentPosterStyle + '.png';
+      link.href = posterCanvas.toDataURL('image/png');
+      link.click();
+    }
+
+    // Initialize
+    initMap();
+    checkSharedLocation();
+  </script>
+</body>
+</html>

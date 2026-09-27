@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Leaflet Test - NO Global CSS</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    body { padding: 20px; font-family: Arial, sans-serif; }
+    .test-container { width: 800px; height: 500px; border: 2px solid red; }
+    #test-map2 { width: 100%; height: 100%; }
+  </style>
+</head>
+<body>
+  <h1>Leaflet Test - NO Global CSS</h1>
+  <p>This page does NOT load the site's global CSS. If map works here, global CSS is the problem.</p>
+  <div class="test-container">
+    <div id="test-map2"></div>
+  </div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    var map = L.map('test-map2').setView([36.639, 117.1425], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors',
+      maxZoom: 19
+    }).addTo(map);
+  </script>
+</body>
+</html>

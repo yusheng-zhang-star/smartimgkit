@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>MapLibre Test - Photo Markers</title>
+  <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+  <style>
+    html, body { margin: 0; padding: 0; font-family: Arial, sans-serif; background: #0f0f1a; color: white; }
+    .container { padding: 20px; max-width: 1200px; margin: 0 auto; }
+    h2 { color: #a5b4fc; }
+    #map { width: 100%; height: 500px; border-radius: 12px; overflow: hidden; background: #1a1a2e; }
+    #log { margin-top: 10px; padding: 10px; background: #1a1a2e; border-radius: 8px; font-size: 12px; max-height: 150px; overflow-y: auto; font-family: monospace; }
+    .photo-marker { cursor: pointer; transition: transform 0.2s; }
+    .photo-marker img { width: 52px; height: 52px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 12px rgba(0,0,0,0.6); object-fit: cover; display: block; }
+    .photo-marker:hover img { transform: scale(1.15); border-color: #818cf8; }
+    .photo-marker.selected img { width: 64px; height: 64px; border-color: #6366f1; box-shadow: 0 0 0 4px rgba(99,102,241,0.3), 0 4px 16px rgba(0,0,0,0.6); }
+    .maplibregl-popup-content { background: #1a1a2e !important; color: white !important; border-radius: 12px !important; padding: 0 !important; border: 1px solid #374151 !important; box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important; }
+    .maplibregl-popup-content img { width: 200px; height: 150px; object-fit: cover; border-radius: 12px 12px 0 0; display: block; }
+    .popup-info { padding: 12px; }
+    .popup-info h4 { margin: 0 0 6px 0; color: #a5b4fc; }
+    .popup-info p { margin: 2px 0; font-size: 12px; color: #9ca3af; }
+    .maplibregl-popup-close-button { color: white !important; font-size: 20px !important; padding: 4px 8px !important; }
+    .fallback-note { margin-top: 10px; padding: 10px; background: #fef3c7; color: #92400e; border-radius: 8px; font-size: 13px; display: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🗺️ MapLibre + OpenFreeMap - Photo Markers Test</h2>
+    <div id="map"></div>
+    <div id="log">Loading MapLibre...</div>
+    <div class="fallback-note" id="fallbackNote">⚠️ Map tiles failed to load in your network. This is expected in China - international users will see the full map with photo markers.</div>
+  </div>
+
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <script>
+    const log = document.getElementById('log');
+    function addLog(msg) {
+      log.innerHTML += msg + '<br>';
+      log.scrollTop = log.scrollHeight;
+    }
+
+    // Sample photos with colored placeholder images
+    function makePlaceholder(color, letter) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 100; canvas.height = 100;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = color;
+      ctx.fillRect(0, 0, 100, 100);
+      ctx.fillStyle = 'white';
+      ctx.font = 'bold 40px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(letter, 50, 50);
+      return canvas.toDataURL('image/jpeg', 0.8);
+    }
+
+    const photos = [
+      { name: 'Jinan Spring', lat: 36.639, lon: 117.1425, date: '2026-09-10', url: makePlaceholder('#4682B4', 'J') },
+      { name: 'Beijing Forbidden City', lat: 39.9163, lon: 116.3972, date: '2026-09-08', url: makePlaceholder('#CD853F', 'B') },
+      { name: 'Shanghai Bund', lat: 31.2397, lon: 121.4900, date: '2026-09-05', url: makePlaceholder('#2E8B57', 'S') },
+      { name: 'Guangzhou Tower', lat: 23.1066, lon: 113.3245, date: '2026-09-02', url: makePlaceholder('#DC143C', 'G') }
+    ];
+
+    window.onload = function() {
+      addLog('MapLibre: ' + (typeof maplibregl !== 'undefined' ? maplibregl.version : 'NOT LOADED'));
+
+      if (typeof maplibregl === 'undefined') {
+        addLog('ERROR: MapLibre failed to load');
+        document.getElementById('fallbackNote').style.display = 'block';
+        return;
+      }
+
+      try {
+        const map = new maplibregl.Map({
+          container: 'map',
+          style: 'https://tiles.openfreemap.org/styles/liberty',
+          center: [117.0, 35.0],
+          zoom: 4
+        });
+
+        addLog('Map created, loading OpenFreeMap tiles...');
+
+        let tilesLoaded = false;
+        map.on('load', () => {
+          tilesLoaded = true;
+          addLog('✅ Map tiles loaded successfully!');
+          addPhotoMarkers();
+        });
+
+        map.on('error', (e) => {
+          addLog('Map error: ' + (e.error ? e.error.message : 'unknown'));
+        });
+
+        // Fallback: if tiles don't load in 8 seconds, show note
+        setTimeout(() => {
+          if (!tilesLoaded) {
+            addLog('⚠️ Tiles still loading (may be blocked in your network)');
+            document.getElementById('fallbackNote').style.display = 'block';
+            // Still add markers so user can see the photo marker feature
+            addPhotoMarkers();
+          }
+        }, 8000);
+
+        map.addControl(new maplibregl.NavigationControl(), 'top-right');
+
+        function addPhotoMarkers() {
+          photos.forEach((photo, idx) => {
+            const el = document.createElement('div');
+            el.className = 'photo-marker';
+            el.innerHTML = '<img src="' + photo.url + '" alt="' + photo.name + '">';
+            
+            const marker = new maplibregl.Marker({ element: el })
+              .setLngLat([photo.lon, photo.lat])
+              .setPopup(new maplibregl.Popup({ offset: 35, closeButton: true })
+                .setHTML('<img src="' + photo.url + '"><div class="popup-info"><h4>' + photo.name + '</h4><p>📍 ' + photo.lat.toFixed(4) + ', ' + photo.lon.toFixed(4) + '</p><p>📅 ' + photo.date + '</p></div>'))
+              .addTo(map);
+
+            el.addEventListener('click', () => {
+              document.querySelectorAll('.photo-marker').forEach(m => m.classList.remove('selected'));
+              el.classList.add('selected');
+              map.flyTo({ center: [photo.lon, photo.lat], zoom: 12, essential: true });
+            });
+
+            addLog('Marker added: ' + photo.name);
+          });
+
+          // Fit bounds to show all markers
+          const bounds = photos.map(p => [p.lon, p.lat]);
+          if (bounds.length > 0) {
+            const minLon = Math.min(...bounds.map(b => b[0])) - 2;
+            const maxLon = Math.max(...bounds.map(b => b[0])) + 2;
+            const minLat = Math.min(...bounds.map(b => b[1])) - 2;
+            const maxLat = Math.max(...bounds.map(b => b[1])) + 2;
+            map.fitBounds([[minLon, minLat], [maxLon, maxLat]], { padding: 60, animate: false });
+          }
+          addLog('✅ All photo markers added! Click a marker to see the popup.');
+        }
+
+      } catch(e) {
+        addLog('ERROR: ' + e.message);
+        addLog(e.stack);
+        document.getElementById('fallbackNote').style.display = 'block';
+      }
+    };
+  </script>
+</body>
+</html>

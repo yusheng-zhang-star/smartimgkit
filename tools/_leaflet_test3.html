@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Leaflet Test 3 - with invalidateSize</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    body { padding: 20px; font-family: Arial, sans-serif; }
+    .test-container { width: 800px; height: 500px; border: 2px solid red; }
+    #test-map3 { width: 800px; height: 500px; }
+    .log { margin-top: 10px; padding: 10px; background: #f0f0f0; font-family: monospace; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <h1>Leaflet Test 3 - Fixed pixel size + invalidateSize</h1>
+  <p>Map has fixed 800x500 pixel size, with multiple invalidateSize calls.</p>
+  <div class="test-container">
+    <div id="test-map3"></div>
+  </div>
+  <div class="log" id="log">Log:</div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    function log(msg) {
+      document.getElementById('log').innerHTML += '<br>' + msg;
+    }
+    
+    log('Starting map init...');
+    var map = L.map('test-map3').setView([36.639, 117.1425], 13);
+    log('Map created. Container size: ' + map.getSize().x + 'x' + map.getSize().y);
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors',
+      maxZoom: 19
+    }).addTo(map);
+    
+    log('Tile layer added. Calling invalidateSize...');
+    map.invalidateSize();
+    
+    setTimeout(function() {
+      map.invalidateSize();
+      log('After 100ms invalidateSize. Size: ' + map.getSize().x + 'x' + map.getSize().y);
+    }, 100);
+    
+    setTimeout(function() {
+      map.invalidateSize();
+      log('After 500ms invalidateSize. Size: ' + map.getSize().x + 'x' + map.getSize().y);
+    }, 500);
+    
+    setTimeout(function() {
+      map.setView([36.639, 117.1425], 13);
+      log('After 1s setView. Size: ' + map.getSize().x + 'x' + map.getSize().y);
+    }, 1000);
+  </script>
+</body>
+</html>
