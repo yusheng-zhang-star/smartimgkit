@@ -1,4 +1,4 @@
-﻿﻿<!DOCTYPE html>
+﻿﻿﻿<!DOCTYPE html>
 <html lang="en" data-theme="dark" data-tool-id="image-rotator">
 <head>
   <meta charset="UTF-8">
@@ -660,11 +660,13 @@
       downloadBtn.disabled = true;
       downloadBtn.textContent = '🔄 Processing...';
       status.textContent = '';
+      let blob = null;
+      let ext = 'png';
       try {
         const format = outputFormat.value;
         const quality = format === 'image/png' ? undefined : 0.92;
-        const blob = await ImageUtils.canvasToBlob(previewCanvas, format, quality);
-        const ext = format === 'image/png' ? 'png' : format === 'image/jpeg' ? 'jpg' : 'webp';
+        blob = await ImageUtils.canvasToBlob(previewCanvas, format, quality);
+        ext = format === 'image/png' ? 'png' : format === 'image/jpeg' ? 'jpg' : 'webp';
         ImageUtils.download(blob, `rotated-image.${ext}`);
         status.textContent = '✅ Image downloaded!';
       } catch (e) {

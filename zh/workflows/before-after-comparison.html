@@ -111,7 +111,7 @@ ctx.fillText('前',W/2,H-40);ctx.fillText('后',W/2,H*1.5-40);}
 const blob=await new Promise(r=>c.toBlob(r,fmt==='png'?'image/png':'image/jpeg',0.92));
 const url=URL.createObjectURL(blob);
 $('previewWrap').innerHTML=`<img src="${url}" style="max-width:100%;border-radius:12px">`;
-const a=document.createElement('a');a.href=url;a.download=`before-after.${fmt}`;a.click();
+const link=document.createElement('a');link.href=url;link.download=`before-after.${fmt}`;link.click();
 $('runBtn').textContent='✓ 已下载';setTimeout(()=>{$('runBtn').textContent='🚀 生成对比图';},4000);$('runBtn').disabled=false;
 });
 })();
