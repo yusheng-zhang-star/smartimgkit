@@ -162,9 +162,11 @@
 
     <!-- Actions -->
     <div class="btn-group">
+      <button class="btn btn-primary" id="aiEnhanceBtn" disabled onclick="aiEnhance()" style="background:linear-gradient(135deg,#8b5cf6,#6366f1);border:none;">✨ AI Enhance (2x)</button>
       <button class="btn btn-primary" id="downloadBtn" disabled onclick="downloadImage()">⬇️ Download Enhanced</button>
       <button class="btn btn-secondary" id="resetBtn" disabled onclick="resetAll()">🔄 Reset</button>
     </div>
+    <div id="aiStatus" style="display:none;margin-top:8px;font-size:.85rem;color:var(--text-secondary);text-align:center;"></div>
   </div>
 
   <div class="tool-canvas-area">
@@ -253,7 +255,7 @@
   <div class="faq-item"><button class="faq-question">Is my image private?</button><div class="faq-answer">Absolutely. Your image never leaves your browser. No uploads, no tracking.</div></div>
 <div class="faq-item"><button class="faq-question">Does enhancement work on all photos?</button><div class="faq-answer">It works best on photos with mild blur or softness.</div></div>
 <div class="faq-item"><button class="faq-question">Is the process automatic?</button><div class="faq-answer">Yes — one-click enhancement with no settings needed.</div></div>
-<div class="faq-item"><button class="faq-question">Does AI processing happen on a server?</button><div class="faq-answer">No. The AI models run entirely in your browser using WebAssembly and WebGL.</div></div>
+<div class="faq-item"><button class="faq-question">Does AI processing happen on a server?</button><div class="faq-answer">No. The ESRGAN AI model runs entirely in your browser using WebAssembly. Your image never leaves your device.</div></div>
 <div class="faq-item"><button class="faq-question">What if the result is not perfect?</button><div class="faq-answer">AI enhancement is a starting point — use the Edit tools for fine-tuning.</div></div>
       </section>
 
@@ -360,6 +362,8 @@
   </footer>
 
   <script src="/js/main.js?v=7"></script>
+  <script src="https://cdn.jsdelivr.net/npm/upscaler@latest/dist/browser/umd/upscaler.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@upscalerjs/esrgan-slim@latest/dist/umd/index.min.js"></script>
   <script>
 let origImage = null;
 let origImageData = null;
@@ -367,6 +371,8 @@ let canvas = document.getElementById('previewCanvas');
 let ctx = canvas.getContext('2d');
 let beforeCanvas, afterCanvas;
 let isComparing = false;
+let upscaler = null;
+let upscalerLoading = false;
 
 // File handling
 const dropzone = document.getElementById('dropzone');
@@ -393,11 +399,47 @@ function handleFile(file) {
       document.getElementById('placeholderText').style.display = 'none';
       document.getElementById('downloadBtn').disabled = false;
       document.getElementById('resetBtn').disabled = false;
+      document.getElementById('aiEnhanceBtn').disabled = false;
       resetSliders();
     };
     img.src = e.target.result;
   };
   reader.readAsDataURL(file);
+}
+
+async function aiEnhance() {
+  if (!origImage || upscalerLoading) return;
+  const btn = document.getElementById('aiEnhanceBtn');
+  const status = document.getElementById('aiStatus');
+  btn.disabled = true;
+  status.style.display = 'block';
+  status.textContent = 'Loading AI model (first time ~50MB, cached after)...';
+  try {
+    if (!upscaler) {
+      upscalerLoading = true;
+      upscaler = new Upscaler({ model: ESRGANSlim });
+      upscalerLoading = false;
+    }
+    status.textContent = 'AI processing on your device...';
+    const tensor = tf.browser.fromPixels(canvas);
+    const upscaled = await upscaler.upscale(tensor, {
+      patchSize: 64,
+      padding: 4,
+      output: { shape: [origImage.height * 2, origImage.width * 2, 3] },
+      progress: (p) => { status.textContent = `AI processing... ${Math.round(p * 100)}%`; }
+    });
+    // Draw result
+    canvas.width = upscaled.shape[1];
+    canvas.height = upscaled.shape[0];
+    await tf.browser.toPixels(upscaled, canvas);
+    upscaled.dispose();
+    origImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    status.textContent = `Done! Image is now ${canvas.width}x${canvas.height}. Download below.`;
+    btn.textContent = '✨ AI Enhance (done)';
+  } catch (e) {
+    status.textContent = 'AI enhance failed: ' + e.message + '. Using manual sliders below.';
+    btn.disabled = false;
+  }
 }
 
 function applyFilters() {
