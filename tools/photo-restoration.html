@@ -476,16 +476,22 @@ fileInput.addEventListener('change', e => { if (e.target.files.length) handleFil
         upscaler = new Upscaler({ model: ESRGANSlim });
       }
       aiStatus.textContent = 'AI restoring on your device...';
-      const resultCanvas = await upscaler.upscale(previewCanvas, {
+      const src = previewCanvas.toDataURL('image/png');
+      const base64Result = await upscaler.upscale(src, {
         patchSize: 64,
         padding: 4,
-        output: { imageType: 'canvas' },
         progress: (p) => { aiStatus.textContent = `AI restoring... ${Math.round(p * 100)}%`; }
       });
-      previewCanvas.width = resultCanvas.width;
-      previewCanvas.height = resultCanvas.height;
-      ctx.drawImage(resultCanvas, 0, 0);
-      origImageData = ctx.getImageData(0, 0, previewCanvas.width, previewCanvas.height);
+      const resultImg = new Image();
+      resultImg.onload = () => {
+        previewCanvas.width = resultImg.width;
+        previewCanvas.height = resultImg.height;
+        ctx.drawImage(resultImg, 0, 0);
+        origImageData = ctx.getImageData(0, 0, previewCanvas.width, previewCanvas.height);
+        aiStatus.textContent = `Done! Photo is now ${previewCanvas.width}x${previewCanvas.height}. You can still adjust sliders below.`;
+        aiRestoreBtn.textContent = '✨ AI Restore (done)';
+      };
+      resultImg.src = base64Result;
       aiStatus.textContent = `Done! Photo is now ${previewCanvas.width}x${previewCanvas.height}. You can still adjust sliders below.`;
       aiRestoreBtn.textContent = '✨ AI Restore (done)';
     } catch (e) {
