@@ -477,10 +477,20 @@ fileInput.addEventListener('change', e => { if (e.target.files.length) handleFil
         upscaler = new Upscaler();
       }
       aiStatus.textContent = 'AI restoring on your device...';
-      const src = previewCanvas.toDataURL('image/png');
+      // Downscale if too large for faster processing
+      let processCanvas = previewCanvas;
+      const maxDim = 1000;
+      if (previewCanvas.width > maxDim || previewCanvas.height > maxDim) {
+        const scale = Math.min(maxDim / previewCanvas.width, maxDim / previewCanvas.height);
+        processCanvas = document.createElement('canvas');
+        processCanvas.width = Math.round(previewCanvas.width * scale);
+        processCanvas.height = Math.round(previewCanvas.height * scale);
+        processCanvas.getContext('2d').drawImage(previewCanvas, 0, 0, processCanvas.width, processCanvas.height);
+      }
+      const src = processCanvas.toDataURL('image/png');
       const base64Result = await upscaler.upscale(src, {
-        patchSize: 64,
-        padding: 4,
+        patchSize: 128,
+        padding: 8,
         progress: (p) => { aiStatus.textContent = `AI restoring... ${Math.round(p * 100)}%`; }
       });
       const resultImg = new Image();

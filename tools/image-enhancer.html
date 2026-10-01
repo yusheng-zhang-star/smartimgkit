@@ -422,10 +422,20 @@ async function aiEnhance() {
       upscalerLoading = false;
     }
     status.textContent = 'AI processing on your device...';
-    const src = canvas.toDataURL('image/png');
+    // Downscale if too large for faster processing
+    let processCanvas = canvas;
+    const maxDim = 1000;
+    if (canvas.width > maxDim || canvas.height > maxDim) {
+      const scale = Math.min(maxDim / canvas.width, maxDim / canvas.height);
+      processCanvas = document.createElement('canvas');
+      processCanvas.width = Math.round(canvas.width * scale);
+      processCanvas.height = Math.round(canvas.height * scale);
+      processCanvas.getContext('2d').drawImage(canvas, 0, 0, processCanvas.width, processCanvas.height);
+    }
+    const src = processCanvas.toDataURL('image/png');
     const base64Result = await upscaler.upscale(src, {
-      patchSize: 64,
-      padding: 4,
+      patchSize: 128,
+      padding: 8,
       progress: (p) => { status.textContent = `AI processing... ${Math.round(p * 100)}%`; }
     });
     // Draw result
