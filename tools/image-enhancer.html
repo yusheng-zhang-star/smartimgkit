@@ -421,18 +421,16 @@ async function aiEnhance() {
       upscalerLoading = false;
     }
     status.textContent = 'AI processing on your device...';
-    const tensor = tf.browser.fromPixels(canvas);
-    const upscaled = await upscaler.upscale(tensor, {
+    const resultCanvas = await upscaler.upscale(canvas, {
       patchSize: 64,
       padding: 4,
-      output: { shape: [origImage.height * 2, origImage.width * 2, 3] },
+      output: { imageType: 'canvas' },
       progress: (p) => { status.textContent = `AI processing... ${Math.round(p * 100)}%`; }
     });
     // Draw result
-    canvas.width = upscaled.shape[1];
-    canvas.height = upscaled.shape[0];
-    await tf.browser.toPixels(upscaled, canvas);
-    upscaled.dispose();
+    canvas.width = resultCanvas.width;
+    canvas.height = resultCanvas.height;
+    ctx.drawImage(resultCanvas, 0, 0);
     origImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     status.textContent = `Done! Image is now ${canvas.width}x${canvas.height}. Download below.`;
     btn.textContent = '✨ AI Enhance (done)';

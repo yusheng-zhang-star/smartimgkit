@@ -476,17 +476,15 @@ fileInput.addEventListener('change', e => { if (e.target.files.length) handleFil
         upscaler = new Upscaler({ model: ESRGANSlim });
       }
       aiStatus.textContent = 'AI restoring on your device...';
-      const tensor = tf.browser.fromPixels(previewCanvas);
-      const upscaled = await upscaler.upscale(tensor, {
+      const resultCanvas = await upscaler.upscale(previewCanvas, {
         patchSize: 64,
         padding: 4,
-        output: { shape: [origImage.height * 2, origImage.width * 2, 3] },
+        output: { imageType: 'canvas' },
         progress: (p) => { aiStatus.textContent = `AI restoring... ${Math.round(p * 100)}%`; }
       });
-      previewCanvas.width = upscaled.shape[1];
-      previewCanvas.height = upscaled.shape[0];
-      await tf.browser.toPixels(upscaled, previewCanvas);
-      upscaled.dispose();
+      previewCanvas.width = resultCanvas.width;
+      previewCanvas.height = resultCanvas.height;
+      ctx.drawImage(resultCanvas, 0, 0);
       origImageData = ctx.getImageData(0, 0, previewCanvas.width, previewCanvas.height);
       aiStatus.textContent = `Done! Photo is now ${previewCanvas.width}x${previewCanvas.height}. You can still adjust sliders below.`;
       aiRestoreBtn.textContent = '✨ AI Restore (done)';
