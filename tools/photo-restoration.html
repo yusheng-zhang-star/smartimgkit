@@ -132,7 +132,7 @@
             <div class="card" style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:16px;">
               <h3 style="font-size:.9rem;font-weight:600;margin-bottom:10px;">⚡ Quick Fix Presets</h3>
               <div class="preset-grid">
-                <button class="preset-btn" onclick="applyPreset('auto-restore')" title="Auto Restore — applies all restoration steps with optimal values">🔄 Auto Restore</button>
+                <button class="preset-btn" onclick="smartAutoRestore()" title="Smart Auto Restore — analyzes your photo and applies optimal fixes">✨ Smart Auto Restore</button>
                 <button class="preset-btn" onclick="applyPreset('remove-scratches')" title="Remove Scratches — detect and inpaint scratch-like defects">✂️ Remove Scratches</button>
                 <button class="preset-btn" onclick="applyPreset('reduce-noise')" title="Reduce Noise — median filter to smooth grainy photos">📉 Reduce Noise</button>
                 <button class="preset-btn" onclick="applyPreset('sharpen-face')" title="Sharpen Face — unsharp mask to bring out facial details">👤 Sharpen Face</button>
@@ -612,7 +612,6 @@ fileInput.addEventListener('change', e => { if (e.target.files.length) handleFil
 
   function applyPreset(name) {
     const presets = {
-      'auto-restore': { denoise: 40, scratch: 60, contrast: 40, sharpen: 50, bright: 10, sepia: 0 },
       'remove-scratches': { denoise: 20, scratch: 80, contrast: 20, sharpen: 30, bright: 5, sepia: 0 },
       'reduce-noise': { denoise: 70, scratch: 20, contrast: 15, sharpen: 25, bright: 0, sepia: 0 },
       'sharpen-face': { denoise: 15, scratch: 20, contrast: 25, sharpen: 70, bright: 5, sepia: 0 },
@@ -625,6 +624,65 @@ fileInput.addEventListener('change', e => { if (e.target.files.length) handleFil
     document.getElementById('sharpenSlider').value = p.sharpen;
     document.getElementById('brightSlider').value = p.bright;
     document.getElementById('sepiaSlider').value = p.sepia;
+    onSliderChange();
+  }
+
+  // Smart Auto Restore — analyzes image noise, brightness, contrast
+  function smartAutoRestore() {
+    if (!origImageData) return;
+    const data = origImageData.data;
+    const w = origImageData.width, h = origImageData.height;
+    const n = w * h;
+    const step = Math.max(1, Math.floor(Math.sqrt(n / 30000)));
+
+    let sumLum = 0, count = 0;
+    let minLum = 255, maxLum = 0;
+    let noiseEst = 0;
+
+    for (let y = 0; y < h; y += step) {
+      for (let x = 0; x < w; x += step) {
+        const i = (y * w + x) * 4;
+        const r = data[i], g = data[i+1], b = data[i+2];
+        const lum = 0.299*r + 0.587*g + 0.114*b;
+        sumLum += lum;
+        if (lum < minLum) minLum = lum;
+        if (lum > maxLum) maxLum = lum;
+        // Estimate noise by horizontal neighbor diff
+        if (x + step < w) {
+          const ni = (y * w + x + step) * 4;
+          const nLum = 0.299*data[ni] + 0.587*data[ni+1] + 0.114*data[ni+2];
+          noiseEst += Math.abs(lum - nLum);
+        }
+        count++;
+      }
+    }
+
+    const avgLum = sumLum / count;
+    const contrastRange = maxLum - minLum;
+    const noiseAvg = noiseEst / Math.max(1, count - Math.floor(w/step));
+
+    // Auto denoise: higher if noise estimate is high
+    let denoise = noiseAvg > 15 ? 50 : (noiseAvg > 8 ? 30 : 15);
+
+    // Auto contrast: widen if flat
+    let contrast = contrastRange < 100 ? 50 : 25;
+
+    // Auto sharpen: mild
+    let sharpen = 30;
+
+    // Auto brightness: target 128
+    let bright = Math.round((128 - avgLum) * 0.25);
+    bright = Math.max(-20, Math.min(30, bright));
+
+    // Scratch: mild default
+    let scratch = 25;
+
+    document.getElementById('denoiseSlider').value = denoise;
+    document.getElementById('scratchSlider').value = scratch;
+    document.getElementById('contrastSlider').value = contrast;
+    document.getElementById('sharpenSlider').value = sharpen;
+    document.getElementById('brightSlider').value = bright;
+    document.getElementById('sepiaSlider').value = 0;
     onSliderChange();
   }
 
