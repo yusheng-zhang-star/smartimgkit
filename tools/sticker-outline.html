@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-tool-id="sticker-outline">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Sticker Outline Maker — Add Colored Border to PNG Free | SmartImgKit</title>
+  <meta name="description" content="Add thick colored outline to transparent PNG images online free. Make sticker-style portraits and product graphics. 100% in your browser, no upload.">
+  <meta name="keywords" content="sticker outline png, add border to png, colored outline image, sticker maker free, outline portrait, sticker effect online">
+  <link rel="canonical" href="https://smartimgkit.com/tools/sticker-outline">
+  <meta name="theme-color" content="#db2777">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css?v=10">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Sticker Outline Maker",
+  "url": "https://smartimgkit.com/tools/sticker-outline",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Add colored outline to transparent PNG images. Free, no upload, browser-based sticker maker."
+}
+</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I add an outline to a PNG image?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Upload your transparent PNG, pick a border color and thickness, then download. Works entirely in your browser." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I make sticker-style portraits?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Upload a cutout portrait, add a thick white or colored outline, and you get the popular sticker effect." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this free?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes, 100% free with no watermark, no signup, and unlimited exports." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does my image get uploaded?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. All processing happens in your browser using Canvas. Your images never leave your device." }
+    },
+    {
+      "@type": "Question",
+      "name": "What image format works best?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Transparent PNG works best. JPG also works but the whole image gets outlined." }
+    }
+  ]
+}
+</script>
+  <style>
+    .tool-container{max-width:900px;margin:2rem auto;padding:0 1rem}
+    .upload-zone{border:2px dashed var(--border);border-radius:16px;padding:3rem 2rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--surface)}
+    .upload-zone:hover{border-color:var(--primary)}
+    .preview-wrap{margin:1.5rem 0;text-align:center;background:repeating-conic-gradient(#e5e5e5 0% 25%, #fff 0% 50%) 50% / 20px 20px;border-radius:12px;padding:1rem}
+    #previewCanvas{max-width:100%;max-height:500px}
+    .controls{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:1.5rem 0}
+    .control{padding:16px;background:var(--surface);border-radius:10px;border:1px solid var(--border)}
+    .control label{display:block;font-size:.85rem;font-weight:600;margin-bottom:8px;color:var(--text-secondary)}
+    .control input[type=range]{width:100%}
+    .control input[type=color]{width:100%;height:40px;border:none;border-radius:8px;cursor:pointer}
+    .control .val{float:right;color:var(--primary);font-weight:600}
+    .color-presets{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+    .color-dot{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2px solid transparent}
+    .color-dot.active{border-color:var(--primary)}
+    .btn{padding:12px 24px;border-radius:10px;border:none;font-size:15px;font-weight:600;cursor:pointer}
+    .btn-primary{background:var(--primary);color:#fff}
+    .btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+    .btn-group{display:flex;gap:12px;justify-content:center;margin:1.5rem 0;flex-wrap:wrap}
+    .faq{max-width:800px;margin:3rem auto;padding:0 1rem}
+    .faq-item{border:1px solid var(--border);border-radius:10px;margin-bottom:8px;overflow:hidden}
+    .faq-question{width:100%;padding:16px;background:var(--surface);border:none;text-align:left;font-size:15px;font-weight:600;cursor:pointer;color:var(--text)}
+    .faq-answer{padding:0 16px;max-height:0;overflow:hidden;transition:max-height .3s;color:var(--text-secondary);line-height:1.6}
+    .faq-item.open .faq-answer{max-height:300px;padding:16px}
+    @media (max-width:600px){.controls{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <a href="/" class="logo">SmartImgKit</a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/tools/">Tools</a>
+        <a href="/blog/">Blog</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="tool-container">
+    <h1 style="text-align:center;margin-bottom:.5rem">Sticker Outline Maker</h1>
+    <p style="text-align:center;color:var(--text-secondary);margin-bottom:2rem">Add thick colored border to your PNG. Make sticker-style portraits — free, no upload.</p>
+
+    <div class="upload-zone" id="dropZone">
+      <div style="font-size:3rem;margin-bottom:1rem">✨</div>
+      <p><strong>Upload your transparent PNG</strong> or drag & drop</p>
+      <p style="font-size:.85rem;color:var(--text-secondary)">Cutout portraits work best</p>
+      <input type="file" id="fileInput" accept="image/png,image/webp" hidden>
+    </div>
+
+    <div class="preview-wrap" id="previewWrap" style="display:none">
+      <canvas id="previewCanvas"></canvas>
+    </div>
+
+    <div class="controls" id="controls" style="display:none">
+      <div class="control">
+        <label>Border Color</label>
+        <input type="color" id="colorPicker" value="#ffffff">
+        <div class="color-presets">
+          <div class="color-dot active" style="background:#ffffff" data-c="#ffffff"></div>
+          <div class="color-dot" style="background:#000000" data-c="#000000"></div>
+          <div class="color-dot" style="background:#ff0066" data-c="#ff0066"></div>
+          <div class="color-dot" style="background:#0066ff" data-c="#0066ff"></div>
+          <div class="color-dot" style="background:#ffcc00" data-c="#ffcc00"></div>
+        </div>
+      </div>
+      <div class="control">
+        <label>Border Thickness <span class="val" id="thickVal">20px</span></label>
+        <input type="range" id="thickSlider" min="2" max="80" value="20">
+      </div>
+    </div>
+
+    <div class="btn-group" id="btnGroup" style="display:none">
+      <button class="btn btn-primary" onclick="downloadImage()">⬇️ Download Sticker PNG</button>
+      <button class="btn btn-secondary" onclick="resetAll()">🔄 New Image</button>
+    </div>
+
+    <section class="faq">
+      <h2 style="margin-bottom:1rem">Frequently Asked Questions</h2>
+      <div class="faq-item"><button class="faq-question">How do I add an outline to a PNG image?</button><div class="faq-answer"><p>Upload your transparent PNG, pick a border color and thickness, then download. Works entirely in your browser.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Can I make sticker-style portraits?</button><div class="faq-answer"><p>Yes. Upload a cutout portrait, add a thick white or colored outline, and you get the popular sticker effect.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Is this free?</button><div class="faq-answer"><p>Yes, 100% free with no watermark, no signup, and unlimited exports.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Does my image get uploaded?</button><div class="faq-answer"><p>No. All processing happens in your browser using Canvas. Your images never leave your device.</p></div></div>
+      <div class="faq-item"><button class="faq-question">What image format works best?</button><div class="faq-answer"><p>Transparent PNG works best. JPG also works but the whole image gets outlined.</p></div></div>
+    </section>
+  </main>
+
+  <script>
+  (function(){
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const canvas = document.getElementById('previewCanvas');
+    const ctx = canvas.getContext('2d');
+    const previewWrap = document.getElementById('previewWrap');
+    const controls = document.getElementById('controls');
+    const btnGroup = document.getElementById('btnGroup');
+    const colorPicker = document.getElementById('colorPicker');
+    const thickSlider = document.getElementById('thickSlider');
+
+    let img = null;
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.borderColor = 'var(--primary)'; });
+    dropZone.addEventListener('dragleave', () => dropZone.style.borderColor = '');
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault(); dropZone.style.borderColor = '';
+      if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
+
+    colorPicker.addEventListener('input', render);
+    thickSlider.addEventListener('input', render);
+    document.querySelectorAll('.color-dot').forEach(dot => {
+      dot.addEventListener('click', () => {
+        document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+        dot.classList.add('active');
+        colorPicker.value = dot.dataset.c;
+        render();
+      });
+    });
+
+    function handleFile(file) {
+      img = new Image();
+      img.onload = () => {
+        const thick = +thickSlider.value;
+        canvas.width = img.width + thick * 2;
+        canvas.height = img.height + thick * 2;
+        previewWrap.style.display = 'block';
+        controls.style.display = 'grid';
+        btnGroup.style.display = 'flex';
+        render();
+      };
+      img.src = URL.createObjectURL(file);
+    }
+
+    function render() {
+      if (!img) return;
+      const thick = +thickSlider.value;
+      const color = colorPicker.value;
+      document.getElementById('thickVal').textContent = thick + 'px';
+
+      canvas.width = img.width + thick * 2;
+      canvas.height = img.height + thick * 2;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw outline by drawing the image multiple times offset in all directions
+      ctx.fillStyle = color;
+      for (let dx = -thick; dx <= thick; dx += 2) {
+        for (let dy = -thick; dy <= thick; dy += 2) {
+          if (Math.abs(dx) + Math.abs(dy) <= thick) {
+            ctx.drawImage(img, thick + dx, thick + dy);
+          }
+        }
+      }
+      // Draw original image on top
+      ctx.drawImage(img, thick, thick);
+    }
+
+    window.downloadImage = function() {
+      const a = document.createElement('a');
+      a.download = 'sticker-outline.png';
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+    };
+
+    window.resetAll = function() {
+      img = null;
+      previewWrap.style.display = 'none';
+      controls.style.display = 'none';
+      btnGroup.style.display = 'none';
+      fileInput.value = '';
+    };
+
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => btn.parentElement.classList.toggle('open'));
+    });
+  })();
+  </script>
+</body>
+</html>
