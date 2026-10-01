@@ -217,6 +217,21 @@
             <button class="btn btn-secondary" id="addMoreBtn">+ Ajouter Plus</button>
             <button class="btn btn-secondary" id="clearBtn">🗑️ Effacer All</button>
           </div>
+          <div class="output-options" style="margin:10px 0;display:flex;gap:18px;flex-wrap:wrap;align-items:center;padding:10px 14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;font-size:0.85rem;">
+            <div style="font-weight:600;color:#334155;">Output:</div>
+            <div style="display:flex;gap:6px;align-items:center;">
+              <span style="color:#64748b;">Format</span>
+              <button class="_fmtOpt" data-fmt="png" style="padding:5px 12px;border:2px solid #0ea5e9;border-radius:6px;background:#e0f2fe;color:#0369a1;cursor:pointer;font-size:0.8rem;font-weight:600;">PNG</button>
+              <button class="_fmtOpt" data-fmt="jpeg" style="padding:5px 12px;border:1px solid #cbd5e1;border-radius:6px;background:#fff;color:#475569;cursor:pointer;font-size:0.8rem;">JPG</button>
+              <button class="_fmtOpt" data-fmt="webp" style="padding:5px 12px;border:1px solid #cbd5e1;border-radius:6px;background:#fff;color:#475569;cursor:pointer;font-size:0.8rem;">WebP</button>
+            </div>
+            <div style="display:flex;gap:6px;align-items:center;">
+              <span style="color:#64748b;">Type</span>
+              <button class="_typeOpt" data-type="foreground" style="padding:5px 12px;border:2px solid #0ea5e9;border-radius:6px;background:#e0f2fe;color:#0369a1;cursor:pointer;font-size:0.8rem;font-weight:600;">Cutout</button>
+              <button class="_typeOpt" data-type="mask" style="padding:5px 12px;border:1px solid #cbd5e1;border-radius:6px;background:#fff;color:#475569;cursor:pointer;font-size:0.8rem;">Mask</button>
+            </div>
+            <div style="font-size:0.72rem;color:#94a3b8;">JPG has white background (no transparency)</div>
+          </div>
           <div class="progress-bar" id="progBar" style="display:none">
             <div class="progress-fill" id="progFill"></div>
           </div>
@@ -301,6 +316,44 @@
   <script>
 let files = [];
 let model = null;
+
+// Output options
+var _outputFmt = 'png';
+var _outputType = 'foreground';
+var _FMT_MAP = { png: 'image/png', jpeg: 'image/jpeg', webp: 'image/webp' };
+var _EXT_MAP = { png: 'png', jpeg: 'jpg', webp: 'webp' };
+function _updateOutputUI() {
+  document.querySelectorAll('._fmtOpt').forEach(function(btn) {
+    var f = btn.getAttribute('data-fmt');
+    var on = (f === _outputFmt);
+    btn.style.border = on ? '2px solid #0ea5e9' : '1px solid #cbd5e1';
+    btn.style.background = on ? '#e0f2fe' : '#fff';
+    btn.style.color = on ? '#0369a1' : '#475569';
+    btn.style.fontWeight = on ? '600' : 'normal';
+  });
+  document.querySelectorAll('._typeOpt').forEach(function(btn) {
+    var t = btn.getAttribute('data-type');
+    var on = (t === _outputType);
+    btn.style.border = on ? '2px solid #0ea5e9' : '1px solid #cbd5e1';
+    btn.style.background = on ? '#e0f2fe' : '#fff';
+    btn.style.color = on ? '#0369a1' : '#475569';
+    btn.style.fontWeight = on ? '600' : 'normal';
+  });
+}
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('._fmtOpt').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      _outputFmt = btn.getAttribute('data-fmt');
+      _updateOutputUI();
+    });
+  });
+  document.querySelectorAll('._typeOpt').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      _outputType = btn.getAttribute('data-type');
+      _updateOutputUI();
+    });
+  });
+});
 let modelLoadedOnce = false;
 let processing = false;
 
@@ -378,7 +431,7 @@ function renderList() {
   files.forEach((item, i) => {
     const div = document.createElement('div');
     div.className = 'prev-item';
-    const outName = item.name.replace(/\.[^.]+$/, '') + '-no-bg.png';
+    const outName = item.name.replace(/\.[^.]+$/, '') + ((_outputType === 'mask') ? '-mask' : '-no-bg') + '.' + _EXT_MAP[_outputFmt];
     let info = '<p>Original: ' + formatSize(item.file.size) + '</p>';
     let dl = '';
     if (item.resultBlob) {
@@ -578,8 +631,9 @@ removeBtn.addEventListener('click', async function() {
           status.textContent = ('🧠 Processing image... {elapsed}s elapsed').replace('{elapsed}', elapsed);
         }
       }, 2000);
+      var _callConfig = { output: { format: _FMT_MAP[_outputFmt], type: _outputType, quality: 0.9 } };
       const blob = await Promise.race([
-        model(imgUrl),
+        model(imgUrl, _callConfig),
         new Promise((_, reject) => setTimeout(() => reject(new Error('Processing timed out after ' + (timeoutMs/1000) + 's. Please try again with a smaller image or check your network.')), timeoutMs))
       ]);
       clearInterval(progressTimer);
@@ -617,7 +671,7 @@ downloadAllBtn.addEventListener('click', async function() {
   const zip = new JSZip();
   files.forEach(function(item) {
     if (item.resultBlob) {
-      const outName = item.name.replace(/\.[^.]+$/, '') + '-no-bg.png';
+      const outName = item.name.replace(/\.[^.]+$/, '') + ((_outputType === 'mask') ? '-mask' : '-no-bg') + '.' + _EXT_MAP[_outputFmt];
       zip.file(outName, item.resultBlob);
     }
   });
