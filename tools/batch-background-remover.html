@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-tool-id="batch-bg-remover">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Free Batch Background Remover — Remove BG from Multiple Photos | SmartImgKit</title>
+  <meta name="description" content="Batch remove backgrounds from multiple images at once. 100% in your browser via WebAssembly — photos never leave your device. Free, no signup, ZIP download.">
+  <meta name="keywords" content="batch background remover, bulk remove background, multiple image background removal, batch cutout, free bg remover bulk, ecommerce product photos batch">
+  <link rel="canonical" href="https://smartimgkit.com/tools/batch-background-remover">
+  <meta name="theme-color" content="#7c3aed">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css?v=10">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Batch Background Remover",
+  "url": "https://smartimgkit.com/tools/batch-background-remover",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Remove backgrounds from multiple images at once. 100% browser-based, free, ZIP download."
+}
+</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How many images can I process at once?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Up to 50 images per batch. Larger batches work but take longer depending on your device." }
+    },
+    {
+      "@type": "Question",
+      "name": "Do my images get uploaded to a server?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. All AI processing runs in your browser. Your photos never leave your device." }
+    },
+    {
+      "@type": "Question",
+      "name": "What format do I get?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Transparent PNG files, packed into a single ZIP archive for download." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this free?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes, 100% free with no watermark, no signup, and no limits on how many batches you process." }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does processing take?",
+      "acceptedAnswer": { "@type": "Answer", "text": "3-8 seconds per image on modern hardware. First use downloads ~30MB model, cached after." }
+    }
+  ]
+}
+</script>
+  <style>
+    .tool-container{max-width:900px;margin:2rem auto;padding:0 1rem}
+    .upload-zone{border:2px dashed var(--border);border-radius:16px;padding:3rem 2rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--surface)}
+    .upload-zone:hover,.upload-zone.dragover{border-color:var(--primary);background:color-mix(in srgb,var(--primary) 5%,transparent)}
+    .upload-icon{font-size:3rem;margin-bottom:1rem}
+    .file-list{margin:1.5rem 0;display:flex;flex-direction:column;gap:8px}
+    .file-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--surface);border-radius:8px;border:1px solid var(--border)}
+    .file-item img{width:48px;height:48px;object-fit:cover;border-radius:6px}
+    .file-item .info{flex:1;min-width:0}
+    .file-item .name{font-size:.9rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .file-item .status{font-size:.8rem;color:var(--text-secondary)}
+    .file-item .progress{width:80px;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+    .file-item .progress-fill{height:100%;background:var(--primary);transition:width .3s;border-radius:2px}
+    .file-item.done .progress-fill{background:#22c55e}
+    .file-item.error .progress-fill{background:#ef4444}
+    .btn{padding:12px 24px;border-radius:10px;border:none;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s}
+    .btn-primary{background:linear-gradient(135deg,#7c3aed,#6366f1);color:#fff}
+    .btn-primary:disabled{opacity:.5;cursor:not-allowed}
+    .btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+    .btn-group{display:flex;gap:12px;justify-content:center;margin:1.5rem 0;flex-wrap:wrap}
+    .overall-progress{margin:1.5rem 0;padding:1rem;background:var(--surface);border-radius:10px;border:1px solid var(--border)}
+    .overall-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin-top:8px}
+    .overall-fill{height:100%;background:linear-gradient(90deg,#7c3aed,#6366f1);transition:width .3s;border-radius:4px}
+    .faq{max-width:800px;margin:3rem auto;padding:0 1rem}
+    .faq-item{border:1px solid var(--border);border-radius:10px;margin-bottom:8px;overflow:hidden}
+    .faq-question{width:100%;padding:16px;background:var(--surface);border:none;text-align:left;font-size:15px;font-weight:600;cursor:pointer;color:var(--text)}
+    .faq-answer{padding:0 16px;max-height:0;overflow:hidden;transition:max-height .3s;color:var(--text-secondary);line-height:1.6}
+    .faq-item.open .faq-answer{max-height:300px;padding:16px}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <a href="/" class="logo">SmartImgKit</a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/tools/">Tools</a>
+        <a href="/blog/">Blog</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="tool-container">
+    <h1 style="text-align:center;margin-bottom:.5rem">Batch Background Remover</h1>
+    <p style="text-align:center;color:var(--text-secondary);margin-bottom:2rem">Remove backgrounds from 20+ product photos at once. 100% in your browser — no upload, no watermark.</p>
+
+    <div class="upload-zone" id="dropZone">
+      <div class="upload-icon">🖼️</div>
+      <p><strong>Click to select</strong> or drag & drop multiple images</p>
+      <p style="font-size:.85rem;color:var(--text-secondary)">JPG / PNG / WebP — up to 50 images</p>
+      <input type="file" id="fileInput" accept="image/*" multiple hidden>
+    </div>
+
+    <div class="overall-progress" id="overallProgress" style="display:none">
+      <div id="overallText">Processing 0 / 0...</div>
+      <div class="overall-bar"><div class="overall-fill" id="overallFill" style="width:0%"></div></div>
+    </div>
+
+    <div class="file-list" id="fileList"></div>
+
+    <div class="btn-group" id="btnGroup" style="display:none">
+      <button class="btn btn-primary" id="downloadZipBtn" onclick="downloadZip()" disabled>⬇️ Download All as ZIP</button>
+      <button class="btn btn-secondary" onclick="resetAll()">🔄 Start Over</button>
+    </div>
+
+    <section class="faq">
+      <h2 style="margin-bottom:1rem">Frequently Asked Questions</h2>
+      <div class="faq-item"><button class="faq-question">How many images can I process at once?</button><div class="faq-answer"><p>Up to 50 images per batch. Larger batches work but take longer depending on your device.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Do my images get uploaded to a server?</button><div class="faq-answer"><p>No. All AI processing runs in your browser via WebAssembly. Your photos never leave your device.</p></div></div>
+      <div class="faq-item"><button class="faq-question">What format do I get?</button><div class="faq-answer"><p>Transparent PNG files, packed into a single ZIP archive for download.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Is this free?</button><div class="faq-answer"><p>Yes, 100% free with no watermark, no signup, and no limits on how many batches you process.</p></div></div>
+      <div class="faq-item"><button class="faq-question">How long does processing take?</button><div class="faq-answer"><p>3-8 seconds per image on modern hardware. First use downloads ~30MB model, cached after.</p></div></div>
+    </section>
+  </main>
+
+  <script>
+  (function(){
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileList = document.getElementById('fileList');
+    const btnGroup = document.getElementById('btnGroup');
+    const overallProgress = document.getElementById('overallProgress');
+    const overallText = document.getElementById('overallText');
+    const overallFill = document.getElementById('overallFill');
+    const downloadZipBtn = document.getElementById('downloadZipBtn');
+
+    let files = [];
+    let results = [];
+    let removeBackgroundFn = null;
+    let processing = false;
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault(); dropZone.classList.remove('dragover');
+      addFiles(e.dataTransfer.files);
+    });
+    fileInput.addEventListener('change', e => addFiles(e.target.files));
+
+    function addFiles(newFiles) {
+      for (let f of newFiles) {
+        if (files.length >= 50) break;
+        files.push(f);
+      }
+      renderList();
+      if (files.length > 0) {
+        btnGroup.style.display = 'flex';
+        processAll();
+      }
+    }
+
+    function renderList() {
+      fileList.innerHTML = '';
+      files.forEach((f, i) => {
+        const item = document.createElement('div');
+        item.className = 'file-item';
+        item.id = 'item-' + i;
+        const url = URL.createObjectURL(f);
+        item.innerHTML = `<img src="${url}"><div class="info"><div class="name">${f.name}</div><div class="status" id="status-${i}">Waiting...</div></div><div class="progress"><div class="progress-fill" id="prog-${i}" style="width:0%"></div></div>`;
+        fileList.appendChild(item);
+      });
+    }
+
+    async function loadModel() {
+      if (removeBackgroundFn) return;
+      overallProgress.style.display = 'block';
+      overallText.textContent = 'Loading AI model (first time ~30MB)...';
+      const mod = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm');
+      removeBackgroundFn = mod.removeBackground || mod.default;
+      if (typeof mod.preload === 'function') {
+        await mod.preload({
+          publicPath: 'https://staticimgly.com/@imgly/background-removal-data/1.7.0/dist/',
+          model: 'isnet_quint8'
+        });
+      }
+    }
+
+    async function processAll() {
+      if (processing) return;
+      processing = true;
+      overallProgress.style.display = 'block';
+      downloadZipBtn.disabled = true;
+      results = [];
+
+      try {
+        await loadModel();
+      } catch (e) {
+        overallText.textContent = 'Model load failed: ' + e.message;
+        return;
+      }
+
+      for (let i = 0; i < files.length; i++) {
+        overallText.textContent = `Processing ${i+1} / ${files.length}...`;
+        overallFill.style.width = (i / files.length * 100) + '%';
+        document.getElementById('status-' + i).textContent = 'Removing background...';
+        try {
+          const blob = await removeBackgroundFn(files[i], {
+            publicPath: 'https://staticimgly.com/@imgly/background-removal-data/1.7.0/dist/',
+            model: 'isnet_quint8',
+            output: { format: 'image/png' }
+          });
+          results.push({ name: files[i].name.replace(/\.[^.]+$/, '') + '.png', blob });
+          document.getElementById('status-' + i).textContent = 'Done';
+          document.getElementById('prog-' + i).style.width = '100%';
+          document.getElementById('item-' + i).classList.add('done');
+        } catch (e) {
+          document.getElementById('status-' + i).textContent = 'Failed: ' + e.message;
+          document.getElementById('item-' + i).classList.add('error');
+        }
+      }
+
+      overallText.textContent = `Done! ${results.length} / ${files.length} images processed.`;
+      overallFill.style.width = '100%';
+      downloadZipBtn.disabled = results.length === 0;
+      processing = false;
+    }
+
+    window.downloadZip = async function() {
+      if (results.length === 0) return;
+      downloadZipBtn.textContent = '⏳ Zipping...';
+      const zip = new JSZip();
+      results.forEach(r => zip.file(r.name, r.blob));
+      const blob = await zip.generateAsync({ type: 'blob' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'removed-backgrounds.zip';
+      a.click();
+      downloadZipBtn.textContent = '⬇️ Download All as ZIP';
+    };
+
+    window.resetAll = function() {
+      files = [];
+      results = [];
+      fileList.innerHTML = '';
+      btnGroup.style.display = 'none';
+      overallProgress.style.display = 'none';
+      fileInput.value = '';
+    };
+
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => btn.parentElement.classList.toggle('open'));
+    });
+  })();
+  </script>
+</body>
+</html>
