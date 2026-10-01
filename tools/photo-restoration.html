@@ -173,7 +173,9 @@
             </div>
 
             <!-- Actions -->
+            <button class="restore-btn primary" id="aiRestoreBtn" disabled onclick="aiRestore()" style="background:linear-gradient(135deg,#f59e0b,#ef4444);border:none;">✨ AI Restore (2x)</button>
             <button class="restore-btn primary" id="downloadBtn" disabled onclick="downloadImage()">⬇️ Download Restored Photo</button>
+            <div id="aiStatus" style="display:none;margin-top:8px;font-size:.85rem;color:var(--text-secondary);text-align:center;"></div>
           </div>
 
           <div class="restore-canvas-area">
@@ -362,7 +364,7 @@
         <h2>Frequently Asked Questions</h2>
 <div class="faq-item"><button class="faq-question">Does it add color to black-and-white photos?</button><div class="faq-answer">It enhances clarity; colorization is a separate enhancement.</div></div>
 <div class="faq-item"><button class="faq-question">What photo conditions are best?</button><div class="faq-answer">Scanned old photos at the highest available resolution work best.</div></div>
-<div class="faq-item"><button class="faq-question">Does AI processing happen on a server?</button><div class="faq-answer">No. The AI models run entirely in your browser using WebAssembly and WebGL.</div></div>
+<div class="faq-item"><button class="faq-question">Does AI processing happen on a server?</button><div class="faq-answer">No. The ESRGAN AI model runs entirely in your browser using WebAssembly. Your photos never leave your device.</div></div>
 <div class="faq-item"><button class="faq-question">What if the result is not perfect?</button><div class="faq-answer">AI enhancement is a starting point — use the Edit tools for fine-tuning.</div></div>
       </section>
 
@@ -406,6 +408,8 @@
   </footer>
 
   <script src="/js/main.js?v=7"></script>
+  <script src="https://cdn.jsdelivr.net/npm/upscaler@latest/dist/browser/umd/upscaler.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@upscalerjs/esrgan-slim@latest/dist/umd/index.min.js"></script>
 <script>
 (function(){
   const fileInput = document.getElementById('fileInput');
@@ -414,12 +418,15 @@
   const ctx = previewCanvas.getContext('2d');
   const placeholderText = document.getElementById('placeholderText');
   const downloadBtn = document.getElementById('downloadBtn');
+  const aiRestoreBtn = document.getElementById('aiRestoreBtn');
+  const aiStatus = document.getElementById('aiStatus');
   const progressFill = document.getElementById('progressFill');
 
   let origImage = null;
   let origImageData = null;
   let isComparing = false;
   let beforeCanvas = null, afterCanvas = null;
+  let upscaler = null;
 
   // Drag & drop
   dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
@@ -448,6 +455,7 @@ fileInput.addEventListener('change', e => { if (e.target.files.length) handleFil
         ctx.drawImage(img, 0, 0, w, h);
         origImageData = ctx.getImageData(0, 0, w, h);
         downloadBtn.disabled = false;
+        aiRestoreBtn.disabled = false;
         document.getElementById('compareBox').style.display = 'none';
         document.getElementById('compareToggle').checked = false;
         isComparing = false;
@@ -456,6 +464,37 @@ fileInput.addEventListener('change', e => { if (e.target.files.length) handleFil
     };
     reader.readAsDataURL(file);
   }
+
+  // ---- AI Restore (ESRGAN 2x) ----
+  window.aiRestore = async function() {
+    if (!origImage || aiRestoreBtn.disabled) return;
+    aiRestoreBtn.disabled = true;
+    aiStatus.style.display = 'block';
+    aiStatus.textContent = 'Loading AI model (first time ~50MB, cached after)...';
+    try {
+      if (!upscaler) {
+        upscaler = new Upscaler({ model: ESRGANSlim });
+      }
+      aiStatus.textContent = 'AI restoring on your device...';
+      const tensor = tf.browser.fromPixels(previewCanvas);
+      const upscaled = await upscaler.upscale(tensor, {
+        patchSize: 64,
+        padding: 4,
+        output: { shape: [origImage.height * 2, origImage.width * 2, 3] },
+        progress: (p) => { aiStatus.textContent = `AI restoring... ${Math.round(p * 100)}%`; }
+      });
+      previewCanvas.width = upscaled.shape[1];
+      previewCanvas.height = upscaled.shape[0];
+      await tf.browser.toPixels(upscaled, previewCanvas);
+      upscaled.dispose();
+      origImageData = ctx.getImageData(0, 0, previewCanvas.width, previewCanvas.height);
+      aiStatus.textContent = `Done! Photo is now ${previewCanvas.width}x${previewCanvas.height}. You can still adjust sliders below.`;
+      aiRestoreBtn.textContent = '✨ AI Restore (done)';
+    } catch (e) {
+      aiStatus.textContent = 'AI restore failed: ' + e.message + '. Using manual controls below.';
+      aiRestoreBtn.disabled = false;
+    }
+  };
 
   // ---- Image processing algorithms ----
 
