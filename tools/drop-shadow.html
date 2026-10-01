@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-tool-id="drop-shadow">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Add Shadow to PNG Online Free — Realistic Product Shadow | SmartImgKit</title>
+  <meta name="description" content="Add realistic drop shadow to transparent PNG images online for free. Make product photos look professional. 100% in your browser, no upload, no signup.">
+  <meta name="keywords" content="add shadow to png, drop shadow online, product shadow maker, realistic product shadow, add shadow to image free, e-commerce product shadow">
+  <link rel="canonical" href="https://smartimgkit.com/tools/drop-shadow">
+  <meta name="theme-color" content="#0891b2">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css?v=10">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "PNG Drop Shadow Maker",
+  "url": "https://smartimgkit.com/tools/drop-shadow",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Add realistic drop shadow to transparent PNG images. Free, no upload, browser-based."
+}
+</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I add shadow to a PNG image?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Upload your transparent PNG, adjust shadow blur, opacity, and offset, then download. Works entirely in your browser." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use this for product photos?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. This tool is designed for e-commerce product photos to make cutout PNGs look grounded and realistic." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this free?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes, 100% free with no watermark, no signup, and unlimited exports." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does my image get uploaded?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. All processing happens in your browser using Canvas. Your images never leave your device." }
+    },
+    {
+      "@type": "Question",
+      "name": "What shadow styles are supported?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Flat contact shadow (directly under object) and floating drop shadow (offset, angled) — both adjustable." }
+    }
+  ]
+}
+</script>
+  <style>
+    .tool-container{max-width:900px;margin:2rem auto;padding:0 1rem}
+    .upload-zone{border:2px dashed var(--border);border-radius:16px;padding:3rem 2rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--surface)}
+    .upload-zone:hover{border-color:var(--primary)}
+    .preview-wrap{margin:1.5rem 0;text-align:center;background:repeating-conic-gradient(#e5e5e5 0% 25%, #fff 0% 50%) 50% / 20px 20px;border-radius:12px;padding:1rem}
+    #previewCanvas{max-width:100%;max-height:500px}
+    .controls{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:1.5rem 0}
+    .control{padding:16px;background:var(--surface);border-radius:10px;border:1px solid var(--border)}
+    .control label{display:block;font-size:.85rem;font-weight:600;margin-bottom:8px;color:var(--text-secondary)}
+    .control input[type=range]{width:100%}
+    .control .val{float:right;color:var(--primary);font-weight:600}
+    .btn{padding:12px 24px;border-radius:10px;border:none;font-size:15px;font-weight:600;cursor:pointer}
+    .btn-primary{background:var(--primary);color:#fff}
+    .btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+    .btn-group{display:flex;gap:12px;justify-content:center;margin:1.5rem 0;flex-wrap:wrap}
+    .faq{max-width:800px;margin:3rem auto;padding:0 1rem}
+    .faq-item{border:1px solid var(--border);border-radius:10px;margin-bottom:8px;overflow:hidden}
+    .faq-question{width:100%;padding:16px;background:var(--surface);border:none;text-align:left;font-size:15px;font-weight:600;cursor:pointer;color:var(--text)}
+    .faq-answer{padding:0 16px;max-height:0;overflow:hidden;transition:max-height .3s;color:var(--text-secondary);line-height:1.6}
+    .faq-item.open .faq-answer{max-height:300px;padding:16px}
+    @media (max-width:600px){.controls{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <a href="/" class="logo">SmartImgKit</a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/tools/">Tools</a>
+        <a href="/blog/">Blog</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="tool-container">
+    <h1 style="text-align:center;margin-bottom:.5rem">Add Shadow to PNG</h1>
+    <p style="text-align:center;color:var(--text-secondary);margin-bottom:2rem">Make transparent product photos look professional. Add realistic drop shadow — free, no upload.</p>
+
+    <div class="upload-zone" id="dropZone">
+      <div style="font-size:3rem;margin-bottom:1rem">👤</div>
+      <p><strong>Upload your transparent PNG</strong> or drag & drop</p>
+      <p style="font-size:.85rem;color:var(--text-secondary)">PNG with transparency works best</p>
+      <input type="file" id="fileInput" accept="image/png,image/webp" hidden>
+    </div>
+
+    <div class="preview-wrap" id="previewWrap" style="display:none">
+      <canvas id="previewCanvas"></canvas>
+    </div>
+
+    <div class="controls" id="controls" style="display:none">
+      <div class="control">
+        <label>Blur <span class="val" id="blurVal">20</span></label>
+        <input type="range" id="blurSlider" min="0" max="60" value="20">
+      </div>
+      <div class="control">
+        <label>Opacity <span class="val" id="opacityVal">30%</span></label>
+        <input type="range" id="opacitySlider" min="0" max="100" value="30">
+      </div>
+      <div class="control">
+        <label>Offset Y <span class="val" id="offsetVal">20</span></label>
+        <input type="range" id="offsetSlider" min="-50" max="100" value="20">
+      </div>
+      <div class="control">
+        <label>Scale <span class="val" id="scaleVal">100%</span></label>
+        <input type="range" id="scaleSlider" min="50" max="120" value="100">
+      </div>
+    </div>
+
+    <div class="btn-group" id="btnGroup" style="display:none">
+      <button class="btn btn-primary" onclick="downloadImage()">⬇️ Download PNG</button>
+      <button class="btn btn-secondary" onclick="resetAll()">🔄 New Image</button>
+    </div>
+
+    <section class="faq">
+      <h2 style="margin-bottom:1rem">Frequently Asked Questions</h2>
+      <div class="faq-item"><button class="faq-question">How do I add shadow to a PNG image?</button><div class="faq-answer"><p>Upload your transparent PNG, adjust shadow blur, opacity, and offset, then download. Works entirely in your browser.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Can I use this for product photos?</button><div class="faq-answer"><p>Yes. This tool is designed for e-commerce product photos to make cutout PNGs look grounded and realistic.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Is this free?</button><div class="faq-answer"><p>Yes, 100% free with no watermark, no signup, and unlimited exports.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Does my image get uploaded?</button><div class="faq-answer"><p>No. All processing happens in your browser using Canvas. Your images never leave your device.</p></div></div>
+      <div class="faq-item"><button class="faq-question">What shadow styles are supported?</button><div class="faq-answer"><p>Flat contact shadow (directly under object) and floating drop shadow (offset, angled) — both adjustable.</p></div></div>
+    </section>
+  </main>
+
+  <script>
+  (function(){
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const canvas = document.getElementById('previewCanvas');
+    const ctx = canvas.getContext('2d');
+    const previewWrap = document.getElementById('previewWrap');
+    const controls = document.getElementById('controls');
+    const btnGroup = document.getElementById('btnGroup');
+
+    let img = null;
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.borderColor = 'var(--primary)'; });
+    dropZone.addEventListener('dragleave', () => dropZone.style.borderColor = '');
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropZone.style.borderColor = '';
+      if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
+
+    ['blurSlider','opacitySlider','offsetSlider','scaleSlider'].forEach(id => {
+      document.getElementById(id).addEventListener('input', render);
+    });
+
+    function handleFile(file) {
+      img = new Image();
+      img.onload = () => {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        previewWrap.style.display = 'block';
+        controls.style.display = 'grid';
+        btnGroup.style.display = 'flex';
+        render();
+      };
+      img.src = URL.createObjectURL(file);
+    }
+
+    function render() {
+      if (!img) return;
+      const blur = +document.getElementById('blurSlider').value;
+      const opacity = +document.getElementById('opacitySlider').value / 100;
+      const offsetY = +document.getElementById('offsetSlider').value;
+      const scale = +document.getElementById('scaleSlider').value / 100;
+
+      document.getElementById('blurVal').textContent = blur;
+      document.getElementById('opacityVal').textContent = Math.round(opacity*100) + '%';
+      document.getElementById('offsetVal').textContent = offsetY;
+      document.getElementById('scaleVal').textContent = Math.round(scale*100) + '%';
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw shadow (black, blurred, offset)
+      ctx.save();
+      ctx.filter = `blur(${blur}px)`;
+      ctx.globalAlpha = opacity;
+      ctx.fillStyle = '#000';
+      const sw = canvas.width * scale;
+      const sh = canvas.height * scale;
+      const sx = (canvas.width - sw) / 2;
+      const sy = canvas.height - sh + offsetY;
+      ctx.drawImage(img, sx, sy, sw, sh);
+      ctx.restore();
+
+      // Draw original image on top
+      ctx.drawImage(img, 0, 0);
+    }
+
+    window.downloadImage = function() {
+      const a = document.createElement('a');
+      a.download = 'image-with-shadow.png';
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+    };
+
+    window.resetAll = function() {
+      img = null;
+      previewWrap.style.display = 'none';
+      controls.style.display = 'none';
+      btnGroup.style.display = 'none';
+      fileInput.value = '';
+    };
+
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => btn.parentElement.classList.toggle('open'));
+    });
+  })();
+  </script>
+</body>
+</html>
