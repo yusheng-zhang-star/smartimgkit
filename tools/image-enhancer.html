@@ -418,7 +418,12 @@ async function aiEnhance() {
   try {
     if (!upscaler) {
       upscalerLoading = true;
-      upscaler = new Upscaler({ model: ESRGANSlim });
+      upscaler = new Upscaler({
+        model: {
+          path: 'https://cdn.jsdelivr.net/npm/@upscalerjs/esrgan-slim@latest/dist/umd/model.json',
+          scale: 2
+        }
+      });
       upscalerLoading = false;
     }
     status.textContent = 'AI processing on your device...';
