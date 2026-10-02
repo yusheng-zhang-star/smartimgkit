@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>Amazon Product Image Studio — One-Click Main Images | SmartImgKit</title>
+<meta name="description" content="One-click Amazon product image studio: AI background removal + white background + contact shadow + 2000x2000 export. All in your browser, free.">
+<meta name="keywords" content="amazon product image, amazon main image generator, white background product photo, ecommerce product image tool">
+<link rel="canonical" href="https://smartimgkit.com/workflows/amazon-product-image-studio">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Amazon Product Image Studio","url":"https://smartimgkit.com/workflows/amazon-product-image-studio","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"One-click Amazon product images: AI background removal, white background, contact shadow, 2000x2000 export."}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"What size does Amazon require?","acceptedAnswer":{"@type":"Answer","text":"Amazon recommends 2000x2000 pixels. This tool exports exactly that size. Images under 1000px disable zoom."}},
+{"@type":"Question","name":"Does it remove the background automatically?","acceptedAnswer":{"@type":"Answer","text":"Yes. Built-in AI background removal runs in your browser. No need to visit a separate tool first."}},
+{"@type":"Question","name":"Are my product photos uploaded to a server?","acceptedAnswer":{"@type":"Answer","text":"No. All processing is local in your browser. Your product photos never leave your device."}},
+{"@type":"Question","name":"Can I process multiple products at once?","acceptedAnswer":{"@type":"Answer","text":"Yes. Upload up to 20 photos, and each one gets processed into a 2000x2000 Amazon main image automatically."}}
+]}
+</script>
+<style>
+.workflow-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
+.workflow-step{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:1rem}
+.workflow-step h4{margin-bottom:.3rem}
+.workflow-step p{font-size:.85rem;color:var(--text-secondary)}
+.progress-bar{width:100%;height:8px;background:var(--bg-secondary);border-radius:4px;overflow:hidden;margin:.5rem 0}
+.progress-fill{height:100%;background:var(--primary);transition:width .3s}
+.file-item{display:flex;align-items:center;gap:.5rem;padding:.5rem;border-bottom:1px solid var(--border-color);font-size:.9rem}
+.file-item .status{margin-left:auto;font-size:.8rem;color:var(--text-secondary)}
+</style>
+</head>
+<body>
+<header class="site-header">
+<div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a></nav>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+</div>
+</header>
+
+<main class="tool-page">
+<div class="container">
+<nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/workflows/">Workflows</a><span>/</span><span>Amazon Product Image Studio</span></nav>
+
+<div class="tool-page-header">
+<h1>Amazon Product Image Studio</h1>
+<p>Upload product photos → AI removes background → centers on pure white → adds contact shadow → exports 2000×2000. One-click, no jumping between tools.</p>
+</div>
+
+<div class="tool-workspace">
+<div class="upload-area" id="uploadArea">
+<input type="file" id="fileInput" accept="image/*" multiple hidden>
+<div class="upload-icon">📦</div>
+<h3>Drop product photos here</h3>
+<p>or click to browse (up to 20 images)</p>
+<p class="upload-hint">Each image becomes a 2000×2000 Amazon main image automatically</p>
+</div>
+
+<div id="workspace" style="display:none">
+<div style="text-align:center;margin:1rem 0;color:var(--text-secondary)" id="fileCount">0 files</div>
+
+<div class="workflow-steps">
+<div class="workflow-step">
+<h4>1. AI Background Removal</h4>
+<p>Built-in, runs in your browser</p>
+</div>
+<div class="workflow-step">
+<h4>2. White Background</h4>
+<p>Pure RGB(255,255,255), product centered at 85%</p>
+</div>
+<div class="workflow-step">
+<h4>3. Contact Shadow</h4>
+<p>Soft shadow under product for realism</p>
+</div>
+<div class="workflow-step">
+<h4>4. Export ZIP</h4>
+<p>2000×2000 PNG, ready for Seller Central</p>
+</div>
+</div>
+
+<div style="margin:1rem 0">
+<div id="fileList"></div>
+</div>
+
+<div style="text-align:center;margin:1.5rem 0">
+<button class="btn btn-primary" id="runBtn" disabled>🚀 Generate Amazon Images</button>
+<button class="btn btn-secondary" id="resetBtn">↺ Reset</button>
+</div>
+<div id="resultStats" style="text-align:center;color:var(--text-secondary);font-size:.9rem"></div>
+</div>
+</div>
+
+<section class="how-to-section">
+<h2>How It Works</h2>
+<div class="how-to-steps">
+<div class="how-to-step"><div class="step-number">1</div><h4>Upload Photos</h4><p>Drop your raw product photos. Up to 20 at once.</p></div>
+<div class="how-to-step"><div class="step-number">2</div><h4>One-Click Processing</h4><p>AI removes background, centers product, adds shadow.</p></div>
+<div class="how-to-step"><div class="step-number">3</div><h4>Download ZIP</h4><p>All images are 2000×2000 PNG, Amazon-ready.</p></div>
+<div class="how-to-step"><div class="step-number">4</div><h4>Upload to Seller Central</h4><p>Drag the ZIP contents straight into your listing.</p></div>
+</div>
+</section>
+
+<section class="faq-section">
+<h2>FAQ</h2>
+<div class="faq-item"><button class="faq-question">What size does Amazon require?</button><div class="faq-answer">Amazon recommends 2000x2000 pixels. This tool exports exactly that size. Images under 1000px disable zoom.</div></div>
+<div class="faq-item"><button class="faq-question">Does it remove the background automatically?</button><div class="faq-answer">Yes. Built-in AI background removal runs in your browser. No need to visit a separate tool first.</div></div>
+<div class="faq-item"><button class="faq-question">Are my product photos uploaded to a server?</button><div class="faq-answer">No. All processing is local in your browser. Your product photos never leave your device.</div></div>
+<div class="faq-item"><button class="faq-question">Can I process multiple products at once?</button><div class="faq-answer">Yes. Upload up to 20 photos, and each one gets processed into a 2000x2000 Amazon main image automatically.</div></div>
+</section>
+
+</div>
+</main>
+
+<script type="module">
+import { removeBackground } from "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm";
+
+const $ = id => document.getElementById(id);
+const fileInput = $('fileInput'), uploadArea = $('uploadArea'), workspace = $('workspace');
+const runBtn = $('runBtn'), resetBtn = $('resetBtn'), fileCount = $('fileCount');
+let files = [];
+
+uploadArea.addEventListener('click', () => fileInput.click());
+['dragover','dragenter'].forEach(e => uploadArea.addEventListener(e, ev => { ev.preventDefault(); uploadArea.classList.add('dragover'); }));
+['dragleave','drop'].forEach(e => uploadArea.addEventListener(e, () => uploadArea.classList.remove('dragover')));
+uploadArea.addEventListener('drop', e => { e.preventDefault(); addFiles(Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'))); });
+fileInput.addEventListener('change', () => { addFiles(Array.from(fileInput.files)); fileInput.value=''; });
+
+function addFiles(arr) {
+  files = files.concat(arr.filter(f => f.type.startsWith('image/')));
+  workspace.style.display = 'block';
+  uploadArea.style.display = 'none';
+  fileCount.textContent = files.length + ' files';
+  renderFileList();
+  runBtn.disabled = !files.length;
+}
+
+function renderFileList() {
+  const fl = $('fileList');
+  fl.innerHTML = files.map((f, i) =>
+    `<div class="file-item"><span>📷</span><span>${f.name}</span><span class="status" id="status-${i}">pending</span></div>`
+  ).join('');
+}
+
+resetBtn.addEventListener('click', () => {
+  files = [];
+  workspace.style.display = 'none';
+  uploadArea.style.display = 'block';
+  runBtn.disabled = true;
+  $('resultStats').textContent = '';
+});
+
+function centerOnWhiteWithShadow(imgBlob) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      const size = 2000;
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+
+      // White background
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, size, size);
+
+      // Scale product to fit 85% of canvas
+      const scale = Math.min(size / img.width, size / img.height) * 0.8;
+      const w = img.width * scale;
+      const h = img.height * scale;
+      const x = (size - w) / 2;
+      const y = (size - h) / 2;
+
+      // Draw contact shadow (ellipse at bottom)
+      ctx.save();
+      ctx.filter = 'blur(20px)';
+      ctx.fillStyle = 'rgba(0,0,0,0.25)';
+      ctx.beginPath();
+      ctx.ellipse(size/2, y + h + 20, w * 0.35, 30, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // Draw product on top
+      ctx.drawImage(img, x, y, w, h);
+
+      canvas.toBlob(blob => resolve(blob), 'image/png');
+    };
+    img.src = URL.createObjectURL(imgBlob);
+  });
+}
+
+runBtn.addEventListener('click', async () => {
+  if (!files.length) return;
+  runBtn.disabled = true;
+  runBtn.textContent = '⏳ Processing...';
+
+  const zip = new JSZip();
+  let done = 0;
+
+  for (let i = 0; i < files.length; i++) {
+    const statusEl = $(`status-${i}`);
+    statusEl.textContent = 'AI removing background...';
+
+    // Step 1: AI background removal
+    const cutoutBlob = await removeBackground(files[i]);
+
+    statusEl.textContent = 'Adding white background + shadow...';
+
+    // Step 2: Center on white + shadow
+    const finalBlob = await centerOnWhiteWithShadow(cutoutBlob);
+
+    // Step 3: Add to ZIP
+    const name = files[i].name.replace(/\.[^.]+$/, '') + '_amazon.png';
+    zip.file(name, finalBlob);
+
+    statusEl.textContent = '✅ done';
+    done++;
+    $('resultStats').textContent = `Processing ${done}/${files.length}...`;
+  }
+
+  // Download ZIP
+  statusEl = null;
+  const content = await zip.generateAsync({ type: 'blob' });
+  const url = URL.createObjectURL(content);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'amazon-main-images.zip';
+  a.click();
+
+  $('resultStats').textContent = `✅ Done! ${files.length} images exported as amazon-main-images.zip`;
+  runBtn.textContent = '🚀 Generate Amazon Images';
+  runBtn.disabled = false;
+});
+</script>
+</body>
+</html>
