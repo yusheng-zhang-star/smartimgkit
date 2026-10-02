@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>AI YouTube Thumbnail Maker — One-Click Clickable Thumbnails | SmartImgKit</title>
+<meta name="description" content="Create high-CTR YouTube thumbnails in one click: AI background removal + bold text + high contrast. Export 1280x720 + Shorts 1080x1920. Free, browser-based.">
+<meta name="keywords" content="youtube thumbnail maker, high ctr thumbnail, youtube thumbnail text, thumbnail generator free">
+<link rel="canonical" href="https://smartimgkit.com/workflows/ai-youtube-thumbnail-studio">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"AI YouTube Thumbnail Studio","url":"https://smartimgkit.com/workflows/ai-youtube-thumbnail-studio","applicationCategory":"DesignApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"One-click YouTube thumbnails: AI background removal, bold text overlay, high contrast. Export 1280x720 + Shorts."}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"What size is a YouTube thumbnail?","acceptedAnswer":{"@type":"Answer","text":"1280x720 pixels (16:9). This tool exports exactly that, plus Shorts (1080x1920) and square versions."}},
+{"@type":"Question","name":"What makes a high-CTR thumbnail?","acceptedAnswer":{"@type":"Answer","text":"Bold text (50-80pt), high contrast background, clear subject, and emotion. This tool auto-applies all of these."}},
+{"@type":"Question","name":"Are my images uploaded to a server?","acceptedAnswer":{"@type":"Answer","text":"No. All processing is local in your browser. Your images never leave your device."}}
+]}
+</script>
+<style>
+.control-row{display:flex;gap:1rem;align-items:center;margin:1rem 0;flex-wrap:wrap}
+.control-row label{font-size:.9rem;font-weight:600;min-width:100px}
+.control-row input[type=text]{padding:8px 12px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-primary);flex:1;min-width:200px}
+.workflow-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
+.workflow-step{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:1rem}
+.workflow-step h4{margin-bottom:.3rem}
+.workflow-step p{font-size:.85rem;color:var(--text-secondary)}
+</style>
+</head>
+<body>
+<header class="site-header">
+<div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a></nav>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+</div>
+</header>
+
+<main class="tool-page">
+<div class="container">
+<nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/workflows/">Workflows</a><span>/</span><span>AI YouTube Thumbnail Studio</span></nav>
+
+<div class="tool-page-header">
+<h1>AI YouTube Thumbnail Studio</h1>
+<p>Upload a photo → AI removes background → auto high-contrast boost → add bold title text → export 1280x720 + Shorts. Designed for maximum CTR.</p>
+</div>
+
+<div class="tool-workspace">
+<div class="upload-area" id="uploadArea">
+<input type="file" id="fileInput" accept="image/*" hidden>
+<div class="upload-icon">🎬</div>
+<h3>Upload your thumbnail base image</h3>
+<p>or click to browse</p>
+<p class="upload-hint">Best results: close-up face or product shot</p>
+</div>
+
+<div id="workspace" style="display:none">
+<div class="control-row">
+  <label>Title Text:</label>
+  <input type="text" id="thumbTitle" placeholder="e.g. I Tried 7 Days of Cold Showers" maxlength="40">
+</div>
+<div class="control-row">
+  <label>Background:</label>
+  <select id="bgType" style="padding:8px 12px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-primary)">
+    <option value="none" selected>Keep original</option>
+    <option value="remove">AI Remove BG → Solid Color</option>
+    <option value="dark">Dark overlay boost</option>
+  </select>
+</div>
+
+<div class="workflow-steps">
+<div class="workflow-step">
+<h4>1. High Contrast Boost</h4>
+<p>Auto-adjust for pop</p>
+</div>
+<div class="workflow-step">
+<h4>2. Bold Title Text</h4>
+<p>Big, readable, centered</p>
+</div>
+<div class="workflow-step">
+<h4>3. Multi-Size Export</h4>
+<p>16:9 + Shorts + Square</p>
+</div>
+<div class="workflow-step">
+<h4>4. Upload to YouTube</h4>
+<p>Ready for maximum CTR</p>
+</div>
+</div>
+
+<div style="text-align:center;margin:1.5rem 0">
+<button class="btn btn-primary" id="runBtn" disabled>🚀 Generate Thumbnails</button>
+<button class="btn btn-secondary" id="resetBtn">↺ Reset</button>
+</div>
+<div id="resultStats" style="text-align:center;color:var(--text-secondary);font-size:.9rem"></div>
+</div>
+</div>
+
+<section class="how-to-section">
+<h2>How It Works</h2>
+<div class="how-to-steps">
+<div class="how-to-step"><div class="step-number">1</div><h4>Upload Image</h4><p>Close-up face or product works best.</p></div>
+<div class="how-to-step"><div class="step-number">2</div><h4>Add Title</h4><p>Short, punchy text — max 40 characters.</p></div>
+<div class="how-to-step"><div class="step-number">3</div><h4>Generate</h4><p>Auto contrast, bold text, multi-size export.</p></div>
+<div class="how-to-step"><div class="step-number">4</div><h4>Upload to YouTube</h4><p>1280x720 is the official spec.</p></div>
+</div>
+</section>
+
+<section class="faq-section">
+<h2>FAQ</h2>
+<div class="faq-item"><button class="faq-question">What size is a YouTube thumbnail?</button><div class="faq-answer">1280x720 pixels (16:9). This tool exports exactly that, plus Shorts (1080x1920) and square versions.</div></div>
+<div class="faq-item"><button class="faq-question">What makes a high-CTR thumbnail?</button><div class="faq-answer">Bold text (50-80pt), high contrast background, clear subject, and emotion. This tool auto-applies all of these.</div></div>
+<div class="faq-item"><button class="faq-question">Are my images uploaded to a server?</button><div class="faq-answer">No. All processing is local in your browser. Your images never leave your device.</div></div>
+</section>
+
+</div>
+</main>
+
+<script type="module">
+import { removeBackground } from "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm";
+
+const $ = id => document.getElementById(id);
+const fileInput = $('fileInput'), uploadArea = $('uploadArea'), workspace = $('workspace');
+const runBtn = $('runBtn'), resetBtn = $('resetBtn');
+let file = null;
+
+uploadArea.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', () => {
+  if (fileInput.files[0]) {
+    file = fileInput.files[0];
+    workspace.style.display = 'block';
+    uploadArea.style.display = 'none';
+    runBtn.disabled = false;
+  }
+});
+
+resetBtn.addEventListener('click', () => {
+  file = null;
+  workspace.style.display = 'none';
+  uploadArea.style.display = 'block';
+  runBtn.disabled = true;
+  $('resultStats').textContent = '';
+});
+
+function renderThumb(imgBlob, w, h, title, bgType) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+
+      // Cover fit image
+      const scale = Math.max(w / img.width, h / img.height);
+      const dw = img.width * scale, dh = img.height * scale;
+      ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
+
+      // Dark overlay for text readability
+      if (bgType === 'dark' || title) {
+        ctx.fillStyle = 'rgba(0,0,0,0.4)';
+        ctx.fillRect(0, h * 0.5, w, h * 0.5);
+      }
+
+      // Bold title text
+      if (title) {
+        ctx.fillStyle = '#ffffff';
+        ctx.font = `900 ${Math.floor(h * 0.12)}px Inter, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.lineWidth = 8;
+        ctx.strokeStyle = '#000000';
+        
+        // Wrap text
+        const words = title.split(' ');
+        let lines = [];
+        let current = '';
+        for (const word of words) {
+          const test = current ? current + ' ' + word : word;
+          if (ctx.measureText(test).width > w * 0.9) {
+            lines.push(current);
+            current = word;
+          } else {
+            current = test;
+          }
+        }
+        lines.push(current);
+        
+        const lineHeight = h * 0.15;
+        const startY = h * 0.7;
+        lines.forEach((line, i) => {
+          const y = startY + i * lineHeight;
+          ctx.strokeText(line, w/2, y);
+          ctx.fillText(line, w/2, y);
+        });
+      }
+
+      canvas.toBlob(blob => resolve(blob), 'image/png');
+    };
+    img.src = URL.createObjectURL(imgBlob);
+  });
+}
+
+runBtn.addEventListener('click', async () => {
+  if (!file) return;
+  runBtn.disabled = true;
+  runBtn.textContent = '⏳ Processing...';
+
+  const bgType = $('bgType').value;
+  const title = $('thumbTitle').value.trim();
+  let processedBlob = file;
+
+  if (bgType === 'remove') {
+    $('resultStats').textContent = 'AI removing background...';
+    processedBlob = await removeBackground(file);
+  }
+
+  $('resultStats').textContent = 'Generating thumbnails...';
+  const zip = new JSZip();
+  
+  // 16:9 main
+  const main = await renderThumb(processedBlob, 1280, 720, title, bgType);
+  zip.file('youtube-thumbnail-1280x720.png', main);
+  
+  // Shorts 9:16
+  const shorts = await renderThumb(processedBlob, 1080, 1920, title, bgType);
+  zip.file('youtube-shorts-1080x1920.png', shorts);
+  
+  // Square
+  const square = await renderThumb(processedBlob, 1080, 1080, title, bgType);
+  zip.file('youtube-square-1080x1080.png', square);
+
+  const content = await zip.generateAsync({ type: 'blob' });
+  const url = URL.createObjectURL(content);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'youtube-thumbnails.zip';
+  a.click();
+
+  $('resultStats').textContent = '✅ Done! 3 thumbnail sizes exported as youtube-thumbnails.zip';
+  runBtn.textContent = '🚀 Generate Thumbnails';
+  runBtn.disabled = false;
+});
+</script>
+</body>
+</html>

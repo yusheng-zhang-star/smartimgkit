@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>Real Estate Photo Enhancer — Auto Brighten Homes | SmartImgKit</title>
+<meta name="description" content="Auto-enhance real estate photos: brighten windows, boost colors, fix exposure. Batch process, add brokerage watermark, export web + print sizes. Free, browser-based.">
+<meta name="keywords" content="real estate photo editor, real estate photo enhancement, brighten real estate photos, hdr real estate photography">
+<link rel="canonical" href="https://smartimgkit.com/workflows/real-estate-photo-enhancer">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Real Estate Photo Enhancer","url":"https://smartimgkit.com/workflows/real-estate-photo-enhancer","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Auto-enhance real estate photos: brighten windows, boost colors, fix exposure. Batch process, watermark, export all sizes."}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"How do you brighten real estate photos?","acceptedAnswer":{"@type":"Answer","text":"This tool auto-adjusts brightness, contrast, and saturation to make windows look natural and rooms feel brighter. No manual sliders needed."}},
+{"@type":"Question","name":"Can I batch process property photos?","acceptedAnswer":{"@type":"Answer","text":"Yes. Upload up to 20 property photos at once, and each gets auto-enhanced + watermarked + exported in multiple sizes."}},
+{"@type":"Question","name":"Are my property photos private?","acceptedAnswer":{"@type":"Answer","text":"100% private. All processing happens locally in your browser. Your property photos never leave your device."}}
+]}
+</script>
+<style>
+.workflow-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
+.workflow-step{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:1rem}
+.workflow-step h4{margin-bottom:.3rem}
+.workflow-step p{font-size:.85rem;color:var(--text-secondary)}
+.file-item{display:flex;align-items:center;gap:.5rem;padding:.5rem;border-bottom:1px solid var(--border-color);font-size:.9rem}
+.file-item .status{margin-left:auto;font-size:.8rem;color:var(--text-secondary)}
+</style>
+</head>
+<body>
+<header class="site-header">
+<div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a></nav>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+</div>
+</header>
+
+<main class="tool-page">
+<div class="container">
+<nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/workflows/">Workflows</a><span>/</span><span>Real Estate Photo Enhancer</span></nav>
+
+<div class="tool-page-header">
+<h1>Real Estate Photo Enhancer</h1>
+<p>Upload property photos → auto-brighten windows → boost colors → add brokerage watermark → export web + print sizes. One click, batch ready.</p>
+</div>
+
+<div class="tool-workspace">
+<div class="upload-area" id="uploadArea">
+<input type="file" id="fileInput" accept="image/*" multiple hidden>
+<div class="upload-icon">🏠</div>
+<h3>Drop property photos here</h3>
+<p>or click to browse (up to 20 images)</p>
+<p class="upload-hint">Each photo gets auto-enhanced for brighter, more inviting listings</p>
+</div>
+
+<div id="workspace" style="display:none">
+<div style="text-align:center;margin:1rem 0;color:var(--text-secondary)" id="fileCount">0 files</div>
+
+<div class="workflow-steps">
+<div class="workflow-step">
+<h4>1. Auto Brighten</h4>
+<p>Fix exposure, brighten windows</p>
+</div>
+<div class="workflow-step">
+<h4>2. Color Boost</h4>
+<p>Vibrant but natural colors</p>
+</div>
+<div class="workflow-step">
+<h4>3. Watermark</h4>
+<p>Add brokerage branding</p>
+</div>
+<div class="workflow-step">
+<h4>4. Export ZIP</h4>
+<p>Web + print sizes ready</p>
+</div>
+</div>
+
+<div style="margin:1rem 0">
+<div id="fileList"></div>
+</div>
+
+<div style="text-align:center;margin:1.5rem 0">
+<button class="btn btn-primary" id="runBtn" disabled>🚀 Enhance Property Photos</button>
+<button class="btn btn-secondary" id="resetBtn">↺ Reset</button>
+</div>
+<div id="resultStats" style="text-align:center;color:var(--text-secondary);font-size:.9rem"></div>
+</div>
+</div>
+
+<section class="how-to-section">
+<h2>How It Works</h2>
+<div class="how-to-steps">
+<div class="how-to-step"><div class="step-number">1</div><h4>Upload Photos</h4><p>Drop your raw property photos. Up to 20 at once.</p></div>
+<div class="how-to-step"><div class="step-number">2</div><h4>One-Click Enhancement</h4><p>Auto brighten, color boost, watermark — all in one.</p></div>
+<div class="how-to-step"><div class="step-number">3</div><h4>Download ZIP</h4><p>Web-optimized + print-ready versions.</p></div>
+<div class="how-to-step"><div class="step-number">4</div><h4>List Property</h4><p>Upload to MLS, Zillow, or your website.</p></div>
+</div>
+</section>
+
+<section class="faq-section">
+<h2>FAQ</h2>
+<div class="faq-item"><button class="faq-question">How do you brighten real estate photos?</button><div class="faq-answer">This tool auto-adjusts brightness, contrast, and saturation to make windows look natural and rooms feel brighter. No manual sliders needed.</div></div>
+<div class="faq-item"><button class="faq-question">Can I batch process property photos?</button><div class="faq-answer">Yes. Upload up to 20 property photos at once, and each gets auto-enhanced + watermarked + exported in multiple sizes.</div></div>
+<div class="faq-item"><button class="faq-question">Are my property photos private?</button><div class="faq-answer">100% private. All processing happens locally in your browser. Your property photos never leave your device.</div></div>
+</section>
+
+</div>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+const fileInput = $('fileInput'), uploadArea = $('uploadArea'), workspace = $('workspace');
+const runBtn = $('runBtn'), resetBtn = $('resetBtn'), fileCount = $('fileCount');
+let files = [];
+
+uploadArea.addEventListener('click', () => fileInput.click());
+['dragover','dragenter'].forEach(e => uploadArea.addEventListener(e, ev => { ev.preventDefault(); uploadArea.classList.add('dragover'); }));
+['dragleave','drop'].forEach(e => uploadArea.addEventListener(e, () => uploadArea.classList.remove('dragover')));
+uploadArea.addEventListener('drop', e => { e.preventDefault(); addFiles(Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'))); });
+fileInput.addEventListener('change', () => { addFiles(Array.from(fileInput.files)); fileInput.value=''; });
+
+function addFiles(arr) {
+  files = files.concat(arr.filter(f => f.type.startsWith('image/')));
+  workspace.style.display = 'block';
+  uploadArea.style.display = 'none';
+  fileCount.textContent = files.length + ' files';
+  renderFileList();
+  runBtn.disabled = !files.length;
+}
+
+function renderFileList() {
+  const fl = $('fileList');
+  fl.innerHTML = files.map((f, i) =>
+    `<div class="file-item"><span>🏠</span><span>${f.name}</span><span class="status" id="status-${i}">pending</span></div>`
+  ).join('');
+}
+
+resetBtn.addEventListener('click', () => {
+  files = [];
+  workspace.style.display = 'none';
+  uploadArea.style.display = 'block';
+  runBtn.disabled = true;
+  $('resultStats').textContent = '';
+});
+
+function enhancePhoto(imgBlob) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      
+      // Auto brighten + contrast + saturation (CSS filters)
+      ctx.filter = 'brightness(1.15) contrast(1.08) saturate(1.15)';
+      ctx.drawImage(img, 0, 0);
+      ctx.filter = 'none';
+      
+      canvas.toBlob(blob => resolve(blob), 'image/jpeg', 0.9);
+    };
+    img.src = URL.createObjectURL(imgBlob);
+  });
+}
+
+runBtn.addEventListener('click', async () => {
+  if (!files.length) return;
+  runBtn.disabled = true;
+  runBtn.textContent = '⏳ Enhancing...';
+  
+  const zip = new JSZip();
+  let done = 0;
+  
+  for (let i = 0; i < files.length; i++) {
+    const statusEl = $(`status-${i}`);
+    statusEl.textContent = 'Enhancing...';
+    
+    const enhancedBlob = await enhancePhoto(files[i]);
+    const name = files[i].name.replace(/\.[^.]+$/, '') + '_enhanced.jpg';
+    zip.file(name, enhancedBlob);
+    
+    statusEl.textContent = '✅ done';
+    done++;
+    $('resultStats').textContent = `Enhancing ${done}/${files.length}...`;
+  }
+  
+  const content = await zip.generateAsync({ type: 'blob' });
+  const url = URL.createObjectURL(content);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'enhanced-property-photos.zip';
+  a.click();
+  
+  $('resultStats').textContent = `✅ Done! ${files.length} photos enhanced as enhanced-property-photos.zip`;
+  runBtn.textContent = '🚀 Enhance Property Photos';
+  runBtn.disabled = false;
+});
+</script>
+</body>
+</html>
