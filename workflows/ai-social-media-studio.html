@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>AI Social Media Image Studio — Multi-Size | SmartImgKit</title>
+<meta name="description" content="One-click social media images: AI background removal + custom background + all platform sizes (Instagram, Facebook, Twitter, LinkedIn). Free, browser-based.">
+<meta name="keywords" content="social media image generator, multi-size social media, instagram post size, facebook post size">
+<link rel="canonical" href="https://smartimgkit.com/workflows/ai-social-media-studio">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"AI Social Media Studio","url":"https://smartimgkit.com/workflows/ai-social-media-studio","applicationCategory":"DesignApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"One-click social media images: AI background removal, custom background, all platform sizes."}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"What sizes do you export?","acceptedAnswer":{"@type":"Answer","text":"Instagram 1:1 (1080x1080), Instagram 4:5 (1080x1350), Facebook 16:9 (1200x630), Twitter 16:9 (1600x900), LinkedIn 1:1 (1200x1200)."}},
+{"@type":"Question","name":"Does it remove the background?","acceptedAnswer":{"@type":"Answer","text":"Yes. Optional AI background removal runs in your browser. Choose between transparent, solid color, or gradient background."}},
+{"@type":"Question","name":"Are my images uploaded?","acceptedAnswer":{"@type":"Answer","text":"No. All processing is local in your browser. Your images never leave your device."}}
+]}
+</script>
+<style>
+.workflow-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
+.workflow-step{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:1rem}
+.workflow-step h4{margin-bottom:.3rem}
+.workflow-step p{font-size:.85rem;color:var(--text-secondary)}
+.control-row{display:flex;gap:1rem;align-items:center;margin:1rem 0;flex-wrap:wrap}
+.control-row label{font-size:.9rem;font-weight:600}
+.control-row select{padding:6px 10px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-primary)}
+</style>
+</head>
+<body>
+<header class="site-header">
+<div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a></nav>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+</div>
+</header>
+
+<main class="tool-page">
+<div class="container">
+<nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/workflows/">Workflows</a><span>/</span><span>AI Social Media Studio</span></nav>
+
+<div class="tool-page-header">
+<h1>AI Social Media Image Studio</h1>
+<p>Upload one photo → optional AI background removal → place on custom background → export all platform sizes. Instagram, Facebook, Twitter, LinkedIn.</p>
+</div>
+
+<div class="tool-workspace">
+<div class="upload-area" id="uploadArea">
+<input type="file" id="fileInput" accept="image/*" hidden>
+<div class="upload-icon">📱</div>
+<h3>Drop your image here</h3>
+<p>or click to browse</p>
+<p class="upload-hint">One image → 5 platform sizes automatically</p>
+</div>
+
+<div id="workspace" style="display:none">
+<div class="control-row">
+  <label>Background:</label>
+  <select id="bgType">
+    <option value="none" selected>Keep original</option>
+    <option value="remove">AI Remove BG → Transparent</option>
+    <option value="white">White</option>
+    <option value="gradient">Gradient (purple → blue)</option>
+  </select>
+</div>
+
+<div class="workflow-steps">
+<div class="workflow-step">
+<h4>1. AI Background (Optional)</h4>
+<p>Remove or replace background</p>
+</div>
+<div class="workflow-step">
+<h4>2. Multi-Size Layout</h4>
+<p>Auto-fit each platform ratio</p>
+</div>
+<div class="workflow-step">
+<h4>3. Export All Sizes</h4>
+<p>5 platforms, one ZIP</p>
+</div>
+<div class="workflow-step">
+<h4>4. Download & Post</h4>
+<p>Ready for every feed</p>
+</div>
+</div>
+
+<div style="text-align:center;margin:1.5rem 0">
+<button class="btn btn-primary" id="runBtn" disabled>🚀 Generate Social Images</button>
+<button class="btn btn-secondary" id="resetBtn">↺ Reset</button>
+</div>
+<div id="resultStats" style="text-align:center;color:var(--text-secondary);font-size:.9rem"></div>
+</div>
+</div>
+
+<section class="how-to-section">
+<h2>How It Works</h2>
+<div class="how-to-steps">
+<div class="how-to-step"><div class="step-number">1</div><h4>Upload Image</h4><p>One product shot, portrait, or design.</p></div>
+<div class="how-to-step"><div class="step-number">2</div><h4>Choose Background</h4><p>Keep original, AI remove, or pick a style.</p></div>
+<div class="how-to-step"><div class="step-number">3</div><h4>Generate All Sizes</h4><p>5 platforms, one click.</p></div>
+<div class="how-to-step"><div class="step-number">4</div><h4>Download ZIP</h4><p>Post to every platform at once.</p></div>
+</div>
+</section>
+
+<section class="faq-section">
+<h2>FAQ</h2>
+<div class="faq-item"><button class="faq-question">What sizes do you export?</button><div class="faq-answer">Instagram 1:1 (1080x1080), Instagram 4:5 (1080x1350), Facebook 16:9 (1200x630), Twitter 16:9 (1600x900), LinkedIn 1:1 (1200x1200).</div></div>
+<div class="faq-item"><button class="faq-question">Does it remove the background?</button><div class="faq-answer">Yes. Optional AI background removal runs in your browser. Choose between transparent, solid color, or gradient background.</div></div>
+<div class="faq-item"><button class="faq-question">Are my images uploaded?</button><div class="faq-answer">No. All processing is local in your browser. Your images never leave your device.</div></div>
+</section>
+
+</div>
+</main>
+
+<script type="module">
+import { removeBackground } from "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm";
+
+const $ = id => document.getElementById(id);
+const fileInput = $('fileInput'), uploadArea = $('uploadArea'), workspace = $('workspace');
+const runBtn = $('runBtn'), resetBtn = $('resetBtn');
+let file = null;
+
+uploadArea.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', () => {
+  if (fileInput.files[0]) {
+    file = fileInput.files[0];
+    workspace.style.display = 'block';
+    uploadArea.style.display = 'none';
+    runBtn.disabled = false;
+  }
+});
+
+resetBtn.addEventListener('click', () => {
+  file = null;
+  workspace.style.display = 'none';
+  uploadArea.style.display = 'block';
+  runBtn.disabled = true;
+  $('resultStats').textContent = '';
+});
+
+function renderSize(imgBlob, w, h, bgType) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+
+      if (bgType === 'white') {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, w, h);
+      } else if (bgType === 'gradient') {
+        const grad = ctx.createLinearGradient(0, 0, w, h);
+        grad.addColorStop(0, '#4f46e5');
+        grad.addColorStop(1, '#0ea5e9');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, w, h);
+      }
+
+      // Center image, cover fit
+      const scale = Math.max(w / img.width, h / img.height);
+      const dw = img.width * scale, dh = img.height * scale;
+      ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
+
+      canvas.toBlob(blob => resolve(blob), 'image/png');
+    };
+    img.src = URL.createObjectURL(imgBlob);
+  });
+}
+
+runBtn.addEventListener('click', async () => {
+  if (!file) return;
+  runBtn.disabled = true;
+  runBtn.textContent = '⏳ Processing...';
+
+  const bgType = $('bgType').value;
+  let processedBlob = file;
+
+  if (bgType === 'remove') {
+    $('resultStats').textContent = 'AI removing background...';
+    processedBlob = await removeBackground(file);
+  }
+
+  $('resultStats').textContent = 'Generating sizes...';
+  const zip = new JSZip();
+  const sizes = [
+    { name: 'instagram-square.png', w: 1080, h: 1080 },
+    { name: 'instagram-portrait.png', w: 1080, h: 1350 },
+    { name: 'facebook-link.png', w: 1200, h: 630 },
+    { name: 'twitter-header.png', w: 1600, h: 900 },
+    { name: 'linkedin-post.png', w: 1200, h: 1200 },
+  ];
+
+  for (const s of sizes) {
+    const blob = await renderSize(processedBlob, s.w, s.h, bgType === 'remove' ? 'transparent' : bgType);
+    zip.file(s.name, blob);
+  }
+
+  const content = await zip.generateAsync({ type: 'blob' });
+  const url = URL.createObjectURL(content);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'social-media-images.zip';
+  a.click();
+
+  $('resultStats').textContent = '✅ Done! 5 sizes exported as social-media-images.zip';
+  runBtn.textContent = '🚀 Generate Social Images';
+  runBtn.disabled = false;
+});
+</script>
+</body>
+</html>
