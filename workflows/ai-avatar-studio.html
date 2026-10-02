@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>AI Avatar Studio — One-Click Profile Pictures | SmartImgKit</title>
+<meta name="description" content="One-click avatar maker: AI background removal + circle crop + multiple sizes (64/128/256/512/1024). All in your browser, free.">
+<meta name="keywords" content="avatar maker, profile picture generator, circle avatar, ai avatar background remover">
+<link rel="canonical" href="https://smartimgkit.com/workflows/ai-avatar-studio">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"AI Avatar Studio","url":"https://smartimgkit.com/workflows/ai-avatar-studio","applicationCategory":"DesignApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"One-click avatar maker: AI background removal, circle crop, multiple sizes. Free, browser-based."}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"What sizes do you export?","acceptedAnswer":{"@type":"Answer","text":"64, 128, 256, 512, and 1024 pixels — covers Discord, Slack, Teams, LinkedIn, and social media."}},
+{"@type":"Question","name":"Does it remove the background?","acceptedAnswer":{"@type":"Answer","text":"Yes. Built-in AI background removal runs in your browser. Your photo never leaves your device."}},
+{"@type":"Question","name":"Can I use a solid color background instead?","acceptedAnswer":{"@type":"Answer","text":"Yes. Choose between transparent background or any solid color — white, blue, gray, brand color."}}
+]}
+</script>
+<style>
+.workflow-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
+.workflow-step{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:1rem}
+.workflow-step h4{margin-bottom:.3rem}
+.workflow-step p{font-size:.85rem;color:var(--text-secondary)}
+.control-row{display:flex;gap:1rem;align-items:center;margin:1rem 0;flex-wrap:wrap}
+.control-row label{font-size:.9rem;font-weight:600}
+.control-row select{padding:6px 10px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-primary)}
+</style>
+</head>
+<body>
+<header class="site-header">
+<div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a></nav>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+</div>
+</header>
+
+<main class="tool-page">
+<div class="container">
+<nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/workflows/">Workflows</a><span>/</span><span>AI Avatar Studio</span></nav>
+
+<div class="tool-page-header">
+<h1>AI Avatar Studio</h1>
+<p>Upload one photo → AI removes background → auto circle crop → export 5 sizes. Perfect for Discord, Slack, Teams, LinkedIn.</p>
+</div>
+
+<div class="tool-workspace">
+<div class="upload-area" id="uploadArea">
+<input type="file" id="fileInput" accept="image/*" hidden>
+<div class="upload-icon">👤</div>
+<h3>Drop your photo here</h3>
+<p>or click to browse</p>
+<p class="upload-hint">One photo → 5 avatar sizes automatically</p>
+</div>
+
+<div id="workspace" style="display:none">
+<div class="control-row">
+  <label>Background:</label>
+  <select id="bgType">
+    <option value="transparent" selected>Transparent (PNG)</option>
+    <option value="white">White</option>
+    <option value="brand">Brand Blue</option>
+    <option value="gray">Gray</option>
+  </select>
+</div>
+
+<div class="workflow-steps">
+<div class="workflow-step">
+<h4>1. AI Background Removal</h4>
+<p>Built-in face/person detection</p>
+</div>
+<div class="workflow-step">
+<h4>2. Auto Circle Crop</h4>
+<p>Face centered, perfect circle</p>
+</div>
+<div class="workflow-step">
+<h4>3. Multi-Size Export</h4>
+<p>64 / 128 / 256 / 512 / 1024 px</p>
+</div>
+<div class="workflow-step">
+<h4>4. Download ZIP</h4>
+<p>All sizes ready to use</p>
+</div>
+</div>
+
+<div style="text-align:center;margin:1.5rem 0">
+<button class="btn btn-primary" id="runBtn" disabled>🚀 Generate Avatars</button>
+<button class="btn btn-secondary" id="resetBtn">↺ Reset</button>
+</div>
+<div id="resultStats" style="text-align:center;color:var(--text-secondary);font-size:.9rem"></div>
+</div>
+</div>
+
+<section class="how-to-section">
+<h2>How It Works</h2>
+<div class="how-to-steps">
+<div class="how-to-step"><div class="step-number">1</div><h4>Upload Photo</h4><p>Any headshot or portrait. Up close works best.</p></div>
+<div class="how-to-step"><div class="step-number">2</div><h4>One-Click Processing</h4><p>AI removes background, centers face, crops to circle.</p></div>
+<div class="how-to-step"><div class="step-number">3</div><h4>Download ZIP</h4><p>5 sizes, ready for every platform.</p></div>
+</div>
+</section>
+
+<section class="faq-section">
+<h2>FAQ</h2>
+<div class="faq-item"><button class="faq-question">What sizes do you export?</button><div class="faq-answer">64, 128, 256, 512, and 1024 pixels — covers Discord, Slack, Teams, LinkedIn, and social media.</div></div>
+<div class="faq-item"><button class="faq-question">Does it remove the background?</button><div class="faq-answer">Yes. Built-in AI background removal runs in your browser. Your photo never leaves your device.</div></div>
+<div class="faq-item"><button class="faq-question">Can I use a solid color background instead?</button><div class="faq-answer">Yes. Choose between transparent background or any solid color — white, blue, gray, brand color.</div></div>
+</section>
+
+</div>
+</main>
+
+<script type="module">
+import { removeBackground } from "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm";
+
+const $ = id => document.getElementById(id);
+const fileInput = $('fileInput'), uploadArea = $('uploadArea'), workspace = $('workspace');
+const runBtn = $('runBtn'), resetBtn = $('resetBtn');
+let file = null;
+
+uploadArea.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', () => {
+  if (fileInput.files[0]) {
+    file = fileInput.files[0];
+    workspace.style.display = 'block';
+    uploadArea.style.display = 'none';
+    runBtn.disabled = false;
+  }
+});
+
+resetBtn.addEventListener('click', () => {
+  file = null;
+  workspace.style.display = 'none';
+  uploadArea.style.display = 'block';
+  runBtn.disabled = true;
+  $('resultStats').textContent = '';
+});
+
+function circleCrop(imgBlob, size, bgType) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+
+      // Background
+      if (bgType === 'white') { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, size, size); }
+      else if (bgType === 'brand') { ctx.fillStyle = '#4f46e5'; ctx.fillRect(0, 0, size, size); }
+      else if (bgType === 'gray') { ctx.fillStyle = '#9ca3af'; ctx.fillRect(0, 0, size, size); }
+
+      // Circular clip
+      ctx.beginPath();
+      ctx.arc(size/2, size/2, size/2, 0, Math.PI * 2);
+      ctx.closePath();
+      ctx.clip();
+
+      // Center image
+      const scale = Math.max(size / img.width, size / img.height) * 1.1;
+      const w = img.width * scale, h = img.height * scale;
+      ctx.drawImage(img, (size - w) / 2, (size - h) / 2, w, h);
+
+      canvas.toBlob(blob => resolve(blob), 'image/png');
+    };
+    img.src = URL.createObjectURL(imgBlob);
+  });
+}
+
+runBtn.addEventListener('click', async () => {
+  if (!file) return;
+  runBtn.disabled = true;
+  runBtn.textContent = '⏳ Processing...';
+
+  $('resultStats').textContent = 'AI removing background...';
+  const cutoutBlob = await removeBackground(file);
+
+  $('resultStats').textContent = 'Generating sizes...';
+  const sizes = [64, 128, 256, 512, 1024];
+  const bgType = $('bgType').value;
+  const zip = new JSZip();
+
+  for (const s of sizes) {
+    const blob = await circleCrop(cutoutBlob, s, bgType);
+    zip.file(`avatar_${s}.png`, blob);
+  }
+
+  const content = await zip.generateAsync({ type: 'blob' });
+  const url = URL.createObjectURL(content);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'avatars.zip';
+  a.click();
+
+  $('resultStats').textContent = '✅ Done! 5 avatar sizes exported as avatars.zip';
+  runBtn.textContent = '🚀 Generate Avatars';
+  runBtn.disabled = false;
+});
+</script>
+</body>
+</html>
