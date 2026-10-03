@@ -113,7 +113,20 @@
 
     <div class="controls" id="controls" style="display:none">
       <div class="control">
-        <label>Border Color</label>
+        <label>Preset Template</label>
+        <select id="presetSelect" style="width:100%;padding:.5rem;border-radius:6px;background:var(--surface);color:var(--text);border:1px solid var(--border);">
+          <option value="classic">Classic White Sticker</option>
+          <option value="influencer">Influencer Gradient (Pink-Purple)</option>
+          <option value="cool">Cool Black Outline</option>
+          <option value="neon">Neon Yellow Outline</option>
+        </select>
+      </div>
+      <div class="control">
+        <label>Border Thickness <span class="val" id="thickVal">20px</span></label>
+        <input type="range" id="thickSlider" min="2" max="80" value="20">
+      </div>
+      <div class="control">
+        <label>Border Color 1</label>
         <input type="color" id="colorPicker" value="#ffffff">
         <div class="color-presets">
           <div class="color-dot active" style="background:#ffffff" data-c="#ffffff"></div>
@@ -124,8 +137,17 @@
         </div>
       </div>
       <div class="control">
-        <label>Border Thickness <span class="val" id="thickVal">20px</span></label>
-        <input type="range" id="thickSlider" min="2" max="80" value="20">
+        <label><input type="checkbox" id="optGradient"> Enable Gradient Border</label>
+        <div style="margin-top:.5rem;">
+          <label>Border Color 2 (for gradient)</label>
+          <input type="color" id="colorPicker2" value="#ff00ff">
+        </div>
+      </div>
+      <div class="control" style="grid-column: span 2;">
+        <label><input type="checkbox" id="optShadow" checked> Add drop shadow to sticker</label>
+        <button id="btnExportConfig" style="margin-top:.5rem;padding:.5rem 1rem;border-radius:6px;background:var(--surface);color:var(--text);border:1px solid var(--border);cursor:pointer;font-size:.85rem;">
+          ⚙️ Export Config JSON
+        </button>
       </div>
     </div>
 
@@ -168,7 +190,10 @@
     fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
 
     colorPicker.addEventListener('input', render);
+    document.getElementById('colorPicker2').addEventListener('input', render);
     thickSlider.addEventListener('input', render);
+    document.getElementById('optGradient').addEventListener('change', render);
+    document.getElementById('optShadow').addEventListener('change', render);
     document.querySelectorAll('.color-dot').forEach(dot => {
       dot.addEventListener('click', () => {
         document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
@@ -195,15 +220,36 @@
     function render() {
       if (!img) return;
       const thick = +thickSlider.value;
-      const color = colorPicker.value;
+      const color1 = colorPicker.value;
+      const color2 = document.getElementById('colorPicker2').value;
+      const useGradient = document.getElementById('optGradient').checked;
+      const addShadow = document.getElementById('optShadow').checked;
       document.getElementById('thickVal').textContent = thick + 'px';
 
       canvas.width = img.width + thick * 2;
       canvas.height = img.height + thick * 2;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+      // Create gradient if enabled
+      if (useGradient) {
+        const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        grad.addColorStop(0, color1);
+        grad.addColorStop(1, color2);
+        ctx.fillStyle = grad;
+      } else {
+        ctx.fillStyle = color1;
+      }
+
+      // Add shadow if enabled
+      if (addShadow) {
+        ctx.save();
+        ctx.shadowColor = 'rgba(0,0,0,0.3)';
+        ctx.shadowBlur = thick * 0.5;
+        ctx.shadowOffsetX = thick * 0.2;
+        ctx.shadowOffsetY = thick * 0.2;
+      }
+
       // Draw outline by drawing the image multiple times offset in all directions
-      ctx.fillStyle = color;
       for (let dx = -thick; dx <= thick; dx += 2) {
         for (let dy = -thick; dy <= thick; dy += 2) {
           if (Math.abs(dx) + Math.abs(dy) <= thick) {
@@ -211,6 +257,9 @@
           }
         }
       }
+
+      if (addShadow) ctx.restore();
+
       // Draw original image on top
       ctx.drawImage(img, thick, thick);
     }
@@ -229,6 +278,44 @@
       btnGroup.style.display = 'none';
       fileInput.value = '';
     };
+
+    // Preset templates
+    document.getElementById('presetSelect').addEventListener('change', (e) => {
+      const preset = e.target.value;
+      const presets = {
+        classic: { c1: '#ffffff', c2: '#ffffff', thick: 20, gradient: false, shadow: true },
+        influencer: { c1: '#ff0066', c2: '#9900ff', thick: 25, gradient: true, shadow: true },
+        cool: { c1: '#000000', c2: '#000000', thick: 15, gradient: false, shadow: false },
+        neon: { c1: '#ffff00', c2: '#ffff00', thick: 18, gradient: false, shadow: true }
+      };
+      const p = presets[preset];
+      document.getElementById('colorPicker').value = p.c1;
+      document.getElementById('colorPicker2').value = p.c2;
+      thickSlider.value = p.thick;
+      document.getElementById('optGradient').checked = p.gradient;
+      document.getElementById('optShadow').checked = p.shadow;
+      render();
+    });
+
+    // Export config JSON
+    document.getElementById('btnExportConfig').addEventListener('click', () => {
+      const config = {
+        preset: document.getElementById('presetSelect').value,
+        borderColor1: document.getElementById('colorPicker').value,
+        borderColor2: document.getElementById('colorPicker2').value,
+        thickness: +thickSlider.value,
+        useGradient: document.getElementById('optGradient').checked,
+        addShadow: document.getElementById('optShadow').checked,
+        generatedAt: new Date().toISOString(),
+        tool: 'sticker-outline'
+      };
+      const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'sticker-config.json';
+      a.click();
+    });
 
     document.querySelectorAll('.faq-question').forEach(btn => {
       btn.addEventListener('click', () => btn.parentElement.classList.toggle('open'));
