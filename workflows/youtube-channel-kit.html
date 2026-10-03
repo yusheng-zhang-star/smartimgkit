@@ -17,7 +17,7 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="../css/style.css?v=10">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="/js/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"WebApplication","name":"YouTube Channel Kit","url":"https://smartimgkit.com/workflows/youtube-channel-kit","applicationCategory":"MultimediaApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Upload one image, get your full YouTube channel art pack: profile picture, banner, video thumbnail, and end screen."}
   </script>
@@ -40,8 +40,6 @@
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What sizes are included?","acceptedAnswer":{"@type":"Answer","text":"4 sizes: channel avatar 800x800, banner 2560x1440, thumbnail 1280x720, end screen 1920x1080."}},{"@type":"Question","name":"Do my images get uploaded?","acceptedAnswer":{"@type":"Answer","text":"No. All cropping happens locally in your browser. Your images never leave your device."}},{"@type":"Question","name":"Is this free?","acceptedAnswer":{"@type":"Answer","text":"Yes. No sign-up, no watermark, completely free."}},{"@type":"Question","name":"Can I use my own logo?","acceptedAnswer":{"@type":"Answer","text":"Yes. Upload any logo or photo and we'll auto-crop it to all YouTube sizes."}},{"@type":"Question","name":"What format do I get?","acceptedAnswer":{"@type":"Answer","text":"PNG files in a single ZIP, ready to upload directly to YouTube."}}]}
   </script>
-<meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
 </head>
 <body>
   <header class="site-header">
@@ -66,6 +64,8 @@
         <p class="upload-hint">Supports JPG, PNG, WebP • One image</p>
       </div>
       <input type="file" id="fileInput" accept="image/*" hidden>
+
+      <div id="progress" style="display:none;text-align:center;margin:1rem 0;color:var(--text-secondary);">⏳ Generating all channel sizes...</div>
 
       <div id="outputSection" style="display:none;">
         <h3 style="margin:2rem 0 1rem 0;">Your Channel Pack:</h3>
@@ -100,7 +100,7 @@
             <tr><td style="padding:.75rem;border:1px solid var(--border-color);">Full 4-image pack</td><td style="padding:.75rem;border:1px solid var(--border-color);">✅ Yes</td><td style="padding:.75rem;border:1px solid var(--border-color);">❌ Manual</td><td style="padding:.75rem;border:1px solid var(--border-color);">❌ Single image</td></tr>
             <tr><td style="padding:.75rem;border:1px solid var(--border-color);">Price</td><td style="padding:.75rem;border:1px solid var(--border-color);">Free</td><td style="padding:.75rem;border:1px solid var(--border-color);">$12.99/mo</td><td style="padding:.75rem;border:1px solid var(--border-color);">$8.99/mo</td></tr>
             <tr><td style="padding:.75rem;border:1px solid var(--border-color);">Safe zone guidance</td><td style="padding:.75rem;border:1px solid var(--border-color);">✅ Built-in</td><td style="padding:.75rem;border:1px solid var(--border-color);">Paid templates</td><td style="padding:.75rem;border:1px solid var(--border-color);">Paid templates</td></tr>
-            <tr><td style="padding:.75rem;border:1px solid var(--border-color);">Time to setup channel</td><td style="padding:.75rem;border:1px solid var(--border-color);">~10 seconds</td><td style="padding:.75rem;border:1px solid var(--border-color);">~20 minutes</td><td style="padding:.75rem;border:1px solid var(--border-color);">~15 minutes</td></tr>
+            <tr><td style="padding:.75rem;border:1px solid var(--border-color);">Time to setup channel</td><td style="padding:.75rem;border:1px solid var(--border-color);">~5 seconds</td><td style="padding:.75rem;border:1px solid var(--border-color);">~20 minutes</td><td style="padding:.75rem;border:1px solid var(--border-color);">~15 minutes</td></tr>
           </tbody>
         </table>
       </div>
@@ -126,30 +126,92 @@
       </div>
     </div>
   </main>
-  <script>
-    const uploadArea = document.getElementById('uploadArea');
-    const fileInput = document.getElementById('fileInput');
-    uploadArea.addEventListener('click', () => fileInput.click());
-    uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('drag'); });
-    uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag'));
-    uploadArea.addEventListener('drop', (e) => { e.preventDefault(); uploadArea.classList.remove('drag'); if(e.dataTransfer.files[0]) processImage(e.dataTransfer.files[0]); });
-    fileInput.addEventListener('change', (e) => { if(e.target.files[0]) processImage(e.target.files[0]); });
 
-    async function processImage(file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const url = e.target.result;
-        ['outAvatar','outBanner','outThumb','outEnd'].forEach(id => {
-          document.getElementById(id).src = url;
-        });
-        document.getElementById('outputSection').style.display = 'block';
-      };
-      reader.readAsDataURL(file);
-    }
+<script type="module">
+const uploadArea = document.getElementById('uploadArea');
+const fileInput = document.getElementById('fileInput');
+const progress = document.getElementById('progress');
+const outputSection = document.getElementById('outputSection');
+const btnDownload = document.getElementById('btnDownload');
 
-    document.getElementById('btnDownload').addEventListener('click', () => {
-      alert('ZIP download will be available soon! For now, right-click each image to save.');
-    });
-  </script>
+let processedBlobs = {};
+
+uploadArea.addEventListener('click', () => fileInput.click());
+uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('drag'); });
+uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag'));
+uploadArea.addEventListener('drop', (e) => { e.preventDefault(); uploadArea.classList.remove('drag'); if(e.dataTransfer.files[0]) processImage(e.dataTransfer.files[0]); });
+fileInput.addEventListener('change', (e) => { if(e.target.files[0]) processImage(e.target.files[0]); });
+
+function createCroppedImage(imgBlob, width, height) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+
+      // Fill with dark gray background
+      ctx.fillStyle = '#1a1a2e';
+      ctx.fillRect(0, 0, width, height);
+
+      // Cover crop: scale to fill entire canvas, center crop
+      const scale = Math.max(width / img.width, height / img.height);
+      const w = img.width * scale;
+      const h = img.height * scale;
+      const x = (width - w) / 2;
+      const y = (height - h) / 2;
+
+      ctx.drawImage(img, x, y, w, h);
+      canvas.toBlob(blob => resolve(blob), 'image/png');
+    };
+    img.src = URL.createObjectURL(imgBlob);
+  });
+}
+
+async function processImage(file) {
+  uploadArea.style.display = 'none';
+  progress.style.display = 'block';
+
+  try {
+    // Generate 4 sizes
+    const [avatar, banner, thumb, end] = await Promise.all([
+      createCroppedImage(file, 800, 800),
+      createCroppedImage(file, 2560, 1440),
+      createCroppedImage(file, 1280, 720),
+      createCroppedImage(file, 1920, 1080),
+    ]);
+
+    processedBlobs = { avatar, banner, thumb, end };
+
+    // Show previews
+    document.getElementById('outAvatar').src = URL.createObjectURL(avatar);
+    document.getElementById('outBanner').src = URL.createObjectURL(banner);
+    document.getElementById('outThumb').src = URL.createObjectURL(thumb);
+    document.getElementById('outEnd').src = URL.createObjectURL(end);
+
+    progress.style.display = 'none';
+    outputSection.style.display = 'block';
+  } catch (err) {
+    progress.textContent = '❌ Error: ' + err.message;
+    uploadArea.style.display = 'block';
+  }
+}
+
+btnDownload.addEventListener('click', async () => {
+  const zip = new JSZip();
+  zip.file('01-avatar-800x800.png', processedBlobs.avatar);
+  zip.file('02-banner-2560x1440.png', processedBlobs.banner);
+  zip.file('03-thumbnail-1280x720.png', processedBlobs.thumb);
+  zip.file('04-end-screen-1920x1080.png', processedBlobs.end);
+
+  const content = await zip.generateAsync({ type: 'blob' });
+  const url = URL.createObjectURL(content);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'youtube-channel-kit.zip';
+  a.click();
+});
+</script>
 </body>
 </html>
