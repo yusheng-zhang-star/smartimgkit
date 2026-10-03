@@ -78,6 +78,10 @@
             <div class="color-dot" style="background:#ff0000" data-c="#ff0000"></div>
           </div>
         </div>
+        <div>
+          <label style="display:block;font-size:.9rem;margin-bottom:.5rem;font-weight:600;">Skin Smoothing (0-50%)</label>
+          <input type="range" id="smoothingSlider" min="0" max="50" value="15" style="width:100%;">
+        </div>
       </div>
       <div class="control-row">
         <div>
@@ -212,6 +216,15 @@ function createPassportPhoto(cutoutBlob, w, h, bgColor) {
       const dx = (w - dw) / 2;
       const dy = h - dh - (h * 0.05); // Align bottom
 
+      // Simple skin smoothing: draw blurred layer then original on top
+      const smoothing = parseInt(document.getElementById('smoothingSlider').value);
+      if (smoothing > 0) {
+        ctx.filter = `blur(${smoothing/15}px)`;
+        ctx.globalAlpha = 0.35;
+        ctx.drawImage(img, dx, dy, dw, dh);
+        ctx.globalAlpha = 1.0;
+        ctx.filter = 'none';
+      }
       ctx.drawImage(img, dx, dy, dw, dh);
       canvas.toBlob(blob => resolve(blob), 'image/jpeg', 0.95);
     };
