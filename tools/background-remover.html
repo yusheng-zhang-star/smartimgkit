@@ -279,6 +279,15 @@
               <button class="_typeOpt" data-type="mask" style="padding:5px 12px;border:1px solid #cbd5e1;border-radius:6px;background:#fff;color:#475569;cursor:pointer;font-size:0.8rem;">Mask</button>
             </div>
             <div style="font-size:0.72rem;color:#94a3b8;">JPG has white background (no transparency)</div>
+            <div style="display:flex;gap:6px;align-items:center;">
+              <span style="color:#64748b;">Edge cleanup</span>
+              <input type="range" id="erodeSlider" min="0" max="5" value="1" style="width:80px;">
+              <span id="erodeVal" style="font-size:0.8rem;font-weight:600;color:#0369a1;">1px</span>
+            </div>
+            <div style="display:flex;gap:6px;align-items:center;">
+              <input type="checkbox" id="sharpenCheck" checked>
+              <span style="color:#64748b;">Auto sharpen edges</span>
+            </div>
           </div>
           <div class="progress-bar" id="progBar" style="display:none">
             <div class="progress-fill" id="progFill"></div>
@@ -604,6 +613,33 @@ const removeBtn = document.getElementById('removeBtn');
 removeBtn.disabled = true;
 removeBtn.style.opacity = '0.6';
 removeBtn.style.cursor = 'not-allowed';
+// Edge cleanup controls
+const erodeSlider = document.getElementById('erodeSlider');
+const erodeVal = document.getElementById('erodeVal');
+const sharpenCheck = document.getElementById('sharpenCheck');
+erodeSlider.addEventListener('input', () => { erodeVal.textContent = erodeSlider.value + 'px'; });
+
+// Erode alpha channel to remove white edges
+function erodeAlpha(ctx, w, h, px) {
+  if(px<=0) return;
+  const imgData = ctx.getImageData(0,0,w,h);
+  const d = imgData.data;
+  const newD = new Uint8ClampedArray(d);
+  for(let y=px; y<h-px; y++) {
+    for(let x=px; x<w-px; x++) {
+      const i = (y*w+x)*4;
+      if(d[i+3] > 128) {
+        let minAlpha = 255;
+        for(let dy=-px; dy<=px; dy++) for(let dx=-px; dx<=px; dx++) {
+          minAlpha = Math.min(minAlpha, d[((y+dy)*w+x+dx)*4+3]);
+        }
+        newD[i+3] = minAlpha;
+      }
+    }
+  }
+  ctx.putImageData(new ImageData(newD, w, h), 0, 0);
+}
+
 const downloadAllBtn = document.getElementById('downloadAllBtn');
 const addMoreBtn = document.getElementById('addMoreBtn');
 const clearBtn = document.getElementById('clearBtn');
