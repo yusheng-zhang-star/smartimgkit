@@ -132,7 +132,7 @@ async function processImage(file) {
   const img = new Image();
   img.onload = async () => {
     try {
-      const [igPost, igStory, fbPost, tiktok, ytThumb, twitter, linkedin, pinterest] = await Promise.all([
+      const [igPost, igStory, fbPost, tiktok, ytThumb, twitter, linkedin, pinterest, xiaohongshu, linkedinCover] = await Promise.all([
         createCropImage(img, 1080, 1080),
         createCropImage(img, 1080, 1920),
         createCropImage(img, 1200, 630),
@@ -141,9 +141,11 @@ async function processImage(file) {
         createCropImage(img, 1600, 900),
         createCropImage(img, 1200, 627),
         createCropImage(img, 1000, 1500),
+        createCropImage(img, 1080, 1440),
+        createCropImage(img, 1584, 396),
       ]);
 
-      processedBlobs = { igPost, igStory, fbPost, tiktok, ytThumb, twitter, linkedin, pinterest };
+      processedBlobs = { igPost, igStory, fbPost, tiktok, ytThumb, twitter, linkedin, pinterest, xiaohongshu, linkedinCover };
 
       document.getElementById('out1').src = URL.createObjectURL(igPost);
       document.getElementById('out2').src = URL.createObjectURL(igStory);
