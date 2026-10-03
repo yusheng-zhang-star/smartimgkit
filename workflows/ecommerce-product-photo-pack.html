@@ -59,6 +59,35 @@
         <p>Upload one product photo → get a full 5-image listing pack. AI removes background, centers on white, exports all sizes you need — in one click.</p>
       </div>
 
+      <div style="background:var(--bg-secondary);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;">
+        <h3 style="margin:0 0 1rem 0;">⚙️ Presets & Options</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;">
+          <div>
+            <label style="display:block;font-size:.9rem;margin-bottom:.5rem;font-weight:600;">Template Preset</label>
+            <select id="presetSelect" style="width:100%;padding:.5rem;border-radius:6px;background:var(--bg-card);color:var(--text-primary);border:1px solid var(--border-color);">
+              <option value="amazon">Amazon Standard (White BG + 85% Fill)</option>
+              <option value="etsy">Etsy Lifestyle (Soft Gray BG + Shadow)</option>
+              <option value="shopify">Shopify Minimal (Pure White, No Shadow)</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:.5rem;">
+            <label style="display:flex;align-items:center;gap:.5rem;font-size:.9rem;">
+              <input type="checkbox" id="optShadow" checked>
+              Add realistic contact shadow
+            </label>
+            <label style="display:flex;align-items:center;gap:.5rem;font-size:.9rem;">
+              <input type="checkbox" id="optAutoFit" checked>
+              Auto-fit 85% canvas (Amazon compliant)
+            </label>
+          </div>
+          <div style="display:flex;align-items:flex-end;">
+            <button id="btnExportConfig" style="padding:.5rem 1rem;border-radius:6px;background:var(--bg-card);color:var(--text-primary);border:1px solid var(--border-color);cursor:pointer;font-size:.85rem;">
+              ⚙️ Export Config JSON
+            </button>
+          </div>
+        </div>
+      </div>
+
       <div class="upload-area" id="uploadArea">
         <div class="upload-icon">📸</div>
         <h3>Drop your product photo here</h3>
@@ -148,7 +177,7 @@ uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag
 uploadArea.addEventListener('drop', (e) => { e.preventDefault(); uploadArea.classList.remove('drag'); if(e.dataTransfer.files[0]) processImage(e.dataTransfer.files[0]); });
 fileInput.addEventListener('change', (e) => { if(e.target.files[0]) processImage(e.target.files[0]); });
 
-function createSizedImage(cutoutBlob, width, height, bgColor = '#ffffff') {
+function createSizedImage(cutoutBlob, width, height, bgColor = '#ffffff', addShadow = true, fitRatio = 0.85) {
   return new Promise(resolve => {
     const img = new Image();
     img.onload = () => {
@@ -161,12 +190,27 @@ function createSizedImage(cutoutBlob, width, height, bgColor = '#ffffff') {
       ctx.fillStyle = bgColor;
       ctx.fillRect(0, 0, width, height);
 
-      // Scale product to fit 80% of canvas
-      const scale = Math.min(width / img.width, height / img.height) * 0.75;
+      // Scale product to fit fitRatio of canvas
+      const scale = Math.min(width / img.width, height / img.height) * fitRatio;
       const w = img.width * scale;
       const h = img.height * scale;
       const x = (width - w) / 2;
       const y = (height - h) / 2;
+
+      // Add contact shadow if enabled
+      if (addShadow) {
+        ctx.save();
+        ctx.shadowColor = 'rgba(0,0,0,0.25)';
+        ctx.shadowBlur = w * 0.04;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = h * 0.02;
+        // Draw a small ellipse as base shadow
+        ctx.beginPath();
+        ctx.ellipse(x + w/2, y + h + h*0.02, w*0.4, h*0.03, 0, 0, Math.PI*2);
+        ctx.fillStyle = 'rgba(0,0,0,0.15)';
+        ctx.fill();
+        ctx.restore();
+      }
 
       // Draw product
       ctx.drawImage(img, x, y, w, h);
@@ -185,13 +229,28 @@ async function processImage(file) {
     // Step 1: AI background removal
     const cutoutBlob = await removeBackground(file);
 
+    // Get user options
+    const preset = document.getElementById('presetSelect').value;
+    const addShadow = document.getElementById('optShadow').checked;
+    const autoFit = document.getElementById('optAutoFit').checked;
+    
+    // Preset configs
+    const presets = {
+      amazon: { bg: '#ffffff', shadow: true, fit: 0.85 },
+      etsy: { bg: '#f5f5f5', shadow: true, fit: 0.8 },
+      shopify: { bg: '#ffffff', shadow: false, fit: 0.9 }
+    };
+    const cfg = presets[preset];
+    const shadowEnabled = addShadow && cfg.shadow;
+    const fit = autoFit ? cfg.fit : 0.8;
+
     // Step 2: Generate 5 sizes
     const [main, square, vertical, horizontal, detail] = await Promise.all([
-      createSizedImage(cutoutBlob, 2000, 2000),
-      createSizedImage(cutoutBlob, 1080, 1080),
-      createSizedImage(cutoutBlob, 1080, 1350),
-      createSizedImage(cutoutBlob, 1200, 628),
-      createSizedImage(cutoutBlob, 1500, 1500),
+      createSizedImage(cutoutBlob, 2000, 2000, cfg.bg, shadowEnabled, fit),
+      createSizedImage(cutoutBlob, 1080, 1080, cfg.bg, shadowEnabled, fit),
+      createSizedImage(cutoutBlob, 1080, 1350, cfg.bg, shadowEnabled, fit),
+      createSizedImage(cutoutBlob, 1200, 628, cfg.bg, shadowEnabled, fit),
+      createSizedImage(cutoutBlob, 1500, 1500, cfg.bg, shadowEnabled, fit),
     ]);
 
     processedBlobs = { main, square, vertical, horizontal, detail };
@@ -224,6 +283,30 @@ btnDownload.addEventListener('click', async () => {
   const a = document.createElement('a');
   a.href = url;
   a.download = 'ecommerce-product-pack.zip';
+  a.click();
+});
+
+// Export config JSON
+document.getElementById('btnExportConfig').addEventListener('click', () => {
+  const config = {
+    preset: document.getElementById('presetSelect').value,
+    addShadow: document.getElementById('optShadow').checked,
+    autoFit: document.getElementById('optAutoFit').checked,
+    generatedAt: new Date().toISOString(),
+    tool: 'ecommerce-product-photo-pack',
+    sizes: [
+      { name: 'main', width: 2000, height: 2000 },
+      { name: 'square', width: 1080, height: 1080 },
+      { name: 'vertical', width: 1080, height: 1350 },
+      { name: 'horizontal', width: 1200, height: 628 },
+      { name: 'detail', width: 1500, height: 1500 }
+    ]
+  };
+  const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'workflow-config.json';
   a.click();
 });
 </script>
