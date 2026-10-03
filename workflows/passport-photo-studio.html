@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Free Passport Photo Maker Online — No Upload, 100% Private | SmartImgKit</title>
+  <meta name="description" content="Make passport photos online free. Change background to white/blue/red, crop to official sizes. 100% in your browser — your ID photo never leaves your phone.">
+  <meta name="keywords" string="true">passport photo online, passport photo background changer, id photo maker free, passport photo size, us passport photo, visa photo</title>
+  <link rel="canonical" href="https://smartimgkit.com/workflows/passport-photo-studio">
+  <meta name="theme-color" content="#1e40af">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css?v=10">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="script">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Passport Photo Studio","url":"https://smartimgkit.com/workflows/passport-photo-studio","applicationCategory":"MultimediaApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Make official passport/ID photos online free. Change background, crop to exact sizes. 100% local, no upload."}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What sizes are supported?","acceptedAnswer":{"@type":"Answer","text":"US Passport 2x2 inch, EU Visa 35x45mm, China 1-inch 25x35mm, China 2-inch 35x49mm, UK 35x45mm."}},{"@type":"Question","name":"Can I change the background color?","acceptedAnswer":{"@type":"Answer","text":"Yes. AI removes background locally, then you can set pure white, light blue, or red background."}},{"@type":"Question","name":"Is my ID photo safe?","acceptedAnswer":{"@type":"Answer","text":"Yes. All processing runs 100% in your browser. Your sensitive ID photo never gets uploaded to any server."}},{"@type":"Question","name":"Is this free?","acceptedAnswer":{"@type":"Answer","text":"Yes. Most passport photo apps charge $9.99. This is 100% free, no signup, no watermark."}},{"@type":"Question","name":"Can I print it?","acceptedAnswer":{"@type":"Answer","text":"Yes. Download a 4x6 inch print sheet with multiple copies, print at any photo shop."}}]}
+  </script>
+  <style>
+    .upload-area{border:2px dashed var(--border);border-radius:16px;padding:3rem 2rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--surface)}
+    .upload-area:hover{border-color:var(--primary)}
+    .controls{background:var(--surface);border-radius:12px;padding:1.5rem;margin:1.5rem 0}
+    .control-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+    .output-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-top:2rem}
+    .output-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1rem;text-align:center}
+    .output-card img{max-width:100%;border-radius:8px;margin-bottom:.5rem}
+    .output-card .output-label{font-weight:600;font-size:.9rem;margin-bottom:.25rem}
+    .output-card .output-size{color:var(--text-secondary);font-size:.75rem}
+    .color-picker-row{display:flex;gap:10px;align-items:center}
+    .color-dot{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2px solid transparent}
+    .color-dot.active{border-color:var(--primary)}
+    .btn-download{background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;border:none;padding:.75rem 1.5rem;border-radius:8px;font-weight:600;cursor:pointer;margin-top:1.5rem;width:100%}
+    .progress{text-align:center;margin:1rem 0;color:var(--text-secondary)}
+    select{padding:.5rem;border-radius:6px;background:var(--bg);color:var(--text);border:1px solid var(--border);width:100%}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <a href="/" class="logo">SmartImgKit</a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/tools/">Tools</a>
+        <a href="/workflows/">Workflows</a>
+        <a href="/blog/">Blog</a>
+      </div>
+    </div>
+  </nav>
+  <main class="tool-container" style="max-width:900px;margin:2rem auto;padding:0 1rem">
+    <h1 style="text-align:center;margin-bottom:.5rem">🪪 Passport Photo Studio</h1>
+    <p style="text-align:center;color:var(--text-secondary);margin-bottom:2rem">Make official passport/ID photos at home. 100% local — your ID photo never leaves your device.</p>
+
+    <div class="controls">
+      <div class="control-row">
+        <div>
+          <label style="display:block;font-size:.9rem;margin-bottom:.5rem;font-weight:600;">Photo Type / Size</label>
+          <select id="sizeSelect">
+            <option value="us-passport">US Passport (2x2 inch / 600x600px)</option>
+            <option value="eu-visa">EU Visa (35x45mm / 413x531px)</option>
+            <option value="cn-1inch">China 1-inch (25x35mm)</option>
+            <option value="cn-2inch">China 2-inch (35x49mm)</option>
+            <option value="uk">UK Passport (35x45mm)</option>
+          </select>
+        </div>
+        <div>
+          <label style="display:block;font-size:.9rem;margin-bottom:.5rem;font-weight:600;">Background Color</label>
+          <div class="color-picker-row">
+            <div class="color-dot active" style="background:#ffffff" data-c="#ffffff"></div>
+            <div class="color-dot" style="background:#4a90d9" data-c="#4a90d9"></div>
+            <div class="color-dot" style="background:#ff0000" data-c="#ff0000"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="upload-area" id="uploadArea">
+      <div style="font-size:3rem;margin-bottom:1rem">📸</div>
+      <h3>Upload your selfie</h3>
+      <p>Neutral expression, good lighting works best</p>
+      <p style="font-size:.85rem;color:var(--text-secondary)">JPG / PNG</p>
+    </div>
+    <input type="file" id="fileInput" accept="image/*" hidden>
+
+    <div id="progress" class="progress" style="display:none;">⏳ Processing... AI removing background and cropping...</div>
+
+    <div id="outputSection" style="display:none;">
+      <h3 style="margin:2rem 0 1rem 0;">Your Passport Photos:</h3>
+      <div class="output-grid">
+        <div class="output-card"><img id="outIndividual" alt="Individual photo"><div class="output-label">Individual Photo</div><div class="output-size" id="indSize">600x600 px</div></div>
+        <div class="output-card"><img id="outPrintSheet" alt="Print sheet"><div class="output-label">Print Sheet (4x6 inch)</div><div class="output-size">1200x1800 px</div></div>
+      </div>
+      <button class="btn-download" id="btnDownload">⬇️ Download Photos (ZIP)</button>
+    </div>
+
+    <div style="margin-top:3rem;">
+      <h3>Why this is better than photo shops</h3>
+      <table style="width:100%;border-collapse:collapse;margin-top:1rem;">
+        <thead><tr style="background:var(--surface);">
+          <th style="padding:.75rem;text-align:left;border:1px solid var(--border);">Feature</th>
+          <th style="padding:.75rem;text-align:left;border:1px solid var(--border);">SmartImgKit</th>
+          <th style="padding:.75rem;text-align:left;border:1px solid var(--border);">Photo App / Shop</th>
+        </tr></thead>
+        <tbody>
+          <tr><td style="padding:.75rem;border:1px solid var(--border);">Price</td><td style="padding:.75rem;border:1px solid var(--border);">Free</td><td style="padding:.75rem;border:1px solid var(--border);">$9.99 per set</td></tr>
+          <tr><td style="padding:.75rem;border:1px solid var(--border);">Privacy</td><td style="padding:.75rem;border:1px solid var(--border);">100% local, no upload</td><td style="padding:.75rem;border:1px solid var(--border);">Cloud upload to unknown servers</td></tr>
+          <tr><td style="padding:.75rem;border:1px solid var(--border);">Background change</td><td style="padding:.75rem;border:1px solid var(--border);">White / Blue / Red</td><td style="padding:.75rem;border:1px solid var(--border);">Limited options</td></tr>
+          <tr><td style="padding:.75rem;border:1px solid var(--border);">Print sheet</td><td style="padding:.75rem;border:1px solid var(--border);">Yes, 4x6</td><td style="padding:.75rem;border:1px solid var(--border);">Extra charge</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+<script type="module">
+import { removeBackground } from "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm";
+
+const uploadArea = document.getElementById('uploadArea');
+const fileInput = document.getElementById('fileInput');
+const progress = document.getElementById('progress');
+const outputSection = document.getElementById('outputSection');
+const btnDownload = document.getElementById('btnDownload');
+const sizeSelect = document.getElementById('sizeSelect');
+
+let processedBlobs = {};
+let bgColor = '#ffffff';
+
+// Color picker
+document.querySelectorAll('.color-dot').forEach(dot => {
+  dot.addEventListener('click', () => {
+    document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+    dot.classList.add('active');
+    bgColor = dot.dataset.c;
+    if (processedBlobs.cutout) generateOutputs();
+  });
+});
+
+uploadArea.addEventListener('click', () => fileInput.click());
+uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.style.borderColor = 'var(--primary)'; });
+uploadArea.addEventListener('dragleave', () => uploadArea.style.borderColor = '');
+uploadArea.addEventListener('drop', (e) => { e.preventDefault(); uploadArea.style.borderColor = ''; if(e.dataTransfer.files[0]) processImage(e.dataTransfer.files[0]); });
+fileInput.addEventListener('change', (e) => { if(e.target.files[0]) processImage(e.target.files[0]); });
+sizeSelect.addEventListener('change', () => { if (processedBlobs.cutout) generateOutputs(); });
+
+const sizes = {
+  'us-passport': { w: 600, h: 600 },
+  'eu-visa': { w: 413, h: 531 },
+  'cn-1inch': { w: 295, h: 413 },
+  'cn-2inch': { w: 413, h: 579 },
+  'uk': { w: 413, h: 531 }
+};
+
+async function processImage(file) {
+  uploadArea.style.display = 'none';
+  progress.style.display = 'block';
+
+  try {
+    const cutoutBlob = await removeBackground(file);
+    processedBlobs.cutout = cutoutBlob;
+    await generateOutputs();
+  } catch (err) {
+    progress.textContent = '❌ Error: ' + err.message;
+    uploadArea.style.display = 'block';
+  }
+}
+
+function createPassportPhoto(cutoutBlob, w, h, bgColor) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(0, 0, w, h);
+
+      // Center head: typical passport photo has head taking ~70% of height
+      const scale = Math.min(w / img.width, (h * 0.75) / img.height);
+      const dw = img.width * scale;
+      const dh = img.height * scale;
+      const dx = (w - dw) / 2;
+      const dy = h - dh - (h * 0.05); // Align bottom
+
+      ctx.drawImage(img, dx, dy, dw, dh);
+      canvas.toBlob(blob => resolve(blob), 'image/jpeg', 0.95);
+    };
+    img.src = URL.createObjectURL(cutoutBlob);
+  });
+}
+
+function createPrintSheet(individualBlob, w, h) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      const sheetW = 1200; // 4x6 inch at 300dpi = 1200x1800
+      const sheetH = 1800;
+      const canvas = document.createElement('canvas');
+      canvas.width = sheetW;
+      canvas.height = sheetH;
+      const ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, sheetW, sheetH);
+
+      // Fit as many copies as possible on 4x6
+      const padding = 30;
+      const cols = Math.floor((sheetW - padding) / (w + padding));
+      const rows = Math.floor((sheetH - padding) / (h + padding));
+      const totalW = cols * w + (cols-1) * padding;
+      const totalH = rows * h + (rows-1) * padding;
+      const startX = (sheetW - totalW) / 2;
+      const startY = (sheetH - totalH) / 2;
+
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          ctx.drawImage(img, startX + c*(w+padding), startY + r*(h+padding), w, h);
+        }
+      }
+
+      canvas.toBlob(blob => resolve(blob), 'image/jpeg', 0.95);
+    };
+    img.src = URL.createObjectURL(individualBlob);
+  });
+}
+
+async function generateOutputs() {
+  const sizeKey = sizeSelect.value;
+  const { w, h } = sizes[sizeKey];
+  document.getElementById('indSize').textContent = `${w}x${h} px`;
+
+  progress.style.display = 'block';
+  progress.textContent = 'Generating photos...';
+
+  const individual = await createPassportPhoto(processedBlobs.cutout, w, h, bgColor);
+  const printSheet = await createPrintSheet(individual, w, h);
+
+  processedBlobs.individual = individual;
+  processedBlobs.printSheet = printSheet;
+
+  document.getElementById('outIndividual').src = URL.createObjectURL(individual);
+  document.getElementById('outPrintSheet').src = URL.createObjectURL(printSheet);
+
+  progress.style.display = 'none';
+  outputSection.style.display = 'block';
+}
+
+btnDownload.addEventListener('click', async () => {
+  const zip = new JSZip();
+  zip.file('passport-photo.jpg', processedBlobs.individual);
+  zip.file('print-sheet-4x6.jpg', processedBlobs.printSheet);
+
+  const content = await zip.generateAsync({ type: 'blob' });
+  const url = URL.createObjectURL(content);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'passport-photos.zip';
+  a.click();
+});
+</script>
+</body>
+</html>
