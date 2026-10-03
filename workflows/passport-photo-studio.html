@@ -59,10 +59,15 @@
           <label style="display:block;font-size:.9rem;margin-bottom:.5rem;font-weight:600;">Photo Type / Size</label>
           <select id="sizeSelect">
             <option value="us-passport">US Passport (2x2 inch / 600x600px)</option>
-            <option value="eu-visa">EU Visa (35x45mm / 413x531px)</option>
-            <option value="cn-1inch">China 1-inch (25x35mm)</option>
-            <option value="cn-2inch">China 2-inch (35x49mm)</option>
+            <option value="eu-visa">EU / Schengen Visa (35x45mm / 413x531px)</option>
             <option value="uk">UK Passport (35x45mm)</option>
+            <option value="cn-1inch">China 1-inch (25x35mm)</option>
+            <option value="cn-small-1inch">China Small 1-inch (22x32mm)</option>
+            <option value="cn-2inch">China 2-inch (35x49mm)</option>
+            <option value="cn-small-2inch">China Small 2-inch (35x45mm)</option>
+            <option value="canada">Canada Passport (50x70mm)</option>
+            <option value="australia">Australia Passport (35x45mm)</option>
+            <option value="japan">Japan Passport (35x45mm)</option>
           </select>
         </div>
         <div>
@@ -72,6 +77,15 @@
             <div class="color-dot" style="background:#4a90d9" data-c="#4a90d9"></div>
             <div class="color-dot" style="background:#ff0000" data-c="#ff0000"></div>
           </div>
+        </div>
+      </div>
+      <div class="control-row">
+        <div>
+          <label style="display:block;font-size:.9rem;margin-bottom:.5rem;font-weight:600;">Print Paper Size</label>
+          <select id="paperSelect">
+            <option value="4x6">4x6 inch (10x15cm) — standard photo paper</option>
+            <option value="5x7">5x7 inch (13x18cm)</option>
+          </select>
         </div>
       </div>
     </div>
@@ -142,13 +156,24 @@ uploadArea.addEventListener('dragleave', () => uploadArea.style.borderColor = ''
 uploadArea.addEventListener('drop', (e) => { e.preventDefault(); uploadArea.style.borderColor = ''; if(e.dataTransfer.files[0]) processImage(e.dataTransfer.files[0]); });
 fileInput.addEventListener('change', (e) => { if(e.target.files[0]) processImage(e.target.files[0]); });
 sizeSelect.addEventListener('change', () => { if (processedBlobs.cutout) generateOutputs(); });
+document.getElementById('paperSelect').addEventListener('change', () => { if (processedBlobs.cutout) generateOutputs(); });
 
 const sizes = {
   'us-passport': { w: 600, h: 600 },
   'eu-visa': { w: 413, h: 531 },
+  'uk': { w: 413, h: 531 },
   'cn-1inch': { w: 295, h: 413 },
+  'cn-small-1inch': { w: 260, h: 378 },
   'cn-2inch': { w: 413, h: 579 },
-  'uk': { w: 413, h: 531 }
+  'cn-small-2inch': { w: 413, h: 531 },
+  'canada': { w: 591, h: 827 },
+  'australia': { w: 413, h: 531 },
+  'japan': { w: 413, h: 531 }
+};
+
+const paperSizes = {
+  '4x6': { w: 1200, h: 1800 },
+  '5x7': { w: 1500, h: 2100 }
 };
 
 async function processImage(file) {
@@ -195,8 +220,9 @@ function createPrintSheet(individualBlob, w, h) {
   return new Promise(resolve => {
     const img = new Image();
     img.onload = () => {
-      const sheetW = 1200; // 4x6 inch at 300dpi = 1200x1800
-      const sheetH = 1800;
+      const paper = paperSizes[document.getElementById('paperSelect').value];
+      const sheetW = paper.w;
+      const sheetH = paper.h;
       const canvas = document.createElement('canvas');
       canvas.width = sheetW;
       canvas.height = sheetH;
@@ -205,7 +231,7 @@ function createPrintSheet(individualBlob, w, h) {
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, sheetW, sheetH);
 
-      // Fit as many copies as possible on 4x6
+      // Fit as many copies as possible
       const padding = 30;
       const cols = Math.floor((sheetW - padding) / (w + padding));
       const rows = Math.floor((sheetH - padding) / (h + padding));
