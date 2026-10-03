@@ -107,7 +107,7 @@
     <div class="upload-zone" id="dropZone">
       <div class="upload-icon">🖼️</div>
       <p><strong>Click to select</strong> or drag & drop multiple images</p>
-      <p style="font-size:.85rem;color:var(--text-secondary)">JPG / PNG / WebP — up to 50 images</p>
+      <p style="font-size:.85rem;color:var(--text-secondary)">JPG / PNG / WebP — up to 100 images</p>
       <input type="file" id="fileInput" accept="image/*" multiple hidden>
     </div>
 
@@ -160,7 +160,7 @@
 
     function addFiles(newFiles) {
       for (let f of newFiles) {
-        if (files.length >= 50) break;
+        if (files.length >= 100) break;
         files.push(f);
       }
       renderList();
@@ -210,25 +210,41 @@
         return;
       }
 
-      for (let i = 0; i < files.length; i++) {
-        overallText.textContent = `Processing ${i+1} / ${files.length}...`;
-        overallFill.style.width = (i / files.length * 100) + '%';
-        document.getElementById('status-' + i).textContent = 'Removing background...';
-        try {
-          const blob = await removeBackgroundFn(files[i], {
-            publicPath: 'https://staticimgly.com/@imgly/background-removal-data/1.7.0/dist/',
-            model: 'isnet_quint8',
-            output: { format: 'image/png' }
-          });
-          results.push({ name: files[i].name.replace(/\.[^.]+$/, '') + '.png', blob });
-          document.getElementById('status-' + i).textContent = 'Done';
-          document.getElementById('prog-' + i).style.width = '100%';
-          document.getElementById('item-' + i).classList.add('done');
-        } catch (e) {
-          document.getElementById('status-' + i).textContent = 'Failed: ' + e.message;
-          document.getElementById('item-' + i).classList.add('error');
+      const CONCURRENCY = 2; // Process 2 images at a time to avoid OOM
+      let currentIndex = 0;
+      let completedCount = 0;
+
+      async function worker() {
+        while (currentIndex < files.length) {
+          const i = currentIndex++;
+          overallText.textContent = `Processing ${Math.min(currentIndex, files.length)} / ${files.length}...`;
+          overallFill.style.width = (completedCount / files.length * 100) + '%';
+          document.getElementById('status-' + i).textContent = 'Removing background...';
+          try {
+            const blob = await removeBackgroundFn(files[i], {
+              publicPath: 'https://staticimgly.com/@imgly/background-removal-data/1.7.0/dist/',
+              model: 'isnet_quint8',
+              output: { format: 'image/png' }
+            });
+            results.push({ name: files[i].name.replace(/\.[^.]+$/, '') + '.png', blob });
+            document.getElementById('status-' + i).textContent = 'Done';
+            document.getElementById('prog-' + i).style.width = '100%';
+            document.getElementById('item-' + i).classList.add('done');
+            // Free memory: revoke object URL for original file preview
+            const imgEl = document.querySelector(`#item-${i} img`);
+            if (imgEl && imgEl.src.startsWith('blob:')) {
+              URL.revokeObjectURL(imgEl.src);
+            }
+          } catch (e) {
+            document.getElementById('status-' + i).textContent = 'Failed: ' + e.message;
+            document.getElementById('item-' + i).classList.add('error');
+          }
+          completedCount++;
         }
       }
+
+      // Start multiple workers
+      await Promise.all(Array(CONCURRENCY).fill().map(worker));
 
       overallText.textContent = `Done! ${results.length} / ${files.length} images processed.`;
       overallFill.style.width = '100%';
