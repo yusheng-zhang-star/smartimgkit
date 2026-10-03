@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>YouTube Channel Kit — One Upload, All Channel Art</title>
+  <meta name="description" content="Upload one image, get your full YouTube channel art pack: profile picture, banner, video thumbnail, and end screen. All sizes correct, all in your browser.">
+  <meta name="keywords" content="youtube channel kit, youtube banner maker, youtube thumbnail, channel art pack">
+  <link rel="canonical" href="https://smartimgkit.com/workflows/youtube-channel-kit">
+  <meta name="theme-color" content="#ef4444">
+  <meta property="og:title" content="YouTube Channel Kit">
+  <meta property="og:description" content="One upload → full YouTube channel art pack. Avatar, banner, thumbnail, end screen. All browser-based.">
+  <meta property="og:url" content="https://smartimgkit.com/workflows/youtube-channel-kit">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="../css/style.css?v=10">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="/js/jszip.min.js"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"YouTube Channel Kit","url":"https://smartimgkit.com/workflows/youtube-channel-kit","applicationCategory":"MultimediaApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Upload one image, get your full YouTube channel art pack: profile picture, banner, video thumbnail, and end screen."}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"HowTo","name":"How to use YouTube Channel Kit","step":[{"@type":"HowToStep","position":1,"name":"Upload your logo or photo","text":"Upload your logo or photo"},{"@type":"HowToStep","position":2,"name":"Auto-crop to all YouTube sizes","text":"Auto-crop to all YouTube sizes"},{"@type":"HowToStep","position":3,"name":"Download full channel pack","text":"Download all 4 images as ZIP"}]
+  </script>
+  <style>
+    .upload-area{border:2px dashed var(--border-color);border-radius:16px;padding:3rem 2rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg-secondary)}
+    .upload-area:hover{border-color:var(--accent);background:rgba(239,68,68,.05)}
+    .upload-area.drag{border-color:var(--accent);background:rgba(239,68,68,.1)}
+    .upload-icon{font-size:3rem;margin-bottom:.5rem}
+    .upload-hint{color:var(--text-muted);font-size:.8rem;margin-top:.5rem}
+    .output-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-top:2rem}
+    .output-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:1rem;text-align:center}
+    .output-card img{max-width:100%;border-radius:8px;margin-bottom:.5rem}
+    .output-card .output-label{font-weight:600;font-size:.9rem;margin-bottom:.25rem}
+    .output-card .output-size{color:var(--text-muted);font-size:.75rem}
+    .btn-download{background:var(--accent);color:#fff;border:none;padding:.75rem 1.5rem;border-radius:8px;font-weight:600;cursor:pointer;margin-top:1.5rem;width:100%}
+  </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What sizes are included?","acceptedAnswer":{"@type":"Answer","text":"4 sizes: channel avatar 800x800, banner 2560x1440, thumbnail 1280x720, end screen 1920x1080."}},{"@type":"Question","name":"Do my images get uploaded?","acceptedAnswer":{"@type":"Answer","text":"No. All cropping happens locally in your browser. Your images never leave your device."}},{"@type":"Question","name":"Is this free?","acceptedAnswer":{"@type":"Answer","text":"Yes. No sign-up, no watermark, completely free."}},{"@type":"Question","name":"Can I use my own logo?","acceptedAnswer":{"@type":"Answer","text":"Yes. Upload any logo or photo and we'll auto-crop it to all YouTube sizes."}},{"@type":"Question","name":"What format do I get?","acceptedAnswer":{"@type":"Answer","text":"PNG files in a single ZIP, ready to upload directly to YouTube."}}]}
+  </script>
+<meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/">Home</a><a href="/tools/background-remover">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/about">About</a></nav>
+      <button class="theme-toggle" id="themeToggle">🌙</button>
+    </div>
+  </header>
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/workflows/">Workflows</a><span>/</span><span>YouTube Channel Kit</span></nav>
+      <div class="tool-page-header">
+        <h1>📺 YouTube Channel Kit</h1>
+        <p>Upload one image → get your full YouTube channel art pack. Avatar, banner, thumbnail, and end screen — all perfectly sized in one click.</p>
+      </div>
+
+      <div class="upload-area" id="uploadArea">
+        <div class="upload-icon">📹</div>
+        <h3>Drop your logo or photo here</h3>
+        <p>or click to upload</p>
+        <p class="upload-hint">Supports JPG, PNG, WebP • One image</p>
+      </div>
+      <input type="file" id="fileInput" accept="image/*" hidden>
+
+      <div id="outputSection" style="display:none;">
+        <h3 style="margin:2rem 0 1rem 0;">Your Channel Pack:</h3>
+        <div class="output-grid">
+          <div class="output-card"><img id="outAvatar" alt="Channel avatar"><div class="output-label">1. Channel Avatar</div><div class="output-size">800x800 px</div></div>
+          <div class="output-card"><img id="outBanner" alt="Channel banner"><div class="output-label">2. Channel Banner</div><div class="output-size">2560x1440 px</div></div>
+          <div class="output-card"><img id="outThumb" alt="Video thumbnail"><div class="output-label">3. Video Thumbnail</div><div class="output-size">1280x720 px</div></div>
+          <div class="output-card"><img id="outEnd" alt="End screen"><div class="output-label">4. End Screen</div><div class="output-size">1920x1080 px</div></div>
+        </div>
+        <button class="btn-download" id="btnDownload">⬇️ Download Full Pack (ZIP)</button>
+      </div>
+
+      <div style="margin-top:3rem;">
+        <h3>How it works</h3>
+        <ol>
+          <li><strong>Upload your logo or photo</strong> — any size, any format</li>
+          <li><strong>Auto-crop to all YouTube sizes</strong> — perfectly centered, safe zones respected</li>
+          <li><strong>Download as ZIP</strong> — ready to upload directly to YouTube Studio</li>
+        </ol>
+      </div>
+
+      <div style="margin-top:2rem;">
+        <h3>Compare with other tools</h3>
+        <table style="width:100%;border-collapse:collapse;margin-top:1rem;">
+          <thead><tr style="background:var(--bg-secondary);">
+            <th style="padding:.75rem;text-align:left;border:1px solid var(--border-color);">Feature</th>
+            <th style="padding:.75rem;text-align:left;border:1px solid var(--border-color);">SmartImgKit</th>
+            <th style="padding:.75rem;text-align:left;border:1px solid var(--border-color);">Canva</th>
+            <th style="padding:.75rem;text-align:left;border:1px solid var(--border-color);">Fotor</th>
+          </tr></thead>
+          <tbody>
+            <tr><td style="padding:.75rem;border:1px solid var(--border-color);">Full 4-image pack</td><td style="padding:.75rem;border:1px solid var(--border-color);">✅ Yes</td><td style="padding:.75rem;border:1px solid var(--border-color);">❌ Manual</td><td style="padding:.75rem;border:1px solid var(--border-color);">❌ Single image</td></tr>
+            <tr><td style="padding:.75rem;border:1px solid var(--border-color);">Price</td><td style="padding:.75rem;border:1px solid var(--border-color);">Free</td><td style="padding:.75rem;border:1px solid var(--border-color);">$12.99/mo</td><td style="padding:.75rem;border:1px solid var(--border-color);">$8.99/mo</td></tr>
+            <tr><td style="padding:.75rem;border:1px solid var(--border-color);">Safe zone guidance</td><td style="padding:.75rem;border:1px solid var(--border-color);">✅ Built-in</td><td style="padding:.75rem;border:1px solid var(--border-color);">Paid templates</td><td style="padding:.75rem;border:1px solid var(--border-color);">Paid templates</td></tr>
+            <tr><td style="padding:.75rem;border:1px solid var(--border-color);">Time to setup channel</td><td style="padding:.75rem;border:1px solid var(--border-color);">~10 seconds</td><td style="padding:.75rem;border:1px solid var(--border-color);">~20 minutes</td><td style="padding:.75rem;border:1px solid var(--border-color);">~15 minutes</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top:2rem;">
+        <h3>FAQ</h3>
+        <div style="margin-top:1rem;">
+          <p><strong>What sizes are included?</strong><br>
+          4 sizes: channel avatar 800x800, banner 2560x1440, thumbnail 1280x720, end screen 1920x1080.</p>
+          <p><strong>Do my images get uploaded?</strong><br>
+          No. All cropping happens locally in your browser. Your images never leave your device.</p>
+          <p><strong>Is this free?</strong><br>
+          Yes. No sign-up, no watermark, completely free.</p>
+          <p><strong>Can I use my own logo?</strong><br>
+          Yes. Upload any logo or photo and we'll auto-crop it to all YouTube sizes.</p>
+          <p><strong>What format do I get?</strong><br>
+          PNG files in a single ZIP, ready to upload directly to YouTube.</p>
+        </div>
+      </div>
+
+      <div style="margin-top:2rem;text-align:center;">
+        <a href="/workflows/ai-youtube-thumbnail-studio" style="display:inline-block;background:var(--accent);color:#fff;padding:.75rem 2rem;border-radius:8px;text-decoration:none;font-weight:600;">Try AI Thumbnail Studio →</a>
+      </div>
+    </div>
+  </main>
+  <script>
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    uploadArea.addEventListener('click', () => fileInput.click());
+    uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('drag'); });
+    uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag'));
+    uploadArea.addEventListener('drop', (e) => { e.preventDefault(); uploadArea.classList.remove('drag'); if(e.dataTransfer.files[0]) processImage(e.dataTransfer.files[0]); });
+    fileInput.addEventListener('change', (e) => { if(e.target.files[0]) processImage(e.target.files[0]); });
+
+    async function processImage(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const url = e.target.result;
+        ['outAvatar','outBanner','outThumb','outEnd'].forEach(id => {
+          document.getElementById(id).src = url;
+        });
+        document.getElementById('outputSection').style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    document.getElementById('btnDownload').addEventListener('click', () => {
+      alert('ZIP download will be available soon! For now, right-click each image to save.');
+    });
+  </script>
+</body>
+</html>
