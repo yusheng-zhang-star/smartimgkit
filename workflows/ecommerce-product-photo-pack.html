@@ -79,6 +79,10 @@
               <input type="checkbox" id="optAutoFit" checked>
               Auto-fit 85% canvas (Amazon compliant)
             </label>
+            <div style="margin-top:.5rem;">
+              <label style="font-size:.85rem;margin-bottom:.25rem;display:block;">Optional Title Text</label>
+              <input type="text" id="optText" placeholder="e.g. 50% OFF" style="width:100%;padding:.5rem;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text);">
+            </div>
           </div>
           <div style="display:flex;align-items:flex-end;">
             <button id="btnExportConfig" style="padding:.5rem 1rem;border-radius:6px;background:var(--bg-card);color:var(--text-primary);border:1px solid var(--border-color);cursor:pointer;font-size:.85rem;">
@@ -215,6 +219,15 @@ function createSizedImage(cutoutBlob, width, height, bgColor = '#ffffff', addSha
       // Draw product
       ctx.drawImage(img, x, y, w, h);
 
+      // Draw optional text at bottom
+      const text = document.getElementById('optText').value.trim();
+      if (text) {
+        ctx.font = `bold ${Math.round(width * 0.06)}px Inter, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#1e3a8a';
+        ctx.fillText(text, width/2, height - height * 0.05);
+      }
+
       canvas.toBlob(blob => resolve(blob), 'image/png');
     };
     img.src = URL.createObjectURL(cutoutBlob);
@@ -227,7 +240,10 @@ async function processImage(file) {
 
   try {
     // Step 1: AI background removal
-    const cutoutBlob = await removeBackground(file);
+    const cutoutBlob = await removeBackground(file, {
+      publicPath: 'https://staticimgly.com/@imgly/background-removal-data/1.7.0/dist/',
+      model: 'matting'
+    });
 
     // Get user options
     const preset = document.getElementById('presetSelect').value;

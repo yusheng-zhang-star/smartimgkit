@@ -181,7 +181,10 @@ async function processImage(file) {
   progress.style.display = 'block';
 
   try {
-    const cutoutBlob = await removeBackground(file);
+    const cutoutBlob = await removeBackground(file, {
+      publicPath: 'https://staticimgly.com/@imgly/background-removal-data/1.7.0/dist/',
+      model: 'matting'
+    });
     processedBlobs.cutout = cutoutBlob;
     await generateOutputs();
   } catch (err) {

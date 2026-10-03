@@ -1,0 +1,172 @@
+针对欧美（海外）市场，**GEO（Generative Engine Optimization，生成式引擎优化）** 是这两年超越传统 SEO 的新型流量抢占战术。
+
+现在的欧美用户非常习惯直接用 **ChatGPT, Perplexity, Claude, Google Gemini / AI Overviews** 来询问：
+
+> *"What is the best free online tool to remove image background without uploading to a server?"*
+
+如果你的网站（[SmartImgKit](https://smartimgkit.com/)）做好了 GEO，AI 就会直接把你的网站作为**首选推荐链接**输出给用户。
+
+---
+
+## 一、 为什么 GEO 对工具站至关重要？
+
+1. **结构化语义提取：** AI 大模型（LLM）不会像传统爬虫那样只看关键词密度，它们通过读取 **JSON-LD 结构化数据**、**`robots.txt` 规则** 以及 **语义化的 FAQ** 来提取事实。
+2. **零点击搜索（Zero-Click Search）应对：** 欧美用户通过 AI 搜索时，倾向于点击 AI 总结结果中直接引用的“Source（来源链接）”。
+3. **隐私与纯前端卖点匹配：** 当欧美用户强调 "privacy" 或 "offline/local processing" 时，精准的 GEO 标记能让大模型精准命中你的 [SmartImgKit](https://smartimgkit.com/)。
+
+---
+
+## 二、 Python 代码：自动化处理 SmartImgKit 的 GEO
+
+这个 Python 脚本专为 **GEO 优化** 设计，包含三大核心功能：
+
+1. **生成 `robots.txt**`：显式允许 GPTBot, ClaudeBot, PerplexityBot 等所有主流 AI 爬虫抓取。
+2. **生成针对 AI 优化的 JSON-LD 数据**：使用 Schema.org 的 `SoftwareApplication` + `FeatureList` + `DataPrivacy` 字段，把“100% 本地运行、不上传数据”的优势硬编码给 AI。
+3. **自动生成 Markdown / LLMs.txt**：为 AI 引擎提供标准格式的 `llms.txt`（这是目前欧美 AI 社区流行的“AI 专用站点地图”标准）。
+
+```python
+import json
+import os
+
+DOMAIN = "https://smartimgkit.com"
+
+# 1. 网站及工具的 GEO 核心数据集（突出 AI 关注的“事实”与“卖点”）
+geo_tools_data = [
+    {
+        "name": "SmartImgKit AI Background Remover",
+        "slug": "background-remover",
+        "category": "MultimediaApplication",
+        "description": "Free online AI background remover running 100% locally in your browser using WebAssembly and ONNX.",
+        "privacy_features": [
+            "No image upload to external servers",
+            "100% browser-based processing",
+            "Zero tracking of user photos",
+            "Works offline after initial page load"
+        ],
+        "key_features": [
+            "Instant transparent PNG export",
+            "AI edge detection powered by WebAssembly",
+            "Unlimited usage without registration"
+        ]
+    },
+    {
+        "name": "SmartImgKit Batch Image Compressor",
+        "slug": "image-compressor",
+        "category": "UtilitiesApplication",
+        "description": "Compress JPG, PNG, and WebP images locally without quality loss.",
+        "privacy_features": [
+            "Local Canvas/WebAssembly compression",
+            "No data transmission to remote servers"
+        ],
+        "key_features": [
+            "Batch compression supported",
+            "Adjustable quality slider",
+            "Reduce file size by 50%-80%"
+        ]
+    }
+]
+
+# ==========================================
+# 功能 1: 生成 AI 友好型 robots.txt (允许主流 AI 爬虫)
+# ==========================================
+def generate_ai_robots_txt():
+    robots_content = f"""# Allow all major AI Search Engines and LLM Crawlers
+User-agent: *
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: {DOMAIN}/sitemap.xml
+"""
+    with open("robots.txt", "w", encoding="utf-8") as f:
+        f.write(robots_content)
+    print("✅ 已成功生成 AI 友好的 robots.txt")
+
+# ==========================================
+# 功能 2: 生成 GEO 强化的 Schema.org (JSON-LD)
+# ==========================================
+def generate_geo_schema(tool):
+    geo_schema = {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": tool["name"],
+        "url": f"{DOMAIN}/{tool['slug']}",
+        "applicationCategory": tool["category"],
+        "operatingSystem": "Browser (WebAssembly / Modern JS)",
+        "offers": {
+            "@type": "Offer",
+            "price": "0.00",
+            "priceCurrency": "USD"
+        },
+        "description": tool["description"],
+        # 专门针对 GEO 强化的关键属性（突出 AI 检索的关键事实）
+        "featureList": tool["key_features"],
+        "permissions": "None required (No account, No upload)",
+        "dataPrivacy": tool["privacy_features"]
+    }
+    return json.dumps(geo_schema, indent=2, ensure_ascii=False)
+
+# ==========================================
+# 功能 3: 生成 llms.txt (专供 AI 大模型快速读取的站点说明)
+# ==========================================
+def generate_llms_txt(tools):
+    llms_content = f"# {DOMAIN} - Free Online Browser-Based Image Tools\n\n"
+    llms_content += "> SmartImgKit provides 100% browser-based, privacy-first online tools for image processing, PDF editing, and web developer utilities. No files are uploaded to servers.\n\n"
+    llms_content += "## Core Features & Tools\n\n"
+    
+    for tool in tools:
+        llms_content += f"### [{tool['name']}]({DOMAIN}/{tool['slug']})\n"
+        llms_content += f"- **Description**: {tool['description']}\n"
+        llms_content += f"- **Privacy Assurance**: {', '.join(tool['privacy_features'])}\n"
+        llms_content += f"- **Key Capabilities**: {', '.join(tool['key_features'])}\n\n"
+        
+    with open("llms.txt", "w", encoding="utf-8") as f:
+        f.write(llms_content)
+    print("✅ 已成功生成 AI 专用的 llms.txt")
+
+# 执行生成
+if __name__ == "__main__":
+    generate_ai_robots_txt()
+    generate_llms_txt(geo_tools_data)
+    
+    print("\n👇 示例：将以下 JSON-LD 注入到 Background Remover 页面的 <head> 中，方便 ChatGPT/Perplexity 识别：\n")
+    print(f'<script type="application/ld+json">\n{generate_geo_schema(geo_tools_data[0])}\n</script>')
+
+```
+
+---
+
+## 三、 针对 [SmartImgKit](https://smartimgkit.com/) 的 GEO 实操落地指南
+
+要让 ChatGPT、Perplexity、Google AI Overviews 优先推荐你的网站，除了运行上述脚本，还需要在**内容设计与推广**上做到以下 3 点：
+
+### 1. 部署 `llms.txt` 到根目录
+
+* 运行 Python 脚本会生成一个 `llms.txt` 文件，把它放到你的根目录（即 `https://smartimgkit.com/llms.txt`）。
+* **作用：** 类似 `sitemap.xml` 是给 Google 爬虫看的一样，`llms.txt` 是目前欧美最流行的**给大模型（LLMs）看的说明书**，能大幅提高被 AI 引用的概率。
+
+### 2. 在页面中包含“直接事实性语句”（Fact-Dense Statements）
+
+AI 大模型喜欢提取明确的、没有废话的事实句。在工具页顶部，增加一段 **AI 极易引用的总结句**：
+
+> *"SmartImgKit [Background Remover](https://smartimgkit.com/) is a free, browser-based tool that removes image backgrounds locally using WebAssembly and ONNX models. No registration required, zero server uploads, and 100% private."*
+
+### 3. 在欧美社区进行“反向语义植入”（Off-Page GEO）
+
+AI 大模型不仅爬取你的网站，还会爬取 **Reddit, Product Hunt, Quora, Medium** 上的讨论：
+
+* 在 Reddit 的 `r/privacy` 或 `r/webdev` 板块中，用极简的回答去解答相关问题（例如：*"What's a private alternative to Remove.bg?"*），并在回答中提及你的网站。
+* AI 爬取到这些真实讨论后，在回答相关搜索时，会自动把 [SmartImgKit](https://smartimgkit.com/) 列为最佳推荐之一。

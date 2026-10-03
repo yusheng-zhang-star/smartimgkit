@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>GIF动图制作器 - 多张图片合成GIF免费在线 | SmartImgKit</title>
+<meta name="description" content="将多张图片合成为GIF动图。调整帧延迟、循环、尺寸。无需Photoshop，纯浏览器处理。">
+<link rel="canonical" href="https://smartimgkit.com/zh/workflows/gif-maker">
+<meta name="theme-color" content="#ec4899">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<style>
+.preview{text-align:center;margin:1rem 0}
+.preview img{max-width:100%;border-radius:8px}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:1rem 0}
+.controls label{font-size:.8rem;color:#94a3b8}
+.controls input{width:100%;padding:6px;background:#0f172a;color:#f1f5f9;border:1px solid #334155;border-radius:6px}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">首页</a><a href="/tools/background-remover">工具</a><a href="/workflows/">工作流</a><a href="/blog/">博客</a><a href="/api">API</a><a href="/about">关于</a></nav>
+</div></header>
+<main class="tool-page"><div class="container">
+<nav class="breadcrumb"><a href="/">首页</a><span>/</span><a href="/zh/workflows/">工作流</a><span>/</span><span>GIF动图制作</span></nav>
+<div class="tool-page-header"><h1>GIF动图制作器</h1><p>将多张图片合成为GIF动图。适合教程演示、社交媒体动图。无需Photoshop。</p></div>
+<div class="upload-area" id="uploadArea"><input type="file" id="fileInput" accept="image/*" multiple hidden><div class="upload-icon">🎞️</div><h3>拖入图片（按顺序）</h3><p>或点击选择（多选）</p></div>
+<div id="controls" style="display:none">
+<div class="controls">
+<div><label>帧延迟：<span id="dVal">500</span>ms</label><input type="range" id="delay" min="100" max="2000" step="100" value="500"></div>
+<div><label>宽度：<span id="wVal">600</span>px</label><input type="range" id="width" min="200" max="1200" step="100" value="600"></div>
+</div>
+<button class="btn btn-primary" id="genBtn">生成GIF</button>
+<div class="preview" id="preview"></div>
+<button class="btn btn-primary" id="dlBtn" style="display:none">下载GIF</button>
+</div>
+<p style="color:#94a3b8;margin-top:1rem">🔒 您的图片不会离开设备。</p>
+</div></main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit</p></div></div></footer>
+<script>
+const $=id=>document.getElementById(id);let files=[];
+$('uploadArea').onclick=()=>$('fileInput').click();
+$('fileInput').onchange=e=>{files=Array.from(e.target.files);$('controls').style.display='block';};
+$('delay').oninput=()=>$('dVal').textContent=$('delay').value;
+$('width').oninput=()=>$('wVal').textContent=$('width').value;
+$('genBtn').onclick=async()=>{if(!files.length)return;$('genBtn').disabled=true;$('genBtn').textContent='生成中…';const W=+$('width').value,delay=+$('delay').value;const gif=new GIF({workers:2,quality:10,width:W,workerScript:'https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js'});for(const f of files){const img=await new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.src=URL.createObjectURL(f);});const ratio=W/img.width;const h=img.height*ratio;const c=document.createElement('canvas');c.width=W;c.height=h;c.getContext('2d').drawImage(img,0,0,W,h);gif.addFrame(c,{delay:delay});}gif.on('finished',blob=>{const url=URL.createObjectURL(blob);$('preview').innerHTML=`<img src="${url}">`;$('dlBtn').style.display='inline-block';$('dlBtn').onclick=()=>{const a=document.createElement('a');a.href=url;a.download='animation.gif';a.click();};$('genBtn').disabled=false;$('genBtn').textContent='生成GIF';});gif.render();};
+</script>
+</body></html>

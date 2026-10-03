@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>前后对比图生成器 - 左右分屏免费工具 | SmartImgKit</title>
+<meta name="description" content="上传两张图，一键生成专业的前后对比图。适用于修图、装修、健身、营销对比。浏览器本地处理。">
+<link rel="canonical" href="https://smartimgkit.com/zh/workflows/before-after-comparison">
+<meta name="theme-color" content="#10b981">
+<meta property="og:title" content="前后对比图生成器">
+<meta property="og:description" content="两张图一键生成专业对比图。">
+<meta property="og:url" content="https://smartimgkit.com/zh/workflows/before-after-comparison">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SmartImgKit">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="../../css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<style>
+.workflow-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1.5rem 0}
+.workflow-step{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:1rem}
+.workflow-step label{font-size:.75rem;color:var(--text-secondary);font-weight:600;display:block;margin-top:.5rem}
+.workflow-step select{width:100%;padding:6px 10px;border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-primary);border-radius:6px;margin-top:.4rem;font-size:.9rem}
+.dual-upload{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}
+.dual-upload .drop{border:2px dashed var(--border-color);border-radius:12px;padding:2rem 1rem;text-align:center;cursor:pointer;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.dual-upload img{max-width:100%;max-height:200px;border-radius:8px}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+<nav class="main-nav"><a href="/">首页</a><a href="/tools/background-remover">工具</a><a href="/workflows/">工作流</a><a href="/blog/">博客</a><a href="/about">关于</a></nav>
+<div class="header-actions"><button class="theme-toggle" id="themeToggle">🌙</button></div>
+</div></header>
+<main class="tool-page"><div class="container">
+<nav class="breadcrumb"><a href="/">首页</a><span>/</span><a href="/zh/workflows/">工作流</a><span>/</span><span>前后对比图</span></nav>
+<div class="tool-page-header">
+<h1>前后对比图生成器</h1>
+<p>上传两张图 → 一键生成专业对比图。适用于设计作品集、装修效果、健身对比、营销案例展示。</p>
+</div>
+<div class="tool-workspace">
+<div class="dual-upload">
+<div class="drop" id="dropBefore"><input type="file" id="fileBefore" accept="image/*" hidden><div style="font-size:2rem">📷</div><h4>Before（前）</h4><p>点击上传</p></div>
+<div class="drop" id="dropAfter"><input type="file" id="fileAfter" accept="image/*" hidden><div style="font-size:2rem">✨</div><h4>After（后）</h4><p>点击上传</p></div>
+</div>
+<div id="workspace" style="display:none">
+<div class="workflow-steps">
+<div class="workflow-step"><h4>1. 布局</h4><label>方向</label>
+<select id="optLayout"><option value="horizontal" selected>左右分屏</option><option value="vertical">上下分屏</option></select></div>
+<div class="workflow-step"><h4>2. 标签</h4><label>标签</label>
+<select id="optLabels"><option value="on" selected>显示"前/后"文字</option><option value="off">不显示</option></select></div>
+<div class="workflow-step"><h4>3. 分隔线</h4><label>分隔线</label>
+<select id="optDivider"><option value="white" selected>白线</option><option value="black">黑线</option><option value="none">无</option></select></div>
+<div class="workflow-step"><h4>4. 格式</h4><label>格式</label>
+<select id="optFmt"><option value="jpg" selected>JPG</option><option value="png">PNG</option></select></div>
+</div>
+<div style="text-align:center;margin:1.5rem 0">
+<button class="btn btn-primary" id="runBtn" disabled>🚀 生成对比图</button>
+<button class="btn btn-secondary" id="resetBtn">↺ 重置</button>
+</div>
+<div id="previewWrap" style="text-align:center;margin-top:1rem"></div>
+</div></div>
+<section class="how-to-section"><h2>使用方法</h2>
+<div class="how-to-steps">
+<div class="how-to-step"><div class="step-number">1</div><h4>上传两张图</h4><p>分别上传Before和After图片。</p></div>
+<div class="how-to-step"><div class="step-number">2</div><h4>选择布局</h4><p>左右分屏适合横图，上下分屏适合竖图。</p></div>
+<div class="how-to-step"><div class="step-number">3</div><h4>生成</h4><p>自动对齐两张图到相同尺寸。</p></div>
+<div class="how-to-step"><div class="step-number">4</div><h4>下载</h4><p>得到一张可直接分享的对比图。</p></div>
+</div></section>
+</div></main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved.</p></div></div></footer>
+<script src="../../js/main.js?v=7"></script>
+<script src="/js/ad-loader.js?v=4"></script>
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+let beforeImg=null,afterImg=null;
+['Before','After'].forEach(s=>{const d=$('drop'+s),i=$('file'+s);
+d.addEventListener('click',()=>i.click());
+['dragover','dragenter'].forEach(e=>d.addEventListener(e,ev=>{ev.preventDefault();d.classList.add('dragover');}));
+d.addEventListener('drop',e=>{e.preventDefault();const f=e.dataTransfer.files[0];if(f)load(s,f);});
+i.addEventListener('change',()=>{if(i.files[0])load(s,i.files[0]);i.value='';});});
+async function load(s,file){const img=await createImageBitmap(file);
+if(s==='Before'){beforeImg={img};show('dropBefore',file);}else{afterImg={img};show('dropAfter',file);}
+if(beforeImg&&afterImg){$('workspace').style.display='block';$('runBtn').disabled=false;}}
+function show(id,file){$(id).innerHTML=`<img src="${URL.createObjectURL(file)}" style="max-height:140px">`;}
+$('resetBtn').addEventListener('click',()=>{beforeImg=null;afterImg=null;
+$('dropBefore').innerHTML='<div style="font-size:2rem">📷</div><h4>Before（前）</h4><p>点击上传</p>';
+$('dropAfter').innerHTML='<div style="font-size:2rem">✨</div><h4>After（后）</h4><p>点击上传</p>';
+$('workspace').style.display='none';$('runBtn').disabled=true;$('previewWrap').innerHTML='';});
+$('runBtn').addEventListener('click',async()=>{
+if(!beforeImg||!afterImg)return;
+const layout=$('optLayout').value,labels=$('optLabels').value,divider=$('optDivider').value,fmt=$('optFmt').value;
+$('runBtn').disabled=true;$('runBtn').textContent='⏳ 生成中…';
+const b=beforeImg.img,a=afterImg.img,W=Math.max(b.width,a.width),H=Math.max(b.height,a.height);
+const c=document.createElement('canvas');
+if(layout==='horizontal'){c.width=W*2;c.height=H;}else{c.width=W;c.height=H*2;}
+const ctx=c.getContext('2d');
+function cover(img,x,y,w,h){const s=Math.max(w/img.width,h/img.height);const dw=img.width*s,dh=img.height*s;ctx.drawImage(img,x+(w-dw)/2,y+(h-dh)/2,dw,dh);}
+if(layout==='horizontal'){cover(b,0,0,W,H);cover(a,W,0,W,H);
+if(divider!=='none'){ctx.fillStyle=divider==='black'?'#000':'#fff';ctx.fillRect(W-2,0,4,H);}
+if(labels==='on'){ctx.font='bold 48px Inter';ctx.textAlign='center';ctx.fillStyle='#fff';ctx.shadowColor='rgba(0,0,0,.5)';ctx.shadowBlur=8;
+ctx.fillText('前',W/2,H-40);ctx.fillText('后',W*1.5,H-40);}
+}else{cover(b,0,0,W,H);cover(a,0,H,W,H);
+if(divider!=='none'){ctx.fillStyle=divider==='black'?'#000':'#fff';ctx.fillRect(0,H-2,W,4);}
+if(labels==='on'){ctx.font='bold 48px Inter';ctx.textAlign='center';ctx.fillStyle='#fff';ctx.shadowColor='rgba(0,0,0,.5)';ctx.shadowBlur=8;
+ctx.fillText('前',W/2,H-40);ctx.fillText('后',W/2,H*1.5-40);}
+}
+const blob=await new Promise(r=>c.toBlob(r,fmt==='png'?'image/png':'image/jpeg',0.92));
+const url=URL.createObjectURL(blob);
+$('previewWrap').innerHTML=`<img src="${url}" style="max-width:100%;border-radius:12px">`;
+const a=document.createElement('a');a.href=url;a.download=`before-after.${fmt}`;a.click();
+$('runBtn').textContent='✓ 已下载';setTimeout(()=>{$('runBtn').textContent='🚀 生成对比图';},4000);$('runBtn').disabled=false;
+});
+})();
+</script>
+</body></html>

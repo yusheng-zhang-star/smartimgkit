@@ -14,6 +14,149 @@
     '<iframe src="https://smartimgkit.com" width="800" height="600" frameborder="0" title="SmartImgKit Image Tool"></iframe>\n' +
     'Source: <a href="https://smartimgkit.com">SmartImgKit.com</a>';
 
+  /* ===== Tool-specific configs ===== */
+  var TOOL_CONFIGS = {
+    'background-remover': {
+      title: '✅ Background Removed Successfully',
+      stat1Label: 'Original',
+      stat2Label: 'Processed',
+      stat3Label: 'Quality',
+      twitterText: 'I just removed the background from an image with SmartImgKit — free and no signup! Try it:',
+      systemText: 'I just removed the background from an image with SmartImgKit!',
+      reportHeader: '✅ Background Removal Complete\n',
+      reportLine2: 'Original: ',
+      reportLine3: 'Output: ',
+      reportLine4: 'Quality: ',
+      fileName: 'no-background'
+    },
+    'image-upscaler': {
+      title: '✅ Image Upscaled Successfully',
+      stat1Label: 'Original',
+      stat2Label: 'Upscaled',
+      stat3Label: 'Scale',
+      twitterText: 'I just upscaled an image with AI using SmartImgKit — sharper and bigger! Try it free:',
+      systemText: 'I just upscaled an image with AI using SmartImgKit!',
+      reportHeader: '✅ Image Upscaling Complete\n',
+      reportLine2: 'Original: ',
+      reportLine3: 'Upscaled: ',
+      reportLine4: 'Scale: ',
+      fileName: 'upscaled-image'
+    },
+    'image-compressor': {
+      title: '✅ Image Optimized Successfully',
+      stat1Label: 'Original',
+      stat2Label: 'Optimized',
+      stat3Label: 'Saved',
+      twitterText: 'I just optimized an image with SmartImgKit — saved ',
+      systemText: 'I just optimized an image and saved ',
+      reportHeader: '✅ Image Optimization Complete\n',
+      reportLine2: 'Original: ',
+      reportLine3: 'Optimized: ',
+      reportLine4: 'Saved: ',
+      fileName: 'optimized-image'
+    },
+    'image-cropper': {
+      title: '✅ Image Cropped Successfully',
+      stat1Label: 'Original',
+      stat2Label: 'Cropped',
+      stat3Label: 'Aspect',
+      twitterText: 'I just cropped an image perfectly with SmartImgKit — free and easy! Try it:',
+      systemText: 'I just cropped an image with SmartImgKit!',
+      reportHeader: '✅ Image Cropping Complete\n',
+      reportLine2: 'Original: ',
+      reportLine3: 'Cropped: ',
+      reportLine4: 'Aspect Ratio: ',
+      fileName: 'cropped-image'
+    },
+    'image-resizer': {
+      title: '✅ Image Resized Successfully',
+      stat1Label: 'Original',
+      stat2Label: 'Resized',
+      stat3Label: 'Dimensions',
+      twitterText: 'I just resized an image with SmartImgKit — perfect dimensions every time! Try it free:',
+      systemText: 'I just resized an image with SmartImgKit!',
+      reportHeader: '✅ Image Resizing Complete\n',
+      reportLine2: 'Original: ',
+      reportLine3: 'Resized: ',
+      reportLine4: 'Dimensions: ',
+      fileName: 'resized-image'
+    },
+    'image-converter': {
+      title: '✅ Image Converted Successfully',
+      stat1Label: 'Original',
+      stat2Label: 'Converted',
+      stat3Label: 'Format',
+      twitterText: 'I just converted an image format with SmartImgKit — fast and free! Try it:',
+      systemText: 'I just converted an image format with SmartImgKit!',
+      reportHeader: '✅ Image Conversion Complete\n',
+      reportLine2: 'Original: ',
+      reportLine3: 'Converted: ',
+      reportLine4: 'Format: ',
+      fileName: 'converted-image'
+    },
+    'watermark': {
+      title: '✅ Watermark Added Successfully',
+      stat1Label: 'Original',
+      stat2Label: 'Watermarked',
+      stat3Label: 'Protected',
+      twitterText: 'I just added a watermark to protect my image with SmartImgKit! Try it free:',
+      systemText: 'I just added a watermark to my image with SmartImgKit!',
+      reportHeader: '✅ Watermark Added\n',
+      reportLine2: 'Original: ',
+      reportLine3: 'Watermarked: ',
+      reportLine4: 'Status: Protected\n',
+      fileName: 'watermarked-image'
+    },
+    'bulk-processor': {
+      title: '✅ Bulk Processing Complete',
+      stat1Label: 'Input',
+      stat2Label: 'Output',
+      stat3Label: 'Saved',
+      twitterText: 'I just batch-processed images with SmartImgKit — saved so much time! Try it free:',
+      systemText: 'I just batch-processed images with SmartImgKit!',
+      reportHeader: '✅ Bulk Processing Complete\n',
+      reportLine2: 'Input: ',
+      reportLine3: 'Output: ',
+      reportLine4: 'Saved: ',
+      fileName: 'processed-images'
+    }
+  };
+
+  /* ===== Default config (fallback) ===== */
+  var DEFAULT_CONFIG = {
+    title: '✅ Image Processed Successfully',
+    stat1Label: 'Original',
+    stat2Label: 'Processed',
+    stat3Label: 'Result',
+    twitterText: 'I just processed an image with SmartImgKit — free online image tools! Try it:',
+    systemText: 'I just processed an image with SmartImgKit!',
+    reportHeader: '✅ Image Processing Complete\n',
+    reportLine2: 'Original: ',
+    reportLine3: 'Processed: ',
+    reportLine4: 'Result: ',
+    fileName: 'processed-image'
+  };
+
+  /* ===== Detect tool type from URL ===== */
+  function detectToolType() {
+    try {
+      var path = window.location.pathname;
+      // Match /tools/xxx or /xx/tools/xxx (language prefix)
+      var match = path.match(/\/tools\/([a-z0-9-]+)/i);
+      if (match) return match[1].toLowerCase();
+      // Match /xxx/tools/xxx (e.g., /es/tools/background-remover)
+      var match2 = path.match(/\/[a-z]{2}\/tools\/([a-z0-9-]+)/i);
+      if (match2) return match2[1].toLowerCase();
+    } catch(e) {}
+    return '';
+  }
+
+  /* ===== Get tool config ===== */
+  function getToolConfig(toolType) {
+    toolType = toolType || detectToolType();
+    return TOOL_CONFIGS[toolType] || DEFAULT_CONFIG;
+  }
+
   /* ===== State ===== */
   var state = {
     origSize: '',
@@ -212,11 +355,12 @@
 
   /* ===== Copy report text ===== */
   function copyReport() {
+    var config = state.currentToolConfig || getToolConfig();
     var text =
-      '✅ Image Optimization Complete\n' +
-      'Original: ' + state.origSize + '\n' +
-      'Optimized: ' + state.optSize + '\n' +
-      'Saved: ' + state.saveRate + '\n\n' +
+      config.reportHeader +
+      config.reportLine2 + state.origSize + '\n' +
+      config.reportLine3 + state.optSize + '\n' +
+      config.reportLine4 + state.saveRate + '\n\n' +
       'Processed by SmartImgKit\n' +
       SITE_URL;
 
@@ -253,7 +397,13 @@
   /* ===== Share ===== */
   function shareTwitter() {
     track('click_share', { platform: 'twitter' });
-    var text = encodeURIComponent('I just optimized an image with SmartImgKit — saved ' + state.saveRate + '! Try it free:');
+    var config = state.currentToolConfig || getToolConfig();
+    var shareText = config.twitterText;
+    // For compressor, append save rate
+    if (config === TOOL_CONFIGS['image-compressor'] && state.saveRate && state.saveRate !== '-') {
+      shareText += state.saveRate + '! Try it free:';
+    }
+    var text = encodeURIComponent(shareText);
     var url = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent(SITE_URL);
     window.open(url, '_blank', 'noopener');
   }
@@ -266,10 +416,16 @@
 
   function shareSystem() {
     track('click_share', { platform: 'system' });
+    var config = state.currentToolConfig || getToolConfig();
+    var shareText = config.systemText;
+    // For compressor, append save rate
+    if (config === TOOL_CONFIGS['image-compressor'] && state.saveRate && state.saveRate !== '-') {
+      shareText += state.saveRate + '!';
+    }
     if (navigator.share) {
       navigator.share({
         title: 'SmartImgKit — Free Image Tools',
-        text: 'I just optimized an image and saved ' + state.saveRate + '!',
+        text: shareText,
         url: SITE_URL
       }).catch(function() {});
     } else {
@@ -521,7 +677,10 @@
     state.originalBlob = data.originalBlob || null;
     state.resultBlob = data.resultBlob || null;
     state.watermarkOn = false; // always reset to OFF
-    state.fileName = data.fileName || 'optimized-image';
+
+    // Get tool config for default file name
+    var toolConfigForName = getToolConfig(data.toolType);
+    state.fileName = data.fileName || toolConfigForName.fileName || 'processed-image';
 
     // Determine extension
     if (state.resultBlob && state.resultBlob.type) {
@@ -541,6 +700,21 @@
       previewImg.style.display = 'block';
     } else {
       previewImg.style.display = 'none';
+    }
+
+    // Get tool-specific config
+    var toolConfig = getToolConfig(data.toolType);
+    state.currentToolConfig = toolConfig;
+
+    // Dynamic title and stats based on tool type
+    document.getElementById('resultModalTitle').textContent = toolConfig.title;
+
+    // Update stat labels
+    var statLabels = document.querySelectorAll('.result-stats .stat-label');
+    if (statLabels.length >= 3) {
+      statLabels[0].textContent = toolConfig.stat1Label;
+      statLabels[1].textContent = toolConfig.stat2Label;
+      statLabels[2].textContent = toolConfig.stat3Label;
     }
 
     document.getElementById('statOrigSize').textContent = state.origSize;
@@ -633,7 +807,16 @@
       _fname = _of.name.replace(/\.[^.]+$/, '') + '-optimized.' + (_of.name.split('.').pop() || 'png');
     }
 
+    // Detect tool type and use appropriate file name
+    var toolType = detectToolType();
+    var toolConfig = getToolConfig(toolType);
+    if (toolConfig.fileName && _of && _of.name) {
+      var ext = _of.name.split('.').pop() || 'png';
+      _fname = toolConfig.fileName + '.' + ext;
+    }
+
     openResultModal({
+      toolType: toolType,
       origSize: _origSize > 0 ? _origSize : 'Unknown',
       optSize: _optSize,
       saveRate: _saveRate,
