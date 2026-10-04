@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bulk Image Resizer & Compressor | Process Images Locally in Browser | SmartImgKit</title>
+<meta name="description" content="Bulk resize, crop & compress images 100% locally in your browser. No upload, unlimited batch, no signup. Perfect for Etsy, Amazon, Shopify sellers.">
+<link rel="canonical" href="https://smartimgkit.com/batch-image-resizer/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Bulk Image Resizer & Compressor",
+  "operatingSystem": "Web Browser",
+  "applicationCategory": "DesignApplication",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+  "description": "Bulk resize, compress and convert images locally in your browser. No upload, unlimited batch processing, no signup required."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "Do my images get uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. All resizing, compression and conversion happens 100% locally in your browser. Your photos never leave your device."}},
+    {"@type": "Question", "name": "Is there a limit on how many images I can process?", "acceptedAnswer": {"@type": "Answer", "text": "No. Free users can process unlimited images in batches, no signup required. No per-batch count limits."}},
+    {"@type": "Question", "name": "Can I resize images for Etsy or Amazon listings?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Use the built-in Etsy 2000px and Amazon 2000px square presets to instantly prepare product photos for marketplaces."}}
+  ]
+}
+</script>
+<style>
+* {margin:0; padding:0; box-sizing:border-box;}
+body {font-family:system-ui,sans-serif; background:#f8fafc; color:#1e293b; line-height:1.6;}
+.top {background:#0d9488; color:white; padding:1rem; position:sticky; top:0; z-index:100;}
+.top-inner {max-width:1200px; margin:0 auto; display:flex; align-items:center;}
+.top a {color:white; text-decoration:none; margin-right:1.5rem;}
+.container {max-width:1100px; margin:2rem auto; padding:0 1rem;}
+h1 {color:#0d9488; margin:1rem 0; font-size:2rem;}
+.lead {font-size:1.15rem; color:#475569; margin-bottom:2rem;}
+.workspace {background:white; padding:2rem; border-radius:16px; box-shadow:0 4px 16px rgba(0,0,0,0.08);}
+.drop-zone {border:2px dashed #94a3b8; border-radius:12px; padding:3rem; text-align:center; margin:1.5rem 0; cursor:pointer;}
+.drop-zone:hover {border-color:#0d9488; background:#ecfeff;}
+.controls {display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:1.5rem; margin:2rem 0; padding:1.5rem; background:#f8fafc; border-radius:12px;}
+.control-group label {display:block; font-weight:500; margin-bottom:0.5rem; color:#334155;}
+select, input[type=number], input[type=range] {width:100%; padding:0.6rem; border-radius:8px; border:1px solid #cbd5e1; font-size:1rem;}
+button {background:#0d9488; color:white; border:none; padding:0.9rem 1.8rem; border-radius:8px; font-size:1rem; cursor:pointer; margin:0.5rem;}
+button:hover {background:#0f766e;}
+button:disabled {background:#94a3b8; cursor:not-allowed;}
+.preview-grid {display:grid; grid-template-columns:repeat(auto-fill, minmax(180px,1fr)); gap:1rem; margin:2rem 0;}
+.preview-item {padding:1rem; border:1px solid #e2e8f0; border-radius:8px; text-align:center;}
+.preview-item img {max-width:100%; border-radius:4px; margin-bottom:0.5rem;}
+.faq {margin:3rem 0; padding:2rem; background:white; border-radius:16px;}
+.faq h2 {color:#0d9488; margin-bottom:1.5rem;}
+.faq details {margin:1rem 0; padding:1rem; background:#f8fafc; border-radius:8px;}
+.faq summary {font-weight:600; cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="top-inner">
+    <a href="/" style="font-weight:800; font-size:1.2rem;">SmartImgKit</a>
+    <a href="/tools/">All Tools</a>
+    <a href="/blog/">Blog</a>
+  </div>
+</div>
+<div class="container">
+  <h1>Bulk Image Resizer & Compressor</h1>
+  <p class="lead">Bulk resize, compress and convert images 100% locally in your browser. No upload, unlimited batch, no signup. Perfect for Etsy, Amazon, Shopify sellers.</p>
+
+  <div class="workspace">
+    <div class="drop-zone" id="dropZone">
+      <p style="font-size:1.3rem; margin-bottom:0.5rem;">📂 Drop your images here, or click to upload</p>
+      <p style="color:#64748b;">JPG / PNG / WebP · Unlimited files · 100% local processing</p>
+      <input type="file" id="fileInput" accept="image/*" multiple hidden>
+    </div>
+
+    <div class="controls">
+      <div class="control-group">
+        <label>Resize Preset</label>
+        <select id="preset">
+          <option value="none">No Resize (original)</option>
+          <option value="2000,2000">Etsy / Amazon 2000x2000 Square</option>
+          <option value="1200,1200">1200x1200 Square</option>
+          <option value="1080,1080">Instagram 1080x1080</option>
+          <option value="1920,1080">1920x1080 HD</option>
+          <option value="custom">Custom Dimensions</option>
+        </select>
+      </div>
+      <div class="control-group" id="customSize" style="display:none;">
+        <label>Max Width (px)</label>
+        <input type="number" id="customWidth" value="1000">
+      </div>
+      <div class="control-group">
+        <label>Output Format</label>
+        <select id="format">
+          <option value="image/jpeg">JPG (smallest file size)</option>
+          <option value="image/png">PNG (transparent support)</option>
+          <option value="image/webp">WebP (best compression)</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>Compression Quality: <span id="qualityVal">85</span>%</label>
+        <input type="range" id="quality" min="10" max="100" value="85">
+      </div>
+    </div>
+
+    <div style="text-align:center;">
+      <button id="processBtn" disabled>⚡ Process All Images</button>
+    </div>
+
+    <div class="preview-grid" id="previewGrid"></div>
+  </div>
+
+  <div class="faq">
+    <h2>Frequently Asked Questions</h2>
+    <details>
+      <summary>Do my images get uploaded to a server?</summary>
+      <p>No. All resizing, compression and conversion happens 100% locally in your browser. Your photos never leave your device, which means zero privacy risk for sensitive product photos.</p>
+    </details>
+    <details>
+      <summary>Is there a limit on how many images I can process?</summary>
+      <p>No. Free users can process unlimited images in batches, no signup required. There is no per-batch cap of 10 or 20 files like iLoveIMG or ResizePixel.</p>
+    </details>
+    <details>
+      <summary>Can I resize images for Etsy or Amazon listings?</summary>
+      <p>Yes. Use the built-in Etsy / Amazon 2000x2000 square preset to instantly prepare product photos that meet marketplace size requirements, without paying for a Pro subscription.</p>
+    </details>
+    <details>
+      <summary>Does this tool work on mobile?</summary>
+      <p>Yes. The tool is fully responsive and works on phones and tablets. You can bulk process photos directly from your camera roll without a desktop computer.</p>
+    </details>
+  </div>
+</div>
+
+<script>
+const dropZone = document.getElementById('dropZone');
+const fileInput = document.getElementById('fileInput');
+const processBtn = document.getElementById('processBtn');
+const preset = document.getElementById('preset');
+const customSize = document.getElementById('customSize');
+const customWidth = document.getElementById('customWidth');
+const format = document.getElementById('format');
+const quality = document.getElementById('quality');
+const qualityVal = document.getElementById('qualityVal');
+const previewGrid = document.getElementById('previewGrid');
+
+let files = [];
+quality.addEventListener('input', () => qualityVal.textContent = quality.value);
+preset.addEventListener('change', () => {
+  customSize.style.display = preset.value === 'custom' ? 'block' : 'none';
+});
+
+dropZone.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', (e) => {
+  files = Array.from(e.target.files);
+  processBtn.disabled = files.length === 0;
+  previewGrid.innerHTML = '';
+  files.forEach((f, i) => {
+    const url = URL.createObjectURL(f);
+    const div = document.createElement('div');
+    div.className = 'preview-item';
+    div.innerHTML = `<img src="${url}"><p style="font-size:0.8rem;">${f.name}</p>`;
+    previewGrid.appendChild(div);
+  });
+});
+
+processBtn.addEventListener('click', async () => {
+  processBtn.disabled = true;
+  for(let i=0; i<files.length; i++) {
+    const f = files[i];
+    const img = new Image();
+    img.src = URL.createObjectURL(f);
+    await new Promise(r => img.onload = r);
+    
+    let w, h;
+    const presetVal = preset.value;
+    if(presetVal !== 'none') {
+      let maxW;
+      if(presetVal === 'custom') maxW = parseInt(customWidth.value);
+      else maxW = parseInt(presetVal.split(',')[0]);
+      const ratio = Math.min(maxW / img.width, maxW / img.height);
+      w = img.width * ratio;
+      h = img.height * ratio;
+    } else {
+      w = img.width;
+      h = img.height;
+    }
+
+    const canvas = document.createElement('canvas');
+    canvas.width = w; canvas.height = h;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0,0,w,h);
+    ctx.drawImage(img, 0, 0, w, h);
+
+    const outBlob = await new Promise(r => canvas.toBlob(r, format.value, quality.value/100));
+    const outUrl = URL.createObjectURL(outBlob);
+    const item = previewGrid.children[i];
+    item.innerHTML = `<img src="${outUrl}"><p style="font-size:0.8rem;">${(outBlob.size/1024).toFixed(0)} KB</p><button onclick="download('${outUrl}', 'processed-${i}.jpg')" style="padding:0.4rem 0.8rem; font-size:0.8rem;">Download</button>`;
+  }
+  processBtn.disabled = false;
+});
+
+function download(url, name) {
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = name;
+  a.click();
+}
+</script>
+</body>
+</html>
