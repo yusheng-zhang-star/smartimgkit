@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amazon Product Image Studio — Free, No Upload | SmartImgKit</title>
+<meta name="description" content="Make Amazon product photos with white background and shadow 100% free in your browser. No upload, no watermark, 1:1 main image ready.">
+<link rel="canonical" href="https://smartimgkit.com/tools/amazon-product-image-studio.html">
+<style>
+* {margin:0; padding:0; box-sizing:border-box;}
+body {font-family:system-ui,sans-serif; background:#f8fafc; color:#1e293b; line-height:1.6;}
+.top {background:#1e3a8a; color:white; padding:1rem; position:sticky; top:0; z-index:100;}
+.top-inner {max-width:1200px; margin:0 auto; display:flex; align-items:center;}
+.top a {color:white; text-decoration:none; margin-right:1.5rem;}
+.container {max-width:1000px; margin:2rem auto; padding:0 1rem;}
+h1 {color:#1e3a8a; margin-bottom:1rem;}
+.workspace {background:white; padding:2rem; border-radius:16px; box-shadow:0 4px 16px rgba(0,0,0,0.08);}
+.drop-zone {border:2px dashed #94a3b8; border-radius:12px; padding:3rem; text-align:center; margin:1.5rem 0; cursor:pointer;}
+.drop-zone:hover {border-color:#1e3a8a; background:#eff6ff;}
+button {background:#1e3a8a; color:white; border:none; padding:0.8rem 1.5rem; border-radius:8px; font-size:1rem; cursor:pointer; margin:0.5rem;}
+button:hover {background:#1e40af;}
+#canvas-container {margin:1.5rem 0; text-align:center;}
+canvas {max-width:100%; border:1px solid #e2e8f0; border-radius:8px;}
+.controls {margin:1.5rem 0; display:grid; grid-template-columns:1fr 1fr; gap:1rem;}
+.control-group label {display:block; margin-bottom:0.3rem; font-weight:500;}
+select, input[type=range] {width:100%; padding:0.5rem; border-radius:6px; border:1px solid #cbd5e1;}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="top-inner">
+    <a href="/" style="font-weight:800; font-size:1.2rem;">SmartImgKit</a>
+    <a href="/tools/">All Tools</a>
+    <a href="/blog/">Blog</a>
+  </div>
+</div>
+<div class="container">
+  <h1>Amazon Product Image Studio</h1>
+  <p>Make perfect 1:1 white-background Amazon main photos in your browser. No upload, no watermark, 100% free.</p>
+  <div class="workspace">
+    <div class="drop-zone" id="dropZone">
+      <p style="font-size:1.2rem; margin-bottom:0.5rem;">📸 Drop your product photo here, or click to upload</p>
+      <p style="color:#64748b;">JPG/PNG up to 20MB</p>
+      <input type="file" id="fileInput" accept="image/*" hidden>
+    </div>
+    <div class="controls">
+      <div class="control-group">
+        <label>Background Color</label>
+        <select id="bgColor">
+          <option value="#ffffff">White (Amazon Main Image)</option>
+          <option value="#f3f4f6">Light Gray Studio</option>
+          <option value="#000000">Black</option>
+          <option value="transparent">Transparent</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>Shadow Intensity: <span id="shadowVal">30</span>%</label>
+        <input type="range" id="shadow" min="0" max="100" value="30">
+      </div>
+      <div class="control-group">
+        <label>Padding: <span id="paddingVal">85</span>%</label>
+        <input type="range" id="padding" min="50" max="95" value="85">
+      </div>
+      <div class="control-group">
+        <label>Output Size</label>
+        <select id="outSize">
+          <option value="2000">2000x2000 (Amazon Recommended)</option>
+          <option value="1000">1000x1000</option>
+          <option value="500">500x500</option>
+        </select>
+      </div>
+    </div>
+    <div id="canvas-container"></div>
+    <div style="text-align:center;">
+      <button onclick="processImage()">✨ Generate Amazon Photo</button>
+      <button onclick="downloadImage()" id="downloadBtn" disabled>⬇️ Download Image</button>
+    </div>
+  </div>
+</div>
+<script>
+const dropZone = document.getElementById('dropZone');
+const fileInput = document.getElementById('fileInput');
+let img = null;
+dropZone.onclick = () => fileInput.click();
+dropZone.ondragover = (e) => {e.preventDefault(); dropZone.style.borderColor='#1e3a8a';};
+dropZone.ondrop = (e) => {e.preventDefault(); const f = e.dataTransfer.files[0]; loadImage(f);};
+fileInput.onchange = (e) => loadImage(e.target.files[0]);
+function loadImage(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    img = new Image();
+    img.onload = () => {alert('Image loaded! Click Generate Amazon Photo.');};
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+function processImage() {
+  if (!img) {alert('Please upload a product photo first!'); return;}
+  const size = parseInt(document.getElementById('outSize').value);
+  const bg = document.getElementById('bgColor').value;
+  const shadow = document.getElementById('shadow').value/100;
+  const pad = document.getElementById('padding').value/100;
+  const canvas = document.createElement('canvas');
+  canvas.width = size; canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  if (bg !== 'transparent') {ctx.fillStyle = bg; ctx.fillRect(0,0,size,size);}
+  const scale = (size*pad) / Math.max(img.width, img.height);
+  const w = img.width * scale, h = img.height * scale;
+  const x = (size - w)/2, y = (size - h)/2;
+  ctx.shadowColor = 'rgba(0,0,0,'+shadow+')';
+  ctx.shadowBlur = 20;
+  ctx.drawImage(img, x, y, w, h);
+  document.getElementById('canvas-container').innerHTML = '';
+  document.getElementById('canvas-container').appendChild(canvas);
+  document.getElementById('downloadBtn').disabled = false;
+  window.canvas = canvas;
+}
+function downloadImage() {
+  const a = document.createElement('a');
+  a.download = 'amazon-product-photo.png';
+  a.href = canvas.toDataURL('image/png');
+  a.click();
+}
+</script>
+</body>
+</html>

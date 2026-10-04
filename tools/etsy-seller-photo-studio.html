@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Etsy Seller Photo Studio — Free Product Photos | SmartImgKit</title>
+<meta name="description" content="Make Etsy product photos that convert for free in your browser. No upload, no watermark, square format ready.">
+<style>
+* {margin:0; padding:0; box-sizing:border-box;}
+body {font-family:system-ui,sans-serif; background:#fff7ed; color:#1e293b; line-height:1.6;}
+.top {background:#b45309; color:white; padding:1rem; position:sticky; top:0; z-index:100;}
+.top-inner {max-width:1200px; margin:0 auto; display:flex; align-items:center;}
+.top a {color:white; text-decoration:none; margin-right:1.5rem;}
+.container {max-width:1000px; margin:2rem auto; padding:0 1rem;}
+h1 {color:#b45309; margin-bottom:1rem;}
+.workspace {background:white; padding:2rem; border-radius:16px; box-shadow:0 4px 16px rgba(0,0,0,0.08);}
+.drop-zone {border:2px dashed #d97706; border-radius:12px; padding:3rem; text-align:center; margin:1.5rem 0; cursor:pointer;}
+button {background:#b45309; color:white; border:none; padding:0.8rem 1.5rem; border-radius:8px; font-size:1rem; cursor:pointer; margin:0.5rem;}
+canvas {max-width:100%; border:1px solid #e2e8f0; border-radius:8px;}
+.controls {margin:1.5rem 0; display:grid; grid-template-columns:1fr 1fr; gap:1rem;}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="top-inner">
+    <a href="/" style="font-weight:800; font-size:1.2rem;">SmartImgKit</a>
+    <a href="/tools/">All Tools</a>
+    <a href="/blog/">Blog</a>
+  </div>
+</div>
+<div class="container">
+  <h1>Etsy Seller Photo Studio</h1>
+  <p>Make high-converting Etsy product photos in your browser. 1:1 square, neutral background, ready to list.</p>
+  <div class="workspace">
+    <div class="drop-zone" id="dropZone">
+      <p style="font-size:1.2rem;">📸 Drop your product photo here, or click to upload</p>
+      <input type="file" id="fileInput" accept="image/*" hidden>
+    </div>
+    <div class="controls">
+      <div><label>Background:</label><select id="bg"><option value="#ffffff">White</option><option value="#fef3c7">Warm Beige</option><option value="#f3f4f6">Light Gray</option></select></div>
+      <div><label>Template:</label><select id="template"><option value="plain">Plain</option><option value="minimal">Minimal Text</option></select></div>
+    </div>
+    <div id="canvas-container"></div>
+    <button onclick="processEtsy()">✨ Generate Etsy Photo</button>
+    <button onclick="downloadEtsy()" id="dlBtn" disabled>⬇️ Download</button>
+  </div>
+</div>
+<script>
+const dz = document.getElementById('dropZone'), fi = document.getElementById('fileInput');
+let img;
+dz.onclick = () => fi.click();
+fi.onchange = (e) => {const r = new FileReader(); r.onload = (ev) => {img = new Image(); img.src = ev.target.result;}; r.readAsDataURL(e.target.files[0]);};
+function processEtsy() {
+  if (!img) return alert('Upload a photo first!');
+  const s = 1500;
+  const c = document.createElement('canvas'); c.width = s; c.height = s;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = document.getElementById('bg').value; ctx.fillRect(0,0,s,s);
+  const sc = (s*0.8)/Math.max(img.width, img.height);
+  const w = img.width*sc, h = img.height*sc;
+  ctx.drawImage(img, (s-w)/2, (s-h)/2, w, h);
+  document.getElementById('canvas-container').innerHTML=''; document.getElementById('canvas-container').appendChild(c);
+  document.getElementById('dlBtn').disabled = false;
+  window.c = c;
+}
+function downloadEtsy(){const a=document.createElement('a');a.download='etsy-product.png';a.href=c.toDataURL();a.click();}
+</script>
+</body>
+</html>
