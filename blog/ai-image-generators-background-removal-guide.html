@@ -340,6 +340,17 @@
       <p>© 2026 SmartImgKit · <a href="/blog/">All blogs</a> · <a href="/">Home</a> · <a href="/tools/background-remover/">Background Remover</a></p>
     </div>
   </footer>
+<button onclick="shareOurBlog()" style="position:fixed;bottom:20px;right:20px;background:#0ea5e9;color:white;border:none;border-radius:50%;width:60px;height:60px;font-size:24px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.2);z-index:999;" title="Share this article">💛</button>
+<script>
+function shareOurBlog() {
+  const pageName = document.title.split("—")[0].trim();
+  const url = window.location.href;
+  const text = `Just read this: ${pageName} — totally free, no upload, no signup! 👉 ${url}`;
+  if (navigator.share) { navigator.share({text: text}); }
+  else { navigator.clipboard.writeText(text); alert("✅ Share text copied! Post it online!"); }
+}
+</script>
 </body>
 </html>
+
 
