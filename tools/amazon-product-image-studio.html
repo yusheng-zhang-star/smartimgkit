@@ -19,11 +19,13 @@ h1 {color:#1e3a8a; margin-bottom:1rem;}
 .drop-zone:hover {border-color:#1e3a8a; background:#eff6ff;}
 button {background:#1e3a8a; color:white; border:none; padding:0.8rem 1.5rem; border-radius:8px; font-size:1rem; cursor:pointer; margin:0.5rem;}
 button:hover {background:#1e40af;}
+button:disabled {background:#94a3b8; cursor:not-allowed;}
 #canvas-container {margin:1.5rem 0; text-align:center;}
 canvas {max-width:100%; border:1px solid #e2e8f0; border-radius:8px;}
 .controls {margin:1.5rem 0; display:grid; grid-template-columns:1fr 1fr; gap:1rem;}
 .control-group label {display:block; margin-bottom:0.3rem; font-weight:500;}
 select, input[type=range] {width:100%; padding:0.5rem; border-radius:6px; border:1px solid #cbd5e1;}
+.status {padding:1rem; border-radius:8px; background:#eff6ff; color:#1e3a8a; margin:1rem 0; display:none;}
 </style>
 </head>
 <body>
@@ -43,14 +45,14 @@ select, input[type=range] {width:100%; padding:0.5rem; border-radius:6px; border
       <p style="color:#64748b;">JPG/PNG up to 20MB</p>
       <input type="file" id="fileInput" accept="image/*" hidden>
     </div>
+    <div class="status" id="status"></div>
     <div class="controls">
       <div class="control-group">
         <label>Background Color</label>
         <select id="bgColor">
           <option value="#ffffff">White (Amazon Main Image)</option>
-          <option value="#f3f4f6">Light Gray Studio</option>
+          <option value="#f5f5f5">Light Gray</option>
           <option value="#000000">Black</option>
-          <option value="transparent">Transparent</option>
         </select>
       </div>
       <div class="control-group">
@@ -64,63 +66,116 @@ select, input[type=range] {width:100%; padding:0.5rem; border-radius:6px; border
       <div class="control-group">
         <label>Output Size</label>
         <select id="outSize">
-          <option value="2000">2000x2000 (Amazon Recommended)</option>
-          <option value="1000">1000x1000</option>
-          <option value="500">500x500</option>
+          <option value="2000,2000">2000x2000 (Amazon Recommended)</option>
+          <option value="1000,1000">1000x1000</option>
+          <option value="1500,1500">1500x1500</option>
         </select>
       </div>
     </div>
-    <div id="canvas-container"></div>
     <div style="text-align:center;">
-      <button onclick="processImage()">✨ Generate Amazon Photo</button>
-      <button onclick="downloadImage()" id="downloadBtn" disabled>⬇️ Download Image</button>
+      <button id="generateBtn" disabled>✨ Generate Amazon Photo</button>
+      <button id="downloadBtn" disabled>⬇️ Download Image</button>
+    </div>
+    <div id="canvas-container">
+      <canvas id="canvas"></canvas>
     </div>
   </div>
 </div>
-<script>
+<script type="module">
+let originalImage = null;
+let resultBlob = null;
+let removeModel = null;
 const dropZone = document.getElementById('dropZone');
 const fileInput = document.getElementById('fileInput');
-let img = null;
-dropZone.onclick = () => fileInput.click();
-dropZone.ondragover = (e) => {e.preventDefault(); dropZone.style.borderColor='#1e3a8a';};
-dropZone.ondrop = (e) => {e.preventDefault(); const f = e.dataTransfer.files[0]; loadImage(f);};
-fileInput.onchange = (e) => loadImage(e.target.files[0]);
-function loadImage(file) {
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    img = new Image();
-    img.onload = () => {alert('Image loaded! Click Generate Amazon Photo.');};
-    img.src = e.target.result;
+const generateBtn = document.getElementById('generateBtn');
+const downloadBtn = document.getElementById('downloadBtn');
+const status = document.getElementById('status');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+dropZone.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', (e) => {
+  if(e.target.files[0]) loadImage(e.target.files[0]);
+});
+
+async function loadImage(file) {
+  status.style.display = 'block';
+  status.textContent = 'Loading image...';
+  const img = new Image();
+  img.onload = () => {
+    originalImage = img;
+    status.textContent = 'Image loaded! Click Generate Amazon Photo.';
+    generateBtn.disabled = false;
   };
-  reader.readAsDataURL(file);
+  img.src = URL.createObjectURL(file);
 }
-function processImage() {
-  if (!img) {alert('Please upload a product photo first!'); return;}
-  const size = parseInt(document.getElementById('outSize').value);
-  const bg = document.getElementById('bgColor').value;
-  const shadow = document.getElementById('shadow').value/100;
-  const pad = document.getElementById('padding').value/100;
-  const canvas = document.createElement('canvas');
-  canvas.width = size; canvas.height = size;
-  const ctx = canvas.getContext('2d');
-  if (bg !== 'transparent') {ctx.fillStyle = bg; ctx.fillRect(0,0,size,size);}
-  const scale = (size*pad) / Math.max(img.width, img.height);
-  const w = img.width * scale, h = img.height * scale;
-  const x = (size - w)/2, y = (size - h)/2;
-  ctx.shadowColor = 'rgba(0,0,0,'+shadow+')';
-  ctx.shadowBlur = 20;
-  ctx.drawImage(img, x, y, w, h);
-  document.getElementById('canvas-container').innerHTML = '';
-  document.getElementById('canvas-container').appendChild(canvas);
-  document.getElementById('downloadBtn').disabled = false;
-  window.canvas = canvas;
+
+generateBtn.addEventListener('click', async () => {
+  if(!originalImage) return;
+  generateBtn.disabled = true;
+  status.style.display = 'block';
+  status.textContent = 'Running local AI background removal... this takes 5-10 seconds.';
+  
+  if(!removeModel) {
+    status.textContent = 'Loading AI model (first run only, cached after)...';
+    const mod = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm');
+    removeModel = mod.removeBackground || mod.default;
+  }
+
+  const canvasTmp = document.createElement('canvas');
+  canvasTmp.width = originalImage.width;
+  canvasTmp.height = originalImage.height;
+  const tctx = canvasTmp.getContext('2d');
+  tctx.drawImage(originalImage, 0, 0);
+  const blob = await new Promise(r => canvasTmp.toBlob(r));
+  
+  status.textContent = 'Processing...';
+  const cutoutBlob = await removeModel(blob);
+  const cutoutImg = new Image();
+  cutoutImg.onload = () => {
+    drawFinal(cutoutImg);
+    status.textContent = 'Done! Click Download Image to save.';
+    generateBtn.disabled = false;
+    downloadBtn.disabled = false;
+  };
+  cutoutImg.src = URL.createObjectURL(cutoutBlob);
+});
+
+function drawFinal(cutoutImg) {
+  const [w, h] = document.getElementById('outSize').value.split(',').map(Number);
+  canvas.width = w;
+  canvas.height = h;
+  const bgColor = document.getElementById('bgColor').value;
+  const shadow = document.getElementById('shadow').value / 100;
+  const pad = document.getElementById('padding').value / 100;
+
+  ctx.fillStyle = bgColor;
+  ctx.fillRect(0,0,w,h);
+
+  const maxSize = Math.min(w,h) * pad;
+  const ratio = Math.min(maxSize / cutoutImg.width, maxSize / cutoutImg.height);
+  const dw = cutoutImg.width * ratio;
+  const dh = cutoutImg.height * ratio;
+  const dx = (w - dw)/2;
+  const dy = h - dh - 40;
+
+  ctx.shadowColor = 'rgba(0,0,0,' + shadow + ')';
+  ctx.shadowBlur = 20 * shadow;
+  ctx.shadowOffsetY = 10 * shadow;
+  ctx.drawImage(cutoutImg, dx, dy, dw, dh);
+  ctx.shadowColor = 'transparent';
+
+  resultBlob = null;
+  canvas.toBlob((b) => resultBlob = b);
 }
-function downloadImage() {
+
+downloadBtn.addEventListener('click', () => {
+  if(!resultBlob) return;
   const a = document.createElement('a');
-  a.download = 'amazon-product-photo.png';
-  a.href = canvas.toDataURL('image/png');
+  a.href = URL.createObjectURL(resultBlob);
+  a.download = 'amazon-main-photo.png';
   a.click();
-}
+});
 </script>
 </body>
 </html>
