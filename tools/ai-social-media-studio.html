@@ -3,72 +3,106 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Social Media Resizer — One Image All Platforms | SmartImgKit</title>
-<meta name="description" content="Resize one image for all social media platforms free. Instagram, Twitter, LinkedIn, TikTok — no upload.">
+<title>AI Social Media Studio — One Image, All Sizes Free | SmartImgKit</title>
+<meta name="description" content="Resize one image for all social media platforms (Instagram, TikTok, YouTube, LinkedIn, X, Facebook). AI background removal, 100% local.">
+<link rel="canonical" href="https://smartimgkit.com/tools/ai-social-media-studio.html">
 <style>
 * {margin:0; padding:0; box-sizing:border-box;}
-body {font-family:system-ui,sans-serif; background:#ecfeff; color:#1e293b;}
-.top {background:#0d9488; color:white; padding:1rem; position:sticky; top:0;}
-.top-inner {max-width:1200px; margin:0 auto; display:flex; gap:1.5rem; align-items:center;}
-.top a {color:white; text-decoration:none;}
+body {font-family:system-ui,sans-serif; background:#f8fafc; color:#1e293b; line-height:1.6;}
+.top {background:#0d9488; color:white; padding:1rem; position:sticky; top:0; z-index:100;}
+.top-inner {max-width:1200px; margin:0 auto; display:flex; align-items:center;}
+.top a {color:white; text-decoration:none; margin-right:1.5rem;}
 .container {max-width:1000px; margin:2rem auto; padding:0 1rem;}
 h1 {color:#0d9488; margin-bottom:1rem;}
 .workspace {background:white; padding:2rem; border-radius:16px; box-shadow:0 4px 16px rgba(0,0,0,0.08);}
-.drop-zone {border:2px dashed #0d9488; border-radius:12px; padding:3rem; text-align:center; margin:1.5rem 0; cursor:pointer;}
-button {background:#0d9488; color:white; border:none; padding:0.8rem 1.5rem; border-radius:8px; cursor:pointer; margin:0.5rem;}
-.preview-grid {display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:1rem; margin:1.5rem 0;}
-.preview-item {text-align:center;}
-canvas {width:100%; border:1px solid #e2e8f0; border-radius:8px;}
+.drop-zone {border:2px dashed #94a3b8; border-radius:12px; padding:3rem; text-align:center; margin:1.5rem 0; cursor:pointer;}
+.drop-zone:hover {border-color:#0d9488; background:#ecfeff;}
+button {background:#0d9488; color:white; border:none; padding:0.8rem 1.5rem; border-radius:8px; font-size:1rem; cursor:pointer; margin:0.5rem;}
+button:hover {background:#0f766e;}
+button:disabled {background:#94a3b8; cursor:not-allowed;}
+.sizes-grid {display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin:1.5rem 0;}
+.size-card {padding:1rem; border:1px solid #e2e8f0; border-radius:8px; text-align:center;}
+.size-card canvas {max-width:100%;}
+.status {padding:1rem; border-radius:8px; background:#ecfeff; color:#0d9488; margin:1rem 0; display:none;}
 </style>
 </head>
 <body>
 <div class="top">
   <div class="top-inner">
-    <a href="/" style="font-weight:800;">SmartImgKit</a>
+    <a href="/" style="font-weight:800; font-size:1.2rem;">SmartImgKit</a>
     <a href="/tools/">All Tools</a>
     <a href="/blog/">Blog</a>
   </div>
 </div>
 <div class="container">
-  <h1>Social Media Resizer Studio</h1>
-  <p>Upload one image, instantly get versions sized for every social platform. No upload, 100% free.</p>
+  <h1>AI Social Media Studio</h1>
+  <p>Upload one image, instantly generate all 6 standard social media sizes. AI background removal, 100% local.</p>
   <div class="workspace">
-    <div class="drop-zone" onclick="document.getElementById('fileInput').click()">
-      <p style="font-size:1.2rem;">📱 Upload your base image</p>
+    <div class="drop-zone" id="dropZone">
+      <p style="font-size:1.2rem; margin-bottom:0.5rem;">📱 Drop your image here</p>
+      <p style="color:#64748b;">JPG/PNG up to 20MB</p>
       <input type="file" id="fileInput" accept="image/*" hidden>
     </div>
-    <div id="preview-grid" class="preview-grid"></div>
-    <button onclick="generateAll()">✨ Generate All Sizes</button>
+    <div class="status" id="status"></div>
+    <div style="text-align:center;">
+      <button id="generateBtn" disabled>✨ Generate All Sizes</button>
+    </div>
+    <div class="sizes-grid" id="sizesGrid"></div>
   </div>
 </div>
-<script>
-let img;
-const platforms = [
-  {name:'Instagram Post', w:1080, h:1080},
-  {name:'Instagram Story', w:1080, h:1920},
-  {name:'Twitter/X Post', w:1600, h:900},
-  {name:'LinkedIn Post', w:1200, h:627},
-  {name:'TikTok', w:1080, h:1920},
-  {name:'Facebook Post', w:1200, h:630},
+<script type="module">
+const sizes = [
+  {name: 'Instagram Post', w: 1080, h: 1080},
+  {name: 'TikTok / Reels', w: 1080, h: 1920},
+  {name: 'YouTube Thumbnail', w: 1280, h: 720},
+  {name: 'LinkedIn Post', w: 1200, h: 627},
+  {name: 'X / Twitter Post', w: 1600, h: 900},
+  {name: 'Facebook Cover', w: 820, h: 312}
 ];
-document.getElementById('fileInput').onchange = (e) => {const r=new FileReader();r.onload=(ev)=>{img=new Image();img.src=ev.target.result;};r.readAsDataURL(e.target.files[0]);};
-function generateAll() {
-  if (!img) return alert('Upload an image first!');
-  const grid = document.getElementById('preview-grid');
-  grid.innerHTML='';
-  platforms.forEach(p => {
-    const c = document.createElement('canvas'); c.width=p.w; c.height=p.h;
+let originalImage = null, removeModel = null;
+const dropZone = document.getElementById('dropZone'), fileInput = document.getElementById('fileInput'), generateBtn = document.getElementById('generateBtn'), status = document.getElementById('status'), sizesGrid = document.getElementById('sizesGrid');
+dropZone.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', e => { if(e.target.files[0]) loadImage(e.target.files[0]); });
+async function loadImage(file) {
+  status.style.display='block'; status.textContent='Loading...';
+  const img = new Image(); img.onload = () => { originalImage=img; status.textContent='Ready! Click Generate.'; generateBtn.disabled=false; }; img.src = URL.createObjectURL(file);
+}
+generateBtn.addEventListener('click', async () => {
+  if(!originalImage) return;
+  generateBtn.disabled=true; status.style.display='block'; status.textContent='Running local AI processing...';
+  if(!removeModel) {
+    const mod = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm');
+    removeModel = mod.removeBackground || mod.default;
+  }
+  const tmp = document.createElement('canvas'); tmp.width=originalImage.width; tmp.height=originalImage.height;
+  tmp.getContext('2d').drawImage(originalImage,0,0);
+  const blob = await new Promise(r=>tmp.toBlob(r));
+  const cutout = await removeModel(blob);
+  const cutImg = new Image();
+  cutImg.onload = () => { renderAll(cutImg); status.textContent='Done! All 6 sizes generated.'; generateBtn.disabled=false; };
+  cutImg.src = URL.createObjectURL(cutout);
+});
+function renderAll(cutImg) {
+  sizesGrid.innerHTML = '';
+  sizes.forEach(sz => {
+    const card = document.createElement('div'); card.className='size-card';
+    card.innerHTML = `<p style="font-weight:600; margin-bottom:0.5rem;">${sz.name}</p>`;
+    const c = document.createElement('canvas');
+    c.width = sz.w; c.height = sz.h;
     const ctx = c.getContext('2d');
-    ctx.fillStyle='#fff'; ctx.fillRect(0,0,p.w,p.h);
-    const sc = Math.max(p.w/img.width, p.h/img.height);
-    ctx.drawImage(img, (p.w-img.width*sc)/2, (p.h-img.height*sc)/2, img.width*sc, img.height*sc);
-    const div = document.createElement('div'); div.className='preview-item';
-    div.innerHTML = `<p><strong>${p.name}</strong><br>${p.w}×${p.h}</p>`;
-    div.appendChild(c);
-    const btn = document.createElement('button'); btn.textContent='Download';
-    btn.onclick = () => {const a=document.createElement('a');a.download=p.name.replace(/\s+/g,'-').toLowerCase()+'.png';a.href=c.toDataURL();a.click();};
-    div.appendChild(btn);
-    grid.appendChild(div);
+    ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,sz.w,sz.h);
+    const ratio = Math.max(sz.w/cutImg.width, sz.h/cutImg.height);
+    const dw = cutImg.width*ratio, dh = cutImg.height*ratio;
+    ctx.drawImage(cutImg, (sz.w-dw)/2, (sz.h-dh)/2, dw, dh);
+    card.appendChild(c);
+    const dl = document.createElement('button'); dl.textContent='⬇️ Download'; dl.style.fontSize='0.9rem';
+    dl.addEventListener('click', () => {
+      c.toBlob(b => {
+        const a = document.createElement('a'); a.href=URL.createObjectURL(b); a.download=`${sz.name.replace(/\s+/g,'-').toLowerCase()}.png`; a.click();
+      });
+    });
+    card.appendChild(dl);
+    sizesGrid.appendChild(card);
   });
 }
 </script>

@@ -3,21 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Etsy Seller Photo Studio — Free Product Photos | SmartImgKit</title>
-<meta name="description" content="Make Etsy product photos that convert for free in your browser. No upload, no watermark, square format ready.">
+<title>Etsy Seller Photo Studio — Free, No Upload | SmartImgKit</title>
+<meta name="description" content="Make Etsy product photos 100% free in your browser. AI remove background, square 1:1, no upload, no watermark.">
+<link rel="canonical" href="https://smartimgkit.com/tools/etsy-seller-photo-studio.html">
 <style>
 * {margin:0; padding:0; box-sizing:border-box;}
-body {font-family:system-ui,sans-serif; background:#fff7ed; color:#1e293b; line-height:1.6;}
-.top {background:#b45309; color:white; padding:1rem; position:sticky; top:0; z-index:100;}
+body {font-family:system-ui,sans-serif; background:#f8fafc; color:#1e293b; line-height:1.6;}
+.top {background:#4f46e5; color:white; padding:1rem; position:sticky; top:0; z-index:100;}
 .top-inner {max-width:1200px; margin:0 auto; display:flex; align-items:center;}
 .top a {color:white; text-decoration:none; margin-right:1.5rem;}
 .container {max-width:1000px; margin:2rem auto; padding:0 1rem;}
-h1 {color:#b45309; margin-bottom:1rem;}
+h1 {color:#4f46e5; margin-bottom:1rem;}
 .workspace {background:white; padding:2rem; border-radius:16px; box-shadow:0 4px 16px rgba(0,0,0,0.08);}
-.drop-zone {border:2px dashed #d97706; border-radius:12px; padding:3rem; text-align:center; margin:1.5rem 0; cursor:pointer;}
-button {background:#b45309; color:white; border:none; padding:0.8rem 1.5rem; border-radius:8px; font-size:1rem; cursor:pointer; margin:0.5rem;}
-canvas {max-width:100%; border:1px solid #e2e8f0; border-radius:8px;}
+.drop-zone {border:2px dashed #94a3b8; border-radius:12px; padding:3rem; text-align:center; margin:1.5rem 0; cursor:pointer;}
+.drop-zone:hover {border-color:#4f46e5; background:#eef2ff;}
+button {background:#4f46e5; color:white; border:none; padding:0.8rem 1.5rem; border-radius:8px; font-size:1rem; cursor:pointer; margin:0.5rem;}
+button:hover {background:#4338ca;}
+button:disabled {background:#94a3b8; cursor:not-allowed;}
+canvas {max-width:100%; border:1px solid #e2e8f0; border-radius:8px; margin:1rem auto; display:block;}
 .controls {margin:1.5rem 0; display:grid; grid-template-columns:1fr 1fr; gap:1rem;}
+.control-group label {display:block; margin-bottom:0.3rem; font-weight:500;}
+select, input[type=range] {width:100%; padding:0.5rem; border-radius:6px; border:1px solid #cbd5e1;}
+.status {padding:1rem; border-radius:8px; background:#eef2ff; color:#4f46e5; margin:1rem 0; display:none;}
 </style>
 </head>
 <body>
@@ -30,40 +37,101 @@ canvas {max-width:100%; border:1px solid #e2e8f0; border-radius:8px;}
 </div>
 <div class="container">
   <h1>Etsy Seller Photo Studio</h1>
-  <p>Make high-converting Etsy product photos in your browser. 1:1 square, neutral background, ready to list.</p>
+  <p>Perfect square 1:1 Etsy listing photos in your browser. AI background removal, no upload, no watermark.</p>
   <div class="workspace">
     <div class="drop-zone" id="dropZone">
-      <p style="font-size:1.2rem;">📸 Drop your product photo here, or click to upload</p>
+      <p style="font-size:1.2rem; margin-bottom:0.5rem;">🛍️ Drop your product photo here, or click to upload</p>
+      <p style="color:#64748b;">JPG/PNG up to 20MB</p>
       <input type="file" id="fileInput" accept="image/*" hidden>
     </div>
+    <div class="status" id="status"></div>
     <div class="controls">
-      <div><label>Background:</label><select id="bg"><option value="#ffffff">White</option><option value="#fef3c7">Warm Beige</option><option value="#f3f4f6">Light Gray</option></select></div>
-      <div><label>Template:</label><select id="template"><option value="plain">Plain</option><option value="minimal">Minimal Text</option></select></div>
+      <div class="control-group">
+        <label>Background</label>
+        <select id="bgColor">
+          <option value="#ffffff">White</option>
+          <option value="#fef3c7">Warm Cream</option>
+          <option value="#fce7f3">Blush Pink</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>Output Size</label>
+        <select id="outSize">
+          <option value="2000,2000">2000x2000 (Etsy Recommended)</option>
+          <option value="1200,1200">1200x1200</option>
+        </select>
+      </div>
     </div>
-    <div id="canvas-container"></div>
-    <button onclick="processEtsy()">✨ Generate Etsy Photo</button>
-    <button onclick="downloadEtsy()" id="dlBtn" disabled>⬇️ Download</button>
+    <div style="text-align:center;">
+      <button id="generateBtn" disabled>✨ Generate Etsy Photo</button>
+      <button id="downloadBtn" disabled>⬇️ Download</button>
+    </div>
+    <canvas id="canvas"></canvas>
   </div>
 </div>
-<script>
-const dz = document.getElementById('dropZone'), fi = document.getElementById('fileInput');
-let img;
-dz.onclick = () => fi.click();
-fi.onchange = (e) => {const r = new FileReader(); r.onload = (ev) => {img = new Image(); img.src = ev.target.result;}; r.readAsDataURL(e.target.files[0]);};
-function processEtsy() {
-  if (!img) return alert('Upload a photo first!');
-  const s = 1500;
-  const c = document.createElement('canvas'); c.width = s; c.height = s;
-  const ctx = c.getContext('2d');
-  ctx.fillStyle = document.getElementById('bg').value; ctx.fillRect(0,0,s,s);
-  const sc = (s*0.8)/Math.max(img.width, img.height);
-  const w = img.width*sc, h = img.height*sc;
-  ctx.drawImage(img, (s-w)/2, (s-h)/2, w, h);
-  document.getElementById('canvas-container').innerHTML=''; document.getElementById('canvas-container').appendChild(c);
-  document.getElementById('dlBtn').disabled = false;
-  window.c = c;
+<script type="module">
+let originalImage = null;
+let resultBlob = null;
+let removeModel = null;
+const dropZone = document.getElementById('dropZone');
+const fileInput = document.getElementById('fileInput');
+const generateBtn = document.getElementById('generateBtn');
+const downloadBtn = document.getElementById('downloadBtn');
+const status = document.getElementById('status');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+dropZone.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', (e) => { if(e.target.files[0]) loadImage(e.target.files[0]); });
+
+async function loadImage(file) {
+  status.style.display = 'block';
+  status.textContent = 'Loading image...';
+  const img = new Image();
+  img.onload = () => { originalImage = img; status.textContent = 'Image loaded! Click Generate.'; generateBtn.disabled = false; };
+  img.src = URL.createObjectURL(file);
 }
-function downloadEtsy(){const a=document.createElement('a');a.download='etsy-product.png';a.href=c.toDataURL();a.click();}
+
+generateBtn.addEventListener('click', async () => {
+  if(!originalImage) return;
+  generateBtn.disabled = true;
+  status.style.display = 'block';
+  status.textContent = 'Running local AI background removal...';
+  if(!removeModel) {
+    status.textContent = 'Loading AI model (cached after first run)...';
+    const mod = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm');
+    removeModel = mod.removeBackground || mod.default;
+  }
+  const tmp = document.createElement('canvas');
+  tmp.width = originalImage.width; tmp.height = originalImage.height;
+  tmp.getContext('2d').drawImage(originalImage, 0, 0);
+  const blob = await new Promise(r => tmp.toBlob(r));
+  status.textContent = 'Processing...';
+  const cutout = await removeModel(blob);
+  const cutImg = new Image();
+  cutImg.onload = () => { draw(cutImg); status.textContent = 'Done!'; generateBtn.disabled = false; downloadBtn.disabled = false; };
+  cutImg.src = URL.createObjectURL(cutout);
+});
+
+function draw(cutImg) {
+  const [w,h] = document.getElementById('outSize').value.split(',').map(Number);
+  canvas.width = w; canvas.height = h;
+  ctx.fillStyle = document.getElementById('bgColor').value;
+  ctx.fillRect(0,0,w,h);
+  const s = Math.min(w,h)*0.85;
+  const ratio = Math.min(s/cutImg.width, s/cutImg.height);
+  const dw = cutImg.width*ratio, dh = cutImg.height*ratio;
+  ctx.drawImage(cutImg, (w-dw)/2, (h-dh)/2, dw, dh);
+  canvas.toBlob(b => resultBlob = b);
+}
+
+downloadBtn.addEventListener('click', () => {
+  if(!resultBlob) return;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(resultBlob);
+  a.download = 'etsy-listing-photo.png';
+  a.click();
+});
 </script>
 </body>
 </html>

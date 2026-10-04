@@ -3,63 +3,94 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Avatar Studio — Perfect Profile Pic Free | SmartImgKit</title>
-<meta name="description" content="Make a perfect profile picture online free. Circle crop, glow outline, all social media sizes, no upload.">
+<title>AI Avatar Studio — Perfect Profile Pictures Free | SmartImgKit</title>
+<meta name="description" content="Make perfect circular avatars with colored outline for all social media. AI background removal, 100% local, no upload.">
+<link rel="canonical" href="https://smartimgkit.com/tools/ai-avatar-studio.html">
 <style>
 * {margin:0; padding:0; box-sizing:border-box;}
-body {font-family:system-ui,sans-serif; background:#faf5ff; color:#1e293b;}
-.top {background:#4f46e5; color:white; padding:1rem; position:sticky; top:0;}
-.top-inner {max-width:1200px; margin:0 auto; display:flex; gap:1.5rem; align-items:center;}
-.top a {color:white; text-decoration:none;}
+body {font-family:system-ui,sans-serif; background:#f8fafc; color:#1e293b; line-height:1.6;}
+.top {background:#be185d; color:white; padding:1rem; position:sticky; top:0; z-index:100;}
+.top-inner {max-width:1200px; margin:0 auto; display:flex; align-items:center;}
+.top a {color:white; text-decoration:none; margin-right:1.5rem;}
 .container {max-width:1000px; margin:2rem auto; padding:0 1rem;}
-h1 {color:#4f46e5; margin-bottom:1rem;}
+h1 {color:#be185d; margin-bottom:1rem;}
 .workspace {background:white; padding:2rem; border-radius:16px; box-shadow:0 4px 16px rgba(0,0,0,0.08);}
-.drop-zone {border:2px dashed #4f46e5; border-radius:12px; padding:3rem; text-align:center; margin:1.5rem 0; cursor:pointer;}
-button {background:#4f46e5; color:white; border:none; padding:0.8rem 1.5rem; border-radius:8px; cursor:pointer; margin:0.5rem;}
-canvas {max-width:100%; border-radius:50%; border:3px solid #e2e8f0;}
+.drop-zone {border:2px dashed #94a3b8; border-radius:12px; padding:3rem; text-align:center; margin:1.5rem 0; cursor:pointer;}
+.drop-zone:hover {border-color:#be185d; background:#fdf2f8;}
+button {background:#be185d; color:white; border:none; padding:0.8rem 1.5rem; border-radius:8px; font-size:1rem; cursor:pointer; margin:0.5rem;}
+button:hover {background:#9d174d;}
+button:disabled {background:#94a3b8; cursor:not-allowed;}
+canvas {max-width:400px; margin:1rem auto; display:block; border-radius:50%;}
+.status {padding:1rem; border-radius:8px; background:#fdf2f8; color:#be185d; margin:1rem 0; display:none;}
 </style>
 </head>
 <body>
 <div class="top">
   <div class="top-inner">
-    <a href="/" style="font-weight:800;">SmartImgKit</a>
+    <a href="/" style="font-weight:800; font-size:1.2rem;">SmartImgKit</a>
     <a href="/tools/">All Tools</a>
     <a href="/blog/">Blog</a>
   </div>
 </div>
 <div class="container">
-  <h1>Perfect Profile Picture Studio</h1>
-  <p>Make a clean circular profile pic for all social media. Free, no upload, instant.</p>
+  <h1>AI Avatar Studio</h1>
+  <p>Perfect circular profile pictures for all social media. AI background removal, colored outline, 100% local.</p>
   <div class="workspace">
-    <div class="drop-zone" onclick="document.getElementById('fileInput').click()">
-      <p style="font-size:1.2rem;">🖼️ Upload your portrait photo</p>
+    <div class="drop-zone" id="dropZone">
+      <p style="font-size:1.2rem; margin-bottom:0.5rem;">👤 Drop your portrait photo here</p>
+      <p style="color:#64748b;">JPG/PNG up to 20MB</p>
       <input type="file" id="fileInput" accept="image/*" hidden>
     </div>
-    <div style="margin:1rem 0;">
-      <label>Glow Color: <input type="color" id="glowColor" value="#4f46e5"></label>
+    <div class="status" id="status"></div>
+    <div style="text-align:center;">
+      <button id="generateBtn" disabled>✨ Generate Avatar</button>
+      <button id="downloadBtn" disabled>⬇️ Download</button>
     </div>
-    <div id="canvas-container" style="text-align:center;"></div>
-    <button onclick="makeAvatar()">✨ Generate Avatar</button>
-    <button onclick="downloadAvatar()" id="dlBtn" disabled>⬇️ Download</button>
+    <canvas id="canvas"></canvas>
   </div>
 </div>
-<script>
-let img;
-document.getElementById('fileInput').onchange = (e) => {const r=new FileReader();r.onload=(ev)=>{img=new Image();img.src=ev.target.result;};r.readAsDataURL(e.target.files[0]);};
-function makeAvatar() {
-  if (!img) return alert('Upload a portrait first!');
-  const s = 800;
-  const c = document.createElement('canvas'); c.width=s; c.height=s;
-  const ctx = c.getContext('2d');
-  ctx.beginPath(); ctx.arc(s/2,s/2,s/2-10,0,Math.PI*2); ctx.clip();
-  const sc = s/Math.min(img.width, img.height);
-  ctx.drawImage(img, (s-img.width*sc)/2, (s-img.height*sc)/2, img.width*sc, img.height*sc);
-  ctx.strokeStyle = document.getElementById('glowColor').value; ctx.lineWidth=20;
-  ctx.beginPath(); ctx.arc(s/2,s/2,s/2-10,0,Math.PI*2); ctx.stroke();
-  document.getElementById('canvas-container').innerHTML=''; document.getElementById('canvas-container').appendChild(c);
-  document.getElementById('dlBtn').disabled=false; window.c=c;
+<script type="module">
+let originalImage = null, resultBlob = null, removeModel = null;
+const dropZone = document.getElementById('dropZone'), fileInput = document.getElementById('fileInput'), generateBtn = document.getElementById('generateBtn'), downloadBtn = document.getElementById('downloadBtn'), status = document.getElementById('status'), canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d');
+dropZone.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', e => { if(e.target.files[0]) loadImage(e.target.files[0]); });
+async function loadImage(file) {
+  status.style.display='block'; status.textContent='Loading...';
+  const img = new Image(); img.onload = () => { originalImage=img; status.textContent='Ready! Click Generate.'; generateBtn.disabled=false; }; img.src = URL.createObjectURL(file);
 }
-function downloadAvatar(){const a=document.createElement('a');a.download='profile-avatar.png';a.href=c.toDataURL();a.click();}
+generateBtn.addEventListener('click', async () => {
+  if(!originalImage) return;
+  generateBtn.disabled=true; status.style.display='block'; status.textContent='Running local AI face removal...';
+  if(!removeModel) {
+    const mod = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm');
+    removeModel = mod.removeBackground || mod.default;
+  }
+  const tmp = document.createElement('canvas'); tmp.width=originalImage.width; tmp.height=originalImage.height;
+  tmp.getContext('2d').drawImage(originalImage,0,0);
+  const blob = await new Promise(r=>tmp.toBlob(r));
+  const cutout = await removeModel(blob);
+  const cutImg = new Image();
+  cutImg.onload = () => { draw(cutImg); status.textContent='Done!'; generateBtn.disabled=false; downloadBtn.disabled=false; };
+  cutImg.src = URL.createObjectURL(cutout);
+});
+function draw(cutImg) {
+  const size = 512;
+  canvas.width = size; canvas.height = size;
+  const c = size/2, r = c-8;
+  ctx.beginPath(); ctx.arc(c,c,r,0,Math.PI*2); ctx.fillStyle='#ffffff'; ctx.fill();
+  ctx.save();
+  ctx.beginPath(); ctx.arc(c,c,r-4,0,Math.PI*2); ctx.clip();
+  const ratio = Math.max(size/cutImg.width, size/cutImg.height);
+  const dw = cutImg.width*ratio, dh = cutImg.height*ratio;
+  ctx.drawImage(cutImg, (size-dw)/2, (size-dh)/2, dw, dh);
+  ctx.restore();
+  ctx.beginPath(); ctx.arc(c,c,r,0,Math.PI*2); ctx.strokeStyle='#be185d'; ctx.lineWidth=6; ctx.stroke();
+  canvas.toBlob(b=>resultBlob=b);
+}
+downloadBtn.addEventListener('click', () => {
+  if(!resultBlob) return;
+  const a = document.createElement('a'); a.href=URL.createObjectURL(resultBlob); a.download='avatar.png'; a.click();
+});
 </script>
 </body>
 </html>
