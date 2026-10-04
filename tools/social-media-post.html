@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" data-theme="dark" data-tool-id="social-media-post">
 <head>
   <meta charset="UTF-8">
@@ -880,5 +880,17 @@ if (document.getElementById('themeToggle')) {
 </script>
 
 
+<!-- Viral Share Button -->
+<button onclick="shareOurTool()" style="position:fixed;bottom:20px;right:20px;background:#0ea5e9;color:white;border:none;border-radius:50%;width:60px;height:60px;font-size:24px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.2);z-index:999;" title="Share this free tool">💛</button>
+<script>
+function shareOurTool() {
+  const pageName = document.title.split("—")[0].trim();
+  const url = window.location.href;
+  const text = `I just used this free 100% browser-based ${pageName} — no upload, no watermark, no signup! Try it: ${url}`;
+  if (navigator.share) { navigator.share({text: text}); }
+  else { navigator.clipboard.writeText(text); alert("✅ Share text copied! Post it online to help others!"); }
+}
+</script>
 </body>
 </html>
+
