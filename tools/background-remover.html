@@ -262,6 +262,7 @@
             <button class="btn btn-primary" id="removeBtn">🪄 Remove Backgrounds</button>
             <button class="btn btn-secondary hidden" id="downloadAllBtn">⬇️ Download All (ZIP)</button>
             <button class="btn btn-secondary hidden" id="copyBtn">📋 Copy to Clipboard</button>
+            <button class="btn btn-secondary" onclick="shareToolResult()">💛 Share Free Tool</button>
             <button class="btn btn-secondary" id="addMoreBtn">+ Add More</button>
             <button class="btn btn-secondary" id="clearBtn">🗑️ Clear All</button>
           </div>
@@ -565,6 +566,17 @@ function _updateOutputUI() {
     btn.style.fontWeight = on ? '600' : 'normal';
   });
 }
+
+function shareToolResult() {
+  const text = `I just removed photo backgrounds 100% free in my browser — no upload, no watermark, no signup! Try it: https://smartimgkit.com/tools/background-remover #PhotoEditing #FreeTool`;
+  if (navigator.share) {
+    navigator.share({ title: 'Free Background Remover', text: text });
+  } else {
+    navigator.clipboard.writeText(text);
+    alert('✅ Share text copied! Post it on Twitter/Reddit and help others find this free tool!');
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('._fmtOpt').forEach(function(btn) {
     btn.addEventListener('click', function() {
