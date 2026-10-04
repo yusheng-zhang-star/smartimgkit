@@ -866,6 +866,18 @@ function shareOurTool() {
   else { navigator.clipboard.writeText(text); alert("✅ Share text copied! Post it online to help others!"); }
 }
 </script>
+<button onclick="shareOurTool(event)" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;">💛 Share Free Tool</button>
+<script>
+function shareOurTool(e) {
+  e.stopPropagation();
+  const toolName = document.title.split("—")[0].trim();
+  const url = window.location.href;
+  const text = `I just used this FREE ${toolName} in my browser — no upload, no watermark, no signup! Saved me $29.99 on Photoshop. Try it: ${url}`;
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  window.open(twitterUrl, '_blank', 'width=550,height=420');
+}
+</script>
 </body>
 </html>
+
 
