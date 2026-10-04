@@ -638,8 +638,27 @@ function shareOurTool() {
   window.open(twitterUrl, '_blank', 'width=550,height=420');
 }
 </script>
+<button onclick="shareOurTool()" style="position:fixed;bottom:32px;right:20px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:50%;width:48px;height:48px;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(245,158,11,0.4);z-index:999;" id="shareBtn" title="Share this free tool">💛</button>
+<script>
+function shareOurTool() {
+  const lang = document.documentElement.lang || 'en';
+  const toolName = document.title.split("—")[0].trim();
+  const url = window.location.href;
+  let text;
+  if (lang.startsWith('zh')) {
+    text = `我刚在浏览器里用这个免费${toolName}，不用上传、无水印、不用注册！帮我省了Photoshop的钱，推荐你试试：${url}`;
+  } else if (lang.startsWith('es')) {
+    text = `Acabo de usar este ${toolName} GRATIS directamente en mi navegador — sin subir archivos, sin marca de agua, sin registro! Me ahorró dinero de Photoshop. Pruébalo: ${url}`;
+  } else {
+    text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
+  }
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  window.open(twitterUrl, '_blank', 'width=550,height=420');
+}
+</script>
 </body>
 </html>
+
 
 
 
