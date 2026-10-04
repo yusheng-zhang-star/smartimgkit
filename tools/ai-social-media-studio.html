@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Media Resizer — One Image All Platforms | SmartImgKit</title>
+<meta name="description" content="Resize one image for all social media platforms free. Instagram, Twitter, LinkedIn, TikTok — no upload.">
+<style>
+* {margin:0; padding:0; box-sizing:border-box;}
+body {font-family:system-ui,sans-serif; background:#ecfeff; color:#1e293b;}
+.top {background:#0d9488; color:white; padding:1rem; position:sticky; top:0;}
+.top-inner {max-width:1200px; margin:0 auto; display:flex; gap:1.5rem; align-items:center;}
+.top a {color:white; text-decoration:none;}
+.container {max-width:1000px; margin:2rem auto; padding:0 1rem;}
+h1 {color:#0d9488; margin-bottom:1rem;}
+.workspace {background:white; padding:2rem; border-radius:16px; box-shadow:0 4px 16px rgba(0,0,0,0.08);}
+.drop-zone {border:2px dashed #0d9488; border-radius:12px; padding:3rem; text-align:center; margin:1.5rem 0; cursor:pointer;}
+button {background:#0d9488; color:white; border:none; padding:0.8rem 1.5rem; border-radius:8px; cursor:pointer; margin:0.5rem;}
+.preview-grid {display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:1rem; margin:1.5rem 0;}
+.preview-item {text-align:center;}
+canvas {width:100%; border:1px solid #e2e8f0; border-radius:8px;}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="top-inner">
+    <a href="/" style="font-weight:800;">SmartImgKit</a>
+    <a href="/tools/">All Tools</a>
+    <a href="/blog/">Blog</a>
+  </div>
+</div>
+<div class="container">
+  <h1>Social Media Resizer Studio</h1>
+  <p>Upload one image, instantly get versions sized for every social platform. No upload, 100% free.</p>
+  <div class="workspace">
+    <div class="drop-zone" onclick="document.getElementById('fileInput').click()">
+      <p style="font-size:1.2rem;">📱 Upload your base image</p>
+      <input type="file" id="fileInput" accept="image/*" hidden>
+    </div>
+    <div id="preview-grid" class="preview-grid"></div>
+    <button onclick="generateAll()">✨ Generate All Sizes</button>
+  </div>
+</div>
+<script>
+let img;
+const platforms = [
+  {name:'Instagram Post', w:1080, h:1080},
+  {name:'Instagram Story', w:1080, h:1920},
+  {name:'Twitter/X Post', w:1600, h:900},
+  {name:'LinkedIn Post', w:1200, h:627},
+  {name:'TikTok', w:1080, h:1920},
+  {name:'Facebook Post', w:1200, h:630},
+];
+document.getElementById('fileInput').onchange = (e) => {const r=new FileReader();r.onload=(ev)=>{img=new Image();img.src=ev.target.result;};r.readAsDataURL(e.target.files[0]);};
+function generateAll() {
+  if (!img) return alert('Upload an image first!');
+  const grid = document.getElementById('preview-grid');
+  grid.innerHTML='';
+  platforms.forEach(p => {
+    const c = document.createElement('canvas'); c.width=p.w; c.height=p.h;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle='#fff'; ctx.fillRect(0,0,p.w,p.h);
+    const sc = Math.max(p.w/img.width, p.h/img.height);
+    ctx.drawImage(img, (p.w-img.width*sc)/2, (p.h-img.height*sc)/2, img.width*sc, img.height*sc);
+    const div = document.createElement('div'); div.className='preview-item';
+    div.innerHTML = `<p><strong>${p.name}</strong><br>${p.w}×${p.h}</p>`;
+    div.appendChild(c);
+    const btn = document.createElement('button'); btn.textContent='Download';
+    btn.onclick = () => {const a=document.createElement('a');a.download=p.name.replace(/\s+/g,'-').toLowerCase()+'.png';a.href=c.toDataURL();a.click();};
+    div.appendChild(btn);
+    grid.appendChild(div);
+  });
+}
+</script>
+</body>
+</html>

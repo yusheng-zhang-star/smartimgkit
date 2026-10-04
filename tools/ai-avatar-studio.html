@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Avatar Studio — Perfect Profile Pic Free | SmartImgKit</title>
+<meta name="description" content="Make a perfect profile picture online free. Circle crop, glow outline, all social media sizes, no upload.">
+<style>
+* {margin:0; padding:0; box-sizing:border-box;}
+body {font-family:system-ui,sans-serif; background:#faf5ff; color:#1e293b;}
+.top {background:#4f46e5; color:white; padding:1rem; position:sticky; top:0;}
+.top-inner {max-width:1200px; margin:0 auto; display:flex; gap:1.5rem; align-items:center;}
+.top a {color:white; text-decoration:none;}
+.container {max-width:1000px; margin:2rem auto; padding:0 1rem;}
+h1 {color:#4f46e5; margin-bottom:1rem;}
+.workspace {background:white; padding:2rem; border-radius:16px; box-shadow:0 4px 16px rgba(0,0,0,0.08);}
+.drop-zone {border:2px dashed #4f46e5; border-radius:12px; padding:3rem; text-align:center; margin:1.5rem 0; cursor:pointer;}
+button {background:#4f46e5; color:white; border:none; padding:0.8rem 1.5rem; border-radius:8px; cursor:pointer; margin:0.5rem;}
+canvas {max-width:100%; border-radius:50%; border:3px solid #e2e8f0;}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="top-inner">
+    <a href="/" style="font-weight:800;">SmartImgKit</a>
+    <a href="/tools/">All Tools</a>
+    <a href="/blog/">Blog</a>
+  </div>
+</div>
+<div class="container">
+  <h1>Perfect Profile Picture Studio</h1>
+  <p>Make a clean circular profile pic for all social media. Free, no upload, instant.</p>
+  <div class="workspace">
+    <div class="drop-zone" onclick="document.getElementById('fileInput').click()">
+      <p style="font-size:1.2rem;">🖼️ Upload your portrait photo</p>
+      <input type="file" id="fileInput" accept="image/*" hidden>
+    </div>
+    <div style="margin:1rem 0;">
+      <label>Glow Color: <input type="color" id="glowColor" value="#4f46e5"></label>
+    </div>
+    <div id="canvas-container" style="text-align:center;"></div>
+    <button onclick="makeAvatar()">✨ Generate Avatar</button>
+    <button onclick="downloadAvatar()" id="dlBtn" disabled>⬇️ Download</button>
+  </div>
+</div>
+<script>
+let img;
+document.getElementById('fileInput').onchange = (e) => {const r=new FileReader();r.onload=(ev)=>{img=new Image();img.src=ev.target.result;};r.readAsDataURL(e.target.files[0]);};
+function makeAvatar() {
+  if (!img) return alert('Upload a portrait first!');
+  const s = 800;
+  const c = document.createElement('canvas'); c.width=s; c.height=s;
+  const ctx = c.getContext('2d');
+  ctx.beginPath(); ctx.arc(s/2,s/2,s/2-10,0,Math.PI*2); ctx.clip();
+  const sc = s/Math.min(img.width, img.height);
+  ctx.drawImage(img, (s-img.width*sc)/2, (s-img.height*sc)/2, img.width*sc, img.height*sc);
+  ctx.strokeStyle = document.getElementById('glowColor').value; ctx.lineWidth=20;
+  ctx.beginPath(); ctx.arc(s/2,s/2,s/2-10,0,Math.PI*2); ctx.stroke();
+  document.getElementById('canvas-container').innerHTML=''; document.getElementById('canvas-container').appendChild(c);
+  document.getElementById('dlBtn').disabled=false; window.c=c;
+}
+function downloadAvatar(){const a=document.createElement('a');a.download='profile-avatar.png';a.href=c.toDataURL();a.click();}
+</script>
+</body>
+</html>

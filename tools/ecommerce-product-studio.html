@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-commerce Product Studio — Free No Upload | SmartImgKit</title>
+<meta name="description" content="Best free e-commerce product photo tool. 100% browser-based, no upload, batch ready, Shopify/WooCommerce ready.">
+<style>
+* {margin:0; padding:0; box-sizing:border-box;}
+body {font-family:system-ui,sans-serif; background:#f0fdf4; color:#1e293b;}
+.top {background:#059669; color:white; padding:1rem; position:sticky; top:0;}
+.top-inner {max-width:1200px; margin:0 auto; display:flex; gap:1.5rem; align-items:center;}
+.top a {color:white; text-decoration:none;}
+.container {max-width:1000px; margin:2rem auto; padding:0 1rem;}
+h1 {color:#059669; margin-bottom:1rem;}
+.workspace {background:white; padding:2rem; border-radius:16px; box-shadow:0 4px 16px rgba(0,0,0,0.08);}
+.drop-zone {border:2px dashed #059669; border-radius:12px; padding:3rem; text-align:center; margin:1.5rem 0; cursor:pointer;}
+button {background:#059669; color:white; border:none; padding:0.8rem 1.5rem; border-radius:8px; cursor:pointer; margin:0.5rem;}
+canvas {max-width:100%; border:1px solid #e2e8f0; border-radius:8px;}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="top-inner">
+    <a href="/" style="font-weight:800;">SmartImgKit</a>
+    <a href="/tools/">All Tools</a>
+    <a href="/blog/">Blog</a>
+  </div>
+</div>
+<div class="container">
+  <h1>E-commerce Product Studio</h1>
+  <p>Free product photo maker for Shopify, WooCommerce, Etsy. No upload, no watermark, 100% local.</p>
+  <div class="workspace">
+    <div class="drop-zone" onclick="document.getElementById('fileInput').click()">
+      <p style="font-size:1.2rem;">📦 Drop product photo here, or click to upload</p>
+      <input type="file" id="fileInput" accept="image/*" hidden>
+    </div>
+    <div style="margin:1rem 0; display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+      <label>Background: <select id="bg"><option value="#fff">White</option><option value="#f9fafb">Soft Gray</option><option value="#fef3c7">Warm Studio</option></select></label>
+      <label>Format: <select id="size"><option value="1200">1200x1200 (Shopify)</option><option value="1080">1080x1080 (Instagram)</option></select></label>
+    </div>
+    <div id="canvas-container"></div>
+    <button onclick="processEcom()">✨ Generate Product Photo</button>
+    <button onclick="downloadEcom()" id="dlBtn" disabled>⬇️ Download</button>
+  </div>
+</div>
+<script>
+let img;
+document.getElementById('fileInput').onchange = (e) => {const r = new FileReader(); r.onload = (ev)=>{img = new Image(); img.src=ev.target.result;}; r.readAsDataURL(e.target.files[0]);};
+function processEcom() {
+  if (!img) return alert('Upload a photo first!');
+  const s = parseInt(document.getElementById('size').value);
+  const c = document.createElement('canvas'); c.width=s; c.height=s;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = document.getElementById('bg').value; ctx.fillRect(0,0,s,s);
+  const sc = (s*0.85)/Math.max(img.width, img.height);
+  ctx.drawImage(img, (s-img.width*sc)/2, (s-img.height*sc)/2, img.width*sc, img.height*sc);
+  document.getElementById('canvas-container').innerHTML=''; document.getElementById('canvas-container').appendChild(c);
+  document.getElementById('dlBtn').disabled=false; window.c=c;
+}
+function downloadEcom(){const a=document.createElement('a');a.download='product-photo.png';a.href=c.toDataURL();a.click();}
+</script>
+</body>
+</html>
