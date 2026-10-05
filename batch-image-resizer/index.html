@@ -106,6 +106,10 @@ button:disabled {background:#94a3b8; cursor:not-allowed;}
         <input type="number" id="customWidth" value="1000">
       </div>
       <div class="control-group">
+        <label>Watermark Text (optional)</label>
+        <input type="text" id="watermarkText" placeholder="e.g. © Your Store Name">
+      </div>
+      <div class="control-group">
         <label>Output Format</label>
         <select id="format">
           <option value="image/jpeg">JPG (smallest file size)</option>
@@ -224,6 +228,12 @@ processBtn.addEventListener('click', async () => {
     ctx.fillStyle = '#fff';
     ctx.fillRect(0,0,w,h);
     ctx.drawImage(img, 0, 0, w, h);
+    if(document.getElementById('watermarkText').value.trim()) {
+      ctx.font = `${Math.round(w/25)}px sans-serif`;
+      ctx.fillStyle = 'rgba(255,255,255,0.7)';
+      ctx.textAlign = 'right';
+      ctx.fillText(document.getElementById('watermarkText').value.trim(), w-20, h-20);
+    }
 
     const outBlob = await new Promise(r => canvas.toBlob(r, format.value, quality.value/100));
     processedBlobs.push({name:f.name, blob:outBlob});
