@@ -95,6 +95,9 @@ button:disabled {background:#94a3b8; cursor:not-allowed;}
         <select id="preset">
           <option value="none">No Resize (original)</option>
           <option value="2000,2000">Etsy / Amazon 2000x2000 Square</option>
+          <option value="1200,1200">eBay 1200x1200 Square</option>
+          <option value="2000,1500">Walmart 2000x1500 Landscape</option>
+          <option value="1080,1350">Poshmark 1080x1350 Portrait</option>
           <option value="1200,1200">1200x1200 Square</option>
           <option value="1080,1080">Instagram 1080x1080</option>
           <option value="1920,1080">1920x1080 HD</option>
@@ -108,6 +111,19 @@ button:disabled {background:#94a3b8; cursor:not-allowed;}
       <div class="control-group">
         <label>Watermark Text (optional)</label>
         <input type="text" id="watermarkText" placeholder="e.g. © Your Store Name">
+      </div>
+      <div class="control-group">
+        <label>Rename Template (optional)</label>
+        <input type="text" id="renameTemplate" placeholder="e.g. product-{index}">
+      </div>
+      <div class="control-group">
+        <label>Rotate (degrees)</label>
+        <select id="rotateDeg">
+          <option value="0">No Rotate</option>
+          <option value="90">Rotate 90°</option>
+          <option value="180">Rotate 180°</option>
+          <option value="270">Rotate 270°</option>
+        </select>
       </div>
       <div class="control-group">
         <label>Output Format</label>
@@ -175,6 +191,8 @@ const format = document.getElementById('format');
 const quality = document.getElementById('quality');
 const qualityVal = document.getElementById('qualityVal');
 const previewGrid = document.getElementById('previewGrid');
+const rotateDeg = document.getElementById('rotateDeg');
+const renameTemplate = document.getElementById('renameTemplate');
 let files = [];
 let processedBlobs = [];
 
@@ -203,6 +221,7 @@ processBtn.addEventListener('click', async () => {
   processBtn.disabled = true;
   processedBlobs = [];
   for(let i=0; i<files.length; i++) {
+    processBtn.textContent = `Processing ${i+1}/${files.length}...`;
     const f = files[i];
     const img = new Image();
     img.src = URL.createObjectURL(f);
@@ -210,6 +229,7 @@ processBtn.addEventListener('click', async () => {
     
     let w, h;
     const presetVal = preset.value;
+    const rot = parseInt(rotateDeg.value);
     if(presetVal !== 'none') {
       let maxW;
       if(presetVal === 'custom') maxW = parseInt(customWidth.value);
@@ -221,13 +241,17 @@ processBtn.addEventListener('click', async () => {
       w = img.width;
       h = img.height;
     }
+    if(rot === 90 || rot === 270) [w, h] = [h, w];
 
     const canvas = document.createElement('canvas');
     canvas.width = w; canvas.height = h;
     const ctx = canvas.getContext('2d');
     ctx.fillStyle = '#fff';
     ctx.fillRect(0,0,w,h);
-    ctx.drawImage(img, 0, 0, w, h);
+    ctx.translate(w/2, h/2);
+    ctx.rotate(rot * Math.PI/180);
+    ctx.drawImage(img, -img.width*w/img.width/2, -img.height*w/img.width/2, img.width*w/img.width, img.height*w/img.width);
+    ctx.setTransform(1,0,0,1,0,0);
     if(document.getElementById('watermarkText').value.trim()) {
       ctx.font = `${Math.round(w/25)}px sans-serif`;
       ctx.fillStyle = 'rgba(255,255,255,0.7)';
@@ -236,12 +260,16 @@ processBtn.addEventListener('click', async () => {
     }
 
     const outBlob = await new Promise(r => canvas.toBlob(r, format.value, quality.value/100));
-    processedBlobs.push({name:f.name, blob:outBlob});
+    let outName;
+    if(renameTemplate.value.trim()) outName = renameTemplate.value.replace('{index}', i+1) + '.' + (format.value==='image/jpeg'?'jpg':format.value==='image/png'?'png':'webp');
+    else outName = `processed-${i+1}.${format.value==='image/jpeg'?'jpg':format.value==='image/png'?'png':'webp'}`;
+    processedBlobs.push({name:outName, blob:outBlob});
     const outUrl = URL.createObjectURL(outBlob);
     const item = previewGrid.children[i];
     item.innerHTML = `<img src="${outUrl}"><p style="font-size:0.8rem;">${(outBlob.size/1024).toFixed(0)} KB</p><button onclick="window.open('${outUrl}')" style="padding:0.4rem 0.8rem; font-size:0.8rem;">Download</button>`;
   }
   processBtn.disabled = false;
+  processBtn.textContent = '⚡ Process All Images';
   downloadZipBtn.style.display = 'inline-block';
 });
 
@@ -249,8 +277,7 @@ downloadZipBtn.addEventListener('click', async () => {
   downloadZipBtn.disabled = true;
   const zip = new JSZip();
   processedBlobs.forEach((item, i) => {
-    const ext = format.value === 'image/jpeg' ? 'jpg' : format.value === 'image/png' ? 'png' : 'webp';
-    zip.file(`processed-${i+1}.${ext}`, item.blob);
+    zip.file(item.name, item.blob);
   });
   const zipBlob = await zip.generateAsync({type:'blob'});
   const a = document.createElement('a');
