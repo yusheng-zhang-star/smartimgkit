@@ -121,6 +121,7 @@ button:disabled {background:#94a3b8; cursor:not-allowed;}
 
     <div style="text-align:center;">
       <button id="processBtn" disabled>⚡ Process All Images</button>
+      <button id="downloadZipBtn" style="display:none; background:#059669;">📦 Download All as ZIP</button>
     </div>
 
     <div class="preview-grid" id="previewGrid"></div>
@@ -157,10 +158,12 @@ button:disabled {background:#94a3b8; cursor:not-allowed;}
   </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 const dropZone = document.getElementById('dropZone');
 const fileInput = document.getElementById('fileInput');
 const processBtn = document.getElementById('processBtn');
+const downloadZipBtn = document.getElementById('downloadZipBtn');
 const preset = document.getElementById('preset');
 const customSize = document.getElementById('customSize');
 const customWidth = document.getElementById('customWidth');
@@ -168,8 +171,9 @@ const format = document.getElementById('format');
 const quality = document.getElementById('quality');
 const qualityVal = document.getElementById('qualityVal');
 const previewGrid = document.getElementById('previewGrid');
-
 let files = [];
+let processedBlobs = [];
+
 quality.addEventListener('input', () => qualityVal.textContent = quality.value);
 preset.addEventListener('change', () => {
   customSize.style.display = preset.value === 'custom' ? 'block' : 'none';
@@ -179,7 +183,9 @@ dropZone.addEventListener('click', () => fileInput.click());
 fileInput.addEventListener('change', (e) => {
   files = Array.from(e.target.files);
   processBtn.disabled = files.length === 0;
+  downloadZipBtn.style.display = 'none';
   previewGrid.innerHTML = '';
+  processedBlobs = [];
   files.forEach((f, i) => {
     const url = URL.createObjectURL(f);
     const div = document.createElement('div');
@@ -191,6 +197,7 @@ fileInput.addEventListener('change', (e) => {
 
 processBtn.addEventListener('click', async () => {
   processBtn.disabled = true;
+  processedBlobs = [];
   for(let i=0; i<files.length; i++) {
     const f = files[i];
     const img = new Image();
@@ -219,19 +226,29 @@ processBtn.addEventListener('click', async () => {
     ctx.drawImage(img, 0, 0, w, h);
 
     const outBlob = await new Promise(r => canvas.toBlob(r, format.value, quality.value/100));
+    processedBlobs.push({name:f.name, blob:outBlob});
     const outUrl = URL.createObjectURL(outBlob);
     const item = previewGrid.children[i];
-    item.innerHTML = `<img src="${outUrl}"><p style="font-size:0.8rem;">${(outBlob.size/1024).toFixed(0)} KB</p><button onclick="download('${outUrl}', 'processed-${i}.jpg')" style="padding:0.4rem 0.8rem; font-size:0.8rem;">Download</button>`;
+    item.innerHTML = `<img src="${outUrl}"><p style="font-size:0.8rem;">${(outBlob.size/1024).toFixed(0)} KB</p><button onclick="window.open('${outUrl}')" style="padding:0.4rem 0.8rem; font-size:0.8rem;">Download</button>`;
   }
   processBtn.disabled = false;
+  downloadZipBtn.style.display = 'inline-block';
 });
 
-function download(url, name) {
+downloadZipBtn.addEventListener('click', async () => {
+  downloadZipBtn.disabled = true;
+  const zip = new JSZip();
+  processedBlobs.forEach((item, i) => {
+    const ext = format.value === 'image/jpeg' ? 'jpg' : format.value === 'image/png' ? 'png' : 'webp';
+    zip.file(`processed-${i+1}.${ext}`, item.blob);
+  });
+  const zipBlob = await zip.generateAsync({type:'blob'});
   const a = document.createElement('a');
-  a.href = url;
-  a.download = name;
+  a.href = URL.createObjectURL(zipBlob);
+  a.download = 'processed-product-images.zip';
   a.click();
-}
+  downloadZipBtn.disabled = false;
+});
 </script>
 </body>
 </html>
