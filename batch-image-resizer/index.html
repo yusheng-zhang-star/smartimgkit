@@ -104,6 +104,15 @@ button:disabled {background:#94a3b8; cursor:not-allowed;}
           <option value="custom">Custom Dimensions</option>
         </select>
       </div>
+      <div class="control-group">
+        <label>Crop to Aspect Ratio (optional)</label>
+        <select id="cropRatio">
+          <option value="none">No Crop</option>
+          <option value="1">1:1 Square</option>
+          <option value="0.8">4:5 Portrait</option>
+          <option value="0.75">3:4 Portrait</option>
+        </select>
+      </div>
       <div class="control-group" id="customSize" style="display:none;">
         <label>Max Width (px)</label>
         <input type="number" id="customWidth" value="1000">
@@ -175,6 +184,10 @@ button:disabled {background:#94a3b8; cursor:not-allowed;}
       <summary>Does this tool work on mobile?</summary>
       <p>Yes. The tool is fully responsive and works on phones and tablets. You can bulk process photos directly from your camera roll without a desktop computer.</p>
     </details>
+    <details>
+      <summary>Does it remove EXIF metadata automatically?</summary>
+      <p>Yes, all processed images automatically have all EXIF/GPS metadata stripped out during export, so sensitive location and camera data is never included in your final product photos.</p>
+    </details>
   </div>
 </div>
 
@@ -193,6 +206,7 @@ const qualityVal = document.getElementById('qualityVal');
 const previewGrid = document.getElementById('previewGrid');
 const rotateDeg = document.getElementById('rotateDeg');
 const renameTemplate = document.getElementById('renameTemplate');
+const cropRatio = document.getElementById('cropRatio');
 let files = [];
 let processedBlobs = [];
 
@@ -227,6 +241,16 @@ processBtn.addEventListener('click', async () => {
     img.src = URL.createObjectURL(f);
     await new Promise(r => img.onload = r);
     
+    let imgW = img.width, imgH = img.height;
+    const cr = parseFloat(cropRatio.value);
+    if(cr !== 0) {
+      const targetRatio = cr;
+      if(imgW/imgH > targetRatio) {
+        imgW = imgH * targetRatio;
+      } else {
+        imgH = imgW / targetRatio;
+      }
+    }
     let w, h;
     const presetVal = preset.value;
     const rot = parseInt(rotateDeg.value);
@@ -234,12 +258,12 @@ processBtn.addEventListener('click', async () => {
       let maxW;
       if(presetVal === 'custom') maxW = parseInt(customWidth.value);
       else maxW = parseInt(presetVal.split(',')[0]);
-      const ratio = Math.min(maxW / img.width, maxW / img.height);
-      w = img.width * ratio;
-      h = img.height * ratio;
+      const ratio = Math.min(maxW / imgW, maxW / imgH);
+      w = imgW * ratio;
+      h = imgH * ratio;
     } else {
-      w = img.width;
-      h = img.height;
+      w = imgW;
+      h = imgH;
     }
     if(rot === 90 || rot === 270) [w, h] = [h, w];
 
@@ -250,7 +274,8 @@ processBtn.addEventListener('click', async () => {
     ctx.fillRect(0,0,w,h);
     ctx.translate(w/2, h/2);
     ctx.rotate(rot * Math.PI/180);
-    ctx.drawImage(img, -img.width*w/img.width/2, -img.height*w/img.width/2, img.width*w/img.width, img.height*w/img.width);
+    const sx = (img.width - imgW)/2, sy = (img.height - imgH)/2;
+    ctx.drawImage(img, sx, sy, imgW, imgH, -w/2, -h/2, w, h);
     ctx.setTransform(1,0,0,1,0,0);
     if(document.getElementById('watermarkText').value.trim()) {
       ctx.font = `${Math.round(w/25)}px sans-serif`;
