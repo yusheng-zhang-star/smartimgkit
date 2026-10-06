@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>免费在线PNG图片加投影工具 自动给透明图加柔和阴影</title>
+<meta name="description" content="免费在线给PNG透明图片加柔和投影，自定义偏移、模糊度、透明度，本地处理不上传，适合做电商产品图、贴纸效果。">
+<link rel="canonical" href="https://smartimgkit.com/zh/tools/drop-shadow.html">
+<style>
+* {margin:0; padding:0; box-sizing:border-box; font-family:system-ui, sans-serif;}
+.top {background:#7c3aed; color:white; padding:1rem;}
+.top-inner {max-width:1000px; margin:0 auto; display:flex; align-items:center;}
+.top a {color:white; text-decoration:none; margin-right:1.5rem;}
+.container {max-width:1000px; margin:2rem auto; padding:2rem; display:grid; grid-template-columns:1fr 1fr; gap:2rem;}
+canvas {max-width:100%; border:1px dashed #ddd; border-radius:8px; background:repeating-conic-gradient(#f8fafc 0% 25%, white 0% 50%) 0 / 20px 20px;}
+.controls label {display:block; margin:1rem 0;}
+button {background:#7c3aed; color:white; border:none; padding:0.8rem 1.5rem; border-radius:8px; cursor:pointer; font-size:1rem;}
+input[type=range] {width:100%;}
+.drop-area {border:2px dashed #c4b5fd; border-radius:12px; padding:3rem; text-align:center; background:#faf5ff; cursor:pointer; margin:1.5rem 0;}
+</style>
+</head>
+<body>
+<nav class="top"><div class="top-inner">
+<strong>SmartImgKit</strong>
+<a href="/zh/">首页</a>
+<a href="/#tools">所有工具</a>
+<a href="/zh/blog/">博客</a>
+</div></nav>
+<main class="container">
+<div>
+<h1>PNG图片自动加投影工具</h1>
+<div class="drop-area" id="dropArea">
+<p>点击上传透明PNG图片，自动给图片加柔和阴影</p>
+<input type="file" id="fileInput" accept="image/png" hidden>
+</div>
+<canvas id="canvas" width="600" height="400"></canvas>
+</div>
+<div class="controls">
+<h3>参数调节</h3>
+<label>阴影偏移X: <input type="range" id="offsetX" value="10"></label>
+<label>阴影偏移Y: <input type="range" id="offsetY" value="10"></label>
+<label>模糊度: <input type="range" id="blur" value="15"></label>
+<label>透明度: <input type="range" id="opacity" value="40"></label>
+<button id="downloadBtn">下载加完投影的PNG</button>
+</div>
+</main>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const dropArea = document.getElementById('dropArea');
+const fileInput = document.getElementById('fileInput');
+let img = null;
+dropArea.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', e => {
+const reader = new FileReader();
+reader.onload = ev => {
+img = new Image();
+img.onload = () => {
+canvas.width = img.width + 100;
+canvas.height = img.height + 100;
+render();
+};
+img.src = ev.target.result;
+};
+reader.readAsDataURL(e.target.files[0]);
+});
+function render() {
+if (!img) return;
+ctx.clearRect(0,0, canvas.width, canvas.height);
+const ox = parseInt(document.getElementById('offsetX').value);
+const oy = parseInt(document.getElementById('offsetY').value);
+const blur = parseInt(document.getElementById('blur').value);
+const opacity = parseInt(document.getElementById('opacity').value) / 100;
+ctx.shadowColor = `rgba(0,0,0,${opacity})`;
+ctx.shadowBlur = blur;
+ctx.shadowOffsetX = ox;
+ctx.shadowOffsetY = oy;
+ctx.drawImage(img, 50, 50);
+}
+document.querySelectorAll('input[type=range]').forEach(el => el.addEventListener('input', render));
+document.getElementById('downloadBtn').addEventListener('click', () => {
+const link = document.createElement('a');
+link.download = 'drop-shadow.png';
+link.href = canvas.toDataURL('image/png');
+link.click();
+});
+</script>
+</body>
+</html>

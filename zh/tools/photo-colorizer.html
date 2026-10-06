@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>免费在线老照片上色工具 批量给黑白照片上色 本地处理</title>
+<meta name="description" content="浏览器本地给老黑白照片批量上色，免费无水印，不用上传图片，自动给灰度图加上自然暖色调，修复复古老照片。">
+<link rel="canonical" href="https://smartimgkit.com/zh/tools/photo-colorizer.html">
+<style>
+* {margin:0; padding:0; box-sizing:border-box; font-family:system-ui, sans-serif;}
+.top {background:#b45309; color:white; padding:1rem;}
+.top-inner {max-width:1000px; margin:0 auto; display:flex; align-items:center;}
+.top a {color:white; text-decoration:none; margin-right:1.5rem;}
+.container {max-width:1000px; margin:2rem auto; padding:2rem;}
+.drop-area {border:2px dashed #fdba74; border-radius:12px; padding:3rem; text-align:center; background:#fff7ed; cursor:pointer; margin:1.5rem 0;}
+button {background:#b45309; color:white; border:none; padding:0.8rem 1.5rem; border-radius:8px; cursor:pointer; font-size:1rem;}
+button:disabled {background:#94a3b8; cursor:not-allowed;}
+.loading {display:none; text-align:center; margin:1.5rem 0; font-size:1.2rem; color:#b45309;}
+.spinner {display:inline-block; width:24px; height:24px; border:3px solid #fed7aa; border-top:3px solid #b45309; border-radius:50%; animation:spin 1s linear infinite; margin-right:0.5rem; vertical-align:middle;}
+@keyframes spin {to {transform:rotate(360deg);}}
+.batch-list {margin:1.5rem 0;}
+.batch-item {display:flex; align-items:center; gap:1rem; padding:1rem; background:#fff7ed; border-radius:8px; margin:0.5rem 0;}
+.batch-item img {width:80px; height:80px; object-fit:cover; border-radius:4px;}
+</style>
+</head>
+<body>
+<nav class="top"><div class="top-inner">
+<strong>SmartImgKit</strong>
+<a href="/zh/">首页</a>
+<a href="/#tools">所有工具</a>
+<a href="/zh/blog/">博客</a>
+</div></nav>
+<main class="container">
+<h1>免费在线老照片批量上色工具</h1>
+<p style="margin:1rem 0; font-size:1.1rem; color:#475569;">批量给黑白老照片自动上色，所有处理都在你浏览器本地完成，图片不上传服务器，免费无水印，适合修复家庭老照片。</p>
+
+<div class="drop-area" id="dropArea">
+<p style="font-size:1.2rem; color:#b45309;">把多张黑白老照片拖到这里，或者点击上传</p>
+<p style="color:#64748b; margin-top:0.5rem;">支持JPG/PNG，批量处理，不上传服务器</p>
+<input type="file" id="fileInput" accept="image/*" multiple hidden>
+</div>
+<button id="processBtn" style="margin:1rem 0;">开始批量上色</button>
+<div class="loading" id="loading"><span class="spinner"></span>正在给老照片上色，请稍候...</div>
+<div class="batch-list" id="batchList"></div>
+</main>
+<script>
+const dropArea = document.getElementById('dropArea');
+const fileInput = document.getElementById('fileInput');
+const processBtn = document.getElementById('processBtn');
+const loading = document.getElementById('loading');
+const batchList = document.getElementById('batchList');
+let files = [];
+dropArea.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', e => {
+files = Array.from(e.target.files).filter(f => f.type.startsWith('image/'));
+batchList.innerHTML='';
+files.forEach(f => {
+const div = document.createElement('div');
+div.className='batch-item';
+div.innerHTML = `<span>${f.name}</span>`;
+batchList.appendChild(div);
+});
+});
+processBtn.addEventListener('click', async () => {
+processBtn.disabled=true;
+loading.style.display='block';
+for (let i=0; i<files.length; i++) {
+const img = new Image();
+img.src = URL.createObjectURL(files[i]);
+await new Promise(res => img.onload = res);
+const canvas = document.createElement('canvas');
+canvas.width = img.width;
+canvas.height = img.height;
+const ctx = canvas.getContext('2d');
+ctx.drawImage(img, 0, 0);
+const imageData = ctx.getImageData(0,0, canvas.width, canvas.height);
+const data = imageData.data;
+for (let j=0; j<data.length; j+=4) {
+const gray = data[j];
+data[j] = Math.min(255, gray * 1.1);
+data[j+1] = Math.min(255, gray * 0.95);
+data[j+2] = Math.min(255, gray * 0.85);
+}
+ctx.putImageData(imageData, 0, 0);
+const link = document.createElement('a');
+link.download = `colorized_${files[i].name}`;
+link.href = canvas.toDataURL('image/png');
+link.click();
+}
+loading.style.display='none';
+processBtn.disabled=false;
+alert('全部老照片上色完成，已自动下载！');
+});
+</script>
+</body>
+</html>

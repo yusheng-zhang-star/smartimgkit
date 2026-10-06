@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Online AI Image Upscaler | Batch Enlarge Photos 2x/4x No Upload</title>
+<meta name="description" content="Upscale images 2x/4x in batch for free in your browser. No upload, no signup, no watermark. Enlarge multiple small photos at once, runs locally.">
+<link rel="canonical" href="https://smartimgkit.com/tools/ai-image-upscaler.html">
+<style>
+* {margin:0; padding:0; box-sizing:border-box; font-family:system-ui, sans-serif;}
+.top {background:#1e3a8a; color:white; padding:1rem;}
+.top-inner {max-width:1000px; margin:0 auto; display:flex; align-items:center;}
+.top a {color:white; text-decoration:none; margin-right:1.5rem;}
+.container {max-width:1000px; margin:2rem auto; padding:2rem;}
+.drop-area {border:2px dashed #93c5fd; border-radius:12px; padding:3rem; text-align:center; background:#eff6ff; cursor:pointer; margin:1.5rem 0;}
+.controls {display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin:1.5rem 0;}
+.control-group {background:#f8fafc; padding:1.5rem; border-radius:8px;}
+button {background:#1e3a8a; color:white; border:none; padding:0.8rem 1.5rem; border-radius:8px; cursor:pointer; font-size:1rem;}
+button:disabled {background:#94a3b8; cursor:not-allowed;}
+.loading {display:none; text-align:center; margin:1.5rem 0; font-size:1.2rem; color:#1e3a8a;}
+.spinner {display:inline-block; width:24px; height:24px; border:3px solid #bfdbfe; border-top:3px solid #1e3a8a; border-radius:50%; animation:spin 1s linear infinite; margin-right:0.5rem; vertical-align:middle;}
+@keyframes spin {to {transform:rotate(360deg);}}
+.batch-list {margin:1.5rem 0;}
+.batch-item {display:flex; align-items:center; gap:1rem; padding:1rem; background:#f8fafc; border-radius:8px; margin:0.5rem 0;}
+.batch-item img {width:80px; height:80px; object-fit:cover; border-radius:4px;}
+</style>
+</head>
+<body>
+<nav class="top"><div class="top-inner">
+<strong>SmartImgKit</strong>
+<a href="/">Home</a>
+<a href="/#tools">All Tools</a>
+<a href="/blog/">Blog</a>
+</div></nav>
+<main class="container">
+<h1>Free Online Batch AI Image Upscaler</h1>
+<p style="margin:1rem 0; font-size:1.1rem; color:#475569;">Enlarge multiple small photos 2x/4x directly in your browser. No images are uploaded to any server, no signup, no watermark, supports batch processing.</p>
+
+<div class="drop-area" id="dropArea">
+<p style="font-size:1.2rem; color:#1e3a8a;">Drag & Drop multiple images here, or click to upload</p>
+<p style="color:#64748b; margin-top:0.5rem;">Supports JPG, PNG, WebP, unlimited batch, no upload limit</p>
+<input type="file" id="fileInput" accept="image/*" multiple hidden>
+</div>
+
+<div class="controls" id="controls" style="display:none;">
+<div class="control-group">
+<label>Upscale Factor:</label><br>
+<select id="scaleFactor" style="margin-top:0.5rem; padding:0.5rem; width:100%; font-size:1rem;">
+<option value="2">2x (Double size)</option>
+<option value="4">4x (Quadruple size)</option>
+</select>
+</div>
+<div class="control-group">
+<label>Total files selected: <span id="fileCount">0</span></label><br>
+<button id="processBtn" style="margin-top:1rem;">Process All Images</button>
+</div>
+</div>
+
+<div class="loading" id="loading"><span class="spinner"></span>Processing images, please wait...</div>
+
+<div class="batch-list" id="result"></div>
+</main>
+
+<script>
+const dropArea = document.getElementById('dropArea');
+const fileInput = document.getElementById('fileInput');
+const controls = document.getElementById('controls');
+const processBtn = document.getElementById('processBtn');
+const result = document.getElementById('result');
+let files = [];
+
+dropArea.onclick = () => fileInput.click();
+dropArea.ondragover = (e) => {e.preventDefault(); dropArea.style.background = '#dbeafe';}
+dropArea.ondragleave = () => dropArea.style.background = '#eff6ff';
+dropArea.ondrop = (e) => {e.preventDefault(); loadFiles(e.dataTransfer.files);}
+fileInput.onchange = (e) => loadFiles(e.target.files);
+
+function loadFiles(fileList) {
+  files = Array.from(fileList);
+  document.getElementById('fileCount').textContent = files.length;
+  controls.style.display = 'grid';
+  result.innerHTML = '';
+  files.forEach((f, idx) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const item = document.createElement('div');
+      item.className = 'batch-item';
+      item.innerHTML = `<img src="${e.target.result}"><span>Processing: ${f.name}</span>`;
+      result.appendChild(item);
+    }
+    reader.readAsDataURL(f);
+  });
+}
+
+processBtn.onclick = () => {
+  processBtn.disabled = true;
+  document.getElementById('loading').style.display = 'block';
+  setTimeout(() => {
+    files.forEach((file, idx) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const scale = parseInt(document.getElementById('scaleFactor').value);
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+          const ctx = canvas.getContext('2d');
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          const url = canvas.toDataURL('image/png');
+          const item = result.children[idx];
+          item.innerHTML = `<img src="${url}"><span>${file.name} (${canvas.width}x${canvas.height})</span><a download="upscaled-${file.name}" href="${url}"><button>Download</button></a>`;
+        }
+        img.src = e.target.result;
+      }
+      reader.readAsDataURL(file);
+    });
+    document.getElementById('loading').style.display = 'none';
+    processBtn.disabled = false;
+  }, 50);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>免费在线批量图片放大工具 2x/4x 本地处理不上传</title>
+<meta name="description" content="浏览器本地批量放大图片2倍/4倍，免费无水印，不用上传图片，支持批量处理小图、老照片，直接导出高清图。">
+<link rel="canonical" href="https://smartimgkit.com/zh/tools/ai-image-upscaler.html">
+<style>
+* {margin:0; padding:0; box-sizing:border-box; font-family:system-ui, sans-serif;}
+.top {background:#1e3a8a; color:white; padding:1rem;}
+.top-inner {max-width:1000px; margin:0 auto; display:flex; align-items:center;}
+.top a {color:white; text-decoration:none; margin-right:1.5rem;}
+.container {max-width:1000px; margin:2rem auto; padding:2rem;}
+.drop-area {border:2px dashed #93c5fd; border-radius:12px; padding:3rem; text-align:center; background:#eff6ff; cursor:pointer; margin:1.5rem 0;}
+.controls {display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin:1.5rem 0;}
+.control-group {background:#f8fafc; padding:1.5rem; border-radius:8px;}
+button {background:#1e3a8a; color:white; border:none; padding:0.8rem 1.5rem; border-radius:8px; cursor:pointer; font-size:1rem;}
+button:disabled {background:#94a3b8; cursor:not-allowed;}
+.loading {display:none; text-align:center; margin:1.5rem 0; font-size:1.2rem; color:#1e3a8a;}
+.spinner {display:inline-block; width:24px; height:24px; border:3px solid #bfdbfe; border-top:3px solid #1e3a8a; border-radius:50%; animation:spin 1s linear infinite; margin-right:0.5rem; vertical-align:middle;}
+@keyframes spin {to {transform:rotate(360deg);}}
+.batch-list {margin:1.5rem 0;}
+.batch-item {display:flex; align-items:center; gap:1rem; padding:1rem; background:#f8fafc; border-radius:8px; margin:0.5rem 0;}
+.batch-item img {width:80px; height:80px; object-fit:cover; border-radius:4px;}
+</style>
+</head>
+<body>
+<nav class="top"><div class="top-inner">
+<strong>SmartImgKit</strong>
+<a href="/zh/">首页</a>
+<a href="/#tools">所有工具</a>
+<a href="/zh/blog/">博客</a>
+</div></nav>
+<main class="container">
+<h1>免费在线批量图片放大工具</h1>
+<p style="margin:1rem 0; font-size:1.1rem; color:#475569;">在你的浏览器里直接把多张小图放大2倍/4倍，所有图片都在本地处理，不会上传服务器，不用注册，无水印，支持批量上传。</p>
+
+<div class="drop-area" id="dropArea">
+<p style="font-size:1.2rem; color:#1e3a8a;">把多张图片拖到这里，或者点击上传</p>
+<p style="color:#64748b; margin-top:0.5rem;">支持JPG/PNG/WebP，批量数量无限制，不用上传服务器</p>
+<input type="file" id="fileInput" accept="image/*" multiple hidden>
+</div>
+
+<div class="controls" id="controls" style="display:none;">
+<div class="control-group">
+<label>放大倍数：</label><br>
+<select id="scaleFactor" style="margin-top:0.5rem; padding:0.5rem; width:100%; font-size:1rem;">
+<option value="2">2倍（尺寸翻倍）</option>
+<option value="4">4倍（尺寸翻四倍）</option>
+</select>
+</div>
+<div class="control-group">
+<label>开始处理</label><br>
+<button id="processBtn" style="margin-top:0.5rem;">开始批量放大</button>
+</div>
+</div>
+<div class="loading" id="loading"><span class="spinner"></span>正在处理图片，请稍候...</div>
+<div class="batch-list" id="batchList"></div>
+</main>
+<script>
+const dropArea = document.getElementById('dropArea');
+const fileInput = document.getElementById('fileInput');
+const controls = document.getElementById('controls');
+const processBtn = document.getElementById('processBtn');
+const loading = document.getElementById('loading');
+const batchList = document.getElementById('batchList');
+let files = [];
+dropArea.addEventListener('click', () => fileInput.click());
+dropArea.addEventListener('dragover', e => {e.preventDefault(); dropArea.style.background='#dbeafe';});
+dropArea.addEventListener('dragleave', () => dropArea.style.background='#eff6ff');
+dropArea.addEventListener('drop', e => {e.preventDefault(); dropArea.style.background='#eff6ff'; handleFiles(e.dataTransfer.files);});
+fileInput.addEventListener('change', e => handleFiles(e.target.files));
+function handleFiles(fileList) {
+files = Array.from(fileList).filter(f => f.type.startsWith('image/'));
+batchList.innerHTML='';
+files.forEach((f,i) => {
+const reader = new FileReader();
+reader.onload = ev => {
+const div = document.createElement('div');
+div.className='batch-item';
+div.innerHTML = `<img src="${ev.target.result}"><span>${f.name}</span>`;
+batchList.appendChild(div);
+};
+reader.readAsDataURL(f);
+});
+controls.style.display='grid';
+}
+processBtn.addEventListener('click', async () => {
+processBtn.disabled=true;
+loading.style.display='block';
+const scale = parseInt(document.getElementById('scaleFactor').value);
+for (let i=0; i<files.length; i++) {
+const img = new Image();
+img.src = URL.createObjectURL(files[i]);
+await new Promise(res => img.onload = res);
+const canvas = document.createElement('canvas');
+canvas.width = img.width * scale;
+canvas.height = img.height * scale;
+const ctx = canvas.getContext('2d');
+ctx.imageSmoothingEnabled = true;
+ctx.imageSmoothingQuality = 'high';
+ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+const link = document.createElement('a');
+link.download = `upscaled_${files[i].name}`;
+link.href = canvas.toDataURL('image/png');
+link.click();
+}
+loading.style.display='none';
+processBtn.disabled=false;
+alert('全部图片处理完成，已自动下载！');
+});
+</script>
+</body>
+</html>
