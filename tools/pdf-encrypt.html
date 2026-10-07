@@ -21,16 +21,14 @@
     .control-row input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-secondary); color: var(--text-primary); }
     .btn { padding: 12px 24px; border: none; border-radius: 8px; background: var(--accent); color: white; font-weight: 600; cursor: pointer; width: 100%; margin-top: 16px; }
     .btn:hover { background: var(--accent-hover); }
+    .status-text { text-align: center; margin-top: 16px; color: var(--text-secondary); }
   </style>
 </head>
 <body>
   <div class="top">
     <div class="top-inner">
       <a href="/" class="logo">SmartImgKit</a>
-      <nav class="nav-links">
-        <a href="/tools/">Tools</a>
-        <a href="/blog/">Blog</a>
-      </nav>
+      <nav class="nav-links"><a href="/tools/">Tools</a><a href="/blog/">Blog</a></nav>
     </div>
   </div>
   <main class="tool-workspace">
@@ -51,19 +49,50 @@
         <input type="password" id="confirmPassword" placeholder="Confirm password">
       </div>
       <button class="btn" id="encryptBtn">Encrypt PDF</button>
-      <p id="statusText" style="text-align:center;margin-top:16px;color:var(--text-secondary)"></p>
+      <p id="statusText" class="status-text"></p>
     </div>
   </main>
-  <script>
-    // PDF encryption using pdf-lib will be loaded dynamically, all processing local
+  <script type="module">
     const uploadArea = document.getElementById('uploadArea');
     const fileInput = document.getElementById('fileInput');
     const controls = document.getElementById('controls');
-    uploadArea.addEventListener('click', () => fileInput.click());
+    const statusText = document.getElementById('statusText');
+    const encryptBtn = document.getElementById('encryptBtn');
     let selectedFile = null;
+
+    uploadArea.addEventListener('click', () => fileInput.click());
+    uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.style.borderColor = 'var(--accent)'; });
+    uploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      selectedFile = e.dataTransfer.files[0];
+      if(selectedFile) controls.style.display='block';
+    });
     fileInput.addEventListener('change', (e) => {
       selectedFile = e.target.files[0];
       if (selectedFile) controls.style.display = 'block';
+    });
+
+    encryptBtn.addEventListener('click', async () => {
+      const pwd = document.getElementById('password').value;
+      const confirm = document.getElementById('confirmPassword').value;
+      if(!pwd || pwd !== confirm) { statusText.textContent = "Passwords don't match"; return; }
+      statusText.textContent = "Encrypting...";
+      const { PDFDocument, StandardFonts, rgb } = await import('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/+esm');
+      const { encrypt } = await import('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/+esm');
+      const arrayBuffer = await selectedFile.arrayBuffer();
+      const pdfDoc = await PDFDocument.load(arrayBuffer);
+      const bytes = await pdfDoc.save({
+        useObjectStreams: true,
+        encrypt: { ownerPassword: pwd, userPassword: pwd }
+      });
+      const blob = new Blob([bytes], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'encrypted.pdf';
+      a.click();
+      URL.revokeObjectURL(url);
+      statusText.textContent = "Done! Encrypted PDF downloaded.";
     });
   </script>
 </body>
