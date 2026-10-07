@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How to Verify We Really Process Images Locally | SmartImgKit</title>
+  <meta name="description" content="Don't trust us blindly. Here's how you can verify that SmartImgKit really processes your images locally in your browser — no uploads, no tracking.">
+  <meta name="keywords" content="local image processing verification, privacy image tool, no upload image editor, browser-based image processing">
+  <link rel="canonical" href="https://smartimgkit.com/privacy-verification.html">
+  <meta name="theme-color" content="#059669">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css?v=10">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to Verify We Really Process Images Locally","author":{"@type":"Organization","name":"SmartImgKit"},"publisher":{"@type":"Organization","name":"SmartImgKit"},"description":"Don't trust us blindly. Here's how you can verify that SmartImgKit really processes your images locally in your browser."}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How can I verify an image tool really processes locally?","acceptedAnswer":{"@type":"Answer","text":"Open your browser's Developer Tools (F12), go to the Network tab, upload an image and process it. If no requests to external servers appear during processing, it's truly local."}},{"@type":"Question","name":"Does SmartImgKit work offline?","acceptedAnswer":{"@type":"Answer","text":"Yes. Once the page loads, you can disconnect from the internet and all tools will still work. That's the simplest proof of local processing."}},{"@type":"Question","name":"Why should I trust a new website that claims 'no uploads'?","acceptedAnswer":{"@type":"Answer","text":"You shouldn't trust us blindly. Follow the verification steps on this page to prove it to yourself. We also publish our code on GitHub for full transparency."}},{"@type":"Question","name":"What's the fastest way to check?","acceptedAnswer":{"@type":"Answer","text":"Turn off your Wi-Fi or unplug your ethernet cable. If the tool still works, it's 100% local. No internet = no upload = no privacy risk."}},{"@type":"Question","name":"Do you really not upload any images?","acceptedAnswer":{"@type":"Answer","text":"Correct. All image processing happens in your browser using Canvas API and WebAssembly. Your images never leave your device, period."}}]}</script>
+  <style>
+    .verification-steps{max-width:800px;margin:2rem auto}
+    .step{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem}
+    .step h3{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem}
+    .step-number{width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
+    .tip-box{background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:1rem;margin:1rem 0;color:#166534}
+    .tip-box strong{color:#15803d}
+    .warning-box{background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:1rem;margin:1rem 0;color:#991b1b}
+    code{background:var(--bg-secondary);padding:.2rem .4rem;border-radius:4px;font-family:monospace;font-size:.9em}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo"><span class="logo-icon">🖼️</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/">Home</a><a href="/#tools">Tools</a><a href="/workflows/">Use Cases</a><a href="/blog/">Blog</a><a href="/about">About</a></nav>
+      <div class="header-actions"><button class="theme-toggle" id="themeToggle">🌙</button><button class="mobile-menu-btn" id="mobileMenuBtn">☰</button></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div style="text-align:center;margin:2rem 0">
+        <h1 style="font-size:2.2rem;margin-bottom:.5rem">🔍 Don't Trust Us Blindly. Prove It Yourself.</h1>
+        <p style="color:var(--text-secondary);font-size:1.1rem;max-width:600px;margin:0 auto">We say all our tools process images locally. But you shouldn't take our word for it. Here's how to verify it yourself in 2 minutes.</p>
+      </div>
+
+      <div class="verification-steps">
+        <div class="step">
+          <h3><span class="step-number">1</span> The Easiest Test: Go Offline</h3>
+          <p>This is the simplest proof. Once the page loads, <strong>turn off your Wi-Fi or unplug your ethernet cable</strong>.</p>
+          <p>Then try using any tool: compress an image, remove a background, resize a photo.</p>
+          <div class="tip-box">
+            <strong>✅ If it still works:</strong> It's 100% local. No internet connection means no upload to any server. Period.
+          </div>
+          <div class="warning-box">
+            <strong>⚠️ If it stops working:</strong> It means the tool is uploading your images to a remote server. You should leave immediately.
+          </div>
+        </div>
+
+        <div class="step">
+          <h3><span class="step-number">2</span> The Technical Test: Check Network Tab</h3>
+          <p>Want to see exactly what's happening under the hood?</p>
+          <ol style="line-height:2">
+            <li>Open any tool (e.g. <a href="/tools/compressor" style="color:var(--accent)">Image Compressor</a>)</li>
+            <li>Press <code>F12</code> to open Developer Tools</li>
+            <li>Go to the <strong>Network</strong> tab</li>
+            <li>Upload an image and process it</li>
+            <li>Watch for any requests containing your image data being sent out</li>
+          </ol>
+          <div class="tip-box">
+            <strong>✅ What you'll see on SmartImgKit:</strong> Only the initial page load request. No image upload requests. No weird API calls to unknown domains. Just pure local Canvas processing.
+          </div>
+        </div>
+
+        <div class="step">
+          <h3><span class="step-number">3</span> The Source Code Test: View Page Source</h3>
+          <p>We believe in full transparency. Our entire site is open-source on GitHub.</p>
+          <p>Want to see exactly how the tools work? View page source (Right-click → View Page Source) and you'll see all the JavaScript code right there in the HTML. No minified black boxes.</p>
+          <div class="tip-box">
+            <strong>💡 What to look for:</strong> Search for <code>fetch(</code> or <code>XMLHttpRequest</code>. If you see them being called with image data during processing, that's a red flag. On SmartImgKit, you won't find any image upload code — because there isn't any.
+          </div>
+        </div>
+
+        <div class="step">
+          <h3><span class="step-number">4</span> The Privacy Policy Test</h3>
+          <p>Read any tool's privacy policy. If they say "we may upload your images to our servers for processing" — that's exactly what you're worried about.</p>
+          <p>Our privacy policy is short and clear: <strong>we don't collect, store, or upload any of your images. Ever.</strong></p>
+          <p>That's not marketing talk — that's literally how the code works. There is no backend server to upload to.</p>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin:3rem 0;padding:2rem;background:var(--bg-card);border-radius:12px;border:1px solid var(--border-color)">
+        <h2 style="margin-bottom:1rem">Why We Care So Much About Privacy</h2>
+        <p style="color:var(--text-secondary);max-width:600px;margin:0 auto 1.5rem">We built SmartImgKit because we were tired of tools that claimed to be "free" but actually stole your photos, tracked you, and sold your data. We decided to build the opposite: tools that respect your privacy, work offline, and cost nothing — because they run on your own device.</p>
+        <a href="/#tools" class="action-btn primary" style="display:inline-block;padding:.75rem 2rem;border-radius:8px;background:var(--accent);color:#fff;text-decoration:none;font-weight:600">Try Our Tools — No Uploads, Ever</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="/js/ad-loader.js?v=4"></script>
+</body>
+</html>
