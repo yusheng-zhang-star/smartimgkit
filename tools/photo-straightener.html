@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Photo Straightener — Fix Crooked Photos Online</title>
+<meta name="description" content="Straighten crooked photos online for free. Rotate images by small angles to fix tilted horizons, local processing no upload.">
+<link rel="canonical" href="https://smartimgkit.com/tools/photo-straightener.html">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="site-header">
+<a href="/" class="logo">SmartImgKit</a>
+<nav><a href="/tools/">All Tools</a><a href="/blog/">Blog</a></nav>
+</header>
+<main class="container">
+<h1>Photo Straightener</h1>
+<p class="lead">Rotate photos by small angles to fix crooked horizons and tilted shots, 100% local processing, no upload.</p>
+<div class="upload-area" id="dropZone">
+<p>Upload your crooked photo here</p>
+<input type="file" id="fileInput" accept="image/*" hidden>
+</div>
+<div class="controls" style="margin:1rem 0;">
+<label>Rotation Angle: <input type="range" id="angle" min="-45" max="45" value="0"> <span id="angleVal">0°</span></label>
+<button id="downloadBtn" class="primary">Download Straightened Photo</button>
+</div>
+<canvas id="canvas" style="max-width:100%;border:1px solid #333;"></canvas>
+</main>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let img = new Image();
+document.getElementById('dropZone').onclick = () => document.getElementById('fileInput').click();
+document.getElementById('fileInput').onchange = (e) => {const f=e.target.files[0]; const r=new FileReader(); r.onload=(ev)=>{img.onload=()=>{canvas.width=img.width;canvas.height=img.height;draw();};img.src=ev.target.result;}; r.readAsDataURL(f);};
+function draw() {
+const angle = parseInt(document.getElementById('angle').value);
+document.getElementById('angleVal').textContent = angle + '°';
+ctx.save();
+ctx.clearRect(0,0,canvas.width,canvas.height);
+ctx.translate(canvas.width/2, canvas.height/2);
+ctx.rotate(angle * Math.PI/180);
+ctx.drawImage(img, -img.width/2, -img.height/2);
+ctx.restore();
+}
+document.getElementById('angle').oninput = draw;
+document.getElementById('downloadBtn').onclick = () => {const a=document.createElement('a');a.download='straightened.jpg';a.href=canvas.toDataURL('image/jpeg');a.click();};
+</script>
+</body>
+</html>
