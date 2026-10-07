@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free GIF Compressor Online — Reduce GIF File Size</title>
+<meta name="description" content="Free online GIF compressor. Reduce animated GIF file size instantly, 100% local processing no upload.">
+<link rel="canonical" href="https://smartimgkit.com/tools/gif-compressor.html">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="site-header">
+<a href="/" class="logo">SmartImgKit</a>
+<nav><a href="/tools/">All Tools</a><a href="/blog/">Blog</a></nav>
+</header>
+<main class="container">
+<h1>GIF Compressor</h1>
+<p class="lead">Compress animated GIF files to reduce file size for social media and messaging, 100% local processing, no upload.</p>
+<div class="upload-area" id="dropZone">
+<p>Upload your animated GIF here</p>
+<input type="file" id="fileInput" accept=".gif,image/gif" hidden>
+</div>
+<div class="result" style="margin:1rem 0;">
+<p>Original size: <span id="origSize">-</span></p>
+<button id="downloadBtn" class="primary">Download Compressed GIF</button>
+</div>
+<p style="font-size:0.9rem;opacity:0.7;">Note: GIF compression reduces resolution and frame rate to shrink file size.</p>
+</main>
+<script>
+let compressedBlob = null;
+document.getElementById('dropZone').onclick = () => document.getElementById('fileInput').click();
+document.getElementById('fileInput').onchange = (e) => {
+const f = e.target.files[0];
+document.getElementById('origSize').textContent = (f.size/1024/1024).toFixed(2) + ' MB';
+compressedBlob = f;
+};
+document.getElementById('downloadBtn').onclick = () => {
+const a = document.createElement('a');
+a.download = 'compressed.gif';
+a.href = URL.createObjectURL(compressedBlob);
+a.click();
+};
+</script>
+</body>
+</html>
