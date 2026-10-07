@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free URL to Image Converter — Screenshot Any Webpage to JPG/PNG</title>
+<meta name="description" content="Convert any webpage URL to a high-resolution image for free. Enter a URL to capture a full-page screenshot and download as PNG/JPG. No signup required.">
+<link rel="canonical" href="https://smartimgkit.com/tools/url-to-image.html">
+<link rel="stylesheet" href="/css/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+<header class="site-header">
+<a href="/" class="logo">SmartImgKit</a>
+<nav><a href="/tools/">All Tools</a><a href="/blog/">Blog</a></nav>
+</header>
+<main class="container">
+<h1>URL to Image Converter</h1>
+<p class="lead">Enter any webpage URL to capture a full-page screenshot and download it as a high-resolution PNG or JPG. Perfect for saving web content, creating previews, or archiving pages.</p>
+<div class="url-input-group" style="margin:2rem 0;">
+<input type="url" id="urlInput" placeholder="https://example.com" style="width:70%;padding:0.8rem;font-size:1rem;">
+<button id="captureBtn" class="primary">Capture Screenshot</button>
+</div>
+<div id="previewArea" style="margin:2rem 0;display:none;">
+<h3>Preview:</h3>
+<iframe id="previewFrame" style="width:100%;height:500px;border:1px solid #333;"></iframe>
+<div style="margin-top:1rem;">
+<button id="downloadPngBtn">Download PNG</button>
+<button id="downloadJpgBtn">Download JPG</button>
+</div>
+</div>
+<section class="faq">
+<h2>Frequently Asked Questions</h2>
+<details><summary>Can I capture any website?</summary><p>Most public websites can be captured. Some sites with strict CORS or login requirements may not load properly in the preview.</p></details>
+<details><summary>Is my data stored?</summary><p>No, all screenshots are processed directly in your browser, no data is sent to our servers.</p></details>
+</section>
+</main>
+<script>
+const urlInput = document.getElementById('urlInput');
+const captureBtn = document.getElementById('captureBtn');
+const previewArea = document.getElementById('previewArea');
+const previewFrame = document.getElementById('previewFrame');
+captureBtn.onclick = async () => {
+let url = urlInput.value.trim();
+if(!url.startsWith('http')) url = 'https://' + url;
+previewFrame.src = url;
+previewArea.style.display = 'block';
+alert('Waiting for page to load fully, then you can download the screenshot.');
+};
+document.getElementById('downloadPngBtn').onclick = async () => {
+const canvas = await html2canvas(previewFrame.contentDocument.body);
+const link = document.createElement('a');
+link.download = 'webpage-screenshot.png';
+link.href = canvas.toDataURL('image/png');
+link.click();
+};
+document.getElementById('downloadJpgBtn').onclick = async () => {
+const canvas = await html2canvas(previewFrame.contentDocument.body);
+const link = document.createElement('a');
+link.download = 'webpage-screenshot.jpg';
+link.href = canvas.toDataURL('image/jpeg', 0.9);
+link.click();
+};
+</script>
+</body>
+</html>

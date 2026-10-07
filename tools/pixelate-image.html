@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Online Image Pixelate Tool — Blur Sensitive Areas Locally</title>
+<meta name="description" content="Free online pixelate image tool. Paint over sensitive faces, text, or license plates to add pixelation blur. 100% local processing, no upload, no signup.">
+<link rel="canonical" href="https://smartimgkit.com/tools/pixelate-image.html">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="site-header">
+<a href="/" class="logo">SmartImgKit</a>
+<nav><a href="/tools/">All Tools</a><a href="/blog/">Blog</a></nav>
+</header>
+<main class="container">
+<h1>Image Pixelate Tool</h1>
+<p class="lead">Paint over any area of your image to apply pixelation blur, perfect for hiding faces, license plates, or sensitive text. All processing happens 100% locally in your browser — no files are uploaded.</p>
+<div class="upload-area" id="dropZone">
+<p>Drop your image here or click to upload</p>
+<input type="file" id="fileInput" accept="image/*" hidden>
+</div>
+<div class="controls" style="margin:1rem 0;">
+<label>Brush Size: <span id="brushSizeVal">30</span>px <input type="range" id="brushSize" min="10" max="100" value="30"></label>
+<label>Pixel Level: <span id="pixelSizeVal">10</span>px <input type="range" id="pixelSize" min="2" max="30" value="10"></label>
+<button id="undoBtn">Undo</button>
+<button id="downloadBtn" class="primary">Download Pixelated Image</button>
+</div>
+<div class="canvas-container" style="text-align:center;">
+<canvas id="canvas" style="max-width:100%;border:1px solid #333;display:none;"></canvas>
+</div>
+<section class="faq">
+<h2>Frequently Asked Questions</h2>
+<details><summary>Is my image uploaded to a server?</summary><p>No. All pixelation is done locally in your browser, your images never leave your device.</p></details>
+<details><summary>Can I pixelate multiple areas?</summary><p>Yes, you can paint over as many areas as you want, and use the undo button to revert changes.</p></details>
+</section>
+</main>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let img = new Image();
+let isDrawing = false;
+let history = [];
+const dropZone = document.getElementById('dropZone');
+const fileInput = document.getElementById('fileInput');
+dropZone.onclick = () => fileInput.click();
+dropZone.ondragover = (e) => {e.preventDefault(); dropZone.classList.add('dragover');};
+dropZone.ondragleave = () => dropZone.classList.remove('dragover');
+dropZone.ondrop = (e) => {e.preventDefault(); const file = e.dataTransfer.files[0]; loadImage(file);};
+fileInput.onchange = (e) => loadImage(e.target.files[0]);
+function loadImage(file) {
+const reader = new FileReader();
+reader.onload = (e) => {
+img.onload = () => {
+canvas.width = img.width;
+canvas.height = img.height;
+canvas.style.display = 'block';
+ctx.drawImage(img, 0, 0);
+saveHistory();
+};
+img.src = e.target.result;
+};
+reader.readAsDataURL(file);
+}
+function saveHistory() {
+history.push(canvas.toDataURL());
+if(history.length > 10) history.shift();
+}
+document.getElementById('undoBtn').onclick = () => {
+if(history.length > 1) {
+history.pop();
+const prev = new Image();
+prev.onload = () => ctx.drawImage(prev, 0, 0);
+prev.src = history[history.length-1];
+}
+};
+function getPos(e) {
+const rect = canvas.getBoundingClientRect();
+return {
+x: (e.clientX - rect.left) * (canvas.width / rect.width),
+y: (e.clientY - rect.top) * (canvas.height / rect.height)
+};
+}
+canvas.onmousedown = (e) => {isDrawing = true; applyPixel(getPos(e));};
+canvas.onmousemove = (e) => {if(isDrawing) applyPixel(getPos(e));};
+canvas.onmouseup = () => {isDrawing = false; saveHistory();};
+function applyPixel(pos) {
+const brushSize = parseInt(document.getElementById('brushSize').value);
+const pixelSize = parseInt(document.getElementById('pixelSize').value);
+const x = pos.x - brushSize/2;
+const y = pos.y - brushSize/2;
+const w = brushSize;
+const h = brushSize;
+const imageData = ctx.getImageData(x, y, w, h);
+const smallCanvas = document.createElement('canvas');
+smallCanvas.width = pixelSize;
+smallCanvas.height = pixelSize;
+const smallCtx = smallCanvas.getContext('2d');
+smallCtx.drawImage(canvas, x, y, w, h, 0, 0, pixelSize, pixelSize);
+ctx.imageSmoothingEnabled = false;
+ctx.drawImage(smallCanvas, 0, 0, pixelSize, pixelSize, x, y, w, h);
+}
+document.getElementById('downloadBtn').onclick = () => {
+const link = document.createElement('a');
+link.download = 'pixelated-image.png';
+link.href = canvas.toDataURL('image/png');
+link.click();
+};
+</script>
+</body>
+</html>
