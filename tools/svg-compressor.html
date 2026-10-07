@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free SVG Compressor Online — Optimize SVG Files No Upload</title>
+<meta name="description" content="Free online SVG compressor. Minify and optimize SVG vector files, reduce file size instantly, local processing no upload.">
+<link rel="canonical" href="https://smartimgkit.com/tools/svg-compressor.html">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="site-header">
+<a href="/" class="logo">SmartImgKit</a>
+<nav><a href="/tools/">All Tools</a><a href="/blog/">Blog</a></nav>
+</header>
+<main class="container">
+<h1>Free SVG Compressor</h1>
+<p class="lead">Minify SVG vector files by removing unnecessary whitespace and metadata, 100% local processing, no upload.</p>
+<div class="upload-area" id="dropZone">
+<p>Upload your SVG file to compress</p>
+<input type="file" id="fileInput" accept=".svg,image/svg+xml" hidden>
+</div>
+<div class="result" style="margin:1rem 0;">
+<p>Original size: <span id="origSize">-</span></p>
+<p>Compressed size: <span id="newSize">-</span></p>
+<p>Savings: <span id="savings">-</span></p>
+<button id="downloadBtn" class="primary">Download Compressed SVG</button>
+</div>
+</main>
+<script>
+let compressed = '';
+document.getElementById('dropZone').onclick = () => document.getElementById('fileInput').click();
+document.getElementById('fileInput').onchange = (e) => {
+const f = e.target.files[0];
+const reader = new FileReader();
+reader.onload = (ev) => {
+const svg = ev.target.result;
+document.getElementById('origSize').textContent = (f.size/1024).toFixed(2) + ' KB';
+compressed = svg.replace(/\s+/g, ' ').replace(/>\s+</g, '><').trim();
+const newSize = new Blob([compressed]).size;
+document.getElementById('newSize').textContent = (newSize/1024).toFixed(2) + ' KB';
+document.getElementById('savings').textContent = Math.round((1-newSize/f.size)*100) + '% smaller';
+};
+reader.readAsText(f);
+};
+document.getElementById('downloadBtn').onclick = () => {
+const blob = new Blob([compressed], {type:'image/svg+xml'});
+const a = document.createElement('a');
+a.download = 'compressed.svg';
+a.href = URL.createObjectURL(blob);
+a.click();
+};
+</script>
+</body>
+</html>
