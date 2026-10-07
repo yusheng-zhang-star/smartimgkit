@@ -92,9 +92,17 @@
     .prev-item button{background:none;border:none;cursor:pointer;font-size:1.1rem;color:#ef4444;padding:4px 8px}
     .controls{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:center;margin:1rem 0}
     .controls label{font-weight:600;font-size:0.9rem}
-    .controls input[type=range]{width:120px}
-    .controls select,.controls input[type=number]{padding:6px 10px;border:1px solid #ccc;border-radius:6px;font-size:0.9rem}
-    .btn{padding:10px 22px;border:none;border-radius:8px;font-size:0.95rem;cursor:pointer;font-weight:600;transition:all .2s}
+    .controls input[type=range]{width:120px;min-height:44px}
+    .controls select,.controls input[type=number]{padding:10px 12px;border:1px solid #ccc;border-radius:8px;font-size:1rem;min-height:44px}
+    .btn{padding:14px 24px;border:none;border-radius:10px;font-size:1rem;cursor:pointer;font-weight:600;transition:all .2s;min-height:48px;touch-action:manipulation}
+    @media(max-width:640px){
+      .controls{flex-direction:column;gap:0.75rem}
+      .controls label{width:100%;text-align:center}
+      .controls input[type=range]{width:90%}
+      .btn{width:100%;max-width:300px}
+      .upload-area{padding:3rem 1rem !important}
+      .upload-icon{font-size:3rem !important}
+    }
     .btn-primary{background:#4f46e5;color:#fff}
     .btn-primary:hover{background:#4338ca}
     .btn-secondary{background:#e5e7eb;color:#1f2937}
@@ -214,9 +222,10 @@
       <label style="margin-left:1rem" for="outputFmt">Output Format</label>
       <select id="outputFmt">
         <option value="same">Same as input</option>
-        <option value="image/jpeg">JPG</option>
-        <option value="image/png">PNG</option>
-        <option value="image/webp">WebP</option>
+        <option value="image/jpeg">JPG (smallest compatibility)</option>
+        <option value="image/png">PNG (lossless)</option>
+        <option value="image/webp">WebP (best size/quality balance)</option>
+        <option value="image/avif">AVIF (newest, smallest files)</option>
       </select>
     </div>
 

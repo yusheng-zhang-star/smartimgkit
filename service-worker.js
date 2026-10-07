@@ -1,12 +1,14 @@
-const CACHE_NAME = 'smartimgkit-v1';
+const CACHE_NAME = 'smartimgkit-v2';
 const urlsToCache = [
   '/',
   '/css/style.css',
+  '/js/main.js',
   '/favicon.svg',
-  '/manifest.json'
+  '/manifest.json',
+  '/index.html'
 ];
 
-// Install event - cache static assets
+// Install event - cache core static assets
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -30,7 +32,7 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch event - cache first, then network
+// Fetch event - stale-while-revalidate for same-origin GET
 self.addEventListener('fetch', (event) => {
   // Skip non-GET requests and cross-origin requests
   if (event.request.method !== 'GET' || !event.request.url.startsWith(self.location.origin)) {
@@ -38,27 +40,30 @@ self.addEventListener('fetch', (event) => {
   }
 
   event.respondWith(
-    caches.match(event.request)
-      .then((cachedResponse) => {
-        // Return cached version if available
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-        // Otherwise fetch from network
-        return fetch(event.request)
-          .then((response) => {
-            // Don't cache non-successful responses
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-            // Clone the response
-            const responseToCache = response.clone();
-            caches.open(CACHE_NAME)
-              .then((cache) => {
-                cache.put(event.request, responseToCache);
-              });
+    caches.match(event.request).then((cachedResponse) => {
+      // Return cached immediately, then update in background
+      const fetchPromise = fetch(event.request)
+        .then((response) => {
+          if (!response || response.status !== 200 || response.type !== 'basic') {
             return response;
+          }
+          const responseToCache = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache);
           });
-      })
+          return response;
+        })
+        .catch(() => {
+          // Network failed — if we have a cached version, return it
+          if (cachedResponse) return cachedResponse;
+          // For navigation requests offline, show cached home as fallback
+          if (event.request.mode === 'navigate') {
+            return caches.match('/');
+          }
+          return new Response('Offline', { status: 503 });
+        });
+
+      return cachedResponse || fetchPromise;
+    })
   );
 });
