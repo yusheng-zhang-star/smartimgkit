@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartImgKit API — Free Developer SDK for Image Tools</title>
+  <meta name="description" content="Free browser-based image processing SDK. Remove backgrounds, compress, convert, and resize images with a few lines of JavaScript. No server needed, 100% client-side.">
+  <link rel="canonical" href="https://smartimgkit.com/api/">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="SmartImgKit API — Free Developer SDK">
+  <meta property="og:description" content="Free browser-based image processing SDK. No server needed.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css?v=10">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "SmartImgKit API",
+    "url": "https://smartimgkit.com/api/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+    "description": "Free browser-based image processing SDK."
+  }
+  </script>
+  <style>
+    .api-container{max-width:900px;margin:2rem auto;padding:0 1rem}
+    .code-block{background:#1e293b;color:#e2e8f0;padding:1.2rem;border-radius:8px;overflow-x:auto;font-family:'Consolas',monospace;font-size:0.9rem;line-height:1.6;margin:1rem 0}
+    .code-block .comment{color:#64748b}
+    .endpoint{background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:1rem;margin:1rem 0}
+    .method{display:inline-block;padding:2px 10px;border-radius:4px;font-size:0.8rem;font-weight:700;margin-right:8px}
+    .method-get{background:#dcfce7;color:#166534}
+    .method-post{background:#dbeafe;color:#1e40af}
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+    <nav class="main-nav"><a href="/">Home</a><a href="/#tools">Tools</a><a href="/workflows/">Workflows</a><a href="/blog/">Blog</a><a href="/api/">API</a></nav>
+  </div>
+</header>
+
+<main class="api-container">
+  <nav class="breadcrumb"><a href="/">Home</a><span>/</span><span>Developer API</span></nav>
+
+  <h1 style="font-size:2rem;margin:1.5rem 0;">SmartImgKit Developer API</h1>
+  <p style="font-size:1.1rem;color:var(--text-secondary);line-height:1.7;margin-bottom:2rem;">
+    <strong>The short answer:</strong> Embed professional image processing directly into your web app with a few lines of JavaScript. All processing runs in the user's browser — no server upload, no bandwidth costs, no API keys required. 100% free forever.
+  </p>
+
+  <h2 style="font-size:1.5rem;margin:2.5rem 0 1rem;">🚀 Quick Start (30 seconds)</h2>
+  <div class="code-block">
+    <span class="comment">// Load the SDK from our CDN</span>
+    &lt;script src="https://smartimgkit.com/js/sdk.min.js"&gt;&lt;/script&gt;
+
+    <span class="comment">// Compress an image file</span>
+    &lt;script&gt;
+      const result = await SmartImgKit.compress(file, {
+        quality: 0.8,
+        maxWidth: 1920,
+        format: 'webp'
+      });
+      console.log('Saved:', file.size - result.size, 'bytes');
+      download(result, 'compressed.webp');
+    &lt;/script&gt;
+  </div>
+
+  <h2 style="font-size:1.5rem;margin:2.5rem 0 1rem;">📦 Available Methods</h2>
+
+  <div class="endpoint">
+    <span class="method method-post">compress</span>
+    <strong>SmartImgKit.compress(file, options)</strong>
+    <p style="margin:0.5rem 0 0;color:var(--text-secondary);font-size:0.9rem;">Compress JPG/PNG/WebP images with adjustable quality. Returns a Blob.</p>
+    <div class="code-block" style="margin-top:0.8rem;">
+      options = {
+        quality: 0.8,        <span class="comment">// 0.1 - 1.0</span>
+        maxWidth: 1920,      <span class="comment">// optional</span>
+        format: 'webp'       <span class="comment">// jpeg | png | webp | avif</span>
+      }
+    </div>
+  </div>
+
+  <div class="endpoint">
+    <span class="method method-post">resize</span>
+    <strong>SmartImgKit.resize(file, width, height)</strong>
+    <p style="margin:0.5rem 0 0;color:var(--text-secondary);font-size:0.9rem;">Resize an image to exact dimensions. Returns a Blob.</p>
+  </div>
+
+  <div class="endpoint">
+    <span class="method method-post">convert</span>
+    <strong>SmartImgKit.convert(file, targetFormat)</strong>
+    <p style="margin:0.5rem 0 0;color:var(--text-secondary);font-size:0.9rem;">Convert between JPG, PNG, WebP, AVIF. targetFormat = 'jpeg' | 'png' | 'webp' | 'avif'.</p>
+  </div>
+
+  <div class="endpoint">
+    <span class="method method-post">crop</span>
+    <strong>SmartImgKit.crop(file, x, y, width, height)</strong>
+    <p style="margin:0.5rem 0 0;color:var(--text-secondary);font-size:0.9rem;">Crop an image to a rectangle. All values in pixels.</p>
+  </div>
+
+  <h2 style="font-size:1.5rem;margin:2.5rem 0 1rem;">🔒 Why Browser-Based?</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1.5rem 0;">
+    <div style="padding:1.2rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border);">
+      <h3 style="margin:0 0 0.5rem;font-size:1rem;">🔒 Privacy-First</h3>
+      <p style="margin:0;font-size:0.9rem;color:var(--text-secondary);">Images never leave your users' devices. No upload compliance headaches.</p>
+    </div>
+    <div style="padding:1.2rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border);">
+      <h3 style="margin:0 0 0.5rem;font-size:1rem;">💰 Zero Server Cost</h3>
+      <p style="margin:0;font-size:0.9rem;color:var(--text-secondary);">All processing happens client-side. No bandwidth bills, no GPU servers.</p>
+    </div>
+    <div style="padding:1.2rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border);">
+      <h3 style="margin:0 0 0.5rem;font-size:1rem;">⚡ Instant</h3>
+      <p style="margin:0;font-size:0.9rem;color:var(--text-secondary);">No waiting for uploads. Processing starts the moment the user selects a file.</p>
+    </div>
+    <div style="padding:1.2rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border);">
+      <h3 style="margin:0 0 0.5rem;font-size:1rem;">🆓 Free Forever</h3>
+      <p style="margin:0;font-size:0.9rem;color:var(--text-secondary);">No API keys, no rate limits, no credit card. Use it in commercial projects.</p>
+    </div>
+  </div>
+
+  <h2 style="font-size:1.5rem;margin:2.5rem 0 1rem;">💡 Real-World Example</h2>
+  <p style="line-height:1.7;margin:1rem 0;">A blog platform using SmartImgKit SDK to automatically compress user uploads:</p>
+  <div class="code-block">
+    &lt;input type="file" id="upload" accept="image/*"&gt;
+    &lt;script&gt;
+      document.getElementById('upload').addEventListener('change', async (e) =&gt; {
+        const file = e.target.files[0];
+        <span class="comment">// Auto-compress to max 1600px width, WebP quality 80</span>
+        const optimized = await SmartImgKit.compress(file, {
+          maxWidth: 1600,
+          quality: 0.8,
+          format: 'webp'
+        });
+        <span class="comment">// 80% smaller file, same visual quality</span>
+        uploadToServer(optimized);
+      });
+    &lt;/script&gt;
+  </div>
+
+  <h2 style="font-size:1.5rem;margin:2.5rem 0 1rem;">❓ FAQ</h2>
+  <div style="margin:1rem 0;">
+    <h3 style="font-size:1rem;">Is the SDK really free for commercial use?</h3>
+    <p style="color:var(--text-secondary);font-size:0.95rem;">Yes. MIT-style license. Use it in commercial SaaS, client work, or internal tools — no attribution required.</p>
+  </div>
+  <div style="margin:1rem 0;">
+    <h3 style="font-size:1rem;">Do images get uploaded to your server?</h3>
+    <p style="color:var(--text-secondary);font-size:0.95rem;">No. The entire SDK runs in the browser using Canvas and WebAssembly. Your users' files never touch our servers.</p>
+  </div>
+  <div style="margin:1rem 0;">
+    <h3 style="font-size:1rem;">Which browsers are supported?</h3>
+    <p style="color:var(--text-secondary);font-size:0.95rem;">All modern browsers: Chrome, Firefox, Safari 14+, Edge. AVIF support requires Chrome 85+ / Firefox 93+.</p>
+  </div>
+  <div style="margin:1rem 0;">
+    <h3 style="font-size:1rem;">Is there a server-side API?</h3>
+    <p style="color:var(--text-secondary);font-size:0.95rem;">Not yet. The current SDK is browser-only — which is actually a feature, not a limitation.</p>
+  </div>
+
+  <div style="margin:3rem 0;padding:2rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border);text-align:center;">
+    <h3 style="margin:0 0 0.5rem;">Try it now</h3>
+    <p style="color:var(--text-secondary);margin-bottom:1rem;">Open any of our tools and inspect the source — that's the SDK you'll be using.</p>
+    <a href="/tools/image-compressor" class="btn btn-primary" style="display:inline-block;padding:12px 28px;background:#4f46e5;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;">Open Image Compressor →</a>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved.</p></div>
+  </div>
+</footer>
+<script src="/js/main.js?v=7"></script>
+</body>
+</html>
