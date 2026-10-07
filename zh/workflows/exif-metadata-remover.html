@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN" data-theme="dark">
 <head>
 <meta charset="UTF-8">
@@ -43,3 +43,4 @@ $('fileInput').onchange=e=>{files=Array.from(e.target.files);$('fileList').inner
 $('cleanBtn').onclick=async()=>{$('cleanBtn').disabled=true;$('cleanBtn').textContent='清除中…';const zip=new JSZip();for(const f of files){const blob=await new Promise(r=>{const img=new Image();img.onload=()=>{const c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;c.getContext('2d').drawImage(img,0,0);c.toBlob(r,'image/jpeg',0.92);};img.src=URL.createObjectURL(f);});zip.file(f.name.replace(/\.[^.]+$/,'')+'-clean.jpg',blob);}const blob=await zip.generateAsync({type:'blob'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='clean-photos.zip';a.click();$('cleanBtn').disabled=false;$('cleanBtn').textContent='清除并下载ZIP';};
 </script>
 </body></html>
+

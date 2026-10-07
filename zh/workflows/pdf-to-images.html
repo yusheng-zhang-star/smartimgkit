@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN" data-theme="dark">
 <head>
 <meta charset="UTF-8">
@@ -53,3 +53,4 @@ $('convBtn').onclick=async()=>{if(!pdf)return;$('convBtn').disabled=true;$('conv
 $('dlBtn').onclick=async()=>{const zip=new JSZip();const fmt=$('fmt').value;for(let i=0;i<canvases.length;i++){const blob=await new Promise(r=>canvases[i].toBlob(r,fmt,fmt==='image/jpeg'?0.92:undefined));const ext=fmt==='image/png'?'png':'jpg';zip.file(`page-${String(i+1).padStart(3,'0')}.${ext}`,blob);}const blob=await zip.generateAsync({type:'blob'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='pdf-pages.zip';a.click();};
 </script>
 </body></html>
+

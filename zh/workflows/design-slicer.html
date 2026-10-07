@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN" data-theme="dark">
 <head>
 <meta charset="UTF-8">
@@ -51,3 +51,4 @@ function draw(){if(!img)return;const cols=+$('cols').value,rows=+$('rows').value
 $('dlBtn').onclick=async()=>{const cols=+$('cols').value,rows=+$('rows').value;const tw=Math.floor(img.width/cols),th=Math.floor(img.height/rows);const zip=new JSZip();let n=1;for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const cv=document.createElement('canvas');cv.width=tw;cv.height=th;cv.getContext('2d').drawImage(img,c*tw,r*th,tw,th,0,0,tw,th);const blob=await new Promise(res=>cv.toBlob(res,'image/png'));zip.file(`tile-${String(n++).padStart(2,'0')}.png`,blob);}const blob=await zip.generateAsync({type:'blob'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='slices.zip';a.click();};
 </script>
 </body></html>
+

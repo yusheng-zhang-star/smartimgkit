@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN" data-theme="dark">
 <head>
 <meta charset="UTF-8">
@@ -51,3 +51,4 @@ $('width').oninput=()=>$('wVal').textContent=$('width').value;
 $('genBtn').onclick=async()=>{if(!files.length)return;$('genBtn').disabled=true;$('genBtn').textContent='生成中…';const W=+$('width').value,delay=+$('delay').value;const gif=new GIF({workers:2,quality:10,width:W,workerScript:'/js/gif.worker.js'});for(const f of files){const img=await new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.src=URL.createObjectURL(f);});const ratio=W/img.width;const h=img.height*ratio;const c=document.createElement('canvas');c.width=W;c.height=h;c.getContext('2d').drawImage(img,0,0,W,h);gif.addFrame(c,{delay:delay});}gif.on('finished',blob=>{const url=URL.createObjectURL(blob);$('preview').innerHTML=`<img src="${url}">`;$('dlBtn').style.display='inline-block';$('dlBtn').onclick=()=>{const a=document.createElement('a');a.href=url;a.download='animation.gif';a.click();};$('genBtn').disabled=false;$('genBtn').textContent='生成GIF';});gif.render();};
 </script>
 </body></html>
+

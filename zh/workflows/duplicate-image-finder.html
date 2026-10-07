@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN" data-theme="dark">
 <head>
 <meta charset="UTF-8">
@@ -45,3 +45,4 @@ async function phash(file){return new Promise((resolve)=>{const img=new Image();
 $('findBtn').onclick=async()=>{$('findBtn').disabled=true;$('findBtn').textContent='扫描中…';const hashes=await Promise.all(files.map(phash));const th=+$('th').value;const groups=[];const used=new Set();for(let i=0;i<files.length;i++){if(used.has(i))continue;const g=[i];used.add(i);for(let j=i+1;j<files.length;j++){if(used.has(j))continue;let diff=0;for(let k=0;k<64;k++)if(hashes[i][k]!==hashes[j][k])diff++;const sim=Math.round((1-diff/64)*100);if(sim>=th){g.push(j);used.add(j);}}if(g.length>1)groups.push(g);}if(!groups.length){$('results').innerHTML='<p style="color:#10b981">未发现重复图片！🎉</p>';}else{$('results').innerHTML=groups.map((g,i)=>`<div class="group"><h4>第${i+1}组（${g.length}张相似）</h4>${g.map(idx=>`<img src="${URL.createObjectURL(files[idx])}" title="${files[idx].name}">`).join('')}</div>`).join('');}$('findBtn').disabled=false;$('findBtn').textContent='查找重复';};
 </script>
 </body></html>
+
