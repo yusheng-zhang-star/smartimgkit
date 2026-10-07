@@ -1,0 +1,239 @@
+﻿<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Refinador de Bordes Gratis — Arregla Bordes Recortados | SmartImgKit</title>|<title>Refinador de Bordes Gratis — Arregla Bordes Recortados | SmartImgKit</title>
+  <meta name="description" content="Herramienta gratuita de refinado de bordes. Arregla halos blancos, bordes rugosos y detalles de cabello faltantes después de eliminar el fondo con IA. En el navegador, sin subir archivos, 100% gratis.">
+  <meta name="keywords" content="edge refiner, fix cutout edges, remove white halo, hair edge retouch, transparent background edge fix">
+  <link rel="canonical" href="https://smartimgkit.com/es/tools/edge-refiner.html">
+  <meta name="theme-color" content="#059669">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="../css/style.css?v=10">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Edge Refiner","url":"https://smartimgkit.com/tools/edge-refiner.html","applicationCategory":"MultimediaApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Free online edge refiner tool. Fix white halos, rough edges, and missing hair details after AI background removal."}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I fix white halos after background removal?","acceptedAnswer":{"@type":"Answer","text":"Use an edge refiner tool like SmartImgKit. Sube tu PNG transparente, paint over the white halo edges with the eraser brush, and download the fixed image. All processing happens locally in your browser."}},{"@type":"Question","name":"Can I fix missing hair details after AI cutout?","acceptedAnswer":{"@type":"Answer","text":"Yes. Use the add brush to paint back missing hair strands or fine details that the AI background remover cut away. Adjust brush size for precision work."}},{"@type":"Question","name":"Is my image uploaded to a server?","acceptedAnswer":{"@type":"Answer","text":"No. All edge refinement runs locally in your browser using Canvas API. Your images never leave your device, ensuring full privacy."}},{"@type":"Question","name":"What file formats are supported?","acceptedAnswer":{"@type":"Answer","text":"PNG with transparency is recommended (the output of background removal tools). JPG files can also be loaded but you'll need to erase the background yourself first."}},{"@type":"Question","name":"Is this tool really free?","acceptedAnswer":{"@type":"Answer","text":"Yes, completely free. No signup, no watermark, no resolution limits. Process as many images as you need at no cost."}}]}</script>
+  <style>
+    .editor-container{display:grid;grid-template-columns:1fr 240px;gap:1.5rem;margin-top:1rem}
+    .canvas-wrapper{background:#1a1a1a;border:1px solid var(--border-color);border-radius:12px;overflow:hidden;position:relative;min-height:500px;display:flex;align-items:center;justify-content:center;background-image:linear-gradient(45deg,#2a2a25 25%,transparent 25%),linear-gradient(-45deg,#2a2a25 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#2a2a25 75%),linear-gradient(-45deg,transparent 75%,#2a2a25 75%);background-size:20px 20px;background-position:0 0,0 10px,10px -10px,10px 0}
+    #canvas{max-width:100%;max-height:70vh;cursor:crosshair}
+    .controls-panel{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:1.25rem}
+    .control-group{margin-bottom:1.25rem}
+    .control-group label{display:block;font-size:.8rem;font-weight:600;margin-bottom:.5rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px}
+    .brush-size{width:100%}
+    .tool-buttons{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:1rem}
+    .tool-btn{padding:.6rem;border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-primary);border-radius:8px;cursor:pointer;font-size:.85rem;transition:all .15s}
+    .tool-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+    .tool-btn:hover{border-color:var(--accent)}
+    .action-buttons{display:flex;flex-direction:column;gap:.5rem;margin-top:1rem}
+    .action-btn{padding:.75rem;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:.9rem;transition:opacity .15s}
+    .action-btn.primary{background:var(--accent);color:#fff}
+    .action-btn.secondary{background:var(--bg-secondary);color:var(--text-primary);border:1px solid var(--border-color)}
+    .action-btn:hover{opacity:.9}
+    .upload-prompt{text-align:center;color:var(--text-muted)}
+    .upload-prompt .icon{font-size:4rem;margin-bottom:1rem}
+    @media (max-width: 768px){.editor-container{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/es/">Inicio</a><a href="/es/tools/">Herramientas</a><a href="/workflows/">Use Cases</a><a href="/es/blog/">Blog</a><a href="/about">Acerca de</a></nav>
+      <div class="header-actions"><button class="theme-toggle" id="themeToggle">🌙</button><button class="mobile-menu-btn" id="mobileMenuBtn">☰</button></div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/es/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>Refinador de Bordes</span></nav>
+      <div class="tool-page-header">
+        <h1>✏️ Refinador de Bordes — Arregla Recortes</h1>
+        <p>Arregla halos blancos, bordes rugosos y detalles de cabello faltantes después de eliminar el fondo con IA. Pinta sobre las áreas problemáticas para refinar los bordes de tu recorte.</p>
+      </div>
+
+      <div id="uploadPrompt" class="upload-prompt" style="margin:3rem 0">
+        <div class="icon">✏️</div>
+        <h3>Sube tu PNG transparente</h3>
+        <p>Works best on images that have already had the background removed (PNG with transparency)</p>
+        <input type="file" id="fileInput" accept="image/png,image/jpeg" hidden>
+        <button class="action-btn primary" onclick="document.getElementById('fileInput').click()">Elegir Imagen</button>
+      </div>
+
+      <div id="editor" style="display:none">
+        <div class="editor-container">
+          <div class="canvas-wrapper">
+            <canvas id="canvas"></canvas>
+          </div>
+          <div class="controls-panel">
+            <div class="control-group">
+              <label>Tool</label>
+              <div class="tool-buttons">
+                <button class="tool-btn active" id="eraserBtn" onclick="setTool('eraser')">🧽 Borrador</button>
+                <button class="tool-btn" id="addBtn" onclick="setTool('add')">🖌️ Añadir</button>
+              </div>
+            </div>
+            <div class="control-group">
+              <label>Brush Size: <span id="sizeVal">20</span>px</label>
+              <input type="range" class="brush-size" id="brushSize" min="1" max="100" value="20">
+            </div>
+            <div class="control-group">
+              <label>Brush Hardness: <span id="hardnessVal">80</span>%</label>
+              <input type="range" class="brush-size" id="brushHardness" min="0" max="100" value="80">
+            </div>
+            <div class="control-group">
+              <label>Zoom: <span id="zoomVal">100</span>%</label>
+              <input type="range" class="brush-size" id="zoom" min="25" max="200" value="100">
+            </div>
+            <div class="action-buttons">
+              <button class="action-btn secondary" onclick="undo()">↩️ Undo</button>
+              <button class="action-btn secondary" onclick="resetImage()">🔄 Reset</button>
+              <button class="action-btn primary" onclick="download()">⬇️ Download PNG</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/js/ad-loader.js?v=4"></script>
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    let img = new Image();
+    let isDrawing = false;
+    let currentTool = 'eraser';
+    let historyStack = [];
+
+    document.getElementById('fileInput').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        img.onload = () => {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+          document.getElementById('uploadPrompt').style.display = 'none';
+          document.getElementById('editor').style.display = 'block';
+          saveState();
+          applyZoom();
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    function setTool(tool) {
+      currentTool = tool;
+      document.getElementById('eraserBtn').classList.toggle('active', tool === 'eraser');
+      document.getElementById('addBtn').classList.toggle('active', tool === 'add');
+    }
+
+    document.getElementById('brushSize').addEventListener('input', (e) => {
+      document.getElementById('sizeVal').textContent = e.target.value;
+    });
+    document.getElementById('brushHardness').addEventListener('input', (e) => {
+      document.getElementById('hardnessVal').textContent = e.target.value;
+    });
+    document.getElementById('zoom').addEventListener('input', applyZoom);
+
+    function applyZoom() {
+      const zoom = document.getElementById('zoom').value;
+      document.getElementById('zoomVal').textContent = zoom;
+      canvas.style.width = (img.width * zoom / 100) + 'px';
+      canvas.style.height = (img.height * zoom / 100) + 'px';
+    }
+
+    function getPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      return {
+        x: (e.clientX - rect.left) * scaleX,
+        y: (e.clientY - rect.top) * scaleY
+      };
+    }
+
+    canvas.addEventListener('mousedown', startDraw);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDraw);
+    canvas.addEventListener('mouseleave', stopDraw);
+
+    // Touch support
+    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDraw(e.touches[0]); });
+    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e.touches[0]); });
+    canvas.addEventListener('touchend', stopDraw);
+
+    function startDraw(e) {
+      isDrawing = true;
+      const pos = getPos(e);
+      paint(pos.x, pos.y);
+    }
+
+    function draw(e) {
+      if (!isDrawing) return;
+      const pos = getPos(e);
+      paint(pos.x, pos.y);
+    }
+
+    function stopDraw() {
+      if (isDrawing) {
+        isDrawing = false;
+        saveState();
+      }
+    }
+
+    function paint(x, y) {
+      const size = document.getElementById('brushSize').value;
+      const hardness = document.getElementById('brushHardness').value / 100;
+      
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(x, y, size, 0, Math.PI * 2);
+      
+      if (currentTool === 'eraser') {
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.fillStyle = `rgba(0,0,0,${hardness})`;
+      } else {
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.globalAlpha = hardness;
+      }
+      
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function saveState() {
+      if (historyStack.length > 10) historyStack.shift();
+      historyStack.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+    }
+
+    function undo() {
+      if (historyStack.length > 1) {
+        historyStack.pop();
+        const state = historyStack[historyStack.length - 1];
+        ctx.putImageData(state, 0, 0);
+      }
+    }
+
+    function resetImage() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0);
+      historyStack = [];
+      saveState();
+    }
+
+    function download() {
+      canvas.toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'refined-edges.png';
+        a.click();
+        URL.revokeObjectURL(url);
+      }, 'image/png');
+    }
+  </script>
+</body>
+</html>
+
