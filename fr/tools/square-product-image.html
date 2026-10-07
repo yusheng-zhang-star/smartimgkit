@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Auto Square Image Resizer — 1:1 Product Photo Maker</title>
+<meta name="description" content="Free online tool to automatically center and pad product photos into 1:1 square white background, perfect for Amazon, Etsy, Shopify.">
+<link rel="canonical" href="https://smartimgkit.com/tools/square-product-image.html">
+<link rel="stylesheet" href=/fr/css/style.css">
+</head>
+<body>
+<header class="site-header">
+<a href=/fr/" class="logo">SmartImgKit</a>
+<nav><a href=/fr/tools/">All Tools</a><a href=/fr/blog/">Blog</a></nav>
+</header>
+<main class="container">
+<h1>Auto Square Product Photo Maker</h1>
+<p class="lead">Automatically center your product photo on a white 1:1 square background, no manual resizing needed. Perfect for Amazon, Etsy, and Shopify listings. 100% local processing, no upload.</p>
+<div class="upload-area" id="dropZone">
+<p>Upload your product photo</p>
+<input type="file" id="fileInput" accept="image/*" hidden>
+</div>
+<div class="controls" style="margin:1rem 0;">
+<label>Output Size: <select id="sizeSelect">
+<option value="1000">1000x1000</option>
+<option value="2000" selected>2000x2000</option>
+<option value="3000">3000x3000</option>
+</select></label>
+<label>Background: <select id="bgSelect">
+<option value="#ffffff" selected>White</option>
+<option value="#000000">Black</option>
+<option value="transparent">Transparent</option>
+</select></label>
+<button id="downloadBtn" class="primary">Download Square Image</button>
+</div>
+<canvas id="canvas" style="max-width:500px;border:1px solid #333;"></canvas>
+</main>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let img = new Image();
+document.getElementById('dropZone').onclick = () => document.getElementById('fileInput').click();
+document.getElementById('fileInput').onchange = (e) => {const f=e.target.files[0]; const r=new FileReader(); r.onload=(ev)=>{img.onload=()=>{draw();};img.src=ev.target.result;}; r.readAsDataURL(f);};
+function draw() {
+const size = parseInt(document.getElementById('sizeSelect').value);
+const bg = document.getElementById('bgSelect').value;
+canvas.width = size; canvas.height = size;
+if(bg !== 'transparent') {
+ctx.fillStyle = bg;
+ctx.fillRect(0,0,size,size);
+}
+const scale = Math.min(size/img.width, size/img.height) * 0.9;
+const w = img.width*scale, h = img.height*scale;
+const x = (size-w)/2, y = (size-h)/2;
+ctx.drawImage(img, x, y, w, h);
+}
+document.getElementById('sizeSelect').onchange = draw;
+document.getElementById('bgSelect').onchange = draw;
+document.getElementById('downloadBtn').onclick = () => {const a=document.createElement('a');a.download='square-product.png';a.href=canvas.toDataURL('image/png');a.click();};
+</script>
+</body>
+</html>
+

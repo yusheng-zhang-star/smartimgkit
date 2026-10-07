@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Image to Line Art Sketch Converter Online — Turn Photos into Pencil Drawing</title>
+<meta name="description" content="Convert any photo into pencil sketch / line art drawing online for free. No signup, 100% local processing, no upload.">
+<link rel="canonical" href="https://smartimgkit.com/tools/photo-to-sketch.html">
+<link rel="stylesheet" href=/zh/css/style.css">
+</head>
+<body>
+<header class="site-header">
+<a href=/zh/" class="logo">SmartImgKit</a>
+<nav><a href=/zh/tools/">All Tools</a><a href=/zh/blog/">Blog</a></nav>
+</header>
+<main class="container">
+<h1>Photo to Pencil Sketch Converter</h1>
+<p class="lead">Turn any photo into a realistic pencil sketch line art drawing instantly, 100% local processing, no upload required.</p>
+<div class="upload-area" id="dropZone">
+<p>Upload your photo to convert to sketch</p>
+<input type="file" id="fileInput" accept="image/*" hidden>
+</div>
+<div class="controls" style="margin:1rem 0;">
+<label>Sketch Strength: <input type="range" id="strength" min="1" max="10" value="5"></label>
+<button id="downloadBtn" class="primary">Download Sketch Image</button>
+</div>
+<canvas id="canvas" style="max-width:500px;border:1px solid #333;"></canvas>
+</main>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let img = new Image();
+document.getElementById('dropZone').onclick = () => document.getElementById('fileInput').click();
+document.getElementById('fileInput').onchange = (e) => {const f=e.target.files[0]; const r=new FileReader(); r.onload=(ev)=>{img.onload=()=>{draw();};img.src=ev.target.result;}; r.readAsDataURL(f);};
+function draw() {
+canvas.width = img.width; canvas.height = img.height;
+ctx.drawImage(img,0,0);
+const imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+const data = imgData.data;
+const gray = new Float32Array(canvas.width*canvas.height);
+for(let i=0;i<gray.length;i++){
+const p=i*4;
+gray[i] = 0.299*data[p] + 0.587*data[p+1] + 0.114*data[p+2];
+}
+for(let y=1;y<canvas.height-1;y++){
+for(let x=1;x<canvas.width-1;x++){
+const i=y*canvas.width+x;
+const gx = gray[i+1] - gray[i-1];
+const gy = gray[i+canvas.width] - gray[i-canvas.width];
+const edge = Math.abs(gx) + Math.abs(gy);
+const v = edge > 30 ? 0 : 255;
+const p=i*4;
+data[p]=data[p+1]=data[p+2]=v;
+}
+}
+ctx.putImageData(imgData,0,0);
+}
+document.getElementById('strength').oninput = draw;
+document.getElementById('downloadBtn').onclick = () => {const a=document.createElement('a');a.download='sketch.png';a.href=canvas.toDataURL('image/png');a.click();};
+</script>
+</body>
+</html>
+

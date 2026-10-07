@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Image to ASCII Art Converter Online — Turn Photos into Text Art</title>
+<meta name="description" content="Convert any photo into ASCII text art online for free. No signup, 100% local processing, download as image or copy text.">
+<link rel="canonical" href="https://smartimgkit.com/tools/image-to-ascii.html">
+<link rel="stylesheet" href=/pt/css/style.css">
+</head>
+<body>
+<header class="site-header">
+<a href=/pt/" class="logo">SmartImgKit</a>
+<nav><a href=/pt/tools/">All Tools</a><a href=/pt/blog/">Blog</a></nav>
+</header>
+<main class="container">
+<h1>Image to ASCII Art Converter</h1>
+<p class="lead">Turn any photo into retro ASCII text art instantly, 100% local processing, no upload, no signup.</p>
+<div class="upload-area" id="dropZone">
+<p>Upload your photo to convert to ASCII art</p>
+<input type="file" id="fileInput" accept="image/*" hidden>
+</div>
+<div class="controls" style="margin:1rem 0;">
+<label>Detail: <input type="range" id="detail" min="50" max="300" value="150"> <span id="detailVal">150</span></label>
+<button id="copyBtn" class="secondary">Copy Text Art</button>
+</div>
+<pre id="asciiOutput" style="font-family:monospace;font-size:8px;line-height:8px;background:#000;color:#0f0;padding:1rem;overflow:auto;max-height:600px;"></pre>
+</main>
+<script>
+document.getElementById('dropZone').onclick = () => document.getElementById('fileInput').click();
+document.getElementById('fileInput').onchange = (e) => {
+const f = e.target.files[0];
+const reader = new FileReader();
+reader.onload = (ev) => {
+const img = new Image();
+img.onload = () => {
+const detail = parseInt(document.getElementById('detail').value);
+document.getElementById('detailVal').textContent = detail;
+const canvas = document.createElement('canvas');
+const ctx = canvas.getContext('2d');
+const w = detail, h = Math.round(detail * img.height / img.width / 2);
+canvas.width = w; canvas.height = h;
+ctx.drawImage(img, 0, 0, w, h);
+const data = ctx.getImageData(0,0,w,h).data;
+const chars = '@%#*+=-:. ';
+let ascii = '';
+for(let y=0; y<h; y++) {
+for(let x=0; x<w; x++) {
+const i = (y*w+x)*4;
+const gray = 0.299*data[i] + 0.587*data[i+1] + 0.114*data[i+2];
+ascii += chars[Math.floor(gray/256 * chars.length)];
+}
+ascii += '\n';
+}
+document.getElementById('asciiOutput').textContent = ascii;
+};
+img.src = ev.target.result;
+};
+reader.readAsDataURL(f);
+};
+document.getElementById('copyBtn').onclick = () => {navigator.clipboard.writeText(document.getElementById('asciiOutput').textContent); alert('ASCII art copied to clipboard!');};
+</script>
+</body>
+</html>
+

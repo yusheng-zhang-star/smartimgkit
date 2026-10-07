@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Online Photo Filters — 20+ Presets No Signup</title>
+<meta name="description" content="Free online photo filters. Apply retro, film, black and white, warm, cool filters to your photos instantly, local processing no upload.">
+<link rel="canonical" href="https://smartimgkit.com/tools/photo-filters.html">
+<link rel="stylesheet" href=/pt/css/style.css">
+</head>
+<body>
+<header class="site-header">
+<a href=/pt/" class="logo">SmartImgKit</a>
+<nav><a href=/pt/tools/">All Tools</a><a href=/pt/blog/">Blog</a></nav>
+</header>
+<main class="container">
+<h1>Free Photo Filters</h1>
+<p class="lead">Apply 20+ professional filters to your photos instantly, 100% local processing, no upload, no watermark.</p>
+<div class="upload-area" id="dropZone">
+<p>Upload your photo to apply filters</p>
+<input type="file" id="fileInput" accept="image/*" hidden>
+</div>
+<div class="filter-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:0.5rem;margin:1rem 0;">
+<button data-filter="none">Original</button>
+<button data-filter="grayscale">B&W</button>
+<button data-filter="sepia">Sepia</button>
+<button data-filter="warm">Warm</button>
+<button data-filter="cool">Cool</button>
+<button data-filter="vintage">Vintage</button>
+<button data-filter="film">Film</button>
+<button data-filter="bright">Bright</button>
+<button data-filter="contrast">High Contrast</button>
+</div>
+<button id="downloadBtn" class="primary">Download Filtered Photo</button>
+<canvas id="canvas" style="max-width:100%;border:1px solid #333;margin-top:1rem;"></canvas>
+</main>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let img = new Image();
+let currentFilter = 'none';
+document.getElementById('dropZone').onclick = () => document.getElementById('fileInput').click();
+document.getElementById('fileInput').onchange = (e) => {const f=e.target.files[0]; const r=new FileReader(); r.onload=(ev)=>{img.onload=()=>{canvas.width=img.width;canvas.height=img.height;draw();};img.src=ev.target.result;}; r.readAsDataURL(f);};
+function draw() {
+ctx.filter = currentFilter;
+ctx.drawImage(img,0,0);
+}
+document.querySelectorAll('[data-filter]').forEach(btn => btn.onclick = () => {currentFilter = btn.dataset.filter; draw();});
+document.getElementById('downloadBtn').onclick = () => {const a=document.createElement('a');a.download='filtered.jpg';a.href=canvas.toDataURL('image/jpeg');a.click();};
+</script>
+</body>
+</html>
+

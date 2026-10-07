@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Image Pixel Art Converter — Turn Photos to 8-bit Pixel Art</title>
+<meta name="description" content="Convert any photo to 8-bit pixel art style instantly. Free online pixel art converter, local processing no upload.">
+<link rel="canonical" href="https://smartimgkit.com/tools/pixel-art-converter.html">
+<link rel="stylesheet" href=/es/css/style.css">
+</head>
+<body>
+<header class="site-header">
+<a href=/es/" class="logo">SmartImgKit</a>
+<nav><a href=/es/tools/">All Tools</a><a href=/es/blog/">Blog</a></nav>
+</header>
+<main class="container">
+<h1>Photo to Pixel Art Converter</h1>
+<p class="lead">Turn any photo into retro 8-bit pixel art style, 100% local processing, no upload, no signup.</p>
+<div class="upload-area" id="dropZone">
+<p>Upload your photo to convert to pixel art</p>
+<input type="file" id="fileInput" accept="image/*" hidden>
+</div>
+<div class="controls" style="margin:1rem 0;">
+<label>Pixel Size: <input type="range" id="pixelSize" min="2" max="50" value="10"> <span id="sizeVal">10px</span></label>
+<button id="downloadBtn" class="primary">Download Pixel Art</button>
+</div>
+<canvas id="canvas" style="max-width:100%;border:1px solid #333;"></canvas>
+</main>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let img = new Image();
+document.getElementById('dropZone').onclick = () => document.getElementById('fileInput').click();
+document.getElementById('fileInput').onchange = (e) => {const f=e.target.files[0]; const r=new FileReader(); r.onload=(ev)=>{img.onload=()=>{canvas.width=img.width;canvas.height=img.height;draw();};img.src=ev.target.result;}; r.readAsDataURL(f);};
+function draw() {
+const ps = parseInt(document.getElementById('pixelSize').value);
+document.getElementById('sizeVal').textContent = ps+'px';
+ctx.drawImage(img,0,0);
+const w = canvas.width, h = canvas.height;
+const temp = document.createElement('canvas');
+temp.width = w/ps; temp.height = h/ps;
+const tctx = temp.getContext('2d');
+tctx.drawImage(img,0,0,w/ps,h/ps);
+ctx.imageSmoothingEnabled = false;
+ctx.drawImage(temp,0,0,w,h);
+}
+document.getElementById('pixelSize').oninput = draw;
+document.getElementById('downloadBtn').onclick = () => {const a=document.createElement('a');a.download='pixel-art.png';a.href=canvas.toDataURL('image/png');a.click();};
+</script>
+</body>
+</html>
+

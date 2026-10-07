@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Photo Collage Maker Online — No Signup</title>
+<meta name="description" content="Free online photo collage maker. Combine multiple photos into grid collages, add backgrounds, no signup, local processing.">
+<link rel="canonical" href="https://smartimgkit.com/tools/photo-collage-maker.html">
+<link rel="stylesheet" href=/fr/css/style.css">
+</head>
+<body>
+<header class="site-header">
+<a href=/fr/" class="logo">SmartImgKit</a>
+<nav><a href=/fr/tools/">All Tools</a><a href=/fr/blog/">Blog</a></nav>
+</header>
+<main class="container">
+<h1>Free Photo Collage Maker</h1>
+<p class="lead">Combine 2-9 photos into a beautiful grid collage, all processing 100% local in your browser, no upload, no watermark.</p>
+<div class="upload-area" id="dropZone">
+<p>Upload multiple photos to make a collage</p>
+<input type="file" id="fileInput" accept="image/*" multiple hidden>
+</div>
+<div class="controls" style="margin:1rem 0;display:flex;gap:1rem;flex-wrap:wrap;">
+<label>Layout: <select id="layout"><option value="2x2">2x2 Grid</option><option value="3x1">3 Horizontal</option><option value="1x3">3 Vertical</option><option value="3x3">3x3 Grid</option></select></label>
+<label>Gap: <input type="range" id="gap" min="0" max="50" value="10"></label>
+<label>Background: <input type="color" id="bg" value="#ffffff"></label>
+<button id="downloadBtn" class="primary">Download Collage</button>
+</div>
+<canvas id="canvas" style="max-width:100%;border:1px solid #333;"></canvas>
+</main>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let images = [];
+const fileInput = document.getElementById('fileInput');
+document.getElementById('dropZone').onclick = () => fileInput.click();
+fileInput.onchange = (e) => {
+images = [];
+Array.from(e.target.files).forEach((f,i) => {
+const r = new FileReader();
+r.onload = (ev) => {const img = new Image(); img.onload = () => {images.push(img); if(images.length === e.target.files.length) draw();}; img.src = ev.target.result;};
+r.readAsDataURL(f);
+});
+};
+function draw() {
+const layout = document.getElementById('layout').value;
+const gap = parseInt(document.getElementById('gap').value);
+const bg = document.getElementById('bg').value;
+let cols, rows;
+if(layout === '2x2'){cols=2;rows=2;} else if(layout === '3x1'){cols=3;rows=1;} else if(layout === '1x3'){cols=1;rows=3;} else {cols=3;rows=3;}
+const w = 800, h = 800;
+canvas.width = w; canvas.height = h;
+ctx.fillStyle = bg; ctx.fillRect(0,0,w,h);
+const cellW = (w - gap*(cols+1))/cols;
+const cellH = (h - gap*(rows+1))/rows;
+images.slice(0, cols*rows).forEach((img,i) => {
+const x = gap + (i%cols)*(cellW+gap);
+const y = gap + Math.floor(i/cols)*(cellH+gap);
+ctx.drawImage(img, x, y, cellW, cellH);
+});
+}
+document.getElementById('layout').onchange = draw;
+document.getElementById('gap').oninput = draw;
+document.getElementById('bg').oninput = draw;
+document.getElementById('downloadBtn').onclick = () => {
+const a = document.createElement('a'); a.download='collage.png'; a.href=canvas.toDataURL('image/png'); a.click();
+};
+</script>
+</body>
+</html>
+

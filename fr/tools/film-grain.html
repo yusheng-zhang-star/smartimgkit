@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Film Grain Filter Online — Add Noise to Photos</title>
+<meta name="description" content="Add retro film grain/noise effect to your photos online for free. 100% local processing no upload.">
+<link rel="canonical" href="https://smartimgkit.com/tools/film-grain.html">
+<link rel="stylesheet" href=/fr/css/style.css">
+</head>
+<body>
+<header class="site-header">
+<a href=/fr/" class="logo">SmartImgKit</a>
+<nav><a href=/fr/tools/">All Tools</a><a href=/fr/blog/">Blog</a></nav>
+</header>
+<main class="container">
+<h1>Film Grain Filter</h1>
+<p class="lead">Add retro analog film grain and noise to your photos instantly, 100% local processing, no upload.</p>
+<div class="upload-area" id="dropZone">
+<p>Upload your photo to add film grain</p>
+<input type="file" id="fileInput" accept="image/*" hidden>
+</div>
+<div class="controls" style="margin:1rem 0;">
+<label>Grain Intensity: <input type="range" id="intensity" min="0" max="100" value="30"> <span id="intVal">30%</span></label>
+<button id="downloadBtn" class="primary">Download Grainy Photo</button>
+</div>
+<canvas id="canvas" style="max-width:100%;border:1px solid #333;"></canvas>
+</main>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let img = new Image();
+document.getElementById('dropZone').onclick = () => document.getElementById('fileInput').click();
+document.getElementById('fileInput').onchange = (e) => {const f=e.target.files[0]; const r=new FileReader(); r.onload=(ev)=>{img.onload=()=>{canvas.width=img.width;canvas.height=img.height;draw();};img.src=ev.target.result;}; r.readAsDataURL(f);};
+function draw() {
+const intensity = parseInt(document.getElementById('intensity').value);
+document.getElementById('intVal').textContent = intensity+'%';
+ctx.drawImage(img,0,0);
+const data = ctx.getImageData(0,0,canvas.width,canvas.height);
+const d = data.data;
+for(let i=0;i<d.length;i+=4){
+const noise = (Math.random()-0.5)*intensity*2;
+d[i] += noise; d[i+1] += noise; d[i+2] += noise;
+}
+ctx.putImageData(data,0,0);
+}
+document.getElementById('intensity').oninput = draw;
+document.getElementById('downloadBtn').onclick = () => {const a=document.createElement('a');a.download='film-grain.jpg';a.href=canvas.toDataURL('image/jpeg');a.click();};
+</script>
+</body>
+</html>
+
