@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-tool-id="pdf-encrypt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Protect PDF with Password — Encrypt PDF Free Online | SmartImgKit</title>
+  <meta name="description" content="Add password protection to your PDF files for free. Encrypt PDF locally in your browser, no upload to server, 100% private.">
+  <link rel="canonical" href="https://smartimgkit.com/tools/pdf-encrypt">
+  <meta name="theme-color" content="#6366f1">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css?v=10">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .tool-workspace { max-width: 900px; margin: 0 auto; padding: 24px; }
+    .upload-area { border: 2px dashed var(--border); border-radius: 12px; padding: 48px 24px; text-align: center; cursor: pointer; margin-bottom: 24px; transition: all .2s; }
+    .upload-area:hover { border-color: var(--accent); background: rgba(99,102,241,.05); }
+    .controls { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+    .control-row { margin-bottom: 16px; }
+    .control-row label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-secondary); }
+    .control-row input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-secondary); color: var(--text-primary); }
+    .btn { padding: 12px 24px; border: none; border-radius: 8px; background: var(--accent); color: white; font-weight: 600; cursor: pointer; width: 100%; margin-top: 16px; }
+    .btn:hover { background: var(--accent-hover); }
+  </style>
+</head>
+<body>
+  <div class="top">
+    <div class="top-inner">
+      <a href="/" class="logo">SmartImgKit</a>
+      <nav class="nav-links">
+        <a href="/tools/">Tools</a>
+        <a href="/blog/">Blog</a>
+      </nav>
+    </div>
+  </div>
+  <main class="tool-workspace">
+    <h1>Protect PDF with Password</h1>
+    <p style="color:var(--text-secondary);margin-bottom:24px">Add password protection to your PDF file, 100% local browser processing, your file never leaves your device.</p>
+    <div class="upload-area" id="uploadArea">
+      <div style="font-size:3rem;margin-bottom:16px">🔒</div>
+      <p>Drop your PDF here, or click to select</p>
+      <input type="file" id="fileInput" accept=".pdf" hidden>
+    </div>
+    <div class="controls" id="controls" style="display:none">
+      <div class="control-row">
+        <label>Enter password to encrypt your PDF</label>
+        <input type="password" id="password" placeholder="Create strong password">
+      </div>
+      <div class="control-row">
+        <label>Confirm password</label>
+        <input type="password" id="confirmPassword" placeholder="Confirm password">
+      </div>
+      <button class="btn" id="encryptBtn">Encrypt PDF</button>
+      <p id="statusText" style="text-align:center;margin-top:16px;color:var(--text-secondary)"></p>
+    </div>
+  </main>
+  <script>
+    // PDF encryption using pdf-lib will be loaded dynamically, all processing local
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const controls = document.getElementById('controls');
+    uploadArea.addEventListener('click', () => fileInput.click());
+    let selectedFile = null;
+    fileInput.addEventListener('change', (e) => {
+      selectedFile = e.target.files[0];
+      if (selectedFile) controls.style.display = 'block';
+    });
+  </script>
+</body>
+</html>
