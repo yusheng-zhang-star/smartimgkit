@@ -1,0 +1,818 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-tool-id="image-compressor">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Image Compressor – Free Online Photo Compression</title>
+  <meta name="description" content="Free online image compressor. Reduce JPG, PNG, WebP file size without visible quality loss. 100% in browser, no upload to server.">
+  <meta name="keywords" content="">
+  <link rel="canonical" href="https://smartimgkit.com/tools/image-compressor">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="Image Compressor – Free Online Photo Compression">
+  <meta property="og:description" content="Free online image compressor. Reduce JPG, PNG, WebP file size without visible quality loss. 100% in browser, no upload to server.">
+  <meta property="og:url" content="https://smartimgkit.com/tools/image-compressor">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/home.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Image Compressor – Free Online Photo Compression">
+  <meta name="twitter:description" content="Free online image compressor. Reduce JPG, PNG, WebP file size without visible quality loss. 100% in browser, no upload to server.">
+  <meta name="twitter:image" content="https://smartimgkit.com/screenshots/home.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate" hreflang="ar" href="https://smartimgkit.com/ar/tools/image-compressor">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/image-compressor">
+  <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/image-compressor">
+  <link rel="alternate" hreflang="fr" href="https://smartimgkit.com/fr/tools/image-compressor">
+  <link rel="alternate" hreflang="id" href="https://smartimgkit.com/id/tools/image-compressor">
+  <link rel="alternate" hreflang="pt" href="https://smartimgkit.com/pt/tools/image-compressor">
+  <link rel="alternate" hreflang="vi" href="https://smartimgkit.com/vi/tools/image-compressor">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/image-compressor">
+  <link rel="stylesheet" href="/css/style.css?v=10">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Bulk Image Compressor",
+  "url": "https://smartimgkit.com/tools/image-compressor",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Compress many JPG, PNG, and WebP images at once."
+}
+</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Use Bulk Image Compressor",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Upload Images",
+      "text": "Drop multiple image files."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Set Quality",
+      "text": "Adjust the quality slider."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Set Max Width",
+      "text": "Optionally resize images to a max width."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "name": "Compress & Download",
+      "text": "Click Compress All and download ZIP."
+    }
+  ]
+}
+</script>
+  <style>
+    .tool-container{max-width:900px;margin:2rem auto;padding:0 1rem}
+    .preview-list{display:flex;flex-direction:column;gap:1rem;margin:1.5rem 0}
+    .prev-item{display:flex;flex-wrap:wrap;gap:1rem;padding:1rem;background:#f9fafb;border-radius:8px;align-items:center}
+    .prev-item .thumb{width:100px;height:100px;object-fit:cover;border-radius:4px}
+    .prev-item .info{flex:1;min-width:200px}
+    .prev-item .info p{margin:0.25rem 0;font-size:0.85rem;color:#374151}
+    .prev-item .badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:0.75rem;font-weight:600}
+    .badge-saved{background:#dcfce7;color:#166534}
+    .badge-larger{background:#fee2e2;color:#991b1b}
+    .prev-item button{background:none;border:none;cursor:pointer;font-size:1.1rem;color:#ef4444;padding:4px 8px}
+    .controls{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:center;margin:1rem 0}
+    .controls label{font-weight:600;font-size:0.9rem}
+    .controls input[type=range]{width:120px;min-height:44px}
+    .controls select,.controls input[type=number]{padding:10px 12px;border:1px solid #ccc;border-radius:8px;font-size:1rem;min-height:44px}
+    .btn{padding:14px 24px;border:none;border-radius:10px;font-size:1rem;cursor:pointer;font-weight:600;transition:all .2s;min-height:48px;touch-action:manipulation}
+    @media(max-width:640px){
+      .controls{flex-direction:column;gap:0.75rem}
+      .controls label{width:100%;text-align:center}
+      .controls input[type=range]{width:90%}
+      .btn{width:100%;max-width:300px}
+      .upload-area{padding:3rem 1rem !important}
+      .upload-icon{font-size:3rem !important}
+    }
+    .btn-primary{background:#4f46e5;color:#fff}
+    .btn-primary:hover{background:#4338ca}
+    .btn-secondary{background:#e5e7eb;color:#1f2937}
+    .btn-secondary:hover{background:#d1d5db}
+    .btn:disabled{opacity:0.5;cursor:not-allowed}
+    .status{text-align:center;padding:0.75rem;font-size:0.9rem;color:#6b7280}
+    .progress-bar{width:100%;height:8px;background:#e5e7eb;border-radius:4px;overflow:hidden;margin:0.5rem 0}
+    .progress-fill{height:100%;background:#4f46e5;transition:width 0.3s}
+    .compare-wrap{display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;margin:1rem 0}
+    .compare-box{flex:1;min-width:200px;text-align:center}
+    .compare-box img{max-width:100%;border-radius:8px;border:1px solid #e5e7eb}
+    .compare-box p{margin:0.5rem 0;font-size:0.85rem;color:#6b7280}
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Will compression reduce image quality?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For JPG/WebP, yes. The quality slider controls the trade-off."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are my images uploaded to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All compression happens locally."
+      }
+    }
+  ]
+}
+</script>
+<style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+
+<style id="enrich-css">
+.selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
+.sp-item{display:flex;align-items:center;gap:8px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:999px;padding:8px 16px;font-size:0.85rem;color:var(--text-secondary);font-weight:500}
+.sp-item span.sp-icon{font-size:1rem}
+.feature-narrative{margin:2.5rem 0;padding:0 1rem}
+.feature-narrative h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.feature-narrative .fn-intro{text-align:center;max-width:680px;margin:0 auto 2rem;color:var(--text-secondary);font-size:1rem;line-height:1.6}
+.fn-block{display:flex;gap:1.5rem;align-items:flex-start;margin:1.5rem 0;padding:1.25rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.fn-block .fn-icon{font-size:2rem;flex-shrink:0;line-height:1}
+.fn-block h3{font-size:1.05rem;color:var(--text-primary);margin:0 0 0.4rem}
+.fn-block p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin:0}
+.features-grid-section{margin:2.5rem 0;padding:0 1rem}
+.features-grid-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.features-grid-section .fg-sub{text-align:center;color:var(--text-secondary);font-size:0.95rem;margin-bottom:2rem}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;max-width:1000px;margin:0 auto}
+.feature-card{background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;padding:1.25rem;transition:transform .2s,border-color .2s}
+.feature-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.feature-card .fc-icon{font-size:1.8rem;margin-bottom:0.5rem}
+.feature-card h3{font-size:1rem;color:var(--text-primary);margin:0 0 0.4rem}
+.feature-card p{color:var(--text-secondary);font-size:0.85rem;line-height:1.5;margin:0}
+.trust-badges{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:2rem 0;padding:1.5rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.trust-badge{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;min-width:120px}
+.trust-badge .tb-icon{font-size:1.6rem}
+.trust-badge .tb-title{font-size:0.85rem;font-weight:700;color:var(--text-primary)}
+.trust-badge .tb-desc{font-size:0.72rem;color:var(--text-secondary)}
+@media(max-width:640px){.fn-block{flex-direction:column}.features-grid{grid-template-columns:1fr}.trust-badges{gap:12px}.trust-badge{min-width:90px}}
+</style>
+<meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- Header: exact match image-rotator compact format -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/">Home</a><a href="/#tools">Tools</a><a href="/blog/">Blog</a><a href="/about">About</a><a href="/contact">Contact</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Switch language">🇬🇧 EN</button>
+          <div class="lang-dropdown" style="position:absolute;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+            <a href="/fr/" hreflang="fr" lang="fr">🇫🇷 Français</a>
+            <a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a>
+            <a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a>
+          </div>
+        </div>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+<div class="ad-zone ad-header ad-loader-slot" data-ad-type="header" data-current-mobile="0"></div>
+
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/">Tools</a><span>/</span><span>Image Compressor</span></nav>
+      <div class="tool-page-header">
+        <h1>Image Compressor</h1>
+        <p></p>
+      </div>
+      <div class="tool-workspace">
+<div class="upload-area" id="uploadArea">
+    <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" multiple hidden>
+    <div class="upload-icon">🗜️</div>
+    <h3>Drop images here</h3>
+    <p>or click to browse</p>
+    <p class="upload-hint">Supports JPG, PNG, WebP — up to 50 images</p>
+  </div>
+
+  <div id="workspace" style="display:none">
+    <div class="controls">
+      <label for="qualityRange">Quality: <span id="qualityVal">80</span>%</label>
+      <input type="range" id="qualityRange" min="10" max="100" value="80" style="width:140px">
+      <label style="margin-left:1rem" for="maxWidth">Max Width (px)</label>
+      <input type="number" id="maxWidth" placeholder="e.g. 1920" min="100" max="10000" style="width:100px">
+      <label style="margin-left:1rem" for="outputFmt">Output Format</label>
+      <select id="outputFmt">
+        <option value="same">Same as input</option>
+        <option value="image/jpeg">JPG (smallest compatibility)</option>
+        <option value="image/png">PNG (lossless)</option>
+        <option value="image/webp">WebP (best size/quality balance)</option>
+        <option value="image/avif">AVIF (newest, smallest files)</option>
+      </select>
+    </div>
+
+    <div class="progress-bar" id="progBar" style="display:none"><div class="progress-fill" id="progFill" style="width:0%"></div></div>
+        <div class="selling-points">
+  <div class="sp-item"><span class="sp-icon">✅</span>Shrink image files with adjustable quality</div>
+  <div class="sp-item"><span class="sp-icon">🎯</span>Batch-compress photos for web publishing</div>
+  <div class="sp-item"><span class="sp-icon">🔒</span>100% private — runs in your browser</div>
+</div>
+    <div class="status" id="statusText"></div>
+
+    <div class="preview-list" id="previewList"></div>
+
+    <div class="controls">
+      <button class="btn btn-primary" id="compressBtn">Compress All</button>
+      <button class="btn btn-secondary" id="downloadAllBtn" style="display:none">Download ZIP</button>
+      <button class="btn btn-secondary" id="addMoreBtn">Add More Images</button>
+      <button class="btn btn-secondary" id="clearBtn">Clear All</button>
+    </div>
+  </div>
+      </div>
+
+      <section class="feature-narrative">
+        <h2>Image Compressor: Shrink image files with adjustable quality</h2>
+        <p class="fn-intro">Image Compressor lets you shrink image files with adjustable quality. Upload JPG, PNG, WebP images and get a smaller image file — all processed locally in your browser, with no uploads and no sign-up.</p>
+      <div class="fn-block">
+        <div class="fn-icon">⚡</div>
+        <div><h3>Batch-compress photos for web publishing</h3><p>Batch-compress photos for web publishing. This is one of the most common reasons people reach for Image Compressor — and it handles the job in seconds, entirely in your browser.</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">🎯</div>
+        <div><h3>Reduce image weight for mobile pages</h3><p>Reduce image weight for mobile pages. This is one of the most common reasons people reach for Image Compressor — and it handles the job in seconds, entirely in your browser.</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">🔒</div>
+        <div><h3>Fit large images under upload limits</h3><p>Fit large images under upload limits. This is one of the most common reasons people reach for Image Compressor — and it handles the job in seconds, entirely in your browser.</p></div>
+      </div>
+      </section>
+
+      <section class="features-grid-section">
+        <h2>Everything You Need in a Image Compressor</h2>
+        <p class="fg-sub">Powerful features that make Image Compressor fast, private, and free.</p>
+        <div class="features-grid">
+        <div class="feature-card">
+          <div class="fc-icon">⚡</div>
+          <h3>Instant Conversion</h3>
+          <p>Files are processed in your browser the moment you upload — no waiting in a queue.</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🔒</div>
+          <h3>100% Private</h3>
+          <p>Your files never leave your device. Everything runs locally in your browser.</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🎯</div>
+          <h3>Adjustable Quality</h3>
+          <p>Fine-tune compression or output settings to balance size and quality.</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">📦</div>
+          <h3>Batch Support</h3>
+          <p>Process multiple files at once and download them together.</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🆓</div>
+          <h3>Free Forever</h3>
+          <p>No sign-up, no watermarks, no hidden limits — completely free.</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🌐</div>
+          <h3>Cross-Platform</h3>
+          <p>Works on Windows, Mac, Linux, iOS, and Android — any modern browser.</p>
+        </div>
+        </div>
+      </section>
+
+<div class="trust-badges">
+  <div class="trust-badge"><div class="tb-icon">🔒</div><div class="tb-title">100% Private</div><div class="tb-desc">Files never leave your browser</div></div>
+  <div class="trust-badge"><div class="tb-icon">⚡</div><div class="tb-title">Browser-Based</div><div class="tb-desc">No installs, no uploads</div></div>
+  <div class="trust-badge"><div class="tb-icon">💯</div><div class="tb-title">Free Forever</div><div class="tb-desc">No sign-up, no watermarks</div></div>
+  <div class="trust-badge"><div class="tb-icon">🚀</div><div class="tb-title">No Signup</div><div class="tb-desc">Start instantly, no account</div></div>
+</div>
+      <section class="how-to-section">
+  <h2>How to Use</h2>
+  <div class="how-to-steps">
+    <div class="how-to-step"><div class="step-number">1</div><h4>Upload Images</h4><p>Drop multiple image files or select a folder.</p></div>
+    <div class="how-to-step"><div class="step-number">2</div><h4>Set Quality</h4><p>Adjust the quality slider (lower = smaller files).</p></div>
+    <div class="how-to-step"><div class="step-number">3</div><h4>Set Max Width</h4><p>Optionally resize images to a max width.</p></div>
+    <div class="how-to-step"><div class="step-number">4</div><h4>Compress & Download</h4><p>Click "Compress All" and download as ZIP.</p></div>
+  </div>
+</section>
+
+<h2>Detailed User Guide</h2>
+
+      <div class="guide-block">
+        <h3>Step 1: Upload Images</h3>
+        <p>Drag and drop multiple image files.</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Step 2: Set Quality</h3>
+        <p>Use the Quality slider to control compression.</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Step 3: Set Max Width (Optional)</h3>
+        <p>Enter a max width in pixels.</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Step 4: Compress and Download</h3>
+        <p>Click "Compress All" then "Download ZIP".</p>
+      </div>
+
+      <div class="guide-block">
+        <h3>Best Use Cases</h3>
+        <ul><li>Website optimization</li><li>Email attachments</li><li>Cloud storage</li></ul>
+      </div>
+
+
+    <section class="amazon-store-section">
+      <div class="container">
+        <h2 style="font-size:1.3rem;font-weight:700;text-align:center;margin-bottom:6px;">Recommended Tools for Image Projects</h2>
+        <p style="text-align:center;color:var(--text-secondary);font-size:.9rem;margin-bottom:0;">Check these useful supplies to print and create your edited images.</p>
+        <div class="amazon-store-grid">
+          <a class="amazon-card" href="https://www.amazon.com/dp/B000TT7YRY?tag=sendafun20-20" target="_blank" rel="noopener sponsored nofollow">
+            <h3>Glossy Photo Paper</h3>
+            <p>High-quality photo paper for printing your edited pictures.</p>
+          </a>
+          <a class="amazon-card" href="https://www.amazon.com/dp/B0BF6T86WD?tag=sendafun20-20" target="_blank" rel="noopener sponsored nofollow">
+            <h3>Canon SELPHY CP1500</h3>
+            <p>Wireless compact photo printer — print 4x6 photos from your phone.</p>
+          </a>
+          <a class="amazon-card" href="https://www.amazon.com/dp/B0000721Z3?tag=sendafun20-20" target="_blank" rel="noopener sponsored nofollow">
+            <h3>Matte Inkjet Art Paper</h3>
+            <p>Matte heavy-weight paper for art prints & graphic works.</p>
+          </a>
+          <a class="amazon-card" href="https://www.amazon.com/dp/B08HN37XC1?tag=sendafun20-20" target="_blank" rel="noopener sponsored nofollow">
+            <h3>SanDisk Extreme SSD 1TB</h3>
+            <p>Rugged portable SSD — fast backup for photos, videos, and large files.</p>
+          </a>
+          <a class="amazon-card" href="https://www.amazon.com/dp/B00DIHSZCC?tag=sendafun20-20" target="_blank" rel="noopener sponsored nofollow">
+            <h3>Etekcity 24" 5-in-1 Reflector</h3>
+            <p>Ultra-lightweight 8oz reflector — easy to carry on location shoots.</p>
+          </a>
+        </div>
+        <p class="amazon-disclaimer">As an Amazon Associate, we earn from qualifying purchases.</p>
+      </div>
+    </section>
+<section class="faq-section">
+  <h2>Frequently Asked Questions</h2>
+  <div class="faq-item"><button class="faq-question">What's the difference between this and the Compressor?</button><div class="faq-answer">This is for bulk processing. The single-image Compressor has before/after preview.</div></div>
+  <div class="faq-item"><button class="faq-question">Will compression reduce image quality?</button><div class="faq-answer">For JPG/WebP, yes. The quality slider lets you control the trade-off.</div></div>
+  <div class="faq-item"><button class="faq-question">Are my images uploaded to a server?</button><div class="faq-answer">No. All compression happens locally.</div></div>
+<div class="faq-item"><button class="faq-question">Is batch compression supported?</button><div class="faq-answer">Yes — select multiple files and they are processed together, each downloaded individually.</div></div>
+<div class="faq-item"><button class="faq-question">What is the maximum reduction?</button><div class="faq-answer">Up to 80% smaller with strong compression, depending on the original.</div></div>
+<div class="faq-item"><button class="faq-question">Is there a file size limit?</button><div class="faq-answer">Files up to 100MB are supported. Very large files may take a few extra seconds to process.</div></div>
+<div class="faq-item"><button class="faq-question">Do I need to install anything?</button><div class="faq-answer">No. Everything runs in your browser — no apps, plugins, or extensions.</div></div>
+      </section>
+
+<section class="related-tools">
+  <h2>You Might Also Like</h2>
+  <div class="related-tools-grid">
+    <a href="/tools/compressor" class="related-tool-card">
+      <span class="tool-icon">🗜️</span>
+      <div class="tool-info">
+        <strong>Image Compressor</strong>
+        <span class="tool-desc">Single-image compression with preview</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/tools/converter" class="related-tool-card">
+      <span class="tool-icon">🔄</span>
+      <div class="tool-info">
+        <strong>Image Converter</strong>
+        <span class="tool-desc">Convert after compression</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/tools/resizer" class="related-tool-card">
+      <span class="tool-icon">📐</span>
+      <div class="tool-info">
+        <strong>Image Resizer</strong>
+        <span class="tool-desc">Resize to exact dimensions</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+  </div>
+</section>
+
+
+
+    </div>
+
+<div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
+</main>
+
+  <!-- Footer: exact match image-rotator compact format -->
+  <div class="ad-zone ad-footer ad-loader-slot" data-ad-type="footer"></div>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Free AI-powered image tools that respect your privacy.</p></div>
+        <div class="footer-links footer-links-multi"><h4>Tools</h4><a href="/tools/background-remover">Background Remover</a><a href="/tools/compressor">Compressor</a><a href="/tools/converter">Converter</a><a href="/tools/resizer">Resizer</a>
+          <a href="/tools/gif-editor">GIF Editor</a>
+          <a href="/tools/pdf-to-image">PDF to Image</a>
+        </div>
+        <div class="footer-links footer-links-multi"><h4>More Tools</h4>
+          <div class="footer-links-list">
+          <a href="/tools/cropper">Cropper</a><a href="/tools/watermark">Watermark</a><a href="/tools/image-merger">Image Merger</a><a href="/tools/screenshot-to-image">Screenshot to Image</a><a href="/tools/image-filters">Image Filters</a><a href="/tools/svg-to-png">SVG to PNG</a><a href="/tools/image-compare">Image Compare</a><a href="/tools/print-resizer">Print-Ready Resizer</a><a href="/tools/meme-generator">Meme Generator</a>          <a href="/tools/face-blur">Face Blur</a>
+          <a href="/tools/heic-converter">HEIC Converter</a>
+          <a href="/tools/metadata-viewer">Metadata Viewer</a>
+          <a href="/tools/avif-support">AVIF Support</a>
+          <a href="/tools/image-adjust">Image Adjustment</a>
+          <a href="/tools/image-border">Image Border</a>
+          <a href="/tools/image-flip">Image Flip</a>
+          <a href="/tools/image-grayscale">Image Grayscale</a>
+          <a href="/tools/image-shadow">Image Shadow</a>
+          <a href="/tools/image-splitter">Image Splitter</a>
+          <a href="/tools/image-exif-remover">EXIF Remover</a><a href="/tools/circle-crop">Circle Crop</a><a href="/tools/favicon-generator">Favicon Generator</a><a href="/tools/ocr">OCR Text</a><a href="/tools/bulk-processor">Bulk Processor</a><a href="/tools/image-to-pdf">Image to PDF</a>          <a href="/tools/id-photo">ID Photo Maker</a>
+          <a href="/tools/product-white-background">Product White BG</a>
+          <a href="/tools/social-media-post">Social Media Post</a>
+          <a href="/tools/photo-restoration">Photo Restoration</a><a href="/tools/image-enhancer">Image Enhancer</a>
+          </div>
+        </div>
+        <div class="footer-links"><h4>Legal</h4><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a><a href="/cookie-policy">Cookie Policy</a></div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved. | <a href="https://comprimefotos.com/" style="color: var(--accent); font-weight: 500;">Español: ComprimeFotos — Comprimir Imágenes Online</a></p></div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js?v=7"></script>
+  <script src="/js/browser-image-compression.min.js"></script>
+  <script src="/js/jszip.min.js"></script>
+  <script>
+const $ = id => document.getElementById(id);
+const fileInput = $('fileInput'), uploadArea = $('uploadArea'), workspace = $('workspace');
+const previewList = $('previewList'), compressBtn = $('compressBtn'), downloadAllBtn = $('downloadAllBtn');
+const addMoreBtn = $('addMoreBtn'), clearBtn = $('clearBtn');
+const progBar = $('progBar'), progFill = $('progFill'), statusText = $('statusText');
+const qualityRange = $('qualityRange'), qualityVal = $('qualityVal'), maxWidth = $('maxWidth'), outputFmt = $('outputFmt');
+
+let images = []; // { name, file, url, compressedUrl, compressedBlob, originalSize, compressedSize }
+
+qualityRange.addEventListener('input', () => { qualityVal.textContent = qualityRange.value; });
+
+// Upload
+uploadArea.addEventListener('click', () => fileInput.click());
+uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.style.borderColor = '#4f46e5'; });
+uploadArea.addEventListener('dragleave', () => { uploadArea.style.borderColor = '#d1d5db'; });
+uploadArea.addEventListener('drop', e => {
+  e.preventDefault(); uploadArea.style.borderColor = '#d1d5db';
+  addFiles(Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/')));
+});
+fileInput.addEventListener('change', () => { addFiles(Array.from(fileInput.files).filter(f => f.type.startsWith('image/'))); fileInput.value = ''; });
+
+function addFiles(arr) {
+  if (!arr.length) return;
+  images = images.concat(arr.map(f => ({ name: f.name, file: f, url: URL.createObjectURL(f), compressedUrl: null, compressedBlob: null, originalSize: f.size, compressedSize: 0 })));
+  uploadArea.style.display = 'none';
+  workspace.style.display = 'block';
+  renderList();
+}
+
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+}
+
+function renderList() {
+  previewList.innerHTML = '';
+  images.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'prev-item';
+    const hasCompressed = item.compressedUrl;
+    const pct = hasCompressed && item.originalSize > 0 ? Math.round((1 - item.compressedSize / item.originalSize) * 100) : 0;
+    const badge = hasCompressed ? (pct > 0 ? `<span class="badge badge-saved">-${pct}%</span>` : `<span class="badge badge-larger">+${Math.abs(pct)}%</span>`) : '';
+    const fmt = outputFmt.value === 'same' ? item.file.type : outputFmt.value;
+    const ext = fmt === 'image/png' ? '.png' : fmt === 'image/webp' ? '.webp' : '.jpg';
+    const outName = item.name.replace(/\.(jpg|jpeg|png|webp)$/i, '') + (hasCompressed ? ext : '');
+
+    div.innerHTML = `
+      <img class="thumb" src="${item.url}">
+      <div class="info">
+        <p><strong>${item.name}</strong> ${badge}</p>
+        <p>Original: ${formatSize(item.originalSize)}</p>
+        ${hasCompressed ? `<p>Compressed: ${formatSize(item.compressedSize)}</p>` : '<p>Not compressed yet</p>'}
+      </div>
+      ${hasCompressed ? `<a href="${item.compressedUrl}" download="${outName}" class="btn btn-secondary" style="padding:4px 10px;font-size:0.8rem;align-self:center">Download</a>` : ''}
+      <button title="Remove" style="align-self:flex-start">✕</button>`;
+    div.querySelector('button').addEventListener('click', e => { e.stopPropagation(); URL.revokeObjectURL(item.url); if (item.compressedUrl) URL.revokeObjectURL(item.compressedUrl); images.splice(i, 1); renderList(); });
+    previewList.appendChild(div);
+  });
+  downloadAllBtn.style.display = images.some(i => i.compressedUrl) && images.filter(i => i.compressedUrl).length > 1 ? 'inline-block' : 'none';
+}
+
+addMoreBtn.addEventListener('click', () => fileInput.click());
+
+compressBtn.addEventListener('click', async () => {
+  if (!images.length) return;
+  compressBtn.disabled = true;
+  progBar.style.display = 'block';
+
+  const quality = parseInt(qualityRange.value) / 100;
+  const maxW = parseInt(maxWidth.value) || undefined;
+
+  for (let i = 0; i < images.length; i++) {
+    if (images[i].compressedUrl) { // already compressed
+      progFill.style.width = (((i + 1) / images.length) * 100) + '%';
+      continue;
+    }
+    statusText.textContent = `Compressing ${i+1}/${images.length}: ${images[i].name}...`;
+    progFill.style.width = ((i / images.length) * 100) + '%';
+
+    try {
+      const options = {
+        maxSizeMB: Infinity, // we control via quality
+        initialQuality: quality,
+        useWebWorker: true,
+        onProgress: p => { progFill.style.width = ((i + p) / images.length * 100) + '%'; }
+      };
+      if (maxW) options.maxWidthOrHeight = maxW;
+
+      // browser-image-compression expects a File object
+      let fileToCompress = images[i].file;
+      // If output format differs, we need to re-encode — the library handles this via `fileType` option
+      if (outputFmt.value !== 'same') options.fileType = outputFmt.value;
+
+      const compressedFile = await imageCompression(fileToCompress, options);
+      images[i].compressedBlob = compressedFile;
+      images[i].compressedSize = compressedFile.size;
+      images[i].compressedUrl = URL.createObjectURL(compressedFile);
+    } catch (err) {
+      statusText.textContent = `Error compressing ${images[i].name}: ${err.message}`;
+
+    }
+  }
+
+  progFill.style.width = '100%';
+  const totalOriginal = images.reduce((s, i) => s + i.originalSize, 0);
+  const totalCompressed = images.filter(i => i.compressedUrl).reduce((s, i) => s + i.compressedSize, 0);
+  statusText.textContent = `Done! Total saved: ${formatSize(totalOriginal)} → ${formatSize(totalCompressed)}`;
+  setTimeout(() => { progBar.style.display = 'none'; statusText.textContent = ''; }, 4000);
+  compressBtn.disabled = false;
+  renderList();
+});
+
+downloadAllBtn.addEventListener('click', async () => {
+  const zip = new JSZip();
+  images.forEach(item => {
+    if (item.compressedBlob) {
+      fmt = outputFmt.value === 'same' ? item.file.type : outputFmt.value;
+      ext = fmt === 'image/png' ? '.png' : fmt === 'image/webp' ? '.webp' : '.jpg';
+      outName = item.name.replace(/\.(jpg|jpeg|png|webp)$/i, '') + ext;
+      zip.file(outName, item.compressedBlob);
+    }
+  });
+  statusText.textContent = 'Creating ZIP...';
+  const blob = await zip.generateAsync({ type: 'blob' });
+  SmartImgKit._triggerDownload(blob, 'compressed-images.zip'); setTimeout(() => { statusText.textContent = ''; }, 2000);
+});
+
+clearBtn.addEventListener('click', () => {
+  images.forEach(f => { URL.revokeObjectURL(f.url); if (f.compressedUrl) URL.revokeObjectURL(f.compressedUrl); });
+  images = [];
+  previewList.innerHTML = '';
+  workspace.style.display = 'none'; uploadArea.style.display = 'block';
+  progBar.style.display = 'none'; statusText.textContent = '';
+});
+  </script>
+  <script src="/js/lang.js"></script>
+<script src="/js/ad-loader.js?v=4"></script>
+<script src="/js/result-modal.js"></script>
+
+<!-- Result Modal Hook -->
+<script>
+(function(){
+  function tryHook(){
+    if (typeof openResultModal !== 'function') return;
+
+    // Helper: get result blob from page scope
+    function getResultBlob(){
+      try { if (typeof resultBlob !== 'undefined' && resultBlob) return resultBlob; } catch(e){}
+      try { if (typeof convertedBlob !== 'undefined' && convertedBlob) return convertedBlob; } catch(e){}
+      try { if (typeof outputBlob !== 'undefined' && outputBlob) return outputBlob; } catch(e){}
+      try { if (typeof processedBlob !== 'undefined' && processedBlob) return processedBlob; } catch(e){}
+      try { if (typeof blob !== 'undefined' && blob && !(blob instanceof File)) return blob; } catch(e){}
+      return null;
+    }
+    function getOriginalFile(){
+      try { if (typeof currentFile !== 'undefined' && currentFile) return currentFile; } catch(e){}
+      try { if (typeof originalFile !== 'undefined' && originalFile) return originalFile; } catch(e){}
+      try { if (typeof origFile !== 'undefined' && origFile) return origFile; } catch(e){}
+      try { if (typeof originalImg !== 'undefined' && originalImg && originalImg instanceof File) return originalImg; } catch(e){}
+      return null;
+    }
+    function fmtSize(n){
+      if (!n) return '0 B';
+      if (n < 1024) return Math.round(n) + ' B';
+      if (n < 1024*1024) return (n/1024).toFixed(n<10240?1:0) + ' KB';
+      return (n/1024/1024).toFixed(2) + ' MB';
+    }
+    function getFileName(origFile, resultBlob){
+      if (origFile && origFile.name) {
+        var parts = origFile.name.split('.');
+        var base = parts.slice(0,-1).join('.') || origFile.name;
+        var ext = parts.length>1 ? parts.pop() : 'png';
+        return base + '-optimized.' + ext;
+      }
+      return 'optimized-image.png';
+    }
+
+    // Hook single download buttons
+    var dlBtns = document.querySelectorAll('#downloadBtn, .btn-primary[id*="download"], button[id*="download"], a.btn[id*="download"], .download-btn, button[onclick*="download"], a[onclick*="download"]');
+    dlBtns.forEach(function(btn){
+      if (btn.getAttribute('data-rm-hooked')) return;
+      btn.setAttribute('data-rm-hooked','1');
+      btn.addEventListener('click', function(){
+        var rb = getResultBlob();
+        if (!rb) return;
+        var of = getOriginalFile();
+        var origSize = of ? (of.size || 0) : 0;
+        var optSize = rb.size || 0;
+        var saveRate = '0%';
+        if (origSize > 0 && optSize > 0) {
+          var s = Math.round((1 - optSize/origSize)*1000)/10;
+          saveRate = (s > 0 ? s : 0) + '%';
+        }
+        openResultModal({
+          origSize: fmtSize(origSize),
+          optSize: fmtSize(optSize),
+          saveRate: saveRate,
+          originalBlob: of,
+          resultBlob: rb,
+          fileName: getFileName(of, rb)
+        });
+      });
+    });
+
+    // Hook batch download-all buttons
+    var dlAllBtns = document.querySelectorAll('#downloadAllBtn, #downloadAll, button[id*="downloadAll"], a[id*="downloadAll"]');
+    dlAllBtns.forEach(function(btn){
+      if (btn.getAttribute('data-rm-hooked')) return;
+      btn.setAttribute('data-rm-hooked','1');
+      btn.addEventListener('click', function(){
+        // For batch tools, open modal with first result if single file
+        var filesArr = null;
+        try { if (typeof files !== 'undefined' && files) filesArr = files; } catch(e){}
+        if (!filesArr) {
+          try { if (typeof window.files !== 'undefined') filesArr = window.files; } catch(e){}
+        }
+        if (!filesArr) {
+          try {
+            var list = document.querySelectorAll('.file-item');
+            if (list && list.length === 1) {
+              var rb = getResultBlob();
+              var of = getOriginalFile();
+              if (rb && of) {
+                var origSize2 = of.size || 0;
+                var optSize2 = rb.size || 0;
+                var sr2 = '0%';
+                if (origSize2 > 0 && optSize2 > 0) {
+                  var ss = Math.round((1 - optSize2/origSize2)*1000)/10;
+                  sr2 = (ss > 0 ? ss : 0) + '%';
+                }
+                openResultModal({
+                  origSize: fmtSize(origSize2),
+                  optSize: fmtSize(optSize2),
+                  saveRate: sr2,
+                  originalBlob: of,
+                  resultBlob: rb,
+                  fileName: getFileName(of, rb)
+                });
+              }
+              return;
+            }
+          } catch(e){}
+        }
+        if (filesArr && filesArr.length === 1 && filesArr[0].resultBlob) {
+          var rb = filesArr[0].resultBlob;
+          var of = filesArr[0].file;
+          var origSize2 = of ? (of.size || 0) : 0;
+          var optSize2 = rb.size || 0;
+          var sr2 = '0%';
+          if (origSize2 > 0 && optSize2 > 0) {
+            var ss = Math.round((1 - optSize2/origSize2)*1000)/10;
+            sr2 = (ss > 0 ? ss : 0) + '%';
+          }
+          openResultModal({
+            origSize: fmtSize(origSize2),
+            optSize: fmtSize(optSize2),
+            saveRate: sr2,
+            originalBlob: of,
+            resultBlob: rb,
+            fileName: getFileName(of, rb)
+          });
+        }
+        // For multi-file batch, skip modal (ZIP download is the primary action)
+      });
+    });
+  }
+
+  if (document.readyState !== 'loading') { tryHook(); setTimeout(tryHook, 1500); setTimeout(tryHook, 3500); }
+  else { document.addEventListener('DOMContentLoaded', function(){ tryHook(); setTimeout(tryHook, 1500); setTimeout(tryHook, 3500); }); }
+})();
+</script>
+
+
+<!-- Viral Share Button -->
+<button onclick="shareOurTool()" style="position:fixed;bottom:20px;right:20px;background:#0ea5e9;color:white;border:none;border-radius:50%;width:60px;height:60px;font-size:24px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.2);z-index:999;" title="Share this free tool">💛</button>
+<script>
+function shareOurTool() {
+  const pageName = document.title.split("—")[0].trim();
+  const url = window.location.href;
+  const text = `I just used this free 100% browser-based ${pageName} — no upload, no watermark, no signup! Try it: ${url}`;
+  if (navigator.share) { navigator.share({text: text}); }
+  else { navigator.clipboard.writeText(text); alert("✅ Share text copied! Post it online to help others!"); }
+}
+</script>
+<button onclick="shareOurTool(event)" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;">💛 Share Free Tool</button>
+<script>
+function shareOurTool(e) {
+  e.stopPropagation();
+  const toolName = document.title.split("—")[0].trim();
+  const url = window.location.href;
+  const text = `I just used this FREE ${toolName} in my browser — no upload, no watermark, no signup! Saved me $29.99 on Photoshop. Try it: ${url}`;
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  window.open(twitterUrl, '_blank', 'width=550,height=420');
+}
+</script>
+<button onclick="shareOurTool()" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;">💛 Share Free Tool</button>
+<script>
+function shareOurTool() {
+  const toolName = document.title.split("—")[0].trim();
+  const url = window.location.href;
+  const text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  window.open(twitterUrl, '_blank', 'width=550,height=420');
+}
+</script>
+<button onclick="shareOurTool()" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;" id="shareBtn">💛 Share Free Tool</button>
+<script>
+function shareOurTool() {
+  const lang = document.documentElement.lang || 'en';
+  const toolName = document.title.split("—")[0].trim();
+  const url = window.location.href;
+  let text, btnText;
+  if (lang.startsWith('zh')) {
+    btnText = '💛 分享免费工具';
+    text = `我刚在浏览器里用这个免费${toolName}，不用上传、无水印、不用注册！帮我省了Photoshop的钱，推荐你试试：${url}`;
+  } else if (lang.startsWith('es')) {
+    btnText = '💛 Compartir Herramienta Gratis';
+    text = `Acabo de usar este ${toolName} GRATIS directamente en mi navegador — sin subir archivos, sin marca de agua, sin registro! Me ahorró dinero de Photoshop. Pruébalo: ${url}`;
+  } else {
+    btnText = '💛 Share Free Tool';
+    text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
+  }
+  document.getElementById('shareBtn').innerText = btnText;
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  window.open(twitterUrl, '_blank', 'width=550,height=420');
+}
+</script>
+<button onclick="shareOurTool()" style="position:fixed;bottom:32px;right:20px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:50%;width:48px;height:48px;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(245,158,11,0.4);z-index:999;" id="shareBtn" title="Share this free tool">💛</button>
+<script>
+function shareOurTool() {
+  const lang = document.documentElement.lang || 'en';
+  const toolName = document.title.split("—")[0].trim();
+  const url = window.location.href;
+  let text;
+  if (lang.startsWith('zh')) {
+    text = `我刚在浏览器里用这个免费${toolName}，不用上传、无水印、不用注册！帮我省了Photoshop的钱，推荐你试试：${url}`;
+  } else if (lang.startsWith('es')) {
+    text = `Acabo de usar este ${toolName} GRATIS directamente en mi navegador — sin subir archivos, sin marca de agua, sin registro! Me ahorró dinero de Photoshop. Pruébalo: ${url}`;
+  } else {
+    text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
+  }
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  window.open(twitterUrl, '_blank', 'width=550,height=420');
+}
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
