@@ -1,0 +1,324 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Free Image to SVG Converter — Bitmap to Vector Online | SmartImgKit</title>
+  <meta name="description" string="true">Convert PNG/JPG to SVG vector online free. 100% in your browser, no upload. Perfect for logos, line art, and print-on-demand designs.">
+  <meta name="keywords" string="true">image to svg, png to svg, bitmap to vector, vectorizer online free, potrace javascript, convert logo to vector</title>
+  <link rel="canonical" href="https://smartimgkit.com/tools/image-to-svg">
+  <meta name="theme-color" content="#0d9488">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css?v=10">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@tajmone/potrace@2.1.8/build/potrace.umd.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Image to SVG Converter",
+    "url": "https://smartimgkit.com/tools/image-to-svg",
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "description": "Convert bitmap images (PNG/JPG) to SVG vector format. 100% browser-based, free, no upload."
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is Image to SVG converter?",
+        "acceptedAnswer": { "@type": "Answer", "text": "It converts pixel-based bitmap images (PNG/JPG) into infinitely scalable vector SVG format, perfect for logos and print." }
+      },
+      {
+        "@type": "Question",
+        "name": "Is this really free?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Vector Magic costs $0.20 per image. This tool is 100% free, no signup, no watermark, unlimited exports." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does my image get uploaded?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. All conversion happens locally in your browser using Potrace WASM. Your images never leave your device." }
+      },
+      {
+        "@type": "Question",
+        "name": "What images work best?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Logos, line art, icons, and simple illustrations work best. Photographs will produce large, complex SVGs." }
+      },
+      {
+        "@type": "Question",
+        "name": "What can I do with the SVG?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Scale infinitely without quality loss, edit in Illustrator/Figma, use for print-on-demand (t-shirts, mugs), or laser cutting." }
+      }
+    ]
+  }
+  </script>
+  <style>
+    .tool-container{max-width:900px;margin:2rem auto;padding:0 1rem}
+    .upload-zone{border:2px dashed var(--border);border-radius:16px;padding:3rem 2rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--surface)}
+    .upload-zone:hover{border-color:var(--primary)}
+    .preview-wrap{margin:1.5rem 0;text-align:center;background:repeating-conic-gradient(#e5e5e5 0% 25%, #fff 0% 50%) 50% / 20px 20px;border-radius:12px;padding:1rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+    .preview-col{text-align:center}
+    .preview-col h3{font-size:.9rem;margin-bottom:.5rem;color:var(--text-secondary)}
+    .preview-col img, .preview-col svg{max-width:100%;max-height:400px}
+    .controls{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:1.5rem 0}
+    .control{padding:16px;background:var(--surface);border-radius:10px;border:1px solid var(--border)}
+    .control label{display:block;font-size:.85rem;font-weight:600;margin-bottom:8px;color:var(--text-secondary)}
+    .control input[type=range]{width:100%}
+    .control .val{float:right;color:var(--primary);font-weight:600}
+    .btn{padding:12px 24px;border-radius:10px;border:none;font-size:15px;font-weight:600;cursor:pointer}
+    .btn-primary{background:var(--primary);color:#fff}
+    .btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+    .btn-group{display:flex;gap:12px;justify-content:center;margin:1.5rem 0;flex-wrap:wrap}
+    .faq{max-width:800px;margin:3rem auto;padding:0 1rem}
+    .faq-item{border:1px solid var(--border);border-radius:10px;margin-bottom:8px;overflow:hidden}
+    .faq-question{width:100%;padding:16px;background:var(--surface);border:none;text-align:left;font-size:15px;font-weight:600;cursor:pointer;color:var(--text)}
+    .faq-answer{padding:0 16px;max-height:0;overflow:hidden;transition:max-height .3s;color:var(--text-secondary);line-height:1.6}
+    .faq-item.open .faq-answer{max-height:300px;padding:16px}
+    @media (max-width:600px){.controls{grid-template-columns:1fr}.preview-wrap{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <a href="/" class="logo">SmartImgKit</a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/#tools">Tools</a>
+        <a href="/blog/">Blog</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="tool-container">
+    <h1 style="text-align:center;margin-bottom:.5rem">Image to SVG Converter</h1>
+    <p style="text-align:center;color:var(--text-secondary);margin-bottom:2rem">Convert PNG/JPG to infinitely scalable SVG. Free, no upload, perfect for logos and POD.</p>
+
+    <div class="upload-zone" id="dropZone">
+      <div style="font-size:3rem;margin-bottom:1rem">✒️</div>
+      <p><strong>Upload your image</strong> or drag & drop</p>
+      <p style="font-size:.85rem;color:var(--text-secondary)">Logos and line art work best</p>
+      <input type="file" id="fileInput" accept="image/png,image/jpeg" hidden>
+    </div>
+
+    <div class="preview-wrap" id="previewWrap" style="display:none">
+      <div class="preview-col">
+        <h3>Original Bitmap</h3>
+        <img id="originalImg" alt="Original">
+      </div>
+      <div class="preview-col">
+        <h3>SVG Vector</h3>
+        <div id="svgPreview"></div>
+      </div>
+    </div>
+
+    <div class="controls" id="controls" style="display:none">
+      <div class="control">
+        <label>Detail Level <span class="val" id="optVal">128</span></label>
+        <input type="range" id="optSlider" min="32" max="256" value="128">
+      </div>
+      <div class="control">
+        <label>Threshold <span class="val" id="thresholdVal">128</span></label>
+        <input type="range" id="thresholdSlider" min="0" max="255" value="128">
+      </div>
+    </div>
+
+    <div class="btn-group" id="btnGroup" style="display:none">
+      <button class="btn btn-primary" onclick="downloadSvg()">⬇️ Download SVG</button>
+      <button class="btn btn-secondary" onclick="resetAll()">🔄 New Image</button>
+    </div>
+
+    <section class="faq">
+      <h2 style="margin-bottom:1rem">Frequently Asked Questions</h2>
+      <div class="faq-item"><button class="faq-question">What is Image to SVG converter?</button><div class="faq-answer"><p>It converts pixel-based bitmap images (PNG/JPG) into infinitely scalable vector SVG format, perfect for logos and print.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Is this really free?</button><div class="faq-answer"><p>Yes. Vector Magic costs $0.20 per image. This tool is 100% free, no signup, no watermark, unlimited exports.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Does my image get uploaded?</button><div class="faq-answer"><p>No. All conversion happens locally in your browser using Potrace WASM. Your images never leave your device.</p></div></div>
+      <div class="faq-item"><button class="faq-question">What images work best?</button><div class="faq-answer"><p>Logos, line art, icons, and simple illustrations work best. Photographs will produce large, complex SVGs.</p></div></div>
+      <div class="faq-item"><button class="faq-question">What can I do with the SVG?</button><div class="faq-answer"><p>Scale infinitely without quality loss, edit in Illustrator/Figma, use for print-on-demand (t-shirts, mugs), or laser cutting.</p></div></div>
+    </section>
+  </main>
+
+  <script>
+  (function(){
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const previewWrap = document.getElementById('previewWrap');
+    const controls = document.getElementById('controls');
+    const btnGroup = document.getElementById('btnGroup');
+    const originalImg = document.getElementById('originalImg');
+    const svgPreview = document.getElementById('svgPreview');
+    const optSlider = document.getElementById('optSlider');
+    const thresholdSlider = document.getElementById('thresholdSlider');
+
+    let img = null;
+    let currentSvg = '';
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.borderColor = 'var(--primary)'; });
+    dropZone.addEventListener('dragleave', () => dropZone.style.borderColor = '');
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault(); dropZone.style.borderColor = '';
+      if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
+
+    optSlider.addEventListener('input', render);
+    thresholdSlider.addEventListener('input', render);
+
+    function handleFile(file) {
+      img = new Image();
+      img.onload = () => {
+        originalImg.src = URL.createObjectURL(img);
+        previewWrap.style.display = 'grid';
+        controls.style.display = 'grid';
+        btnGroup.style.display = 'flex';
+        render();
+      };
+      img.src = URL.createObjectURL(file);
+    }
+
+    function render() {
+      if (!img) return;
+      document.getElementById('optVal').textContent = optSlider.value;
+      document.getElementById('thresholdVal').textContent = thresholdSlider.value;
+
+      // Create canvas to get image data
+      const canvas = document.createElement('canvas');
+      const maxSize = 500;
+      const scale = Math.min(maxSize / img.width, maxSize / img.height);
+      canvas.width = img.width * scale;
+      canvas.height = img.height * scale;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      // Use Potrace
+      const params = {
+        turdSize: +optSlider.value,
+        threshold: +thresholdSlider.value
+      };
+      try {
+        const potrace = new Potrace(params);
+        potrace.loadImageFromCanvas(canvas);
+        potrace.process();
+        currentSvg = potrace.getSVG();
+        svgPreview.innerHTML = currentSvg;
+        // Set SVG background to white for visibility
+        const svgEl = svgPreview.querySelector('svg');
+        if (svgEl) {
+          svgEl.style.background = '#ffffff';
+          svgEl.style.maxWidth = '100%';
+        }
+      } catch (e) {
+        svgPreview.innerHTML = '<p style="color:red">Error: ' + e.message + '</p>';
+      }
+    }
+
+    window.downloadSvg = function() {
+      if (!currentSvg) return;
+      const blob = new Blob([currentSvg], { type: 'image/svg+xml' });
+      const a = document.createElement('a');
+      a.download = 'vector.svg';
+      a.href = URL.createObjectURL(blob);
+      a.click();
+    };
+
+    window.resetAll = function() {
+      img = null;
+      currentSvg = '';
+      previewWrap.style.display = 'none';
+      controls.style.display = 'none';
+      btnGroup.style.display = 'none';
+      fileInput.value = '';
+    };
+
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => btn.parentElement.classList.toggle('open'));
+    });
+  })();
+  </script>
+<!-- Viral Share Button -->
+<button onclick="shareOurTool()" style="position:fixed;bottom:20px;right:20px;background:#0ea5e9;color:white;border:none;border-radius:50%;width:60px;height:60px;font-size:24px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.2);z-index:999;" title="Share this free tool">💛</button>
+<script>
+function shareOurTool() {
+  const pageName = document.title.split("—")[0].trim();
+  const url = window.location.href;
+  const text = `I just used this free 100% browser-based ${pageName} — no upload, no watermark, no signup! Try it: ${url}`;
+  if (navigator.share) { navigator.share({text: text}); }
+  else { navigator.clipboard.writeText(text); alert("✅ Share text copied! Post it online to help others!"); }
+}
+</script>
+<button onclick="shareOurTool(event)" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;">💛 Share Free Tool</button>
+<script>
+function shareOurTool(e) {
+  e.stopPropagation();
+  const toolName = document.title.split("—")[0].trim();
+  const url = window.location.href;
+  const text = `I just used this FREE ${toolName} in my browser — no upload, no watermark, no signup! Saved me $29.99 on Photoshop. Try it: ${url}`;
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  window.open(twitterUrl, '_blank', 'width=550,height=420');
+}
+</script>
+<button onclick="shareOurTool()" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;">💛 Share Free Tool</button>
+<script>
+function shareOurTool() {
+  const toolName = document.title.split("—")[0].trim();
+  const url = window.location.href;
+  const text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  window.open(twitterUrl, '_blank', 'width=550,height=420');
+}
+</script>
+<button onclick="shareOurTool()" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;" id="shareBtn">💛 Share Free Tool</button>
+<script>
+function shareOurTool() {
+  const lang = document.documentElement.lang || 'en';
+  const toolName = document.title.split("—")[0].trim();
+  const url = window.location.href;
+  let text, btnText;
+  if (lang.startsWith('zh')) {
+    btnText = '💛 分享免费工具';
+    text = `我刚在浏览器里用这个免费${toolName}，不用上传、无水印、不用注册！帮我省了Photoshop的钱，推荐你试试：${url}`;
+  } else if (lang.startsWith('es')) {
+    btnText = '💛 Compartir Herramienta Gratis';
+    text = `Acabo de usar este ${toolName} GRATIS directamente en mi navegador — sin subir archivos, sin marca de agua, sin registro! Me ahorró dinero de Photoshop. Pruébalo: ${url}`;
+  } else {
+    btnText = '💛 Share Free Tool';
+    text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
+  }
+  document.getElementById('shareBtn').innerText = btnText;
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  window.open(twitterUrl, '_blank', 'width=550,height=420');
+}
+</script>
+<button onclick="shareOurTool()" style="position:fixed;bottom:32px;right:20px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:50%;width:48px;height:48px;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(245,158,11,0.4);z-index:999;" id="shareBtn" title="Share this free tool">💛</button>
+<script>
+function shareOurTool() {
+  const lang = document.documentElement.lang || 'en';
+  const toolName = document.title.split("—")[0].trim();
+  const url = window.location.href;
+  let text;
+  if (lang.startsWith('zh')) {
+    text = `我刚在浏览器里用这个免费${toolName}，不用上传、无水印、不用注册！帮我省了Photoshop的钱，推荐你试试：${url}`;
+  } else if (lang.startsWith('es')) {
+    text = `Acabo de usar este ${toolName} GRATIS directamente en mi navegador — sin subir archivos, sin marca de agua, sin registro! Me ahorró dinero de Photoshop. Pruébalo: ${url}`;
+  } else {
+    text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
+  }
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  window.open(twitterUrl, '_blank', 'width=550,height=420');
+}
+</script>
+</body>
+</html>
+
+
+
+
+
+
+

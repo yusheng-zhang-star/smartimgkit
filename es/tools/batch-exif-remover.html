@@ -1,0 +1,619 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-tool-id="batch-exif-remover">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Batch EXIF Remover — Remove Metadata from Multiple Images | SmartImgKit</title>
+  <meta name="description" content="Remove EXIF metadata from multiple images at once. Batch strip GPS location, camera info, and hidden data. Preserve original format. Free, private, browser-based.">
+  <meta name="keywords" content="batch exif remover, remove metadata multiple images, bulk exif remover, strip gps batch, photo privacy batch, exif remover bulk">
+  <link rel="canonical" href="https://smartimgkit.com/tools/batch-exif-remover">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="Batch EXIF Remover — Strip Metadata from Multiple Photos">
+  <meta property="og:description" content="Remove EXIF and GPS data from multiple images at once. Preserve original format. 100% free and private.">
+  <meta property="og:url" content="https://smartimgkit.com/tools/batch-exif-remover">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <meta property="og:image" content="https://smartimgkit.com/screenshots/home.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Batch EXIF Remover — SmartImgKit">
+  <meta name="twitter:description" content="Remove EXIF metadata from multiple images at once. Free, private, browser-based.">
+  <meta name="twitter:image" content="https://smartimgkit.com/screenshots/home.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/batch-exif-remover">
+  <link rel="stylesheet" href="/css/style.css?v=10">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Batch EXIF Remover",
+  "url": "https://smartimgkit.com/tools/batch-exif-remover",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Remove EXIF metadata from multiple images at once. Preserve original format."
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Batch Remove EXIF Metadata",
+  "step": [
+    {"@type": "HowToStep", "position": 1, "name": "Upload Images", "text": "Drag and drop or select multiple images."},
+    {"@type": "HowToStep", "position": 2, "name": "Remove EXIF", "text": "Click Process All to strip metadata from all images."},
+    {"@type": "HowToStep", "position": 3, "name": "Download", "text": "Download individual clean images or get them all as a ZIP."}
+  ]
+}
+  </script>
+  <style>
+    .batch-container { display: flex; flex-direction: column; gap: 16px; }
+    .batch-dropzone { border: 2px dashed var(--border); border-radius: 12px; padding: 40px; text-align: center; cursor: pointer; transition: all .2s; background: var(--bg-secondary); }
+    .batch-dropzone:hover, .batch-dropzone.drag { border-color: var(--accent); background: rgba(99,102,241,0.05); }
+    .batch-dropzone .icon { font-size: 3rem; margin-bottom: 12px; }
+    .batch-dropzone h3 { color: var(--text-primary); margin-bottom: 8px; }
+    .batch-dropzone p { color: var(--text-secondary); font-size: 0.9rem; }
+    .batch-dropzone .formats { font-size: 0.75rem; color: var(--text-muted); margin-top: 8px; }
+    .batch-toolbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding: 14px 18px; background: var(--bg-secondary); border-radius: 12px; border: 1px solid var(--border); }
+    .batch-stats { display: flex; gap: 20px; }
+    .batch-stat { text-align: center; }
+    .batch-stat .value { font-size: 1.3rem; font-weight: 800; color: var(--accent); }
+    .batch-stat .label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+    .batch-actions { display: flex; gap: 10px; }
+    .batch-btn { padding: 10px 20px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: none; transition: all .2s; display: flex; align-items: center; gap: 6px; }
+    .batch-btn.primary { background: var(--accent); color: white; }
+    .batch-btn.primary:hover { opacity: 0.9; }
+    .batch-btn.secondary { background: var(--bg-primary); color: var(--text-primary); border: 1px solid var(--border); }
+    .batch-btn.secondary:hover { border-color: var(--accent); }
+    .batch-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .batch-list { display: flex; flex-direction: column; gap: 8px; max-height: 400px; overflow-y: auto; padding-right: 4px; }
+    .batch-item { display: flex; align-items: center; gap: 14px; padding: 12px 16px; background: var(--bg-secondary); border-radius: 10px; border: 1px solid var(--border); transition: all .2s; }
+    .batch-item:hover { border-color: var(--accent); }
+    .batch-item.processing { border-color: #f59e0b; background: rgba(245,158,11,0.05); }
+    .batch-item.done { border-color: #22c55e; background: rgba(34,197,94,0.05); }
+    .batch-item.error { border-color: #ef4444; background: rgba(239,68,68,0.05); }
+    .batch-thumb { width: 48px; height: 48px; border-radius: 6px; object-fit: cover; flex-shrink: 0; }
+    .batch-info { flex: 1; min-width: 0; }
+    .batch-name { font-size: 0.85rem; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .batch-meta { font-size: 0.72rem; color: var(--text-secondary); margin-top: 2px; }
+    .batch-status { font-size: 0.75rem; font-weight: 600; flex-shrink: 0; }
+    .batch-status.pending { color: var(--text-muted); }
+    .batch-status.processing { color: #f59e0b; }
+    .batch-status.done { color: #22c55e; }
+    .batch-status.error { color: #ef4444; }
+    .batch-download { padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; border: none; background: var(--accent); color: white; flex-shrink: 0; }
+    .batch-download:disabled { opacity: 0.3; cursor: not-allowed; }
+    .batch-remove { padding: 6px 10px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; border: none; background: transparent; color: var(--text-muted); flex-shrink: 0; }
+    .batch-remove:hover { color: #ef4444; }
+    .progress-bar { width: 100%; height: 6px; background: var(--bg-primary); border-radius: 3px; overflow: hidden; margin-top: 8px; }
+    .progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width .3s; width: 0%; }
+    .selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
+    .sp-item{display:flex;align-items:center;gap:8px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:999px;padding:8px 16px;font-size:0.85rem;color:var(--text-secondary);font-weight:500}
+    .sp-item span.sp-icon{font-size:1rem}
+    .feature-narrative{margin:2.5rem 0;padding:0 1rem}
+    .feature-narrative h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+    .feature-narrative .fn-intro{text-align:center;max-width:680px;margin:0 auto 2rem;color:var(--text-secondary);font-size:1rem;line-height:1.6}
+    .fn-block{display:flex;gap:1.5rem;align-items:flex-start;margin:1.5rem 0;padding:1.25rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+    .fn-block .fn-icon{font-size:2rem;flex-shrink:0;line-height:1}
+    .fn-block h3{font-size:1.05rem;color:var(--text-primary);margin:0 0 0.4rem}
+    .fn-block p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin:0}
+    @media(max-width:640px){.fn-block{flex-direction:column}.batch-toolbar{flex-direction:column;align-items:stretch}.batch-stats{justify-content:space-around}}
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "Does batch EXIF removal reduce image quality?", "acceptedAnswer": {"@type": "Answer", "text": "No. We use canvas re-encoding which preserves visual quality. For JPEGs, you can choose quality level. The output keeps your original format."}},
+    {"@type": "Question", "name": "How many images can I process at once?", "acceptedAnswer": {"@type": "Answer", "text": "There's no hard limit, but for best performance we recommend up to 50 images per batch. Larger batches may take longer."}},
+    {"@type": "Question", "name": "Are my photos uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. All processing happens locally in your browser. Your photos never leave your device."}},
+    {"@type": "Question", "name": "What metadata is removed?", "acceptedAnswer": {"@type": "Answer", "text": "All EXIF data including GPS coordinates, camera model, lens info, shutter speed, aperture, ISO, date/time, and software information."}}
+  ]
+}
+  </script>
+<style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+<meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/">Home</a><a href="/#tools">Tools</a><a href="/blog/">Blog</a><a href="/about">About</a><a href="/contact">Contact</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Switch language">🇬🇧 EN</button>
+          <div class="lang-dropdown" style="position:absolute;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+            <a href="/fr/" hreflang="fr" lang="fr">🇫🇷 Français</a>
+            <a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a>
+            <a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a>
+          </div>
+        </div>
+        <button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+  <div class="ad-zone ad-header ad-loader-slot" data-ad-type="header" data-current-mobile="0"></div>
+
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/">Tools</a><span>/</span><span>📦 Batch EXIF Remover</span></nav>
+      <div class="tool-page-header">
+        <h1>📦 Batch EXIF Remover</h1>
+        <p>Strip EXIF metadata from multiple images at once. Remove GPS location, camera info, and hidden data — preserve original format. 100% private, in your browser.</p>
+      </div>
+
+      <div class="selling-points">
+        <div class="sp-item"><span class="sp-icon">📦</span>Batch process multiple images</div>
+        <div class="sp-item"><span class="sp-icon">🎯</span>Preserve original format</div>
+        <div class="sp-item"><span class="sp-icon">📍</span>Remove GPS location</div>
+        <div class="sp-item"><span class="sp-icon">🔒</span>100% private — no upload</div>
+        <div class="sp-item"><span class="sp-icon">🗜️</span>Download as ZIP</div>
+      </div>
+
+      <div class="tool-workspace">
+        <div class="batch-container">
+          <!-- Dropzone -->
+          <div class="batch-dropzone" id="dropzone">
+            <div class="icon">📸</div>
+            <h3>Drop images here or click to browse</h3>
+            <p>Select multiple images to remove EXIF metadata in batch</p>
+            <div class="formats">JPG, PNG, WebP — Multiple files OK</div>
+            <input type="file" id="fileInput" accept="image/*" multiple style="display:none">
+          </div>
+
+          <!-- Toolbar (hidden until files added) -->
+          <div class="batch-toolbar" id="toolbar" style="display:none;">
+            <div class="batch-stats">
+              <div class="batch-stat"><div class="value" id="totalCount">0</div><div class="label">Total</div></div>
+              <div class="batch-stat"><div class="value" id="doneCount">0</div><div class="label">Done</div></div>
+              <div class="batch-stat"><div class="value" id="pendingCount">0</div><div class="label">Pending</div></div>
+            </div>
+            <div class="batch-actions">
+              <button class="batch-btn primary" id="processAllBtn">🗑️ Process All</button>
+              <button class="batch-btn secondary" id="downloadZipBtn" disabled>🗜️ Download ZIP</button>
+              <button class="batch-btn secondary" id="clearBtn">🗑️ Clear</button>
+            </div>
+          </div>
+
+          <!-- Progress -->
+          <div id="progressContainer" style="display:none;">
+            <div style="display:flex;justify-content:space-between;font-size:0.8rem;color:var(--text-secondary);margin-bottom:4px;">
+              <span id="progressText">Processing...</span>
+              <span id="progressPercent">0%</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+          </div>
+
+          <!-- File List -->
+          <div class="batch-list" id="fileList"></div>
+        </div>
+      </div>
+
+      <!-- Feature Narrative -->
+      <div class="feature-narrative">
+        <h2>Protect Your Privacy in Bulk</h2>
+        <p class="fn-intro">Sharing photos online? Don't expose your location, camera details, and personal data. Batch EXIF Remover strips metadata from dozens of images in seconds.</p>
+
+        <div class="fn-block">
+          <div class="fn-icon">📍</div>
+          <div>
+            <h3>Remove GPS Location Data</h3>
+            <p>Most smartphones embed GPS coordinates into every photo. Before sharing to social media, marketplaces, or forums, strip this data to protect your home, workplace, and daily routine.</p>
+          </div>
+        </div>
+
+        <div class="fn-block">
+          <div class="fn-icon">📦</div>
+          <div>
+            <h3>Process Dozens at Once</h3>
+            <p>No more one-by-one. Upload your entire album, click Process All, and download everything as a convenient ZIP file. Perfect for bloggers, sellers, and photographers.</p>
+          </div>
+        </div>
+
+        <div class="fn-block">
+          <div class="fn-icon">🎯</div>
+          <div>
+            <h3>Preserve Original Format & Quality</h3>
+            <p>Unlike other tools that force PNG output, we preserve your original format. JPEGs stay JPEGs with adjustable quality, and PNGs stay lossless. No unnecessary file bloat.</p>
+          </div>
+        </div>
+
+        <div class="fn-block">
+          <div class="fn-icon">🔒</div>
+          <div>
+            <h3>Your Photos Never Leave Your Device</h3>
+            <p>All processing happens locally in your browser. No server uploads, no cloud storage, no privacy risks. Your images stay yours.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="faq-section" style="margin: 2.5rem 0; padding: 0 1rem;">
+        <h2 style="text-align:center; font-size:1.6rem; color:var(--text-primary); margin-bottom:1.5rem;">Frequently Asked Questions</h2>
+        <div class="faq-item" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:10px; margin-bottom:10px; overflow:hidden;">
+          <button class="faq-question" style="width:100%; padding:16px 20px; background:none; border:none; text-align:left; font-size:0.95rem; font-weight:600; color:var(--text-primary); cursor:pointer; display:flex; justify-content:space-between; align-items:center;">Does batch EXIF removal reduce image quality?<span>▼</span></button>
+          <div class="faq-answer" style="padding:0 20px 16px; color:var(--text-secondary); font-size:0.9rem; line-height:1.6; display:none;">No. We use canvas re-encoding which preserves visual quality. For JPEGs, you can choose quality level. The output keeps your original format.</div>
+        </div>
+        <div class="faq-item" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:10px; margin-bottom:10px; overflow:hidden;">
+          <button class="faq-question" style="width:100%; padding:16px 20px; background:none; border:none; text-align:left; font-size:0.95rem; font-weight:600; color:var(--text-primary); cursor:pointer; display:flex; justify-content:space-between; align-items:center;">How many images can I process at once?<span>▼</span></button>
+          <div class="faq-answer" style="padding:0 20px 16px; color:var(--text-secondary); font-size:0.9rem; line-height:1.6; display:none;">There's no hard limit, but for best performance we recommend up to 50 images per batch. Larger batches may take longer.</div>
+        </div>
+        <div class="faq-item" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:10px; margin-bottom:10px; overflow:hidden;">
+          <button class="faq-question" style="width:100%; padding:16px 20px; background:none; border:none; text-align:left; font-size:0.95rem; font-weight:600; color:var(--text-primary); cursor:pointer; display:flex; justify-content:space-between; align-items:center;">Are my photos uploaded to a server?<span>▼</span></button>
+          <div class="faq-answer" style="padding:0 20px 16px; color:var(--text-secondary); font-size:0.9rem; line-height:1.6; display:none;">No. All processing happens locally in your browser. Your photos never leave your device.</div>
+        </div>
+        <div class="faq-item" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:10px; margin-bottom:10px; overflow:hidden;">
+          <button class="faq-question" style="width:100%; padding:16px 20px; background:none; border:none; text-align:left; font-size:0.95rem; font-weight:600; color:var(--text-primary); cursor:pointer; display:flex; justify-content:space-between; align-items:center;">What metadata is removed?<span>▼</span></button>
+          <div class="faq-answer" style="padding:0 20px 16px; color:var(--text-secondary); font-size:0.9rem; line-height:1.6; display:none;">All EXIF data including GPS coordinates, camera model, lens info, shutter speed, aperture, ISO, date/time, and software information.</div>
+        </div>
+      </div>
+
+      <!-- Related Tools -->
+      <div style="margin: 2.5rem 0; padding: 0 1rem;">
+        <h2 style="text-align:center; font-size:1.6rem; color:var(--text-primary); margin-bottom:1.5rem;">Related Tools</h2>
+        <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px; max-width:900px; margin:0 auto;">
+          <a href="/tools/image-exif-remover" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:12px; padding:1.25rem; text-decoration:none; transition:transform .2s,border-color .2s;">
+            <div style="font-size:1.8rem; margin-bottom:0.5rem;">🗑️</div>
+            <strong style="color:var(--text-primary); font-size:1rem;">EXIF Remover</strong>
+            <p style="color:var(--text-secondary); font-size:0.85rem; margin:0.4rem 0 0;">Single image EXIF removal</p>
+          </a>
+          <a href="/tools/metadata-viewer" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:12px; padding:1.25rem; text-decoration:none; transition:transform .2s,border-color .2s;">
+            <div style="font-size:1.8rem; margin-bottom:0.5rem;">📊</div>
+            <strong style="color:var(--text-primary); font-size:1rem;">Metadata Viewer</strong>
+            <p style="color:var(--text-secondary); font-size:0.85rem; margin:0.4rem 0 0;">View EXIF and GPS data</p>
+          </a>
+          <a href="/tools/photo-map" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:12px; padding:1.25rem; text-decoration:none; transition:transform .2s,border-color .2s;">
+            <div style="font-size:1.8rem; margin-bottom:0.5rem;">📍</div>
+            <strong style="color:var(--text-primary); font-size:1rem;">Photo Location Map</strong>
+            <p style="color:var(--text-secondary); font-size:0.85rem; margin:0.4rem 0 0;">See where photos were taken</p>
+          </a>
+        </div>
+      </div>
+    </div>
+
+
+    <section class="amazon-store-section">
+      <div class="container">
+        <h2 style="font-size:1.3rem;font-weight:700;text-align:center;margin-bottom:6px;">Recommended Tools for Image Projects</h2>
+        <p style="text-align:center;color:var(--text-secondary);font-size:.9rem;margin-bottom:0;">Check these useful supplies to print and create your edited images.</p>
+        <div class="amazon-store-grid">
+          <a class="amazon-card" href="https://www.amazon.com/dp/B000TT7YRY?tag=sendafun20-20" target="_blank" rel="noopener sponsored nofollow">
+            <h3>Glossy Photo Paper</h3>
+            <p>High-quality photo paper for printing your edited pictures.</p>
+          </a>
+          <a class="amazon-card" href="https://www.amazon.com/dp/B0BF6T86WD?tag=sendafun20-20" target="_blank" rel="noopener sponsored nofollow">
+            <h3>Canon SELPHY CP1500</h3>
+            <p>Wireless compact photo printer — print 4x6 photos from your phone.</p>
+          </a>
+          <a class="amazon-card" href="https://www.amazon.com/dp/B0000721Z3?tag=sendafun20-20" target="_blank" rel="noopener sponsored nofollow">
+            <h3>Matte Inkjet Art Paper</h3>
+            <p>Matte heavy-weight paper for art prints & graphic works.</p>
+          </a>
+          <a class="amazon-card" href="https://www.amazon.com/dp/B08HN37XC1?tag=sendafun20-20" target="_blank" rel="noopener sponsored nofollow">
+            <h3>SanDisk Extreme SSD 1TB</h3>
+            <p>Rugged portable SSD — fast backup for photos, videos, and large files.</p>
+          </a>
+          <a class="amazon-card" href="https://www.amazon.com/dp/B00DIHSZCC?tag=sendafun20-20" target="_blank" rel="noopener sponsored nofollow">
+            <h3>Etekcity 24" 5-in-1 Reflector</h3>
+            <p>Ultra-lightweight 8oz reflector — easy to carry on location shoots.</p>
+          </a>
+        </div>
+        <p class="amazon-disclaimer">As an Amazon Associate, we earn from qualifying purchases.</p>
+      </div>
+    </section>
+</main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved.</p></div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js?v=7"></script>
+  <script>
+    let files = [];
+    let processedBlobs = [];
+
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const toolbar = document.getElementById('toolbar');
+    const fileList = document.getElementById('fileList');
+    const processAllBtn = document.getElementById('processAllBtn');
+    const downloadZipBtn = document.getElementById('downloadZipBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const progressContainer = document.getElementById('progressContainer');
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+    const progressPercent = document.getElementById('progressPercent');
+
+    dropzone.addEventListener('click', () => fileInput.click());
+    dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag'); });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag'));
+    dropzone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropzone.classList.remove('drag');
+      addFiles(e.dataTransfer.files);
+    });
+    fileInput.addEventListener('change', e => addFiles(e.target.files));
+
+    function addFiles(newFiles) {
+      const imageFiles = Array.from(newFiles).filter(f => f.type.startsWith('image/'));
+      if (imageFiles.length === 0) return;
+
+      imageFiles.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = e => {
+          files.push({
+            file,
+            dataUrl: e.target.result,
+            status: 'pending',
+            blob: null
+          });
+          renderList();
+        };
+        reader.readAsDataURL(file);
+      });
+
+      dropzone.style.display = 'none';
+      toolbar.style.display = 'flex';
+    }
+
+    function renderList() {
+      fileList.innerHTML = '';
+      files.forEach((item, i) => {
+        const div = document.createElement('div');
+        div.className = 'batch-item ' + item.status;
+        div.innerHTML = `
+          <img src="${item.dataUrl}" class="batch-thumb" alt="${item.file.name}">
+          <div class="batch-info">
+            <div class="batch-name">${item.file.name}</div>
+            <div class="batch-meta">${(item.file.size / 1024).toFixed(1)} KB · ${item.file.type}</div>
+          </div>
+          <div class="batch-status ${item.status}">
+            ${item.status === 'pending' ? '⏳ Pending' : item.status === 'processing' ? '🔄 Processing...' : item.status === 'done' ? '✅ Done' : '❌ Error'}
+          </div>
+          <button class="batch-download" data-index="${i}" ${item.status !== 'done' ? 'disabled' : ''}>⬇️</button>
+          <button class="batch-remove" data-index="${i}">✕</button>
+        `;
+        fileList.appendChild(div);
+      });
+
+      document.querySelectorAll('.batch-download').forEach(btn => {
+        btn.addEventListener('click', e => {
+          const idx = parseInt(e.target.dataset.index);
+          downloadSingle(idx);
+        });
+      });
+      document.querySelectorAll('.batch-remove').forEach(btn => {
+        btn.addEventListener('click', e => {
+          const idx = parseInt(e.target.dataset.index);
+          files.splice(idx, 1);
+          if (files.length === 0) resetAll();
+          renderList();
+          updateStats();
+        });
+      });
+
+      updateStats();
+    }
+
+    function updateStats() {
+      const total = files.length;
+      const done = files.filter(f => f.status === 'done').length;
+      const pending = files.filter(f => f.status === 'pending').length;
+      document.getElementById('totalCount').textContent = total;
+      document.getElementById('doneCount').textContent = done;
+      document.getElementById('pendingCount').textContent = pending;
+      downloadZipBtn.disabled = done === 0;
+    }
+
+    async function processAll() {
+      const pending = files.filter(f => f.status === 'pending');
+      if (pending.length === 0) return;
+
+      processAllBtn.disabled = true;
+      progressContainer.style.display = 'block';
+
+      let processed = 0;
+      const total = pending.length;
+
+      for (const item of pending) {
+        item.status = 'processing';
+        renderList();
+        progressText.textContent = `Processing ${item.file.name}...`;
+
+        try {
+          const blob = await removeExifFromFile(item.file);
+          item.blob = blob;
+          item.status = 'done';
+        } catch (err) {
+          console.error('Error processing', item.file.name, err);
+          item.status = 'error';
+        }
+
+        processed++;
+        const pct = Math.round((processed / total) * 100);
+        progressFill.style.width = pct + '%';
+        progressPercent.textContent = pct + '%';
+        renderList();
+      }
+
+      progressText.textContent = '✅ All done!';
+      processAllBtn.disabled = false;
+      setTimeout(() => { progressContainer.style.display = 'none'; }, 2000);
+    }
+
+    async function removeExifFromFile(file) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.naturalWidth;
+          canvas.height = img.naturalHeight;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+
+          const mimeType = file.type === 'image/png' ? 'image/png' :
+                           file.type === 'image/webp' ? 'image/webp' : 'image/jpeg';
+          const quality = mimeType === 'image/jpeg' ? 0.92 : undefined;
+
+          canvas.toBlob(blob => {
+            if (blob) resolve(blob);
+            else reject(new Error('Failed to create blob'));
+          }, mimeType, quality);
+        };
+        img.onerror = () => reject(new Error('Failed to load image'));
+        img.src = URL.createObjectURL(file);
+      });
+    }
+
+    function downloadSingle(index) {
+      const item = files[index];
+      if (!item.blob) return;
+      const ext = item.file.type === 'image/png' ? 'png' :
+                  item.file.type === 'image/webp' ? 'webp' : 'jpg';
+      const base = item.file.name.replace(/\.[^.]+$/, '');
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(item.blob);
+      a.download = base + '-clean.' + ext;
+      a.click();
+    }
+
+    async function downloadZip() {
+      const done = files.filter(f => f.status === 'done' && f.blob);
+      if (done.length === 0) return;
+
+      downloadZipBtn.disabled = true;
+      downloadZipBtn.textContent = '🗜️ Creating ZIP...';
+
+      const zip = new JSZip();
+      done.forEach((item, i) => {
+        const ext = item.file.type === 'image/png' ? 'png' :
+                    item.file.type === 'image/webp' ? 'webp' : 'jpg';
+        const base = item.file.name.replace(/\.[^.]+$/, '');
+        zip.file(base + '-clean.' + ext, item.blob);
+      });
+
+      const content = await zip.generateAsync({ type: 'blob' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(content);
+      a.download = 'exif-removed-images.zip';
+      a.click();
+
+      downloadZipBtn.disabled = false;
+      downloadZipBtn.textContent = '🗜️ Download ZIP';
+    }
+
+    function resetAll() {
+      files = [];
+      dropzone.style.display = 'block';
+      toolbar.style.display = 'none';
+      progressContainer.style.display = 'none';
+      fileInput.value = '';
+      fileList.innerHTML = '';
+    }
+
+    processAllBtn.addEventListener('click', processAll);
+    downloadZipBtn.addEventListener('click', downloadZip);
+    clearBtn.addEventListener('click', resetAll);
+
+    // FAQ toggle
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const answer = btn.nextElementSibling;
+        const arrow = btn.querySelector('span');
+        answer.style.display = answer.style.display === 'none' ? 'block' : 'none';
+        arrow.textContent = answer.style.display === 'none' ? '▼' : '▲';
+      });
+    });
+  </script>
+  <script src="/js/lang.js"></script>
+  <script src="/js/ad-loader.js?v=4"></script>
+<!-- Viral Share Button -->
+<button onclick="shareOurTool()" style="position:fixed;bottom:20px;right:20px;background:#0ea5e9;color:white;border:none;border-radius:50%;width:60px;height:60px;font-size:24px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.2);z-index:999;" title="Share this free tool">💛</button>
+<script>
+function shareOurTool() {
+  const pageName = document.title.split("—")[0].trim();
+  const url = window.location.href;
+  const text = `I just used this free 100% browser-based ${pageName} — no upload, no watermark, no signup! Try it: ${url}`;
+  if (navigator.share) { navigator.share({text: text}); }
+  else { navigator.clipboard.writeText(text); alert("✅ Share text copied! Post it online to help others!"); }
+}
+</script>
+<button onclick="shareOurTool(event)" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;">💛 Share Free Tool</button>
+<script>
+function shareOurTool(e) {
+  e.stopPropagation();
+  const toolName = document.title.split("—")[0].trim();
+  const url = window.location.href;
+  const text = `I just used this FREE ${toolName} in my browser — no upload, no watermark, no signup! Saved me $29.99 on Photoshop. Try it: ${url}`;
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  window.open(twitterUrl, '_blank', 'width=550,height=420');
+}
+</script>
+<button onclick="shareOurTool()" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;">💛 Share Free Tool</button>
+<script>
+function shareOurTool() {
+  const toolName = document.title.split("—")[0].trim();
+  const url = window.location.href;
+  const text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  window.open(twitterUrl, '_blank', 'width=550,height=420');
+}
+</script>
+<button onclick="shareOurTool()" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;" id="shareBtn">💛 Share Free Tool</button>
+<script>
+function shareOurTool() {
+  const lang = document.documentElement.lang || 'en';
+  const toolName = document.title.split("—")[0].trim();
+  const url = window.location.href;
+  let text, btnText;
+  if (lang.startsWith('zh')) {
+    btnText = '💛 分享免费工具';
+    text = `我刚在浏览器里用这个免费${toolName}，不用上传、无水印、不用注册！帮我省了Photoshop的钱，推荐你试试：${url}`;
+  } else if (lang.startsWith('es')) {
+    btnText = '💛 Compartir Herramienta Gratis';
+    text = `Acabo de usar este ${toolName} GRATIS directamente en mi navegador — sin subir archivos, sin marca de agua, sin registro! Me ahorró dinero de Photoshop. Pruébalo: ${url}`;
+  } else {
+    btnText = '💛 Share Free Tool';
+    text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
+  }
+  document.getElementById('shareBtn').innerText = btnText;
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  window.open(twitterUrl, '_blank', 'width=550,height=420');
+}
+</script>
+<button onclick="shareOurTool()" style="position:fixed;bottom:32px;right:20px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:50%;width:48px;height:48px;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(245,158,11,0.4);z-index:999;" id="shareBtn" title="Share this free tool">💛</button>
+<script>
+function shareOurTool() {
+  const lang = document.documentElement.lang || 'en';
+  const toolName = document.title.split("—")[0].trim();
+  const url = window.location.href;
+  let text;
+  if (lang.startsWith('zh')) {
+    text = `我刚在浏览器里用这个免费${toolName}，不用上传、无水印、不用注册！帮我省了Photoshop的钱，推荐你试试：${url}`;
+  } else if (lang.startsWith('es')) {
+    text = `Acabo de usar este ${toolName} GRATIS directamente en mi navegador — sin subir archivos, sin marca de agua, sin registro! Me ahorró dinero de Photoshop. Pruébalo: ${url}`;
+  } else {
+    text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
+  }
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  window.open(twitterUrl, '_blank', 'width=550,height=420');
+}
+</script>
+</body>
+</html>
+
+
+
+
+
+
+

@@ -1,0 +1,405 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-tool-id="sticker-outline">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Sticker Outline Maker — Add Colored Border to PNG Free | SmartImgKit</title>
+  <meta name="description" content="Add thick colored outline to transparent PNG images online free. Make sticker-style portraits and product graphics. 100% in your browser, no upload.">
+  <meta name="keywords" content="sticker outline png, add border to png, colored outline image, sticker maker free, outline portrait, sticker effect online">
+  <link rel="canonical" href="https://smartimgkit.com/tools/sticker-outline">
+  <meta name="theme-color" content="#db2777">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css?v=10">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Sticker Outline Maker",
+  "url": "https://smartimgkit.com/tools/sticker-outline",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Add colored outline to transparent PNG images. Free, no upload, browser-based sticker maker."
+}
+</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I add an outline to a PNG image?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Upload your transparent PNG, pick a border color and thickness, then download. Works entirely in your browser." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I make sticker-style portraits?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Upload a cutout portrait, add a thick white or colored outline, and you get the popular sticker effect." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this free?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes, 100% free with no watermark, no signup, and unlimited exports." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does my image get uploaded?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. All processing happens in your browser using Canvas. Your images never leave your device." }
+    },
+    {
+      "@type": "Question",
+      "name": "What image format works best?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Transparent PNG works best. JPG also works but the whole image gets outlined." }
+    }
+  ]
+}
+</script>
+  <style>
+    .tool-container{max-width:900px;margin:2rem auto;padding:0 1rem}
+    .upload-zone{border:2px dashed var(--border);border-radius:16px;padding:3rem 2rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--surface)}
+    .upload-zone:hover{border-color:var(--primary)}
+    .preview-wrap{margin:1.5rem 0;text-align:center;background:repeating-conic-gradient(#e5e5e5 0% 25%, #fff 0% 50%) 50% / 20px 20px;border-radius:12px;padding:1rem}
+    #previewCanvas{max-width:100%;max-height:500px}
+    .controls{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:1.5rem 0}
+    .control{padding:16px;background:var(--surface);border-radius:10px;border:1px solid var(--border)}
+    .control label{display:block;font-size:.85rem;font-weight:600;margin-bottom:8px;color:var(--text-secondary)}
+    .control input[type=range]{width:100%}
+    .control input[type=color]{width:100%;height:40px;border:none;border-radius:8px;cursor:pointer}
+    .control .val{float:right;color:var(--primary);font-weight:600}
+    .color-presets{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+    .color-dot{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2px solid transparent}
+    .color-dot.active{border-color:var(--primary)}
+    .btn{padding:12px 24px;border-radius:10px;border:none;font-size:15px;font-weight:600;cursor:pointer}
+    .btn-primary{background:var(--primary);color:#fff}
+    .btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+    .btn-group{display:flex;gap:12px;justify-content:center;margin:1.5rem 0;flex-wrap:wrap}
+    .faq{max-width:800px;margin:3rem auto;padding:0 1rem}
+    .faq-item{border:1px solid var(--border);border-radius:10px;margin-bottom:8px;overflow:hidden}
+    .faq-question{width:100%;padding:16px;background:var(--surface);border:none;text-align:left;font-size:15px;font-weight:600;cursor:pointer;color:var(--text)}
+    .faq-answer{padding:0 16px;max-height:0;overflow:hidden;transition:max-height .3s;color:var(--text-secondary);line-height:1.6}
+    .faq-item.open .faq-answer{max-height:300px;padding:16px}
+    @media (max-width:600px){.controls{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <a href="/" class="logo">SmartImgKit</a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/#tools">Tools</a>
+        <a href="/blog/">Blog</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="tool-container">
+    <h1 style="text-align:center;margin-bottom:.5rem">Sticker Outline Maker</h1>
+    <p style="text-align:center;color:var(--text-secondary);margin-bottom:2rem">Add thick colored border to your PNG. Make sticker-style portraits — free, no upload.</p>
+
+    <div class="upload-zone" id="dropZone">
+      <div style="font-size:3rem;margin-bottom:1rem">✨</div>
+      <p><strong>Upload your transparent PNG</strong> or drag & drop</p>
+      <p style="font-size:.85rem;color:var(--text-secondary)">Cutout portraits work best</p>
+      <input type="file" id="fileInput" accept="image/png,image/webp" hidden>
+    </div>
+
+    <div class="preview-wrap" id="previewWrap" style="display:none">
+      <canvas id="previewCanvas"></canvas>
+    </div>
+
+    <div class="controls" id="controls" style="display:none">
+      <div class="control">
+        <label>Preset Template</label>
+        <select id="presetSelect" style="width:100%;padding:.5rem;border-radius:6px;background:var(--surface);color:var(--text);border:1px solid var(--border);">
+          <option value="classic">Classic White Sticker</option>
+          <option value="influencer">Influencer Gradient (Pink-Purple)</option>
+          <option value="cool">Cool Black Outline</option>
+          <option value="neon">Neon Yellow Outline</option>
+        </select>
+      </div>
+      <div class="control">
+        <label>Border Thickness <span class="val" id="thickVal">20px</span></label>
+        <input type="range" id="thickSlider" min="2" max="80" value="20">
+      </div>
+      <div class="control">
+        <label>Border Color 1</label>
+        <input type="color" id="colorPicker" value="#ffffff">
+        <div class="color-presets">
+          <div class="color-dot active" style="background:#ffffff" data-c="#ffffff"></div>
+          <div class="color-dot" style="background:#000000" data-c="#000000"></div>
+          <div class="color-dot" style="background:#ff0066" data-c="#ff0066"></div>
+          <div class="color-dot" style="background:#0066ff" data-c="#0066ff"></div>
+          <div class="color-dot" style="background:#ffcc00" data-c="#ffcc00"></div>
+        </div>
+      </div>
+      <div class="control">
+        <label><input type="checkbox" id="optGradient"> Enable Gradient Border</label>
+        <div style="margin-top:.5rem;">
+          <label>Border Color 2 (for gradient)</label>
+          <input type="color" id="colorPicker2" value="#ff00ff">
+        </div>
+      </div>
+      <div class="control" style="grid-column: span 2;">
+        <label><input type="checkbox" id="optShadow" checked> Add drop shadow to sticker</label>
+        <button id="btnExportConfig" style="margin-top:.5rem;padding:.5rem 1rem;border-radius:6px;background:var(--surface);color:var(--text);border:1px solid var(--border);cursor:pointer;font-size:.85rem;">
+          ⚙️ Export Config JSON
+        </button>
+      </div>
+    </div>
+
+    <div class="btn-group" id="btnGroup" style="display:none">
+      <button class="btn btn-primary" onclick="downloadImage()">⬇️ Download Sticker PNG</button>
+      <button class="btn btn-secondary" onclick="resetAll()">🔄 New Image</button>
+    </div>
+
+    <section class="faq">
+      <h2 style="margin-bottom:1rem">Frequently Asked Questions</h2>
+      <div class="faq-item"><button class="faq-question">How do I add an outline to a PNG image?</button><div class="faq-answer"><p>Upload your transparent PNG, pick a border color and thickness, then download. Works entirely in your browser.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Can I make sticker-style portraits?</button><div class="faq-answer"><p>Yes. Upload a cutout portrait, add a thick white or colored outline, and you get the popular sticker effect.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Is this free?</button><div class="faq-answer"><p>Yes, 100% free with no watermark, no signup, and unlimited exports.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Does my image get uploaded?</button><div class="faq-answer"><p>No. All processing happens in your browser using Canvas. Your images never leave your device.</p></div></div>
+      <div class="faq-item"><button class="faq-question">What image format works best?</button><div class="faq-answer"><p>Transparent PNG works best. JPG also works but the whole image gets outlined.</p></div></div>
+    </section>
+  </main>
+
+  <script>
+  (function(){
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const canvas = document.getElementById('previewCanvas');
+    const ctx = canvas.getContext('2d');
+    const previewWrap = document.getElementById('previewWrap');
+    const controls = document.getElementById('controls');
+    const btnGroup = document.getElementById('btnGroup');
+    const colorPicker = document.getElementById('colorPicker');
+    const thickSlider = document.getElementById('thickSlider');
+
+    let img = null;
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.borderColor = 'var(--primary)'; });
+    dropZone.addEventListener('dragleave', () => dropZone.style.borderColor = '');
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault(); dropZone.style.borderColor = '';
+      if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
+
+    colorPicker.addEventListener('input', render);
+    document.getElementById('colorPicker2').addEventListener('input', render);
+    thickSlider.addEventListener('input', render);
+    document.getElementById('optGradient').addEventListener('change', render);
+    document.getElementById('optShadow').addEventListener('change', render);
+    document.querySelectorAll('.color-dot').forEach(dot => {
+      dot.addEventListener('click', () => {
+        document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+        dot.classList.add('active');
+        colorPicker.value = dot.dataset.c;
+        render();
+      });
+    });
+
+    function handleFile(file) {
+      img = new Image();
+      img.onload = () => {
+        const thick = +thickSlider.value;
+        canvas.width = img.width + thick * 2;
+        canvas.height = img.height + thick * 2;
+        previewWrap.style.display = 'block';
+        controls.style.display = 'grid';
+        btnGroup.style.display = 'flex';
+        render();
+      };
+      img.src = URL.createObjectURL(file);
+    }
+
+    function render() {
+      if (!img) return;
+      const thick = +thickSlider.value;
+      const color1 = colorPicker.value;
+      const color2 = document.getElementById('colorPicker2').value;
+      const useGradient = document.getElementById('optGradient').checked;
+      const addShadow = document.getElementById('optShadow').checked;
+      document.getElementById('thickVal').textContent = thick + 'px';
+
+      canvas.width = img.width + thick * 2;
+      canvas.height = img.height + thick * 2;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Create gradient if enabled
+      if (useGradient) {
+        const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        grad.addColorStop(0, color1);
+        grad.addColorStop(1, color2);
+        ctx.fillStyle = grad;
+      } else {
+        ctx.fillStyle = color1;
+      }
+
+      // Add shadow if enabled
+      if (addShadow) {
+        ctx.save();
+        ctx.shadowColor = 'rgba(0,0,0,0.3)';
+        ctx.shadowBlur = thick * 0.5;
+        ctx.shadowOffsetX = thick * 0.2;
+        ctx.shadowOffsetY = thick * 0.2;
+      }
+
+      // Draw outline by drawing the image multiple times offset in all directions
+      for (let dx = -thick; dx <= thick; dx += 2) {
+        for (let dy = -thick; dy <= thick; dy += 2) {
+          if (Math.abs(dx) + Math.abs(dy) <= thick) {
+            ctx.drawImage(img, thick + dx, thick + dy);
+          }
+        }
+      }
+
+      if (addShadow) ctx.restore();
+
+      // Draw original image on top
+      ctx.drawImage(img, thick, thick);
+    }
+
+    window.downloadImage = function() {
+      const a = document.createElement('a');
+      a.download = 'sticker-outline.png';
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+    };
+
+    window.resetAll = function() {
+      img = null;
+      previewWrap.style.display = 'none';
+      controls.style.display = 'none';
+      btnGroup.style.display = 'none';
+      fileInput.value = '';
+    };
+
+    // Preset templates
+    document.getElementById('presetSelect').addEventListener('change', (e) => {
+      const preset = e.target.value;
+      const presets = {
+        classic: { c1: '#ffffff', c2: '#ffffff', thick: 20, gradient: false, shadow: true },
+        influencer: { c1: '#ff0066', c2: '#9900ff', thick: 25, gradient: true, shadow: true },
+        cool: { c1: '#000000', c2: '#000000', thick: 15, gradient: false, shadow: false },
+        neon: { c1: '#ffff00', c2: '#ffff00', thick: 18, gradient: false, shadow: true }
+      };
+      const p = presets[preset];
+      document.getElementById('colorPicker').value = p.c1;
+      document.getElementById('colorPicker2').value = p.c2;
+      thickSlider.value = p.thick;
+      document.getElementById('optGradient').checked = p.gradient;
+      document.getElementById('optShadow').checked = p.shadow;
+      render();
+    });
+
+    // Export config JSON
+    document.getElementById('btnExportConfig').addEventListener('click', () => {
+      const config = {
+        preset: document.getElementById('presetSelect').value,
+        borderColor1: document.getElementById('colorPicker').value,
+        borderColor2: document.getElementById('colorPicker2').value,
+        thickness: +thickSlider.value,
+        useGradient: document.getElementById('optGradient').checked,
+        addShadow: document.getElementById('optShadow').checked,
+        generatedAt: new Date().toISOString(),
+        tool: 'sticker-outline'
+      };
+      const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'sticker-config.json';
+      a.click();
+    });
+
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => btn.parentElement.classList.toggle('open'));
+    });
+  })();
+  </script>
+<!-- Viral Share Button -->
+<button onclick="shareOurTool()" style="position:fixed;bottom:20px;right:20px;background:#0ea5e9;color:white;border:none;border-radius:50%;width:60px;height:60px;font-size:24px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.2);z-index:999;" title="Share this free tool">💛</button>
+<script>
+function shareOurTool() {
+  const pageName = document.title.split("—")[0].trim();
+  const url = window.location.href;
+  const text = `I just used this free 100% browser-based ${pageName} — no upload, no watermark, no signup! Try it: ${url}`;
+  if (navigator.share) { navigator.share({text: text}); }
+  else { navigator.clipboard.writeText(text); alert("✅ Share text copied! Post it online to help others!"); }
+}
+</script>
+<button onclick="shareOurTool(event)" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;">💛 Share Free Tool</button>
+<script>
+function shareOurTool(e) {
+  e.stopPropagation();
+  const toolName = document.title.split("—")[0].trim();
+  const url = window.location.href;
+  const text = `I just used this FREE ${toolName} in my browser — no upload, no watermark, no signup! Saved me $29.99 on Photoshop. Try it: ${url}`;
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  window.open(twitterUrl, '_blank', 'width=550,height=420');
+}
+</script>
+<button onclick="shareOurTool()" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;">💛 Share Free Tool</button>
+<script>
+function shareOurTool() {
+  const toolName = document.title.split("—")[0].trim();
+  const url = window.location.href;
+  const text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  window.open(twitterUrl, '_blank', 'width=550,height=420');
+}
+</script>
+<button onclick="shareOurTool()" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;" id="shareBtn">💛 Share Free Tool</button>
+<script>
+function shareOurTool() {
+  const lang = document.documentElement.lang || 'en';
+  const toolName = document.title.split("—")[0].trim();
+  const url = window.location.href;
+  let text, btnText;
+  if (lang.startsWith('zh')) {
+    btnText = '💛 分享免费工具';
+    text = `我刚在浏览器里用这个免费${toolName}，不用上传、无水印、不用注册！帮我省了Photoshop的钱，推荐你试试：${url}`;
+  } else if (lang.startsWith('es')) {
+    btnText = '💛 Compartir Herramienta Gratis';
+    text = `Acabo de usar este ${toolName} GRATIS directamente en mi navegador — sin subir archivos, sin marca de agua, sin registro! Me ahorró dinero de Photoshop. Pruébalo: ${url}`;
+  } else {
+    btnText = '💛 Share Free Tool';
+    text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
+  }
+  document.getElementById('shareBtn').innerText = btnText;
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  window.open(twitterUrl, '_blank', 'width=550,height=420');
+}
+</script>
+<button onclick="shareOurTool()" style="position:fixed;bottom:32px;right:20px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:50%;width:48px;height:48px;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(245,158,11,0.4);z-index:999;" id="shareBtn" title="Share this free tool">💛</button>
+<script>
+function shareOurTool() {
+  const lang = document.documentElement.lang || 'en';
+  const toolName = document.title.split("—")[0].trim();
+  const url = window.location.href;
+  let text;
+  if (lang.startsWith('zh')) {
+    text = `我刚在浏览器里用这个免费${toolName}，不用上传、无水印、不用注册！帮我省了Photoshop的钱，推荐你试试：${url}`;
+  } else if (lang.startsWith('es')) {
+    text = `Acabo de usar este ${toolName} GRATIS directamente en mi navegador — sin subir archivos, sin marca de agua, sin registro! Me ahorró dinero de Photoshop. Pruébalo: ${url}`;
+  } else {
+    text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
+  }
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  window.open(twitterUrl, '_blank', 'width=550,height=420');
+}
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
