@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estudio de Fotos de Producto para E-commerce Gratis | SmartImgKit</title>
+<meta name="description" content="Editor de fotos de producto para e-commerce: quita fondo con IA, fondo blanco, ideal para Mercado Libre, Amazon, Etsy. 100% local, sin subir archivos.">
+<link rel="canonical" href="https://smartimgkit.com/es/tools/ecommerce-product-studio.html">
+<style>
+* {margin:0; padding:0; box-sizing:border-box;}
+body {font-family:system-ui,sans-serif; background:#f8fafc; color:#1e293b; line-height:1.6;}
+.top {background:#059669; color:white; padding:1rem; position:sticky; top:0; z-index:100;}
+.top-inner {max-width:1200px; margin:0 auto; display:flex; align-items:center;}
+.top a {color:white; text-decoration:none; margin-right:1.5rem;}
+.container {max-width:1000px; margin:2rem auto; padding:0 1rem;}
+h1 {color:#059669; margin-bottom:1rem;}
+.workspace {background:white; padding:2rem; border-radius:16px; box-shadow:0 4px 16px rgba(0,0,0,0.08);}
+.drop-zone {border:2px dashed #94a3b8; border-radius:12px; padding:3rem; text-align:center; margin:1.5rem 0; cursor:pointer;}
+.drop-zone:hover {border-color:#059669; background:#ecfdf5;}
+button {background:#059669; color:white; border:none; padding:0.8rem 1.5rem; border-radius:8px; font-size:1rem; cursor:pointer; margin:0.5rem;}
+button:hover {background:#047857;}
+button:disabled {background:#94a3b8; cursor:not-allowed;}
+canvas {max-width:100%; border:1px solid #e2e8f0; border-radius:8px; margin:1rem auto; display:block;}
+.status {padding:1rem; border-radius:8px; background:#ecfdf5; color:#059669; margin:1rem 0; display:none;}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="top-inner">
+    <a href="/es/" style="font-weight:800; font-size:1.2rem;">SmartImgKit</a>
+    <a href="/es/tools/">Todas las herramientas</a>
+    <a href="/es/blog/">Blog</a>
+  </div>
+</div>
+<div class="container">
+  <h1>Estudio de Fotos de Producto</h1>
+  <p>Fotos de producto limpias para Mercado Libre, Amazon y Etsy, 100% en tu navegador. Eliminación de fondo con IA, fondo blanco puro, sin subir archivos a servidores.</p>
+  <div class="workspace">
+    <div class="drop-zone" id="dropZone">
+      <p style="font-size:1.2rem; margin-bottom:0.5rem;">📦 Drop your product photo here</p>
+      <p style="color:#64748b;">JPG/PNG up to 20MB</p>
+      <input type="file" id="fileInput" accept="image/*" hidden>
+    </div>
+    <div class="status" id="status"></div>
+    <div style="text-align:center;">
+      <button id="generateBtn" disabled>✨ Generate Clean Product Photo</button>
+      <button id="downloadBtn" disabled>⬇️ Download</button>
+    </div>
+    <canvas id="canvas"></canvas>
+  </div>
+</div>
+<script type="module">
+let originalImage = null, resultBlob = null, removeModel = null;
+const dropZone = document.getElementById('dropZone'), fileInput = document.getElementById('fileInput'), generateBtn = document.getElementById('generateBtn'), downloadBtn = document.getElementById('downloadBtn'), status = document.getElementById('status'), canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d');
+dropZone.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', e => { if(e.target.files[0]) loadImage(e.target.files[0]); });
+async function loadImage(file) {
+  status.style.display = 'block'; status.textContent = 'Loading...';
+  const img = new Image();
+  img.onload = () => { originalImage = img; status.textContent = 'Ready! Click Generate.'; generateBtn.disabled = false; };
+  img.src = URL.createObjectURL(file);
+}
+generateBtn.addEventListener('click', async () => {
+  if(!originalImage) return;
+  generateBtn.disabled = true; status.style.display = 'block'; status.textContent = 'Running local AI removal...';
+  if(!removeModel) {
+    const mod = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm');
+    removeModel = mod.removeBackground || mod.default;
+  }
+  const tmp = document.createElement('canvas'); tmp.width = originalImage.width; tmp.height = originalImage.height;
+  tmp.getContext('2d').drawImage(originalImage,0,0);
+  const blob = await new Promise(r => tmp.toBlob(r));
+  const cutout = await removeModel(blob);
+  const cutImg = new Image();
+  cutImg.onload = () => { draw(cutImg); status.textContent='Done!'; generateBtn.disabled=false; downloadBtn.disabled=false; };
+  cutImg.src = URL.createObjectURL(cutout);
+});
+function draw(cutImg) {
+  const w = 1600, h = 1600;
+  canvas.width = w; canvas.height = h;
+  ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,w,h);
+  const s = Math.min(w,h)*0.8;
+  const ratio = Math.min(s/cutImg.width, s/cutImg.height);
+  const dw = cutImg.width*ratio, dh = cutImg.height*ratio;
+  ctx.drawImage(cutImg, (w-dw)/2, (h-dh)/2, dw, dh);
+  canvas.toBlob(b => resultBlob = b);
+}
+downloadBtn.addEventListener('click', () => {
+  if(!resultBlob) return;
+  const a = document.createElement('a'); a.href = URL.createObjectURL(resultBlob); a.download = 'clean-product-photo.png'; a.click();
+});
+</script>
+</body>
+</html>
+
