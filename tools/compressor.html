@@ -227,6 +227,25 @@
               <span>Quality</span><span id="qualityVal">80%</span>
             </label>
             <input type="range" id="qualityRange" min="10" max="95" value="80">
+            <div style="margin:16px 0;">
+              <label style="display:flex;justify-content:space-between;color:var(--text-secondary);font-size:.85rem;margin-bottom:6px">
+                <span>🎯 Target File Size (optional)</span>
+                <span style="font-size:.75rem;opacity:0.7;">Auto-adjust quality</span>
+              </label>
+              <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;">
+                <button class="btn btn-secondary" style="padding:5px 10px;font-size:0.75rem;" onclick="document.getElementById('targetSizeInput').value=500;document.getElementById('targetSizeUnit').value='KB';doCompress();">📦 Etsy &lt;500KB</button>
+                <button class="btn btn-secondary" style="padding:5px 10px;font-size:0.75rem;" onclick="document.getElementById('targetSizeInput').value=1;document.getElementById('targetSizeUnit').value='MB';doCompress();">🛒 Amazon &lt;1MB</button>
+                <button class="btn btn-secondary" style="padding:5px 10px;font-size:0.75rem;" onclick="document.getElementById('targetSizeInput').value=10;document.getElementById('targetSizeUnit').value='MB';doCompress();">📧 Email &lt;10MB</button>
+              </div>
+              <div style="display:flex;gap:8px;">
+                <input type="number" id="targetSizeInput" placeholder="e.g. 500" min="1" style="flex:1;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--bg-primary);color:var(--text-primary);">
+                <select id="targetSizeUnit" style="padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--bg-primary);color:var(--text-primary);">
+                  <option value="KB">KB</option>
+                  <option value="MB">MB</option>
+                </select>
+              </div>
+              <p style="font-size:.75rem;color:var(--text-muted);margin-top:4px;line-height:1.4;">Leave empty to use quality slider. We'll automatically find the best quality to hit your target size.</p>
+            </div>
           </div>
           <div id="sizeCompare" class="hidden" style="max-width:600px;margin:0 auto 16px;padding:16px;background:var(--bg-secondary);border-radius:12px">
             <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:.85rem">
@@ -242,6 +261,7 @@
           <div class="tool-actions">
             <button class="btn btn-primary" id="compressBtn">🗜️ Compress</button>
             <button class="btn btn-secondary hidden" id="downloadBtn">⬇️ Download</button>
+            <button class="btn btn-secondary hidden" id="copyBtn">📋 Copy to Clipboard</button>
             <button class="btn btn-secondary" id="resetBtn">🔄 New Image</button>
           </div>
           <div id="status" class="text-center mt-16" style="color:var(--text-secondary)"></div>
@@ -554,26 +574,56 @@ const dropzone = document.getElementById('dropzone');
       });
     }
 
+    const targetSizeInput = document.getElementById('targetSizeInput');
+    const targetSizeUnit = document.getElementById('targetSizeUnit');
+    const copyBtn = document.getElementById('copyBtn');
+
     async function doCompress() {
       if (!currentFile) return;
+      status.textContent = 'Compressing...';
       try {
         const img = await ImageUtils.load(currentFile);
         const canvas = ImageUtils.createCanvas(img.naturalWidth, img.naturalHeight);
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0);
-        const quality = parseInt(qualityRange.value) / 100;
         let outType = formatSelect.value;
         if (outType === 'auto') {
           outType = currentFile.type === 'image/png' ? 'image/png' : 'image/jpeg';
         }
-        const blob = await ImageUtils.canvasToBlob(canvas, outType, quality);
-        resultBlob = blob;
-        const url = URL.createObjectURL(blob);
+
+        // Target size binary search logic
+        const targetKb = targetSizeInput.value ? parseFloat(targetSizeInput.value) * (targetSizeUnit.value === 'MB' ? 1024 : 1) : null;
+        let quality = parseInt(qualityRange.value) / 100;
+
+        if (targetKb && outType !== 'image/png') {
+          // Binary search for optimal quality to hit target size
+          let low = 0.1, high = 0.95;
+          let bestBlob = null;
+          for (let i = 0; i < 8; i++) {
+            quality = (low + high) / 2;
+            const blob = await ImageUtils.canvasToBlob(canvas, outType, quality);
+            if (blob.size / 1024 > targetKb) {
+              high = quality;
+            } else {
+              bestBlob = blob;
+              low = quality;
+            }
+          }
+          resultBlob = bestBlob || await ImageUtils.canvasToBlob(canvas, outType, quality);
+          qualityRange.value = Math.round(quality * 100);
+          qualityVal.textContent = Math.round(quality * 100) + '%';
+        } else {
+          resultBlob = await ImageUtils.canvasToBlob(canvas, outType, quality);
+        }
+
+        const url = URL.createObjectURL(resultBlob);
         compImg.src = url;
-        const saved = Math.round((1 - blob.size / currentFile.size) * 100);
-        compSize.textContent = ImageUtils.formatBytes(blob.size) + ' — ' + (saved > 0 ? 'Saved ' + saved + '%' : 'Larger by ' + Math.abs(saved) + '%');
+        const saved = Math.round((1 - resultBlob.size / currentFile.size) * 100);
+        compSize.textContent = ImageUtils.formatBytes(resultBlob.size) + ' — ' + (saved > 0 ? 'Saved ' + saved + '%' : 'Larger by ' + Math.abs(saved) + '%');
         downloadBtn.classList.remove('hidden');
-        updateSizeCompare(currentFile.size, blob.size);
+        copyBtn.classList.remove('hidden');
+        status.textContent = '';
+        updateSizeCompare(currentFile.size, resultBlob.size);
 
         if (typeof openResultModal === 'function') {
           var _extMap = { 'image/jpeg': 'jpg', 'image/webp': 'webp', 'image/png': 'png' };
@@ -604,6 +654,19 @@ const dropzone = document.getElementById('dropzone');
         const ext = extMap[outType] || currentFile.name.split('.').pop();
         const base = currentFile.name.replace(/\.[^.]+$/, '');
         ImageUtils.download(resultBlob, base + '-compressed.' + ext);
+      }
+    });
+
+    // Copy to clipboard
+    copyBtn.addEventListener('click', async () => {
+      if (!resultBlob) return;
+      try {
+        await navigator.clipboard.write([new ClipboardItem({[resultBlob.type]: resultBlob})]);
+        const oldText = copyBtn.textContent;
+        copyBtn.textContent = '✅ Copied!';
+        setTimeout(() => copyBtn.textContent = oldText, 2000);
+      } catch (e) {
+        alert('Copy failed, please download instead.');
       }
     });
 
