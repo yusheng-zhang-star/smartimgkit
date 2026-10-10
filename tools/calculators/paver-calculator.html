@@ -4,8 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paver Calculator: How Many Pavers Do I Need?</title>
-    <meta name="description" content="Free paver calculator estimates how many paving stones you need for a driveway or patio. No ads, includes base material estimate.">
+    <meta name="description" content="Free paver calculator estimates how many paving bricks and base gravel you need for your patio or walkway. No ads, instant results.">
     <link rel="canonical" href="https://smartimgkit.com/tools/calculators/paver-calculator">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {"@type": "Question", "name": "How many pavers do I need for a 10x10 patio?", "acceptedAnswer": {"@type": "Answer", "text": "For standard 4x8 inch pavers, you need about 450 pavers for a 10x10 patio, plus 4 inches of gravel base underneath."}},
+        {"@type": "Question", "name": "How much base gravel do I need under pavers?", "acceptedAnswer": {"@type": "Answer", "text": "You need 4 inches of compacted gravel base under all pavers, for driveways go to 6 inches."}},
+        {"@type": "Question", "name": "How much extra pavers should I buy?", "acceptedAnswer": {"@type": "Answer", "text": "Buy 5-10% extra pavers for cuts around edges, and for future repairs."}}
+      ]
+    }
+    </script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         body { background: #f8fafc; color: #1e293b; line-height: 1.7; }
@@ -14,29 +25,46 @@
         .logo { font-weight: 700; color: #57534e; text-decoration: none; font-size: 1.2rem; }
         .nav-links a { margin-left: 1.5rem; color: #475569; text-decoration: none; }
         .container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
-        .calc-card { background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .calc-card { background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 2rem; }
         h1 { font-size: 1.8rem; margin-bottom: 1rem; }
+        h2 { font-size: 1.4rem; margin: 1.5rem 0 1rem; }
         .direct-answer { background: #f5f5f4; padding: 1.2rem; border-radius: 8px; margin: 1rem 0; }
         .input-group { margin: 1rem 0; }
         label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
         input { width: 100%; padding: 0.8rem; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 1.1rem; }
         .result { background: #f0fdf4; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; font-size: 1.2rem; font-weight: 500; }
+        .disclaimer { font-size: 0.85rem; color: #64748b; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; }
+        p { margin: 0.8rem 0; }
     </style>
 </head>
 <body>
-    <div class="top"><div class="top-inner"><a href="/" class="logo">SmartImgKit</a><div class="nav-links"><a href="/tools/">Tools</a><a href="/blog/">Blog</a><a href="/es/">Español</a></div></div></div>
-    <div class="container"><div class="calc-card">
-        <h1>Paver Calculator</h1>
-        <div class="direct-answer">Yes, you can calculate exactly how many pavers and how much gravel base you need for your patio. No ads, instant results.</div>
-        <div class="input-group"><label>Patio Area (sq ft)</label><input type="number" id="area" value="100" oninput="calculate()"></div>
-        <div class="result" id="result">Result will appear here</div>
+    <div class="top"><div class="top-inner"><a href="/" class="logo">SmartImgKit</a><div class="nav-links"><a href="/tools/">Tools</a><a href="/blog/">Blog</a><a href="/es/tools/calculators/">Español</a></div></div></div>
+    <div class="container">
+        <div class="calc-card">
+            <h1>Paver Calculator</h1>
+            <div class="direct-answer">Yes, you can calculate exactly how many paving stones you need for your patio. This free calculator gives instant results, no ads, no signup, and automatically includes 10% extra for cuts and waste.</div>
+            <div class="input-group"><label>Patio Width (ft)</label><input type="number" id="width" value="10" oninput="calculate()"></div>
+            <div class="input-group"><label>Patio Length (ft)</label><input type="number" id="length" value="10" oninput="calculate()"></div>
+            <div class="result" id="result">Result will appear here</div>
+            <div class="disclaimer">For DIY estimation only. Standard 4x8 inch pavers are used for this calculation.</div>
+        </div>
+        <div class="calc-card">
+            <h2>Frequently Asked Questions</h2>
+            <p><strong>Q: How many pavers do I need for a 10x10 patio?</strong></p>
+            <p>A: For standard 4x8 inch pavers, you need about 450 pavers, plus 4 inches of compacted gravel base underneath.</p>
+            <p><strong>Q: How much base gravel do I need?</strong></p>
+            <p>A: Use 4 inches of gravel for patios, 6 inches for vehicle driveways.</p>
+            <p><strong>Q: How much extra pavers should I buy?</strong></p>
+            <p>A: Buy 10% extra for edge cuts, and keep a few boxes for future repairs.</p>
+        </div>
     </div>
     <script>
         function calculate() {
-            const area = parseFloat(document.getElementById('area').value) || 0;
-            const pavers = Math.ceil(area * 4.5 * 1.05);
-            const gravel = (area * 4 / 27 * 1.1).toFixed(2);
-            document.getElementById('result').textContent = `You need ${pavers} standard 4x8 inch pavers, and ${gravel} cubic yards of gravel base.`;
+            const w = parseFloat(document.getElementById('width').value) || 0;
+            const l = parseFloat(document.getElementById('length').value) || 0;
+            const pavers = Math.ceil(w*l * 4.5 *1.1);
+            const gravelYards = Math.ceil(w*l * (4/12) /27 *1.1);
+            document.getElementById('result').textContent = `You need about ${pavers} standard 4x8 inch pavers, plus ${gravelYards} cubic yards of gravel base.`;
         }
         calculate();
     </script>
