@@ -826,8 +826,23 @@ function shareOurTool() {
   <a href="/tools/image-converter" style="padding:12px;background:white;border-radius:8px;text-decoration:none;color:#1e3a8a;">Convert format</a>
 </div>
 </div>
+<button id="downloadAllZip" style="display:none;background:#059669;color:white;padding:12px 24px;border:none;border-radius:8px;cursor:pointer;margin:10px 0;font-size:16px;">Download All as ZIP</button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+document.getElementById('downloadAllZip').addEventListener('click', async function() {
+  const zip = new JSZip();
+  const blobs = window.processedImages;
+  blobs.forEach((blob, i) => zip.file(`compressed_${i+1}.jpg`, blob));
+  const content = await zip.generateAsync({type:"blob"});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(content);
+  a.download = 'compressed_images.zip';
+  a.click();
+});
+</script>
 </body>
 </html>
+
 
 
 
