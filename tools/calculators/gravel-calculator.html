@@ -47,6 +47,13 @@
             <div class="input-group"><label>Area Length (ft)</label><input type="number" id="length" value="20" oninput="calculate()"></div>
             <div class="input-group"><label>Depth (inches, standard 4")</label><input type="number" id="depth" value="4" oninput="calculate()"></div>
             <div class="result" id="result">Result will appear here</div>
+        <button class="copy-btn" style="margin-top:1rem;" onclick="copyResult()">Copy Result</button>
+        <script>
+        function copyResult() {
+            navigator.clipboard.writeText(document.getElementById('result').textContent);
+            alert('Result copied to clipboard!');
+        }
+        </script>
             <div class="disclaimer">For DIY estimation only. Weights are approximate, as gravel density varies by type.</div>
         </div>
         <div class="calc-card">
@@ -58,8 +65,17 @@
             <p><strong>Q: How much does a yard of gravel weigh?</strong></p>
             <p>A: One cubic yard weighs about 1.4 tons (2800 lbs).</p>
         </div>
+        <div class="calc-card">
+        <h2>Related DIY Calculators</h2>
+        <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap:1rem; margin:1rem 0;">
+            <a href="/tools/calculators/paint-calculator" style="padding:0.8rem; background:#f8fafc; border-radius:8px; text-decoration:none; color:#1e293b;">🎨 Paint Calculator</a>
+            <a href="/tools/calculators/tile-calculator" style="padding:0.8rem; background:#f8fafc; border-radius:8px; text-decoration:none; color:#1e293b;">🧱 Tile Calculator</a>
+            <a href="/tools/calculators/concrete-calculator" style="padding:0.8rem; background:#f8fafc; border-radius:8px; text-decoration:none; color:#1e293b;">🏗️ Concrete Calculator</a>
+            <a href="/tools/calculators/mulch-calculator" style="padding:0.8rem; background:#f8fafc; border-radius:8px; text-decoration:none; color:#1e293b;">🌳 Mulch Calculator</a>
+        </div>
     </div>
-    <script>
+</div>
+<script>
         function calculate() {
             const w = parseFloat(document.getElementById('width').value) || 0;
             const l = parseFloat(document.getElementById('length').value) || 0;
@@ -72,3 +88,4 @@
     </script>
 </body>
 </html>
+

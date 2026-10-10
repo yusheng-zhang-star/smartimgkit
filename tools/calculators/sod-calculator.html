@@ -46,6 +46,13 @@
             <div class="input-group"><label>Yard Width (ft)</label><input type="number" id="width" value="20" oninput="calculate()"></div>
             <div class="input-group"><label>Yard Length (ft)</label><input type="number" id="length" value="25" oninput="calculate()"></div>
             <div class="result" id="result">Result will appear here</div>
+        <button class="copy-btn" style="margin-top:1rem;" onclick="copyResult()">Copy Result</button>
+        <script>
+        function copyResult() {
+            navigator.clipboard.writeText(document.getElementById('result').textContent);
+            alert('Result copied to clipboard!');
+        }
+        </script>
             <div class="disclaimer">For DIY estimation only. Standard sod pallets cover 500 sq ft each.</div>
         </div>
         <div class="calc-card">
@@ -64,8 +71,17 @@
             <p><strong>Q: How much extra sod should I order?</strong></p>
             <p>A: Order 5% extra to account for cuts and small mistakes during installation.</p>
         </div>
+        <div class="calc-card">
+        <h2>Related DIY Calculators</h2>
+        <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap:1rem; margin:1rem 0;">
+            <a href="/tools/calculators/paint-calculator" style="padding:0.8rem; background:#f8fafc; border-radius:8px; text-decoration:none; color:#1e293b;">🎨 Paint Calculator</a>
+            <a href="/tools/calculators/tile-calculator" style="padding:0.8rem; background:#f8fafc; border-radius:8px; text-decoration:none; color:#1e293b;">🧱 Tile Calculator</a>
+            <a href="/tools/calculators/concrete-calculator" style="padding:0.8rem; background:#f8fafc; border-radius:8px; text-decoration:none; color:#1e293b;">🏗️ Concrete Calculator</a>
+            <a href="/tools/calculators/mulch-calculator" style="padding:0.8rem; background:#f8fafc; border-radius:8px; text-decoration:none; color:#1e293b;">🌳 Mulch Calculator</a>
+        </div>
     </div>
-    <script>
+</div>
+<script>
         function calculate() {
             const w = parseFloat(document.getElementById('width').value) || 0;
             const l = parseFloat(document.getElementById('length').value) || 0;
@@ -77,3 +93,4 @@
     </script>
 </body>
 </html>
+

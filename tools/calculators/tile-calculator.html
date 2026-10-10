@@ -38,6 +38,13 @@
         <div class="input-group"><label>Floor Length (ft)</label><input type="number" id="length" value="12" oninput="calculate()"></div>
         <div class="input-group"><label>Tile Size (12x12 inch = standard floor tile)</label><input type="number" id="tileSize" value="12" oninput="calculate()"></div>
         <div class="result" id="result">Result will appear here</div>
+        <button class="copy-btn" style="margin-top:1rem;" onclick="copyResult()">Copy Result</button>
+        <script>
+        function copyResult() {
+            navigator.clipboard.writeText(document.getElementById('result').textContent);
+            alert('Result copied to clipboard!');
+        }
+        </script>
         <div class="disclaimer">For DIY estimation only. All calculations run locally in your browser.</div>
     </div>
     <div class="calc-card">
@@ -57,8 +64,17 @@
         <h2>FAQ</h2>
         <div class="faq-item"><h3>How many tiles for a 12x12 kitchen?</h3><p>For a 12x12 kitchen with standard 12x12 tiles, you need about 149 tiles (5% waste included). That's roughly 10-11 boxes, depending on how many tiles come in a box.</p></div>
         <div class="faq-item"><h3>How much extra tile should I buy?</h3><p>Always buy 5-10% extra for cuts and future repairs. Tiles from different batches may not match, so keep extra tiles for repairs later.</p></div>
-    </div></div>
-    <script>
+    </div>    <div class="calc-card">
+        <h2>Related DIY Calculators</h2>
+        <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap:1rem; margin:1rem 0;">
+            <a href="/tools/calculators/paint-calculator" style="padding:0.8rem; background:#f8fafc; border-radius:8px; text-decoration:none; color:#1e293b;">🎨 Paint Calculator</a>
+            <a href="/tools/calculators/tile-calculator" style="padding:0.8rem; background:#f8fafc; border-radius:8px; text-decoration:none; color:#1e293b;">🧱 Tile Calculator</a>
+            <a href="/tools/calculators/concrete-calculator" style="padding:0.8rem; background:#f8fafc; border-radius:8px; text-decoration:none; color:#1e293b;">🏗️ Concrete Calculator</a>
+            <a href="/tools/calculators/mulch-calculator" style="padding:0.8rem; background:#f8fafc; border-radius:8px; text-decoration:none; color:#1e293b;">🌳 Mulch Calculator</a>
+        </div>
+    </div>
+</div>
+<script>
         function calculate() {
             const w = parseFloat(document.getElementById('width').value) || 0;
             const l = parseFloat(document.getElementById('length').value) || 0;
@@ -72,3 +88,4 @@
     </script>
 </body>
 </html>
+

@@ -43,6 +43,13 @@
             <div class="input-group"><label>Garden Bed Length (ft)</label><input type="number" id="length" value="10" oninput="calculate()"></div>
             <div class="input-group"><label>Desired Mulch Depth (inches, standard is 3in)</label><input type="number" id="depth" value="3" oninput="calculate()"></div>
             <div class="result" id="result">Result will appear here</div>
+        <button class="copy-btn" style="margin-top:1rem;" onclick="copyResult()">Copy Result</button>
+        <script>
+        function copyResult() {
+            navigator.clipboard.writeText(document.getElementById('result').textContent);
+            alert('Result copied to clipboard!');
+        }
+        </script>
             <div class="test-example">
                 <strong>Test Example:</strong> 10ft × 10ft bed, 3in depth → Expected: 1 cubic yard, or 14 standard 2 cu ft bags. This matches Home Depot's mulch calculator results.
             </div>
@@ -68,8 +75,17 @@
             <div class="faq-item"><h3>Is 3 inches of mulch enough?</h3><p>Yes, 3 inches is the ideal depth for most garden beds. It blocks weeds, holds moisture, and won't suffocate plant roots.</p></div>
             <div class="faq-item"><h3>How much does 1 cubic yard of mulch cover?</h3><p>1 cubic yard covers 100 square feet at 3 inches depth, or 324 square feet at 1 inch depth.</p></div>
         </div>
+        <div class="calc-card">
+        <h2>Related DIY Calculators</h2>
+        <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap:1rem; margin:1rem 0;">
+            <a href="/tools/calculators/paint-calculator" style="padding:0.8rem; background:#f8fafc; border-radius:8px; text-decoration:none; color:#1e293b;">🎨 Paint Calculator</a>
+            <a href="/tools/calculators/tile-calculator" style="padding:0.8rem; background:#f8fafc; border-radius:8px; text-decoration:none; color:#1e293b;">🧱 Tile Calculator</a>
+            <a href="/tools/calculators/concrete-calculator" style="padding:0.8rem; background:#f8fafc; border-radius:8px; text-decoration:none; color:#1e293b;">🏗️ Concrete Calculator</a>
+            <a href="/tools/calculators/mulch-calculator" style="padding:0.8rem; background:#f8fafc; border-radius:8px; text-decoration:none; color:#1e293b;">🌳 Mulch Calculator</a>
+        </div>
     </div>
-    <script>
+</div>
+<script>
         function calculate() {
             const w = parseFloat(document.getElementById('width').value) || 0;
             const l = parseFloat(document.getElementById('length').value) || 0;
@@ -83,3 +99,4 @@
     </script>
 </body>
 </html>
+

@@ -32,6 +32,13 @@
         <div class="input-group"><label>Room Width (ft)</label><input type="number" id="width" value="12" oninput="calculate()"></div>
         <div class="input-group"><label>Room Height (ft)</label><input type="number" id="height" value="8" oninput="calculate()"></div>
         <div class="result" id="result">Result will appear here</div>
+        <button class="copy-btn" style="margin-top:1rem;" onclick="copyResult()">Copy Result</button>
+        <script>
+        function copyResult() {
+            navigator.clipboard.writeText(document.getElementById('result').textContent);
+            alert('Result copied to clipboard!');
+        }
+        </script>
         <div class="disclaimer">Standard wallpaper rolls are 27 inches wide and 27 feet long, covering about 60 square feet each. We add 15% extra for pattern matching.</div>
     </div>
     <div class="calc-card">
@@ -64,8 +71,17 @@
             <p><strong>Q: Does pattern repeat increase how much I need?</strong></p>
             <p>A: Yes. Large repeating patterns (20+ inches repeat) can waste 20-30% of material. Our default 15% waste works for most small-pattern wallpapers.</p>
         </div>
+        <div class="calc-card">
+        <h2>Related DIY Calculators</h2>
+        <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap:1rem; margin:1rem 0;">
+            <a href="/tools/calculators/paint-calculator" style="padding:0.8rem; background:#f8fafc; border-radius:8px; text-decoration:none; color:#1e293b;">🎨 Paint Calculator</a>
+            <a href="/tools/calculators/tile-calculator" style="padding:0.8rem; background:#f8fafc; border-radius:8px; text-decoration:none; color:#1e293b;">🧱 Tile Calculator</a>
+            <a href="/tools/calculators/concrete-calculator" style="padding:0.8rem; background:#f8fafc; border-radius:8px; text-decoration:none; color:#1e293b;">🏗️ Concrete Calculator</a>
+            <a href="/tools/calculators/mulch-calculator" style="padding:0.8rem; background:#f8fafc; border-radius:8px; text-decoration:none; color:#1e293b;">🌳 Mulch Calculator</a>
+        </div>
     </div>
-    <script>
+</div>
+<script>
         function calculate() {
             const w = parseFloat(document.getElementById('width').value) || 0;
             const h = parseFloat(document.getElementById('height').value) || 0;
@@ -88,3 +104,4 @@
     </script>
 </body>
 </html>
+
