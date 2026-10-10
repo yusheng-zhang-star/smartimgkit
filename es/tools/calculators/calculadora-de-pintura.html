@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Pintura: ¿Cuánta Pintura Necesito? Gratis</title>
+    <meta name="description" content="Calculadora de pintura gratis online. Calcula cuántos galones o litros necesitas para tu cuarto. Sin anuncios, sin registro.">
+    <link rel="canonical" href="https://smartimgkit.com/es/tools/calculators/calculadora-de-pintura">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background: #f8fafc; color: #1e293b; line-height: 1.7; }
+        .top { background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1rem 0; }
+        .top-inner { max-width: 1200px; margin: 0 auto; padding: 0 1rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-weight: 700; color: #1e3a8a; text-decoration: none; font-size: 1.2rem; }
+        .nav-links a { margin-left: 1.5rem; color: #475569; text-decoration: none; }
+        .container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+        .calc-card { background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 2rem; }
+        h1 { font-size: 1.8rem; margin-bottom: 1rem; }
+        .direct-answer { background: #eff6ff; padding: 1.2rem; border-radius: 8px; margin: 1rem 0; }
+        .input-group { margin: 1rem 0; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+        input { width: 100%; padding: 0.8rem; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 1.1rem; }
+        .result { background: #f0fdf4; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; font-size: 1.2rem; font-weight: 500; }
+    </style>
+</head>
+<body>
+    <div class="top"><div class="top-inner"><a href="/es/" class="logo">SmartImgKit ES</a><div class="nav-links"><a href="/es/tools/">Herramientas</a><a href="/es/blog/">Blog</a><a href="/">English</a></div></div></div>
+    <div class="container"><div class="calc-card">
+        <h1>Calculadora de Pintura</h1>
+        <div class="direct-answer">Sí, puedes calcular exactamente cuánta pintura necesitas para cualquier cuarto. Esta calculadora gratis funciona en tu navegador, sin anuncios, sin subir fotos.</div>
+        <div class="input-group"><label>Ancho del cuarto (metros)</label><input type="number" id="width" value="4" oninput="calculate()"></div>
+        <div class="input-group"><label>Largo del cuarto (metros)</label><input type="number" id="length" value="4" oninput="calculate()"></div>
+        <div class="input-group"><label>Alto del techo (metros)</label><input type="number" id="height" value="2.5" oninput="calculate()"></div>
+        <div class="result" id="result">Resultado aparecerá aquí</div>
+    </div>
+    <script>
+        function calculate() {
+            const w = parseFloat(document.getElementById('width').value) || 0;
+            const l = parseFloat(document.getElementById('length').value) || 0;
+            const h = parseFloat(document.getElementById('height').value) || 0;
+            const area = 2*h*(w+l)*2*1.1;
+            const liters = (area / 12).toFixed(1);
+            document.getElementById('result').textContent = `Necesitas aproximadamente ${liters} litros de pintura para 2 manos. Recomendamos comprar ${Math.ceil(liters/19)} botes de 19L.`;
+        }
+        calculate();
+    </script>
+</body>
+</html>

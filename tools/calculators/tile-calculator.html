@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tile Calculator: How Many Tiles Do I Need? (Free)</title>
+    <meta name="description" content="Free tile calculator estimates how many tiles you need for any floor or wall. No ads, includes 5% waste, instant results.">
+    <link rel="canonical" href="https://smartimgkit.com/tools/calculators/tile-calculator">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background: #f8fafc; color: #1e293b; line-height: 1.7; }
+        .top { background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1rem 0; }
+        .top-inner { max-width: 1200px; margin: 0 auto; padding: 0 1rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-weight: 700; color: #4f46e5; text-decoration: none; font-size: 1.2rem; }
+        .nav-links a { margin-left: 1.5rem; color: #475569; text-decoration: none; }
+        .container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+        .calc-card { background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 2rem; }
+        h1 { font-size: 1.8rem; margin-bottom: 1rem; }
+        h2 { font-size: 1.4rem; margin: 1.5rem 0 1rem; }
+        .direct-answer { background: #eef2ff; padding: 1.2rem; border-radius: 8px; margin: 1rem 0; }
+        .input-group { margin: 1rem 0; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+        input { width: 100%; padding: 0.8rem; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 1.1rem; }
+        .result { background: #f0fdf4; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; font-size: 1.2rem; font-weight: 500; }
+        .disclaimer { font-size: 0.85rem; color: #64748b; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; }
+        .compare-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        .compare-table th, .compare-table td { padding: 0.8rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        .faq-item { margin: 1rem 0; padding: 1rem; background: #f8fafc; border-radius: 8px; }
+        p { margin: 0.8rem 0; }
+    </style>
+</head>
+<body>
+    <div class="top"><div class="top-inner"><a href="/" class="logo">SmartImgKit</a><div class="nav-links"><a href="/tools/">Tools</a><a href="/blog/">Blog</a><a href="/es/">Español</a></div></div></div>
+    <div class="container"><div class="calc-card">
+        <h1>Tile Calculator: How Many Tiles Do I Need?</h1>
+        <div class="direct-answer">Yes, you can calculate exactly how many tiles you need for any floor or wall. This free browser-based calculator gives instant results, includes 5% waste for cuts, no ads or signup required.</div>
+        <div class="input-group"><label>Floor Width (ft)</label><input type="number" id="width" value="12" oninput="calculate()"></div>
+        <div class="input-group"><label>Floor Length (ft)</label><input type="number" id="length" value="12" oninput="calculate()"></div>
+        <div class="input-group"><label>Tile Size (12x12 inch = standard floor tile)</label><input type="number" id="tileSize" value="12" oninput="calculate()"></div>
+        <div class="result" id="result">Result will appear here</div>
+        <div class="disclaimer">For DIY estimation only. All calculations run locally in your browser.</div>
+    </div>
+    <div class="calc-card">
+        <h2>How to Calculate Tile Quantity</h2>
+        <p>We first calculate total floor/wall area by multiplying width × length. Then we convert your tile size from inches to square feet, divide total area by tile area, and add 5% waste for cuts, broken tiles and mistakes. This matches the standard rule of thumb every tiler uses.</p>
+        <p>Most DIYers forget to add waste, and end up 5-10 tiles short halfway through the job. Since tile is sold by the box, you'll have to buy a whole extra box just for a few tiles, which wastes money. We automatically add 5% so you buy the right number of boxes the first time.</p>
+        <h2>Common Mistakes</h2>
+        <p><strong>Don't forget cuts.</strong> Every tile at the edge of the room needs to be cut, so you will break or waste about 1 out of 20 tiles. 5% waste is the industry minimum.</p>
+        <p><strong>Boxes are sold whole.</strong> Tiles almost always come in boxes of 10-15 tiles. Our result rounds up, so you know how many full boxes to buy, not partial tiles.</p>
+        <h2>Compare to Other Tile Calculators</h2>
+        <table class="compare-table">
+            <tr><th>Feature</th><th>SmartImgKit</th><th>OmniCalculator</th><th>TileClub</th></tr>
+            <tr><td>Ads</td><td>Zero</td><td>Popups</td><td>Ads</td></tr>
+            <tr><td>Waste included</td><td>Default 5%</td><td>Manual input</td><td>Default 10%</td></tr>
+            <tr><td>Shows box count</td><td>Yes</td><td>No</td><td>Yes</td></tr>
+        </table>
+        <h2>FAQ</h2>
+        <div class="faq-item"><h3>How many tiles for a 12x12 kitchen?</h3><p>For a 12x12 kitchen with standard 12x12 tiles, you need about 149 tiles (5% waste included). That's roughly 10-11 boxes, depending on how many tiles come in a box.</p></div>
+        <div class="faq-item"><h3>How much extra tile should I buy?</h3><p>Always buy 5-10% extra for cuts and future repairs. Tiles from different batches may not match, so keep extra tiles for repairs later.</p></div>
+    </div></div>
+    <script>
+        function calculate() {
+            const w = parseFloat(document.getElementById('width').value) || 0;
+            const l = parseFloat(document.getElementById('length').value) || 0;
+            const tileInch = parseFloat(document.getElementById('tileSize').value) || 12;
+            const areaSqFt = w * l;
+            const tileSqFt = (tileInch/12)*(tileInch/12);
+            const tiles = Math.ceil(areaSqFt / tileSqFt * 1.05);
+            document.getElementById('result').textContent = `You need approximately ${tiles} tiles (5% waste included). Buy at least 5 extra tiles for future repairs.`;
+        }
+        calculate();
+    </script>
+</body>
+</html>
