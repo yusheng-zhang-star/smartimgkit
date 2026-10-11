@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amazon FBA Fee Calculator: Calculate Profit & Fees Free 2026</title>
+    <title>Amazon FBA Fee Calculator: Calculate Profit & ROI Free (2026)</title>
     <meta name="description" content="Free Amazon FBA fee calculator 2026. Calculate referral fees, FBA fulfillment costs, net profit and ROI instantly. No signup, works locally in your browser.">
     <link rel="canonical" href="https://smartimgkit.com/tools/fba-fee-calculator">
     <style>
@@ -16,12 +16,17 @@
         .container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
         .calc-card { background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 2rem; }
         h1 { font-size: 1.8rem; margin-bottom: 1rem; }
+        h2 { font-size: 1.4rem; margin: 1.5rem 0 0.8rem; color: #1e3a8a; }
         .direct-answer { background: #eff6ff; padding: 1.2rem; border-radius: 8px; margin: 1rem 0; }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        th, td { border: 1px solid #e2e8f0; padding: 0.8rem; text-align: left; }
+        th { background: #f1f5f9; }
         .input-group { margin: 1rem 0; }
         label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
         input, select { width: 100%; padding: 0.8rem; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 1.1rem; }
         .result { background: #f0fdf4; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; font-size: 1.1rem; font-weight: 500; }
         .copy-btn { background: #059669; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; cursor: pointer; }
+        .test-example { background: #fef3c7; padding: 1rem; border-radius: 8px; margin: 1.5rem 0; }
         .disclaimer { font-size: 0.85rem; color: #64748b; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; }
     </style>
     <script type="application/ld+json">
@@ -31,7 +36,9 @@
         "mainEntity": [
             {"@type": "Question", "name": "How much does Amazon FBA charge per item?", "acceptedAnswer": {"@type": "Answer", "text": "Amazon charges a 15% referral fee for most categories plus $3-$6 FBA fulfillment fee per standard size item, depending on weight and dimensions."}},
             {"@type": "Question", "name": "Is this FBA calculator really free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, no signup, no ads, no data upload. All calculations run locally in your browser, your cost data never leaves your device."}},
-            {"@type": "Question", "name": "How do I calculate my FBA profit margin?", "acceptedAnswer": {"@type": "Answer", "text": "Subtract referral fee, FBA fee, product cost, and shipping from your selling price, then divide by selling price to get your margin."}}
+            {"@type": "Question", "name": "How do I calculate my FBA profit margin?", "acceptedAnswer": {"@type": "Answer", "text": "Subtract referral fee, FBA fee, product cost, and shipping from your selling price, then divide by selling price to get your margin."}},
+            {"@type": "Question", "name": "What is a good FBA profit margin?", "acceptedAnswer": {"@type": "Answer", "text": "Most experienced FBA sellers target a 30%+ profit margin to cover PPC ads, returns, and other unforeseen costs."}},
+            {"@type": "Question", "name": "Does this calculator include PPC costs?", "acceptedAnswer": {"@type": "Answer", "text": "No, this calculator gives your base product profit. Remember to reserve 15-20% of your selling price for Amazon PPC advertising costs."}}
         ]
     }
     </script>
@@ -41,16 +48,39 @@
     <div class="container"><div class="calc-card">
         <h1>Free Amazon FBA Fee Calculator</h1>
         <div class="direct-answer">Yes, you can calculate your exact Amazon FBA fees, profit, and ROI in 10 seconds. This free calculator runs entirely in your browser, no signup required, and your product cost data never gets uploaded to any server.</div>
+
+        <h2>Why use this FBA calculator?</h2>
+        <p style="margin:1rem 0;">Most Amazon seller tools lock fee calculators behind expensive $50+/month subscriptions. This tool gives you instant, accurate fee breakdowns completely free, with no account required. Enter your selling price, landed product cost, referral percentage, and standard FBA fee, and you will see your net profit, margin, and ROI instantly.</p>
+
+        <h2>Standard FBA Fee Structure (2026)</h2>
+        <table>
+            <tr><th>Fee Type</th><th>Typical Amount</th><th>Notes</th></tr>
+            <tr><td>Referral Fee</td><td>15% of sale price</td><td>8% for electronics, 45% for Amazon devices</td></tr>
+            <tr><td>FBA Fulfillment Fee</td><td>$3.06 - $6.90</td><td>Standard size, 4-12 oz items</td></tr>
+            <tr><td>Monthly Storage Fee</td><td>$0.87/cu ft</td><td>Q4 storage fees jump to $2.40/cu ft</td></tr>
+            <tr><td>Optional: PPC Ads</td><td>15-20% of sale price</td><td>Required for most new product launches</td></tr>
+        </table>
+
         <div class="input-group"><label>Product Selling Price ($)</label><input type="number" id="price" value="19.99" oninput="calculate()"></div>
-        <div class="input-group"><label>Product Cost (landed cost, $)</label><input type="number" id="cost" value="5.00" oninput="calculate()"></div>
+        <div class="input-group"><label>Product Landed Cost (COGS + shipping to Amazon, $)</label><input type="number" id="cost" value="5.00" oninput="calculate()"></div>
         <div class="input-group"><label>Referral Fee Percentage (%)</label><input type="number" id="referral" value="15" oninput="calculate()"></div>
         <div class="input-group"><label>FBA Fulfillment Fee ($)</label><input type="number" id="fbaFee" value="3.22" oninput="calculate()"></div>
         <div class="result" id="result">Result will appear here</div>
         <button class="copy-btn" onclick="copyResult()">Copy Result</button>
-        <div class="test-example" style="background:#fef3c7;padding:1rem;border-radius:8px;margin:1.5rem 0;">
-            <strong>Test example:</strong> Price $19.99, cost $5, 15% referral, $3.22 FBA fee → Net profit: ~$8.78, margin: 43.9%
+
+        <div class="test-example">
+            <strong>Test example:</strong> Price $19.99, cost $5, 15% referral, $3.22 FBA fee → Net profit: ~$8.78, margin: 43.9%, ROI: 175.6%
         </div>
-<div class='disclaimer'>For seller estimation only, Amazon fees change periodically, always verify on Seller Central for exact numbers.</div>
+
+        <h2>Comparison with other FBA calculators</h2>
+        <table>
+            <tr><th>Tool</th><th>Price</th><th>Signup Required</th><th>Privacy</th></tr>
+            <tr><td>SmartImgKit FBA Calculator</td><td>100% free</td><td>No</td><td>100% local, no data upload</td></tr>
+            <tr><td>Jungle Scout Calculator</td><td>$49/month</td><td>Yes</td><td>All data sent to their servers</td></tr>
+            <tr><td>Helium 10 Calculator</td><td>$39/month</td><td>Yes</td><td>Requires account login</td></tr>
+        </table>
+
+<div class='disclaimer'>For seller estimation only, Amazon fees change periodically, always verify on Seller Central for exact numbers. This is not professional accounting advice.</div>
     </div></div>
     <script>
         function calculate() {

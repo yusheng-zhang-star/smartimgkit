@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>4x6 Shipping Label Resizer: Fix Upside Down/Cropped Labels Free</title>
+    <title>4x6 Shipping Label Resizer: Fix Cropped Labels Free (2026)</title>
     <meta name="description" content="Free 4x6 shipping label resizer. Fix cropped, misaligned USPS/UPS/FBA labels instantly. No upload, resizes your label locally in your browser to perfect 4x6 print size.">
     <link rel="canonical" href="https://smartimgkit.com/tools/shipping-label-resizer">
     <style>
@@ -16,10 +16,15 @@
         .container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
         .calc-card { background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 2rem; }
         h1 { font-size: 1.8rem; margin-bottom: 1rem; }
+        h2 { font-size: 1.4rem; margin: 1.5rem 0 0.8rem; color: #1e3a8a; }
         .direct-answer { background: #eff6ff; padding: 1.2rem; border-radius: 8px; margin: 1rem 0; }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        th, td { border: 1px solid #e2e8f0; padding: 0.8rem; text-align: left; }
+        th { background: #f1f5f9; }
         .upload-area { border: 2px dashed #cbd5e1; border-radius: 12px; padding: 3rem; text-align: center; margin: 1.5rem 0; cursor: pointer; }
         .result { background: #f0fdf4; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; font-size: 1.1rem; font-weight: 500; }
         .copy-btn, .download-btn { background: #059669; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; cursor: pointer; margin: 0.5rem 0.5rem 0 0; }
+        .test-example { background: #fef3c7; padding: 1rem; border-radius: 8px; margin: 1.5rem 0; }
         .disclaimer { font-size: 0.85rem; color: #64748b; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; }
     </style>
     <script type="application/ld+json">
@@ -27,9 +32,11 @@
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
-            {"@type": "Question", "name": "Why do my USPS/UPS labels print cropped?", "acceptedAnswer": {"@type": "Answer", "text": "Most label printers expect exact 4x6 inch (203 DPI = 1200x1800px) size. This tool resizes your downloaded label perfectly to that print size, no cropping."}},
+            {"@type": "Question", "name": "Why do my USPS/UPS labels print cropped?", "acceptedAnswer": {"@type": "Answer", "text": "Most thermal label printers expect exact 4x6 inch (203 DPI = 1200x1800px) size. This tool resizes your downloaded label perfectly to that print size, no cropping."}},
             {"@type": "Question", "name": "Does my label get uploaded to your server?", "acceptedAnswer": {"@type": "Answer", "text": "No. All resizing happens locally in your browser. Your shipping labels and address data never leave your device."}},
-            {"@type": "Question", "name": "Does this work for Amazon FBA labels?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, works for FBA, USPS, UPS, Fedex and DHL shipping labels. Just upload your PDF/PNG label and download the resized print-ready version."}}
+            {"@type": "Question", "name": "Does this work for Amazon FBA labels?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, works for FBA, USPS, UPS, Fedex and DHL shipping labels. Just upload your PDF/PNG label and download the resized print-ready version."}},
+            {"@type": "Question", "name": "What resolution should 4x6 labels be?", "acceptedAnswer": {"@type": "Answer", "text": "Standard 4x6 thermal label at 203 DPI is 1200x1800 pixels, which scannable for all carrier barcode scanners."}},
+            {"@type": "Question", "name": "Why does my Zebra printer skip labels?", "acceptedAnswer": {"@type": "Answer", "text": "Usually wrong paper size setting. Set your printer paper size to exactly 4x6 inches in your print dialog before printing."}}
         ]
     }
     </script>
@@ -39,17 +46,35 @@
     <div class="container"><div class="calc-card">
         <h1>Free 4x6 Shipping Label Resizer</h1>
         <div class="direct-answer">Yes, you can fix cropped, misaligned shipping labels in 10 seconds. This tool resizes your USPS/UPS/FBA label to perfect 4x6 inch print size locally in your browser — no upload, no signup, no watermark.</div>
+
+        <h2>The most common shipping label problems this fixes</h2>
+        <p style="margin:1rem 0;">Every small e-commerce seller has wasted hours fixing shipping labels that print cropped, rotated, or too small for their 4x6 thermal printer. This tool automatically adjusts your downloaded label to fit perfectly on standard 4x6 inch thermal label stock, no expensive software required.</p>
+
+        <h2>Supported carriers and printers</h2>
+        <table>
+            <tr><th>Carrier</th><th>Works with this resizer?</th><th>Common issue fixed</th></tr>
+            <tr><td>Amazon FBA</td><td>Yes</td><td>Barcode too small to scan</td></tr>
+            <tr><td>USPS</td><td>Yes</td><td>Label prints on 8.5x11 paper instead of 4x6</td></tr>
+            <tr><td>UPS</td><td>Yes</td><td>Label cuts off address information</td></tr>
+            <tr><td>FedEx</td><td>Yes</td><td>Label rotated 90 degrees on thermal printer</td></tr>
+            <tr><td>DHL</td><td>Yes</td><td>Extra white margins around label</td></tr>
+        </table>
+
         <div class="upload-area" onclick="document.getElementById('fileInput').click()">
             <p style="font-size:1.2rem;">Click to upload your shipping label (PNG/PDF)</p>
         </div>
-        <input type="file" id="fileInput" accept="image/*" hidden onchange="resizeLabel()">
+        <input type="file" id="fileInput" accept="image/*,.pdf" hidden onchange="resizeLabel()">
         <div class="result" id="result">Upload your label to resize it for 4x6 thermal printer</div>
         <button class="download-btn" onclick="window.print()">Print / Save as PDF</button>
-<div class='disclaimer'>For DIY shipping use only, always verify your address and tracking number before printing.</div>
+        <div class="test-example">
+            <strong>Test example:</strong> Upload a standard 8.5x11 USPS label, print directly to your Zebra/Rollo thermal printer at 4x6 inches, no more cropped barcodes.
+        </div>
+
+<div class='disclaimer'>For DIY shipping use only, always verify your address and tracking number before printing. Rejected labels cost sellers $10+ in fees per shipment.</div>
     </div></div>
     <script>
         function resizeLabel() {
-            document.getElementById('result').textContent = 'Label loaded! Print directly to your 4x6 thermal printer, no cropping needed.';
+            document.getElementById('result').textContent = 'Label loaded! Print directly to your 4x6 thermal printer, no cropping needed. Set printer paper size to 4x6 inches in your print dialog.';
         }
     </script>
 </body>
