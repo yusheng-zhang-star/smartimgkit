@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Nota Fiscal: Crie Nota Fiscal PDF Grátis Sem Cadastro</title>
+    <meta name="description" content="Gerador de nota fiscal grátis online. Crie notas fiscais profissionais em segundos, sem cadastro, sem marca d'água, seus dados ficam só no seu dispositivo.">
+    <link rel="canonical" href="https://smartimgkit.com/pt/tools/gerador-nota-fiscal">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background: #f8fafc; color: #1e293b; line-height: 1.7; }
+        .top { background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1rem 0; }
+        .top-inner { max-width: 1200px; margin: 0 auto; padding: 0 1rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-weight: 700; color: #1e3a8a; text-decoration: none; font-size: 1.2rem; }
+        .nav-links a { margin-left: 1.5rem; color: #475569; text-decoration: none; }
+        .container { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+        .calc-card { background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 2rem; }
+        h1 { font-size: 1.8rem; margin-bottom: 1rem; }
+        .direct-answer { background: #eff6ff; padding: 1.2rem; border-radius: 8px; margin: 1rem 0; }
+        .input-group { margin: 1rem 0; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+        input, textarea { width: 100%; padding: 0.8rem; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 1rem; }
+        .result { background: #f0fdf4; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; font-size: 1.1rem; font-weight: 500; }
+        .copy-btn, .download-btn { background: #059669; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; cursor: pointer; margin-right: 0.5rem; }
+        .disclaimer { font-size: 0.85rem; color: #64748b; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; }
+    </style>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {"@type": "Question", "name": "Esse gerador de nota fiscal é grátis?", "acceptedAnswer": {"@type": "Answer", "text": "Sim, sem marca d'água, sem cadastro, sem limites. Crie quantas notas fiscais precisar, completamente de graça."}},
+            {"@type": "Question", "name": "Meus dados são enviados para o seu servidor?", "acceptedAnswer": {"@type": "Answer", "text": "Não. Todos os cálculos são feitos localmente no seu navegador. Nunca vemos os dados dos seus clientes nem os valores."}},
+            {"@type": "Question", "name": "Posso baixar a nota fiscal em PDF?", "acceptedAnswer": {"@type": "Answer", "text": "Sim, clique no botão de imprimir para salvar sua nota como PDF pronto para enviar ou imprimir."}}
+        ]
+    }
+    </script>
+</head>
+<body>
+    <div class="top"><div class="top-inner"><a href="/pt/" class="logo">SmartImgKit PT</a><div class="nav-links"><a href="/pt/tools/">Ferramentas</a><a href="/pt/blog/">Blog</a><a href="/">English</a></div></div></div>
+    <div class="container"><div class="calc-card">
+        <h1>Gerador de Nota Fiscal Grátis</h1>
+        <div class="direct-answer">Sim, você pode criar uma nota fiscal profissional em PDF em 30 segundos. Esse gerador não tem marca d'água, não precisa de cadastro, e todos os seus dados ficam só no seu dispositivo — nunca são enviados para nossos servidores.</div>
+        <div class="input-group"><label>Nome da sua empresa</label><input type="text" id="businessName" value="Minha Empresa Ltda."></div>
+        <div class="input-group"><label>Nome do cliente</label><input type="text" id="clientName" value="Empresa Cliente"></div>
+        <div class="input-group"><label>Número da nota</label><input type="text" id="invoiceNum" value="NF-001"></div>
+        <div class="input-group"><label>Descrição do serviço</label><textarea id="desc" rows="2">Serviços de design de site</textarea></div>
+        <div class="input-group"><label>Valor (R$)</label><input type="number" id="amount" value="500.00" oninput="calculate()"></div>
+        <div class="input-group"><label>Imposto (%)</label><input type="number" id="tax" value="0" oninput="calculate()"></div>
+        <div class="result" id="result">Total: R$500,00</div>
+        <button class="download-btn" onclick="window.print()">Baixar PDF / Imprimir</button>
+        <button class="copy-btn" onclick="copyResult()">Copiar Total</button>
+<div class='disclaimer'>Apenas para emissão de notas para pequenos negócios, consulte seu contador para obrigações fiscais.</div>
+    </div></div>
+    <script>
+        function calculate() {
+            const amount = parseFloat(document.getElementById('amount').value) || 0;
+            const taxPct = parseFloat(document.getElementById('tax').value) || 0;
+            const tax = amount * taxPct/100;
+            const total = amount + tax;
+            document.getElementById('result').textContent = `Subtotal: R$${amount.toFixed(2)} | Imposto: R$${tax.toFixed(2)} | Total: R$${total.toFixed(2)}`;
+        }
+        function copyResult() {
+            navigator.clipboard.writeText(document.getElementById('result').textContent);
+        }
+        calculate();
+    </script>
+</body>
+</html>
