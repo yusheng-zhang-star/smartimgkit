@@ -41,6 +41,13 @@
     <div class="container"><div class="calc-card">
         <h1>Gerador de Nota Fiscal Grátis</h1>
         <div class="direct-answer">Sim, você pode criar uma nota fiscal profissional em PDF em 30 segundos. Esse gerador não tem marca d'água, não precisa de cadastro, e todos os seus dados ficam só no seu dispositivo — nunca são enviados para nossos servidores.</div>
+        <h2>Modelos Rápidos (1 clique)</h2>
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin:1rem 0;">
+            <button class="copy-btn" onclick="fillTemplate('design')">Designer Gráfico</button>
+            <button class="copy-btn" onclick="fillTemplate('consultoria')">Consultor</button>
+            <button class="copy-btn" onclick="fillTemplate('web')">Desenvolvedor Web</button>
+            <button class="copy-btn" onclick="fillTemplate('redacao')">Redator</button>
+        </div>
         <div class="input-group"><label>Nome da sua empresa</label><input type="text" id="businessName" value="Minha Empresa Ltda."></div>
         <div class="input-group"><label>Nome do cliente</label><input type="text" id="clientName" value="Empresa Cliente"></div>
         <div class="input-group"><label>Número da nota</label><input type="text" id="invoiceNum" value="NF-001"></div>
@@ -53,6 +60,18 @@
 <div class='disclaimer'>Apenas para emissão de notas para pequenos negócios, consulte seu contador para obrigações fiscais.</div>
     </div></div>
     <script>
+        function fillTemplate(type) {
+            const templates = {
+                design: {desc: "Criação de logotipo e identidade visual", amount: 1800},
+                consultoria: {desc: "2 horas de consultoria de negócios", amount: 900},
+                web: {desc: "Desenvolvimento de landing page", amount: 3000},
+                redacao: {desc: "Redação de 3 artigos para blog", amount: 1200}
+            };
+            const t = templates[type];
+            document.getElementById('desc').value = t.desc;
+            document.getElementById('amount').value = t.amount;
+            calculate();
+        }
         function calculate() {
             const amount = parseFloat(document.getElementById('amount').value) || 0;
             const taxPct = parseFloat(document.getElementById('tax').value) || 0;

@@ -41,6 +41,13 @@
     <div class="container"><div class="calc-card">
         <h1>Generador de Facturas Gratis</h1>
         <div class="direct-answer">Sí, puedes crear una factura PDF profesional en 30 segundos. Este generador no tiene marca de agua, no requiere registro, y todos tus datos se quedan localmente en tu dispositivo — nunca se suben a nuestros servidores.</div>
+        <h2>Plantillas rápidas (1 clic)</h2>
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin:1rem 0;">
+            <button class="copy-btn" onclick="fillTemplate('diseno')">Diseñador Gráfico</button>
+            <button class="copy-btn" onclick="fillTemplate('consultoria')">Consultor</button>
+            <button class="copy-btn" onclick="fillTemplate('web')">Desarrollador Web</button>
+            <button class="copy-btn" onclick="fillTemplate('redaccion')">Redactor</button>
+        </div>
         <div class="input-group"><label>Nombre de tu negocio</label><input type="text" id="businessName" value="Mi Negocio S.L."></div>
         <div class="input-group"><label>Nombre del cliente</label><input type="text" id="clientName" value="Empresa Cliente"></div>
         <div class="input-group"><label>Número de factura</label><input type="text" id="invoiceNum" value="FAC-001"></div>
@@ -53,6 +60,18 @@
 <div class='disclaimer'>Solo para facturación de pequeños negocios, consulta con tu asesor para cumplimiento fiscal.</div>
     </div></div>
     <script>
+        function fillTemplate(type) {
+            const templates = {
+                diseno: {desc: "Diseño de logotipo e identidad de marca", amount: 350},
+                consultoria: {desc: "2 horas de consultoría de negocio", amount: 180},
+                web: {desc: "Desarrollo de página web landing", amount: 600},
+                redaccion: {desc: "Redacción de 3 artículos de blog", amount: 250}
+            };
+            const t = templates[type];
+            document.getElementById('desc').value = t.desc;
+            document.getElementById('amount').value = t.amount;
+            calculate();
+        }
         function calculate() {
             const amount = parseFloat(document.getElementById('amount').value) || 0;
             const taxPct = parseFloat(document.getElementById('tax').value) || 0;
