@@ -17,20 +17,29 @@
         .calc-card { background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
         h1 { font-size: 1.8rem; margin-bottom: 1rem; }
         .direct-answer { background: #eef2ff; padding: 1.2rem; border-radius: 8px; margin: 1rem 0; }
+        img.scene { width: 100%; border-radius: 8px; margin: 1rem 0; height: 250px; object-fit: cover; }
         .input-group { margin: 1rem 0; }
         label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
         input { width: 100%; padding: 0.8rem; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 1.1rem; }
         .result { background: #f0fdf4; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; font-size: 1.2rem; font-weight: 500; }
+        .copy-btn { background: #059669; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; cursor: pointer; }
+        .test-example { background: #fef3c7; padding: 1rem; border-radius: 8px; margin: 1.5rem 0; font-size: 0.95rem; }
+        .disclaimer { font-size: 0.85rem; color: #64748b; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; }
     </style>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿Cuántas baldosas necesito para 9 m²?","acceptedAnswer":{"@type":"Answer","text":"Para 9 m², necesitas aproximadamente 10 baldosas de 90x90cm, incluyendo 5% de desperdicio."}}]}</script>
 </head>
 <body>
     <div class="top"><div class="top-inner"><a href="/es/" class="logo">SmartImgKit ES</a><div class="nav-links"><a href="/es/tools/">Herramientas</a><a href="/es/blog/">Blog</a><a href="/">English</a></div></div></div>
     <div class="container"><div class="calc-card">
         <h1>Calculadora de Baldosas</h1>
-        <div class="direct-answer">Sí, calcula cuántas baldosas necesitas para tu piso o baño. Sin anuncios, incluye 5% de desperdicio por cortes.</div>
+        <div class="direct-answer">Sí, calcula cuántas baldosas necesitas para tu piso o baño en 10 segundos. Sin anuncios, funciona en tu navegador, incluye 5% de desperdicio por cortes.</div>
+        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800&q=80" alt="Instalación de baldosas de piso DIY" class="scene">
         <div class="input-group"><label>Ancho del piso (metros)</label><input type="number" id="width" value="3" oninput="calculate()"></div>
         <div class="input-group"><label>Largo del piso (metros)</label><input type="number" id="length" value="3" oninput="calculate()"></div>
         <div class="result" id="result">Resultado aparecerá aquí</div>
+        <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('result').textContent)">Copiar Resultado</button>
+        <div class="test-example">Ejemplo: piso 3x3m → necesitas 9.5 m² de baldosas, listo para comprar.</div>
+        <div class="disclaimer">Solo para estimaciones DIY, no para instalación profesional.</div>
     </div>
     <script>
         function calculate() {
