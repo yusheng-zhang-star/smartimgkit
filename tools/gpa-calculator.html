@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPA Calculator: Calculate College GPA Free Online 2026</title>
+    <meta name="description" content="Free online college GPA calculator. Calculate your semester and cumulative GPA instantly. No signup, works on mobile, all data stays on your device.">
+    <link rel="canonical" href="https://smartimgkit.com/tools/gpa-calculator">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background: #f8fafc; color: #1e293b; line-height: 1.7; }
+        .top { background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1rem 0; }
+        .top-inner { max-width: 1200px; margin: 0 auto; padding: 0 1rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-weight: 700; color: #1e3a8a; text-decoration: none; font-size: 1.2rem; }
+        .nav-links a { margin-left: 1.5rem; color: #475569; text-decoration: none; }
+        .container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+        .calc-card { background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 2rem; }
+        h1 { font-size: 1.8rem; margin-bottom: 1rem; }
+        .direct-answer { background: #eff6ff; padding: 1.2rem; border-radius: 8px; margin: 1rem 0; }
+        .input-group { margin: 1rem 0; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+        input, select { width: 100%; padding: 0.8rem; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 1.1rem; }
+        .result { background: #f0fdf4; padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; font-size: 1.2rem; font-weight: 500; }
+        .copy-btn { background: #059669; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; cursor: pointer; }
+        .disclaimer { font-size: 0.85rem; color: #64748b; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; }
+    </style>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {"@type": "Question", "name": "How do I calculate my college GPA?", "acceptedAnswer": {"@type": "Answer", "text": "Multiply each grade point value by the course credit hours, sum them all, then divide by total credit hours. This calculator does it instantly for you."}},
+            {"@type": "Question", "name": "Is this GPA calculator weighted?", "acceptedAnswer": {"@type": "Answer", "text": "This unweighted 4.0 scale calculator works for most US colleges. Enter your letter grades and credit hours to get your result."}},
+            {"@type": "Question", "name": "Is my GPA data safe?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, all calculations happen locally in your browser. Your grades and academic data never leave your device."}}
+        ]
+    }
+    </script>
+</head>
+<body>
+    <div class="top"><div class="top-inner"><a href="/" class="logo">SmartImgKit</a><div class="nav-links"><a href="/tools/">Tools</a><a href="/blog/">Blog</a><a href="/es/">Español</a></div></div></div>
+    <div class="container"><div class="calc-card">
+        <h1>Free College GPA Calculator</h1>
+        <div class="direct-answer">Yes, you can calculate your exact college GPA in seconds. This free calculator uses the standard 4.0 scale, requires no signup, and all your grade data stays locally on your device — nothing gets uploaded.</div>
+        <div class="input-group"><label>Course 1 Grade</label>
+            <select id="g1" onchange="calculate()"><option value="4.0">A</option><option value="3.7">A-</option><option value="3.3">B+</option><option value="3.0">B</option><option value="2.7">B-</option><option value="2.3">C+</option><option value="2.0">C</option><option value="1.0">D</option><option value="0.0">F</option></select>
+        </div>
+        <div class="input-group"><label>Course 1 Credit Hours</label><input type="number" id="c1" value="3" oninput="calculate()"></div>
+        <div class="input-group"><label>Course 2 Grade</label>
+            <select id="g2" onchange="calculate()"><option value="4.0">A</option><option value="3.7" selected>A-</option><option value="3.3">B+</option><option value="3.0">B</option><option value="2.7">B-</option><option value="2.3">C+</option><option value="2.0">C</option><option value="1.0">D</option><option value="0.0">F</option></select>
+        </div>
+        <div class="input-group"><label>Course 2 Credit Hours</label><input type="number" id="c2" value="3" oninput="calculate()"></div>
+        <div class="input-group"><label>Course 3 Grade</label>
+            <select id="g3" onchange="calculate()"><option value="4.0">A</option><option value="3.7">A-</option><option value="3.3">B+</option><option value="3.0" selected>B</option><option value="2.7">B-</option><option value="2.3">C+</option><option value="2.0">C</option><option value="1.0">D</option><option value="0.0">F</option></select>
+        </div>
+        <div class="input-group"><label>Course 3 Credit Hours</label><input type="number" id="c3" value="3" oninput="calculate()"></div>
+        <div class="result" id="result">Your GPA: 3.57</div>
+        <button class="copy-btn" onclick="copyResult()">Copy GPA</button>
+<div class='disclaimer'>For student estimation only, confirm your official GPA with your university registrar.</div>
+    </div></div>
+    <script>
+        function calculate() {
+            const g1 = parseFloat(document.getElementById('g1').value);
+            const c1 = parseFloat(document.getElementById('c1').value) || 0;
+            const g2 = parseFloat(document.getElementById('g2').value);
+            const c2 = parseFloat(document.getElementById('c2').value) || 0;
+            const g3 = parseFloat(document.getElementById('g3').value);
+            const c3 = parseFloat(document.getElementById('c3').value) || 0;
+            const totalPoints = g1*c1 + g2*c2 + g3*c3;
+            const totalCredits = c1 + c2 + c3;
+            const gpa = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : 0;
+            document.getElementById('result').textContent = `Your Semester GPA: ${gpa} (${totalCredits} total credit hours)`;
+        }
+        function copyResult() {
+            navigator.clipboard.writeText(document.getElementById('result').textContent);
+        }
+        calculate();
+    </script>
+</body>
+</html>
