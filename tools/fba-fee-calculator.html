@@ -61,6 +61,13 @@
             <tr><td>Optional: PPC Ads</td><td>15-20% of sale price</td><td>Required for most new product launches</td></tr>
         </table>
 
+        <h2>Quick Category Presets</h2>
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin:1rem 0;">
+            <button class="copy-btn" onclick="setCategory('15')">General (15%)</button>
+            <button class="copy-btn" onclick="setCategory('8')">Electronics (8%)</button>
+            <button class="copy-btn" onclick="setCategory('45')">Amazon Devices (45%)</button>
+            <button class="copy-btn" onclick="setCategory('20')">Beauty (20%)</button>
+        </div>
         <div class="input-group"><label>Product Selling Price ($)</label><input type="number" id="price" value="19.99" oninput="calculate()"></div>
         <div class="input-group"><label>Product Landed Cost (COGS + shipping to Amazon, $)</label><input type="number" id="cost" value="5.00" oninput="calculate()"></div>
         <div class="input-group"><label>Referral Fee Percentage (%)</label><input type="number" id="referral" value="15" oninput="calculate()"></div>
@@ -83,6 +90,10 @@
 <div class='disclaimer'>For seller estimation only, Amazon fees change periodically, always verify on Seller Central for exact numbers. This is not professional accounting advice.</div>
     </div></div>
     <script>
+        function setCategory(pct) {
+            document.getElementById('referral').value = pct;
+            calculate();
+        }
         function calculate() {
             const price = parseFloat(document.getElementById('price').value) || 0;
             const cost = parseFloat(document.getElementById('cost').value) || 0;

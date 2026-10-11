@@ -65,6 +65,13 @@
             </div>
         </div>
         <button class="add-btn" onclick="addCourse()">+ Add Another Course</button>
+        <div style="margin:2rem 0; padding:1rem; background:#f8fafc; border-radius:8px;">
+            <h3 style="margin-bottom:0.8rem;">📊 Calculate Cumulative GPA across semesters</h3>
+            <div class="input-group"><label>Current Cumulative GPA (before this semester)</label><input type="number" id="prevGpa" value="0" step="0.01"></div>
+            <div class="input-group"><label>Previous Total Credit Hours</label><input type="number" id="prevCredits" value="0"></div>
+            <button class="copy-btn" onclick="calculateCumulative()">Calculate Cumulative GPA</button>
+        </div>
+        <div class="result" id="cumulativeResult" style="background:#eff6ff; display:none;"></div>
         <div class="result" id="result">Your GPA: 4.0 (3 total credits)</div>
         <button class="copy-btn" onclick="copyResult()">Copy GPA Result</button>
         <div style="background:#fef3c7;padding:1rem;border-radius:8px;margin:1.5rem 0;">
@@ -81,6 +88,22 @@
             <input type="text" placeholder="Course name (optional)">`;
             document.getElementById('courses').appendChild(div);
             calculate();
+        }
+        function calculateCumulative() {
+            const prevGpa = parseFloat(document.getElementById('prevGpa').value) || 0;
+            const prevCredits = parseFloat(document.getElementById('prevCredits').value) || 0;
+            const grades = document.querySelectorAll('.grade');
+            const credits = document.querySelectorAll('.credits');
+            let totalPoints = 0, totalCredits = 0;
+            for(let i=0; i<grades.length; i++) {
+                totalPoints += parseFloat(grades[i].value) * (parseFloat(credits[i].value)||0);
+                totalCredits += parseFloat(credits[i].value)||0;
+            }
+            const semGpa = totalCredits > 0 ? totalPoints/totalCredits : 0;
+            const cumGpa = (prevGpa*prevCredits + semGpa*totalCredits) / (prevCredits + totalCredits);
+            const el = document.getElementById('cumulativeResult');
+            el.style.display = 'block';
+            el.innerHTML = `Your New Cumulative GPA: <strong>${cumGpa.toFixed(2)}</strong> (combined ${prevCredits+totalCredits} total credits)`;
         }
         function calculate() {
             const grades = document.querySelectorAll('.grade');

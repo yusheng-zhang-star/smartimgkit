@@ -60,6 +60,13 @@
             <tr><td>Invoice Simple</td><td>3 invoices free, then $10/month</td><td>Yes on free tier</td><td>Requires account signup</td></tr>
         </table>
 
+        <h2>Quick Start Templates (1-click fill)</h2>
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin:1rem 0;">
+            <button class="copy-btn" onclick="fillTemplate('freelance')">Freelance Writer</button>
+            <button class="copy-btn" onclick="fillTemplate('design')">Graphic Designer</button>
+            <button class="copy-btn" onclick="fillTemplate('consult')">Business Consultant</button>
+            <button class="copy-btn" onclick="fillTemplate('webdev')">Web Developer</button>
+        </div>
         <div class="input-group"><label>Your Business Name</label><input type="text" id="businessName" value="My Business LLC"></div>
         <div class="input-group"><label>Client Name</label><input type="text" id="clientName" value="Client Company"></div>
         <div class="input-group"><label>Invoice Number</label><input type="text" id="invoiceNum" value="INV-001"></div>
@@ -76,6 +83,18 @@
 <div class='disclaimer'>For small business invoicing use only, consult your accountant for tax compliance requirements in your country.</div>
     </div></div>
     <script>
+        function fillTemplate(type) {
+            const templates = {
+                freelance: {desc: "Blog post writing (3 x 1000 word articles)", amount: 300},
+                design: {desc: "Logo design + brand kit", amount: 450},
+                consult: {desc: "2-hour business strategy consultation", amount: 200},
+                webdev: {desc: "Landing page development", amount: 800}
+            };
+            const t = templates[type];
+            document.getElementById('desc').value = t.desc;
+            document.getElementById('amount').value = t.amount;
+            calculate();
+        }
         function calculate() {
             const amount = parseFloat(document.getElementById('amount').value) || 0;
             const taxPct = parseFloat(document.getElementById('tax').value) || 0;
