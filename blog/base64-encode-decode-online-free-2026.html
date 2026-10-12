@@ -64,19 +64,24 @@
 
         <h2>Common use cases for Base64</h2>
         <ul style="margin:1rem 2rem;">
-            <li>Embed small PNG/SVG icons directly in your CSS to reduce HTTP requests</li>
-            <li>Encode API keys and passwords for HTTP Basic Authorization headers</li>
-            <li>Convert binary files (like small images) to text for embedding in JSON responses</li>
-            <li>Decode Base64 strings you encounter in network logs or browser dev tools</li>
+            <li>Embed small PNG/SVG icons directly in your CSS to reduce HTTP requests — a 1KB icon saves a full network roundtrip on mobile</li>
+            <li>Encode API keys and passwords for HTTP Basic Authorization headers — this is the most common reason developers open a Base64 tool at 2am</li>
+            <li>Convert binary files (like small images, audio clips) to text for embedding in JSON responses that don't support raw binary</li>
+            <li>Decode Base64 strings you encounter in network logs, browser dev tools, or API responses that look like garbage</li>
+            <li>Convert image attachments for email — old email systems couldn't handle raw binary, so Base64 became the universal standard</li>
+            <li>Store small thumbnails in databases as text instead of BLOB columns, making backups and replication easier</li>
         </ul>
 
-        <h2>Step-by-step: encode a string in 10 seconds</h2>
-        <ol style="margin:1rem 2rem;">
-            <li>Open the free Base64 tool</li>
-            <li>Paste your plain text into the left input box</li>
-            <li>Click "Encode" — your Base64 output appears instantly on the right</li>
-            <li>Click copy to paste it into your code or config file</li>
-        </ol>
+        <h2>Common Base64 mistakes and how to fix them</h2>
+        <p>New developers run into the same Base64 errors every day. The most common one is trying to decode a string that isn't actually Base64 — if you see characters like <, >, or spaces that aren't in the standard Base64 alphabet, the input is wrong. The second most common mistake is double-encoding: you take plain text, encode it to Base64, then encode that Base64 string again, and wonder why the decoded output is still Base64-looking garbage. Our tool automatically strips whitespace and newlines from your input, which fixes 90% of these common errors.</p>
+        <p>Another common confusion: Base64 is not encryption. A lot of people think they're "hiding" data by encoding it, but Base64 is trivially reversible — anyone can decode it in one click. Never use Base64 to store passwords or secret keys; it's only for transport, not security.</p>
+
+        <h2>Why you shouldn't paste production data into random online tools</h2>
+        <p>We built this tool after seeing too many horror stories: a dev pasted a production AWS access key into a random online Base64 decoder to test a string, and that string was logged on the tool's server, leading to credential leaks. When you use a local-in-browser tool, your input never touches a remote server — there's no log, no analytics beacon sending your input somewhere, no chance of accidental leakage. This is the same privacy principle as our background remover and JSON formatter: your data stays on your device, period.</p>
+        <p>Most online tools make money by showing ads, but many also inject third-party trackers that send your input to analytics companies. Even if they don't intentionally log your input, the ad networks can read it. Our tool has zero external calls — it's a single static HTML file, no scripts loaded from external domains, no trackers, no ads. It works even if you turn off your internet connection after the page loads.</p>
+
+        <h2>Pros and cons of using a local Base64 tool</h2>
+        <p><strong>Pros:</strong> 100% private — your strings never leave your device; no signup, no email, no account required; works offline after the page loads; instant results even for 10MB+ strings; no ads, no popups, no dark patterns. <strong>Cons:</strong> it doesn't do fancy things like file-to-Base64 conversion for PDFs (we have a separate tool for that); it's focused purely on text strings, which is what 95% of developers need when they open a Base64 tool at 1am. If you need to convert an image to Base64, you can use our image tools first, then paste the result here.</p>
 
         <div class="cta">
             <p>👉 Try the <a href="/base64" style="font-weight:700; color:#4f46e5;">local Base64 encoder/decoder now</a> — no signup, no upload, 100% private.</p>

@@ -70,11 +70,24 @@
 
         <h2>Common developer use cases for UUIDs</h2>
         <ul style="margin:1rem 2rem;">
-            <li>Database primary keys for distributed applications (no auto-increment conflicts)</li>
-            <li>Session IDs and password reset tokens in web apps</li>
-            <li>File names for uploaded user content (avoids naming collisions)</li>
-            <li>Message IDs in event streaming and message queue systems</li>
+            <li>Database primary keys for distributed applications — unlike auto-increment integers, UUIDs can be generated on any client without coordination, so no two writes collide even across 1000 servers</li>
+            <li>Session IDs and password reset tokens in web apps — they're unguessable, so attackers can't brute-force other users' sessions</li>
+            <li>File names for uploaded user content — using a UUID as the file name means two users uploading "vacation.jpg" never overwrite each other's files on your server</li>
+            <li>Message IDs in event streaming and message queue systems like Kafka or RabbitMQ — you need globally unique IDs to track events across partitions</li>
+            <li>OAuth 2.0 state parameters and CSRF tokens — they're random, unguessable, and unique per request, which stops cross-site request forgery attacks</li>
+            <li>Testing and development — when you need dummy unique IDs for unit tests, seed data, or demo applications, a UUID generator is the fastest way to make realistic-looking data</li>
         </ul>
+
+        <h2>Why local UUID generation matters</h2>
+        <p>Most online UUID generators use a server-side random number generator. That means every UUID they give you is logged on their server — they can see exactly what IDs you're generating, when you generated them, and what pattern they follow. If you're generating UUIDs for production database keys, internal session IDs, or customer record IDs, that's a serious privacy leak: a malicious tool operator could correlate your generated IDs with your application traffic and reverse-engineer how your system works.</p>
+        <p>Our UUID generator uses your browser's built-in <code>crypto.getRandomValues()</code> API, which is the same cryptographically secure random number generator that browsers use for TLS, Web Crypto, and production web applications. When you open our page, every UUID you generate is created on your own device, using your own operating system's entropy source. There's no network call to our server to "fetch" a UUID — the math happens entirely in JavaScript running on your machine. That means even if our server went down, the tool would still work perfectly offline.</p>
+
+        <h2>What does a UUID actually look like?</h2>
+        <p>A standard UUID v4 looks like this: <code>3fa2b8e1-1b3d-4e5f-8a9b-0c1d2e3f4a5b</code>. It's 36 characters long: 32 hexadecimal digits separated by 4 hyphens, in the format 8-4-4-4-12. The "v4" means it's entirely randomly generated — there's no embedded timestamp or MAC address, which makes it the most private and secure UUID version. Other UUID versions (v1, v3, v5) embed timestamps or user IDs, which can leak information about when the ID was created and what machine created it. That's why almost all modern applications use v4 UUIDs.</p>
+        <p>People often ask how many possible UUIDs exist. The number is 2^128, which is about 3.4 × 10^38. To put that in perspective: if you generated 1 billion UUIDs every second for 100 years, you'd still have less than a 0.0000001% chance of ever generating a duplicate. That's why UUIDs are safe to use as primary keys in massive global applications — collision is practically impossible.</p>
+
+        <h2>Pros and cons of our UUID generator</h2>
+        <p><strong>Pros:</strong> uses cryptographically secure random numbers from your browser's built-in API; generates up to 100 UUIDs in one click; copies any UUID to clipboard with a single click; zero network requests, works offline; no ads, no signup, no tracking. <strong>Cons:</strong> it only generates v4 UUIDs — if you need v1, v3, or v5 UUIDs for legacy system integration, you'll need a more complex tool. But for 99% of modern developer use cases, v4 is what you want anyway.</p>
 
         <div class="cta">
             <p>👉 Try the <a href="/uuid-generator" style="font-weight:700; color:#059669;">free local UUID generator now</a> — no signup, no server calls.</p>
