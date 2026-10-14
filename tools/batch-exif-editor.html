@@ -1,36 +1,368 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-tool-id="batch-exif-editor">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Free Batch EXIF Editor — Change Photo Date Time Online</title>
-<meta name="description" content="Batch edit photo EXIF date and time online for free. Set all photos to the same date, 100% local processing no upload.">
+<meta name="robots" content="index, follow">
+<title>Free Batch EXIF Editor — Change Photo Date Time Online | SmartImgKit</title>
+<meta name="description" content="Batch edit photo EXIF date and time online for free. Set all photos to the same date, 100% local processing, no upload.">
 <link rel="canonical" href="https://smartimgkit.com/tools/batch-exif-editor">
-<link rel="stylesheet" href="/css/style.css">
+<meta name="theme-color" content="#6366f1">
+<meta property="og:title" content="Free Batch EXIF Editor — Change Photo Date Time Online | SmartImgKit">
+<meta property="og:description" content="Batch edit photo EXIF date and time online for free. Set all photos to the same date, 100% local processing, no upload.">
+<meta property="og:url" content="https://smartimgkit.com/tools/batch-exif-editor">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SmartImgKit">
+<meta property="og:image" content="https://smartimgkit.com/screenshots/compressor.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free Batch EXIF Editor — Change Photo Date Time Online | SmartImgKit">
+<meta name="twitter:description" content="Batch edit photo EXIF date and time online for free. Set all photos to the same date, 100% local processing, no upload.">
+<meta name="twitter:image" content="https://smartimgkit.com/screenshots/compressor.png">
+<link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/batch-exif-editor">
+<link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/batch-exif-editor">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Batch EXIF Date Editor",
+  "url": "https://smartimgkit.com/tools/batch-exif-editor",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Set the EXIF capture date and time on many JPG photos at once. Free, private, and fully browser-based."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to change the date on multiple photos",
+  "step": [
+    { "@type": "HowToStep", "position": 1, "name": "Add your JPGs", "text": "Drag in as many JPG files as you like. Nothing is uploaded." },
+    { "@type": "HowToStep", "position": 2, "name": "Pick the new date and time", "text": "Set the date and clock time to write into the EXIF block of every file." },
+    { "@type": "HowToStep", "position": 3, "name": "Click Apply & Download", "text": "One photo downloads directly; several are packed into a single ZIP." }
+  ]
+}
+</script>
+
+<style>
+.toolui{max-width:840px;margin:0 auto}
+.toolui .drop{border:2px dashed var(--border);border-radius:12px;padding:2.4rem 1.25rem;text-align:center;cursor:pointer;transition:border-color .2s,background .2s}
+.toolui .drop:hover,.toolui .drop.drag{border-color:var(--accent);background:var(--bg-secondary)}
+.toolui .drop .ico{font-size:2.6rem;line-height:1;margin-bottom:.6rem}
+.toolui .drop p{margin:.25rem 0;color:var(--text-secondary);font-size:.92rem}
+.toolui .drop strong{color:var(--text-primary)}
+.toolui .ctrls{display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-end;margin:1.25rem 0}
+.toolui label{display:flex;flex-direction:column;font-size:.78rem;color:var(--text-secondary);gap:.35rem}
+.toolui input[type=date],.toolui input[type=time],.toolui input[type=number],.toolui input[type=text],.toolui select{padding:.5rem .6rem;border:1px solid var(--border);border-radius:8px;background:var(--bg-secondary);color:var(--text-primary);font:inherit;font-size:.9rem}
+.toolui button{padding:.62rem 1.15rem;border-radius:8px;border:1px solid var(--border);background:var(--bg-secondary);color:var(--text-primary);cursor:pointer;font-weight:600;font:inherit;font-size:.9rem}
+.toolui button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.toolui button:disabled{opacity:.5;cursor:not-allowed}
+.toolui .hint{font-size:.84rem;color:var(--text-secondary)}
+.toolui .err{font-size:.84rem;color:#ef4444}
+.toolui .list{list-style:none;margin:1rem 0 0;padding:0;font-size:.85rem}
+.toolui .list li{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.55rem .8rem;border:1px solid var(--border);border-radius:8px;margin-bottom:.5rem;background:var(--bg-secondary)}
+.toolui .list li span:last-child{color:var(--text-secondary);text-align:right;white-space:nowrap}
+.toolui .bar{height:8px;border-radius:99px;background:var(--bg-secondary);border:1px solid var(--border);overflow:hidden;margin:.6rem 0;display:none}
+.toolui .bar.show{display:block}
+.toolui .bar>i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+.toolui canvas,.toolui img.prev{max-width:100%;border-radius:10px;border:1px solid var(--border);display:block;margin:0 auto}
+.toolui .result{display:none;margin-top:1.25rem}
+.toolui .result.show{display:block}
+.toolui .slider{display:flex;flex-direction:column;font-size:.78rem;color:var(--text-secondary);gap:.35rem}
+.toolui .slider .row{display:flex;align-items:center;gap:.6rem}
+.toolui input[type=range]{accent-color:var(--accent);width:170px}
+@media(max-width:640px){.toolui .ctrls{flex-direction:column;align-items:stretch}.toolui .drop{padding:1.8rem 1rem}}
+
+.sec{margin:2.5rem 0}
+.sec>h2{font-size:1.55rem;margin:0 0 .5rem;text-align:center;color:var(--text-primary)}
+.sec>.sub{text-align:center;color:var(--text-secondary);margin:0 auto 1.6rem;max-width:660px;font-size:.95rem;line-height:1.6}
+.grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.card2{background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;padding:1.1rem}
+.card2 h3{font-size:1rem;margin:0 0 .4rem;color:var(--text-primary)}
+.card2 p{margin:0;font-size:.88rem;color:var(--text-secondary);line-height:1.6}
+.steps{counter-reset:s;list-style:none;padding:0;margin:0 auto;max-width:720px}
+.steps li{counter-increment:s;position:relative;padding:0 0 1.1rem 2.6rem;color:var(--text-secondary);font-size:.92rem;line-height:1.6}
+.steps li:before{content:counter(s);position:absolute;left:0;top:0;width:1.7rem;height:1.7rem;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700}
+.faq details{border:1px solid var(--border);border-radius:10px;padding:.8rem 1rem;margin-bottom:.6rem;background:var(--bg-secondary)}
+.faq summary{cursor:pointer;font-weight:600;color:var(--text-primary);font-size:.95rem}
+.faq p{margin:.6rem 0 0;color:var(--text-secondary);font-size:.9rem;line-height:1.6}
+.related{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.related a{background:var(--bg-secondary);border:1px solid var(--border);border-radius:999px;padding:.5rem 1rem;font-size:.85rem;color:var(--text-primary);text-decoration:none}
+.related a:hover{border-color:var(--accent)}
+</style>
 </head>
 <body>
 <header class="site-header">
-<a href="/" class="logo">SmartImgKit</a>
-<nav><a href="/tools/">All Tools</a><a href="/blog/">Blog</a></nav>
-</header>
-<main class="container">
-<h1>Batch EXIF Date Editor</h1>
-<p class="lead">Set all your photos to the same EXIF capture date and time in one batch, 100% local processing, no upload required.</p>
-<div class="upload-area" id="dropZone">
-<p>Upload multiple photos to edit EXIF data</p>
-<input type="file" id="fileInput" accept="image/*" multiple hidden>
+    <div class="container header-inner">
+      <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/">Home</a><a href="/tools/">Tools</a><a href="/blog/">Blog</a><a href="/about">About</a><a href="/contact">Contact</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Switch language">🇬🇧 EN</button>
+          <div class="lang-dropdown" style="position:absolute;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+            <a href="/fr/" hreflang="fr" lang="fr">🇫🇷 Français</a>
+            <a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a>
+            <a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a>
+          </div>
+        </div>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+<main class="tool-page">
+<div class="container">
+
+      <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>🗓️ Batch EXIF Editor</span></nav>
+      <div class="tool-page-header">
+        <h1>Batch EXIF Date Editor</h1>
+        <p>Set the capture date and time on many JPG photos at once — for scanned archives, camera-clock drift, or re-dating a batch before you import it. The rewrite happens in your browser; the photos are never uploaded.</p>
+      </div>
+
+      <div class="toolui">
+        <div class="drop" id="dropZone">
+          <div class="ico">🗓️</div>
+          <p><strong>Drop JPG photos here</strong> or click to choose files</p>
+          <p>JPG / JPEG only — the date is stored inside the JPEG's EXIF block</p>
+          <input type="file" id="fileInput" accept="image/jpeg,.jpg,.jpeg" multiple hidden>
+        </div>
+        <div class="ctrls">
+          <label>New date <input type="date" id="dateInput" value="2026-01-01"></label>
+          <label>New time <input type="time" id="timeInput" value="12:00"></label>
+          <button id="applyBtn" class="primary" disabled>Apply &amp; Download</button>
+          <button id="clearBtn">Clear</button>
+        </div>
+        <p class="hint" id="statusText">No photos selected yet.</p>
+        <ul class="list" id="previewList"></ul>
+      </div>
+
+      <section class="sec">
+        <h2>What this tool does — and does not do</h2>
+        <p class="sub">It rewrites the three EXIF date fields (<code>DateTime</code>, <code>DateTimeOriginal</code>, <code>DateTimeDigitized</code>) in your JPEG files. The pixels are untouched, so there is no re-compression and no quality loss.</p>
+        <div class="grid2">
+          <div class="card2"><h3>✔ Rewrites the capture date</h3><p>All three date tags are set to the value you pick, so photo managers, Lightroom, Apple Photos and Google Photos all sort by the same date.</p></div>
+          <div class="card2"><h3>✔ Keeps other metadata</h3><p>Camera model, lens, ISO, GPS and keywords are preserved — only the date fields change.</p></div>
+          <div class="card2"><h3>✔ No re-compression</h3><p>The JPEG image stream is copied byte for byte, so file size and quality stay exactly the same.</p></div>
+          <div class="card2"><h3>✖ Not a GPS or serial editor</h3><p>This page changes dates only. To strip metadata entirely, use the EXIF Remover instead.</p></div>
+        </div>
+      </section>
+
+      <section class="sec">
+        <h2>How to change the date on multiple photos</h2>
+        <ol class="steps">
+          <li><strong>Add your JPGs.</strong> Drag in as many files as you like — nothing is uploaded, so a large batch is fine.</li>
+          <li><strong>Check the current dates.</strong> Each file shows the capture date already in its EXIF block, so you can spot the ones that need fixing.</li>
+          <li><strong>Pick the new date and time.</strong> Both the date and the clock time are written, so you can also correct a camera that was set to the wrong time zone.</li>
+          <li><strong>Click Apply &amp; Download.</strong> One photo downloads directly; several are packed into a single ZIP. Originals on disk are never modified — you get edited copies named <code>…-edited.jpg</code>.</li>
+        </ol>
+      </section>
+
+      <section class="sec faq">
+        <h2>Frequently Asked Questions</h2>
+        <details><summary>Which file types are supported?</summary><p>JPEG only. EXIF dates are a JPEG/TIFF feature — PNG, WebP and GIF files do not carry a capture date, so they are skipped automatically.</p></details>
+        <details><summary>Will this reduce image quality?</summary><p>No. Only the small EXIF header segment is rewritten; the compressed image data is copied unchanged.</p></details>
+        <details><summary>Can I set different dates for different photos?</summary><p>Not in one pass. Set one date for the whole batch, download the results, then run the ones that need a different date a second time.</p></details>
+        <details><summary>Does my photo get uploaded?</summary><p>Never. Everything runs in your browser using a local copy of the piexif library. You can disconnect from the internet after the page has loaded and the tool still works.</p></details>
+        <details><summary>How do I undo it?</summary><p>Save the originals before you overwrite them. This tool downloads edited copies and never touches the files on your disk, so your originals stay intact.</p></details>
+      </section>
+
+      <section class="sec">
+        <h2>Related tools</h2>
+        <div class="related">
+          <a href="/tools/image-exif-remover">EXIF Remover</a>
+          <a href="/tools/metadata-viewer">Metadata Viewer</a>
+          <a href="/tools/photo-map">Photo Map</a>
+          <a href="/tools/compressor">Image Compressor</a>
+        </div>
+      </section>
+
 </div>
-<div class="controls" style="margin:1rem 0;">
-<label>New Date: <input type="date" id="dateInput" value="2026-01-01"></label>
-<button id="downloadBtn" class="primary">Download Edited Photos</button>
-</div>
-<p style="font-size:0.9rem;opacity:0.7;">Note: EXIF editing works on JPG files, processed fully in your browser.</p>
 </main>
+<footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Free AI-powered image tools that respect your privacy.</p></div>
+        <div class="footer-links footer-links-multi"><h4>Tools</h4><a href="/tools/background-remover">Background Remover</a><a href="/tools/compressor">Compressor</a><a href="/tools/converter">Converter</a><a href="/tools/resizer">Resizer</a>
+          <a href="/tools/gif-editor">GIF Editor</a>
+          <a href="/tools/pdf-to-image">PDF to Image</a>
+        </div>
+        <div class="footer-links footer-links-multi"><h4>More Tools</h4>
+          <div class="footer-links-list">
+          <a href="/tools/cropper">Cropper</a><a href="/tools/watermark">Watermark</a><a href="/tools/image-merger">Image Merger</a><a href="/tools/screenshot-to-image">Screenshot to Image</a><a href="/tools/image-filters">Image Filters</a><a href="/tools/svg-to-png">SVG to PNG</a><a href="/tools/image-compare">Image Compare</a><a href="/tools/print-resizer">Print-Ready Resizer</a><a href="/tools/meme-generator">Meme Generator</a>          <a href="/tools/face-blur">Face Blur</a>
+          <a href="/tools/heic-converter">HEIC Converter</a>
+          <a href="/tools/metadata-viewer">Metadata Viewer</a>
+          <a href="/tools/avif-support">AVIF Support</a>
+          <a href="/tools/image-adjust">Image Adjustment</a>
+          <a href="/tools/image-border">Image Border</a>
+          <a href="/tools/image-flip">Image Flip</a>
+          <a href="/tools/image-grayscale">Image Grayscale</a>
+          <a href="/tools/image-shadow">Image Shadow</a>
+          <a href="/tools/image-splitter">Image Splitter</a>
+          <a href="/tools/image-exif-remover">EXIF Remover</a><a href="/tools/circle-crop">Circle Crop</a><a href="/tools/favicon-generator">Favicon Generator</a><a href="/tools/ocr">OCR Text</a><a href="/tools/bulk-processor">Bulk Processor</a><a href="/tools/image-to-pdf">Image to PDF</a>          <a href="/tools/id-photo">ID Photo Maker</a>
+          <a href="/tools/product-white-background">Product White BG</a>
+          <a href="/tools/social-media-post">Social Media Post</a>
+          <a href="/tools/photo-restoration">Photo Restoration</a><a href="/tools/image-enhancer">Image Enhancer</a>
+          </div>
+        </div>
+        <div class="footer-links"><h4>Legal</h4><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a><a href="/cookie-policy">Cookie Policy</a></div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved. | <a href="https://comprimefotos.com/" style="color: var(--accent); font-weight: 500;">Español: ComprimeFotos — Comprimir Imágenes Online</a></p></div>
+    </div>
+  </footer>
+<script src="/js/main.js?v=7"></script>
+<script src="/js/lang.js"></script>
+<script src="/js/piexif.min.js"></script>
+<script src="/js/jszip.min.js"></script>
 <script>
-document.getElementById('dropZone').onclick = () => document.getElementById('fileInput').click();
-document.getElementById('downloadBtn').onclick = () => alert('Batch EXIF editing is processing locally, no upload required.');
+
+(function(){
+  'use strict';
+  var dz = document.getElementById('dropZone'), fi = document.getElementById('fileInput');
+  var dateIn = document.getElementById('dateInput'), timeIn = document.getElementById('timeInput');
+  var applyBtn = document.getElementById('applyBtn'), clearBtn = document.getElementById('clearBtn');
+  var statusEl = document.getElementById('statusText'), listEl = document.getElementById('previewList');
+  var items = [];
+
+  function human(n){ return n < 1024 ? n + ' B' : (n / 1024).toFixed(0) + ' KB'; }
+  function say(msg, cls){ statusEl.textContent = msg; statusEl.className = cls || 'hint'; }
+  function baseName(name){
+    var i = name.lastIndexOf('.');
+    return i > 0 ? name.slice(0, i) + '-edited' + name.slice(i) : name + '-edited';
+  }
+  function saveBlob(blob, name){
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 4000);
+  }
+  function readAsDataURL(file){
+    return new Promise(function(res, rej){
+      var fr = new FileReader();
+      fr.onload = function(){ res(fr.result); }; fr.onerror = rej;
+      fr.readAsDataURL(file);
+    });
+  }
+  function dataUrlToBlob(u){
+    var p = u.split(','), mime = (p[0].match(/:(.*?);/) || [])[1] || 'image/jpeg';
+    var bin = atob(p[1]), arr = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    return new Blob([arr], { type: mime });
+  }
+  // 用 piexif 覆写 EXIF 的三个日期字段（保留其余元数据与图像数据不动）
+  function setExifDate(dataUrl, dt){
+    var ex;
+    try { ex = window.piexif.load(dataUrl); }
+    catch (e) { ex = { '0th': {}, 'Exif': {}, 'GPS': {}, 'Interop': {}, '1st': {}, 'thumbnail': null }; }
+    ex['0th'] = ex['0th'] || {}; ex['Exif'] = ex['Exif'] || {};
+    ex['0th'][window.piexif.ImageIFD.DateTime] = dt;
+    ex['Exif'][window.piexif.ExifIFD.DateTimeOriginal] = dt;
+    ex['Exif'][window.piexif.ExifIFD.DateTimeDigitized] = dt;
+    return window.piexif.insert(window.piexif.dump(ex), dataUrl);
+  }
+
+  function render(){
+    listEl.innerHTML = '';
+    items.forEach(function(it){
+      var li = document.createElement('li');
+      var a = document.createElement('span'); a.textContent = it.name;
+      var b = document.createElement('span');
+      if (it.busy) { b.textContent = 'reading…'; }
+      else if (it.error) { b.textContent = it.error; b.style.color = '#ef4444'; }
+      else if (it.blob) { b.textContent = '✓ ' + human(it.blob.size) + ' · ' + it.newDate; b.style.color = '#22c55e'; }
+      else { b.textContent = it.oldDate ? ('current: ' + it.oldDate) : 'no EXIF date found'; }
+      li.appendChild(a); li.appendChild(b); listEl.appendChild(li);
+    });
+  }
+
+  function readDate(it){
+    readAsDataURL(it.file).then(function(u){
+      try {
+        var ex = window.piexif.load(u);
+        var v = (ex['Exif'] && ex['Exif'][window.piexif.ExifIFD.DateTimeOriginal]) ||
+                (ex['0th'] && ex['0th'][window.piexif.ImageIFD.DateTime]) || '';
+        it.oldDate = (typeof v === 'string') ? v : '';
+      } catch (e) { it.oldDate = ''; }
+      it.busy = false; render();
+    }).catch(function(){ it.busy = false; render(); });
+  }
+
+  function addFiles(fl){
+    var added = 0, skipped = 0;
+    Array.prototype.forEach.call(fl, function(f){
+      if (f.type !== 'image/jpeg' && !/\.jpe?g$/i.test(f.name)) { skipped++; return; }
+      var it = { file: f, name: f.name, blob: null, oldDate: null, busy: true, error: null };
+      items.push(it); added++; readDate(it);
+    });
+    if (!added && skipped) { say('Only JPG / JPEG files are supported — EXIF dates live inside the JPEG itself.', 'err'); return; }
+    say(added + ' photo(s) added' + (skipped ? (' · ' + skipped + ' non-JPG skipped') : '') + '. Pick a date and click Apply.');
+    applyBtn.disabled = items.length === 0;
+    render();
+  }
+
+  dz.addEventListener('click', function(){ fi.click(); });
+  dz.addEventListener('dragover', function(e){ e.preventDefault(); dz.classList.add('drag'); });
+  dz.addEventListener('dragleave', function(){ dz.classList.remove('drag'); });
+  dz.addEventListener('drop', function(e){ e.preventDefault(); dz.classList.remove('drag'); addFiles(e.dataTransfer.files); });
+  fi.addEventListener('change', function(){ addFiles(fi.files); fi.value = ''; });
+  clearBtn.addEventListener('click', function(){
+    items = []; listEl.innerHTML = ''; applyBtn.disabled = true; applyBtn.textContent = 'Apply & Download';
+    say('Cleared. Add photos to start again.');
+  });
+
+  applyBtn.addEventListener('click', function(){
+    if (!items.length) return;
+    if (!window.piexif) { say('The EXIF library did not load — please refresh the page and try again.', 'err'); return; }
+    if (!dateIn.value) { say('Please pick a date first.', 'err'); return; }
+    var dt = dateIn.value.replace(/-/g, ':') + ' ' + (timeIn.value || '12:00') + ':00';
+    applyBtn.disabled = true;
+    say('Editing ' + items.length + ' photo(s)…');
+
+    var i = 0;
+    (function next(){
+      if (i >= items.length) {
+        var ok = items.filter(function(x){ return x.blob; });
+        render();
+        if (!ok.length) { say('No photo could be edited. Make sure the files are valid JPEGs.', 'err'); applyBtn.disabled = false; return; }
+        say('Done — ' + ok.length + ' photo(s) written with the new date. Download started.');
+        download(ok);
+        applyBtn.disabled = false;
+        applyBtn.textContent = 'Apply & Download Again';
+        return;
+      }
+      var it = items[i++];
+      readAsDataURL(it.file).then(function(u){
+        try {
+          it.blob = dataUrlToBlob(setExifDate(u, dt));
+          it.newDate = dt;
+        } catch (e) {
+          it.error = 'failed (not a writable JPEG)';
+        }
+        render(); setTimeout(next, 0);
+      }).catch(function(){
+        it.error = 'failed to read file'; render(); setTimeout(next, 0);
+      });
+    })();
+  });
+
+  function download(ok){
+    if (ok.length === 1) { saveBlob(ok[0].blob, baseName(ok[0].name)); return; }
+    if (!window.JSZip) {   // 无 ZIP 库时退化为逐个下载
+      ok.forEach(function(it, k){ setTimeout(function(){ saveBlob(it.blob, baseName(it.name)); }, k * 350); });
+      return;
+    }
+    var zip = new window.JSZip();
+    ok.forEach(function(it){ zip.file(baseName(it.name), it.blob); });
+    zip.generateAsync({ type: 'blob' }).then(function(b){ saveBlob(b, 'exif-dates-edited.zip'); });
+  }
+})();
 </script>
+
 </body>
 </html>
-
-

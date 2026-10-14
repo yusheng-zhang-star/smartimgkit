@@ -1,23 +1,342 @@
 ﻿<!DOCTYPE html>
 <html lang="en" data-theme="dark" data-tool-id="background-blur">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="index, follow">
-  <title>Blur Background of Photo — Portrait Background Blur Free | SmartImgKit</title>
-  <meta name="description" content="Blur the background of your portrait photo for free, locally in your browser, no upload. DSLR-style bokeh effect.">
-  <link rel="canonical" href="https://smartimgkit.com/tools/background-blur">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="stylesheet" href="/css/style.css?v=10">
-  <style>.tool-workspace{max-width:900px;margin:0 auto;padding:24px}.upload-area{border:2px dashed var(--border);border-radius:12px;padding:48px;text-align:center;cursor:pointer}</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>Blur Background of Photo — Portrait Background Blur Free | SmartImgKit</title>
+<meta name="description" content="Blur the background of your portrait photo for free, locally in your browser, no upload. Real subject cut-out and DSLR-style bokeh.">
+<link rel="canonical" href="https://smartimgkit.com/tools/background-blur">
+<meta name="theme-color" content="#6366f1">
+<meta property="og:title" content="Blur Background of Photo — Portrait Background Blur Free | SmartImgKit">
+<meta property="og:description" content="Blur the background of your portrait photo for free, locally in your browser, no upload. Real subject cut-out and DSLR-style bokeh.">
+<meta property="og:url" content="https://smartimgkit.com/tools/background-blur">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SmartImgKit">
+<meta property="og:image" content="https://smartimgkit.com/screenshots/compressor.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Blur Background of Photo — Portrait Background Blur Free | SmartImgKit">
+<meta name="twitter:description" content="Blur the background of your portrait photo for free, locally in your browser, no upload. Real subject cut-out and DSLR-style bokeh.">
+<meta name="twitter:image" content="https://smartimgkit.com/screenshots/compressor.png">
+<link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/background-blur">
+<link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/background-blur">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Blur Photo Background",
+  "url": "https://smartimgkit.com/tools/background-blur",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Blur the background of a portrait photo for a DSLR-style bokeh effect. Free, private, and fully browser-based."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to blur the background of a photo",
+  "step": [
+    { "@type": "HowToStep", "position": 1, "name": "Add a portrait", "text": "Drop in a photo with a clearly separated subject." },
+    { "@type": "HowToStep", "position": 2, "name": "Wait for the model on first use", "text": "The segmentation model downloads once and is then cached by the browser." },
+    { "@type": "HowToStep", "position": 3, "name": "Set the blur strength", "text": "Choose how much bokeh you want, from 0 to 40 px." },
+    { "@type": "HowToStep", "position": 4, "name": "Download the PNG", "text": "Save the composited result at full resolution." }
+  ]
+}
+</script>
+
+<style>
+.toolui{max-width:840px;margin:0 auto}
+.toolui .drop{border:2px dashed var(--border);border-radius:12px;padding:2.4rem 1.25rem;text-align:center;cursor:pointer;transition:border-color .2s,background .2s}
+.toolui .drop:hover,.toolui .drop.drag{border-color:var(--accent);background:var(--bg-secondary)}
+.toolui .drop .ico{font-size:2.6rem;line-height:1;margin-bottom:.6rem}
+.toolui .drop p{margin:.25rem 0;color:var(--text-secondary);font-size:.92rem}
+.toolui .drop strong{color:var(--text-primary)}
+.toolui .ctrls{display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-end;margin:1.25rem 0}
+.toolui label{display:flex;flex-direction:column;font-size:.78rem;color:var(--text-secondary);gap:.35rem}
+.toolui input[type=date],.toolui input[type=time],.toolui input[type=number],.toolui input[type=text],.toolui select{padding:.5rem .6rem;border:1px solid var(--border);border-radius:8px;background:var(--bg-secondary);color:var(--text-primary);font:inherit;font-size:.9rem}
+.toolui button{padding:.62rem 1.15rem;border-radius:8px;border:1px solid var(--border);background:var(--bg-secondary);color:var(--text-primary);cursor:pointer;font-weight:600;font:inherit;font-size:.9rem}
+.toolui button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.toolui button:disabled{opacity:.5;cursor:not-allowed}
+.toolui .hint{font-size:.84rem;color:var(--text-secondary)}
+.toolui .err{font-size:.84rem;color:#ef4444}
+.toolui .list{list-style:none;margin:1rem 0 0;padding:0;font-size:.85rem}
+.toolui .list li{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.55rem .8rem;border:1px solid var(--border);border-radius:8px;margin-bottom:.5rem;background:var(--bg-secondary)}
+.toolui .list li span:last-child{color:var(--text-secondary);text-align:right;white-space:nowrap}
+.toolui .bar{height:8px;border-radius:99px;background:var(--bg-secondary);border:1px solid var(--border);overflow:hidden;margin:.6rem 0;display:none}
+.toolui .bar.show{display:block}
+.toolui .bar>i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+.toolui canvas,.toolui img.prev{max-width:100%;border-radius:10px;border:1px solid var(--border);display:block;margin:0 auto}
+.toolui .result{display:none;margin-top:1.25rem}
+.toolui .result.show{display:block}
+.toolui .slider{display:flex;flex-direction:column;font-size:.78rem;color:var(--text-secondary);gap:.35rem}
+.toolui .slider .row{display:flex;align-items:center;gap:.6rem}
+.toolui input[type=range]{accent-color:var(--accent);width:170px}
+@media(max-width:640px){.toolui .ctrls{flex-direction:column;align-items:stretch}.toolui .drop{padding:1.8rem 1rem}}
+
+.sec{margin:2.5rem 0}
+.sec>h2{font-size:1.55rem;margin:0 0 .5rem;text-align:center;color:var(--text-primary)}
+.sec>.sub{text-align:center;color:var(--text-secondary);margin:0 auto 1.6rem;max-width:660px;font-size:.95rem;line-height:1.6}
+.grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.card2{background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;padding:1.1rem}
+.card2 h3{font-size:1rem;margin:0 0 .4rem;color:var(--text-primary)}
+.card2 p{margin:0;font-size:.88rem;color:var(--text-secondary);line-height:1.6}
+.steps{counter-reset:s;list-style:none;padding:0;margin:0 auto;max-width:720px}
+.steps li{counter-increment:s;position:relative;padding:0 0 1.1rem 2.6rem;color:var(--text-secondary);font-size:.92rem;line-height:1.6}
+.steps li:before{content:counter(s);position:absolute;left:0;top:0;width:1.7rem;height:1.7rem;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700}
+.faq details{border:1px solid var(--border);border-radius:10px;padding:.8rem 1rem;margin-bottom:.6rem;background:var(--bg-secondary)}
+.faq summary{cursor:pointer;font-weight:600;color:var(--text-primary);font-size:.95rem}
+.faq p{margin:.6rem 0 0;color:var(--text-secondary);font-size:.9rem;line-height:1.6}
+.related{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.related a{background:var(--bg-secondary);border:1px solid var(--border);border-radius:999px;padding:.5rem 1rem;font-size:.85rem;color:var(--text-primary);text-decoration:none}
+.related a:hover{border-color:var(--accent)}
+</style>
 </head>
 <body>
-  <div class="top"><div class="top-inner"><a href="/" class="logo">SmartImgKit</a></div></div>
-  <main class="tool-workspace">
-    <h1>Blur Photo Background</h1>
-    <p style="color:var(--text-secondary);margin-bottom:24px">Add DSLR-style bokeh background blur to your portrait, 100% local processing.</p>
-    <div class="upload-area"><div style="font-size:3rem;margin-bottom:16px">✨</div><p>Drop your portrait photo here</p></div>
+<header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/">Home</a><a href="/tools/">Tools</a><a href="/blog/">Blog</a><a href="/about">About</a><a href="/contact">Contact</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Switch language">🇬🇧 EN</button>
+          <div class="lang-dropdown" style="position:absolute;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+            <a href="/fr/" hreflang="fr" lang="fr">🇫🇷 Français</a>
+            <a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a>
+            <a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a>
+          </div>
+        </div>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+<main class="tool-page">
+<div class="container">
+
+      <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>✨ Background Blur</span></nav>
+      <div class="tool-page-header">
+        <h1>Blur Photo Background</h1>
+        <p>Add a DSLR-style bokeh background to any portrait. The subject is detected automatically, the background is blurred, and the result is composited — all inside your browser, with no upload.</p>
+      </div>
+
+      <div class="toolui">
+        <div class="drop" id="dropZone">
+          <div class="ico">✨</div>
+          <p><strong>Drop a portrait photo here</strong> or click to choose a file</p>
+          <p>JPG, PNG or WebP · the model runs locally after a one-time download</p>
+          <input type="file" id="fileInput" accept="image/*" hidden>
+        </div>
+        <div class="ctrls">
+          <div class="slider">
+            <label for="blurRange">Background blur</label>
+            <div class="row"><input type="range" id="blurRange" min="0" max="40" value="14"><span id="blurVal">14 px</span></div>
+          </div>
+          <button id="runBtn" class="primary" disabled>Blur Background</button>
+          <button id="dlBtn" disabled>Download PNG</button>
+          <button id="clearBtn">Clear</button>
+        </div>
+        <div class="bar" id="bar"><i id="barFill"></i></div>
+        <p class="hint" id="statusText">Choose a portrait photo to begin.</p>
+        <div class="result" id="resultBox"><canvas id="outCanvas"></canvas></div>
+      </div>
+
+      <section class="sec">
+        <h2>How the background blur works</h2>
+        <p class="sub">The page loads a segmentation model that runs entirely in your browser via WebAssembly. It returns the subject as a transparent cut-out; the background layer is then blurred and the sharp subject is composited back on top — the same two-layer trick a portrait-mode camera uses.</p>
+        <div class="grid2">
+          <div class="card2"><h3>🔒 Nothing is uploaded</h3><p>Image decoding, segmentation and compositing all happen on your device. The only network request is the one-time model file.</p></div>
+          <div class="card2"><h3>🎚 Adjustable strength</h3><p>Slide from 0 px (barely visible separation) to 40 px of heavy bokeh until the subject pops.</p></div>
+          <div class="card2"><h3>🖼 Full resolution</h3><p>The result keeps the original pixel dimensions, so it stays usable for print and for social platforms.</p></div>
+          <div class="card2"><h3>🧠 Real model, stated honestly</h3><p>This page uses <code>@imgly/background-removal</code> v1.7.0 (ISNet) for segmentation. Blur itself is a standard canvas operation.</p></div>
+        </div>
+      </section>
+
+      <section class="sec">
+        <h2>How to blur the background of a photo</h2>
+        <ol class="steps">
+          <li><strong>Add a portrait.</strong> Photos with a clearly separated person work best; a busy scene with many small objects is harder for any segmentation model to split cleanly.</li>
+          <li><strong>Wait for the model on first use.</strong> The about 30 MB model is downloaded once and cached by the browser, so later photos process almost instantly.</li>
+          <li><strong>Set the blur strength.</strong> Start around 12–16 px; push higher for a stronger faux-bokeh look or lower to keep some background context.</li>
+          <li><strong>Download the PNG.</strong> PNG keeps the full quality of the composite; convert to JPG afterwards if you need a smaller file.</li>
+        </ol>
+      </section>
+
+      <section class="sec faq">
+        <h2>Frequently Asked Questions</h2>
+        <details><summary>Is the blur real or a fake effect?</summary><p>It is a real composite: the subject is cut out with a neural network, the background is genuinely blurred with a Gaussian filter, and the two layers are merged. Nothing is faked with an overlay.</p></details>
+        <details><summary>Why does the subject sometimes get clipped?</summary><p>Segmentation is a best-effort prediction. Unusual poses, very low contrast between subject and background, or hair against a similar colour can produce a rough edge. Try a photo with more separation.</p></details>
+        <details><summary>Does it work on group photos or pets?</summary><p>Yes — the model segments the salient foreground, which can be several people, a pet, or an object. Results vary with how busy the scene is.</p></details>
+        <details><summary>Why is the first run slow?</summary><p>The browser downloads the model file (about 30 MB) once. Every subsequent photo uses the cached copy, so only the first image waits.</p></details>
+        <details><summary>Can I undo the blur?</summary><p>Yes — this page never modifies your original file. Only the newly generated PNG is saved.</p></details>
+      </section>
+
+      <section class="sec">
+        <h2>Related tools</h2>
+        <div class="related">
+          <a href="/tools/background-remover">Background Remover</a>
+          <a href="/tools/face-blur">Face Blur</a>
+          <a href="/tools/object-remover">Object Remover</a>
+          <a href="/tools/image-border">Image Border</a>
+        </div>
+      </section>
+
+</div>
 </main>
+<footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Free AI-powered image tools that respect your privacy.</p></div>
+        <div class="footer-links footer-links-multi"><h4>Tools</h4><a href="/tools/background-remover">Background Remover</a><a href="/tools/compressor">Compressor</a><a href="/tools/converter">Converter</a><a href="/tools/resizer">Resizer</a>
+          <a href="/tools/gif-editor">GIF Editor</a>
+          <a href="/tools/pdf-to-image">PDF to Image</a>
+        </div>
+        <div class="footer-links footer-links-multi"><h4>More Tools</h4>
+          <div class="footer-links-list">
+          <a href="/tools/cropper">Cropper</a><a href="/tools/watermark">Watermark</a><a href="/tools/image-merger">Image Merger</a><a href="/tools/screenshot-to-image">Screenshot to Image</a><a href="/tools/image-filters">Image Filters</a><a href="/tools/svg-to-png">SVG to PNG</a><a href="/tools/image-compare">Image Compare</a><a href="/tools/print-resizer">Print-Ready Resizer</a><a href="/tools/meme-generator">Meme Generator</a>          <a href="/tools/face-blur">Face Blur</a>
+          <a href="/tools/heic-converter">HEIC Converter</a>
+          <a href="/tools/metadata-viewer">Metadata Viewer</a>
+          <a href="/tools/avif-support">AVIF Support</a>
+          <a href="/tools/image-adjust">Image Adjustment</a>
+          <a href="/tools/image-border">Image Border</a>
+          <a href="/tools/image-flip">Image Flip</a>
+          <a href="/tools/image-grayscale">Image Grayscale</a>
+          <a href="/tools/image-shadow">Image Shadow</a>
+          <a href="/tools/image-splitter">Image Splitter</a>
+          <a href="/tools/image-exif-remover">EXIF Remover</a><a href="/tools/circle-crop">Circle Crop</a><a href="/tools/favicon-generator">Favicon Generator</a><a href="/tools/ocr">OCR Text</a><a href="/tools/bulk-processor">Bulk Processor</a><a href="/tools/image-to-pdf">Image to PDF</a>          <a href="/tools/id-photo">ID Photo Maker</a>
+          <a href="/tools/product-white-background">Product White BG</a>
+          <a href="/tools/social-media-post">Social Media Post</a>
+          <a href="/tools/photo-restoration">Photo Restoration</a><a href="/tools/image-enhancer">Image Enhancer</a>
+          </div>
+        </div>
+        <div class="footer-links"><h4>Legal</h4><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a><a href="/cookie-policy">Cookie Policy</a></div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved. | <a href="https://comprimefotos.com/" style="color: var(--accent); font-weight: 500;">Español: ComprimeFotos — Comprimir Imágenes Online</a></p></div>
+    </div>
+  </footer>
+<script src="/js/main.js?v=7"></script>
+<script src="/js/lang.js"></script>
+<script type="module">
+
+const BG_CONFIG = {
+  publicPath: 'https://staticimgly.com/@imgly/background-removal-data/1.7.0/dist/',
+  model: 'isnet_fp16'
+};
+const dz = document.getElementById('dropZone');
+const fi = document.getElementById('fileInput');
+const range = document.getElementById('blurRange');
+const rangeVal = document.getElementById('blurVal');
+const runBtn = document.getElementById('runBtn');
+const dlBtn = document.getElementById('dlBtn');
+const clearBtn = document.getElementById('clearBtn');
+const statusEl = document.getElementById('statusText');
+const bar = document.getElementById('bar');
+const barFill = document.getElementById('barFill');
+const resultBox = document.getElementById('resultBox');
+const canvas = document.getElementById('outCanvas');
+let file = null, modelPromise = null, outName = 'blurred.png';
+
+function say(m, cls) { statusEl.textContent = m; statusEl.className = cls || 'hint'; }
+function prog(p, show) { bar.classList.toggle('show', show !== false); barFill.style.width = p + '%'; }
+function loadImg(src) { return new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; }); }
+function getModel() {
+  if (!modelPromise) {
+    modelPromise = import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm')
+      .then(m => (typeof m.removeBackground === 'function' ? m.removeBackground : m.default));
+  }
+  return modelPromise;
+}
+// 浏览器支持 ctx.filter 就用原生高斯模糊；不支持则用「缩小再放大」近似
+const supportsFilter = (() => {
+  const c = document.createElement('canvas').getContext('2d');
+  c.filter = 'blur(2px)';
+  return c.filter === 'blur(2px)';
+})();
+function blurInto(ctx, img, w, h, strength) {
+  ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+  if (supportsFilter) {
+    ctx.filter = 'blur(' + strength + 'px)';
+    ctx.drawImage(img, 0, 0, w, h);
+    ctx.filter = 'none';
+    return;
+  }
+  const k = Math.max(2, Math.round(strength / 1.6) + 2);
+  const tw = Math.max(1, Math.round(w / k)), th = Math.max(1, Math.round(h / k));
+  const tmp = document.createElement('canvas'); tmp.width = tw; tmp.height = th;
+  tmp.getContext('2d').drawImage(img, 0, 0, tw, th);
+  ctx.drawImage(tmp, 0, 0, tw, th, 0, 0, w, h);
+}
+
+range.addEventListener('input', () => { rangeVal.textContent = range.value + ' px'; });
+dz.addEventListener('click', () => fi.click());
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('drag'));
+dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag'); take(e.dataTransfer.files[0]); });
+fi.addEventListener('change', () => { take(fi.files[0]); fi.value = ''; });
+clearBtn.addEventListener('click', () => {
+  file = null; runBtn.disabled = true; dlBtn.disabled = true;
+  resultBox.classList.remove('show'); prog(0, false);
+  say('Cleared. Choose a portrait photo to start again.');
+});
+function take(f) {
+  if (!f || !/^image\//.test(f.type)) { say('Please choose an image file (JPG, PNG or WebP).', 'err'); return; }
+  file = f;
+  outName = f.name.replace(/\.[^.]+$/, '') + '-blurred.png';
+  runBtn.disabled = false; dlBtn.disabled = true;
+  resultBox.classList.remove('show'); prog(0, false);
+  say('Ready — “' + f.name + '”. Set the blur strength and click Blur Background.');
+}
+
+runBtn.addEventListener('click', async () => {
+  if (!file) return;
+  runBtn.disabled = true; dlBtn.disabled = true;
+  const strength = parseInt(range.value, 10) || 0;
+  try {
+    prog(15, true); say('Loading the segmentation model (~30 MB, cached after the first run)…');
+    const removeBg = await getModel();
+    prog(45); say('Separating the subject from the background…');
+    const fgBlob = await removeBg(file, Object.assign({}, BG_CONFIG, { output: { format: 'image/png' } }));
+    prog(75); say('Blurring the background and compositing…');
+    const orig = await loadImg(URL.createObjectURL(file));
+    const w = orig.naturalWidth, h = orig.naturalHeight;
+    const bg = document.createElement('canvas'); bg.width = w; bg.height = h;
+    const bctx = bg.getContext('2d');
+    // 略微放大再模糊，避免边缘因采样到画布外而变透明
+    const s = 1 + Math.max(0.06, strength / 120);
+    bctx.translate(w / 2, h / 2); bctx.scale(s, s);
+    bctx.translate(-w / 2, -h / 2);
+    blurInto(bctx, orig, w, h, strength);
+    const fg = await loadImg(URL.createObjectURL(fgBlob));
+    canvas.width = w; canvas.height = h;
+    const octx = canvas.getContext('2d');
+    octx.drawImage(bg, 0, 0);
+    octx.drawImage(fg, 0, 0, w, h);
+    prog(100); say('Done — the subject stays sharp while the background is blurred. Download the PNG below.');
+    resultBox.classList.add('show'); dlBtn.disabled = false;
+  } catch (err) {
+    prog(0, false);
+    say('Could not process this image: ' + (err && err.message ? err.message : 'unknown error') + '. A stable connection is needed once to fetch the model.', 'err');
+  } finally {
+    runBtn.disabled = false;
+  }
+});
+
+dlBtn.addEventListener('click', () => {
+  canvas.toBlob(b => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(b); a.download = outName;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  }, 'image/png');
+});
+</script>
+
 </body>
 </html>
-

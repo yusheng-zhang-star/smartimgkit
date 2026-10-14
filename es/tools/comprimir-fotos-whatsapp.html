@@ -1,49 +1,337 @@
-<!DOCTYPE html>
-<html lang="es">
+﻿<!DOCTYPE html>
+<html lang="es" data-theme="dark" data-tool-id="comprimir-fotos-whatsapp">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
 <title>Comprimir Fotos para WhatsApp Gratis Online | SmartImgKit</title>
-<meta name="description" content="Comprime fotos para WhatsApp al tamaño perfecto: 1600px de ancho, menos de 1MB, sin pérdida de calidad. 100% local, sin subir archivos.">
+<meta name="description" content="Comprime fotos para WhatsApp al tamaño perfecto: 1600px de ancho, menos de 1MB, sin pérdida visible de calidad. 100% local, sin subir archivos.">
 <link rel="canonical" href="https://smartimgkit.com/es/tools/comprimir-fotos-whatsapp">
+<meta name="theme-color" content="#6366f1">
+<meta property="og:title" content="Comprimir Fotos para WhatsApp Gratis Online | SmartImgKit">
+<meta property="og:description" content="Comprime fotos para WhatsApp al tamaño perfecto: 1600px de ancho, menos de 1MB, sin pérdida visible de calidad. 100% local, sin subir archivos.">
+<meta property="og:url" content="https://smartimgkit.com/es/tools/comprimir-fotos-whatsapp">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SmartImgKit">
+<meta property="og:image" content="https://smartimgkit.com/screenshots/compressor.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Comprimir Fotos para WhatsApp Gratis Online | SmartImgKit">
+<meta name="twitter:description" content="Comprime fotos para WhatsApp al tamaño perfecto: 1600px de ancho, menos de 1MB, sin pérdida visible de calidad. 100% local, sin subir archivos.">
+<meta name="twitter:image" content="https://smartimgkit.com/screenshots/compressor.png">
+<link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/comprimir-fotos-whatsapp">
+<link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/es/tools/comprimir-fotos-whatsapp">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/css/style.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Comprimir Fotos para WhatsApp",
+  "url": "https://smartimgkit.com/es/tools/comprimir-fotos-whatsapp",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Comprime fotos para WhatsApp a 1600 px y menos de 1 MB. Gratis, privado y totalmente en tu navegador."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "Cómo comprimir fotos para WhatsApp",
+  "step": [
+    { "@type": "HowToStep", "position": 1, "name": "Añade las fotos", "text": "Arrastra o selecciona tantas fotos como quieras." },
+    { "@type": "HowToStep", "position": 2, "name": "Ajusta la calidad y el ancho", "text": "Los valores por defecto son 80 de calidad y 1600 px de ancho." },
+    { "@type": "HowToStep", "position": 3, "name": "Comprime", "text": "Pulsa el botón y compara el peso original con el resultado." },
+    { "@type": "HowToStep", "position": 4, "name": "Descarga", "text": "Descarga el ZIP con todas las fotos ya optimizadas." }
+  ]
+}
+</script>
+
 <style>
-* {margin:0; padding:0; box-sizing:border-box;}
-body {font-family:system-ui,sans-serif; background:#f0fdf4; color:#1e293b; line-height:1.6;}
-.top {background:#059669; color:white; padding:1rem; position:sticky; top:0; z-index:100;}
-.top-inner {max-width:1200px; margin:0 auto; display:flex; align-items:center;}
-.top a {color:white; text-decoration:none; margin-right:1.5rem;}
-.container {max-width:900px; margin:2rem auto; padding:0 1rem;}
-h1 {color:#059669; margin-bottom:1rem;}
-.workspace {background:white; padding:2rem; border-radius:16px; box-shadow:0 4px 16px rgba(0,0,0,0.08);}
-.drop-zone {border:2px dashed #94a3b8; border-radius:12px; padding:3rem; text-align:center; margin:1.5rem 0; cursor:pointer;}
-.drop-zone:hover {border-color:#059669; background:#ecfdf5;}
-button {background:#059669; color:white; border:none; padding:0.8rem 1.5rem; border-radius:8px; font-size:1rem; cursor:pointer; margin:0.5rem;}
-.status {padding:1rem; border-radius:8px; background:#ecfdf5; color:#059669; margin:1rem 0; display:none;}
+.toolui{max-width:840px;margin:0 auto}
+.toolui .drop{border:2px dashed var(--border);border-radius:12px;padding:2.4rem 1.25rem;text-align:center;cursor:pointer;transition:border-color .2s,background .2s}
+.toolui .drop:hover,.toolui .drop.drag{border-color:var(--accent);background:var(--bg-secondary)}
+.toolui .drop .ico{font-size:2.6rem;line-height:1;margin-bottom:.6rem}
+.toolui .drop p{margin:.25rem 0;color:var(--text-secondary);font-size:.92rem}
+.toolui .drop strong{color:var(--text-primary)}
+.toolui .ctrls{display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-end;margin:1.25rem 0}
+.toolui label{display:flex;flex-direction:column;font-size:.78rem;color:var(--text-secondary);gap:.35rem}
+.toolui input[type=date],.toolui input[type=time],.toolui input[type=number],.toolui input[type=text],.toolui select{padding:.5rem .6rem;border:1px solid var(--border);border-radius:8px;background:var(--bg-secondary);color:var(--text-primary);font:inherit;font-size:.9rem}
+.toolui button{padding:.62rem 1.15rem;border-radius:8px;border:1px solid var(--border);background:var(--bg-secondary);color:var(--text-primary);cursor:pointer;font-weight:600;font:inherit;font-size:.9rem}
+.toolui button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.toolui button:disabled{opacity:.5;cursor:not-allowed}
+.toolui .hint{font-size:.84rem;color:var(--text-secondary)}
+.toolui .err{font-size:.84rem;color:#ef4444}
+.toolui .list{list-style:none;margin:1rem 0 0;padding:0;font-size:.85rem}
+.toolui .list li{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.55rem .8rem;border:1px solid var(--border);border-radius:8px;margin-bottom:.5rem;background:var(--bg-secondary)}
+.toolui .list li span:last-child{color:var(--text-secondary);text-align:right;white-space:nowrap}
+.toolui .bar{height:8px;border-radius:99px;background:var(--bg-secondary);border:1px solid var(--border);overflow:hidden;margin:.6rem 0;display:none}
+.toolui .bar.show{display:block}
+.toolui .bar>i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+.toolui canvas,.toolui img.prev{max-width:100%;border-radius:10px;border:1px solid var(--border);display:block;margin:0 auto}
+.toolui .result{display:none;margin-top:1.25rem}
+.toolui .result.show{display:block}
+.toolui .slider{display:flex;flex-direction:column;font-size:.78rem;color:var(--text-secondary);gap:.35rem}
+.toolui .slider .row{display:flex;align-items:center;gap:.6rem}
+.toolui input[type=range]{accent-color:var(--accent);width:170px}
+@media(max-width:640px){.toolui .ctrls{flex-direction:column;align-items:stretch}.toolui .drop{padding:1.8rem 1rem}}
+
+.sec{margin:2.5rem 0}
+.sec>h2{font-size:1.55rem;margin:0 0 .5rem;text-align:center;color:var(--text-primary)}
+.sec>.sub{text-align:center;color:var(--text-secondary);margin:0 auto 1.6rem;max-width:660px;font-size:.95rem;line-height:1.6}
+.grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.card2{background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;padding:1.1rem}
+.card2 h3{font-size:1rem;margin:0 0 .4rem;color:var(--text-primary)}
+.card2 p{margin:0;font-size:.88rem;color:var(--text-secondary);line-height:1.6}
+.steps{counter-reset:s;list-style:none;padding:0;margin:0 auto;max-width:720px}
+.steps li{counter-increment:s;position:relative;padding:0 0 1.1rem 2.6rem;color:var(--text-secondary);font-size:.92rem;line-height:1.6}
+.steps li:before{content:counter(s);position:absolute;left:0;top:0;width:1.7rem;height:1.7rem;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700}
+.faq details{border:1px solid var(--border);border-radius:10px;padding:.8rem 1rem;margin-bottom:.6rem;background:var(--bg-secondary)}
+.faq summary{cursor:pointer;font-weight:600;color:var(--text-primary);font-size:.95rem}
+.faq p{margin:.6rem 0 0;color:var(--text-secondary);font-size:.9rem;line-height:1.6}
+.related{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.related a{background:var(--bg-secondary);border:1px solid var(--border);border-radius:999px;padding:.5rem 1rem;font-size:.85rem;color:var(--text-primary);text-decoration:none}
+.related a:hover{border-color:var(--accent)}
 </style>
 </head>
 <body>
-<div class="top">
-  <div class="top-inner">
-    <a href="/es/" style="font-weight:800; font-size:1.2rem;">SmartImgKit</a>
-    <a href="/es/">Todas las herramientas</a>
-  </div>
-</div>
+<header class="site-header">
+    <div class="container header-inner">
+      <a href="/es/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/es/">Inicio</a><a href="/es/tools/">Herramientas</a><a href="/es/blog/">Blog</a><a href="/about">Acerca de</a><a href="/contact">Contacto</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Switch language">🇪🇸 ES</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/" hreflang="en" lang="en">🇬🇧 English</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+            <a href="/fr/" hreflang="fr" lang="fr">🇫🇷 Français</a>
+            <a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a>
+            <a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a>
+          </div>
+        </div>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+<main class="tool-page">
 <div class="container">
-  <h1>Comprimir Fotos para WhatsApp</h1>
-  <p>Reduce el tamaño de tus fotos para que se suban rápido en WhatsApp, sin perder calidad. Todo se procesa localmente en tu navegador, tus fotos nunca salen de tu dispositivo.</p>
-  <div class="workspace">
-    <div class="drop-zone" id="dropZone">
-      <p style="font-size:1.2rem; margin-bottom:0.5rem;">📲 Sube tus fotos aquí</p>
-      <p style="color:#64748b;">Se ajustarán automáticamente a 1600px y menos de 1MB, ideal para enviar por WhatsApp</p>
-      <input type="file" id="fileInput" accept="image/*" multiple hidden>
-    </div>
-    <div class="status" id="status"></div>
-    <div style="text-align:center;">
-      <button id="downloadBtn">⬇️ Descargar fotos comprimidas</button>
-    </div>
-  </div>
-  <h2 style="margin-top:2rem;">¿Por qué necesitas comprimir fotos para WhatsApp?</h2>
-  <p>WhatsApp comprime las fotos que subes automáticamente, perdiendo mucha calidad. Con nuestra herramienta tú controlas la compresión: ajustamos las fotos al tamaño perfecto (1600px de ancho, peso menor a 1MB) para que se vean nítidas y no tarden horas en enviarse, sin límite de cantidad, sin marcas de agua.</p>
+
+      <nav class="breadcrumb"><a href="/es/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>📲 Comprimir para WhatsApp</span></nav>
+      <div class="tool-page-header">
+        <h1>Comprimir Fotos para WhatsApp</h1>
+        <p>Ajusta tus fotos al tamaño ideal para enviarlas por WhatsApp — 1600 px de ancho y menos de 1 MB — sin subirlas a ningún servidor. Todo el proceso ocurre en tu navegador.</p>
+      </div>
+
+      <div class="toolui">
+        <div class="drop" id="dropZone">
+          <div class="ico">📲</div>
+          <p><strong>Suelta tus fotos aquí</strong> o haz clic para elegirlas</p>
+          <p>JPG, PNG, WebP o HEIC · sin límite de cantidad</p>
+          <input type="file" id="fileInput" accept="image/*" multiple hidden>
+        </div>
+        <div class="ctrls">
+          <div class="slider">
+            <label for="qualityRange">Calidad</label>
+            <div class="row"><input type="range" id="qualityRange" min="40" max="95" value="80"><span id="qualityVal">80</span></div>
+          </div>
+          <label>Ancho máximo (px) <input type="number" id="maxWidth" value="1600" min="320" max="6000" step="10"></label>
+          <button id="runBtn" class="primary" disabled>Comprimir fotos</button>
+          <button id="dlBtn" disabled>Descargar todo (ZIP)</button>
+          <button id="clearBtn">Limpiar</button>
+        </div>
+        <div class="bar" id="bar"><i id="barFill"></i></div>
+        <p class="hint" id="statusText">Añade tus fotos para empezar. Se ajustarán a 1600 px y menos de 1 MB.</p>
+        <ul class="list" id="previewList"></ul>
+      </div>
+
+      <section class="sec">
+        <h2>¿Por qué conviene comprimir las fotos antes de enviarlas?</h2>
+        <p class="sub">WhatsApp recomprime lo que subes y aplica su propio límite de peso, así que una foto de móvil de 5 MB pierde nitidez y aun así tarda en enviarse. Si la ajustas tú antes, controlas el resultado: se ve nítida, se envía al instante y no consume datos de más.</p>
+        <div class="grid2">
+          <div class="card2"><h3>🎯 Tamaño pensado para WhatsApp</h3><p>1600 px de ancho es el ancho que WhatsApp muestra sin recortar en pantallas de móvil, y 1 MB entra sin problemas en cualquier chat.</p></div>
+          <div class="card2"><h3>🔒 Tus fotos no salen del móvil</h3><p>La compresión se hace con la API del navegador. No hay subida, ni cola de espera, ni copia en servidores ajenos.</p></div>
+          <div class="card2"><h3>📦 Sin límite de cantidad</h3><p>Suelta veinte o doscientas fotos: se procesan en serie y se descargan juntas en un único ZIP.</p></div>
+          <div class="card2"><h3>⚙️ Control de calidad</h3><p>Baja la calidad si necesitas archivos aún más pequeños; súbela si la foto lleva texto o detalles finos.</p></div>
+        </div>
+      </section>
+
+      <section class="sec">
+        <h2>Cómo comprimir fotos para WhatsApp</h2>
+        <ol class="steps">
+          <li><strong>Añade las fotos.</strong> Arrástralas o selecciónalas; puedes mezclar JPG, PNG, WebP y HEIC.</li>
+          <li><strong>Ajusta la calidad y el ancho.</strong> Los valores por defecto (80 de calidad, 1600 px) funcionan bien para la mayoría de fotos de móvil.</li>
+          <li><strong>Pulsa «Comprimir fotos».</strong> Verás el peso original y el resultado final de cada archivo.</li>
+          <li><strong>Descarga el ZIP.</strong> Descomprímelo y envía las fotos por WhatsApp — llegarán nítidas y sin recortes.</li>
+        </ol>
+      </section>
+
+      <section class="sec faq">
+        <h2>Preguntas frecuentes</h2>
+        <details><summary>¿En qué formato se guardan las fotos comprimidas?</summary><p>En JPG. Es el formato que WhatsApp trata mejor y el que consigue el mayor ahorro de peso en fotografías.</p></details>
+        <details><summary>¿Se pueden subir fotos HEIC de iPhone?</summary><p>Sí, si tu navegador puede descodificarlas (Chrome, Edge y Safari recientes sí). Si no, convierte primero con el conversor de HEIC.</p></details>
+        <details><summary>¿Hay límite de fotos o de tamaño?</summary><p>No hay límite impuesto por la herramienta. El único freno es la memoria del dispositivo, así que en lotes muy grandes conviene trabajar por grupos.</p></details>
+        <details><summary>¿Pierden mucha calidad las fotos?</summary><p>Reducir el ancho a 1600 px apenas se nota en pantalla, porque los móviles muestran las fotos a ese ancho o menos. Lo que se elimina es resolución que WhatsApp nunca mostraría.</p></details>
+        <details><summary>¿Se suben mis fotos a algún servidor?</summary><p>No. Todo el procesamiento es local en tu navegador; puedes desconectar el WiFi después de cargar la página y seguirá funcionando.</p></details>
+      </section>
+
+      <section class="sec">
+        <h2>Herramientas relacionadas</h2>
+        <div class="related">
+          <a href="/es/tools/compressor">Compresor de imágenes</a>
+          <a href="/es/tools/image-compressor">Comprimir imagen</a>
+          <a href="/es/tools/resizer">Redimensionar imagen</a>
+          <a href="/es/tools/converter">Convertir imagen</a>
+        </div>
+      </section>
+
 </div>
+</main>
+<footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="/es/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Herramientas de imagen gratuitas con IA que respetan tu privacidad.</p></div>
+        <div class="footer-links footer-links-multi"><h4>Tools</h4><a href="/es/tools/background-remover">Background Remover</a><a href="/es/tools/compressor">Compressor</a><a href="/es/tools/converter">Converter</a><a href="/es/tools/resizer">Resizer</a>
+          <a href="/es/tools/gif-editor">GIF Editor</a>
+          <a href="/es/tools/pdf-to-image">PDF to Image</a>
+        </div>
+        <div class="footer-links footer-links-multi"><h4>More Tools</h4>
+          <div class="footer-links-list">
+          <a href="/es/tools/cropper">Cropper</a><a href="/es/tools/watermark">Watermark</a><a href="/es/tools/image-merger">Image Merger</a><a href="/es/tools/screenshot-to-image">Screenshot to Image</a><a href="/es/tools/image-filters">Image Filters</a><a href="/es/tools/svg-to-png">SVG to PNG</a><a href="/es/tools/image-compare">Image Compare</a><a href="/es/tools/print-resizer">Print-Ready Resizer</a><a href="/es/tools/meme-generator">Meme Generator</a>          <a href="/es/tools/face-blur">Face Blur</a>
+          <a href="/es/tools/heic-converter">HEIC Converter</a>
+          <a href="/es/tools/metadata-viewer">Metadata Viewer</a>
+          <a href="/es/tools/avif-support">AVIF Support</a>
+          <a href="/es/tools/image-adjust">Image Adjustment</a>
+          <a href="/es/tools/image-border">Image Border</a>
+          <a href="/es/tools/image-flip">Image Flip</a>
+          <a href="/es/tools/image-grayscale">Image Grayscale</a>
+          <a href="/es/tools/image-shadow">Image Shadow</a>
+          <a href="/es/tools/image-splitter">Image Splitter</a>
+          <a href="/es/tools/image-exif-remover">EXIF Remover</a><a href="/es/tools/circle-crop">Circle Crop</a><a href="/es/tools/favicon-generator">Favicon Generator</a><a href="/es/tools/ocr">OCR Text</a><a href="/es/tools/bulk-processor">Bulk Processor</a><a href="/es/tools/image-to-pdf">Image to PDF</a>          <a href="/es/tools/id-photo">ID Photo Maker</a>
+          <a href="/es/tools/product-white-background">Product White BG</a>
+          <a href="/es/tools/social-media-post">Social Media Post</a>
+          <a href="/es/tools/photo-restoration">Photo Restoration</a><a href="/es/tools/image-enhancer">Image Enhancer</a>
+          </div>
+        </div>
+        <div class="footer-links"><h4>Legal</h4><a href="/privacy">Política de Privacidad</a><a href="/terms">Términos de Servicio</a><a href="/cookie-policy">Política de Cookies</a>
+        </div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. Todos los derechos reservados. | <a href="https://comprimefotos.com/" style="color: var(--accent); font-weight: 500;">Español: ComprimeFotos — Comprimir Imágenes Online</a></p></div>
+    </div>
+  </footer>
+<script src="/js/main.js?v=7"></script>
+<script src="/js/lang.js"></script>
+<script src="/js/browser-image-compression.min.js"></script>
+<script src="/js/jszip.min.js"></script>
+<script>
+
+(function(){
+  'use strict';
+  var dz = document.getElementById('dropZone'), fi = document.getElementById('fileInput');
+  var quality = document.getElementById('qualityRange'), qualityVal = document.getElementById('qualityVal');
+  var maxWidth = document.getElementById('maxWidth');
+  var runBtn = document.getElementById('runBtn'), dlBtn = document.getElementById('dlBtn'), clearBtn = document.getElementById('clearBtn');
+  var statusEl = document.getElementById('statusText'), listEl = document.getElementById('previewList');
+  var bar = document.getElementById('bar'), barFill = document.getElementById('barFill');
+  var items = [];
+
+  function human(n){ return n < 1024 ? n + ' B' : (n / 1024).toFixed(0) + ' KB'; }
+  function say(m, cls){ statusEl.textContent = m; statusEl.className = cls || 'hint'; }
+  function prog(p, show){ bar.classList.toggle('show', show !== false); barFill.style.width = p + '%'; }
+  function outName(name){ var i = name.lastIndexOf('.'); return (i > 0 ? name.slice(0, i) : name) + '-whatsapp.jpg'; }
+  function saveBlob(blob, name){
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 4000);
+  }
+
+  quality.addEventListener('input', function(){ qualityVal.textContent = quality.value; });
+
+  function render(){
+    listEl.innerHTML = '';
+    items.forEach(function(it){
+      var li = document.createElement('li');
+      var a = document.createElement('span'); a.textContent = it.name;
+      var b = document.createElement('span');
+      if (it.busy){ b.textContent = 'comprimiendo…'; }
+      else if (it.error){ b.textContent = it.error; b.style.color = '#ef4444'; }
+      else if (it.out){ b.textContent = human(it.size) + ' → ' + human(it.out.size) + '  ✓'; b.style.color = '#22c55e'; }
+      else { b.textContent = human(it.size); }
+      li.appendChild(a); li.appendChild(b); listEl.appendChild(li);
+    });
+  }
+  function addFiles(fl){
+    var added = 0;
+    Array.prototype.forEach.call(fl, function(f){
+      if (!/^image\//.test(f.type)) return;
+      items.push({ file: f, name: f.name, size: f.size, out: null, busy: false, error: null }); added++;
+    });
+    if (!added){ say('No se añadieron imágenes. Elige archivos JPG, PNG, WebP o HEIC.', 'err'); return; }
+    say(added + ' foto(s) añadidas. Pulsa «Comprimir fotos» para empezar.');
+    runBtn.disabled = false; render();
+  }
+
+  dz.addEventListener('click', function(){ fi.click(); });
+  dz.addEventListener('dragover', function(e){ e.preventDefault(); dz.classList.add('drag'); });
+  dz.addEventListener('dragleave', function(){ dz.classList.remove('drag'); });
+  dz.addEventListener('drop', function(e){ e.preventDefault(); dz.classList.remove('drag'); addFiles(e.dataTransfer.files); });
+  fi.addEventListener('change', function(){ addFiles(fi.files); fi.value = ''; });
+  clearBtn.addEventListener('click', function(){
+    items = []; listEl.innerHTML = ''; runBtn.disabled = true; dlBtn.disabled = true; prog(0, false);
+    say('Lista vaciada. Añade fotos para empezar de nuevo.');
+  });
+
+  runBtn.addEventListener('click', function(){
+    if (!items.length) return;
+    if (typeof imageCompression !== 'function'){ say('No se pudo cargar la librería de compresión. Recarga la página e inténtalo otra vez.', 'err'); return; }
+    var opts = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: parseInt(maxWidth.value, 10) || 1600,
+      initialQuality: (parseInt(quality.value, 10) || 80) / 100,
+      useWebWorker: true,
+      fileType: 'image/jpeg'
+    };
+    runBtn.disabled = true;
+    var i = 0;
+    (function next(){
+      if (i >= items.length){
+        var ok = items.filter(function(x){ return x.out; });
+        prog(100);
+        if (!ok.length){ say('No se pudo comprimir ninguna foto. Comprueba que los archivos sean imágenes válidas.', 'err'); runBtn.disabled = false; return; }
+        var before = ok.reduce(function(s, x){ return s + x.size; }, 0);
+        var after = ok.reduce(function(s, x){ return s + x.out.size; }, 0);
+        var saved = before ? Math.round((1 - after / before) * 100) : 0;
+        say('Listo: ' + ok.length + ' foto(s) comprimidas, ' + saved + '% menos de peso (' + human(before) + ' → ' + human(after) + '). Ya puedes descargarlas.');
+        dlBtn.disabled = false; runBtn.disabled = false;
+        return;
+      }
+      var it = items[i];
+      prog(Math.round((i / items.length) * 100));
+      it.busy = true; render();
+      imageCompression(it.file, opts).then(function(out){
+        it.out = out; it.busy = false; i++; render(); setTimeout(next, 0);
+      }).catch(function(e){
+        it.busy = false; it.error = 'error al comprimir'; i++; render(); setTimeout(next, 0);
+      });
+    })();
+  });
+
+  dlBtn.addEventListener('click', function(){
+    var ok = items.filter(function(x){ return x.out; });
+    if (!ok.length) return;
+    if (ok.length === 1){ saveBlob(ok[0].out, outName(ok[0].name)); return; }
+    if (typeof JSZip !== 'function'){ ok.forEach(function(x, k){ setTimeout(function(){ saveBlob(x.out, outName(x.name)); }, k * 350); }); return; }
+    var zip = new JSZip();
+    ok.forEach(function(x){ zip.file(outName(x.name), x.out); });
+    zip.generateAsync({ type: 'blob' }).then(function(b){ saveBlob(b, 'fotos-whatsapp.zip'); });
+  });
+})();
+</script>
+
 </body>
 </html>
