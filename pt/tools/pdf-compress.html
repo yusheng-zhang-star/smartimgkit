@@ -5,19 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="index, follow">
   <title>PDF Compressor — Reduce PDF File Size Free</title>
-  <meta name="description" content="Free online PDF compressor. Reduce PDF file size by optimizing images and removing unnecessary metadata. Browser-based, no upload.">
+  <meta name="description" content="Free online PDF compressor. Reduce PDF file size by removing unnecessary metadata, flattening annotations and rebuilding the file with compressed object streams. Browser-based, no upload.">
   <meta name="keywords" content="PDF compressor, compress PDF, reduce PDF size, shrink PDF, optimize PDF online">
   <link rel="canonical" href="https://smartimgkit.com/pt/tools/pdf-compress">
   <meta name="theme-color" content="#6366f1">
   <meta property="og:title" content="PDF Compressor — Reduce PDF File Size Free">
-  <meta property="og:description" content="Free online PDF compressor. Reduce PDF file size by optimizing images and removing unnecessary metadata. Browser-based, no upload.">
+  <meta property="og:description" content="Free online PDF compressor. Reduce PDF file size by removing unnecessary metadata, flattening annotations and rebuilding the file with compressed object streams. Browser-based, no upload.">
   <meta property="og:url" content="https://smartimgkit.com/pt/tools/pdf-compress">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SmartImgKit">
   <meta property="og:image" content="https://smartimgkit.com/screenshots/pdf-compress.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="PDF Compressor — Reduce PDF File Size Free">
-  <meta name="twitter:description" content="Free online PDF compressor. Reduce PDF file size by optimizing images and removing unnecessary metadata. Browser-based, no upload.">
+  <meta name="twitter:description" content="Free online PDF compressor. Reduce PDF file size by removing unnecessary metadata, flattening annotations and rebuilding the file with compressed object streams. Browser-based, no upload.">
   <meta name="twitter:image" content="https://smartimgkit.com/screenshots/pdf-compress.png">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="alternate" hreflang="ar" href="https://smartimgkit.com/ar/tools/pdf-compress">
@@ -43,7 +43,7 @@
     "price": "0",
     "priceCurrency": "USD"
   },
-  "description": "Free online PDF compressor. Reduce PDF file size by optimizing images and removing unnecessary metadata. Browser-based, no upload."
+  "description": "Free online PDF compressor. Reduce PDF file size by removing unnecessary metadata, flattening annotations and rebuilding the file with compressed object streams. Browser-based, no upload."
 }
 </script>
   <script type="application/ld+json">
@@ -202,14 +202,6 @@
         <div class="controls hidden" id="controlsSection">
           <h2>⚙️ Options</h2>
           <div class="pdf-info" id="pdfInfo"></div>
-          <div class="control-row">
-            <label>Compression Level</label>
-            <select id="compLevel">
-              <option value="low">Low (minimal reduction)</option>
-              <option value="medium" selected>Medium (balanced)</option>
-              <option value="high">High (aggressive)</option>
-            </select>
-          </div>
           <div class="btn-row">
             <button class="btn btn-primary" id="processBtn">🗜️ Compress PDF</button>
             <button class="btn btn-secondary" id="resetBtn">Reset</button>
@@ -318,7 +310,7 @@
         // Flatten form fields and remove annotations
         try { pages[i].flattenAnnotations(); } catch(e) {}
       }
-      const bytes = await src.save({ useObjectStreams: false });
+      const bytes = await src.save({ useObjectStreams: true });
       window.__downloadBlob__(bytes, `${fileName}-compressed.pdf`);
       statusSection.textContent = '✓ Compression complete!';
     } catch(e) { statusSection.textContent = '✗ Error: ' + e.message; }

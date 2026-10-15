@@ -20,6 +20,8 @@
     .control-row label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-secondary); }
     .control-row input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-secondary); color: var(--text-primary); }
     .btn { padding: 12px 24px; border: none; border-radius: 8px; background: var(--accent); color: white; font-weight: 600; cursor: pointer; width: 100%; margin-top: 16px; }
+    .btn:disabled { opacity: .6; cursor: progress; }
+    .status-text { text-align: center; margin-top: 12px; color: var(--text-secondary); font-size: 14px; }
   </style>
 </head>
 <body>
@@ -31,14 +33,156 @@
     <div class="controls" id="controls" style="display:none">
       <div class="control-row"><label>Enter current PDF password</label><input type="password" id="password" placeholder="Current PDF password"></div>
       <button class="btn" id="unlockBtn">Unlock PDF</button>
+      <p id="statusText" class="status-text"></p>
     </div>
+
+
+    <div class="container" style="padding: 2rem 0;">
+      <div style="max-width: 800px; margin: 0 auto; line-height: 1.7;">
+        <nav aria-label="breadcrumb" style="margin-bottom: 1.5rem; color: var(--text-secondary); font-size: 0.9rem;">
+          <a href="/" style="color: var(--accent);">Home</a> / <a href="/tools/" style="color: var(--accent);">Tools</a> / PDF Unlock
+        </nav>
+        <h2>About This Tool</h2>
+        <p>Remove password restrictions from PDFs you have permission to access right in your browser. This tool bypasses printing, copying, and editing locks on PDFs you already own, so you can use the document normally without entering the password every time.</p>
+        
+        <h2>How to Use</h2>
+        <ol style="line-height: 2;">
+          <li>Upload the restricted PDF you already have permission to open.</li><li>Enter the document open password if required.</li><li>Click "Unlock" and download your unrestricted PDF.</li>
+        </ol>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-section">
+          <h3>Can you bypass unknown PDF passwords?</h3><p>No. This tool only works for PDFs you already have the password for — it removes permission locks, not open passwords. We do not support cracking protected documents you do not own.</p>
+        <h3>Where does my PDF go after unlock?</h3><p>The unlocking process runs locally in your browser. The processed file stays on your device and is never uploaded to our servers.</p>
+        
+        </div>
+
+        <script type="application/ld+json">
+        {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Can you bypass unknown PDF passwords?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. This tool only works for PDFs you already have the password for \u2014 it removes permission locks, not open passwords. We do not support cracking protected documents you do not own."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where does my PDF go after unlock?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The unlocking process runs locally in your browser. The processed file stays on your device and is never uploaded to our servers."
+      }
+    }
+  ]
+}
+        </script>
+      </div>
+    </div>
+
 </main>
   <script>
     const uploadArea = document.getElementById('uploadArea');
     const fileInput = document.getElementById('fileInput');
+    const controls = document.getElementById('controls');
+    const unlockBtn = document.getElementById('unlockBtn');
+    const statusText = document.getElementById('statusText');
+    let selectedFile = null;
+
     uploadArea.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', () => document.getElementById('controls').style.display='block');
+    uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.style.borderColor = 'var(--accent)'; });
+    uploadArea.addEventListener('dragleave', () => { uploadArea.style.borderColor = ''; });
+    uploadArea.addEventListener('drop', e => {
+      e.preventDefault();
+      uploadArea.style.borderColor = '';
+      if (e.dataTransfer.files[0]) pick(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener('change', e => { if (e.target.files[0]) pick(e.target.files[0]); });
+
+    function pick(f) {
+      if (!/\.pdf$/i.test(f.name) && f.type !== 'application/pdf') {
+        statusText.textContent = 'Please choose a PDF file.';
+        return;
+      }
+      selectedFile = f;
+      controls.style.display = 'block';
+      statusText.textContent = f.name + ' \u00b7 ' + (f.size / 1048576).toFixed(2) + ' MB';
+    }
+
+    unlockBtn.addEventListener('click', async () => {
+      if (!selectedFile) { statusText.textContent = 'Please choose a PDF first.'; return; }
+      const pwd = (document.getElementById('password').value || '').trim();
+      const oldLabel = unlockBtn.textContent;
+      unlockBtn.disabled = true;
+      unlockBtn.textContent = 'Unlocking\u2026';
+      statusText.textContent = 'Reading your PDF\u2026';
+      try {
+        const { PDFDocument } = await import('https://cdn.jsdelivr.net/npm/@cantoo/pdf-lib@2.11.1/+esm');
+        const bytes = await selectedFile.arrayBuffer();
+        let doc;
+        try {
+          doc = await PDFDocument.load(bytes, pwd ? { password: pwd } : { ignoreEncryption: true });
+        } catch (err) {
+          statusText.textContent = 'Could not open this PDF \u2014 check the password and try again.';
+          return;
+        }
+        const out = await doc.save();
+        const blob = new Blob([out], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = selectedFile.name.replace(/\.pdf$/i, '') + '-unlocked.pdf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 4000);
+        statusText.textContent = 'Done \u2014 your unrestricted PDF has been downloaded.';
+      } catch (err) {
+        statusText.textContent = 'Something went wrong: ' + err.message;
+      } finally {
+        unlockBtn.disabled = false;
+        unlockBtn.textContent = oldLabel;
+      }
+    });
   </script>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Fast, private image tools that run 100% in your browser.</p></div>
+        <div class="footer-links footer-links-multi"><h4>Tools</h4><a href="/tools/background-remover">Background Remover</a><a href="/tools/compressor">Compressor</a><a href="/tools/converter">Converter</a><a href="/tools/resizer">Resizer</a>
+          <a href="/tools/gif-editor">GIF Editor</a>
+          <a href="/tools/pdf-to-image">PDF to Image</a>
+        </div>
+        <div class="footer-links footer-links-multi"><h4>More Tools</h4>
+          <div class="footer-links-list">
+          <a href="/tools/cropper">Cropper</a><a href="/tools/watermark">Watermark</a><a href="/tools/image-merger">Image Merger</a><a href="/tools/screenshot-to-image">Screenshot to Image</a><a href="/tools/image-filters">Image Filters</a><a href="/tools/svg-to-png">SVG to PNG</a><a href="/tools/image-compare">Image Compare</a><a href="/tools/print-resizer">Print-Ready Resizer</a><a href="/tools/meme-generator">Meme Generator</a>          <a href="/tools/face-blur">Face Blur</a>
+          <a href="/tools/heic-converter">HEIC Converter</a>
+          <a href="/tools/metadata-viewer">Metadata Viewer</a>
+          <a href="/tools/avif-support">AVIF Support</a>
+          <a href="/tools/image-adjust">Image Adjustment</a>
+          <a href="/tools/image-border">Image Border</a>
+          <a href="/tools/image-flip">Image Flip</a>
+          <a href="/tools/image-grayscale">Image Grayscale</a>
+          <a href="/tools/image-shadow">Image Shadow</a>
+          <a href="/tools/image-splitter">Image Splitter</a>
+          <a href="/tools/image-exif-remover">EXIF Remover</a><a href="/tools/circle-crop">Circle Crop</a><a href="/tools/favicon-generator">Favicon Generator</a><a href="/tools/ocr">OCR Text</a><a href="/tools/bulk-processor">Bulk Processor</a><a href="/tools/image-to-pdf">Image to PDF</a>          <a href="/tools/id-photo">ID Photo Maker</a>
+          <a href="/tools/product-white-background">Product White BG</a>
+          <a href="/tools/social-media-post">Social Media Post</a>
+          <a href="/tools/photo-restoration">Photo Restoration</a><a href="/tools/image-enhancer">Image Enhancer</a>
+          </div>
+        </div>
+        <div class="footer-links"><h4>Legal</h4><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a><a href="/cookie-policy">Cookie Policy</a></div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved.</p></div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js?v=7"></script>
 </body>
 </html>
 

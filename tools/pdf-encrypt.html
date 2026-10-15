@@ -51,6 +51,67 @@
       <button class="btn" id="encryptBtn">Encrypt PDF</button>
       <p id="statusText" class="status-text"></p>
     </div>
+
+    
+
+    <div class="container" style="padding: 2rem 0;">
+      <div style="max-width: 800px; margin: 0 auto; line-height: 1.7;">
+        <nav aria-label="breadcrumb" style="margin-bottom: 1.5rem; color: var(--text-secondary); font-size: 0.9rem;">
+          <a href="/" style="color: var(--accent);">Home</a> / <a href="/tools/" style="color: var(--accent);">Tools</a> / PDF Encrypt
+        </nav>
+        <h2>About This Tool</h2>
+        <p>Add password protection to your PDF files directly in your browser. Our PDF encryption tool uses standard AES-256 encryption to lock your documents, and your files never leave your computer — no cloud upload, no waiting for server processing. Perfect for protecting contracts, bank statements, and sensitive personal documents before sharing.</p>
+        
+        <h2>How to Use</h2>
+        <ol style="line-height: 2;">
+          <li>Upload the PDF you want to lock by dragging it into the zone above.</li><li>Enter your desired password and choose your permission settings (printing, copying, editing restrictions).</li><li>Click "Encrypt PDF" and download the protected file instantly.</li>
+        </ol>
+
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-section">
+          <h3>How strong is the encryption?</h3><p>We use industry-standard AES-256 encryption, which is the same level used by banks and government agencies. Your protected PDF cannot be opened without the correct password.</p>
+        <h3>Do my PDFs get uploaded to your server?</h3><p>No. All encryption runs locally in your browser with Web Crypto API. Your files are never sent anywhere, which means even we cannot see your documents.</p>
+        <h3>Can I remove encryption later?</h3><p>As long as you know the password, you can unlock the PDF by entering it in any standard PDF reader. We do not store copies of your files, so recovery is only possible if you remember your password.</p>
+        
+        </div>
+
+        <script type="application/ld+json">
+        {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How strong is the encryption?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We use industry-standard AES-256 encryption, which is the same level used by banks and government agencies. Your protected PDF cannot be opened without the correct password."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do my PDFs get uploaded to your server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All encryption runs locally in your browser with Web Crypto API. Your files are never sent anywhere, which means even we cannot see your documents."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I remove encryption later?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "As long as you know the password, you can unlock the PDF by entering it in any standard PDF reader. We do not store copies of your files, so recovery is only possible if you remember your password."
+      }
+    }
+  ]
+}
+        </script>
+      </div>
+    </div>
+
+    </div>
+
 </main>
   <script type="module">
     const uploadArea = document.getElementById('uploadArea');
@@ -77,14 +138,11 @@
       const confirm = document.getElementById('confirmPassword').value;
       if(!pwd || pwd !== confirm) { statusText.textContent = "Passwords don't match"; return; }
       statusText.textContent = "Encrypting...";
-      const { PDFDocument, StandardFonts, rgb } = await import('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/+esm');
-      const { encrypt } = await import('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/+esm');
+      const { PDFDocument } = await import('https://cdn.jsdelivr.net/npm/@cantoo/pdf-lib@2.11.1/+esm');
       const arrayBuffer = await selectedFile.arrayBuffer();
       const pdfDoc = await PDFDocument.load(arrayBuffer);
-      const bytes = await pdfDoc.save({
-        useObjectStreams: true,
-        encrypt: { ownerPassword: pwd, userPassword: pwd }
-      });
+      pdfDoc.encrypt({ userPassword: pwd, ownerPassword: pwd });
+      const bytes = await pdfDoc.save({ useObjectStreams: true });
       const blob = new Blob([bytes], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -95,6 +153,40 @@
       statusText.textContent = "Done! Encrypted PDF downloaded.";
     });
   </script>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Fast, private image tools that run 100% in your browser.</p></div>
+        <div class="footer-links footer-links-multi"><h4>Tools</h4><a href="/tools/background-remover">Background Remover</a><a href="/tools/compressor">Compressor</a><a href="/tools/converter">Converter</a><a href="/tools/resizer">Resizer</a>
+          <a href="/tools/gif-editor">GIF Editor</a>
+          <a href="/tools/pdf-to-image">PDF to Image</a>
+        </div>
+        <div class="footer-links footer-links-multi"><h4>More Tools</h4>
+          <div class="footer-links-list">
+          <a href="/tools/cropper">Cropper</a><a href="/tools/watermark">Watermark</a><a href="/tools/image-merger">Image Merger</a><a href="/tools/screenshot-to-image">Screenshot to Image</a><a href="/tools/image-filters">Image Filters</a><a href="/tools/svg-to-png">SVG to PNG</a><a href="/tools/image-compare">Image Compare</a><a href="/tools/print-resizer">Print-Ready Resizer</a><a href="/tools/meme-generator">Meme Generator</a>          <a href="/tools/face-blur">Face Blur</a>
+          <a href="/tools/heic-converter">HEIC Converter</a>
+          <a href="/tools/metadata-viewer">Metadata Viewer</a>
+          <a href="/tools/avif-support">AVIF Support</a>
+          <a href="/tools/image-adjust">Image Adjustment</a>
+          <a href="/tools/image-border">Image Border</a>
+          <a href="/tools/image-flip">Image Flip</a>
+          <a href="/tools/image-grayscale">Image Grayscale</a>
+          <a href="/tools/image-shadow">Image Shadow</a>
+          <a href="/tools/image-splitter">Image Splitter</a>
+          <a href="/tools/image-exif-remover">EXIF Remover</a><a href="/tools/circle-crop">Circle Crop</a><a href="/tools/favicon-generator">Favicon Generator</a><a href="/tools/ocr">OCR Text</a><a href="/tools/bulk-processor">Bulk Processor</a><a href="/tools/image-to-pdf">Image to PDF</a>          <a href="/tools/id-photo">ID Photo Maker</a>
+          <a href="/tools/product-white-background">Product White BG</a>
+          <a href="/tools/social-media-post">Social Media Post</a>
+          <a href="/tools/photo-restoration">Photo Restoration</a><a href="/tools/image-enhancer">Image Enhancer</a>
+          </div>
+        </div>
+        <div class="footer-links"><h4>Legal</h4><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a><a href="/cookie-policy">Cookie Policy</a></div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved.</p></div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js?v=7"></script>
 </body>
 </html>
 

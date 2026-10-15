@@ -466,7 +466,7 @@
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
-        <div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Free AI-powered image tools that respect your privacy.</p></div>
+        <div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Fast, private image tools that run 100% in your browser.</p></div>
         <div class="footer-links footer-links-multi"><h4>Tools</h4><a href="/tools/background-remover">Background Remover</a><a href="/tools/compressor">Compressor</a><a href="/tools/converter">Converter</a><a href="/tools/resizer">Resizer</a>
           <a href="/tools/gif-editor">GIF Editor</a>
           <a href="/tools/pdf-to-image">PDF to Image</a>
@@ -502,7 +502,7 @@
 const ALL_SIZES = [16, 24, 32, 48, 64, 96, 128, 256, 512];
 const state = {
   sourceImg: null,
-  sourceW: 0, sourceH: 0,
+  sourceFile: null,
   selected: new Set([16, 32, 48, 64, 128, 256]),
   algo: 'high',
   corner: 0,
@@ -510,33 +510,64 @@ const state = {
   bgColor: '#6366f1',
   padding: 0,
 };
+let resultBlob = null;
+let currentFile = null;
 
 const sizeGrid = document.getElementById('sizeGrid');
+const dropzone = document.getElementById('dropZone');
+const fileInput = document.getElementById('fileInput');
+const workspace = document.getElementById('workspace');
+const sourceWrap = document.getElementById('sourceWrap');
+const sourcePreview = document.getElementById('sourcePreview');
+const sourceMeta = document.getElementById('sourceMeta');
+const algoSel = document.getElementById('scaleAlgo');
+const cornerSel = document.getElementById('cornerRadius');
+const cornerVal = document.getElementById('cornerVal');
+const bgSel = document.getElementById('bgMode');
+const bgColorWrap = document.getElementById('bgColorWrap');
+const bgColorInput = document.getElementById('bgColor');
+const padSel = document.getElementById('padding');
+const padVal = document.getElementById('padVal');
+const previewGrid = document.getElementById('previewGrid');
+const dlIco = document.getElementById('dlIco');
+const dlZip = document.getElementById('dlZip');
+const dlNote = document.getElementById('dlNote');
+const selectAllBtn = document.getElementById('selectAll');
+const selectNoneBtn = document.getElementById('selectNone');
+const selectClassicBtn = document.getElementById('selectClassic');
+
+function formatSize(b) {
+  if (b < 1024) return b + ' B';
+  if (b < 1048576) return (b / 1024).toFixed(1) + ' KB';
+  return (b / 1048576).toFixed(2) + ' MB';
+}
+
+// ---------- 尺寸网格 ----------
 ALL_SIZES.forEach(sz => {
   const label = document.createElement('label');
   label.className = 'size-chip' + (state.selected.has(sz) ? ' checked' : '');
-  label.innerHTML = `<input type="checkbox" value="${sz}" ${state.selected.has(sz) ? 'checked' : ''}><span>${sz} \u00d7 ${sz}</span>`;
+  label.innerHTML = '<input type="checkbox" value="' + sz + '"' + (state.selected.has(sz) ? ' checked' : '') + '><span>' + sz + ' \u00d7 ' + sz + '</span>';
   label.querySelector('input').addEventListener('change', e => {
     if (e.target.checked) state.selected.add(sz);
     else state.selected.delete(sz);
     label.classList.toggle('checked', e.target.checked);
+    renderPreview();
   });
   sizeGrid.appendChild(label);
 });
 
-const dropzone = document.getElementById('dropZone');
-const fileInput = document.getElementById('fileInput');
-const algoSel = document.getElementById('algoSel');
-const cornerSel = document.getElementById('cornerSel');
-const bgSel = document.getElementById('bgSel');
-const bgColor = document.getElementById('bgColor');
-const paddingSel = document.getElementById('paddingSel');
-const generateBtn = document.getElementById('generateBtn');
-const downloadBtn = document.getElementById('downloadBtn');
-const resetBtn = document.getElementById('resetBtn');
+function syncSizeChips() {
+  sizeGrid.querySelectorAll('label').forEach(label => {
+    const cb = label.querySelector('input');
+    const on = state.selected.has(Number(cb.value));
+    cb.checked = on;
+    label.classList.toggle('checked', on);
+  });
+}
 
+// ---------- 上传 ----------
 dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag'); });
-dropzone.addEventListener('dragleave', () => { dropzone.classList.remove('drag'); });
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag'));
 dropzone.addEventListener('drop', e => {
   e.preventDefault();
   dropzone.classList.remove('drag');
@@ -546,78 +577,247 @@ fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.
 
 function handleFile(file) {
   if (!file || !file.type.startsWith('image/')) {
-    alert('Please select an image file.');
+    alert('Please select an image file (PNG, JPG, WebP or SVG).');
     return;
   }
   const url = URL.createObjectURL(file);
-  state.sourceImg = new Image();
-  state.sourceImg.onload = () => {
-    state.sourceW = state.sourceImg.width;
-    state.sourceH = state.sourceImg.height;
+  const img = new Image();
+  img.onload = () => {
+    state.sourceImg = img;
+    state.sourceFile = file;
+    currentFile = file;
+    sourcePreview.src = url;
+    sourceMeta.textContent = img.naturalWidth + ' \u00d7 ' + img.naturalHeight + ' px \u00b7 ' + formatSize(file.size);
+    sourceWrap.style.display = 'block';
     dropzone.style.display = 'none';
-    document.getElementById('workspace').style.display = 'block';
+    workspace.style.display = 'block';
+    renderPreview();
   };
-  state.sourceImg.src = url;
+  img.onerror = () => alert('Could not read that image. Try a different file.');
+  img.src = url;
 }
 
-function makeIcoAt(size) {
+// ---------- 选项 ----------
+algoSel.addEventListener('change', () => { state.algo = algoSel.value; renderPreview(); });
+cornerSel.addEventListener('input', () => {
+  state.corner = Number(cornerSel.value);
+  cornerVal.textContent = cornerSel.value;
+  renderPreview();
+});
+bgSel.addEventListener('change', () => {
+  state.bgMode = bgSel.value;
+  bgColorWrap.style.display = (bgSel.value === 'solid') ? 'block' : 'none';
+  renderPreview();
+});
+bgColorInput.addEventListener('input', () => { state.bgColor = bgColorInput.value; renderPreview(); });
+padSel.addEventListener('input', () => {
+  state.padding = Number(padSel.value);
+  padVal.textContent = padSel.value;
+  renderPreview();
+});
+
+selectAllBtn.addEventListener('click', () => { ALL_SIZES.forEach(s => state.selected.add(s)); syncSizeChips(); renderPreview(); });
+selectNoneBtn.addEventListener('click', () => { state.selected.clear(); syncSizeChips(); renderPreview(); });
+selectClassicBtn.addEventListener('click', () => { state.selected = new Set([16, 32, 48]); syncSizeChips(); renderPreview(); });
+
+// ---------- 绘制 ----------
+function roundRect(cx, x, y, w, h, r) {
+  r = Math.min(r, w / 2, h / 2);
+  cx.beginPath();
+  cx.moveTo(x + r, y);
+  cx.arcTo(x + w, y, x + w, y + h, r);
+  cx.arcTo(x + w, y + h, x, y + h, r);
+  cx.arcTo(x, y + h, x, y, r);
+  cx.arcTo(x, y, x + w, y, r);
+  cx.closePath();
+}
+
+// 高质算法：逐步折半降采样，比一次性缩放在小尺寸下干净得多
+function drawScaled(cx, img, dx, dy, dw, dh, algo) {
+  if (algo !== 'high' || dw >= img.naturalWidth) {
+    cx.drawImage(img, dx, dy, dw, dh);
+    return;
+  }
+  let cur = document.createElement('canvas');
+  cur.width = img.naturalWidth;
+  cur.height = img.naturalHeight;
+  cur.getContext('2d').drawImage(img, 0, 0);
+  let w = cur.width, h = cur.height;
+  while (w / 2 >= dw && h / 2 >= dh && w > 2 && h > 2) {
+    const nw = Math.max(1, Math.floor(w / 2));
+    const nh = Math.max(1, Math.floor(h / 2));
+    const nc = document.createElement('canvas');
+    nc.width = nw; nc.height = nh;
+    const nctx = nc.getContext('2d');
+    nctx.imageSmoothingEnabled = true;
+    nctx.imageSmoothingQuality = 'high';
+    nctx.drawImage(cur, 0, 0, nw, nh);
+    cur = nc; w = nw; h = nh;
+  }
+  cx.drawImage(cur, 0, 0, w, h, dx, dy, dw, dh);
+}
+
+function makeCanvasAt(size) {
   const c = document.createElement('canvas');
   c.width = size; c.height = size;
   const cx = c.getContext('2d');
-  if (state.bgMode === 'color') {
+  const src = state.sourceImg;
+  if (state.bgMode === 'solid') {
     cx.fillStyle = state.bgColor;
     cx.fillRect(0, 0, size, size);
   }
-  const pad = Math.floor(size * (state.padding / 100));
-  const iw = size - pad * 2;
-  cx.drawImage(state.sourceImg, pad, pad, iw, iw);
-  return new Promise(resolve => c.toBlob(resolve, 'image/png'));
+  const pad = Math.floor(size * state.padding / 100);
+  const inner = Math.max(1, size - pad * 2);
+  const scale = Math.min(inner / src.naturalWidth, inner / src.naturalHeight);
+  const dw = src.naturalWidth * scale;
+  const dh = src.naturalHeight * scale;
+  const dx = pad + (inner - dw) / 2;
+  const dy = pad + (inner - dh) / 2;
+
+  if (state.algo === 'crisp') {
+    cx.imageSmoothingEnabled = false;
+  } else {
+    cx.imageSmoothingEnabled = true;
+    cx.imageSmoothingQuality = state.algo === 'high' ? 'high' : 'medium';
+  }
+
+  const r = size * state.corner / 100;
+  if (r > 0) {
+    cx.save();
+    roundRect(cx, 0, 0, size, size, r);
+    cx.clip();
+  }
+  drawScaled(cx, src, dx, dy, dw, dh, state.algo);
+  if (r > 0) cx.restore();
+  return c;
 }
 
-generateBtn && generateBtn.addEventListener('click', async () => {
-  if (!state.sourceImg) return;
-  generateBtn.disabled = true;
-  const sizes = Array.from(state.selected).sort((a,b) => a-b);
-  const blobs = await Promise.all(sizes.map(makeIcoAt));
+function canvasToBlob(c) {
+  return new Promise(res => c.toBlob(res, 'image/png'));
+}
+
+// ---------- 实时预览 ----------
+let previewTimer = null;
+function renderPreview() {
+  if (!state.sourceImg || !previewGrid) return;
+  clearTimeout(previewTimer);
+  previewTimer = setTimeout(() => {
+    const sizes = Array.from(state.selected).sort((a, b) => a - b);
+    previewGrid.innerHTML = '';
+    const show = sizes.length ? sizes : [64];
+    show.forEach(sz => {
+      const tile = document.createElement('div');
+      tile.className = 'preview-tile';
+      const canvas = makeCanvasAt(sz);
+      const display = Math.min(sz, 112);
+      canvas.style.width = display + 'px';
+      canvas.style.height = display + 'px';
+      tile.appendChild(canvas);
+      const lab = document.createElement('div');
+      lab.className = 'label';
+      lab.textContent = sz + '\u00d7' + sz;
+      tile.appendChild(lab);
+      previewGrid.appendChild(tile);
+    });
+  }, 120);
+}
+
+// ---------- 生成 ICO ----------
+async function buildIco() {
+  const sizes = Array.from(state.selected).sort((a, b) => a - b);
+  if (!sizes.length) { alert('Please select at least one size.'); return null; }
+  const blobs = [];
+  for (const sz of sizes) {
+    blobs.push(await canvasToBlob(makeCanvasAt(sz)));
+  }
   const headerSize = 6 + 16 * blobs.length;
   let offset = headerSize;
-  const parts = [];
-  parts.push(new Uint8Array([0,0,1,0, blobs.length & 0xff, (blobs.length>>8) & 0xff]));
+  const parts = [new Uint8Array([0, 0, 1, 0, blobs.length & 0xff, (blobs.length >> 8) & 0xff])];
   blobs.forEach((b, i) => {
     const sz = sizes[i];
-    const w = sz >= 256 ? 0 : sz;
-    const h = sz >= 256 ? 0 : sz;
-    const bArr = new Uint8Array(b);
+    const dim = sz >= 256 ? 0 : sz;
+    const len = b.size;
     parts.push(new Uint8Array([
-      w, h, 0, 0, 1, 0, 32, 0,
-      bArr.length & 0xff, (bArr.length>>8) & 0xff, (bArr.length>>16) & 0xff, (bArr.length>>24) & 0xff,
-      offset & 0xff, (offset>>8) & 0xff, (offset>>16) & 0xff, (offset>>24) & 0xff
+      dim, dim, 0, 0, 1, 0, 32, 0,
+      len & 0xff, (len >> 8) & 0xff, (len >> 16) & 0xff, (len >> 24) & 0xff,
+      offset & 0xff, (offset >> 8) & 0xff, (offset >> 16) & 0xff, (offset >> 24) & 0xff
     ]));
-    offset += bArr.length;
+    offset += len;
   });
-  blobs.forEach(b => parts.push(new Uint8Array(b)));
-  const icoFile = new Blob(parts, { type: 'image/x-icon' });
-  url = URL.createObjectURL(icoFile);
-  document.getElementById('resultArea').innerHTML = '<a href="' + url + '" download="icon.ico">Download ICO</a>';
+  for (const b of blobs) parts.push(new Uint8Array(await b.arrayBuffer()));
+  return new Blob(parts, { type: 'image/x-icon' });
+}
 
-  if (typeof openResultModal === 'function' && icoFile) {
-    openResultModal({
-      origSize: state.sourceImg ? (state.sourceImg.size || 0) : 'Unknown',
-      optSize: icoFile.size,
-      saveRate: '0%',
-      originalBlob: state.sourceImg,
-      resultBlob: icoFile,
-      fileName: 'icon.ico'
-    });
+function download(blob, name) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+}
+
+dlIco.addEventListener('click', async () => {
+  if (!state.sourceImg) return;
+  const old = dlIco.textContent;
+  dlIco.disabled = true;
+  dlIco.textContent = 'Generating\u2026';
+  try {
+    const ico = await buildIco();
+    if (!ico) return;
+    resultBlob = ico;
+    download(ico, 'icon.ico');
+    if (dlNote) dlNote.textContent = 'icon.ico \u2014 ' + formatSize(ico.size) + ' \u00b7 ' + state.selected.size + ' size(s)';
+    if (typeof openResultModal === 'function') {
+      openResultModal({
+        origSize: state.sourceFile ? state.sourceFile.size : 'Unknown',
+        optSize: ico.size,
+        saveRate: '\u2014',
+        originalBlob: state.sourceFile,
+        resultBlob: ico,
+        fileName: 'icon.ico'
+      });
+    }
+  } catch (e) {
+    alert('Could not generate the ICO: ' + e.message);
+  } finally {
+    dlIco.disabled = false;
+    dlIco.textContent = old;
   }
-  generateBtn.disabled = false;
 });
 
-resetBtn && resetBtn.addEventListener('click', () => {
-  state.sourceImg = null;
-  document.getElementById('workspace').style.display = 'none';
-  dropzone.style.display = '';
-  fileInput.value = '';
+dlZip.addEventListener('click', async () => {
+  if (!state.sourceImg) return;
+  const old = dlZip.textContent;
+  dlZip.disabled = true;
+  dlZip.textContent = 'Packaging\u2026';
+  try {
+    const ico = await buildIco();
+    if (!ico) return;
+    const sizes = Array.from(state.selected).sort((a, b) => a - b);
+    const JSZip = (await import('https://cdn.jsdelivr.net/npm/jszip@3.10.1/+esm')).default;
+    const zip = new JSZip();
+    const folder = zip.folder('icon-pack');
+    folder.file('icon.ico', ico);
+    const manifest = { generated: new Date().toISOString(), sizes: sizes.map(s => s + 'x' + s), files: [] };
+    for (const sz of sizes) {
+      const blob = await canvasToBlob(makeCanvasAt(sz));
+      folder.file('icon-' + sz + 'x' + sz + '.png', blob);
+      manifest.files.push('icon-' + sz + 'x' + sz + '.png');
+    }
+    folder.file('manifest.json', JSON.stringify(manifest, null, 2));
+    const zipBlob = await zip.generateAsync({ type: 'blob' });
+    resultBlob = zipBlob;
+    download(zipBlob, 'icon-pack.zip');
+    if (dlNote) dlNote.textContent = 'icon-pack.zip \u2014 ' + formatSize(zipBlob.size) + ' \u00b7 ' + sizes.length + ' sizes + manifest.json';
+  } catch (e) {
+    alert('Could not build the ZIP: ' + e.message);
+  } finally {
+    dlZip.disabled = false;
+    dlZip.textContent = old;
+  }
 });
 
   </script>
@@ -722,60 +922,6 @@ resetBtn && resetBtn.addEventListener('click', () => {
 })();
 </script>
 
-<!-- Viral Share Button -->
-<button onclick="shareOurTool()" style="position:fixed;bottom:20px;right:20px;background:#0ea5e9;color:white;border:none;border-radius:50%;width:60px;height:60px;font-size:24px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.2);z-index:999;" title="Share this free tool">💛</button>
-<script>
-function shareOurTool() {
-  const pageName = document.title.split("—")[0].trim();
-  const url = window.location.href;
-  const text = `I just used this free 100% browser-based ${pageName} — no upload, no watermark, no signup! Try it: ${url}`;
-  if (navigator.share) { navigator.share({text: text}); }
-  else { navigator.clipboard.writeText(text); alert("✅ Share text copied! Post it online to help others!"); }
-}
-</script>
-<button onclick="shareOurTool(event)" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;">💛 Share Free Tool</button>
-<script>
-function shareOurTool(e) {
-  e.stopPropagation();
-  const toolName = document.title.split("—")[0].trim();
-  const url = window.location.href;
-  const text = `I just used this FREE ${toolName} in my browser — no upload, no watermark, no signup! Saved me $29.99 on Photoshop. Try it: ${url}`;
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
-  window.open(twitterUrl, '_blank', 'width=550,height=420');
-}
-</script>
-<button onclick="shareOurTool()" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;">💛 Share Free Tool</button>
-<script>
-function shareOurTool() {
-  const toolName = document.title.split("—")[0].trim();
-  const url = window.location.href;
-  const text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
-  window.open(twitterUrl, '_blank', 'width=550,height=420');
-}
-</script>
-<button onclick="shareOurTool()" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;" id="shareBtn">💛 Share Free Tool</button>
-<script>
-function shareOurTool() {
-  const lang = document.documentElement.lang || 'en';
-  const toolName = document.title.split("—")[0].trim();
-  const url = window.location.href;
-  let text, btnText;
-  if (lang.startsWith('zh')) {
-    btnText = '💛 分享免费工具';
-    text = `我刚在浏览器里用这个免费${toolName}，不用上传、无水印、不用注册！帮我省了Photoshop的钱，推荐你试试：${url}`;
-  } else if (lang.startsWith('es')) {
-    btnText = '💛 Compartir Herramienta Gratis';
-    text = `Acabo de usar este ${toolName} GRATIS directamente en mi navegador — sin subir archivos, sin marca de agua, sin registro! Me ahorró dinero de Photoshop. Pruébalo: ${url}`;
-  } else {
-    btnText = '💛 Share Free Tool';
-    text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
-  }
-  document.getElementById('shareBtn').innerText = btnText;
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
-  window.open(twitterUrl, '_blank', 'width=550,height=420');
-}
-</script>
 <button onclick="shareOurTool()" style="position:fixed;bottom:32px;right:20px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:50%;width:48px;height:48px;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(245,158,11,0.4);z-index:999;" id="shareBtn" title="Share this free tool">💛</button>
 <script>
 function shareOurTool() {

@@ -187,7 +187,7 @@
           <span>×</span>
           <input type="number" id="resizeH" placeholder="height" style="width:80px">
           <label style="margin-left:0.5rem">
-            <input type="checkbox" id="keepRatio"> Keep ratio
+            <input type="checkbox" id="keepRatio" checked> Keep ratio
           </label>
         </div>
         <div class="controls">
@@ -381,10 +381,17 @@ function processOne(file, tW, tH, fmt, q, wmText, wmSize, wmAlpha) {
     reader.onload = e => {
       const img = new Image();
       img.onload = () => {
+        const keepRatio = $('keepRatio') ? $('keepRatio').checked : true;
         let w = img.width, h = img.height;
-        if (tW && tH) { w = tW; h = tH; }
-        else if (tW) { h = Math.round(img.height * tW / img.width); w = tW; }
-        else if (tH) { w = Math.round(img.width * tH / img.height); h = tH; }
+        if (tW && tH) {
+          if (keepRatio) {
+            const s = Math.min(tW / img.width, tH / img.height);
+            w = Math.max(1, Math.round(img.width * s));
+            h = Math.max(1, Math.round(img.height * s));
+          } else { w = tW; h = tH; }
+        }
+        else if (tW) { h = keepRatio ? Math.round(img.height * tW / img.width) : img.height; w = tW; }
+        else if (tH) { w = keepRatio ? Math.round(img.width * tH / img.height) : img.width; h = tH; }
 
         const c = document.createElement('canvas');
         c.width = w; c.height = h;

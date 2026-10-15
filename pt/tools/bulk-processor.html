@@ -634,7 +634,15 @@
         const img = new Image();
         img.onload = () => {
           let w = img.width, h = img.height;
-          if (tW && tH) { w = tW; h = tH; }
+          if (tW && tH) {
+            if (keepRatio) {
+              const s = Math.min(tW / img.width, tH / img.height);
+              w = Math.max(1, Math.round(img.width * s));
+              h = Math.max(1, Math.round(img.height * s));
+            } else { w = tW; h = tH; }
+          }
+          else if (tW) { h = keepRatio ? Math.round(img.height * tW / img.width) : img.height; w = tW; }
+          else if (tH) { w = keepRatio ? Math.round(img.width * tH / img.height) : img.width; h = tH; }
           else if (tW) { h = keepRatio ? Math.round(img.height * tW / img.width) : img.height; w = tW; }
           else if (tH) { w = keepRatio ? Math.round(img.width * tH / img.height) : img.width; h = tH; }
 

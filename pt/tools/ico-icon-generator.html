@@ -178,7 +178,7 @@
         <h1>Gerador de Ícones ICO</h1>
         <p>Converta qualquer imagem em arquivo ICO multi-tamanho ou pacote completo de ícones.</p>
       </div>
-      <div class="tool-workspace">
+      <div class="tool-workspace" id="workspace">
 <label for="fileInput" class="upload-zone" id="dropZone">
           <div class="icon">🖼️</div>
           <div><strong>Solte uma imagem aqui</strong> ou clique para procurar</div>
@@ -366,10 +366,23 @@
   <script>
 'use strict';
 
+const MSG = {
+  en: { pick: 'Please select an image file (PNG, JPG, WebP or SVG).', read: 'Could not read that image. Try a different file.', size: 'Please select at least one size.', gen: 'Generating\u2026', pack: 'Packaging\u2026', genFail: 'Could not generate the ICO: ', zipFail: 'Could not build the ZIP: ', done: 'Downloaded' },
+  es: { pick: 'Selecciona un archivo de imagen (PNG, JPG, WebP o SVG).', read: 'No se pudo leer esa imagen. Prueba con otro archivo.', size: 'Selecciona al menos un tama\u00f1o.', gen: 'Generando\u2026', pack: 'Empaquetando\u2026', genFail: 'No se pudo generar el ICO: ', zipFail: 'No se pudo crear el ZIP: ', done: 'Descargado' },
+  fr: { pick: 'Veuillez choisir un fichier image (PNG, JPG, WebP ou SVG).', read: 'Impossible de lire cette image. Essayez un autre fichier.', size: 'S\u00e9lectionnez au moins une taille.', gen: 'G\u00e9n\u00e9ration\u2026', pack: 'Compression\u2026', genFail: 'Impossible de g\u00e9n\u00e9rer l\u2019ICO : ', zipFail: 'Impossible de cr\u00e9er le ZIP : ', done: 'T\u00e9l\u00e9charg\u00e9' },
+  pt: { pick: 'Selecione um arquivo de imagem (PNG, JPG, WebP ou SVG).', read: 'N\u00e3o foi poss\u00edvel ler essa imagem. Tente outro arquivo.', size: 'Selecione pelo menos um tamanho.', gen: 'Gerando\u2026', pack: 'Empacotando\u2026', genFail: 'N\u00e3o foi poss\u00edvel gerar o ICO: ', zipFail: 'N\u00e3o foi poss\u00edvel criar o ZIP: ', done: 'Baixado' },
+  ar: { pick: '\u064a\u0631\u062c\u0649 \u0627\u062e\u062a\u064a\u0627\u0631 \u0645\u0644\u0641 \u0635\u0648\u0631\u0629 (PNG \u0623\u0648 JPG \u0623\u0648 WebP \u0623\u0648 SVG).', read: '\u062a\u0639\u0630\u0651\u0631 \u0642\u0631\u0627\u0621\u0629 \u0647\u0630\u0647 \u0627\u0644\u0635\u0648\u0631\u0629. \u062c\u0631\u0651\u0628 \u0645\u0644\u0641\u064b\u0627 \u0622\u062e\u0631.', size: '\u064a\u0631\u062c\u0649 \u0627\u062e\u062a\u064a\u0627\u0631 \u062d\u062c\u0645 \u0648\u0627\u062d\u062f \u0639\u0644\u0649 \u0627\u0644\u0623\u0642\u0644.', gen: '\u062c\u0627\u0631\u064d \u0627\u0644\u0625\u0646\u0634\u0627\u0621\u2026', pack: '\u062c\u0627\u0631\u064d \u0627\u0644\u062a\u0639\u0628\u0626\u0629\u2026', genFail: '\u062a\u0639\u0630\u0651\u0631 \u0625\u0646\u0634\u0627\u0621 \u0627\u0644\u0640 ICO: ', zipFail: '\u062a\u0639\u0630\u0651\u0631 \u0625\u0646\u0634\u0627\u0621 \u0627\u0644\u0640 ZIP: ', done: '\u062a\u0645 \u0627\u0644\u062a\u0646\u0632\u064a\u0644' },
+  id: { pick: 'Pilih file gambar (PNG, JPG, WebP, atau SVG).', read: 'Tidak dapat membaca gambar itu. Coba file lain.', size: 'Pilih setidaknya satu ukuran.', gen: 'Membuat\u2026', pack: 'Mengemas\u2026', genFail: 'Tidak dapat membuat ICO: ', zipFail: 'Tidak dapat membuat ZIP: ', done: 'Terunduh' },
+  vi: { pick: 'Vui l\u00f2ng ch\u1ecdn m\u1ed9t t\u1ec7p h\u00ecnh \u1ea3nh (PNG, JPG, WebP ho\u1eb7c SVG).', read: 'Kh\u00f4ng th\u1ec3 \u0111\u1ecdc h\u00ecnh \u1ea3nh n\u00e0y. H\u00e3y th\u1eed t\u1ec7p kh\u00e1c.', size: 'H\u00e3y ch\u1ecdn \u00edt nh\u1ea5t m\u1ed9t k\u00edch th\u01b0\u1edbc.', gen: '\u0110ang t\u1ea1o\u2026', pack: '\u0110ang \u0111\u00f3ng g\u00f3i\u2026', genFail: 'Kh\u00f4ng th\u1ec3 t\u1ea1o ICO: ', zipFail: 'Kh\u00f4ng th\u1ec3 t\u1ea1o ZIP: ', done: '\u0110\u00e3 t\u1ea3i xu\u1ed1ng' },
+  zh: { pick: '\u8bf7\u9009\u62e9\u4e00\u4e2a\u56fe\u7247\u6587\u4ef6\uff08PNG\u3001JPG\u3001WebP \u6216 SVG\uff09\u3002', read: '\u65e0\u6cd5\u8bfb\u53d6\u8be5\u56fe\u7247\uff0c\u8bf7\u6362\u4e00\u4e2a\u6587\u4ef6\u3002', size: '\u8bf7\u81f3\u5c11\u9009\u62e9\u4e00\u4e2a\u5c3a\u5bf8\u3002', gen: '\u751f\u6210\u4e2d\u2026', pack: '\u6253\u5305\u4e2d\u2026', genFail: '\u65e0\u6cd5\u751f\u6210 ICO\uff1a', zipFail: '\u65e0\u6cd5\u751f\u6210 ZIP\uff1a', done: '\u5df2\u4e0b\u8f7d' }
+};
+const LANG = (document.documentElement.lang || 'en').slice(0, 2).toLowerCase();
+const T = MSG[LANG] || MSG.en;
+
 const ALL_SIZES = [16, 24, 32, 48, 64, 96, 128, 256, 512];
 const state = {
   sourceImg: null,
-  sourceW: 0, sourceH: 0,
+  sourceFile: null,
   selected: new Set([16, 32, 48, 64, 128, 256]),
   algo: 'high',
   corner: 0,
@@ -377,33 +390,62 @@ const state = {
   bgColor: '#6366f1',
   padding: 0,
 };
+let resultBlob = null;
+let currentFile = null;
 
 const sizeGrid = document.getElementById('sizeGrid');
+const dropzone = document.getElementById('dropZone');
+const fileInput = document.getElementById('fileInput');
+const workspace = document.getElementById('workspace');
+const sourceWrap = document.getElementById('sourceWrap');
+const sourcePreview = document.getElementById('sourcePreview');
+const sourceMeta = document.getElementById('sourceMeta');
+const algoSel = document.getElementById('scaleAlgo');
+const cornerSel = document.getElementById('cornerRadius');
+const cornerVal = document.getElementById('cornerVal');
+const bgSel = document.getElementById('bgMode');
+const bgColorWrap = document.getElementById('bgColorWrap');
+const bgColorInput = document.getElementById('bgColor');
+const padSel = document.getElementById('padding');
+const padVal = document.getElementById('padVal');
+const previewGrid = document.getElementById('previewGrid');
+const dlIco = document.getElementById('dlIco');
+const dlZip = document.getElementById('dlZip');
+const dlNote = document.getElementById('dlNote');
+const selectAllBtn = document.getElementById('selectAll');
+const selectNoneBtn = document.getElementById('selectNone');
+const selectClassicBtn = document.getElementById('selectClassic');
+
+function formatSize(b) {
+  if (b < 1024) return b + ' B';
+  if (b < 1048576) return (b / 1024).toFixed(1) + ' KB';
+  return (b / 1048576).toFixed(2) + ' MB';
+}
+
 ALL_SIZES.forEach(sz => {
   const label = document.createElement('label');
   label.className = 'size-chip' + (state.selected.has(sz) ? ' checked' : '');
-  label.innerHTML = `<input type="checkbox" value="${sz}" ${state.selected.has(sz) ? 'checked' : ''}><span>${sz} \u00d7 ${sz}</span>`;
+  label.innerHTML = '<input type="checkbox" value="' + sz + '"' + (state.selected.has(sz) ? ' checked' : '') + '><span>' + sz + ' \u00d7 ' + sz + '</span>';
   label.querySelector('input').addEventListener('change', e => {
     if (e.target.checked) state.selected.add(sz);
     else state.selected.delete(sz);
     label.classList.toggle('checked', e.target.checked);
+    renderPreview();
   });
   sizeGrid.appendChild(label);
 });
 
-const dropzone = document.getElementById('dropzone');
-const fileInput = document.getElementById('fileInput');
-const algoSel = document.getElementById('algoSel');
-const cornerSel = document.getElementById('cornerSel');
-const bgSel = document.getElementById('bgSel');
-const bgColor = document.getElementById('bgColor');
-const paddingSel = document.getElementById('paddingSel');
-const generateBtn = document.getElementById('generateBtn');
-const downloadBtn = document.getElementById('downloadBtn');
-const resetBtn = document.getElementById('resetBtn');
+function syncSizeChips() {
+  sizeGrid.querySelectorAll('label').forEach(label => {
+    const cb = label.querySelector('input');
+    const on = state.selected.has(Number(cb.value));
+    cb.checked = on;
+    label.classList.toggle('checked', on);
+  });
+}
 
 dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag'); });
-dropzone.addEventListener('dragleave', () => { dropzone.classList.remove('drag'); });
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag'));
 dropzone.addEventListener('drop', e => {
   e.preventDefault();
   dropzone.classList.remove('drag');
@@ -412,69 +454,242 @@ dropzone.addEventListener('drop', e => {
 fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
 
 function handleFile(file) {
-  if (!file || !file.type.startsWith('image/')) {
-    alert('Selecione um arquivo de imagem.');
-    return;
-  }
+  if (!file || !file.type.startsWith('image/')) { alert(T.pick); return; }
   const url = URL.createObjectURL(file);
-  state.sourceImg = new Image();
-  state.sourceImg.onload = () => {
-    state.sourceW = state.sourceImg.width;
-    state.sourceH = state.sourceImg.height;
+  const img = new Image();
+  img.onload = () => {
+    state.sourceImg = img;
+    state.sourceFile = file;
+    currentFile = file;
+    sourcePreview.src = url;
+    sourceMeta.textContent = img.naturalWidth + ' \u00d7 ' + img.naturalHeight + ' px \u00b7 ' + formatSize(file.size);
+    sourceWrap.style.display = 'block';
     dropzone.style.display = 'none';
-    document.getElementById('workspace').style.display = 'block';
+    workspace.style.display = 'block';
+    renderPreview();
   };
-  state.sourceImg.src = url;
+  img.onerror = () => alert(T.read);
+  img.src = url;
 }
 
-function makeIcoAt(size) {
+algoSel.addEventListener('change', () => { state.algo = algoSel.value; renderPreview(); });
+cornerSel.addEventListener('input', () => {
+  state.corner = Number(cornerSel.value);
+  cornerVal.textContent = cornerSel.value;
+  renderPreview();
+});
+bgSel.addEventListener('change', () => {
+  state.bgMode = bgSel.value;
+  bgColorWrap.style.display = (bgSel.value === 'solid') ? 'block' : 'none';
+  renderPreview();
+});
+bgColorInput.addEventListener('input', () => { state.bgColor = bgColorInput.value; renderPreview(); });
+padSel.addEventListener('input', () => {
+  state.padding = Number(padSel.value);
+  padVal.textContent = padSel.value;
+  renderPreview();
+});
+
+selectAllBtn.addEventListener('click', () => { ALL_SIZES.forEach(s => state.selected.add(s)); syncSizeChips(); renderPreview(); });
+selectNoneBtn.addEventListener('click', () => { state.selected.clear(); syncSizeChips(); renderPreview(); });
+selectClassicBtn.addEventListener('click', () => { state.selected = new Set([16, 32, 48]); syncSizeChips(); renderPreview(); });
+
+function roundRect(cx, x, y, w, h, r) {
+  r = Math.min(r, w / 2, h / 2);
+  cx.beginPath();
+  cx.moveTo(x + r, y);
+  cx.arcTo(x + w, y, x + w, y + h, r);
+  cx.arcTo(x + w, y + h, x, y + h, r);
+  cx.arcTo(x, y + h, x, y, r);
+  cx.arcTo(x, y, x + w, y, r);
+  cx.closePath();
+}
+
+function drawScaled(cx, img, dx, dy, dw, dh, algo) {
+  if (algo !== 'high' || dw >= img.naturalWidth) {
+    cx.drawImage(img, dx, dy, dw, dh);
+    return;
+  }
+  let cur = document.createElement('canvas');
+  cur.width = img.naturalWidth;
+  cur.height = img.naturalHeight;
+  cur.getContext('2d').drawImage(img, 0, 0);
+  let w = cur.width, h = cur.height;
+  while (w / 2 >= dw && h / 2 >= dh && w > 2 && h > 2) {
+    const nw = Math.max(1, Math.floor(w / 2));
+    const nh = Math.max(1, Math.floor(h / 2));
+    const nc = document.createElement('canvas');
+    nc.width = nw; nc.height = nh;
+    const nctx = nc.getContext('2d');
+    nctx.imageSmoothingEnabled = true;
+    nctx.imageSmoothingQuality = 'high';
+    nctx.drawImage(cur, 0, 0, nw, nh);
+    cur = nc; w = nw; h = nh;
+  }
+  cx.drawImage(cur, 0, 0, w, h, dx, dy, dw, dh);
+}
+
+function makeCanvasAt(size) {
   const c = document.createElement('canvas');
   c.width = size; c.height = size;
   const cx = c.getContext('2d');
-  if (state.bgMode === 'color') {
+  const src = state.sourceImg;
+  if (state.bgMode === 'solid') {
     cx.fillStyle = state.bgColor;
     cx.fillRect(0, 0, size, size);
   }
-  const pad = Math.floor(size * (state.padding / 100));
-  const iw = size - pad * 2;
-  cx.drawImage(state.sourceImg, pad, pad, iw, iw);
-  return new Promise(resolve => c.toBlob(resolve, 'image/png'));
+  const pad = Math.floor(size * state.padding / 100);
+  const inner = Math.max(1, size - pad * 2);
+  const scale = Math.min(inner / src.naturalWidth, inner / src.naturalHeight);
+  const dw = src.naturalWidth * scale;
+  const dh = src.naturalHeight * scale;
+  const dx = pad + (inner - dw) / 2;
+  const dy = pad + (inner - dh) / 2;
+
+  if (state.algo === 'crisp') {
+    cx.imageSmoothingEnabled = false;
+  } else {
+    cx.imageSmoothingEnabled = true;
+    cx.imageSmoothingQuality = state.algo === 'high' ? 'high' : 'medium';
+  }
+
+  const r = size * state.corner / 100;
+  if (r > 0) {
+    cx.save();
+    roundRect(cx, 0, 0, size, size, r);
+    cx.clip();
+  }
+  drawScaled(cx, src, dx, dy, dw, dh, state.algo);
+  if (r > 0) cx.restore();
+  return c;
 }
 
-generateBtn && generateBtn.addEventListener('click', async () => {
-  if (!state.sourceImg) return;
-  generateBtn.disabled = true;
-  const sizes = Array.from(state.selected).sort((a,b) => a-b);
-  const blobs = await Promise.all(sizes.map(makeIcoAt));
+function canvasToBlob(c) {
+  return new Promise(res => c.toBlob(res, 'image/png'));
+}
+
+let previewTimer = null;
+function renderPreview() {
+  if (!state.sourceImg || !previewGrid) return;
+  clearTimeout(previewTimer);
+  previewTimer = setTimeout(() => {
+    const sizes = Array.from(state.selected).sort((a, b) => a - b);
+    previewGrid.innerHTML = '';
+    const show = sizes.length ? sizes : [64];
+    show.forEach(sz => {
+      const tile = document.createElement('div');
+      tile.className = 'preview-tile';
+      const canvas = makeCanvasAt(sz);
+      const display = Math.min(sz, 112);
+      canvas.style.width = display + 'px';
+      canvas.style.height = display + 'px';
+      tile.appendChild(canvas);
+      const lab = document.createElement('div');
+      lab.className = 'label';
+      lab.textContent = sz + '\u00d7' + sz;
+      tile.appendChild(lab);
+      previewGrid.appendChild(tile);
+    });
+  }, 120);
+}
+
+async function buildIco() {
+  const sizes = Array.from(state.selected).sort((a, b) => a - b);
+  if (!sizes.length) { alert(T.size); return null; }
+  const blobs = [];
+  for (const sz of sizes) {
+    blobs.push(await canvasToBlob(makeCanvasAt(sz)));
+  }
   const headerSize = 6 + 16 * blobs.length;
   let offset = headerSize;
-  const parts = [];
-  parts.push(new Uint8Array([0,0,1,0, blobs.length & 0xff, (blobs.length>>8) & 0xff]));
+  const parts = [new Uint8Array([0, 0, 1, 0, blobs.length & 0xff, (blobs.length >> 8) & 0xff])];
   blobs.forEach((b, i) => {
     const sz = sizes[i];
-    const w = sz >= 256 ? 0 : sz;
-    const h = sz >= 256 ? 0 : sz;
-    const bArr = new Uint8Array(b);
+    const dim = sz >= 256 ? 0 : sz;
+    const len = b.size;
     parts.push(new Uint8Array([
-      w, h, 0, 0, 1, 0, 32, 0,
-      bArr.length & 0xff, (bArr.length>>8) & 0xff, (bArr.length>>16) & 0xff, (bArr.length>>24) & 0xff,
-      offset & 0xff, (offset>>8) & 0xff, (offset>>16) & 0xff, (offset>>24) & 0xff
+      dim, dim, 0, 0, 1, 0, 32, 0,
+      len & 0xff, (len >> 8) & 0xff, (len >> 16) & 0xff, (len >> 24) & 0xff,
+      offset & 0xff, (offset >> 8) & 0xff, (offset >> 16) & 0xff, (offset >> 24) & 0xff
     ]));
-    offset += bArr.length;
+    offset += len;
   });
-  blobs.forEach(b => parts.push(new Uint8Array(b)));
-  const icoFile = new Blob(parts, { type: 'image/x-icon' });
-  url = URL.createObjectURL(icoFile);
-  document.getElementById('resultArea').innerHTML = '<a href="' + url + '" download="icon.ico">Baixar ICO</a>';
-  generateBtn.disabled = false;
+  for (const b of blobs) parts.push(new Uint8Array(await b.arrayBuffer()));
+  return new Blob(parts, { type: 'image/x-icon' });
+}
+
+function download(blob, name) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+}
+
+dlIco.addEventListener('click', async () => {
+  if (!state.sourceImg) return;
+  const old = dlIco.textContent;
+  dlIco.disabled = true;
+  dlIco.textContent = T.gen;
+  try {
+    const ico = await buildIco();
+    if (!ico) return;
+    resultBlob = ico;
+    download(ico, 'icon.ico');
+    if (dlNote) dlNote.textContent = 'icon.ico \u2014 ' + formatSize(ico.size) + ' \u00b7 ' + state.selected.size + ' \u00d7 ' + T.done;
+    if (typeof openResultModal === 'function') {
+      openResultModal({
+        origSize: state.sourceFile ? state.sourceFile.size : 'Unknown',
+        optSize: ico.size,
+        saveRate: '\u2014',
+        originalBlob: state.sourceFile,
+        resultBlob: ico,
+        fileName: 'icon.ico'
+      });
+    }
+  } catch (e) {
+    alert(T.genFail + e.message);
+  } finally {
+    dlIco.disabled = false;
+    dlIco.textContent = old;
+  }
 });
 
-resetBtn && resetBtn.addEventListener('click', () => {
-  state.sourceImg = null;
-  document.getElementById('workspace').style.display = 'none';
-  dropzone.style.display = '';
-  fileInput.value = '';
+dlZip.addEventListener('click', async () => {
+  if (!state.sourceImg) return;
+  const old = dlZip.textContent;
+  dlZip.disabled = true;
+  dlZip.textContent = T.pack;
+  try {
+    const ico = await buildIco();
+    if (!ico) return;
+    const sizes = Array.from(state.selected).sort((a, b) => a - b);
+    const JSZip = (await import('https://cdn.jsdelivr.net/npm/jszip@3.10.1/+esm')).default;
+    const zip = new JSZip();
+    const folder = zip.folder('icon-pack');
+    folder.file('icon.ico', ico);
+    const manifest = { generated: new Date().toISOString(), sizes: sizes.map(s => s + 'x' + s), files: [] };
+    for (const sz of sizes) {
+      const blob = await canvasToBlob(makeCanvasAt(sz));
+      folder.file('icon-' + sz + 'x' + sz + '.png', blob);
+      manifest.files.push('icon-' + sz + 'x' + sz + '.png');
+    }
+    folder.file('manifest.json', JSON.stringify(manifest, null, 2));
+    const zipBlob = await zip.generateAsync({ type: 'blob' });
+    resultBlob = zipBlob;
+    download(zipBlob, 'icon-pack.zip');
+    if (dlNote) dlNote.textContent = 'icon-pack.zip \u2014 ' + formatSize(zipBlob.size) + ' \u00b7 ' + sizes.length + ' \u00d7 ' + T.done;
+  } catch (e) {
+    alert(T.zipFail + e.message);
+  } finally {
+    dlZip.disabled = false;
+    dlZip.textContent = old;
+  }
 });
+
   </script>
   <script src="/js/lang.js"></script>
 <script src="/js/ad-loader.js?v=4"></script>
