@@ -116,6 +116,23 @@
         PDF are the campaign record; the tab is not.</li>
     </ul>
 
+    <h2>Scheduling considerations: when each phase should run</h2>
+    <p>The seven phases are ordered by data dependency, but they also interact with the calendar, and two
+    scheduling rules prevent the most common timing mistakes. First, <b>respect the seasonality window in
+    rate fitting</b>: a rate fitted over less than a full year absorbs the seasonal wave into its slope, so
+    whenever the available record is shorter than twelve months, state the window on every fitted rate and
+    avoid comparing rates fitted over different spans — a January-to-December fit against a March-to-February
+    fit can differ by several mm/yr on the same ground with no real change. Where the project calendar forces
+    a short window, prefer comparing second-half against first-half rates within the same record (the
+    time-series tool's acceleration split) rather than absolute rates across records. Second, <b>run the
+    ground-truth phase close in time to the InSAR stack it validates</b>: a GNSS campaign averaged over a
+    different year validates a different process, and in groundwater-driven areas the discrepancy will be
+    calendar, not measurement. When new GNSS results arrive mid-campaign, re-run the validation phase and
+    regenerate the report rather than merging statistics by hand.</p>
+    <p>One further habit: schedule the pre-check before committing field resources, not after. The pre-check's
+    land-cover flags exist precisely because discovering a C-band decorrelation problem after the survey is
+    the most expensive possible order of events — the cheapest failure is the one caught before the mobilisation.</p>
+
     <h2>Where to go next</h2>
     <p>Rehearse the entire sequence on known data with the <a href="sample-dataset-guide.html">sample
     dataset</a> before the first real campaign — ten minutes there buys fluency here. The

@@ -109,6 +109,25 @@
     or tighten the time-series acceleration threshold until seasonality starts masquerading as acceleration.
     Demonstrating what the tools refuse to tell you builds more trust than any success case.</p>
 
+    <h2>What the sample deliberately does not include</h2>
+    <p>Knowing the boundary of the demo prevents two opposite mistakes: over-trusting it and over-extending
+    it. The dataset contains no <em>atmospheric or orbital noise</em> — real processor exports carry error
+    terms whose signatures (spatially correlated residuals, track-dependent biases) the demo cannot
+    reproduce, so passing the demo proves your mechanics, not your data quality. There is no <em>seasonal
+    signal</em> in the time series: the synthetic curves are built from linear rates, a deliberate
+    acceleration ramp and one step, so seasonality-related behaviours must be rehearsed on your own data.
+    No <em>unwrapping artifacts</em> are planted either — the single step in the series is a real step by
+    construction, whereas in production data each flagged step is a genuine question of mechanism versus
+    artifact. And the geometry is simplified: the LOS table carries a single ascending-track geometry
+    rather than an ascending/descending pair, so cross-track separation exercises need real campaign data.</p>
+    <p>If you build your own training data, mirror the demo's disciplines rather than its files: fix a seed
+    or otherwise pin the values so the exercise is reproducible, write the expected results down
+    <em>before</em> running the tools, and make at least one point deliberately anomalous so that the
+    flagging path gets exercised. A teaching dataset whose every point is boring teaches the least of all.
+    Keep the synthetic files clearly labelled as such in any shared folder — the disclaimer below exists
+    because synthetic numbers, once loose in a project drive, have a way of being rediscovered and cited
+    as if they were measurements.</p>
+
     <h2>Where to go next</h2>
     <p>Start the chain at the <a href="../tools/los-convert.html">LOS Converter</a>, with the
     <a href="csv-format-spec.html">CSV format specification</a> open in a second tab; the

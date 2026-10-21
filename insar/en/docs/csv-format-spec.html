@@ -105,6 +105,25 @@
     your source table. That last check catches silently dropped rows — the failure mode no one notices
     until a reviewer counts.</p>
 
+    <h2>Opening CSVs in spreadsheet software without corrupting them</h2>
+    <p>Most corrupt tables are not born corrupt — they are corrupted by the tool used to inspect them.
+    Spreadsheet applications reformat CSVs silently the moment a file is opened and saved, and three
+    failure modes account for nearly all of the damage. <b>Coordinate precision loss</b>: a longitude such
+    as 116.397128 gets displayed as 116.397 and, on save, the display value can overwrite the stored one,
+    moving points tens of metres; treat any column that lands points a block away from where they belong
+    as a precision casualty. The defence is to never round-trip coordinate columns through a spreadsheet —
+    open the file read-only to inspect, or use a plain text editor. <b>Identifier mangling</b>: long numeric
+    point identifiers convert to scientific notation (2.31E+09), which does not survive a round trip either;
+    quote identifiers or prefix them with a letter when the schema allows. <b>Delimiter and decimal drift</b>:
+    a locale set to decimal-comma will re-save the file with semicolons or commas in the wrong places,
+    breaking the delimiter detection this importer performs on the next open.</p>
+    <p>The safe pattern when a spreadsheet is genuinely needed for editing — recoding labels, dropping rows,
+    joining columns — is to keep the CSV as the source of truth, do the edit on a copy, and export the copy
+    back to CSV explicitly (choosing UTF-8 and point decimals in the export dialog) rather than saving over
+    the original. Then re-open the result in a text editor and check the first two lines before importing:
+    the header row intact, one delimiter style, decimals as points. Thirty seconds here routinely saves an
+    hour of debugging a table that "worked yesterday".</p>
+
     <h2>Recommendations for clean tables</h2>
     <p>Keep one header row, no merged cells, no footnote rows; export as plain CSV rather than copying
     formatted sheets that carry invisible formatting characters; keep coordinates in decimal degrees with
