@@ -49,7 +49,7 @@
 
   /* ---------- Demo 加载：PS CSV → 纯垂直换算 → 分级 ---------- */
   $("btn-demo").onclick = function () {
-    fetch("../../../assets/sample-data/sample-insar-ps-points.csv")
+    fetch("../../assets/sample-data/sample-insar-ps-points.csv")
       .then(function (r) { return r.text(); })
       .then(function (t) {
         var parsed = CSVUtils.parse(t);

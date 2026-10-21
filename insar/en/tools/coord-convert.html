@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<!-- 工具 7：Batch Coordinate Converter（文档 4.1-7）。内容章节由内容任务填充 -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Batch Coordinate Converter — WGS84 ↔ UTM | insar-geosettle</title>
+  <meta name="description" content="Batch-convert WGS84 lon/lat to UTM (auto zone detection) and back, with CSV and GeoJSON support. proj4js precision, runs locally in your browser.">
+  <link rel="canonical" href="https://smartimgkit.com/insar/en/tools/coord-convert.html">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/insar/en/tools/coord-convert.html">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/insar/en/tools/coord-convert.html">
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
+</head>
+<body>
+  <header class="site-head">
+    <span class="brand">insar-geosettle</span>
+    <a href="los-convert.html">← LOS Converter</a><a href="../index.html">Tools</a>
+  </header>
+  <div class="privacy-strip">🔒 <b>All calculations run locally in your browser.</b> No data is sent to our server.</div>
+
+  <div class="workbench">
+    <div class="card zone-input">
+      <h3>Direction &amp; input</h3>
+      <label>Direction</label>
+      <select id="in-dir" style="width:100%;padding:6px;border:1px solid var(--line);border-radius:6px">
+        <option value="ll2utm">WGS84 lon/lat → UTM (auto zone)</option>
+        <option value="utm2ll">UTM → WGS84 lon/lat</option>
+      </select>
+      <div id="zone-box" style="display:none">
+        <label>UTM zone <span class="qm" title="Required for reverse conversion (grid zone is not recoverable from easting/northing alone)">?</span></label>
+        <input type="number" id="in-zone" value="10" min="1" max="60">
+        <label><input type="checkbox" id="in-south"> Southern hemisphere</label>
+      </div>
+
+      <label>Paste CSV / rows</label>
+      <textarea id="in-paste" placeholder="ll2utm: lon,lat (one per line)&#10;utm2ll: easting,northing (one per line)"></textarea>
+      <input type="file" id="in-file" accept=".csv,.json" style="display:none">
+      <button class="btn ghost" id="btn-file">Import CSV / GeoJSON</button>
+      <button class="btn ghost" id="btn-demo">Load demo points</button>
+      <button class="btn accent" id="btn-run">Convert</button>
+      <div class="hint" id="msg"></div>
+    </div>
+
+    <div class="card zone-result">
+      <h3>Results</h3>
+      <div class="scroll-box"><table class="res" id="table"></table></div>
+    </div>
+
+    <div class="card zone-chart">
+      <h3>Points (UTM easting / northing)</h3>
+      <div id="map" style="width:100%;height:360px"></div>
+    </div>
+
+    <div class="card zone-export">
+      <h3>Export</h3>
+      <button class="btn" id="btn-csv">Results CSV</button>
+      <button class="btn" id="btn-geojson">GeoJSON (lon/lat)</button>
+      <span class="hint" id="export-msg"></span>
+    </div>
+  </div>
+
+  <section class="content" style="padding:0 24px;max-width:1100px">
+    <h1 style="color:var(--teal)">Batch Coordinate Converter — WGS84 ↔ UTM</h1>
+    <p>InSAR results arrive in geographic coordinates because satellites orbit a sphere; the CAD drawing,
+    the GIS project and the survey total station live in projected metres because engineers measure in
+    metres. Sooner or later every workflow needs to cross that line, and doing it point-by-point in an
+    online converter is where transcription errors breed. This tool converts entire tables between WGS84
+    longitude/latitude and UTM coordinates in both directions — with automatic zone detection, CSV and
+    GeoJSON interchange, and the projection mathematics delegated to the widely used proj4js library rather
+    than to hand-typed formulas. The points never leave your browser.</p>
+
+    <h2>What UTM actually is, in the amount that matters</h2>
+    <p>The Universal Transverse Mercator system divides the world into sixty longitudinal zones, each six
+    degrees wide, and flattens each zone with a transverse Mercator projection tuned to its own central
+    meridian. Coordinates appear as an easting (metres from the zone's false origin — 500,000 m at the
+    central meridian) and a northing (metres from the equator, or from 10,000,000 m false northing in the
+    southern hemisphere). Three practical consequences follow. First, a UTM coordinate is meaningless without
+    its zone: the easting/northing pair repeats across all sixty zones, which is why reverse conversion
+    requires you to state the zone explicitly — the numbers themselves cannot reveal it. Second, near a zone
+    boundary the same physical line can be described in two zones; pick one and stay in it for the whole
+    project, because mixing zones introduces scale differences across the seam. Third, UTM is conformal —
+    shapes are locally preserved and grid north deviates from true north by a small, computable
+    convergence — but distances are not exactly ground distances; high-accuracy engineering work applies the
+    appropriate scale-factor corrections that this tool deliberately does not, because they belong to the
+    survey discipline, not to data preparation.</p>
+
+    <h2>When you should use this tool</h2>
+    <ul>
+      <li>Feeding InSAR point tables into QGIS, CAD or Google Earth workflows that expect projected
+        metres — or bringing surveyed UTM points back into a geographic-coordinate tool.</li>
+      <li>Batch-preparing monitoring point lists: one paste, the whole table, a CSV out with consistent
+        columns instead of sixty trips through a web form.</li>
+      <li>Exchanging point sets with GeoJSON-based systems: import a GeoJSON of survey markers, or export
+        your converted results as GeoJSON with the UTM values preserved in the properties.</li>
+    </ul>
+
+    <h2>When NOT to use this tool</h2>
+    <ul>
+      <li>For geodetic survey deliverables. Datum transformations beyond plain WGS84↔UTM (NAD27, regional
+        frames, local mine grids), scale-factor and height-correction reductions, and control-grade
+        requirements all belong in dedicated geodetic software with documented parameters.</li>
+      <li>Across hemispheres or zones in one batch. The converter applies one zone per run by design —
+        split the table instead, or the silent mixing will cost an afternoon.</li>
+      <li>With coordinates whose provenance you cannot state. No converter fixes data that was collected
+        against an unknown datum; find out what the source actually is first.</li>
+    </ul>
+
+    <h2>Step-by-step usage</h2>
+    <ol>
+      <li>Choose the direction. Forward (lon/lat → UTM) detects the zone automatically from each point's
+        longitude — the demo button shows this with four points spanning three zones. Reverse (UTM →
+        lon/lat) asks you to state the zone and hemisphere, and the tool holds you to it.</li>
+      <li>Paste the table or import a CSV (forward needs a lon/lat or x/y header; reverse needs
+        easting/northing) or a GeoJSON file for coordinate extraction.</li>
+      <li>Convert, inspect the table, and check the plan-view scatter — a wrongly chosen zone announces
+        itself immediately as points landing thousands of kilometres from their neighbours.</li>
+      <li>Export the results as CSV, or as GeoJSON when the downstream system speaks that dialect.</li>
+    </ol>
+
+    <h2>Common pitfalls &amp; mistakes</h2>
+    <ul>
+      <li><b>Latitude/longitude order flips.</b> GeoJSON mandates longitude-first; some survey exports are
+        latitude-first. The scatter plot is the fastest way to catch a swap — points appear in the wrong
+        hemisphere or ocean.</li>
+      <li><b>Southern-hemisphere northing panic.</b> South-of-equator northings run from 10,000,000 m
+        downwards. A "negative" northing usually means the hemisphere flag was missing, not that the point
+        is broken.</li>
+      <li><b>The 500,000 illusion.</b> Eastings below 500,000 m are west of the central meridian, not
+        erroneous. Points hugging a zone edge can legitimately sit near 100,000 or 900,000.</li>
+      <li><b>Datum complacency.</b> "UTM" fixes the projection, not the datum. WGS84-based coordinates
+        convert cleanly; legacy NAD27 or local mine-grid values need a real datum transformation first.</li>
+      <li><b>Precision theatre.</b> Six decimal places of longitude are about ten centimetres — quoting
+        more implies equipment that does not exist. Match the printed precision to the survey's reality.</li>
+    </ul>
+
+    <h2>Zone, hemisphere and edge cases at a glance</h2>
+    <ul>
+      <li><b>Zone arithmetic.</b> Zone = floor((longitude + 180) / 6) + 1. Norway and Svalbard use
+        well-known exemptions in some national workflows; if your project sits there, confirm which
+        convention your downstream systems expect before trusting the automatic assignment.</li>
+      <li><b>High latitudes.</b> UTM distortion grows rapidly poleward of about 80°, where the system was
+        never intended to operate. Polar work switches to UPS or national polar projections.</li>
+      <li><b>GeoJSON axis order.</b> The specification is unambiguous — longitude first, latitude second —
+        yet real files violate it regularly. The import parser treats coordinates as longitude-first and
+        the plan-view scatter will expose violations instantly.</li>
+      <li><b>Northing at the equator.</b> Exactly 10,000,000 m in the southern variant and 0 in the
+        northern; points hovering near the equator need the hemisphere set deliberately, not assumed.</li>
+      <li><b>Batch hygiene.</b> Keep one zone, one hemisphere, one datum per file. The CSV export preserves
+        the zone column so the converted table remains self-describing when it reaches your GIS.</li>
+    </ul>
+
+    <h2>Frequently asked questions</h2>
+    <dl>
+      <dt>Which datum does the tool assume?</dt>
+      <dd>WGS84 throughout, consistent with GNSS and typical InSAR exports. If your source uses a different
+        frame, transform it before conversion — this tool does not hide datum shifts inside the projection.</dd>
+      <dt>Why must I enter the zone for reverse conversion?</dt>
+      <dd>Because easting/northing pairs repeat in every zone — it is a property of the system, not a
+        limitation of the tool. Guessing would silently place your points in the wrong country.</dd>
+      <dt>How accurate is the conversion?</dt>
+      <dd>Sub-millimetre at site scales: the proj4js implementation of the standard transverse Mercator
+        series round-trips well below any engineering tolerance. Uncertainty in your input data dwarfs it.</dd>
+      <dt>Can it convert my mine's local grid?</dt>
+      <dd>Only if the local grid is UTM-compatible. Local engineering grids with custom origins need their
+        own transformation parameters — treat them as a separate datum problem.</dd>
+      <dt>Does the scatter map use real basemaps?</dt>
+      <dd>No, and that is deliberate: no tile fetches means no data leaves the browser and the tool works
+        offline. The axes are labelled easting/northing or lon/lat for orientation.</dd>
+      <dt>Why does my converted table show a zone column for forward conversion?</dt>
+      <dd>Because the zone is part of the result: each point's zone is detected from its longitude and
+        written into the output, so a batch that accidentally spans two zones is visible in the CSV instead
+        of being silently merged. If you see two zone values in one run, split the table.</dd>
+    </dl>
+
+    <h2>Related tools</h2>
+    <p>The <a href="los-convert.html">LOS Converter</a> and the
+    <a href="hazard-classify.html">Hazard Classifier</a> work in geographic coordinates end to end; this
+    converter is the bridge out to surveying and CAD tooling, and the way surveying data comes back in.</p>
+  </section>
+
+  <div class="disclaimer">
+    Projections are computed with proj4js (WGS84 / UTM). Reverse conversion requires the correct UTM
+    zone — always confirm the zone before use. Preliminary tool for data preparation, not a geodetic
+    survey product.
+  </div>
+
+  <script src="../../assets/js/vendor/proj4.js"></script>
+  <script src="../../assets/js/vendor/echarts.min.js"></script>
+  <script src="../../assets/js/charts.js"></script>
+  <script src="../../assets/js/csv-utils.js"></script>
+  <script src="../../assets/js/coord.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      var $ = function (id) { return document.getElementById(id); };
+      var rows = [], cols = [], mapChart = null;
+
+      $("in-dir").onchange = function () {
+        $("zone-box").style.display = $("in-dir").value === "utm2ll" ? "block" : "none";
+      };
+
+      function convert(text, name) {
+        try {
+          rows = []; cols = [];
+          var dir = $("in-dir").value;
+
+          if (/\.json$/i.test(name || "") || text[0] === "{") {   // GeoJSON → UTM
+            CoordTool.geojsonToUTM(JSON.parse(text)).forEach(function (r) {
+              rows.push(r); cols = ["lon", "lat", "easting", "northing", "zone"];
+            });
+          } else {
+            var parsed = CSVUtils.parse(text);
+            var isNum = function (r, k) { return typeof r[k] === "number"; };
+            if (dir === "ll2utm") {
+              var lonK = ["lon", "longitude", "x"].find(function (k) { return isNum(parsed.rows[0], k); });
+              var latK = ["lat", "latitude", "y"].find(function (k) { return isNum(parsed.rows[0], k); });
+              if (!lonK || !latK) { throw new Error("Detected: missing lon/lat numeric columns"); }
+              parsed.rows.forEach(function (r) {
+                var u = CoordTool.toUTM(r[lonK], r[latK]);
+                rows.push({ lon: r[lonK], lat: r[latK], zone: u.zone, easting: u.easting, northing: u.northing });
+              });
+              cols = ["lon", "lat", "zone", "easting", "northing"];
+            } else {
+              var eK = ["easting", "utm_e", "e", "x"].find(function (k) { return isNum(parsed.rows[0], k); });
+              var nK = ["northing", "utm_n", "n", "y"].find(function (k) { return isNum(parsed.rows[0], k); });
+              if (!eK || !nK) { throw new Error("Detected: missing easting/northing numeric columns"); }
+              var zone = Number($("in-zone").value), south = $("in-south").checked;
+              parsed.rows.forEach(function (r) {
+                var ll = CoordTool.toLonLat(zone, south, r[eK], r[nK]);
+                rows.push({ easting: r[eK], northing: r[nK], zone: zone, lon: ll.lon, lat: ll.lat });
+              });
+              cols = ["easting", "northing", "zone", "lon", "lat"];
+            }
+          }
+          render();
+          $("msg").textContent = rows.length + " points converted";
+        } catch (e) { $("msg").textContent = e.message; }
+      }
+
+      function render() {
+        $("table").innerHTML = "<thead><tr>" + cols.map(function (c) { return "<th>" + c + "</th>"; }).join("")
+          + "</tr></thead><tbody>" + rows.slice(0, 300).map(function (r) {
+            return "<tr>" + cols.map(function (c) { return "<td>" + r[c] + "</td>"; }).join("") + "</tr>";
+          }).join("") + "</tbody>";
+
+        var pts = rows.filter(function (r) { return r.easting && r.northing; })
+          .map(function (r) { return { value: [r.easting, r.northing] }; });
+        if (!pts.length) { return; }
+        if (mapChart) { mapChart.dispose(); }
+        mapChart = IGCharts.render($("map"), {
+          xAxis: { type: "value", name: "easting", scale: true },
+          yAxis: { type: "value", name: "northing", scale: true },
+          series: [{ type: "scatter", symbolSize: 9, data: pts, itemStyle: { color: "#184A54" } }],
+        });
+      }
+
+      $("btn-run").onclick = function () { convert($("in-paste").value, ""); };
+      $("btn-file").onclick = function () { $("in-file").click(); };
+      $("in-file").onchange = function (e) {
+        var f = e.target.files[0];
+        var rd = new FileReader();
+        rd.onload = function () { convert(rd.result, f.name); };
+        rd.readAsText(f);
+      };
+      $("btn-demo").onclick = function () {
+        $("in-dir").value = "ll2utm"; $("in-dir").onchange();
+        $("in-paste").value = "lon,lat\n-121.35,46.87\n-121.30,46.88\n-121.25,46.86\n-0.1278,51.5074\n";
+        convert($("in-paste").value, "");
+      };
+
+      $("btn-csv").onclick = function () {
+        if (!rows.length) { return; }
+        var out = cols.join(",") + "\n" + rows.map(function (r) {
+          return cols.map(function (c) { return r[c]; }).join(",");
+        }).join("\n");
+        download(out, "coord-converted.csv");
+        $("export-msg").textContent = "CSV downloaded";
+      };
+      $("btn-geojson").onclick = function () {
+        if (!rows.length || !rows[0].lon) { $("export-msg").textContent = "No lon/lat to export"; return; }
+        var gj = { type: "FeatureCollection", features: rows.map(function (r, i) {
+          return { type: "Feature", geometry: { type: "Point", coordinates: [r.lon, r.lat] },
+            properties: { id: i + 1, easting: r.easting || null, northing: r.northing || null } };
+        }) };
+        download(JSON.stringify(gj, null, 1), "points.geojson", "application/geo+json");
+        $("export-msg").textContent = "GeoJSON downloaded";
+      };
+      function download(text, name, type) {
+        var blob = new Blob([text], { type: type || "text/csv" });
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob); a.download = name;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      }
+    })();
+  </script>
+</body>
+</html>

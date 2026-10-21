@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<!-- 工具 4：InSAR ↔ Ground Survey Validation（文档 4.1-4）
+     内容章节（≥1200 词）由内容生产任务填充，占位注释标出 -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>InSAR ↔ GNSS Validation — Residual, RMSE & Bias | insar-geosettle</title>
+  <meta name="description" content="Match InSAR vertical velocities to GNSS or leveling observations, compute residuals, RMSE and systematic bias, and export a standardized comparison paragraph. Runs locally in your browser.">
+  <link rel="canonical" href="https://smartimgkit.com/insar/en/tools/gnss-validate.html">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/insar/en/tools/gnss-validate.html">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/insar/en/tools/gnss-validate.html">
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
+</head>
+<body>
+  <header class="site-head">
+    <span class="brand">insar-geosettle</span>
+    <a href="los-convert.html">← LOS Converter</a>
+    <a href="hazard-classify.html">← Hazard Classifier</a>
+    <a href="../docs/insar-basics.html">Docs</a>
+  </header>
+  <div class="privacy-strip">
+    🔒 <b>All calculations run locally in your browser.</b> No survey points, velocity data or CSV files are sent to our server.
+  </div>
+
+  <section class="content" style="padding:0 24px;max-width:1100px">
+    <h1 style="color:var(--teal)">InSAR ↔ GNSS / Levelling Validation</h1>
+    <p>Every InSAR report eventually faces the reviewer's question: <em>how do you know the satellite is
+    right?</em> The honest answer is a comparison against independent ground observations — GNSS campaigns,
+    levelling lines, or monitoring wells with vertical benchmarks — and the uncomfortable truth is that most
+    practitioners do this comparison ad hoc in a spreadsheet, with a different method every time. This tool
+    makes the comparison reproducible: it matches each ground observation to its nearest InSAR point within
+    a stated radius, computes residuals, the root-mean-square error, the systematic bias and the residual
+    spread, flags statistically anomalous pairs, and writes the comparison paragraph your report needs in
+    standard, review-ready language.</p>
+    <p>The tool sits at the verification stage of the workflow, after conversion (GNSS measures vertical
+    motion, so the InSAR side must be vertical velocities, not LOS) and alongside or after hazard
+    classification. As everywhere on this site, both datasets stay in your browser; nothing is uploaded.</p>
+
+    <h2>When you should use this tool</h2>
+    <ul>
+      <li>A monitoring campaign has both InSAR results and co-located GNSS or levelling observations, and
+        the report needs a quantified agreement statement.</li>
+      <li>You are validating a new processing configuration (different atmospheric correction, different
+        track, different time window) and want an objective, repeatable metric.</li>
+      <li>A reviewer challenged the credibility of the InSAR results and you need a defensible,
+        standards-aware comparison section in an afternoon rather than a week.</li>
+    </ul>
+
+    <h2>When NOT to use this tool</h2>
+    <ul>
+      <li>The InSAR dataset is still in LOS geometry. GNSS vertical velocities compare to vertical InSAR
+        velocities — run the LOS Converter first.</li>
+      <li>The observations do not overlap in time. Comparing a 2019 GNSS campaign to a 2026 InSAR velocity
+        measures nothing about either; rates must cover a common or strongly overlapping window.</li>
+      <li>Ground points are kilometres away from any InSAR point. The match radius exists to keep the
+        comparison honest; stretching it to force matches produces confident nonsense.</li>
+      <li>You expect tool output to replace judgement. Flagged anomalies need engineering interpretation,
+        not automatic deletion.</li>
+    </ul>
+
+    <h2>What RMSE, bias and σ actually separate</h2>
+    <p>The three statistics in the results header answer three different reviewer questions. The
+    <b>systematic bias</b> (mean of InSAR − GNSS residuals) exposes constant-offset mechanisms: reference
+    frame differences between the InSAR solution and the GNSS solution, residual atmospheric signal common
+    to the whole scene, or a levelling datum shift. A bias of a few mm/yr is normal and worth one sentence
+    of explanation; a bias comparable to the deformation signal itself means one dataset is anchored
+    differently and should be de-trended or re-referenced before comparison. The <b>residual σ</b> (the
+    random component, σ² = RMSE² − bias²) reflects point-level agreement: atmospheric turbulence between
+    the paired epochs, phase-noise at the InSAR point, GNSS velocity uncertainty, and real local gradients
+    between the two measurement locations. The <b>RMSE</b> is what reviewers remember — it combines both —
+    so state bias and σ alongside it whenever the report has room for three numbers instead of one.</p>
+    <p>Anomalous pairs are flagged when the residual departs from the bias by more than k·σ (default k = 2).
+    They are candidates for investigation — an unwrapping error at the InSAR point, a benchmark disturbance,
+    a genuine local deformation feature — never candidates for silent deletion. The conclusion paragraph
+    reports their identifiers precisely so that the report acknowledges them.</p>
+  </section>
+
+  <div class="workbench">
+    <div class="card zone-input">
+      <h3>Inputs <span class="qm" title="InSAR side comes from the Data Tray; GNSS side from file or paste">?</span></h3>
+
+      <label>InSAR dataset (Data Tray)</label>
+      <div id="src-list" class="hint">Data Tray is empty.</div>
+
+      <label>GNSS / leveling data</label>
+      <button class="btn ghost" id="btn-demo">Load GNSS demo (12 pts)</button>
+      <input type="file" id="in-file" accept=".csv" style="display:none">
+      <button class="btn ghost" id="btn-file">Import CSV file</button>
+      <textarea id="in-paste" placeholder="Paste: point_id, lon, lat, vertical_vel_gnss …" style="display:none"></textarea>
+      <button class="btn ghost" id="btn-paste-run" style="display:none">Parse pasted data</button>
+
+      <label>Match radius (m)</label>
+      <input type="number" id="in-radius" value="200" step="50">
+      <label>Anomaly tolerance k (×σ)</label>
+      <input type="number" id="in-k" value="2" step="0.5">
+
+      <button class="btn accent" id="btn-run">Run validation</button>
+      <div class="hint" id="msg"></div>
+    </div>
+
+    <div class="card zone-result">
+      <h3>Matched pairs &amp; statistics</h3>
+      <div id="stats" class="hint"></div>
+      <div class="scroll-box"><table class="res" id="table"></table></div>
+    </div>
+
+    <div class="card zone-chart">
+      <h3>InSAR vs GNSS (1:1 reference)</h3>
+      <div id="chart" style="width:100%;height:340px"></div>
+    </div>
+
+    <div class="card zone-export">
+      <h3>Export</h3>
+      <button class="btn" id="btn-csv">Pairs CSV</button>
+      <button class="btn" id="btn-md">Conclusion (Markdown)</button>
+      <button class="btn" id="btn-copy">Copy conclusion</button>
+      <button class="btn" id="btn-png">Chart PNG 300DPI</button>
+      <span class="hint" id="export-msg"></span>
+      <div id="conclusion" style="display:none"></div>
+      <span class="hint" style="display:block;margin-top:6px">The conclusion paragraph is deterministic — the same pairs always produce the same text, which is what reviewers and auditors want.</span>
+      <!-- 占位 2 已并入下方正文区 -->
+    </div>
+  </div>
+
+  <section class="content" style="padding:0 24px;max-width:1100px">
+    <h2>Input reference</h2>
+    <ul>
+      <li><b>InSAR side (Data Tray).</b> The tool consumes whatever vertical-velocity dataset the tray
+        holds — normally the output of the LOS Converter. If the tray is empty, the demo button loads and
+        converts the sample scene automatically so you can exercise the full chain.</li>
+      <li><b>GNSS / levelling side.</b> A CSV with point identifier, longitude, latitude and vertical
+        velocity (mm/yr); accuracy and survey-date columns are welcome and survive through to the CSV
+        export. Paste straight from Excel or import a file — the header matcher knows the common GNSS
+        export column names.</li>
+      <li><b>Match radius.</b> The maximum separation at which an InSAR point may represent a ground
+        observation. 100–200 m is a sane band for velocity comparison over deforming ground; beyond that,
+        real spatial gradients contaminate the residual. Unmatched ground points are reported as such, not
+        silently dropped.</li>
+      <li><b>Anomaly tolerance k.</b> The multiplier on σ for the anomaly flag. k = 2 flags roughly the
+        outer 5% of a well-behaved population; raise it if your dataset is small and you only want gross
+        errors to surface.</li>
+    </ul>
+
+    <h2>Step-by-step usage</h2>
+    <ol>
+      <li>Load the InSAR dataset (via the LOS Converter, or the demo auto-load here).</li>
+      <li>Import the GNSS table — file or paste.</li>
+      <li>Set the match radius and anomaly tolerance, then <em>Run validation</em>.</li>
+      <li>Read the statistics header, scan the table for flagged rows, and check the 1:1 plot: points sit on
+        the dashed identity line when the two datasets agree; a cloud parallel to it but offset indicates
+        bias; scatter perpendicular to it indicates random disagreement.</li>
+      <li>Export the pairs CSV for the report appendix and copy the conclusion paragraph into the text.
+        The paragraph names the match radius, the counts, all three statistics, the flagged identifiers and
+        the verification caveat — the section a reviewer will read first.</li>
+    </ol>
+
+    <h2>Common pitfalls &amp; mistakes</h2>
+    <ul>
+      <li><b>Comparing LOS to vertical.</b> The classic. GNSS vertical velocities against unconverted InSAR
+        LOS velocities produce a systematic error of tens of percent that no statistical flourish will
+        repair. Convert first.</li>
+      <li><b>Datum and frame mismatch.</b> InSAR velocities are relative to the scene's reference point;
+        GNSS velocities are absolute in a terrestrial frame. A large bias often means the InSAR scene
+        reference is unstable or the GNSS solution embeds regional uplift — re-reference before
+        interpreting.</li>
+      <li><b>Time-window mismatch.</b> Velocities from different epochs embed different transients
+        (groundwater cycles, construction). Overlap windows or state the caveat.</li>
+      <li><b>Deleting anomalies to improve RMSE.</b> The report must account for every flagged pair. An
+        explained anomaly strengthens the analysis; an unexplained deletion destroys its credibility.</li>
+      <li><b>Over-precision.</b> Quoting RMSE to three decimals implies a rigor the method does not have.
+        Two significant figures and an honest σ are more defensible.</li>
+    </ul>
+
+    <h2>Frequently asked questions</h2>
+    <dl>
+      <dt>How many pairs do I need for the statistics to mean anything?</dt>
+      <dd>Rough guidance: below about 8–10 pairs the σ estimate is fragile and the anomaly flag unstable.
+        With a handful of pairs, report residuals pair-by-pair instead of pretending to a distribution.</dd>
+      <dt>The bias is large but the σ is small — what does that mean?</dt>
+      <dd>The two datasets agree with each other up to a constant offset. Look for reference-frame or
+        datum issues before suspecting the deformation signal itself.</dd>
+      <dt>Should I match to the nearest InSAR point even if it is 300 m away?</dt>
+      <dd>Only if you can defend that spatial separation is negligible for your deformation pattern. The
+        radius exists precisely to stop the tool from manufacturing agreement.</dd>
+      <dt>Can I compare levelling lines (relative heights) instead of GNSS velocities?</dt>
+      <dd>Yes, if you convert the levelling increments into rates over the same window and acknowledge that
+        levelling gives relative motion between benchmarks — the InSAR reference point choice then matters.</dd>
+      <dt>Why does the tool not weight pairs by GNSS accuracy?</dt>
+      <dd>Weighting is on the roadmap. At screening level, unweighted statistics are transparent and
+        reproducible; state the accuracy column in the report if it varies strongly.</dd>
+    </dl>
+
+    <h2>Demo dataset &amp; related tools</h2>
+    <p>The GNSS demo table contains 12 synthetic observations paired to the sample InSAR scene with a
+    realistic error budget — run it and compare the RMSE you get against the value stated in the
+    <a href="../docs/sample-dataset-guide.html">Sample dataset guide</a. Upstream: <a href="los-convert.html">LOS Converter</a> and the
+    <a href="hazard-classify.html">Hazard Classifier</a>. Companion: the <a href="error-budget.html">Error
+    Budget calculator</a>, which explains <em>why</em> the σ you measure is what it is.</p>
+  </section>
+
+  <div class="disclaimer">
+    This toolkit provides preliminary geotechnical interpretation only. Results cannot replace licensed
+    site investigation, GNSS survey or official geohazard assessment reports. Flagged discrepancies
+    require field verification by qualified professionals.
+  </div>
+
+  <script src="../../assets/js/vendor/echarts.min.js"></script>
+  <script src="../../assets/js/charts.js"></script>
+  <script src="../../assets/js/core-tray.js"></script>
+  <script src="../../assets/js/csv-utils.js"></script>
+  <script src="../../assets/js/los-convert.js"></script>
+  <script src="../../assets/js/validation.js"></script>
+  <script src="../../assets/js/validation-page.js"></script>
+</body>
+</html>

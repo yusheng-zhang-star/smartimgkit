@@ -50,7 +50,7 @@
 
   function ensureInsarFromDemo(done) {
     if (insarRows()) { done(); return; }
-    fetch("../../../assets/sample-data/sample-insar-ps-points.csv")
+    fetch("../../assets/sample-data/sample-insar-ps-points.csv")
       .then(function (r) { return r.text(); })
       .then(function (t) {
         var parsed = CSVUtils.parse(t);
@@ -122,7 +122,7 @@
 
   /* ---------- 导入入口 ---------- */
   $("btn-demo").onclick = function () {
-    fetch("../../../assets/sample-data/sample-ground-gnss.csv")
+    fetch("../../assets/sample-data/sample-ground-gnss.csv")
       .then(function (r) { return r.text(); })
       .then(function (t) { loadGnss(t, "demo"); });
   };

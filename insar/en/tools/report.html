@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<!-- 工具 8：Report & Interpretation Note Generator（文档 4.1-8）。内容章节由本轮填充 -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Report & Interpretation Note Generator — Engineering Deliverables | insar-geosettle</title>
+  <meta name="description" content="Assemble your InSAR screening results into a structured engineering report: scenario templates, Data Tray statistics injection, standardized limitations section. Markdown, runs locally.">
+  <link rel="canonical" href="https://smartimgkit.com/insar/en/tools/report.html">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/insar/en/tools/report.html">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/insar/en/tools/report.html">
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
+</head>
+<body>
+  <header class="site-head">
+    <span class="brand">insar-geosettle</span>
+    <a href="los-convert.html">← LOS Converter</a>
+    <a href="hazard-classify.html">← Classifier</a>
+    <a href="gnss-validate.html">← Validation</a>
+  </header>
+  <div class="privacy-strip">🔒 <b>All assembly runs locally in your browser.</b> Project details and results never leave your machine.</div>
+
+  <div class="workbench" style="grid-template-columns:320px 1fr">
+    <div class="card zone-input" style="grid-row:1/span 2">
+      <h3>Report parameters</h3>
+      <label>Scenario</label>
+      <select id="in-scenario" style="width:100%;padding:6px;border:1px solid var(--line);border-radius:6px">
+        <option value="railway">Railway baseline screening</option>
+        <option value="mine">Mine subsidence assessment</option>
+        <option value="landslide">Landslide reconnaissance</option>
+        <option value="highway">Highway asset survey</option>
+      </select>
+      <label>Project / site name</label>
+      <input type="text" id="in-project" placeholder="e.g. Corridor KM 42–55 embankment">
+      <label>Location</label>
+      <input type="text" id="in-location" placeholder="Region, country">
+      <label>Monitoring period</label>
+      <input type="text" id="in-period" placeholder="e.g. 2026-03 to 2026-09">
+      <label>Sensor &amp; track</label>
+      <input type="text" id="in-sensor" placeholder="e.g. Sentinel-1 C-band, ascending">
+      <label>Prepared by</label>
+      <input type="text" id="in-author" placeholder="Engineer / office">
+      <label>Key observations (free text, added to Findings)</label>
+      <textarea id="in-notes" placeholder="Notable clusters, flagged points, field context…"></textarea>
+
+      <label>Data Tray injection</label>
+      <div id="tray-info" class="hint">Data Tray is empty — statistics section will be a placeholder.</div>
+      <button class="btn accent" id="btn-generate">Generate report</button>
+      <div class="hint" id="msg"></div>
+    </div>
+
+    <div class="card zone-result" style="grid-row:1/span 2">
+      <h3>Markdown preview</h3>
+      <pre id="preview" style="background:#12262c;color:#c9e4d4;padding:14px;border-radius:8px;overflow:auto;max-height:640px;font-size:12px">Fill the parameters and press Generate.</pre>
+    </div>
+
+    <div class="card zone-export" style="grid-column:1 / span 2;grid-row:3">
+      <h3>Export</h3>
+      <button class="btn" id="btn-copy">Copy Markdown</button>
+      <button class="btn" id="btn-md">Download .md</button>
+      <span class="hint" id="export-msg"></span>
+    </div>
+  </div>
+
+  <section class="content" style="padding:0 24px;max-width:1100px">
+    <h1 style="color:var(--teal)">Report &amp; Interpretation Note Generator</h1>
+    <p>The analysis is finished; the deliverable is not. Every engineer who has closed the laptop after a
+    good InSAR processing run knows the gap between <em>having results</em> and <em>having a report</em> —
+    the structure, the methodology statement, the limitations section written in language a reviewer will
+    accept, the disclaimer phrasing that protects both the client and the author. This tool closes that gap.
+    It assembles the numbers you produced across the workbench — converted velocities, classification
+    counts, validation statistics — into a structured engineering report skeleton, tailored to one of four
+    delivery scenarios, in Markdown that pastes cleanly into Word, Google Docs or any documentation system.</p>
+    <p>Two design decisions distinguish it from a mail-merge template. First, the statistics section is
+    injected from the Data Tray, so the figures in the report are the figures your tools actually computed
+    — there is no transcription step where typos creep in. Second, the limitations and verification language
+    is standardized on purpose: the same careful wording, the same insistence on field verification, every
+    time. Consistency in the caveats is what makes a screening deliverable defensible.</p>
+
+    <h2>When you should use this tool</h2>
+    <ul>
+      <li>At the end of a screening workflow, to produce the first-draft report the engineer then reviews,
+        edits and takes responsibility for.</li>
+      <li>As a junior engineer's training frame: the generated structure shows which sections a defensible
+        InSAR screening note contains, and in what order the reviewer expects them.</li>
+      <li>To standardize deliverables across a team — the same scenario always produces the same section
+        skeleton, so reviewers know where to look.</li>
+      <li>For fast site memos where a two-page structured note is the right deliverable and a full report
+        would be theater.</li>
+    </ul>
+
+    <h2>When NOT to use this tool</h2>
+    <ul>
+      <li>As the final deliverable without human review. The generator writes structure and neutral
+        phrasing; it does not know your site, your client's specification or your professional judgement —
+        and the generated text says so explicitly.</li>
+      <li>For formal geotechnical assessment reports governed by a client template. Where a specification
+        prescribes section structure and wording, the specification wins.</li>
+      <li>To launder analysis you have not actually performed. The report skeleton includes a methodology
+        section that lists the tools used; generating a report around steps you skipped is exactly the
+        misuse the disclaimer language exists to prevent.</li>
+    </ul>
+
+    <h2>How the four scenarios differ</h2>
+    <p>All scenarios share the same skeleton — introduction and scope, site and data, methodology, findings,
+    interpretation, limitations, recommendations — but each frames the analysis the way its audience
+    expects. The <b>railway baseline screening</b> variant emphasizes corridor-scale gradients and the
+    asset-span logic of the neighbour radius, because track engineers think in wavelengths of defect. The
+    <b>mine subsidence assessment</b> variant frames results against the monitoring campaign's purpose and
+    flags the difference between planar subsidence bowls and localized slope-motion signals. The
+    <b>landslide reconnaissance</b> variant stresses that slope-parallel motion is the expected signal,
+    that single-track LOS is an imperfect observer of it, and that reconnaissance findings feed a site
+    walkover rather than conclude one. The <b>highway asset survey</b> variant organizes findings by asset
+    segment and references differential-settlement screening explicitly. Pick the scenario that matches the
+    client's vocabulary; the wrong frame makes an accurate report feel foreign.</p>
+
+    <h2>Step-by-step usage</h2>
+    <ol>
+      <li>Run the analysis chain first: convert velocities, classify hazards, validate against GNSS if
+        available. The Data Tray accumulates the results as you go.</li>
+      <li>Open this tool, choose the scenario, and fill the identification fields — project, location,
+        period, sensor and track, author. These feed the header and the site-and-data section verbatim.</li>
+      <li>Write the key observations in your own words. This is the section the generator deliberately
+        cannot write for you: it carries your site knowledge, and everything around it is scaffolding.</li>
+      <li>Generate and read the preview end to end. Edit in place if your workflow allows, or copy the
+        Markdown into your document system and edit there. The downloaded .md file keeps the same content.</li>
+      <li>Attach the tool exports (classified CSV, KML, validation pairs) as appendices — the methodology
+        section references them by name.</li>
+    </ol>
+
+    <h2>What the generator writes — and what it refuses to</h2>
+    <p>The generator writes: the section skeleton; neutral methodology sentences naming the tools and their
+    documented screening criteria; a statistics paragraph assembled from the Data Tray (point counts,
+    velocity ranges, class distribution, validation metrics — whichever are present); a limitations section
+    with the site's standard verification language; and a recommendation block with placeholders your
+    judgement must fill. It refuses to write conclusions — no "the site is safe", no "no significant
+    subsidence was detected" filler. Absence of detected motion in a screening dataset is a statement about
+    the dataset as much as the ground, and the limitations section says exactly that. If your findings
+    warrant a stronger statement, that statement is yours to write, own and sign.</p>
+
+    <h2>Common pitfalls &amp; mistakes</h2>
+    <ul>
+      <li><b>Submitting the draft unedited.</b> The placeholder fields left in a delivered document are the
+        fastest possible way to lose a client's trust. The generator marks them clearly; search for the
+        markers before sending.</li>
+      <li><b>Statistics without context.</b> A class distribution quoted without the criteria package and
+        neighbour radius is not reproducible. The generated methodology section carries them — keep it.</li>
+      <li><b>Report drift from the data.</b> If you rerun the analysis after generating, regenerate the
+        report. The injection is live at generation time only; stale numbers are the classic audit finding.</li>
+      <li><b>Scenario borrowing.</b> Using the mine template for a railway client because it sounds more
+        thorough confuses reviewers. Match the frame to the asset.</li>
+    </ul>
+
+    <h2>Frequently asked questions</h2>
+    <dl>
+      <dt>Which statistics get injected automatically?</dt>
+      <dd>Whatever the Data Tray holds at generation time: dataset names, point counts, and — when the
+        dataset carries vertical velocities — the velocity range and mean. Validation and classification
+        metrics appear if you have run those tools on the same tray data.</dd>
+      <dt>Can I edit the generated Markdown before export?</dt>
+      <dd>Copy it into your editor — that is the intended flow. The preview is read-only to keep the
+        generation deterministic.</dd>
+      <dt>Does the disclaimer satisfy my professional liability requirements?</dt>
+      <dd>It is careful, standardized screening language — not legal advice. Your professional framework
+        and jurisdiction govern what else the deliverable must state.</dd>
+      <dt>Why Markdown and not Word?</dt>
+      <dd>Markdown pastes into every authoring system, survives copy-paste without corruption, and keeps
+        the deliverable diff-able in version control. Convert to Word at the end of your own workflow.</dd>
+      <dt>What if my campaign used only part of the workflow?</dt>
+      <dd>Generate anyway and edit the methodology section to describe what actually ran. The skeleton is
+        deliberately tolerant: a note that covers conversion and classification without GNSS validation is
+        a legitimate screening deliverable, as long as the missing verification is acknowledged in the
+        limitations section rather than hidden. What the skeleton will not do is retroactively claim steps
+        that did not happen — the methodology text you keep is the one you can defend.</dd>
+      <dt>Is the generated report stored anywhere?</dt>
+      <dd>No. The text exists in your browser's memory until you close the tab; download or copy it before
+        leaving the page.</dd>
+    </dl>
+
+    <h2>Related tools</h2>
+    <p>This is the workflow's last stop: <a href="los-convert.html">LOS Converter</a> →
+    <a href="hazard-classify.html">Hazard Classifier</a> → <a href="gnss-validate.html">GNSS Validation</a>
+    → <a href="error-budget.html">Error Budget</a> → this report. The
+    <a href="../workflow.html">Workflow page</a> shows the full pipeline with every quality gate.</p>
+  </section>
+
+  <div class="disclaimer">
+    This generator assembles screening-level language and your own inputs into a report skeleton. The output
+    is a draft for professional review and does not constitute a licensed geotechnical assessment. Field
+    verification by qualified professionals is required before any engineering decision.
+  </div>
+
+  <script src="../../assets/js/core-tray.js"></script>
+  <script src="../../assets/js/csv-utils.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      var $ = function (id) { return document.getElementById(id); };
+      DataTray.mount();
+
+      var lastTrayRows = null;
+      var origAdd = DataTray.add;
+      DataTray.add = function (n, s, rows, f) { lastTrayRows = rows; return origAdd(n, s, rows, f); };
+
+      function trayStats() {
+        if (!lastTrayRows || !lastTrayRows.length) { return null; }
+        var key = lastTrayRows[0].vertical_vel !== undefined ? "vertical_vel" : "los_vel";
+        var vals = lastTrayRows.map(function (r) { return r[key]; }).filter(function (v) { return typeof v === "number"; });
+        if (!vals.length) { return null; }
+        var min = Math.min.apply(null, vals), max = Math.max.apply(null, vals);
+        var mean = vals.reduce(function (a, b) { return a + b; }, 0) / vals.length;
+        return { n: vals.length, key: key, min: min.toFixed(1), max: max.toFixed(1), mean: mean.toFixed(1) };
+      }
+
+      var SCENARIOS = {
+        railway: {
+          title: "Railway Baseline Screening Note",
+          scope: "screen a railway corridor for differential settlement patterns that may affect track geometry and drainage performance",
+          frame: "Gradient classification used a neighbour radius matched to typical asset spans; results are reported per classified point and summarized by class.",
+        },
+        mine: {
+          title: "Mine Subsidence Assessment Note",
+          scope: "characterize mining-related surface deformation around the site and separate broad subsidence bowls from localized slope-motion signals",
+          frame: "The open-pit screening package was applied; planar bowl behaviour and localized slope signals are discussed separately in the findings.",
+        },
+        landslide: {
+          title: "Landslide Reconnaissance Note",
+          scope: "identify slope-motion signals compatible with landslide processes and prioritize slopes for reconnaissance walkover",
+          frame: "Slope-parallel motion is the expected signal in this scenario; single-track LOS is an imperfect observer of it, and the along-slope estimates carry that assumption explicitly.",
+        },
+        highway: {
+          title: "Highway Asset Survey Note",
+          scope: "survey highway assets for differential settlement affecting pavements, culverts and structures",
+          frame: "Findings are organized by asset segment; differential-settlement screening thresholds are those of the highway package and must be checked against the governing specification.",
+        },
+      };
+
+      function generate() {
+        var s = SCENARIOS[$("in-scenario").value];
+        var g = function (id, ph) { var v = $(id).value.trim(); return v || (ph ? "[" + ph + "]" : ""); };
+        var st = trayStats();
+        var statsLine = st
+          ? ("- Dataset assessed: **" + st.n + " points** (" + st.key + ", mm/yr); range " + st.min + " to " + st.max + ", mean " + st.mean + ".")
+          : "- [Statistics placeholder — run the analysis chain with the Data Tray connected, or paste results manually.]";
+        var md = [
+          "# " + s.title,
+          "",
+          "**Project / site:** " + g("in-project", "project name") + "  ",
+          "**Location:** " + g("in-location", "location") + "  ",
+          "**Monitoring period:** " + g("in-period", "period") + "  ",
+          "**Sensor & track:** " + g("in-sensor", "sensor") + "  ",
+          "**Prepared by:** " + g("in-author", "author") + "  ",
+          "**Date of issue:** " + new Date().toISOString().slice(0, 10),
+          "",
+          "## 1. Introduction & scope",
+          "This note presents a screening-level interpretation of InSAR measurements for " + g("in-project", "the site")
+            + ". The purpose of the assessment is to " + s.scope
+            + ". Results derive from satellite radar interferometry processed to displacement rate products and interpreted with the insar-geosettle screening workbench.",
+          "",
+          "## 2. Site & data",
+          "- Sensor and viewing geometry: " + g("in-sensor", "sensor") + "; period " + g("in-period", "period") + ".",
+          statsLine,
+          "",
+          "## 3. Methodology",
+          "- LOS velocities were converted to vertical rates using per-point incidence geometry (insar-geosettle LOS Converter).",
+          "- " + s.frame,
+          "- Where applicable, results were compared against ground observations (insar-geosettle GNSS Validation tool) and an error budget was stated (Error Budget calculator).",
+          "- Screening criteria are documented defaults; the governing project specification takes precedence where it defines limiting values.",
+          "",
+          "## 4. Findings",
+          g("in-notes", "Key observations — describe spatial clusters, flagged points and field context"),
+          "",
+          "## 5. Interpretation",
+          "[Interpretation to be completed by the responsible engineer. The screening indicators identify where to look; they do not classify the ground.]",
+          "",
+          "## 6. Limitations",
+          "- InSAR measurements contain geometric projection, atmospheric and decorrelation uncertainties; the screening criteria are generic defaults, not project-specific limits.",
+          "- Coverage depends on coherent scatterers; absence of detected motion is a statement about the dataset as much as the ground.",
+          "- All findings are preliminary and require field verification by qualified professionals before engineering decisions.",
+          "",
+          "## 7. Recommendations",
+          "- [Recommended follow-up: field inspection of flagged zones, additional tracks, extended archive — to be completed by the responsible engineer.]",
+          "",
+          "## 8. Disclaimer",
+          "This note provides preliminary geotechnical interpretation only. Results cannot replace licensed site investigation or official geohazard assessment reports. All high-risk zones require field verification by qualified professionals.",
+        ].join("\n");
+        $("preview").textContent = md;
+        $("msg").textContent = "Report generated — review every placeholder before use.";
+        $("preview").dataset.md = md;
+      }
+
+      $("btn-generate").onclick = function () { try { generate(); } catch (e) { $("msg").textContent = e.message; } };
+      $("btn-copy").onclick = function () {
+        var md = $("preview").dataset.md;
+        if (!md) { return; }
+        navigator.clipboard.writeText(md).then(function () { $("export-msg").textContent = "Copied to clipboard"; });
+      };
+      $("btn-md").onclick = function () {
+        var md = $("preview").dataset.md;
+        if (!md) { return; }
+        var blob = new Blob([md], { type: "text/markdown" });
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob); a.download = "insar-screening-note.md";
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        $("export-msg").textContent = "Markdown downloaded";
+      };
+    })();
+  </script>
+</body>
+</html>

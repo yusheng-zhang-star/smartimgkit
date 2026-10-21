@@ -171,7 +171,7 @@
 
   /* ---------- 导入入口 ---------- */
   $("btn-demo").onclick = function () {
-    fetch("../../../assets/sample-data/sample-insar-ps-points.csv")
+    fetch("../../assets/sample-data/sample-insar-ps-points.csv")
       .then(function (r) { return r.text(); })
       .then(function (t) { runBatch(t, "sample-insar-ps-points.csv", "demo"); });
   };
