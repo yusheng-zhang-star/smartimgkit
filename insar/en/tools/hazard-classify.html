@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<!-- 工具 3：Subsidence Gradient & Hazard Classifier（文档 4.1-3）
+     内容章节（≥1200 词）由内容生产任务填充，占位注释标出 -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Subsidence Gradient & Hazard Classifier — InSAR Risk Screening | insar-geosettle</title>
+  <meta name="description" content="Classify InSAR vertical deformation points into five hazard levels using differential subsidence gradients. AASHTO-informed screening packages, KML and CSV export. Runs locally in your browser.">
+  <link rel="canonical" href="https://smartimgkit.com/insar/en/tools/hazard-classify.html">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/insar/en/tools/hazard-classify.html">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/insar/en/tools/hazard-classify.html">
+  <link rel="stylesheet" href="../../../assets/css/site.css">
+</head>
+<body>
+  <header class="site-head">
+    <span class="brand">insar-geosettle</span>
+    <a href="los-convert.html">← LOS Converter</a><a href="../index.html">Tools</a><a href="../docs/insar-basics.html">Docs</a>
+  </header>
+  <div class="privacy-strip">
+    🔒 <b>All calculations run locally in your browser.</b> No survey points, velocity data or CSV files are sent to our server.
+  </div>
+
+  <section class="content" style="padding:0 24px;max-width:1100px">
+    <h1 style="color:var(--teal)">Subsidence Gradient &amp; Hazard Classifier</h1>
+    <p>A single velocity number tells you how fast a point moves; it tells you nothing about whether the
+    ground is <em>differential</em> moving — and differential movement is what damages highways, railways,
+    pipelines and structures. Two points can both subside at 10 mm/yr and be perfectly harmless if they move
+    together, while two points 20 metres apart moving at 0 and 15 mm/yr respectively represent a serious
+    engineering problem. This tool turns a cloud of vertical velocity points into a spatial risk picture by
+    computing the subsidence gradient — the velocity difference between neighbouring points divided by the
+    distance between them — and classifying every point against transparent, screening-level criteria
+    packages informed by published differential-settlement practice.</p>
+    <p>Use it after the LOS Converter (which supplies vertical rates through the Data Tray) and before the
+    reporting step. Like everything on this site, the computation happens entirely in your browser, and the
+    classified points can be exported as CSV for your records, as KML for Google Earth or QGIS, and as a
+    300-DPI risk map for the report.</p>
+
+    <h2>When you should use this tool</h2>
+    <ul>
+      <li>You have converted vertical velocity points and need a defensible first-pass screening of where
+        differential settlement concentrates.</li>
+      <li>You are comparing two processing campaigns or two tracks and need a consistent classification
+        scheme applied to both.</li>
+      <li>You need to communicate InSAR results to non-specialists — the five-level colour scheme and the
+        KML export make the spatial pattern legible in a client meeting or a GIS environment.</li>
+    </ul>
+
+    <h2>When NOT to use this tool</h2>
+    <ul>
+      <li>Your points are still LOS velocities — convert them first, or the gradients will mix geometric
+        projection effects with real deformation differences.</li>
+      <li>You expect a verdict on structural safety. A hazard class here is a screening indicator derived
+        from generic criteria; the governing design specification for your asset always takes precedence.</li>
+      <li>The point density is far below the neighbour radius you intend to use — every point will come out
+        isolated and the classification degenerates to a velocity threshold exercise. Collect more points or
+        widen the radius knowingly.</li>
+    </ul>
+
+    <h2>What the gradient actually measures</h2>
+    <p>For every point the tool searches within a radius R (default 100 m, package-dependent) and computes
+    the velocity difference to each neighbour, divided by their horizontal (great-circle) distance. The
+    largest such value becomes the point's representative gradient, expressed in mm of differential motion
+    per metre of distance. This mirrors how deformation damage actually accumulates: it is driven by
+    relative displacement over a structural span, not by absolute settlement. Choosing R is an engineering
+    decision, not a default to accept blindly: R should roughly match the span of the asset you care about —
+    a bridge abutment spacing, a rail weld interval, a foundation footprint. A radius much larger than that
+    dilutes real discontinuities; a radius much smaller than the point spacing leaves most points without
+    neighbours, and they are then classified on velocity alone and marked <em>isolated</em> in the output.</p>
+    <p>On top of the gradient, the tool applies a velocity safeguard: points whose vertical rate exceeds the
+    package's rapid-motion threshold are promoted regardless of gradient, because a fast-moving isolated
+    point can be a genuine hazard even without a nearby reference point to differ from.</p>
+  </section>
+
+  <div class="workbench">
+    <div class="card zone-input">
+      <h3>Criteria &amp; data <span class="qm" title="Pick a screening package; thresholds are defaults, verify against project spec">?</span></h3>
+
+      <label>Criteria package</label>
+      <select id="in-pkg" style="width:100%;padding:6px;border:1px solid var(--line);border-radius:6px"></select>
+      <div class="hint" id="pkg-ref"></div>
+
+      <label>Neighbor radius R (m)</label>
+      <input type="number" id="in-radius" value="100" step="10">
+
+      <label>Data source <span class="qm" title="Load converted points from the Data Tray, or load the demo directly">?</span></label>
+      <div id="src-list" class="hint">Data Tray is empty.</div>
+      <button class="btn accent" id="btn-run">Run classification</button>
+      <button class="btn ghost" id="btn-demo">Load demo &amp; run</button>
+      <div class="hint" id="run-msg"></div>
+    </div>
+
+    <div class="card zone-result">
+      <h3>Classified points</h3>
+      <div id="summary" class="hint"></div>
+      <div class="scroll-box"><table class="res" id="table"></table></div>
+    </div>
+
+    <div class="card zone-chart">
+      <h3>Risk map &amp; distribution</h3>
+      <div id="map" style="width:100%;height:260px"></div>
+      <div id="bars" style="width:100%;height:200px"></div>
+    </div>
+
+    <div class="card zone-export">
+      <h3>Export</h3>
+      <button class="btn" id="btn-csv">Classified CSV</button>
+      <button class="btn" id="btn-kml">KML (Google Earth / QGIS)</button>
+      <button class="btn" id="btn-png">Risk map PNG 300DPI</button>
+      <span class="hint" id="export-msg"></span>
+      <span class="hint" style="display:block;margin-top:6px">KML colours follow the on-screen classes; PNG renders the map at 300 DPI for direct report use.</span>
+      <!-- 占位 2 已并入下方正文区 -->
+    </div>
+  </div>
+
+  <section class="content" style="padding:0 24px;max-width:1100px">
+    <h2>Criteria packages &amp; their limits</h2>
+    <p>Four built-in packages ship with the tool: highway (AASHTO-informed), railway embankment, open-pit
+    mine slope and building foundation. Each defines four gradient boundaries that split the range into
+    five classes — Stable, Low Concern, Moderate, High Hazard and Critical — plus the neighbour radius and
+    the velocity safeguard thresholds. The thresholds are <em>screening defaults drawn from published
+    differential-settlement practice</em>; they are deliberately conservative and deliberately transparent.
+    They are not the numbers of any specific design clause, and this tool does not pretend to replace the
+    governing specification for your asset. If your project specification defines limiting gradients or
+    deflection ratios, use those numbers — the philosophy of the tool is to give you a defensible starting
+    grid, not an authority claim.</p>
+
+    <h2>Step-by-step usage</h2>
+    <ol>
+      <li>Convert your LOS points in the LOS Converter (the demo button there loads 87 points). They arrive
+        here automatically through the Data Tray — no re-import, no column matching a second time.</li>
+      <li>Pick the criteria package that matches your asset type, and adjust the neighbour radius to your
+        structural span if needed. The reference note under the selector states what each package assumes.</li>
+      <li>Run the classification. The table lists every point with its velocity, representative gradient,
+        neighbour count and class; the map colours points by class; the bar chart summarises the
+        distribution.</li>
+      <li>Export: the CSV preserves every column for your records; the KML carries the five-class colour
+        scheme into Google Earth or QGIS for spatial context against imagery; the PNG is a print-ready
+        300-DPI risk map.</li>
+    </ol>
+
+    <h2>Output interpretation guide</h2>
+    <p>Read the map before the table. Clusters of High Hazard and Critical points along a linear asset are
+    the pattern that deserves follow-up; a single Critical point surrounded by stable neighbours is more
+    often a processing artefact (an unwrapping error, a corner reflector, an atmospheric outlier) than a
+    real hazard. Check the neighbour column: isolated points carry a marker and their class rests on the
+    velocity safeguard alone. The gradient column is the number to quote when defending the classification
+    in a review meeting — it is reproducible from your own dataset with nothing more than a ruler.</p>
+
+    <h2>Common pitfalls &amp; mistakes</h2>
+    <ul>
+      <li><b>Radius-annealing blindness.</b> Running the tool once with the default radius and never asking
+        whether that radius matches the asset. A 100 m radius is meaningless for a rail weld inspection and
+        generous for a building foundation.</li>
+      <li><b>Cross-package comparison.</b> A Moderate in the mine package is a different physical gradient
+        than a Moderate in the railway package. Never quote class labels without naming the package.</li>
+      <li><b>Class inflation by velocity safeguard.</b> Points promoted by the rapid-motion rule carry the
+        same label as gradient-driven ones. Look at the gradient column to see which mechanism fired.</li>
+      <li><b>Treating Critical as a failure verdict.</b> InSAR screening flags where to look; it does not
+        condemn. Follow-up is a field programme, not a demolition order.</li>
+    </ul>
+
+    <h2>Frequently asked questions</h2>
+    <dl>
+      <dt>Why does the point count differ between runs?</dt>
+      <dd>Changing the radius changes which points have neighbours and which gradients are the largest.
+        Report the radius together with the results — they are part of the method.</dd>
+      <dt>Can I use my own thresholds?</dt>
+      <dd>The package structure is designed for it; custom criterion packages saved locally are on the
+        roadmap. Until then, export the CSV and classify downstream if your specification differs.</dd>
+      <dt>Why great-circle distance instead of projected UTM distance?</dt>
+      <dd>At site scales (kilometres) the two differ by less than the point-spacing noise. The haversine
+        form keeps the tool projection-free; use the Coordinate Converter if your workflow needs UTM
+        coordinates for other purposes.</dd>
+      <dt>Does classification use atmospheric-corrected velocities?</dt>
+      <dd>It uses whatever velocities you give it. If atmospheric phase screens dominate your scene, the
+        gradients inherit that error — apply your processor's atmospheric correction first.</dd>
+      <dt>Is the five-level scheme an industry standard?</dt>
+      <dd>The labels are this tool's, chosen for clarity. The gradient boundaries are informed by published
+        practice but not part of any standard; name the package and thresholds whenever you publish results.</dd>
+    </dl>
+
+    <h2>Demo dataset &amp; related tools</h2>
+    <p>The demo dataset (87 points across four deformation regimes) classifies into a distribution that
+    matches its design — see the <a href="../docs/sample-dataset-guide.html">Sample dataset guide</a for the expected numbers, which double
+    as a self-test of your configuration. Upstream: <a href="los-convert.html">LOS Converter</a>.
+    Downstream: the <a href="gnss-validate.html">GNSS Validation tool</a> to check flagged zones against
+    ground truth, and the <a href="error-budget.html">Error Budget calculator</a> to state the uncertainty
+    behind every gradient.</p>
+  </section>
+
+  <div class="disclaimer">
+    This toolkit provides preliminary geotechnical interpretation only. Gradient thresholds are
+    screening-level defaults derived from public differential-settlement practice and must be verified
+    against the governing project specification. All high-hazard zones require field verification by
+    qualified professionals.
+  </div>
+
+  <script src="../../../assets/js/vendor/echarts.min.js"></script>
+  <script src="../../../assets/js/charts.js"></script>
+  <script src="../../../assets/js/core-tray.js"></script>
+  <script src="../../../assets/js/csv-utils.js"></script>
+  <script src="../../../assets/js/los-convert.js"></script>
+  <script src="../../../assets/js/hazard.js"></script>
+  <script src="../../../assets/js/hazard-page.js"></script>
+</body>
+</html>

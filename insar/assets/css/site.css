@@ -1,0 +1,93 @@
+/* insar-geosettle 全站基础样式（文档 9.1 品牌规范）
+   主色 Deep Slate Teal #184A54｜辅助陶土橙 #D27948｜风险色卡色弱友好
+   说明：一期用原生 CSS 保证零构建；后续如引 Tailwind 再迁移 */
+
+:root {
+  --teal: #184A54;
+  --teal-dark: #0F333B;
+  --terracotta: #D27948;
+  --risk-stable: #48A969;
+  --risk-low: #E6C249;
+  --risk-moderate: #E28942;
+  --risk-high: #D84A4A;
+  --risk-critical: #7C1919;
+  --bg: #F5F7F8;
+  --card: #FFFFFF;
+  --line: #D7DEE1;
+  --text: #22333B;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0; font-family: Inter, system-ui, sans-serif;
+  background: var(--bg); color: var(--text); font-size: 14px;
+}
+
+/* ---------- 顶部导航与隐私条 ---------- */
+.site-head { background: var(--teal); color: #fff; padding: 12px 24px; display: flex; align-items: center; gap: 16px; }
+.site-head .brand { font-weight: 700; font-size: 17px; }
+.site-head a { color: #cfe3e8; text-decoration: none; font-size: 13px; }
+.privacy-strip { background: var(--teal-dark); color: #cfe3e8; font-size: 12px; padding: 6px 24px; }
+.privacy-strip b { color: #fff; }
+
+/* ---------- 四区工作台布局（文档 9.2） ---------- */
+.workbench { display: grid; grid-template-columns: 300px 1fr 1fr; gap: 14px; padding: 14px 24px; align-items: start; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 14px; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+.card h3 { margin: 0 0 10px; font-size: 14px; color: var(--teal); }
+.zone-input  { grid-column: 1; grid-row: 1 / span 2; }
+.zone-result { grid-column: 2; grid-row: 1; }
+.zone-chart  { grid-column: 3; grid-row: 1; }
+.zone-export { grid-column: 2 / span 2; grid-row: 2; }
+
+/* ---------- 表单 ---------- */
+label { display: block; margin: 8px 0 2px; font-size: 12px; color: #5a6b72; }
+input[type="number"], input[type="text"], textarea {
+  width: 100%; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; font: inherit;
+}
+textarea { height: 90px; resize: vertical; }
+.btn {
+  display: inline-block; border: 0; border-radius: 6px; padding: 7px 14px;
+  background: var(--teal); color: #fff; cursor: pointer; font: inherit; margin: 4px 4px 0 0;
+}
+.btn.accent { background: var(--terracotta); }
+.btn.ghost { background: transparent; color: var(--teal); border: 1px solid var(--teal); }
+.hint { font-size: 11px; color: #8a999f; margin-top: 2px; }
+.qm { cursor: help; color: var(--terracotta); font-weight: 700; }
+
+/* ---------- 结果表 ---------- */
+table.res { width: 100%; border-collapse: collapse; font-size: 12px; }
+table.res th, table.res td { border-bottom: 1px solid var(--line); padding: 4px 6px; text-align: right; }
+table.res th:first-child, table.res td:first-child { text-align: left; }
+table.res th { color: var(--teal); background: #eef3f4; position: sticky; top: 0; }
+.scroll-box { max-height: 320px; overflow: auto; }
+
+/* ---------- Data Tray 悬浮托盘 ---------- */
+#ig-data-tray {
+  position: fixed; right: 16px; bottom: 16px; width: 240px; z-index: 999;
+  background: var(--teal-dark); color: #dcebee; border-radius: 10px;
+  padding: 10px 12px; font-size: 12px; box-shadow: 0 6px 18px rgba(0,0,0,.25);
+}
+#ig-data-tray .tray-head { font-weight: 700; margin-bottom: 6px; display: flex; justify-content: space-between; }
+#ig-data-tray .tray-badge { background: var(--terracotta); color: #fff; border-radius: 10px; padding: 0 8px; font-size: 11px; }
+#ig-data-tray .tray-row { padding: 2px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#ig-data-tray .tray-src { color: #9fc3cc; font-size: 10px; margin-right: 4px; text-transform: uppercase; }
+#ig-data-tray .tray-empty { color: #8fb0b8; font-size: 11px; white-space: normal; }
+#ig-data-tray .tray-btns { margin-top: 6px; display: flex; gap: 6px; }
+#ig-data-tray button { flex: 1; border: 0; border-radius: 6px; padding: 4px 0; cursor: pointer; font-size: 11px; }
+#ig-data-tray [data-act="export"] { background: var(--terracotta); color: #fff; }
+#ig-data-tray [data-act="clear"] { background: transparent; color: #9fc3cc; border: 1px solid #4a6a72; }
+
+/* ---------- 结果徽标 ---------- */
+.pill { display: inline-block; border-radius: 10px; padding: 1px 8px; font-size: 11px; color: #fff; }
+.ok   { background: var(--risk-stable); }
+.warn { background: var(--risk-moderate); }
+.bad  { background: var(--risk-high); }
+
+/* ---------- 免责块（不计内容字数） ---------- */
+.disclaimer { margin: 18px 24px 30px; padding: 10px 14px; border-left: 4px solid var(--terracotta);
+  background: #fdf4ee; font-size: 12px; color: #5a6b72; }
+
+@media (max-width: 980px) {
+  .workbench { grid-template-columns: 1fr; }
+  .zone-input, .zone-result, .zone-chart, .zone-export { grid-column: 1; grid-row: auto; }
+}

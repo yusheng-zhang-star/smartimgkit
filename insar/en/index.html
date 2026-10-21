@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!-- en 首页（文档 9.2 首页差异化：三栏叙事 + 工具卡片矩阵） -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>insar-geosettle — From SAR Velocity Points to Geotechnical Hazard Report</title>
+  <meta name="description" content="Free browser-based InSAR post-processing workbench for geotechnical engineers: LOS to vertical conversion, hazard classification, GNSS validation, error budgets and report generation. All calculations run locally.">
+  <link rel="canonical" href="https://smartimgkit.com/insar/en/">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/insar/en/">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/insar/en/">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <style>
+    .hero { background: linear-gradient(135deg, var(--teal-dark), var(--teal)); color: #fff; padding: 48px 24px; }
+    .hero h1 { font-size: 30px; margin: 0 0 12px; max-width: 820px; }
+    .hero p { max-width: 780px; color: #d7e6ea; font-size: 15px; line-height: 1.6; }
+    .cta { display: inline-block; background: var(--terracotta); color: #fff; text-decoration: none;
+      padding: 10px 22px; border-radius: 6px; font-weight: 600; margin: 16px 12px 0 0; }
+    .cta.ghost { background: transparent; border: 1px solid #9fc3cc; }
+    .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; padding: 14px 24px; }
+    .tool-card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 16px; text-decoration: none; color: var(--text); display: block; }
+    .tool-card h3 { margin: 0 0 6px; color: var(--teal); font-size: 15px; }
+    .tool-card p { margin: 0; font-size: 12.5px; color: #5a6b72; line-height: 1.5; }
+    .flow { padding: 8px 24px 24px; }
+    .flow svg { width: 100%; max-width: 980px; height: auto; }
+    .content h2 { color: var(--teal); }
+    .content { padding: 12px 24px 24px; max-width: 1100px; }
+  </style>
+</head>
+<body>
+  <header class="site-head">
+    <span class="brand">insar-geosettle</span>
+    <a href="../index.html">Language</a><a href="workflow.html">Workflow</a><a href="docs/insar-basics.html">Docs</a>
+  </header>
+
+  <div class="hero">
+    <h1>From SAR velocity points to geotechnical hazard report — all in one workbench</h1>
+    <p>You processed the interferograms. MintPy, LiCSBAS or HyP3 handed you velocity points, coherence
+    layers and time series. The engineering work starts exactly there — and that is where most workflows
+    fall back to spreadsheets. This workbench finishes the job: geometric correction of LOS velocities,
+    differential-settlement hazard classification, validation against GNSS and levelling, uncertainty
+    budgets, and a report skeleton your reviewer will recognize. Every calculation runs locally in your
+    browser — your survey points, velocities and CSV files are never uploaded, stored or transmitted.</p>
+    <a class="cta" href="tools/los-convert.html">Start with the LOS Converter</a>
+    <a class="cta ghost" href="workflow.html">See the full workflow</a>
+  </div>
+
+  <div class="flow">
+    <svg viewBox="0 0 980 120" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="fa" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#8a999f"/></marker></defs>
+      <g font-size="12" font-family="system-ui">
+        <rect x="10" y="35" width="150" height="44" rx="8" fill="#eef3f4" stroke="#d7dee1"/><text x="85" y="53" text-anchor="middle" fill="#5a6b72">Sentinel-1 / ALOS-2</text><text x="85" y="69" text-anchor="middle" fill="#5a6b72">MintPy · LiCSBAS · HyP3</text>
+        <line x1="160" y1="57" x2="205" y2="57" stroke="#8a999f" stroke-width="2" marker-end="url(#fa)"/>
+        <rect x="208" y="35" width="150" height="44" rx="8" fill="#184A54"/><text x="283" y="61" text-anchor="middle" fill="#fff">LOS → vertical</text>
+        <line x1="358" y1="57" x2="403" y2="57" stroke="#8a999f" stroke-width="2" marker-end="url(#fa)"/>
+        <rect x="406" y="35" width="150" height="44" rx="8" fill="#184A54"/><text x="481" y="61" text-anchor="middle" fill="#fff">Hazard classification</text>
+        <line x1="556" y1="57" x2="601" y2="57" stroke="#8a999f" stroke-width="2" marker-end="url(#fa)"/>
+        <rect x="604" y="35" width="150" height="44" rx="8" fill="#184A54"/><text x="679" y="61" text-anchor="middle" fill="#fff">GNSS validation</text>
+        <line x1="754" y1="57" x2="799" y2="57" stroke="#8a999f" stroke-width="2" marker-end="url(#fa)"/>
+        <rect x="802" y="35" width="150" height="44" rx="8" fill="#D27948"/><text x="877" y="61" text-anchor="middle" fill="#fff">Screening report</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="tools-grid">
+    <a class="tool-card" href="tools/los-convert.html"><h3>1 · LOS → Vertical Converter</h3>
+      <p>Stop reporting line-of-sight velocities as settlement. Geometry-correct conversion with per-point
+      incidence, slope projection and propagated uncertainty. CSV batch import, live vector diagram.</p></a>
+    <a class="tool-card" href="tools/site-check.html"><h3>2 · Site Suitability Pre-Check</h3>
+      <p>Before processing: expected coherence, layover/shadow and atmospheric scoring with transparent
+      weights, red flags, and a ready-to-paste HyP3 job package.</p></a>
+    <a class="tool-card" href="tools/hazard-classify.html"><h3>3 · Gradient &amp; Hazard Classifier</h3>
+      <p>Differential settlement is what damages assets. Neighbour-gradient screening against four
+      documented criteria packages, KML/CSV/PNG export.</p></a>
+    <a class="tool-card" href="tools/gnss-validate.html"><h3>4 · GNSS Validation</h3>
+      <p>Match InSAR points to GNSS or levelling observations, compute RMSE, bias and residual spread,
+      flag anomalies, and copy the standardized comparison paragraph.</p></a>
+    <a class="tool-card" href="tools/error-budget.html"><h3>5 · Error Budget Calculator</h3>
+      <p>Five InSAR error sources combined by root-sum-square, contribution shares as a pie chart, and a
+      summary paragraph for the quality-assurance section.</p></a>
+    <a class="tool-card" href="tools/timeseries.html"><h3>6 · Time-series Calculator</h3>
+      <p>Cumulative displacement curves with linear baselines: per-point rates, acceleration detection by
+      half-span comparison, and unwrapping-step flags.</p></a>
+    <a class="tool-card" href="tools/coord-convert.html"><h3>7 · Coordinate Converter</h3>
+      <p>WGS84 ↔ UTM batch conversion with automatic zone detection, CSV and GeoJSON interchange,
+      proj4js precision — the bridge to CAD and GIS.</p></a>
+    <a class="tool-card" href="tools/report.html"><h3>8 · Report Generator</h3>
+      <p>Assemble the whole workflow into a structured screening note: four delivery scenarios, Data Tray
+      statistics injection, standardized limitations language.</p></a>
+  </div>
+
+  <div class="content">
+    <h2>Why a local workbench</h2>
+    <p>Monitoring data carries contractual and sometimes regulatory weight. Cloud tools that upload your
+    point coordinates create obligations you may not be able to make — data-processing agreements, hosting
+    jurisdiction questions, retention policies. This workbench takes a harder line: the computation runs in
+    your browser's JavaScript and the data dies with the tab. There is no account, no database and no upload
+    path in the code. What you keep are the exports — CSV, KML, GeoJSON, Markdown — which are yours the
+    moment they are written.</p>
+    <p>The second commitment is professional honesty. Screening criteria are documented, thresholds are
+    labelled as defaults, red flags state their physical mechanisms, and every tool's limitations section
+    says what the tool cannot do. InSAR is a remarkable screening instrument and a poor oracle; the workbench
+    is built to keep that distinction visible in every deliverable.</p>
+    <p>New here? Read the <a href="workflow.html">workflow page</a> for the full pipeline, or load the
+    demonstration dataset in any tool and reproduce the worked examples from the
+    <a href="docs/sample-dataset-guide.html">sample dataset guide</a>.</p>
+  </div>
+
+  <div class="disclaimer">
+    This toolkit provides preliminary geotechnical interpretation only. Results cannot replace licensed site
+    investigation, GNSS survey, levelling survey or official geohazard assessment reports. All high-risk
+    zones require field verification by qualified professionals.
+  </div>
+</body>
+</html>

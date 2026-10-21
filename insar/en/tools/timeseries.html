@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<!-- 工具 6：Cumulative Time-series Subsidence Calculator（文档 4.1-6）。内容章节由内容任务填充 -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cumulative Time-series Subsidence Calculator | insar-geosettle</title>
+  <meta name="description" content="Import multi-epoch InSAR time series, compute cumulative displacement and linear-fit rates, detect accelerating deformation segments and steps. Runs locally in your browser.">
+  <link rel="canonical" href="https://smartimgkit.com/insar/en/tools/timeseries.html">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/insar/en/tools/timeseries.html">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/insar/en/tools/timeseries.html">
+  <link rel="stylesheet" href="../../../assets/css/site.css">
+</head>
+<body>
+  <header class="site-head">
+    <span class="brand">insar-geosettle</span>
+    <a href="los-convert.html">← LOS Converter</a><a href="hazard-classify.html">← Hazard Classifier</a>
+  </header>
+  <div class="privacy-strip">🔒 <b>All calculations run locally in your browser.</b> No time-series data is sent to our server.</div>
+
+  <div class="workbench">
+    <div class="card zone-input">
+      <h3>Time-series input <span class="qm" title="Long format: point_id, date, displacement_mm (cumulative)">?</span></h3>
+      <button class="btn accent" id="btn-demo">Load demo (6 pts × 12 epochs)</button>
+      <input type="file" id="in-file" accept=".csv" style="display:none">
+      <button class="btn ghost" id="btn-file">Import CSV file</button>
+      <textarea id="in-paste" placeholder="point_id,date,displacement_mm&#10;P001,2026-03-15,-0.2 …"></textarea>
+      <button class="btn accent" id="btn-run">Analyze</button>
+
+      <label>Acceleration threshold (mm/yr) <span class="qm" title="Rate increase (2nd half vs 1st half) to flag accelerating subsidence">?</span></label>
+      <input type="number" id="in-accel" value="3" step="0.5">
+      <label>Step threshold (mm/epoch)</label>
+      <input type="number" id="in-step" value="15" step="1">
+      <div class="hint" id="msg"></div>
+    </div>
+
+    <div class="card zone-result">
+      <h3>Point summary</h3>
+      <div class="scroll-box"><table class="res" id="table"></table></div>
+    </div>
+
+    <div class="card zone-chart">
+      <h3>Cumulative displacement curves <span class="qm" title="Dashed lines = linear-fit baseline">?</span></h3>
+      <div id="chart" style="width:100%;height:400px"></div>
+    </div>
+
+    <div class="card zone-export">
+      <h3>Export</h3>
+      <button class="btn" id="btn-csv">Summary CSV</button>
+      <button class="btn" id="btn-svg">Chart SVG</button>
+      <button class="btn" id="btn-png">Chart PNG 300DPI</button>
+      <span class="hint" id="export-msg"></span>
+    </div>
+  </div>
+
+  <section class="content" style="padding:0 24px;max-width:1100px">
+    <h1 style="color:var(--teal)">Cumulative Time-series Subsidence Calculator</h1>
+    <p>Velocity maps summarise a deformation story in one number per point — and in doing so they hide the
+    part of the story that matters most to an engineer: <em>when</em> the motion happened, whether it was
+    steady or accelerating, and whether the record contains a discontinuity that no velocity can represent.
+    A point averaging 10 mm/yr of steady subsidence and a point that sat still for two years and then dropped
+    60 millimetres in a wet season share the same velocity. Only the time series separates them. This tool
+    imports the multi-epoch displacement series your processor exported, fits each point's trajectory,
+    compares the first-half and second-half rates to detect acceleration, watches for single-epoch steps
+    that usually mean unwrapping trouble, and draws every trajectory with its linear baseline so the
+    behaviour is visible at a glance.</p>
+    <p>It occupies the temporal stage of the workflow — after the LOS Converter has produced consistent
+    vertical series, alongside the Hazard Classifier's spatial view. The two are complementary: the
+    classifier tells you <em>where</em> to look, this tool tells you <em>how the motion unfolded there</em>.
+    As with every tool on this site, the series never leave your browser.</p>
+
+    <h2>When you should use this tool</h2>
+    <ul>
+      <li>You have SBAS or PS time-series exports (cumulative displacement per epoch per point) and need
+        per-point rates, acceleration flags and a clean figure for the report.</li>
+      <li>A hazard-classified zone needs a temporal characterisation before you recommend field inspection —
+        accelerating points and steady points deserve different urgency.</li>
+      <li>You suspect unwrapping or atmospheric events in the record and need a systematic scan for
+        discontinuities across all points, not a manual click-through of a hundred charts.</li>
+      <li>You are preparing a monitoring baseline: knowing which points behaved linearly over the archive
+        period tells you which are trustworthy reference candidates.</li>
+    </ul>
+
+    <h2>When NOT to use this tool</h2>
+    <ul>
+      <li>Your data is a single displacement pair or a velocity layer — there is no time dimension to
+        analyse here. Import a proper per-epoch series.</li>
+      <li>The epochs are irregular and sparse (fewer than roughly six epochs). Half-span rate comparison
+        needs enough points on each side to fit meaningfully; with three epochs the acceleration flag is
+        numerology.</li>
+      <li>You expect the acceleration flag to carry regulatory meaning. It is a screening indicator from a
+        defined arithmetic comparison, and it must be confirmed — the flags direct field attention, they do
+        not conclude.</li>
+    </ul>
+
+    <h2>How the detection actually works</h2>
+    <p>Each point's epochs are sorted in time and converted to decimal years. A least-squares line over the
+    full record gives the headline rate in mm/yr; that is the number to compare against the velocity maps
+    you already have. The acceleration test then fits separate lines to the first half and the second half
+    of the record: if the second-half rate is more negative than the first-half rate by more than the
+    acceleration threshold (default 3 mm/yr), the point is flagged as accelerating. The half-span choice is
+    deliberate — it is robust to seasonality on either side, cheap to explain in a review, and impossible to
+    tune into self-deception without noticing. The step test watches consecutive epochs: a single-interval
+    jump larger than the step threshold (default 15 mm) is flagged with its date, because an isolated
+    discontinuity in an otherwise smooth series is far more likely an unwrapping or network error than real
+    geology. Steps take precedence over the acceleration label in the display for exactly that reason.</p>
+
+    <h2>Reading the chart &amp; the summary</h2>
+    <p>The chart stacks every point's cumulative displacement curve with its full-record linear fit as a
+    dashed line. Three signatures cover most engineering narratives: a flat noisy line (stable — a candidate
+    reference point), a straight descending line (steady subsidence — quote the fitted rate), and a curve
+    that steepens (accelerating — quote both half-rates and the crossover period). A curve with a clean jump
+    should trigger a look at the raw interferograms around the flagged date before any interpretation. The
+    summary table gives every number the chart displays — epoch count, total displacement, headline rate,
+    both half-rates and the flags — and the CSV export carries them all, one row per point.</p>
+
+    <h2>What the demo shows, point by point</h2>
+    <p>The demonstration series — six points over twelve monthly epochs — is built so that every detection
+    mechanism fires exactly once, which makes it a calibration target for your own threshold tuning. Two
+    points are stable: their curves are flat noise, their rates near zero, their flags linear. Two are
+    steady subsiders: clean straight lines whose fitted rates land in the −10 to −15 mm/yr band, flagged
+    linear — these are your honest, quotable results. One accelerates: its curve steepens visibly, the
+    second-half rate comes out several mm/yr more negative than the first half, and the accelerating flag
+    fires. The last point is linear except for a single 18 mm jump mid-record — below nothing you would
+    notice in a velocity map, above the step threshold — and it surfaces as a step flag with the date
+    attached. Run the demo, open the summary CSV, and confirm you can reproduce each flag from the numbers:
+    that ten-minute exercise is the fastest way to understand precisely what the tool will and will not
+    tell you about a real monitoring record.</p>
+
+    <h2>Common pitfalls &amp; mistakes</h2>
+    <ul>
+      <li><b>Seasonal masquerade.</b> Groundwater-driven sites oscillate; a half-span fit can dress a
+        seasonal cycle up as acceleration. Check whether the steepening coincides with a wet season before
+        escalating.</li>
+      <li><b>Reference-point contamination.</b> If the scene's reference point itself moves, every series
+        inherits it. Validate the reference against the GNSS Validation tool first.</li>
+      <li><b>Threshold blindness.</b> The default acceleration threshold of 3 mm/yr suits mm-level Sentinel-1
+        work on temperate sites; noisy tropical scenes may need a wider threshold, and high-quality urban
+        stacks a narrower one. State the threshold with the results.</li>
+      <li><b>Treating steps as geology.</b> Until the interferograms around the flagged date are checked, a
+        step is a data-quality hypothesis, not a finding.</li>
+      <li><b>Mixed time windows.</b> Points with different observation periods (new buildings, mission gaps)
+        produce rates over different baselines — the span column exists so you can spot them.</li>
+    </ul>
+
+    <h2>Frequently asked questions</h2>
+    <dl>
+      <dt>Must the displacement series be cumulative, or per-interval?</dt>
+      <dd>Cumulative, as SBAS/PS processors export. If your source gives per-interval increments, cumulate
+        them before import — the tool's plots and statistics assume a running sum.</dd>
+      <dt>Why a linear fit and not something fancier?</dt>
+      <dd>Because the deliverable is a report number a reviewer can recompute with two statistics functions.
+        Piecewise and periodic models are valuable, but they add assumptions this screening stage cannot
+        defend.</dd>
+      <dt>Can I analyse more than six points at once?</dt>
+      <dd>Yes — the six-curve demo is for readability. Real imports of hundreds of points work; the chart
+        legend scrolls, and the table carries every point regardless.</dd>
+      <dt>What acceleration threshold should I use?</dt>
+      <dd>Start at 3 mm/yr, then check the flagged points against the chart. If the flags are catching
+        seasonal wiggles, widen; if genuine accelerations slip through, narrow. Record the final value.</dd>
+      <dt>Do the flags survive export?</dt>
+      <dd>Yes — the CSV includes both half-rates, the accelerating boolean and the step date, so the
+        classification logic is fully auditable offline.</dd>
+    </dl>
+
+    <h2>Related tools</h2>
+    <p>The <a href="los-convert.html">LOS Converter</a> produces the consistent vertical series this tool
+    expects; the <a href="hazard-classify.html">Hazard Classifier</a> provides the spatial view that tells
+    you which of these temporal stories happens where; the <a href="gnss-validate.html">GNSS Validation
+    tool</a> anchors the rates against ground truth.</p>
+  </section>
+
+  <div class="disclaimer">
+    This toolkit provides preliminary geotechnical interpretation only. Acceleration flags are
+    screening-level indicators derived from half-span rate comparison and must be confirmed by
+    field verification before engineering decisions.
+  </div>
+
+  <script src="../../../assets/js/vendor/echarts.min.js"></script>
+  <script src="../../../assets/js/charts.js"></script>
+  <script src="../../../assets/js/csv-utils.js"></script>
+  <script src="../../../assets/js/timeseries.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      var $ = function (id) { return document.getElementById(id); };
+      var result = null, chart = null;
+      var PALETTE = ["#184A54", "#D27948", "#48A969", "#E28942", "#7C1919", "#6B8F9C"];
+
+      function load(text, name) {
+        try {
+          var parsed = CSVUtils.parse(text);
+          var map = CSVUtils.matchFields(parsed.fields, ["point_id", "date", "displacement_mm"]);
+          var rows = parsed.rows.map(function (r) {
+            return { point_id: r[map.point_id], date: r[map.date], displacement_mm: Number(r[map.displacement_mm]) };
+          });
+          run(rows, name);
+        } catch (e) { $("msg").textContent = e.message; }
+      }
+
+      function run(rows, name) {
+        result = TimeSeries.analyze(rows, Number($("in-accel").value), Number($("in-step").value));
+        renderTable();
+        renderChart(rows, name);
+        $("msg").textContent = result.length + " points analyzed";
+      }
+
+      function renderTable() {
+        var html = "<thead><tr><th>point</th><th>n</th><th>total (mm)</th><th>rate (mm/yr)</th>"
+          + "<th>rate 1st/2nd half</th><th>flag</th></tr></thead><tbody>";
+        result.forEach(function (r) {
+          // 标记优先级：单期突跳（可能是解缠错误）优先于加速判定
+          var flag = r.step_date ? '<span class="pill warn">step @ ' + r.step_date + "</span>"
+            : r.accelerating ? '<span class="pill bad">accelerating</span>'
+            : '<span class="pill ok">linear</span>';
+          html += "<tr><td>" + r.id + "</td><td>" + r.n + "</td><td>" + r.total_disp
+            + "</td><td>" + r.rate + "</td><td>" + r.rate_first + " → " + r.rate_second
+            + "</td><td>" + flag + "</td></tr>";
+        });
+        $("table").innerHTML = html + "</tbody>";
+      }
+
+      function renderChart(rows, name) {
+        // 分组原始曲线 + 全程线性拟合虚线
+        var groups = TimeSeries.group(rows);
+        var series = [];
+        groups.forEach(function (g, i) {
+          var color = PALETTE[i % PALETTE.length];
+          series.push({
+            type: "line", name: g.id, showSymbol: false,
+            data: g.series.map(function (p) { return [p.t, Math.round(p.d * 100) / 100]; }),
+            lineStyle: { color: color, width: 2 }, itemStyle: { color: color },
+          });
+          var f = TimeSeries.fit(g.series);
+          var t0 = g.series[0].t, t1 = g.series[g.series.length - 1].t;
+          series.push({
+            type: "line", name: g.id + " fit", silent: true, showSymbol: false,
+            data: [[t0, Math.round((f.intercept) * 100) / 100],
+                   [t1, Math.round((f.intercept + f.slope * g.series[g.series.length - 1].tYears) * 100) / 100]],
+            lineStyle: { color: color, width: 1, type: "dashed", opacity: 0.5 },
+          });
+        });
+        if (chart) { chart.dispose(); }
+        chart = IGCharts.render($("chart"), {
+          legend: { top: 0, type: "scroll", textStyle: { fontSize: 10 } },
+          tooltip: { trigger: "axis" },
+          xAxis: { type: "time" },
+          yAxis: { type: "value", name: "cumulative displacement (mm)" },
+          series: series,
+        });
+      }
+
+      $("btn-demo").onclick = function () {
+        fetch("../../../assets/sample-data/sample-timeseries.csv")
+          .then(function (r) { return r.text(); })
+          .then(function (t) { load(t, "demo"); });
+      };
+      $("btn-file").onclick = function () { $("in-file").click(); };
+      $("in-file").onchange = function (e) {
+        var f = e.target.files[0];
+        var rd = new FileReader();
+        rd.onload = function () { load(rd.result, f.name); };
+        rd.readAsText(f);
+      };
+      $("btn-run").onclick = function () { load($("in-paste").value, "pasted"); };
+
+      $("btn-csv").onclick = function () {
+        if (!result) { return; }
+        var head = "point_id,n_epochs,span_months,total_disp_mm,rate_mm_per_yr,rate_first_half,rate_second_half,accelerating,step_date\n";
+        var body = result.map(function (r) {
+          return [r.id, r.n, r.span_months, r.total_disp, r.rate, r.rate_first, r.rate_second, r.accelerating, r.step_date || ""].join(",");
+        }).join("\n");
+        var blob = new Blob([head + body], { type: "text/csv" });
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob); a.download = "timeseries-summary.csv";
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        $("export-msg").textContent = "CSV downloaded";
+      };
+      $("btn-svg").onclick = function () { if (chart) { IGCharts.exportSVG(chart, "timeseries-chart.svg"); } };
+      $("btn-png").onclick = function () { if (chart) { IGCharts.exportPNG300(chart, "timeseries-chart-300dpi.png"); } };
+    })();
+  </script>
+</body>
+</html>

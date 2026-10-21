@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<!-- docs/workflow-manual.html（≥1100 词） -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Workflow Manual — Running a Full InSAR Screening Campaign | insar-geosettle</title>
+  <meta name="description" content="The complete operational manual for an InSAR screening campaign with the insar-geosettle workbench: preparation, tool-by-tool operation, quality gates, and report assembly.">
+  <link rel="canonical" href="https://smartimgkit.com/insar/en/docs/workflow-manual.html">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/insar/en/docs/workflow-manual.html">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/insar/en/docs/workflow-manual.html">
+  <link rel="stylesheet" href="../../assets/css/site.css">
+</head>
+<body>
+  <header class="site-head">
+    <span class="brand">insar-geosettle</span>
+    <a href="../index.html">← Home</a><a href="../workflow.html">Workflow</a><a href="insar-basics.html">Docs</a>
+  </header>
+  <div class="privacy-strip">🔒 <b>All calculations run locally in your browser.</b> No survey points, velocity data or CSV files are sent to our server.</div>
+
+  <section class="content" style="padding:0 24px;max-width:1100px">
+    <h1 style="color:var(--teal)">Workflow manual — a full screening campaign</h1>
+    <p><em>Who this page is for:</em> the engineer running an actual campaign, who knows what InSAR is (the
+    <a href="insar-basics.html">basics page</a> covers that) and needs the operational sequence — what to
+    prepare, what to run in which order, what to check at each gate, and what the deliverables are.
+    <em>What it adds over the workflow overview:</em> the overview describes the pipeline; this manual
+    describes running it, including the decisions that are yours rather than the tools'.</p>
+
+    <h2>Before you open the workbench</h2>
+    <p>Three things must exist outside the tools, because no tool can invent them. <b>A defined engineering
+    question</b> — "is the embankment between chainage 42 and 55 deforming differentially?" is a campaign;
+    "what does InSAR say about this area?" is not. The question determines the criteria package, the
+    neighbour radius, the observation window and the report scenario at the far end. <b>The processing
+    outputs</b> from your InSAR software: a velocity layer with per-point incidence and azimuth geometry,
+    exported per the <a href="csv-format-spec.html">CSV specification</a>, plus time series if the campaign
+    needs temporal characterisation. <b>Ground observations if you have them</b> — the validation stage is
+    what converts a plausible result into a defensible one, and arranging benchmark access is a
+    pre-campaign task, not a post-processing one. With those three in hand, budget half a day for the first
+    full pass; subsequent campaigns on the same site take an hour.</p>
+
+    <h2>Phase 1 — Pre-check (Site Suitability tool)</h2>
+    <p>Enter the bounding box around the assets, the dominant land cover, climate class, the maximum slope
+    from your DEM, your intended sensor band, and the deformation target. Read the flags before the score:
+    each flag names a mechanism and a countermeasure. Record the outcome in the project file either way —
+    a documented pre-check protects the campaign if the results later disappoint, and the Markdown export
+    exists for exactly that. <em>Decision point:</em> Poor score with unfixable red flags means stopping or
+    changing sensor here is cheaper than a doomed processing run.</p>
+
+    <h2>Phase 2 — Conversion (LOS Converter)</h2>
+    <p>Import the velocity table — file or paste; the header matcher handles the common exports. Verify the
+    sign convention on one known area before trusting the batch: pick a point where the ground truth is
+    intuitively clear and confirm the sign points the expected way. Convert, and sanity-check the summary:
+    the velocity range should be consistent with regional knowledge. The converted points now live in the
+    Data Tray. <em>Quality gate:</em> sign convention confirmed; incidence angles actually vary across the
+    table rather than being one copied constant (unless the site is genuinely small).</p>
+
+    <h2>Phase 3 — Spatial screening (Hazard Classifier)</h2>
+    <p>Select the criteria package matching the asset, and — the decision that is yours — set the neighbour
+    radius to the structural span you care about, not the default for its own sake. Run, then read in this
+    order: the distribution bar chart (is the split plausible?), the map (do flagged points cluster along
+    the asset or scatter randomly?), and only then the table. Check the neighbour column for isolated
+    points, whose classes rest on the velocity safeguard alone. Export the CSV for the record and the KML
+    for spatial context. <em>Quality gate:</em> every class quoted in future text carries its package name
+    and radius.</p>
+
+    <h2>Phase 4 — Temporal characterisation (Time-series tool)</h2>
+    <p>If the campaign imported a time series, run the six-step check here: which flagged zones are
+    accelerating, which are steady, and whether any step flags coincide with known processing events.
+    Thresholds are yours to tune — record the final values. A common pattern worth learning on the demo:
+    acceleration flags that track wet seasons are seasonal signals wearing an acceleration costume; widen
+    the threshold or annotate the seasonality rather than escalating blindly.</p>
+
+    <h2>Phase 5 — Ground truth (GNSS Validation)</h2>
+    <p>Load the observation table, set a match radius that is honest about spatial gradients, and run. Read
+    the three statistics separately — bias is a reference-frame conversation, σ is a noise conversation,
+    RMSE is what the reviewer remembers. Investigate flagged pairs before the report, not after a reviewer
+    finds them. Copy the generated conclusion paragraph into the report; it already contains the
+    standardised caveat language. <em>Quality gate:</em> every anomalous pair accounted for in writing.</p>
+
+    <h2>Phase 6 — Uncertainty statement (Error Budget)</h2>
+    <p>Replace the screening defaults with values justified by your processing: archive length, correction
+    models applied, coherence levels observed. The pie chart tells you which term dominates; the
+    GNSS-measured σ from Phase 5 is your reality check — if it exceeds the prediction substantially, an
+    assumption is wrong, usually the atmosphere. Export the Markdown summary for the quality-assurance
+    section.</p>
+
+    <h2>Phase 7 — Reporting (Report Generator)</h2>
+    <p>Choose the scenario matching the client's vocabulary, fill the identification fields, write the key
+    observations in your own words, and generate. The injection pulls the Data Tray statistics; the
+    limitations and verification language arrives standardised. Edit the placeholders — they are marked —
+    and attach the CSV/KML exports as appendices. The final professional act is yours: the generator writes
+    structure, the engineer owns conclusions.</p>
+
+    <h2>Troubleshooting the common stalls</h2>
+    <p>Four stalls account for most lost hours. <b>The tray is empty at the classifier:</b> the Data Tray
+    lives per browser tab — run the whole chain in one tab, or re-import. <b>The validation shows far fewer
+    pairs than benchmarks:</b> the match radius is smaller than the real point separation, or the two
+    datasets' coordinates are in different units or order; check the scatter. <b>The classification looks
+    uniformly Stable:</b> the velocity column may still be LOS rather than converted vertical, or the sign
+    convention flipped — both surface as compressed ranges in the converter's summary. <b>The report
+    statistics look stale:</b> the injection happens at generation time; you re-ran the analysis after
+    generating, so regenerate. Each stall has a signature in the tools' own summaries, which is why the
+    habit of reading summaries before tables pays for itself within the first campaign.</p>
+
+    <h2>Campaign hygiene</h2>
+    <ul>
+      <li><b>One question per campaign.</b> Mixing asset types in one run blurs the criteria choice; run
+        separate campaigns per asset class.</li>
+      <li><b>Record every threshold.</b> Radius, k-factor, acceleration and step thresholds are part of the
+        method; a result without them is not reproducible.</li>
+      <li><b>Re-generate after re-analysis.</b> Stale injected statistics are the classic audit finding;
+        the report is generated from the tray, so regenerate whenever the tray changes.</li>
+      <li><b>Keep the browser tab alive through a phase.</b> Tray data lives in memory; closing the tab
+        between tools means re-importing. Complete a phase, export, then close if you must.</li>
+      <li><b>Archive the exports, not the browser state.</b> CSVs, KML, Markdown reports and the pre-check
+        PDF are the campaign record; the tab is not.</li>
+    </ul>
+
+    <h2>Where to go next</h2>
+    <p>Rehearse the entire sequence on known data with the <a href="sample-dataset-guide.html">sample
+    dataset</a> before the first real campaign — ten minutes there buys fluency here. The
+    <a href="insar-basics.html">basics page</a> backfills concepts, and each tool's own page documents its
+    inputs, outputs and pitfalls in depth.</p>
+  </section>
+
+  <div class="disclaimer">
+    This toolkit provides preliminary geotechnical interpretation only. Results cannot replace licensed site
+    investigation, GNSS survey, levelling survey or official geohazard assessment reports. All high-risk
+    zones require field verification by qualified professionals.
+  </div>
+</body>
+</html>

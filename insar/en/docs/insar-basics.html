@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<!-- docs/insar-basics.html（≥1100 词） -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>InSAR Basics for Geotechnical Engineers | insar-geosettle</title>
+  <meta name="description" content="What InSAR measures, what LOS geometry means, why coherence matters, and how PS, SBAS and DS-InSAR differ — explained for civil and geotechnical engineers without a remote-sensing background.">
+  <link rel="canonical" href="https://smartimgkit.com/insar/en/docs/insar-basics.html">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/insar/en/docs/insar-basics.html">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/insar/en/docs/insar-basics.html">
+  <link rel="stylesheet" href="../../assets/css/site.css">
+</head>
+<body>
+  <header class="site-head">
+    <span class="brand">insar-geosettle</span>
+    <a href="../index.html">← Home</a><a href="../workflow.html">Workflow</a><a href="insar-basics.html">Docs</a>
+  </header>
+  <div class="privacy-strip">🔒 <b>All calculations run locally in your browser.</b> No survey points, velocity data or CSV files are sent to our server.</div>
+
+  <section class="content" style="padding:0 24px;max-width:1100px">
+    <h1 style="color:var(--teal)">InSAR basics for geotechnical engineers</h1>
+    <p><em>Who this page is for:</em> civil and geotechnical engineers who have been handed an InSAR result
+    — a velocity map, a colleague's CSV, a consultant's figure — and need to understand what the measurement
+    actually is before interpreting or defending it. No remote-sensing background is assumed; the radar
+    physics is kept to the minimum that interpretation requires. <em>What it covers:</em> what interferometry
+    measures, what the line-of-sight geometry means for deformation interpretation, what coherence is and
+    why it decides where measurements exist at all, and how the three main processing families differ.
+    <em>What it does not cover:</em> how to run the processors themselves — the workflow manual and the
+    software documentation handle that.</p>
+
+    <h2>What InSAR measures</h2>
+    <p>Synthetic Aperture Radar satellites illuminate the ground with microwave pulses and record the
+    echoed signal's phase as well as its strength. Compare the phase of two images of the same area taken
+    from nearly the same position at different times, and the phase difference contains the ground's motion
+    along the direction the antenna was looking during those seconds — the <em>line of sight</em>, or LOS.
+    Unwrap the phase differences across an image stack and you can convert them into a displacement history
+    per pixel, then fit a rate per point. That is the essence of InSAR: millimetre-level displacement
+    sensing over wide areas, from space, without touching the ground.</p>
+    <p>The "synthetic aperture" part is what makes the millimetres possible: as the satellite flies, its
+    antenna synthesizes an aperture hundreds of times larger than the physical one, achieving metre-level
+    ground resolution from 700 kilometres away. Sentinel-1, the workhorse mission for this kind of work,
+    repeats every orbit with the same geometry so that successive images are directly comparable — a
+    twelve-day revisit at the equator, six days where both orbit units overlap.</p>
+
+    <h2>The line of sight — and why it is the first thing to fix</h2>
+    <p>The satellite does not measure "subsidence". It measures the projection of the full displacement
+    vector onto the LOS direction, which for Sentinel-1 is tilted roughly 30–46° from vertical depending on
+    position in the image swath. A purely vertical movement appears in the LOS at only cos θ of its true
+    magnitude; the rest of the vector is invisible to that geometry. Consequently the most common
+    interpretation error in engineering practice — reading LOS velocity directly as settlement — silently
+    understates vertical rates by twenty to thirty percent. The correction is simple division by cos θ, but
+    it must be done with each point's own incidence angle and with the sign convention of the export
+    understood; the <a href="../tools/los-convert.html">LOS Converter</a> exists to make that step systematic.
+    The deeper limitation follows from the same geometry: a single viewing direction cannot separate vertical
+    from horizontal motion at all. Where slopes may be moving along their own dip, the LOS signal mixes both,
+    and only a second geometry — an ascending and descending track pair — allows the components to be
+    separated.</p>
+
+    <h2>Coherence — where measurements can exist</h2>
+    <p>Phase comparison only works where the ground surface returns a stable radar signature between the two
+    epochs. This stability is <em>coherence</em>. Urban fabric, rock faces and infrastructure hold coherent
+    scatterers for years; vegetation decorrelates C-band signal within weeks as leaves move and grow;
+    water decorrelates instantly; snow buries the surface seasonally. Coherence therefore decides where
+    InSAR can measure anything at all, long before accuracy enters the discussion. It also explains the
+    central mission choice: C-band (Sentinel-1, ~5.6 cm wavelength) is free and systematic but penetrates
+    vegetation poorly, while L-band (ALOS-2/4, ~24 cm) penetrates canopy substantially better at the cost of
+    access and resolution. When a site pre-check flags forest under C-band as a red flag, this is the
+    physics it is describing.</p>
+
+    <h2>PS, SBAS and DS — three strategies for the same signal</h2>
+    <p>Raw interferograms are corrupted by atmosphere, orbit error and decorrelation. The processing
+    families are strategies for extracting stable motion anyway. <b>PS-InSAR</b> (persistent scatterer)
+    tracks individual phase-stable targets — buildings, rocks, infrastructure — through long image stacks,
+    accepting sparse spatial coverage in exchange for very stable point behaviour. It suits urban and rocky
+    sites and slow, steady signals. <b>SBAS</b> (small baseline subset) builds many interferograms from
+    short baseline pairs, averages down the noise, and retrieves smoother, denser fields — well suited to
+    subsidence bowls and medium-coherence land cover. <b>DS-InSAR</b> (distributed scatterer) relaxes the
+    point-target requirement by statistically combining neighbouring pixels, recovering measurements over
+    moderate vegetation and mixed terrain where PS fails — at the price of heavier computation. Rapid
+    events (landslides, mining collapses) additionally use <b>DInSAR</b> — single interferogram pairs —
+    where the deformation happens between two epochs and magnitude, not long-term rate, is the question.
+    The <a href="../tools/site-check.html">site pre-checker</a> recommends among these based on exactly the
+    land-cover and coherence expectations this page describes.</p>
+
+    <h2>What corrupts the measurement</h2>
+    <p>Four corruption families matter to the interpreter. <b>Atmospheric phase delay</b> — humidity and
+    stratified troposphere imprint centimetre-scale phase patterns unrelated to ground motion; correction
+    models and spatial averaging suppress it, and it is usually the largest single term in an error budget.
+    <b>Geometric uncertainty</b> — imprecise orbits and DEM errors leave phase residuals and shift pixels;
+    precise orbits and modern global DEMs reduce it. <b>Decorrelation noise</b> — the random phase loss
+    described above, worst over vegetation and long time intervals. <b>Unwrapping failure</b> — the
+    phase-unwrapping step can integrate incorrectly in noisy or rapidly deforming areas, producing
+    isolated gross errors that no amount of averaging repairs; these surface as steps and outliers, which
+    is why the time-series tool watches for them. None of these can be fully eliminated; they are bounded,
+    stated and lived with — which is why the error budget exists as a deliverable section rather than a
+    footnote.</p>
+
+    <h2>What this means for engineering use</h2>
+    <p>Three dispositions follow. First, InSAR is a <em>screening</em> instrument: wide-area, history-rich,
+    cheap per point — ideal for finding where to look — but each point carries geometric and atmospheric
+    uncertainty that field methods do not. Second, every InSAR number needs its geometry corrected and its
+    uncertainty stated before it enters an engineering document; the workbench's conversion and budget tools
+    exist for precisely those two steps. Third, credibility comes from ground truth: GNSS and levelling
+    comparisons are what turn a plausible map into a defensible result. The workflow page chains these
+    dispositions into a pipeline, and the sample dataset guide lets you rehearse the full chain on data
+    with a known answer.</p>
+
+    <h2>Where to go next</h2>
+    <p>Practical next steps: the <a href="csv-format-spec.html">CSV format specification</a> explains what
+    your processor's exports look like and how to get them into the workbench cleanly; the
+    <a href="sample-dataset-guide.html">sample dataset guide</a> walks a complete worked example; the
+    <a href="../workflow.html">workflow page</a> maps every stage to its tool; and the
+    <a href="../tools/los-convert.html">LOS Converter</a> is where most engineers should start.</p>
+  </section>
+
+  <div class="disclaimer">
+    This toolkit provides preliminary geotechnical interpretation only. Results cannot replace licensed site
+    investigation or official geohazard assessment reports. Field verification by qualified professionals is
+    required for all engineering decisions.
+  </div>
+</body>
+</html>

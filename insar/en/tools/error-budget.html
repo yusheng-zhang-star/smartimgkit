@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<!-- 工具 5：InSAR Error Budget Calculator（文档 4.1-5）。内容章节由内容任务填充 -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>InSAR Error Budget Calculator — Combined Uncertainty | insar-geosettle</title>
+  <meta name="description" content="Combine DEM, orbit, atmospheric, decorrelation and incidence-angle errors into a total InSAR uncertainty budget with contribution shares. Runs locally in your browser.">
+  <link rel="canonical" href="https://smartimgkit.com/insar/en/tools/error-budget.html">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/insar/en/tools/error-budget.html">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/insar/en/tools/error-budget.html">
+  <link rel="stylesheet" href="../../../assets/css/site.css">
+</head>
+<body>
+  <header class="site-head">
+    <span class="brand">insar-geosettle</span>
+    <a href="los-convert.html">← LOS Converter</a><a href="../index.html">Tools</a>
+  </header>
+  <div class="privacy-strip">🔒 <b>All calculations run locally in your browser.</b> No data is sent to our server.</div>
+
+  <div class="workbench">
+    <div class="card zone-input">
+      <h3>Error sources (mm or mm/yr) <span class="qm" title="Independent 1σ values; combined by root-sum-square">?</span></h3>
+      <div id="inputs"></div>
+      <label>Unit</label>
+      <select id="in-unit" style="width:100%;padding:6px;border:1px solid var(--line);border-radius:6px">
+        <option value="mm (single epoch)">mm (single epoch)</option>
+        <option value="mm/yr (velocity)">mm/yr (velocity)</option>
+      </select>
+      <button class="btn accent" id="btn-run">Compute</button>
+      <div class="hint" id="msg"></div>
+    </div>
+
+    <div class="card zone-result">
+      <h3>Budget</h3>
+      <div id="result"></div>
+    </div>
+
+    <div class="card zone-chart">
+      <h3>Contribution shares</h3>
+      <div id="pie" style="width:100%;height:320px"></div>
+    </div>
+
+    <div class="card zone-export">
+      <h3>Export</h3>
+      <button class="btn" id="btn-md">Summary (Markdown)</button>
+      <button class="btn" id="btn-svg">Pie SVG</button>
+      <button class="btn" id="btn-png">Pie PNG 300DPI</button>
+      <span class="hint" id="export-msg"></span>
+      <div id="md" style="display:none"></div>
+    </div>
+  </div>
+
+  <section class="content" style="padding:0 24px;max-width:1100px">
+    <h1 style="color:var(--teal)">InSAR Error Budget Calculator</h1>
+    <p>Every deformation number in a report is an estimate, and reviewers increasingly refuse estimates
+    without an uncertainty statement attached. The error budget is that statement made systematic: you list
+    every mechanism that corrupts the measurement, assign each a realistic one-sigma magnitude, and combine
+    them into a single total uncertainty with an explicit breakdown of which mechanisms dominate. This tool
+    performs the combination for you — five standard InSAR error sources, root-sum-square mathematics, a
+    contribution pie chart that shows instantly whether your precision claim is limited by the atmosphere or
+    by your own geometry assumptions — and writes the summary paragraph for the report.</p>
+    <p>The mathematical model is simple and worth stating plainly, because its simplicity is what makes it
+    defensible. If the error sources are statistically independent, their variances add:
+    <b>σ<sub>total</sub> = √(Σ σᵢ²)</b>. The share of each source is its variance divided by the total
+    variance, so shares always sum to 100% and the dominant mechanism is the one whose square dominates.
+    That last observation matters practically: quadrature combination forgives you moderate uncertainty in
+    minor sources, but the largest source sets the floor — halving a 6 mm atmospheric term buys you far more
+    than eliminating a 1 mm orbit term entirely. When you need to improve a project's precision claim, spend
+    effort where the pie chart is fat.</p>
+
+    <h2>When you should use this tool</h2>
+    <ul>
+      <li>Writing the quality-assurance section of a monitoring report, where each deformation rate needs a
+        stated uncertainty with a defensible breakdown.</li>
+      <li>Answering the pre-award question "how precise will InSAR be on this site?" — the budget shows
+        which correction investments (weather-model atmospheric correction, better DEM, longer archives)
+        actually move the total.</li>
+      <li>Comparing configurations: compute the budget twice — with and without an atmospheric correction,
+        at two incidence angles — and the share chart quantifies the improvement.</li>
+      <li>Preparing for review: an explicit budget with named sources pre-empts the vaguest but most
+        damaging question, "how accurate is this really?".</li>
+    </ul>
+
+    <h2>When NOT to use this tool</h2>
+    <ul>
+      <li>As evidence of achieved accuracy. A budget is a design-stage statement of expected error, not a
+        validation result; achieved accuracy comes from the GNSS Validation tool against real observations.</li>
+      <li>With sources that are not independent. Correlated errors do not add in quadrature — if two of
+        your terms share a driver (say, DEM error and incidence-angle error both stemming from one bad
+        geolocation), the quadrature model underestimates the total. Merge them or widen one honestly.</li>
+      <li>For single-epoch claims using velocity-calibrated defaults. The default values sit at screening
+        magnitudes for Sentinel-1 small-baseline processing; your project's parameters — baseline
+        distribution, coherence levels, correction models — may be better or worse. Edit every line.</li>
+    </ul>
+
+    <h2>The five sources &amp; where their defaults come from</h2>
+    <p><b>DEM error</b> enters through the residual topography phase; small-baseline strategies that keep
+    perpendicular baselines short suppress it strongly, which is why the default is modest.
+    <b>Orbit error</b> reflects residual satellite-position uncertainty after precise orbit products —
+    small for Sentinel-1 with POEORB, and it mainly manifests as long-wavelength ramps.
+    <b>Atmospheric delay</b> is the heavyweight in most real budgets: turbulent wet delay and stratified
+    troposphere can easily contribute several millimetres per epoch in humid or high-relief terrain, and
+    this is the term that weather-model corrections (ERA5, GACOS-class products) attack. <b>Decorrelation
+    noise</b> covers temporal and geometric loss of coherence, which depends on land cover, time interval
+    and baseline spread — it shrinks as your archive grows. <b>Incidence-angle error</b> is the projection
+    uncertainty you already met in the LOS Converter: |v · tan θ| · dθ, which is why it scales with the
+    deformation magnitude itself and grows toward far range. Every default in the tool is a screening-level
+    typical magnitude, labelled as such; the credible move is to replace each with a value justified by your
+    own processing parameters and cite that justification.</p>
+
+    <h2>Step-by-step usage &amp; output</h2>
+    <ol>
+      <li>Enter the five one-sigma values in the unit that matches your report — millimetres per epoch for
+        single-measurement claims, mm/yr for velocity claims. Keep the unit consistent across sources.</li>
+      <li>Compute. The results table lists each source with its magnitude and variance share; the pie chart
+        makes the hierarchy visible; the total appears above with the unit label.</li>
+      <li>Export the Markdown summary — it names the dominant source and carries the screening-default
+        caveat, so the report cannot be accused of overstating rigor.</li>
+      <li>Iterate: adjust the source you intend to improve (atmospheric correction is the usual candidate)
+        and watch the total respond. Two or three such comparisons usually settle the processing plan.</li>
+    </ol>
+
+    <h2>A worked example you can reproduce</h2>
+    <p>Run the tool with its opening defaults and you get a concrete illustration of the whole point of
+    budgeting. The five screening defaults produce a total uncertainty of roughly 7 mm, with the atmospheric
+    term alone contributing about two-thirds of the variance while the orbit term is nearly invisible. The
+    engineering reading is immediate: buying a better orbit product would be money spent on the thin slice
+    of the pie, whereas an atmospheric correction that halved the atmospheric term would pull the total down
+    by a fifth or more. That asymmetry — small sources barely matter, the dominant source defines your
+    ceiling — is the single most useful thing an error budget teaches, and the pie chart teaches it without
+    a single line of text. Repeat the exercise with your own project values; the conclusion you can defend
+    in a review is not the total itself but the demonstrated reasoning of which correction to buy next.</p>
+
+    <h2>Common pitfalls &amp; mistakes</h2>
+    <ul>
+      <li><b>Double counting.</b> If your atmospheric term already includes the DEM-correlated stratified
+        component, do not add it again under DEM error. Define each source's scope once, in writing.</li>
+      <li><b>Unicorns in the small print.</b> Quoting σ<sub>total</sub> = 0.4 mm/yr from optimistic
+        defaults impresses nobody who has measured real atmospheric signal. The pie chart's honesty is the
+        product; use realistic values.</li>
+      <li><b>Mixing epochs and velocities.</b> Per-epoch errors and per-year rates are different quantities;
+        converting between them requires the observation span, not a unit relabel.</li>
+      <li><b>Forgetting the spatial structure.</b> Atmospheric error is spatially correlated — it inflates
+        gradients near the deformation feature less than point velocities far from any reference. State the
+        scope of the budget.</li>
+    </ul>
+
+    <h2>Frequently asked questions</h2>
+    <dl>
+      <dt>Why root-sum-square and not linear addition?</dt>
+      <dd>Independent random errors add in variance, not in magnitude; linear addition would dramatically
+        overestimate the total. The model's honesty lives in the independence assumption — check it.</dd>
+      <dt>My dominant source is atmospheric. What now?</dt>
+      <dd>That is the normal finding. Weather-model corrections, dense time-series averaging and spatial
+        filtering are the standard levers; recompute the budget with the post-correction magnitude.</dd>
+      <dt>Should the budget include unwrapping errors?</dt>
+      <dd>They are not Gaussian and resist a σ. Handle them as events — the Time-series tool's step
+        detection flags candidates — rather than folding them into the budget.</dd>
+      <dt>How does this connect to the GNSS comparison?</dt>
+      <dd>The GNSS Validation tool measures the achieved σ; the budget predicts it. When the measured value
+        far exceeds the prediction, one of your source assumptions is wrong — usually the atmosphere.</dd>
+      <dt>Can I add a sixth source?</dt>
+      <dd>Not in the form, but the arithmetic is trivial: add its square into the sum. The Markdown report
+        lists shares explicitly, so a manual extension stays auditable.</dd>
+    </dl>
+
+    <h2>Related tools</h2>
+    <p>Use alongside the <a href="los-convert.html">LOS Converter</a> (whose incidence-uncertainty column
+    implements one of the five sources) and the <a href="gnss-validate.html">GNSS Validation tool</a> (which
+    measures what this tool predicts). The <a href="../docs/sample-dataset-guide.html">Sample dataset guide</a shows the budget values used
+    in the demonstration workflow.</p>
+  </section>
+
+  <div class="disclaimer">
+    Default values are screening-level typical magnitudes for Sentinel-1 small-baseline processing.
+    Refine with project-specific parameters before formal engineering use. Preliminary interpretation
+    only — not a substitute for licensed site investigation.
+  </div>
+
+  <script src="../../../assets/js/vendor/echarts.min.js"></script>
+  <script src="../../../assets/js/charts.js"></script>
+  <script src="../../../assets/js/error-budget.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      var $ = function (id) { return document.getElementById(id); };
+      var chart = null;
+
+      // 生成五项输入（带默认值与说明 tooltip）
+      $("inputs").innerHTML = ErrorBudget.SOURCES.map(function (s) {
+        return '<label>' + s.label + ' <span class="qm" title="' + s.note + '">?</span></label>'
+          + '<input type="number" id="eb-' + s.key + '" value="' + s.def + '" step="0.5">';
+      }).join("");
+
+      function run() {
+        var vals = ErrorBudget.SOURCES.map(function (s) {
+          var v = Number($("eb-" + s.key).value);
+          if (!(v >= 0)) { throw new Error(s.label + ": invalid value"); }
+          return v;
+        });
+        var c = ErrorBudget.combine(vals);
+        $("result").innerHTML = '<div style="font-size:20px;color:var(--teal);margin:8px 0">σ<sub>total</sub> = '
+          + c.total + " " + $("in-unit").value + '</div><table class="res"><thead><tr><th>Source</th><th>σ</th><th>Share</th></tr></thead><tbody>'
+          + c.items.map(function (it) { return "<tr><td>" + it.label + "</td><td>" + it.value + "</td><td>" + it.share + "%</td></tr>"; }).join("")
+          + "</tbody></table>";
+        if (chart) { chart.dispose(); }
+        chart = IGCharts.render($("pie"), {
+          tooltip: { formatter: function (p) { return p.name + ": " + p.value + "%"; } },
+          series: [{ type: "pie", radius: ["35%", "65%"],
+            data: c.items.map(function (it, i) {
+              return { name: it.label, value: it.share,
+                itemStyle: { color: ["#48A969", "#E6C249", "#E28942", "#D84A4A", "#184A54"][i] } };
+            }) }],
+        });
+        var md = ErrorBudget.summary(c, $("in-unit").value);
+        $("md").style.display = "block"; $("md").textContent = md;
+        $("msg").textContent = "";
+      }
+
+      $("btn-run").onclick = function () { try { run(); } catch (e) { $("msg").textContent = e.message; } };
+
+      $("btn-md").onclick = function () {
+        var blob = new Blob([$("md").textContent], { type: "text/markdown" });
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob); a.download = "error-budget-summary.md";
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        $("export-msg").textContent = "Markdown downloaded";
+      };
+      $("btn-svg").onclick = function () {
+        if (!chart) { return; }
+        IGCharts.exportSVG(chart, "error-budget-pie.svg");
+        $("export-msg").textContent = "SVG downloaded";
+      };
+      $("btn-png").onclick = function () {
+        if (!chart) { return; }
+        IGCharts.exportPNG300(chart, "error-budget-pie-300dpi.png");
+        $("export-msg").textContent = "PNG downloaded";
+      };
+
+      run();  // 默认值直接出图
+    })();
+  </script>
+</body>
+</html>
