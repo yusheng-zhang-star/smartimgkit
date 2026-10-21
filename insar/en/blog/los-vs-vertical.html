@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<!-- blog/los-vs-vertical.html（≥1100 词，博客 1：误区拆解型） -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Why Your InSAR LOS Velocity Is Not Subsidence — And When It Matters | insar-geosettle</title>
+  <meta name="description" content="Reading LOS velocity directly as vertical settlement understates rates by 20–30% and, on slopes, measures something else entirely. A practical breakdown of the geometry, the sign conventions, and when the correction actually changes your decision.">
+  <link rel="canonical" href="https://smartimgkit.com/insar/en/blog/los-vs-vertical.html">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/insar/en/blog/los-vs-vertical.html">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/insar/en/blog/los-vs-vertical.html">
+  <link rel="stylesheet" href="../../assets/css/site.css">
+</head>
+<body>
+  <header class="site-head">
+    <span class="brand">insar-geosettle</span>
+    <a href="../index.html">← Home</a><a href="../workflow.html">Workflow</a><a href="../docs/insar-basics.html">Docs</a><a href="los-vs-vertical.html">Blog</a>
+  </header>
+  <div class="privacy-strip">🔒 <b>All calculations run locally in your browser.</b> No survey points, velocity data or CSV files are sent to our server.</div>
+
+  <article class="content" style="padding:0 24px;max-width:1100px">
+    <h1 style="color:var(--teal)">Your InSAR velocity is not subsidence — and here is when that actually matters</h1>
+    <p style="font-size:13px;color:#5a6b72"><time datetime="2026-10-22">22 October 2026</time> · about 9 min read</p>
+
+    <p>A deformation map lands on your desk. Every point carries a velocity, the colour ramp runs from
+    blue to red, and the caption says <em>subsidence rate (mm/yr)</em>. It is the single most common
+    labelling mistake in the whole InSAR-to-engineering pipeline, and it survives because the numbers
+    look plausible: a point showing −12 mm/yr near a pump station probably <em>is</em> going down, and
+    −12 feels like the right kind of number to write next to it. But the satellite never measured
+    −12 mm/yr of subsidence. It measured −12 mm/yr along one particular viewing direction, and the gap
+    between those two statements ranges from a twenty-percent bookkeeping footnote to a factor-of-two
+    interpretation error, depending on where the point is and what is moving it. This article walks
+    through the three layers of that gap — geometry, sign convention, and track geometry — and then
+    draws the line that matters in practice: when you can safely ignore the correction, and when you
+    cannot.</p>
+
+    <h2>Layer one: the satellite measures along a tilted line</h2>
+    <p>SAR antennas look sideways, not straight down. For Sentinel-1 the incidence angle — the tilt of
+    the viewing direction away from vertical — runs roughly 30° near the centre of the image swath to
+    about 46° at its edge. The satellite reports the projection of the true displacement vector onto
+    that tilted line of sight, and a projection is always shorter than the vector it comes from. A
+    purely vertical displacement of 10 mm shows up in the LOS as 10·cos θ: about 8.7 mm at 30°, about
+    6.9 mm at 46°. Inverting the relationship — dividing the LOS velocity by cos θ — recovers the
+    vertical component, and that is the entire mathematics of the
+    <a href="../tools/los-convert.html">LOS to vertical converter</a>. The catch is that dividing by
+    cos θ is only correct if the motion really was vertical. Where it was not, the division produces a
+    number that is not the vertical component of anything; it is an artifact with units of mm/yr.</p>
+    <p>The systematic understatement is easy to state and easy to underestimate in day-to-day work. At
+    a 35° incidence angle — a typical mid-swath value — the LOS velocity is only 82% of the vertical
+    rate. A settlement bowl whose true maximum is −15 mm/yr presents as −12.3. If your screening
+    threshold sits at −10, the uncorrected map says "above threshold" either way; if it sits at −15,
+    the uncorrected map quietly keeps the point below the line. The error is proportional and
+    one-sided, which means averaging over many points does not remove it — every point is biased the
+    same direction. That is the fundamental difference between this error and the random noise terms
+    in an <a href="../tools/error-budget.html">error budget</a>: noise can be averaged, bias cannot.</p>
+
+    <h2>Layer two: the sign convention trap</h2>
+    <p>Before any geometry can be corrected, the sign has to be understood, and there is no industry-wide
+    standard. Some processors export LOS displacement as negative-toward-the-satellite (a descending
+    surface is negative); others follow the radar convention of positive range change, which makes
+    subsidence positive. Some exporters reverse the sign at export; a few analysts reverse it again in
+    a spreadsheet "to make it intuitive". The result in real project folders is a mix where adjacent
+    columns from the same processing batch disagree.</p>
+    <p>The failure mode is worse than a wrong number — it is a plausible wrong number. Flip the sign of a
+    settlement bowl and you get an uplift dome of the same magnitude; both look like legitimate
+    geodesy, and nothing in the plot flags the error. The defence is procedural, not technical: check
+    the exporter's documentation once, verify the convention against one point whose behaviour you know
+    from an independent source — a benchmark, a GNSS monument, a structure you have seen — and record
+    the convention in the CSV header or the delivery note. The sample data shipped with this workbench
+    uses negative-is-subsidence, and every tool states its assumption so that a column imported with the
+    opposite convention fails loudly instead of silently.</p>
+
+    <h2>Layer three: ascending and descending tracks disagree — and that is information</h2>
+    <p>The cos θ correction assumes the motion is vertical. On slopes, embankments and creep-prone
+    hillsides, it often is not: mass moves along its own dip direction, and that movement has a
+    horizontal component the LOS mixes in. A single viewing geometry cannot separate the two — this is
+    not a processing deficiency but a geometric fact, the same fact that makes one photograph
+    insufficient to reconstruct a 3-D scene. Where an ascending and a descending track both cover the
+    area, their lines of sight differ, and the pair can be solved for vertical and east-west components
+    together. Where they disagree sharply over a slope, the disagreement itself is the diagnostic: it
+    means the motion has a horizontal component, and treating the LOS as "subsidence with a correction
+    factor" will under-report the hazard while feeling rigorous.</p>
+    <p>Engineering consequence: near-scoped classification tools that consume vertical velocity, such as
+    the <a href="../tools/hazard-classify.html">gradient and hazard classifier</a>, assume the input
+    really is vertical. Feeding them uncorrected or slope-contaminated LOS values does not just scale
+    the answer — it can move points across class boundaries in the wrong direction, because the
+    horizontal contribution can carry either sign. On a project where the deliverable is a hazard
+    zoning map rather than a rate map, the geometry question stops being a bookkeeping preference and
+    becomes part of the safety argument.</p>
+
+    <h2>When you can safely skip the correction</h2>
+    <p>Not every use demands it, and pretending otherwise breeds carelessness at the moments that matter.
+    The correction is genuinely optional in three situations. First, <em>relative screening</em>: if the
+    question is "which parts of this area move most?", a uniform geometry over a small area applies
+    nearly the same projection everywhere, and the ranking survives uncorrected. Second, <em>order-of-magnitude
+    triage</em>: deciding whether a 40 km² basin is subsiding at 2 or 20 mm/yr does not need the last
+    18%. Third, <em>internal comparison of same-track data</em>: two points from the same swath can be
+    compared without any geometry correction at all, because their incidence angles differ by at most a
+    few degrees.</p>
+    <p>The correction stops being optional the moment a number leaves the screening context: any figure
+    destined for a report, any comparison against a threshold or a code limit, any cross-validation
+    against GNSS or levelling, and any pooling of ascending with descending results. A levelling
+    benchmark measures vertical motion; comparing it to an uncorrected LOS velocity creates a residual
+    of twenty-plus percent that no amount of data quality can explain, and the validation exercise
+    fails for a reason that has nothing to do with the data.</p>
+
+    <h2>A five-minute routine that keeps the issue closed</h2>
+    <p>The full correction, done deliberately, takes minutes per file. The routine this workbench is
+    built around: confirm the sign convention from the exporter's documentation and state it in the
+    file; confirm that each row carries its own incidence angle rather than a scene-average (the
+    difference matters at swath edges, where cos θ varies by several percent across a single scene);
+    convert LOS to vertical with each point's own angle; and carry the conversion into the deliverable's
+    uncertainty statement rather than treating it as exact. The <a href="../tools/los-convert.html">LOS
+    converter</a> performs the per-point conversion and flags rows missing an angle or a convention, and
+    its output drops straight into the <a href="../tools/error-budget.html">error budget</a>, where the
+    incidence-angle term sits alongside atmosphere and decorrelation instead of being forgotten here.</p>
+    <p>None of this makes InSAR fragile. It makes InSAR legible — a measurement with a stated geometry,
+    a stated sign, and a stated uncertainty is one that survives the review meeting. The velocity map
+    that simply says "subsidence" is the one that gets reopened six months later, by someone holding a
+    levelling run that disagrees by exactly the factor the geometry predicted all along.</p>
+
+    <h2>Related reading</h2>
+    <ul>
+      <li><a href="reading-timeseries.html">Steady, accelerating, stepping: how to read the three shapes of an InSAR time series</a> — the velocity is only the average; the curve shape carries the warning.</li>
+      <li><a href="gnss-cross-validation.html">Cross-validating InSAR with GNSS: the checklist before a map goes in a report</a> — why correct geometry is the precondition for any validation exercise.</li>
+      <li><a href="../docs/insar-basics.html">InSAR basics for geotechnical engineers</a> — the reference treatment of LOS geometry and coherence.</li>
+    </ul>
+  </article>
+
+  <div class="disclaimer">
+    This toolkit provides preliminary geotechnical interpretation only. Results cannot replace licensed site
+    investigation or official geohazard assessment reports. Field verification by qualified professionals is
+    required for all engineering decisions.
+  </div>
+</body>
+</html>
