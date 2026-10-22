@@ -31,7 +31,7 @@
       background-size: 20px 20px;
       background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
     }
-    .or-canvas-wrap canvas { position: absolute; top: 0; left: 0; max-width: 100%; max-height: 500px; }
+    .or-canvas-wrap canvas { position: absolute; top: 0; left: 0; max-width: 100%; max-height: none; }
     .or-original-preview {
       position: absolute; top: 0; left: 0; max-width: 100%; max-height: 500px;
       display: none; z-index: 15; pointer-events: none;
@@ -79,7 +79,10 @@
     .or-status-dot.busy { background: #f59e0b; animation: blink 1s infinite; }
     .or-status-dot.err { background: #ef4444; }
     @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
-  </style>
+  .selling-points{display:flex;flex-direction:column;gap:6px;margin:0;font-size:.82rem;color:var(--text-secondary);list-style:none;padding:0}
+.sp-item{display:flex;align-items:center;gap:8px}
+.sp-icon{flex:none}
+</style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -275,8 +278,8 @@ function dbPut(db,key,val){return new Promise(function(res,rej){var tx=db.transa
 
 async function fetchModel(url){
   var db;try{db=await openDB();}catch(e){db=null;}
-  if(db){try{var c=await dbGet(db,url);if(c){post('progress',{pct:95,label:'キャッシュから読み込み中…'});return c;}}catch(e){}}
-  post('progress',{pct:0,label:'モデルをダウンロード中…'});
+  if(db){try{var c=await dbGet(db,url);if(c){post('progress',{pct:95,label:'Loading model from cache…'});return c;}}catch(e){}}
+  post('progress',{pct:0,label:'Downloading AI model…'});
   var resp=await fetch(url);
   if(!resp.ok) throw new Error('fetch failed: '+resp.status);
   var reader=resp.body.getReader(), total=parseInt(resp.headers.get('content-length')||'0',10), chunks=[], received=0;
@@ -289,10 +292,10 @@ async function fetchModel(url){
 async function init(msg){
   try{
     importScripts(ORT_CDN);
-    post('status',{state:'busy',text:'onnxruntime-web 読み込み完了'});
+    post('status',{state:'busy',text:'AI engine loaded — loading model…'});
     var buf=await fetchModel(msg.modelUrl);
     IMG_SIZE = msg.imgSize || IMG_SIZE;
-    post('progress',{pct:95,label:'セッション初期化中…'});
+    post('progress',{pct:95,label:'Initializing session…'});
     var eps=['wasm'];
     if(msg.preferWebGPU){try{if(navigator.gpu||typeof GPUAdapter!=='undefined') eps=['webgpu','wasm'];}catch(e){}}
     var ortBase = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.17.3/dist/';
@@ -389,7 +392,7 @@ self.onmessage=function(e){var m=e.data;if(m.type==='init')init(m);if(m.type==='
     inpainter = new NezumiInpaint({
       container: '#canvasWrap',
       workerSrc: workerSrc,
-      modelUrl: 'https://huggingface.co/datasets/Mouserat/nezumi-models/resolve/main/lama_fp16.onnx',
+      modelUrl: 'https://huggingface.co/datasets/Mouserat/nezumi-models/resolve/main/lama_fp32.onnx',
       dtype: 'float16',
       imgSize: 512,
       roi: true,
@@ -419,6 +422,17 @@ self.onmessage=function(e){var m=e.data;if(m.type==='init')init(m);if(m.type==='
     });
 
     // 文件上传
+    // 引擎把画布统一设为 width/height:100%，容器必须与图片同比例，否则图像被拉伸
+    function fitCanvasWrap() {
+      var c = document.getElementById('ni-imageCanvas');
+      if (!c || !c.width || !c.height) return;
+      var maxH = 520;
+      wrap.style.aspectRatio = c.width + ' / ' + c.height;
+      wrap.style.maxWidth = Math.round(maxH * c.width / c.height) + 'px';
+      wrap.style.margin = '0 auto';
+      wrap.style.minHeight = '0';
+    }
+
     function loadFile(file) {
       if (!file || !file.type.startsWith('image/')) return;
       dropOverlay.classList.add('hidden');
@@ -427,6 +441,7 @@ self.onmessage=function(e){var m=e.data;if(m.type==='init')init(m);if(m.type==='
       reader.onload = function(e) { originalDataURL = e.target.result; originalPreview.src = originalDataURL; };
       reader.readAsDataURL(file);
       inpainter.loadImage(file).then(function() {
+        fitCanvasWrap();
         if (inpainter.isReady()) {
           btnRun.disabled = false;
           setStatus('ok', 'Image loaded. Brush over the object to remove.');
@@ -492,108 +507,38 @@ self.onmessage=function(e){var m=e.data;if(m.type==='init')init(m);if(m.type==='
   })();
   </script>
 <!-- Viral Share Button -->
-<button onclick="shareOurTool()" style="position:fixed;bottom:20px;right:20px;background:#0ea5e9;color:white;border:none;border-radius:50%;width:60px;height:60px;font-size:24px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.2);z-index:999;" title="Share this free tool">💛</button>
-<script>
-function shareOurTool() {
-  const pageName = document.title.split("—")[0].trim();
-  const url = window.location.href;
-  const text = `I just used this free 100% browser-based ${pageName} — no upload, no watermark, no signup! Try it: ${url}`;
-  if (navigator.share) { navigator.share({text: text}); }
-  else { navigator.clipboard.writeText(text); alert("✅ Share text copied! Post it online to help others!"); }
-}
-</script>
-<button onclick="shareOurTool(event)" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;">💛 Share Free Tool</button>
-<script>
-function shareOurTool(e) {
-  e.stopPropagation();
-  const toolName = document.title.split("—")[0].trim();
-  const url = window.location.href;
-  const text = `I just used this FREE ${toolName} in my browser — no upload, no watermark, no signup! Saved me $29.99 on Photoshop. Try it: ${url}`;
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
-  window.open(twitterUrl, '_blank', 'width=550,height=420');
-}
-</script>
-<button onclick="shareOurTool()" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;">💛 Share Free Tool</button>
-<script>
-function shareOurTool() {
-  const toolName = document.title.split("—")[0].trim();
-  const url = window.location.href;
-  const text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
-  window.open(twitterUrl, '_blank', 'width=550,height=420');
-}
-</script>
-<button onclick="shareOurTool()" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;" id="shareBtn">💛 Share Free Tool</button>
-<script>
-function shareOurTool() {
-  const lang = document.documentElement.lang || 'en';
-  const toolName = document.title.split("—")[0].trim();
-  const url = window.location.href;
-  let text, btnText;
-  if (lang.startsWith('zh')) {
-    btnText = '💛 分享免费工具';
-    text = `我刚在浏览器里用这个免费${toolName}，不用上传、无水印、不用注册！帮我省了Photoshop的钱，推荐你试试：${url}`;
-  } else if (lang.startsWith('es')) {
-    btnText = '💛 Compartir Herramienta Gratis';
-    text = `Acabo de usar este ${toolName} GRATIS directamente en mi navegador — sin subir archivos, sin marca de agua, sin registro! Me ahorró dinero de Photoshop. Pruébalo: ${url}`;
-  } else {
-    btnText = '💛 Share Free Tool';
-    text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
-  }
-  document.getElementById('shareBtn').innerText = btnText;
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
-  window.open(twitterUrl, '_blank', 'width=550,height=420');
-}
-</script>
-<button onclick="shareOurTool()" style="position:fixed;bottom:32px;right:20px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:50%;width:48px;height:48px;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(245,158,11,0.4);z-index:999;" id="shareBtn" title="Share this free tool">💛</button>
-<script>
-function shareOurTool() {
-  const lang = document.documentElement.lang || 'en';
-  const toolName = document.title.split("—")[0].trim();
-  const url = window.location.href;
-  let text;
-  if (lang.startsWith('zh')) {
-    text = `我刚在浏览器里用这个免费${toolName}，不用上传、无水印、不用注册！帮我省了Photoshop的钱，推荐你试试：${url}`;
-  } else if (lang.startsWith('es')) {
-    text = `Acabo de usar este ${toolName} GRATIS directamente en mi navegador — sin subir archivos, sin marca de agua, sin registro! Me ahorró dinero de Photoshop. Pruébalo: ${url}`;
-  } else {
-    text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
-  }
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
-  window.open(twitterUrl, '_blank', 'width=550,height=420');
-}
-</script>
-<div style="margin:20px 0;padding:16px;background:#ecfdf5;border-radius:8px;border-left:4px solid #059669;">
-<strong>How to use in 3 steps:</strong>
-<ol style="margin:8px 0 0 20px;padding:0;">
-<li>Upload your photo</li>
-<li>Drag the strength slider</li>
-<li>Download the improved result</li>
-</ol>
-</div>
-<div style="margin:30px 0;padding:20px;background:#eff6ff;border-radius:10px;">
+
+
+
+
+
+
+
+
+
+
+<div style="margin:30px 0;padding:20px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:10px;">
 <h3 style="margin-top:0;">While you're here:</h3>
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;">
-  <a href="/tools/background-remover" style="padding:12px;background:white;border-radius:8px;text-decoration:none;color:#1e3a8a;">Remove background</a>
-  <a href="/tools/resizer" style="padding:12px;background:white;border-radius:8px;text-decoration:none;color:#1e3a8a;">Resize for platforms</a>
-  <a href="/tools/converter" style="padding:12px;background:white;border-radius:8px;text-decoration:none;color:#1e3a8a;">Convert format</a>
+  <a href="/tools/background-remover" style="padding:12px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:8px;text-decoration:none;color:var(--text-primary);">Remove background</a>
+  <a href="/tools/resizer" style="padding:12px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:8px;text-decoration:none;color:var(--text-primary);">Resize for platforms</a>
+  <a href="/tools/converter" style="padding:12px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:8px;text-decoration:none;color:var(--text-primary);">Convert format</a>
 </div>
 </div>
-<div style="margin:20px 0;padding:16px;background:#fff7ed;border-radius:8px;border-left:4px solid #b45309;">
+<div style="margin:20px 0;padding:16px;background:var(--bg-secondary);border:1px solid var(--border-color);border-left:4px solid #b45309;border-radius:8px;">
 <strong>Common things people remove:</strong>
 <div style="display:flex;gap:12px;margin-top:10px;flex-wrap:wrap;">
-  <span style="padding:6px 12px;background:white;border-radius:16px;font-size:14px;">🚶 Random pedestrians in background</span>
-  <span style="padding:6px 12px;background:white;border-radius:16px;font-size:14px;">💧 Watermarks and logos</span>
-  <span style="padding:6px 12px;background:white;border-radius:16px;font-size:14px;">🗑️ Litter / unwanted objects</span>
+  <span style="padding:6px 12px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:16px;font-size:14px;">🚶 Random pedestrians in background</span>
+  <span style="padding:6px 12px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:16px;font-size:14px;">💧 Watermarks and logos</span>
+  <span style="padding:6px 12px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:16px;font-size:14px;">🗑️ Litter / unwanted objects</span>
 </div>
 </div>
+<button onclick="shareTool()" id="shareBtn" title="Share this free tool" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#fff;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,.4);z-index:999;">💛 Share Free Tool</button>
+<script>
+function shareTool() {
+  var text = 'I just removed an object from a photo with this free browser tool — no upload, no watermark, no signup: ' + window.location.href;
+  window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text), '_blank', 'width=550,height=420');
+}
+</script>
 </body>
 </html>
-
-
-
-
-
-
-
-

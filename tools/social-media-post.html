@@ -75,6 +75,33 @@
 .trust-badge .tb-title{font-size:0.85rem;font-weight:700;color:var(--text-primary)}
 .trust-badge .tb-desc{font-size:0.72rem;color:var(--text-secondary)}
 @media(max-width:640px){.fn-block{flex-direction:column}.features-grid{grid-template-columns:1fr}.trust-badges{gap:12px}.trust-badge{min-width:90px}}
+/* tool workspace: these classes were never defined in either stylesheet */
+.tool-layout{display:grid;grid-template-columns:minmax(280px,340px) 1fr;gap:20px;align-items:start}
+.tool-sidebar{display:flex;flex-direction:column;gap:12px}
+.tool-canvas-area{display:flex;flex-direction:column;gap:8px}
+.preview-box{position:relative;display:flex;align-items:center;justify-content:center;min-height:380px;padding:16px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;overflow:hidden}
+.preview-box canvas{max-width:100%;max-height:560px;height:auto;display:block}
+.compact-card{padding:12px}
+.compact-card h3{margin:0 0 8px;font-size:.9rem;font-weight:600;color:var(--text-primary)}
+.platform-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.platform-btn{display:flex;flex-direction:column;gap:1px;padding:8px 9px;font-family:inherit;font-size:.78rem;font-weight:500;color:var(--text-primary);background:var(--bg-primary);border:1px solid var(--border-color);border-radius:8px;cursor:pointer;text-align:left;transition:border-color .15s,box-shadow .15s}
+.platform-btn:hover{border-color:var(--accent)}
+.platform-btn.active{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);font-weight:600}
+.platform-btn .sub{font-size:.68rem;font-weight:400;color:var(--text-secondary)}
+.custom-size-row{display:flex;align-items:center;gap:6px}
+.custom-size-row input[type=number]{width:70px;padding:6px 8px;font-family:inherit;font-size:.78rem;color:var(--text-primary);background:var(--bg-primary);border:1px solid var(--border-color);border-radius:7px}
+.control-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.control-row label{font-size:.78rem;color:var(--text-secondary);white-space:nowrap}
+.control-row input[type=text]{flex:1;padding:7px 10px;font-family:inherit;font-size:.82rem;color:var(--text-primary);background:var(--bg-primary);border:1px solid var(--border-color);border-radius:7px}
+.control-row input[type=range]{flex:1;accent-color:var(--accent);cursor:pointer}
+.control-row .cv{min-width:38px;text-align:right;font-size:.74rem;font-weight:600;color:var(--accent);font-variant-numeric:tabular-nums}
+.text-controls{display:flex;flex-direction:column}
+.toggle-group{display:flex;gap:14px;margin-top:2px}
+.toggle-label{display:inline-flex;align-items:center;gap:5px;font-size:.78rem;color:var(--text-secondary);cursor:pointer}
+.dim-label{font-size:.78rem;color:var(--text-secondary);text-align:center}
+.card{background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:14px}
+@media(max-width:900px){.tool-layout{grid-template-columns:1fr}}
+.guide-table th{font-size:.76rem;letter-spacing:.03em;text-transform:uppercase;color:var(--text-secondary);font-weight:600}
 </style>
 <meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
@@ -562,6 +589,8 @@ function updateLogoY() {
 }
 
 function renderCanvas() {
+  // 首次绘制后隐藏占位提示，避免与画布内容重叠
+  document.getElementById('placeholderText').style.display = 'none';
   const bgColor = document.getElementById('bgColorPicker').value;
   const text = document.getElementById('textInput').value;
   const fontSize = parseInt(document.getElementById('fontSizeSlider').value);

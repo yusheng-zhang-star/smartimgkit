@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-tool-id="text-remover">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Text Remover from Image — Remove Text from Photos Free</title>
+  <meta name="description" content="Free text remover from image. Brush over any text, caption, label or watermark and AI inpainting rebuilds what was behind it — no blur, no smudge. Runs offline in your browser, no signup, no watermark.">
+  <meta name="keywords" content="text remover from image, image text remover, remove text from image, remove text from image free, ai text remover, text eraser from image, remove text from photo, text remove from image, erase text from picture, remove text logos from photo">
+  <link rel="canonical" href="https://smartimgkit.com/tools/text-remover">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/text-remover">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/text-remover">
+  <meta name="theme-color" content="#6366f1">
+  <meta property="og:title" content="Text Remover from Image — Remove Text from Photos Free | SmartImgKit">
+  <meta property="og:description" content="Brush over the text, AI inpainting fills in the background behind it. Free, unlimited, no upload — runs entirely in your browser.">
+  <meta property="og:url" content="https://smartimgkit.com/tools/text-remover">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css?v=11">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+
+    .tr-workspace { display: flex; flex-direction: column; gap: 16px; }
+    .tr-canvas-wrap {
+      position: relative;
+      width: 100%;
+      min-height: 400px;
+      background: var(--bg-secondary);
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background-image: linear-gradient(45deg, #1a1a2e 25%, transparent 25%), linear-gradient(-45deg, #1a1a2e 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #1a1a2e 75%), linear-gradient(-45deg, transparent 75%, #1a1a2e 75%);
+      background-size: 20px 20px;
+      background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    }
+    .tr-canvas-wrap canvas { position: absolute; top: 0; left: 0; max-width: 100%; max-height: none; }
+    .tr-original-preview {
+      position: absolute; top: 0; left: 0; max-width: 100%; max-height: 500px;
+      display: none; z-index: 15; pointer-events: none;
+    }
+    .tr-original-preview.visible { display: block; }
+    .tr-compare-badge {
+      position: absolute; top: 12px; left: 12px; z-index: 25;
+      background: rgba(0,0,0,0.7); color: #fff; padding: 4px 12px;
+      border-radius: 6px; font-size: .8rem; font-weight: 600; display: none;
+    }
+    .tr-compare-badge.visible { display: block; }
+    .tr-drop-overlay {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 12px; cursor: pointer; z-index: 20;
+      transition: background .2s;
+    }
+    .tr-drop-overlay:hover { background: rgba(99,102,241,.08); }
+    .tr-drop-overlay.hidden { display: none; }
+    .tr-drop-icon { font-size: 3rem; }
+    .tr-toolbar {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
+      padding: 12px 16px;
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    .tr-tool-group { display: flex; align-items: center; gap: 8px; }
+    .tr-tool-label { font-size: .8rem; color: var(--text-secondary); min-width: 40px; }
+    .tr-mode-btn {
+      padding: 6px 14px; border-radius: 6px; border: 1px solid var(--border);
+      background: var(--bg-primary); color: var(--text-primary); cursor: pointer;
+      font-size: .85rem; transition: all .2s;
+    }
+    .tr-mode-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+    .tr-brush-slider { width: 120px; }
+    .tr-progress-wrap { display: none; width: 100%; }
+    .tr-progress-wrap.visible { display: block; }
+    .tr-progress-bar-bg { height: 8px; background: var(--bg-primary); border-radius: 4px; overflow: hidden; }
+    .tr-progress-bar-fill { height: 100%; background: var(--accent); width: 0%; transition: width .3s; }
+    .tr-progress-label { font-size: .8rem; color: var(--text-secondary); margin-top: 4px; text-align: center; }
+    .tr-status { display: flex; align-items: center; gap: 8px; font-size: .85rem; color: var(--text-secondary); }
+    .tr-status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-secondary); }
+    .tr-status-dot.ok { background: #10b981; }
+    .tr-status-dot.busy { background: #f59e0b; animation: blink 1s infinite; }
+    .tr-status-dot.err { background: #ef4444; }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+  .selling-points{display:flex;flex-direction:column;gap:6px;margin:0;font-size:.82rem;color:var(--text-secondary);list-style:none;padding:0}
+.sp-item{display:flex;align-items:center;gap:8px}
+.sp-icon{flex:none}
+
+    .tr-canvas-wrap {
+      min-height: 340px;
+      background-color: var(--bg-secondary);
+      background-image:
+        linear-gradient(45deg, rgba(127,127,127,.06) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(127,127,127,.06) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(127,127,127,.06) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(127,127,127,.06) 75%);
+      background-size: 24px 24px;
+      background-position: 0 0, 0 12px, 12px -12px, -12px 0;
+    }
+    .tr-canvas-wrap canvas { max-height: none; }
+    .tr-drop-overlay { color: var(--text-primary); text-align: center; }
+    .tr-drop-overlay h3 { margin: 0; font-size: 1.05rem; }
+    .tr-drop-overlay p { margin: 0; font-size: .85rem; color: var(--text-secondary); }
+    .tr-toolbar .tr-brush-slider { width: 96px; }
+    .tr-toolbar .btn { padding: 8px 12px; font-size: .85rem; }
+    #sizeVal { display: inline-block; min-width: 2.2em; text-align: right; font-variant-numeric: tabular-nums; font-size: .82rem; color: var(--text-secondary); }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Text Remover from Image",
+    "url": "https://smartimgkit.com/tools/text-remover",
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "Any (runs in the browser)",
+    "description": "Free online text remover. Brush over text, captions, labels or watermarks in a photo and LaMa AI inpainting rebuilds the background behind them. No upload, no signup, no watermark.",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+    "featureList": "Remove text from image, AI inpainting instead of blur, adjustable brush, undo, PNG download, 100% browser-side processing",
+    "browserRequirements": "Requires JavaScript and WebAssembly. Runs in modern desktop and mobile browsers."
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to remove text from an image",
+    "totalTime": "PT1M",
+    "tool": [{"@type": "HowToTool", "name": "SmartImgKit Text Remover"}],
+    "step": [
+      {"@type": "HowToStep", "position": 1, "name": "Open the image", "text": "Drop a JPG, PNG or WebP into the editor, or click to browse. The file is opened locally — nothing is uploaded."},
+      {"@type": "HowToStep", "position": 2, "name": "Mark the text", "text": "Pick the mark tool, set a brush size that just covers the letters, and paint over the text. Use Erase to take a stroke back, or Undo for the whole stroke."},
+      {"@type": "HowToStep", "position": 3, "name": "Run the removal", "text": "Click Remove Text. LaMa inpainting reads the pixels around your mask and reconstructs the background, so the text disappears without a blurred rectangle."},
+      {"@type": "HowToStep", "position": 4, "name": "Download", "text": "Save the cleaned image as a PNG, or hold Compare to check the original against the result."}
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type": "Question", "name": "How do I remove text from an image for free?", "acceptedAnswer": {"@type": "Answer", "text": "Open the image in this text remover, paint over the text with the brush, and click Remove Text. The AI fills the masked area with the surrounding background, and you download the result as a PNG. It is free and unlimited — no signup, no watermark, no daily cap."}},
+      {"@type": "Question", "name": "Is this image text remover really free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. There is no credit system, no daily limit and no watermark on the export. The reason it can stay free is that the model runs on your own device: there are no server costs for us because your image is never sent anywhere."}},
+      {"@type": "Question", "name": "Does it leave a blurry patch where the text was?", "acceptedAnswer": {"@type": "Answer", "text": "No. Most free tools blur or smudge the selection, which leaves a visible soft rectangle. This tool uses LaMa inpainting, a neural network that synthesises new pixels from the surrounding texture, so the background continues across the area the text occupied."}},
+      {"@type": "Question", "name": "Can I remove text from a photo of a document or receipt?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, and it works best when the text sits on a flat background, as on a scanned page or a receipt. Mark the lines you want gone and run the removal. For dense paragraphs on paper with visible grain, mask one block at a time and run it again for the next block."}},
+      {"@type": "Question", "name": "Can I remove text logos from a photo?", "acceptedAnswer": {"@type": "Answer", "text": "Small logos and wordmarks come out cleanly, since the model only has to rebuild a limited area. A large logo that covers a busy background may need two or three passes, marking and removing one part at a time."}},
+      {"@type": "Question", "name": "Do I have to upload my image to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. The inpainting model is downloaded once into your browser and executed there with WebAssembly and ONNX Runtime. Your image is read from the file input and never leaves the device, which is why the tool also works with the network disconnected after the first load."}},
+      {"@type": "Question", "name": "What image formats and sizes are supported?", "acceptedAnswer": {"@type": "Answer", "text": "JPG, PNG and WebP are supported, and there is no hard file-size cap. Very large photos take longer because the model processes the marked region in tiles, but the output keeps the original resolution."}},
+      {"@type": "Question", "name": "Does the text remover work on iPhone and Android?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. It runs in Safari, Chrome and Firefox on mobile, and the brush responds to touch. No app install is needed, and the first load is the only time the model has to download."}}
+    ]
+  }
+  </script>
+</head>
+<body>
+<header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/">Home</a><a href="/tools/">Tools</a><a href="/blog/">Blog</a><a href="/about">About</a><a href="/contact">Contact</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Switch language">🇬🇧 EN</button>
+          <div class="lang-dropdown" style="position:absolute;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+            <a href="/fr/" hreflang="fr" lang="fr">🇫🇷 Français</a>
+            <a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a>
+            <a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a>
+          </div>
+        </div>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>Text Remover from Image</span></nav>
+
+      <div class="tool-page-header">
+        <h1>Text Remover from Image</h1>
+        <p class="answer-lead">Text Remover from Image erases text, captions, price labels and watermarks from a photo without leaving a blurred patch. Brush over the letters, click Remove Text, and LaMa AI inpainting rebuilds the background that was behind them. It runs entirely in your browser — free, unlimited, no signup, no watermark, and the image is never uploaded.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Method</span><span class="f-v">AI inpainting, not blur</span></li>
+          <li><span class="f-k">Price</span><span class="f-v">Free, unlimited</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">PNG, full resolution</span></li>
+          <li><span class="f-k">Privacy</span><span class="f-v">Never uploaded</span></li>
+        </ul>
+      </div>
+
+      <div class="selling-points">
+        <div class="sp-item"><span class="sp-icon">🖌️</span>Brush over the text, AI rebuilds what was behind it</div>
+        <div class="sp-item"><span class="sp-icon">🧠</span>No blur, no smudge, no visible rectangle</div>
+        <div class="sp-item"><span class="sp-icon">🔒</span>100% private — runs in your browser</div>
+      </div>
+
+      <div class="tr-workspace">
+        <div class="tr-canvas-wrap" id="canvasWrap">
+          <img class="tr-original-preview" id="originalPreview" alt="original">
+          <div class="tr-compare-badge" id="compareBadge">📷 Original</div>
+          <div class="tr-drop-overlay" id="dropOverlay">
+            <div class="tr-drop-icon">🖼️</div>
+            <h3>Drop an image with text here</h3>
+            <p>or click to browse. Supports JPG, PNG, WebP.</p>
+          </div>
+        </div>
+
+        <div class="tr-toolbar">
+          <div class="tr-tool-group">
+            <span class="tr-tool-label">Tool:</span>
+            <button class="tr-mode-btn active" id="btnMask">✏️ Mark text</button>
+            <button class="tr-mode-btn" id="btnErase">🧽 Erase mark</button>
+          </div>
+          <div class="tr-tool-group">
+            <span class="tr-tool-label">Brush:</span>
+            <input type="range" class="tr-brush-slider" id="brushSize" min="4" max="120" value="32">
+            <span id="sizeVal">32</span>
+          </div>
+          <div style="flex:1"></div>
+          <button class="btn btn-secondary" id="btnClear">🗑️ Clear</button>
+          <button class="btn btn-secondary" id="btnUndo">↩️ Undo</button>
+          <button class="btn btn-primary" id="btnRun" disabled>✨ Remove Text</button>
+          <button class="btn btn-secondary" id="btnDownload" disabled>💾 Download</button>
+          <button class="btn btn-secondary" id="btnCompare" disabled>👁️ Compare</button>
+        </div>
+
+        <div class="tr-progress-wrap" id="progressWrap">
+          <div class="tr-progress-bar-bg"><div class="tr-progress-bar-fill" id="progressFill"></div></div>
+          <div class="tr-progress-label" id="progressLabel"></div>
+        </div>
+
+        <div class="tr-status">
+          <div class="tr-status-dot" id="statusDot"></div>
+          <span id="statusText">Loading AI model…</span>
+        </div>
+      </div>
+
+      <input type="file" id="fileInput" accept="image/*" style="display:none;">
+
+      <div class="how-to-section">
+        <h2>How to Remove Text from an Image</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step"><div class="step-number">1</div><h4>Open the image</h4><p>Drop a JPG, PNG or WebP, or click to browse. The file opens locally — nothing is uploaded.</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>Mark the text</h4><p>Pick a brush size that just covers the letters and paint over the text. Erase takes a stroke back, Undo clears the last one.</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>Click Remove Text</h4><p>The model reads the pixels around your mask and reconstructs the background underneath, so no blur remains.</p></div>
+          <div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Save a full-resolution PNG, or hold Compare to check the original against the result.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <section style="max-width:900px;margin:3rem auto;padding:0 1rem;">
+      <h2 style="margin-bottom:1rem;">Free text remover vs. typical free tools</h2>
+      <table class="compare-table">
+        <thead>
+          <tr><th scope="col"></th><th scope="col">This text remover</th><th scope="col">Typical free text remover</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">What happens to the text</th><td class="col-ours">AI rebuilds the background behind it</td><td>Blur, smudge, or a cropped rectangle</td></tr>
+          <tr><th scope="row">Limits</th><td class="col-ours">Unlimited removals, no watermark</td><td>1–3 images per day, watermark on export</td></tr>
+          <tr><th scope="row">Control over the mask</th><td class="col-ours">Adjustable brush, erase mode, undo</td><td>Auto-detect only, or a fixed rectangle</td></tr>
+          <tr><th scope="row">Where the image goes</th><td class="col-ours">Stays on your device</td><td>Uploaded to a server</td></tr>
+        </tbody>
+      </table>
+
+      <h2 style="margin:2.5rem 0 1rem;">What it handles well — and what it can't</h2>
+      <p style="font-size:.95rem;line-height:1.7;color:var(--text-secondary);">Any text remover is a reconstruction problem: the model has to invent the pixels the letters were covering. It is honest to say where that works and where it needs help.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin:1.5rem 0 2rem;">
+        <div style="padding:1.5rem;border-radius:12px;background:var(--bg-secondary);">
+          <h3>✅ Comes out clean</h3>
+          <p>Text on flat or gradient backgrounds: product photos, screenshots, slides, price stickers, single-line captions, subtitles on a still frame, small wordmarks.</p>
+        </div>
+        <div style="padding:1.5rem;border-radius:12px;background:var(--bg-secondary);">
+          <h3>🔁 Worth a second pass</h3>
+          <p>Dense paragraphs over paper grain, text crossing fine detail such as hair, foliage or brickwork, and very large lettering that covers more than a third of the frame. Mask one block, run it, then repeat.</p>
+        </div>
+        <div style="padding:1.5rem;border-radius:12px;background:var(--bg-secondary);">
+          <h3>🎯 Tips that matter</h3>
+          <p>Cover the letters plus one or two pixels of the edge — leaving a sliver of the glyph behind is the most common reason a removal looks imperfect. Remove light text and dark text in separate passes.</p>
+        </div>
+      </div>
+
+<section class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+      <div>
+        <div class="faq-item"><button class="faq-question">How do I remove text from an image for free?</button><div class="faq-answer">Open the image in this text remover, paint over the text with the brush, and click Remove Text. The AI fills the masked area with the surrounding background, and you download the result as a PNG. It is free and unlimited — no signup, no watermark, no daily cap.</div></div>
+        <div class="faq-item"><button class="faq-question">Is this image text remover really free?</button><div class="faq-answer">Yes. There is no credit system, no daily limit and no watermark on the export. The reason it can stay free is that the model runs on your own device: there are no server costs for us because your image is never sent anywhere.</div></div>
+        <div class="faq-item"><button class="faq-question">Does it leave a blurry patch where the text was?</button><div class="faq-answer">No. Most free tools blur or smudge the selection, which leaves a visible soft rectangle. This tool uses LaMa inpainting, a neural network that synthesises new pixels from the surrounding texture, so the background continues across the area the text occupied.</div></div>
+        <div class="faq-item"><button class="faq-question">Can I remove text from a photo of a document or receipt?</button><div class="faq-answer">Yes, and it works best when the text sits on a flat background, as on a scanned page or a receipt. Mark the lines you want gone and run the removal. For dense paragraphs on paper with visible grain, mask one block at a time and run it again for the next block.</div></div>
+        <div class="faq-item"><button class="faq-question">Can I remove text logos from a photo?</button><div class="faq-answer">Small logos and wordmarks come out cleanly, since the model only has to rebuild a limited area. A large logo that covers a busy background may need two or three passes, marking and removing one part at a time.</div></div>
+        <div class="faq-item"><button class="faq-question">Do I have to upload my image to a server?</button><div class="faq-answer">No. The inpainting model is downloaded once into your browser and executed there with WebAssembly and ONNX Runtime. Your image is read from the file input and never leaves the device, which is why the tool also works with the network disconnected after the first load.</div></div>
+        <div class="faq-item"><button class="faq-question">What image formats and sizes are supported?</button><div class="faq-answer">JPG, PNG and WebP are supported, and there is no hard file-size cap. Very large photos take longer because the model processes the marked region in tiles, but the output keeps the original resolution.</div></div>
+        <div class="faq-item"><button class="faq-question">Does the text remover work on iPhone and Android?</button><div class="faq-answer">Yes. It runs in Safari, Chrome and Firefox on mobile, and the brush responds to touch. No app install is needed, and the first load is the only time the model has to download.</div></div>
+      </div>
+    </section>
+    </section>
+
+<section class="amazon-store-section">
+      <div class="container">
+        <h2 style="font-size:1.3rem;font-weight:700;text-align:center;margin-bottom:6px;">Recommended Gear for Product Photography</h2>
+        <p style="text-align:center;color:var(--text-secondary);font-size:.9rem;margin-bottom:0;">Everything an e-commerce seller needs for clean listing photos.</p>
+        <div class="amazon-store-grid">
+          <a class="amazon-card" href="https://www.amazon.com/dp/B01GIL6EU4?tag=sendafun20-20" target="_blank" rel="noopener sponsored nofollow">
+            <h3>Amazon Basics Photo Tent</h3>
+            <p>25x30x25 foldable light box with LED — product photography for e-commerce sellers.</p>
+          </a>
+          <a class="amazon-card" href="https://www.amazon.com/dp/B002ZIMEMW?tag=sendafun20-20" target="_blank" rel="noopener sponsored nofollow">
+            <h3>NEEWER 43" 5-in-1 Reflector</h3>
+            <p>Best-selling light reflector — 5 surfaces for portraits & product shots. 19k+ reviews.</p>
+          </a>
+          <a class="amazon-card" href="https://www.amazon.com/dp/B0BF6T86WD?tag=sendafun20-20" target="_blank" rel="noopener sponsored nofollow">
+            <h3>Canon SELPHY CP1500</h3>
+            <p>Wireless compact photo printer — print 4x6 photos from your phone.</p>
+          </a>
+          <a class="amazon-card" href="https://www.amazon.com/dp/B0869BX44Y?tag=sendafun20-20" target="_blank" rel="noopener sponsored nofollow">
+            <h3>UBeesize 60" Phone Tripod</h3>
+            <p>Adjustable tripod with phone mount — perfect for product videos and live streams.</p>
+          </a>
+          <a class="amazon-card" href="https://www.amazon.com/dp/B08HN37XC1?tag=sendafun20-20" target="_blank" rel="noopener sponsored nofollow">
+            <h3>SanDisk Extreme SSD 1TB</h3>
+            <p>Rugged portable SSD — fast backup for photos, videos, and large files.</p>
+          </a>
+          <a class="amazon-card" href="https://www.amazon.com/dp/B000TT7YRY?tag=sendafun20-20" target="_blank" rel="noopener sponsored nofollow">
+            <h3>Glossy Photo Paper</h3>
+            <p>High-quality photo paper for printing your edited pictures.</p>
+          </a>
+        </div>
+        <p class="amazon-disclaimer">As an Amazon Associate, we earn from qualifying purchases.</p>
+      </div>
+    </section>
+  </main>
+
+<footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Fast, private image tools that run 100% in your browser.</p></div>
+        <div class="footer-links footer-links-multi"><h4>Tools</h4><a href="/tools/background-remover">Background Remover</a><a href="/tools/compressor">Compressor</a><a href="/tools/converter">Converter</a><a href="/tools/resizer">Resizer</a>
+          <a href="/tools/gif-editor">GIF Editor</a>
+          <a href="/tools/pdf-to-image">PDF to Image</a>
+        </div>
+        <div class="footer-links footer-links-multi"><h4>More Tools</h4>
+          <div class="footer-links-list">
+          <a href="/tools/cropper">Cropper</a><a href="/tools/watermark">Watermark</a><a href="/tools/image-merger">Image Merger</a><a href="/tools/screenshot-to-image">Screenshot to Image</a><a href="/tools/image-filters">Image Filters</a><a href="/tools/svg-to-png">SVG to PNG</a><a href="/tools/image-compare">Image Compare</a><a href="/tools/print-resizer">Print-Ready Resizer</a><a href="/tools/meme-generator">Meme Generator</a>          <a href="/tools/face-blur">Face Blur</a>
+          <a href="/tools/heic-converter">HEIC Converter</a>
+          <a href="/tools/metadata-viewer">Metadata Viewer</a>
+          <a href="/tools/avif-support">AVIF Support</a>
+          <a href="/tools/image-adjust">Image Adjustment</a>
+          <a href="/tools/image-border">Image Border</a>
+          <a href="/tools/image-flip">Image Flip</a>
+          <a href="/tools/image-grayscale">Image Grayscale</a>
+          <a href="/tools/image-shadow">Image Shadow</a>
+          <a href="/tools/image-splitter">Image Splitter</a>
+          <a href="/tools/image-exif-remover">EXIF Remover</a><a href="/tools/circle-crop">Circle Crop</a><a href="/tools/favicon-generator">Favicon Generator</a><a href="/tools/ocr">OCR Text</a><a href="/tools/bulk-processor">Bulk Processor</a><a href="/tools/image-to-pdf">Image to PDF</a>          <a href="/tools/id-photo">ID Photo Maker</a>
+          <a href="/tools/product-white-background">Product White BG</a>
+          <a href="/tools/social-media-post">Social Media Post</a>
+          <a href="/tools/photo-restoration">Photo Restoration</a><a href="/tools/image-enhancer">Image Enhancer</a>
+          </div>
+        </div>
+        <div class="footer-links"><h4>Legal</h4><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a><a href="/cookie-policy">Cookie Policy</a></div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved. | <a href="https://comprimefotos.com/" rel="nofollow sponsored" style="color: var(--accent); font-weight: 500;">Español: ComprimeFotos — Comprimir Imágenes Online</a></p></div>
+    </div>
+  </footer>
+
+<script>
+// FAQ 折叠
+document.querySelectorAll('.faq-question').forEach(function (q) {
+  q.addEventListener('click', function () {
+    var item = this.parentElement;
+    var wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(function (i) {
+      i.classList.remove('open');
+      var a = i.querySelector('.faq-answer');
+      if (a) a.style.maxHeight = '';
+    });
+    if (!wasOpen) {
+      item.classList.add('open');
+      var ans = item.querySelector('.faq-answer');
+      if (ans) ans.style.maxHeight = ans.scrollHeight + 'px';
+    }
+  });
+});
+// 主题切换
+document.getElementById('themeToggle')?.addEventListener('click', function () {
+  document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  this.textContent = document.documentElement.dataset.theme === 'dark' ? '🌙' : '☀️';
+});
+</script>
+
+<script id="workerSrc" type="text/plain">'use strict';
+var ORT_CDN = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.17.3/dist/ort.min.js';
+var session = null;
+var IMG_SIZE = 256;
+function post(type,extra){ self.postMessage(Object.assign({type:type},extra||{})); }
+
+// IndexedDB cache
+function openDB(){return new Promise(function(res,rej){var r=indexedDB.open('nezumi-model-cache',1);r.onupgradeneeded=function(e){e.target.result.createObjectStore('models');};r.onsuccess=function(e){res(e.target.result);};r.onerror=function(e){rej(e.target.error);};});}
+function dbGet(db,key){return new Promise(function(res,rej){var tx=db.transaction('models','readonly'),r=tx.objectStore('models').get(key);r.onsuccess=function(){res(r.result);};r.onerror=function(){rej(r.error);};});}
+function dbPut(db,key,val){return new Promise(function(res,rej){var tx=db.transaction('models','readwrite'),r=tx.objectStore('models').put(val,key);r.onsuccess=function(){res();};r.onerror=function(){rej(r.error);};});}
+
+async function fetchModel(url){
+  var db;try{db=await openDB();}catch(e){db=null;}
+  if(db){try{var c=await dbGet(db,url);if(c){post('progress',{pct:95,label:'Loading model from cache…'});return c;}}catch(e){}}
+  post('progress',{pct:0,label:'Downloading AI model…'});
+  var resp=await fetch(url);
+  if(!resp.ok) throw new Error('fetch failed: '+resp.status);
+  var reader=resp.body.getReader(), total=parseInt(resp.headers.get('content-length')||'0',10), chunks=[], received=0;
+  while(true){var _=await reader.read();if(_.done)break;chunks.push(_.value);received+=_.value.length;if(total>0)post('progress',{pct:Math.round(received/total*90),label:Math.round(received/1048576)+' / '+Math.round(total/1048576)+' MB'});}
+  var buf=new Uint8Array(received),off=0;chunks.forEach(function(c){buf.set(c,off);off+=c.length;});
+  if(db){try{await dbPut(db,url,buf.buffer);}catch(e){}}
+  return buf.buffer;
+}
+
+async function init(msg){
+  try{
+    importScripts(ORT_CDN);
+    post('status',{state:'busy',text:'AI engine loaded — loading model…'});
+    var buf=await fetchModel(msg.modelUrl);
+    IMG_SIZE = msg.imgSize || IMG_SIZE;
+    post('progress',{pct:95,label:'Initializing session…'});
+    var eps=['wasm'];
+    if(msg.preferWebGPU){try{if(navigator.gpu||typeof GPUAdapter!=='undefined') eps=['webgpu','wasm'];}catch(e){}}
+    var ortBase = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.17.3/dist/';
+    ort.env.wasm.wasmPaths   = ortBase;
+    ort.env.wasm.numThreads  = msg.threads || 2;
+    ort.env.wasm.simd        = true;
+    session = await ort.InferenceSession.create(buf, { executionProviders: eps, graphOptimizationLevel: 'all' });
+    post('ready',{ep:eps[0]});
+  }catch(e){ post('error',{text:String(e.message||e)}); }
+}
+
+// fp16 bit-pattern (Uint16Array) -> Float32Array
+function decodeF16(u16){
+  var n=u16.length,f32=new Float32Array(n);
+  for(var i=0;i<n;i++){
+    var h=u16[i],s=(h>>>15)?-1:1,e=(h>>>10)&0x1f,m=h&0x3ff;
+    if(e===0)f32[i]=s*Math.pow(2,-14)*(m/1024);
+    else if(e===31)f32[i]=m?NaN:s*Infinity;
+    else f32[i]=s*Math.pow(2,e-15)*(1+m/1024);
+  }
+  return f32;
+}
+
+async function run(msg){
+  try{
+    var S=msg.size||IMG_SIZE, isF16=(msg.dtype==='float16');
+    var imgF32  = isF16 ? decodeF16(new Uint16Array(msg.imgArr))  : new Float32Array(msg.imgArr);
+    var maskF32 = isF16 ? decodeF16(new Uint16Array(msg.maskArr)) : new Float32Array(msg.maskArr);
+    var imgT =new ort.Tensor('float32',imgF32, [1,3,S,S]);
+    var maskT=new ort.Tensor('float32',maskF32,[1,1,S,S]);
+    var feeds={};feeds[session.inputNames[0]]=imgT;feeds[session.inputNames[1]]=maskT;
+    var t0=performance.now(), res=await session.run(feeds), elapsed=performance.now()-t0;
+    var out=res[session.outputNames[0]].data, n=S*S, rgba=new Uint8ClampedArray(n*4);
+    var outMax=0;
+    for(var t=0;t<out.length;t++){ if(out[t]>outMax) outMax=out[t]; }
+    var scale = (outMax <= 1.01) ? 255 : 1;
+    for(var i=0;i<n;i++){
+      rgba[i*4+0]=Math.max(0,Math.min(255,out[i    ]*scale))|0;
+      rgba[i*4+1]=Math.max(0,Math.min(255,out[n+i  ]*scale))|0;
+      rgba[i*4+2]=Math.max(0,Math.min(255,out[2*n+i]*scale))|0;
+      rgba[i*4+3]=255;
+    }
+    var minR=255,maxR=0,minG=255,maxG=0,minB=255,maxB=0;
+    for(var k=0;k<n;k++){
+      var r=rgba[k*4+0], g=rgba[k*4+1], b=rgba[k*4+2];
+      if(r<minR)minR=r; if(r>maxR)maxR=r;
+      if(g<minG)minG=g; if(g>maxG)maxG=g;
+      if(b<minB)minB=b; if(b>maxB)maxB=b;
+    }
+    post('result',{rgba:rgba,ep:session.handler&&session.handler._ep||'wasm',elapsedMs:elapsed,stats:{minR:minR,maxR:maxR,minG:minG,maxG:maxG,minB:minB,maxB:maxB}});
+  }catch(e){ post('error',{text:String(e.message||e)}); }
+}
+
+self.onmessage=function(e){var m=e.data;if(m.type==='init')init(m);if(m.type==='run')run(m);};</script>
+
+  <!-- nezumi-inpaint library -->
+  <script src="/js/nezumi-inpaint.js"></script>
+  <script src="/js/main.js?v=7"></script>
+
+  <script>
+  (function() {
+    'use strict';
+
+    var wrap = document.getElementById('canvasWrap');
+    var dropOverlay = document.getElementById('dropOverlay');
+    var fileInput = document.getElementById('fileInput');
+    var btnRun = document.getElementById('btnRun');
+    var btnClear = document.getElementById('btnClear');
+    var btnUndo = document.getElementById('btnUndo');
+    var btnDownload = document.getElementById('btnDownload');
+    var btnMask = document.getElementById('btnMask');
+    var btnErase = document.getElementById('btnErase');
+    var brushSlider = document.getElementById('brushSize');
+    var sizeVal = document.getElementById('sizeVal');
+    var statusDot = document.getElementById('statusDot');
+    var statusText = document.getElementById('statusText');
+    var originalPreview = document.getElementById('originalPreview');
+    var compareBadge = document.getElementById('compareBadge');
+    var btnCompare = document.getElementById('btnCompare');
+    var originalDataURL = null;
+    var progressWrap = document.getElementById('progressWrap');
+    var progressFill = document.getElementById('progressFill');
+    var progressLabel = document.getElementById('progressLabel');
+
+    var inpainter = null;
+    var workerSrc = document.getElementById('workerSrc').textContent;
+
+    function setStatus(state, text) {
+      statusDot.className = 'tr-status-dot ' + state;
+      statusText.textContent = text;
+    }
+
+    // 创建 inpainter 实例
+    inpainter = new NezumiInpaint({
+      container: '#canvasWrap',
+      workerSrc: workerSrc,
+      modelUrl: 'https://huggingface.co/datasets/Mouserat/nezumi-models/resolve/main/lama_fp32.onnx',
+      dtype: 'float16',
+      imgSize: 512,
+      roi: true,
+      roiPad: 64,
+      roiMinSize: 256,
+      roiMaxSize: 512,
+      brushSize: 32,
+      onStatus: function(s) {
+        setStatus(s.state, s.text || '');
+        if (s.state === 'ok' && inpainter.hasImage()) btnRun.disabled = false;
+      },
+      onProgress: function(p) {
+        progressWrap.classList.toggle('visible', p.pct < 100);
+        progressFill.style.width = p.pct + '%';
+        progressLabel.textContent = p.label || '';
+      },
+      onResult: function(r) {
+        btnRun.disabled = false;
+        btnDownload.disabled = false;
+        btnCompare.disabled = false;
+        setStatus('ok', 'Done! Text removed in ' + (r.elapsedMs / 1000).toFixed(1) + 's');
+      },
+      onError: function(msg) {
+        btnRun.disabled = false;
+        setStatus('err', 'Error: ' + msg);
+      }
+    });
+
+    // 文件上传
+    // 引擎把画布统一设为 width/height:100%，容器必须与图片同比例，否则图像被拉伸
+    function fitCanvasWrap() {
+      var c = document.getElementById('ni-imageCanvas');
+      if (!c || !c.width || !c.height) return;
+      var maxH = 520;
+      wrap.style.aspectRatio = c.width + ' / ' + c.height;
+      wrap.style.maxWidth = Math.round(maxH * c.width / c.height) + 'px';
+      wrap.style.margin = '0 auto';
+      wrap.style.minHeight = '0';
+    }
+
+    function loadFile(file) {
+      if (!file || !file.type.startsWith('image/')) return;
+      dropOverlay.classList.add('hidden');
+      setStatus('busy', 'Loading image...');
+      var reader = new FileReader();
+      reader.onload = function(e) { originalDataURL = e.target.result; originalPreview.src = originalDataURL; };
+      reader.readAsDataURL(file);
+      inpainter.loadImage(file).then(function() {
+        fitCanvasWrap();
+        if (inpainter.isReady()) {
+          btnRun.disabled = false;
+          setStatus('ok', 'Image loaded. Brush over the text you want to remove.');
+        }
+      }).catch(function(err) {
+        setStatus('err', 'Load error: ' + err.message);
+      });
+    }
+
+    fileInput.addEventListener('change', function() { loadFile(fileInput.files[0]); fileInput.value = ''; });
+    dropOverlay.addEventListener('click', function() { fileInput.click(); });
+    wrap.addEventListener('dragover', function(e) { e.preventDefault(); });
+    wrap.addEventListener('drop', function(e) { e.preventDefault(); loadFile(e.dataTransfer.files[0]); });
+
+    // 画笔模式
+    btnMask.addEventListener('click', function() {
+      inpainter.setMode('mask');
+      btnMask.classList.add('active'); btnErase.classList.remove('active');
+    });
+    btnErase.addEventListener('click', function() {
+      inpainter.setMode('erase');
+      btnErase.classList.add('active'); btnMask.classList.remove('active');
+    });
+    brushSlider.addEventListener('input', function() {
+      inpainter.setBrushSize(parseInt(brushSlider.value));
+      sizeVal.textContent = brushSlider.value;
+    });
+
+    // 操作按钮
+    btnClear.addEventListener('click', function() { inpainter.clearMask(); });
+    btnUndo.addEventListener('click', function() { inpainter.undo(); });
+    btnDownload.addEventListener('click', function() { inpainter.download('object-removed.png'); });
+
+
+    // 对比原图：按住显示原图，松开显示结果
+    function showOriginal() {
+      if (!originalDataURL) return;
+      originalPreview.classList.add('visible');
+      compareBadge.classList.add('visible');
+      btnCompare.textContent = '📷 Showing Original';
+    }
+    function hideOriginal() {
+      originalPreview.classList.remove('visible');
+      compareBadge.classList.remove('visible');
+      btnCompare.textContent = '👁️ Hold to Compare';
+    }
+    btnCompare.addEventListener('mousedown', showOriginal);
+    btnCompare.addEventListener('mouseup', hideOriginal);
+    btnCompare.addEventListener('mouseleave', hideOriginal);
+    btnCompare.addEventListener('touchstart', function(e) { e.preventDefault(); showOriginal(); });
+    btnCompare.addEventListener('touchend', function(e) { e.preventDefault(); hideOriginal(); });
+
+    btnRun.addEventListener('click', function() {
+      if (!inpainter.isReady()) { setStatus('err', 'Model still loading...'); return; }
+      if (!inpainter.hasImage()) { setStatus('err', 'Upload an image first'); return; }
+      btnRun.disabled = true;
+      setStatus('busy', 'AI is removing object...');
+      inpainter.run().catch(function(err) {
+        setStatus('err', 'Error: ' + err.message);
+        btnRun.disabled = false;
+      });
+    });
+  })();
+  </script>
+<!-- Viral Share Button -->
+
+
+
+
+
+
+
+
+
+
+<div style="margin:30px 0;padding:20px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:10px;">
+<h3 style="margin-top:0;">While you're here:</h3>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;">
+  <a href="/tools/background-remover" style="padding:12px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:8px;text-decoration:none;color:var(--text-primary);">Remove background</a>
+  <a href="/tools/resizer" style="padding:12px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:8px;text-decoration:none;color:var(--text-primary);">Resize for platforms</a>
+  <a href="/tools/converter" style="padding:12px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:8px;text-decoration:none;color:var(--text-primary);">Convert format</a>
+</div>
+</div>
+<div style="margin:20px 0;padding:16px;background:var(--bg-secondary);border:1px solid var(--border-color);border-left:4px solid #b45309;border-radius:8px;">
+<strong>Common things people remove:</strong>
+<div style="display:flex;gap:12px;margin-top:10px;flex-wrap:wrap;">
+  <span style="padding:6px 12px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:16px;font-size:14px;">🚶 Random pedestrians in background</span>
+  <span style="padding:6px 12px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:16px;font-size:14px;">💧 Watermarks and logos</span>
+  <span style="padding:6px 12px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:16px;font-size:14px;">🗑️ Litter / unwanted objects</span>
+</div>
+</div>
+<button onclick="shareTool()" id="shareBtn" title="Share this free tool" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#fff;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,.4);z-index:999;">💛 Share Free Tool</button>
+<script>
+function shareTool() {
+  var text = 'I just removed an object from a photo with this free browser tool — no upload, no watermark, no signup: ' + window.location.href;
+  window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text), '_blank', 'width=550,height=420');
+}
+</script>
+<button onclick="shareTool()" id="shareBtn" title="Share this free tool" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#fff;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,.4);z-index:999;">💛 Share Free Tool</button>
+<script>
+function shareTool() {
+  var text = 'I just removed text from a photo with this free browser tool — no upload, no watermark, no signup: ' + window.location.href;
+  window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text), '_blank', 'width=550,height=420');
+}
+</script>
+</body>
+</html>
