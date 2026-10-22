@@ -99,35 +99,59 @@
   "@type": "FAQPage",
   "mainEntity": [
     {
-  "@type": "Question",
-  "name": "¿Cómo convierto una imagen a un archivo ICO?",
-  "acceptedAnswer": {
-    "@type": "Answer",
-    "text": "Sube tu imagen (PNG, JPG o WebP), elige los tamaños que necesitas y descarga el archivo .ico. Convertir una imagen a ICO es así de sencillo, y todo se hace directamente en tu navegador: pasar una imagen a ICO no requiere subir nada a ningún servidor."
-  }
-},
-    {
       "@type": "Question",
-      "name": "¿Qué es un archivo ICO?",
+      "name": "¿Cómo convierto una imagen a un archivo ICO?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "ICO es un formato contenedor de iconos de Windows. Un solo archivo .ico puede contener múltiples imágenes de diferentes tamaños (16×16, 32×32, etc.) para que el sistema operativo elija la mejor según el contexto de visualización."
+        "text": "Sube tu imagen (PNG, JPG o WebP), elige los tamaños (por ejemplo 16×16, 32×32 y 48×48) y pulsa Descargar ICO. Todo ocurre en tu navegador: convertir una imagen a ICO no requiere subir el archivo a ningún servidor."
       }
     },
     {
       "@type": "Question",
-      "name": "¿Se suben mis imágenes a un servidor?",
+      "name": "¿Cómo se crea un icono desde una imagen?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Toda la conversión ocurre en tu navegador usando la API Canvas y JavaScript. Tus imágenes nunca salen de tu dispositivo."
+        "text": "Con este generador son tres pasos: cargar la imagen, elegir tamaños y algoritmo de escalado, y descargar el .ico o el ZIP con todos los PNG. Para un resultado nítido conviene partir de una imagen cuadrada de 256×256 o más grande."
       }
     },
     {
       "@type": "Question",
-      "name": "¿Cuál es la diferencia entre ICO y Favicon?",
+      "name": "¿Puedo convertir una imagen a ICO online gratis?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Un favicon es un caso de uso específico (icono de pestaña del navegador) generado normalmente con fragmentos HTML y manifiesto PWA. Un ICO es un contenedor de iconos general para Windows/macOS/apps. Esta herramienta se centra en el caso de uso más amplio de ICO + paquete de iconos multi-tamaño."
+        "text": "Sí. El conversor es 100 % gratis, sin registro y sin límite de usos, y funciona online en cualquier navegador (Windows, macOS, Linux o móvil) sin instalar nada."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué tamaños incluye el archivo .ico?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Tú eliges. El archivo .ico es un contenedor que admite varios tamaños a la vez (16×16, 32×32, 48×48, 64×64, 128×128 y 256×256 son los habituales) y Windows escoge el mejor según dónde se muestre el icono."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuál es la diferencia entre esto y el Generador de Favicon?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El Generador de Favicon está pensado para webs (tamaños fijos más fragmento HTML y manifiesto). Este generador es para iconos de escritorio y apps: tamaños personalizados y archivo .ico clásico."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se suben mis imágenes a algún servidor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. La conversión se hace con la API Canvas de tu navegador; tus imágenes nunca salen de tu dispositivo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿El archivo ICO usa el formato moderno con PNG incrustado?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí. Cada entrada dentro del contenedor .ico es un PNG completo, el formato moderno que admiten Windows Vista y posteriores."
       }
     },
     {
@@ -135,21 +159,16 @@
       "name": "¿Qué algoritmo de escalado debo elegir?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Bilineal es mejor para fotos y degradados. Vecino más cercano mantiene el pixel-art nítido. Mitchell es el predeterminado y funciona para la mayoría de los iconos."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "¿Qué hace la máscara de esquinas redondeadas?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Recorta la salida a un cuadrado redondeado (como los iconos de macOS/iOS) con un radio configurable. Útil para diseño de iconos de app pero no recomendado para archivos .ico legacy de Windows."
+        "text": "Mitchell es el predeterminado y funciona para la mayoría de los iconos. Bilineal va bien con fotos y degradados; Vecino más cercano mantiene nítido el pixel-art."
       }
     }
   ]
 }
 </script>
-<style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+<style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}
+.panel{background:var(--surface);border:1px solid var(--border-color);border-radius:12px;padding:16px;margin-top:18px}
+.btn-ghost{background:transparent;border-color:transparent;color:var(--accent)}
+.btn-sm{padding:5px 10px;font-size:.75rem}</style>
 
 <meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
@@ -184,8 +203,23 @@
       <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>Generador de Iconos ICO</span></nav>
       <div class="tool-page-header">
         <h1>Generador de Iconos ICO</h1>
-        <p>Convierte cualquier imagen a un archivo ICO multi-tamaño o paquete completo de iconos. Elige tamaños, algoritmo de escalado, esquinas redondeadas y color de fondo.</p>
+        <p class="answer-lead">Un generador de iconos ICO online que convierte cualquier imagen (PNG, JPG o WebP) en un archivo .ico multi-tamaño listo para Windows, apps y favicons. Es gratis, sin registro y sin límite de usos. Todo se procesa en tu navegador: tus imágenes nunca se suben a ningún servidor.</p>
       </div>
+      <ul class="facts-strip">
+        <li><span class="f-k">Precio</span><span class="f-v">Gratis, sin límites</span></li>
+        <li><span class="f-k">Registro</span><span class="f-v">No hace falta</span></li>
+        <li><span class="f-k">Subida</span><span class="f-v">Ninguna, 100 % en tu navegador</span></li>
+        <li><span class="f-k">Salida</span><span class="f-v">.ico multi-tamaño + ZIP</span></li>
+      </ul>
+      <table class="compare-table">
+        <thead><tr><th></th><th>SmartImgKit</th><th>Conversor online típico</th></tr></thead>
+        <tbody>
+          <tr><th>Subida de archivos</th><td>Nunca: todo en tu navegador</td><td>A menudo sube tu imagen a un servidor</td></tr>
+          <tr><th>Precio y límites</th><td>Gratis, sin registro ni marca de agua</td><td>Gratis con límites diarios o registro</td></tr>
+          <tr><th>Tamaños del .ico</th><td>Tú eliges, del 16×16 al 256×256</td><td>Suele fijar uno o dos tamaños</td></tr>
+          <tr><th>Salida extra</th><td>ZIP con cada tamaño en PNG</td><td>Solo el archivo .ico</td></tr>
+        </tbody>
+      </table>
       <div class="tool-workspace" id="workspace">
 <label for="fileInput" class="upload-zone" id="dropZone">
           <div class="icon">🖼️</div>
@@ -295,9 +329,14 @@
 
 <section class="faq-section">
   <h2>Preguntas Frecuentes</h2>
-  <div class="faq-item"><button class="faq-question">¿Cómo convierto una imagen a un archivo ICO?</button><div class="faq-answer">Sube tu imagen (PNG, JPG o WebP), elige los tamaños que necesitas y descarga el archivo .ico. La conversión se hace directamente en tu navegador: pasar una imagen a ICO no requiere subir nada a ningún servidor.</div></div><div class="faq-item"><button class="faq-question">¿Cuál es la diferencia entre esto y el Generador de Favicon?</button><div class="faq-answer">El Generador de Favicon es para web (tamaños fijos + fragmento HTML). El Generador de Iconos ICO es para iconos de escritorio/app (tamaños personalizados).</div></div>
-  <div class="faq-item"><button class="faq-question">¿Se suben mis imágenes a algún sitio?</button><div class="faq-answer">No. Todo funciona en tu navegador usando la API Canvas.</div></div>
-  <div class="faq-item"><button class="faq-question">¿El archivo ICO usa el formato moderno con PNG incrustado?</button><div class="faq-answer">Sí. Cada entrada dentro del contenedor .ico es un PNG completo.</div></div>
+  <div class="faq-item"><button class="faq-question">¿Cómo convierto una imagen a un archivo ICO?</button><div class="faq-answer">Sube tu imagen (PNG, JPG o WebP), elige los tamaños (por ejemplo 16×16, 32×32 y 48×48) y pulsa Descargar ICO. Todo ocurre en tu navegador: convertir una imagen a ICO no requiere subir el archivo a ningún servidor.</div></div>
+  <div class="faq-item"><button class="faq-question">¿Cómo se crea un icono desde una imagen?</button><div class="faq-answer">Con este generador son tres pasos: cargar la imagen, elegir tamaños y algoritmo de escalado, y descargar el .ico o el ZIP con todos los PNG. Para un resultado nítido conviene partir de una imagen cuadrada de 256×256 o más grande.</div></div>
+  <div class="faq-item"><button class="faq-question">¿Puedo convertir una imagen a ICO online gratis?</button><div class="faq-answer">Sí. El conversor es 100 % gratis, sin registro y sin límite de usos, y funciona online en cualquier navegador (Windows, macOS, Linux o móvil) sin instalar nada.</div></div>
+  <div class="faq-item"><button class="faq-question">¿Qué tamaños incluye el archivo .ico?</button><div class="faq-answer">Tú eliges. El archivo .ico es un contenedor que admite varios tamaños a la vez (16×16, 32×32, 48×48, 64×64, 128×128 y 256×256 son los habituales) y Windows escoge el mejor según dónde se muestre el icono.</div></div>
+  <div class="faq-item"><button class="faq-question">¿Cuál es la diferencia entre esto y el Generador de Favicon?</button><div class="faq-answer">El Generador de Favicon está pensado para webs (tamaños fijos más fragmento HTML y manifiesto). Este generador es para iconos de escritorio y apps: tamaños personalizados y archivo .ico clásico.</div></div>
+  <div class="faq-item"><button class="faq-question">¿Se suben mis imágenes a algún servidor?</button><div class="faq-answer">No. La conversión se hace con la API Canvas de tu navegador; tus imágenes nunca salen de tu dispositivo.</div></div>
+  <div class="faq-item"><button class="faq-question">¿El archivo ICO usa el formato moderno con PNG incrustado?</button><div class="faq-answer">Sí. Cada entrada dentro del contenedor .ico es un PNG completo, el formato moderno que admiten Windows Vista y posteriores.</div></div>
+  <div class="faq-item"><button class="faq-question">¿Qué algoritmo de escalado debo elegir?</button><div class="faq-answer">Mitchell es el predeterminado y funciona para la mayoría de los iconos. Bilineal va bien con fotos y degradados; Vecino más cercano mantiene nítido el pixel-art.</div></div>
 </section>
 
 <section class="related-tools">
