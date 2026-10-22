@@ -1,31 +1,176 @@
 ﻿<!DOCTYPE html>
-<html lang="zh">
+<html lang="zh" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>胶片颗粒滤镜 — 在线给照片添加复古噪点</title>
-<meta name="description" content="免费在线胶片颗粒滤镜。一键为照片添加复古胶片噪点质感，100% 本地处理，无需上传。">
+<title>胶片颗粒 — 给照片加颗粒质感，强度可调</title>
+<meta name="description" content="免费在线胶片颗粒滤镜：给数码照片叠加胶片颗粒质感，强度可调，模拟高感光胶片效果。浏览器本地处理，不上传图片，无水印。">
 <link rel="canonical" href="https://smartimgkit.com/zh/tools/film-grain">
-<link rel="stylesheet" href=/zh/css/style.css">
+<link rel="stylesheet" href="/css/style.css?v=12">
+
+<style>
+  .tool-box{background:var(--surface,#14141b);border:1px solid var(--border-color,#2a2a35);border-radius:14px;padding:20px;margin:22px 0}
+  .tool-box .upload-area{background:transparent!important;color:var(--text-primary,#ededed);border:2px dashed var(--border-color,#2a2a35);border-radius:12px;padding:34px 18px;text-align:center;cursor:pointer;transition:.2s}
+  .tool-box .upload-area:hover{border-color:var(--accent,#6366f1);background:rgba(99,102,241,.05)}
+  .tool-box .ctl{display:flex;align-items:center;gap:12px;margin:14px 0;flex-wrap:wrap}
+  .tool-box .ctl label{min-width:120px;font-size:.9rem;color:var(--text-secondary,#a1a1aa)}
+  .tool-box .ctl input[type=range]{flex:1;min-width:160px;accent-color:var(--accent,#6366f1)}
+  .tool-box .ctl output{font-variant-numeric:tabular-nums;min-width:56px;text-align:right;font-size:.9rem}
+  .tool-box canvas{display:block;max-width:100%;height:auto;margin:16px auto 0;border-radius:10px;background:repeating-conic-gradient(#2a2a35 0 25%,transparent 0 50%) 0 0/18px 18px}
+  .tool-box button.primary{background:var(--accent,#6366f1);color:#fff;border:0;border-radius:10px;padding:11px 22px;font-size:.95rem;cursor:pointer}
+  .tool-box button.primary:disabled{opacity:.5;cursor:not-allowed}
+  .tool-box .chip{border:1px solid var(--border-color,#2a2a35);background:transparent;color:inherit;border-radius:999px;padding:7px 15px;font-size:.85rem;cursor:pointer}
+  .tool-box .chip.active,.tool-box .chip:hover{border-color:var(--accent,#6366f1);color:var(--accent,#6366f1)}
+  .detail-sec{margin:34px 0}
+  .detail-sec h2{font-size:1.28rem;margin-bottom:12px}
+  .detail-sec p{line-height:1.85;margin-bottom:12px;color:var(--text-secondary,#a1a1aa)}
+  .detail-sec li{line-height:1.9;margin-left:20px;color:var(--text-secondary,#a1a1aa)}
+</style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "胶片颗粒滤镜",
+  "url": "https://smartimgkit.com/zh/tools/film-grain",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "CNY"
+  },
+  "description": "免费在线胶片颗粒滤镜：给数码照片叠加胶片颗粒质感，强度可调，模拟高感光胶片效果。浏览器本地处理，不上传图片，无水印。"
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "胶片颗粒和噪点是一回事吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "视觉上接近，成因不同。噪点是传感器在弱光下放大信号带来的随机杂色，通常带色彩偏色；这里是叠加的明度颗粒，更接近胶片的银盐颗粒，颗粒分布更均匀。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "加颗粒会让照片变模糊吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不会。颗粒是叠加在原图之上的纹理，原图的锐度没有被降低。但如果颗粒强度很高，细密的纹理确实会盖住一些小细节。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "加颗粒的照片适合打印吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "适合，而且打印比屏幕更能体现颗粒质感。建议强度比屏幕上看起来的再低一档，因为打印分辨率更高，颗粒会显得更细。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么加了颗粒照片看起来反而更清晰？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "颗粒在暗部和高光之间制造了微小的明暗跳跃，人眼会把它读成细节。这是一种视觉错觉，也是胶片照片“看起来有质感”的原因之一。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "可以只给照片的一部分加颗粒吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "这个工具是整幅叠加。需要局部处理的话，可以先用图片裁剪取局部，处理完再拼回原图。"
+      }
+    }
+  ]
+}
+  </script>
 </head>
 <body>
 <header class="site-header">
-<a href=/zh/" class="logo">SmartImgKit</a>
-<nav><a href=/zh/tools/">All Tools</a><a href=/zh/blog/">Blog</a></nav>
-</header>
-<main class="container">
-<h1>胶片颗粒滤镜</h1>
-<p class="lead">一键为照片添加复古胶片颗粒和噪点质感，全程在浏览器本地处理，无需上传。</p>
+    <div class="container header-inner">
+      <a href="/zh/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/zh/">首页</a><a href="/zh/tools/">工具</a><a href="/zh/workflows/">工作流</a><a href="/zh/blog/">博客</a><a href="/about">关于</a><a href="/contact">联系我们</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Switch language">🇨🇳 中文</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+            <a href="/fr/" hreflang="fr" lang="fr">🇫🇷 Français</a>
+            <a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a>
+            <a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a>
+            <a href="/zh/" hreflang="zh" lang="zh">🇨🇳 中文</a>
+          </div>
+        </div>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>胶片颗粒滤镜</span></nav>
+      <div class="tool-page-header">
+        <h1>胶片颗粒滤镜</h1>
+        <p class="answer-lead">给数码照片加一层胶片颗粒：模拟 ISO 800、1600 这类高感胶片在暗部产生的细密噪点，强度从几乎没有到明显粗糙都能调。处理在浏览器内完成，图片不上传。</p>
+      </div>
+      <ul class="facts-strip">
+        <li><span class="f-k">处理位置</span><span class="f-v">浏览器本地，不上传</span></li>
+        <li><span class="f-k">可调参数</span><span class="f-v">颗粒强度 0–100%</span></li>
+        <li><span class="f-k">输出</span><span class="f-v">PNG，原尺寸</span></li>
+        <li><span class="f-k">注册</span><span class="f-v">不需要账号</span></li>
+      </ul>
+      <div class="tool-box">
 <div class="upload-area" id="dropZone">
 <p>上传照片，添加胶片颗粒</p>
 <input type="file" id="fileInput" accept="image/*" hidden>
 </div>
 <div class="controls" style="margin:1rem 0;">
-<label>Grain Intensity: <input type="range" id="intensity" min="0" max="100" value="30"> <span id="intVal">30%</span></label>
+<label>颗粒强度： <input type="range" id="intensity" min="0" max="100" value="30"> <span id="intVal">30%</span></label>
 <button id="downloadBtn" class="primary">下载加颗粒后的照片</button>
 </div>
 <canvas id="canvas" style="max-width:100%;border:1px solid #333;"></canvas>
-</main>
+      </div>
+      <table class="compare-table">
+        <thead><tr><th></th><th>SmartImgKit</th><th>常见在线替代品</th></tr></thead>
+        <tbody>
+          <tr><th>颗粒位置</th><td>叠加在整幅画面上，强度可控</td><td>只有固定预设</td></tr>
+          <tr><th>图片去向</th><td>本机处理，不上传</td><td>需上传后云端渲染</td></tr>
+          <tr><th>输出</th><td>原尺寸 PNG</td><td>常被压缩</td></tr>
+          <tr><th>限制</th><td>免费、无水印</td><td>多数要订阅</td></tr>
+        </tbody>
+      </table>
+      <section class="detail-sec">
+        <h2>为什么数码照片要加颗粒</h2>
+        <p>数码传感器的成像是“太干净”的：高光到暗部平滑过渡，没有胶片那种偶然的颗粒起伏。加颗粒的第一层作用是补回这种质感，让照片带上一点非数字的粗糙度，尤其是黑白照，颗粒感几乎是胶片味的核心。</p>
+        <p>第二层作用是掩盖问题。手机在暗光下拍的图容易有色彩噪点和条带，统一叠一层单色颗粒之后，原本的杂色噪点被“混”进了颗粒里，观感反而更自然。老照片放大后发糊，加点颗粒也能把注意力从模糊上移开。</p>
+        <p>第三层是风格化。纪实、街头、livehouse 这类题材本身就需要粗粝感，颗粒是成本最低的调性手段。</p>
+      </section>
+      <section class="detail-sec">
+        <h2>强度给多少合适</h2>
+        <p>30% 以下属于“几乎看不出，但放大能感觉到”，适合日常人像和旅拍，保持干净又不至于塑料感。</p>
+        <p>40%–60% 是胶片味最明显的区间，等效 ISO 800–1600 的观感，适合街头、氛围照、夜景。到这个强度时建议配合黑白或者降饱和，颗粒和色彩同时浓会显得脏。</p>
+        <p>70% 以上就进入风格化范畴了，颗粒本身成为画面语言。这种强度适合做海报、专辑封面，用在人像上要谨慎——脸上的颗粒太密会看起来像皮肤问题。</p>
+      </section>
+
+      <section class="faq-section">
+        <h2>常见问题</h2>
+        <div class="faq-item"><button class="faq-question">胶片颗粒和噪点是一回事吗？</button><div class="faq-answer">视觉上接近，成因不同。噪点是传感器在弱光下放大信号带来的随机杂色，通常带色彩偏色；这里是叠加的明度颗粒，更接近胶片的银盐颗粒，颗粒分布更均匀。</div></div>
+        <div class="faq-item"><button class="faq-question">加颗粒会让照片变模糊吗？</button><div class="faq-answer">不会。颗粒是叠加在原图之上的纹理，原图的锐度没有被降低。但如果颗粒强度很高，细密的纹理确实会盖住一些小细节。</div></div>
+        <div class="faq-item"><button class="faq-question">加颗粒的照片适合打印吗？</button><div class="faq-answer">适合，而且打印比屏幕更能体现颗粒质感。建议强度比屏幕上看起来的再低一档，因为打印分辨率更高，颗粒会显得更细。</div></div>
+        <div class="faq-item"><button class="faq-question">为什么加了颗粒照片看起来反而更清晰？</button><div class="faq-answer">颗粒在暗部和高光之间制造了微小的明暗跳跃，人眼会把它读成细节。这是一种视觉错觉，也是胶片照片“看起来有质感”的原因之一。</div></div>
+        <div class="faq-item"><button class="faq-question">可以只给照片的一部分加颗粒吗？</button><div class="faq-answer">这个工具是整幅叠加。需要局部处理的话，可以先用图片裁剪取局部，处理完再拼回原图。</div></div>
+      </section>
+
+    </div>
+  </main>
 <script>
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -47,6 +192,38 @@ ctx.putImageData(data,0,0);
 document.getElementById('intensity').oninput = draw;
 document.getElementById('downloadBtn').onclick = () => {const a=document.createElement('a');a.download='film-grain.jpg';a.href=canvas.toDataURL('image/jpeg');a.click();};
 </script>
+<footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="/zh/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>尊重您隐私的免费 AI 图像工具。</p></div>
+        <div class="footer-links footer-links-multi"><h4>工具</h4><a href="/zh/tools/background-remover">Background Remover</a><a href="/zh/tools/compressor">Compressor</a><a href="/zh/tools/converter">Converter</a><a href="/zh/tools/resizer">Resizer</a>
+          <a href="/zh/tools/gif-editor">GIF Editor</a>
+          <a href="/zh/tools/pdf-to-image">PDF to Image</a>
+        </div>
+        <div class="footer-links footer-links-multi"><h4>更多工具</h4>
+          <div class="footer-links-list">
+          <a href="/zh/tools/cropper">Cropper</a><a href="/zh/tools/watermark">Watermark</a><a href="/zh/tools/image-merger">Image Merger</a><a href="/zh/tools/screenshot-to-image">Screenshot to Image</a><a href="/zh/tools/image-filters">Image Filters</a><a href="/zh/tools/svg-to-png">SVG to PNG</a><a href="/zh/tools/image-compare">Image Compare</a><a href="/zh/tools/print-resizer">Print-Ready Resizer</a><a href="/zh/tools/meme-generator">Meme Generator</a>          <a href="/zh/tools/face-blur">Face Blur</a>
+          <a href="/zh/tools/heic-converter">HEIC Converter</a>
+          <a href="/zh/tools/metadata-viewer">Metadata Viewer</a>
+          <a href="/zh/tools/avif-support">AVIF Support</a>
+          <a href="/zh/tools/image-adjust">Image Adjustment</a>
+          <a href="/zh/tools/image-border">Image Border</a>
+          <a href="/zh/tools/image-flip">Image Flip</a>
+          <a href="/zh/tools/image-grayscale">Image Grayscale</a>
+          <a href="/zh/tools/image-shadow">Image Shadow</a>
+          <a href="/zh/tools/image-splitter">Image Splitter</a>
+          <a href="/zh/tools/image-exif-remover">EXIF Remover</a><a href="/zh/tools/circle-crop">Circle Crop</a><a href="/zh/tools/favicon-generator">Favicon Generator</a><a href="/zh/tools/ocr">OCR Text</a><a href="/zh/tools/bulk-processor">Bulk Processor</a><a href="/zh/tools/image-to-pdf">Image to PDF</a>          <a href="/zh/tools/id-photo">ID Photo Maker</a>
+          <a href="/zh/tools/product-white-background">Product White BG</a>
+          <a href="/zh/tools/social-media-post">Social Media Post</a>
+          <a href="/zh/tools/photo-restoration">Photo Restoration</a><a href="/zh/tools/image-enhancer">Image Enhancer</a>
+          </div>
+        </div>
+        <div class="footer-links"><h4>法律</h4><a href="/privacy">隐私政策</a><a href="/terms">服务条款</a><a href="/cookie-policy">Cookie 政策</a>
+        </div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. 保留所有权利. | <a href="https://comprimefotos.com/" rel="nofollow sponsored" style="color: var(--accent); font-weight: 500;">Español: ComprimeFotos — Comprimir Imágenes Online</a></p></div>
+    </div>
+  </footer>
 </body>
 </html>
 

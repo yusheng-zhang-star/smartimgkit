@@ -150,6 +150,79 @@ function applyConsent(consent) {
   }
 }
 
+/* ===== Cookie 横幅多语种文案 ===== */
+const COOKIE_I18N = {
+  en: {
+    msg: 'We use cookies to improve your experience and serve relevant ads. You can customize your preferences or accept all cookies.',
+    more: 'Learn more', accept: 'Accept All', reject: 'Reject All', customize: 'Customize',
+    essentialT: 'Essential Cookies', essentialD: 'Required for the website to function. Cannot be disabled.',
+    analyticsT: 'Analytics Cookies', analyticsD: 'Help us understand how visitors use our website (Google Analytics). Optional.',
+    adsT: 'Advertising Cookies', adsD: 'Used to serve personalized ads and measure ad performance. Optional.',
+    save: 'Save Preferences'
+  },
+  zh: {
+    msg: '我们使用 Cookie 来改善浏览体验并展示相关广告。你可以自定义偏好设置，也可以全部接受。',
+    more: '了解更多', accept: '全部接受', reject: '全部拒绝', customize: '自定义',
+    essentialT: '必要 Cookie', essentialD: '网站运行所必需，无法关闭。',
+    analyticsT: '分析 Cookie', analyticsD: '帮助我们了解访客如何使用本站（Google Analytics），可选。',
+    adsT: '广告 Cookie', adsD: '用于展示个性化广告并衡量广告效果，可选。',
+    save: '保存偏好'
+  },
+  es: {
+    msg: 'Usamos cookies para mejorar tu experiencia y mostrar anuncios relevantes. Puedes ajustar tus preferencias o aceptarlas todas.',
+    more: 'Más información', accept: 'Aceptar todas', reject: 'Rechazar todas', customize: 'Personalizar',
+    essentialT: 'Cookies necesarias', essentialD: 'Imprescindibles para que la web funcione. No se pueden desactivar.',
+    analyticsT: 'Cookies analíticas', analyticsD: 'Nos ayudan a entender cómo se usa el sitio (Google Analytics). Opcionales.',
+    adsT: 'Cookies publicitarias', adsD: 'Se usan para mostrar anuncios personalizados y medir su rendimiento. Opcionales.',
+    save: 'Guardar preferencias'
+  },
+  pt: {
+    msg: 'Usamos cookies para melhorar sua experiência e exibir anúncios relevantes. Você pode ajustar suas preferências ou aceitar todas.',
+    more: 'Saiba mais', accept: 'Aceitar todas', reject: 'Rejeitar todas', customize: 'Personalizar',
+    essentialT: 'Cookies necessários', essentialD: 'Essenciais para o site funcionar. Não podem ser desativados.',
+    analyticsT: 'Cookies de análise', analyticsD: 'Ajudam a entender como os visitantes usam o site (Google Analytics). Opcionais.',
+    adsT: 'Cookies de publicidade', adsD: 'Servem para exibir anúncios personalizados e medir o desempenho. Opcionais.',
+    save: 'Salvar preferências'
+  },
+  id: {
+    msg: 'Kami memakai cookie untuk meningkatkan pengalaman Anda dan menampilkan iklan yang relevan. Anda bisa mengatur preferensi atau menerima semua cookie.',
+    more: 'Pelajari lebih lanjut', accept: 'Terima Semua', reject: 'Tolak Semua', customize: 'Sesuaikan',
+    essentialT: 'Cookie Esensial', essentialD: 'Diperlukan agar situs berfungsi. Tidak bisa dinonaktifkan.',
+    analyticsT: 'Cookie Analitik', analyticsD: 'Membantu kami memahami cara pengunjung memakai situs (Google Analytics). Opsional.',
+    adsT: 'Cookie Iklan', adsD: 'Dipakai untuk menampilkan iklan yang dipersonalisasi dan mengukur performanya. Opsional.',
+    save: 'Simpan Preferensi'
+  },
+  fr: {
+    msg: "Nous utilisons des cookies pour améliorer votre expérience et afficher des publicités pertinentes. Vous pouvez personnaliser vos préférences ou tout accepter.",
+    more: 'En savoir plus', accept: 'Tout accepter', reject: 'Tout refuser', customize: 'Personnaliser',
+    essentialT: 'Cookies essentiels', essentialD: 'Indispensables au fonctionnement du site. Ne peuvent pas être désactivés.',
+    analyticsT: 'Cookies analytiques', analyticsD: "Nous aident à comprendre comment le site est utilisé (Google Analytics). Facultatifs.",
+    adsT: 'Cookies publicitaires', adsD: 'Servent à afficher des publicités personnalisées et à mesurer leur performance. Facultatifs.',
+    save: 'Enregistrer les préférences'
+  },
+  vi: {
+    msg: 'Chúng tôi dùng cookie để cải thiện trải nghiệm và hiển thị quảng cáo phù hợp. Bạn có thể tùy chỉnh tùy chọn hoặc chấp nhận tất cả.',
+    more: 'Tìm hiểu thêm', accept: 'Chấp nhận tất cả', reject: 'Từ chối tất cả', customize: 'Tùy chỉnh',
+    essentialT: 'Cookie thiết yếu', essentialD: 'Cần thiết để trang hoạt động. Không thể tắt.',
+    analyticsT: 'Cookie phân tích', analyticsD: 'Giúp chúng tôi hiểu cách khách truy cập dùng trang (Google Analytics). Không bắt buộc.',
+    adsT: 'Cookie quảng cáo', adsD: 'Dùng để hiển thị quảng cáo cá nhân hóa và đo lường hiệu quả. Không bắt buộc.',
+    save: 'Lưu tùy chọn'
+  },
+  ar: {
+    msg: 'نستخدم ملفات تعريف الارتباط لتحسين تجربتك وعرض إعلانات مناسبة. يمكنك تخصيص تفضيلاتك أو قبول جميع الملفات.',
+    more: 'اعرف المزيد', accept: 'قبول الكل', reject: 'رفض الكل', customize: 'تخصيص',
+    essentialT: 'ملفات ضرورية', essentialD: 'لازمة لعمل الموقع ولا يمكن تعطيلها.',
+    analyticsT: 'ملفات تحليلية', analyticsD: 'تساعدنا على فهم كيفية استخدام الزوار للموقع (Google Analytics). اختيارية.',
+    adsT: 'ملفات إعلانية', adsD: 'تُستخدم لعرض إعلانات مخصصة وقياس أدائها. اختيارية.',
+    save: 'حفظ التفضيلات'
+  }
+};
+
+function cookieLang() {
+  const seg = (location.pathname.split('/')[1] || '').toLowerCase();
+  return COOKIE_I18N[seg] ? seg : 'en';
+}
+
 let __cookieInit = false;
 function initCookieConsent() {
   if (__cookieInit) return;
@@ -163,22 +236,24 @@ function initCookieConsent() {
   __cookieInit = true;
   const banner = document.createElement('div');
   banner.className = 'cookie-consent';
+  const t = COOKIE_I18N[cookieLang()];
+  banner.setAttribute('lang', cookieLang());
   banner.innerHTML = `
     <div class="cookie-consent-inner">
       <div class="cookie-consent-text">
-        <p>We use cookies to improve your experience and serve relevant ads. You can customize your preferences or accept all cookies. <a href="/cookie-policy">Learn more</a></p>
+        <p>${t.msg} <a href="/cookie-policy">${t.more}</a></p>
       </div>
       <div class="cookie-consent-actions">
-        <button class="cookie-btn cookie-btn-accept" id="cookieAccept">Accept All</button>
-        <button class="cookie-btn cookie-btn-decline" id="cookieDecline">Reject All</button>
-        <button class="cookie-btn cookie-btn-customize" id="cookieCustomize">Customize</button>
+        <button class="cookie-btn cookie-btn-accept" id="cookieAccept">${t.accept}</button>
+        <button class="cookie-btn cookie-btn-decline" id="cookieDecline">${t.reject}</button>
+        <button class="cookie-btn cookie-btn-customize" id="cookieCustomize">${t.customize}</button>
       </div>
     </div>
     <div class="cookie-customize" id="cookieCustomPanel">
       <div class="cookie-category">
         <div class="cookie-category-info">
-          <h4>Essential Cookies</h4>
-          <p>Required for the website to function. Cannot be disabled.</p>
+          <h4>${t.essentialT}</h4>
+          <p>${t.essentialD}</p>
         </div>
         <label class="cookie-toggle">
           <input type="checkbox" checked disabled>
@@ -187,8 +262,8 @@ function initCookieConsent() {
       </div>
       <div class="cookie-category">
         <div class="cookie-category-info">
-          <h4>Analytics Cookies</h4>
-          <p>Help us understand how visitors use our website (Google Analytics). Optional.</p>
+          <h4>${t.analyticsT}</h4>
+          <p>${t.analyticsD}</p>
         </div>
         <label class="cookie-toggle">
           <input type="checkbox" id="cookieAnalytics">
@@ -197,8 +272,8 @@ function initCookieConsent() {
       </div>
       <div class="cookie-category">
         <div class="cookie-category-info">
-          <h4>Advertising Cookies</h4>
-          <p>Used to serve personalized ads and measure ad performance. Optional.</p>
+          <h4>${t.adsT}</h4>
+          <p>${t.adsD}</p>
         </div>
         <label class="cookie-toggle">
           <input type="checkbox" id="cookieAdvertising">
@@ -206,7 +281,7 @@ function initCookieConsent() {
         </label>
       </div>
       <div class="cookie-save-row">
-        <button class="cookie-btn cookie-btn-accept" id="cookieSave">Save Preferences</button>
+        <button class="cookie-btn cookie-btn-accept" id="cookieSave">${t.save}</button>
       </div>
     </div>
   `;
