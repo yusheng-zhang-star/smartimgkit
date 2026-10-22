@@ -3,29 +3,175 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>图片转字符画 — 在线把照片变成 ASCII 文字画</title>
-<meta name="description" content="免费在线图片转字符画工具。一键把照片变成 ASCII 文字艺术，无需注册，100% 本地处理，可下载图片或复制文本。">
+<title>图片转字符画 — 在线把照片变成 ASCII 艺术</title>
+<meta name="description" content="免费在线图片转字符画工具：按亮度把照片映射成 ASCII 字符，精细度可调，输出可直接复制的纯文本。浏览器本地处理，不上传图片。">
 <link rel="canonical" href="https://smartimgkit.com/zh/tools/image-to-ascii">
 <link rel="stylesheet" href="/css/style.css?v=12">
+
+<style>
+  .tool-box{background:var(--bg-card,rgba(255,255,255,.04));border:1px solid var(--border-color,rgba(255,255,255,.08));border-radius:14px;padding:20px;margin:22px 0}
+  .tool-box .upload-area{background:transparent!important;color:var(--text-primary,#ededed);border:2px dashed var(--border-color,rgba(255,255,255,.15));border-radius:12px;padding:34px 18px;text-align:center;cursor:pointer;transition:.2s}
+  .tool-box .upload-area:hover{border-color:var(--accent,#6366f1)}
+  .tool-box .controls{display:flex;flex-direction:column;gap:12px;margin:16px 0}
+  .tool-box .controls label{display:flex;align-items:center;gap:10px;font-size:.9rem;color:var(--text-secondary,#a1a1aa);flex-wrap:wrap}
+  .tool-box input[type=text],.tool-box select{background:var(--bg-secondary,#1a1a24);border:1px solid var(--border-color,rgba(255,255,255,.12));border-radius:9px;padding:9px 12px;color:inherit;font-size:.9rem;min-width:200px}
+  .tool-box input[type=range]{flex:1;min-width:150px;accent-color:var(--accent,#6366f1)}
+  .tool-box .result{margin:16px 0;font-size:.9rem;color:var(--text-secondary,#a1a1aa);line-height:1.9}
+  .tool-box .result span{color:var(--text-primary,#ededed);font-variant-numeric:tabular-nums}
+  .tool-box pre{background:var(--bg-secondary,#0f0f16);border:1px solid var(--border-color,rgba(255,255,255,.08));border-radius:10px;padding:14px;overflow:auto;max-height:420px;font-size:8px;line-height:1;color:#9fe0b0;margin-top:14px}
+  .tool-box button{background:var(--accent,#6366f1);color:#fff;border:0;border-radius:10px;padding:10px 20px;font-size:.92rem;cursor:pointer;margin-right:8px}
+  .tool-box button.secondary{background:transparent;border:1px solid var(--border-color,rgba(255,255,255,.15));color:inherit}
+  .tool-box button:disabled{opacity:.5;cursor:not-allowed}
+  .detail-sec{margin:34px 0}
+  .detail-sec h2{font-size:1.28rem;margin-bottom:12px}
+  .detail-sec p{line-height:1.85;margin-bottom:12px;color:var(--text-secondary,#a1a1aa)}
+</style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "图片转字符画",
+  "url": "https://smartimgkit.com/zh/tools/image-to-ascii",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "CNY"
+  },
+  "description": "免费在线图片转字符画工具：按亮度把照片映射成 ASCII 字符，精细度可调，输出可直接复制的纯文本。浏览器本地处理，不上传图片。"
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "字符画能直接复制到哪里用？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "输出的是纯文本，可以贴进聊天软件、代码注释、README、终端、邮件——只要能显示等宽字体就能看。复制按钮会把整段文本放进剪贴板。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么我转出来的图认不出来？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "常见三个原因：原图对比度太低（转出来一片糊）、背景太复杂（噪点吃掉主体）、列数太少（细节不够）。把原图对比度提高、去掉背景、把精细度往 100 以上调，通常就能看清了。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "字符画会显示成乱码或错位吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "如果显示环境用了比例字体，或者窗口太窄导致自动换行，画面就会歪。解决办法是换等宽字体、把窗口拉宽，或者把精细度调低到 60 以下。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "支持彩色字符画吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "这个工具输出单色 ASCII，靠字符密度表现明暗。彩色字符画需要终端支持 ANSI 颜色码，用途很窄，也贴不进大多数聊天软件。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "转出来的字符画能商用吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "可以。工具不加水印、不保留副本，输出归你。不过如果原图是他人作品，字符画属于衍生作品，商用仍需授权。"
+      }
+    }
+  ]
+}
+  </script>
 </head>
 <body>
 <header class="site-header">
-<a href="/zh/" class="logo">SmartImgKit</a>
-<nav><a href="/zh/tools/">全部工具</a><a href="/zh/blog/">博客</a></nav>
-</header>
-<main class="container">
-<h1>图片转字符画</h1>
-<p class="lead">一键把照片变成复古 ASCII 字符画，全程本地处理，无需上传、无需注册。</p>
+    <div class="container header-inner">
+      <a href="/zh/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/zh/">首页</a><a href="/zh/tools/">工具</a><a href="/zh/workflows/">工作流</a><a href="/zh/blog/">博客</a><a href="/about">关于</a><a href="/contact">联系我们</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Switch language">🇨🇳 中文</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+            <a href="/fr/" hreflang="fr" lang="fr">🇫🇷 Français</a>
+            <a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a>
+            <a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a>
+            <a href="/zh/" hreflang="zh" lang="zh">🇨🇳 中文</a>
+          </div>
+        </div>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>图片转字符画</span></nav>
+      <div class="tool-page-header">
+        <h1>图片转字符画</h1>
+        <p class="answer-lead">把照片变成 ASCII 字符画：按每个区域的亮度映射到不同密度的字符，暗的地方用 @、# 这类实心字符，亮的地方用点号和空格，拼出能认出来的图像。精细度可调，输出是纯文本，直接复制就能贴到聊天窗口或代码注释里。</p>
+      </div>
+      <ul class="facts-strip">
+        <li><span class="f-k">处理方式</span><span class="f-v">浏览器本地，不上传</span></li>
+        <li><span class="f-k">可调参数</span><span class="f-v">精细度（字符列数）50–300</span></li>
+        <li><span class="f-k">输出</span><span class="f-v">纯文本，可一键复制</span></li>
+        <li><span class="f-k">字体要求</span><span class="f-v">等宽字体</span></li>
+      </ul>
+      <div class="tool-box">
 <div class="upload-area" id="dropZone">
 <p>上传照片，转换成字符画</p>
 <input type="file" id="fileInput" accept="image/*" hidden>
 </div>
 <div class="controls" style="margin:1rem 0;">
-<label>Detail: <input type="range" id="detail" min="50" max="300" value="150"> <span id="detailVal">150</span></label>
-<button id="copyBtn" class="secondary">Copy Text Art</button>
+<label>精细度： <input type="range" id="detail" min="50" max="300" value="150"> <span id="detailVal">150</span></label>
+<button id="copyBtn" class="secondary">复制字符画</button>
 </div>
 <pre id="asciiOutput" style="font-family:monospace;font-size:8px;line-height:8px;background:#000;color:#0f0;padding:1rem;overflow:auto;max-height:600px;"></pre>
-</main>
+      </div>
+      <table class="compare-table">
+        <thead><tr><th></th><th>SmartImgKit</th><th>常见在线替代品</th></tr></thead>
+        <tbody>
+          <tr><th>图片去向</th><td>本机处理</td><td>多数要上传</td></tr>
+          <tr><th>输出形式</th><td>可直接复制的纯文本</td><td>只能下载图片</td></tr>
+          <tr><th>参数控制</th><td>宽度列数连续可调</td><td>固定几档</td></tr>
+          <tr><th>限制</th><td>免费、无需注册</td><td>常带水印或限次数</td></tr>
+        </tbody>
+      </table>
+      <section class="detail-sec">
+        <h2>什么样的图转字符画才好看</h2>
+        <p>字符画的信息量取决于“可用字符”够不够表达明暗层次。一个字符网格里，@ 最实、空格最空，中间的层次靠 # % * + : . 这些符号过渡。所以主体轮廓清晰、明暗反差大的照片（侧光人像、剪影、logo、高对比建筑）转出来辨识度最高。</p>
+        <p>背景复杂的照片效果通常很差：树叶、人群、渐变天空这些区域在字符画里都会变成一片均匀的噪点，把主体淹没掉。想得到能看清的结果，先在照片滤镜里提高对比、去掉背景，再来转。</p>
+        <p>分辨率也不是越高越好。这跟位图逻辑相反——列数超过 200 之后，在聊天窗口、手机屏幕上会因为自动换行而彻底乱掉，本来能认出的图案变成一堆散字符。字符画的美感很大程度来自“远看是画、近看是字”的距离感，列数太多反而丢掉了这个效果。</p>
+      </section>
+      <section class="detail-sec">
+        <h2>精细度该调多少</h2>
+        <p>50–80 列：适合微信、Discord 这类聊天窗口，一行大约 40–60 个字符宽度，不会换行错位。这个范围里人像还能看出五官，体积也小。</p>
+        <p>100–150 列：适合终端、README、个人主页。需要接收方能等宽显示，否则字符宽度不一致会让图案拉伸。</p>
+        <p>200 列以上：只有在宽屏终端、等宽字体、不自动换行的环境里才成立。做海报或打印时用得上，贴在聊天窗口里一定会坏。</p>
+        <p>调完记得确认字体。字符画依赖等宽字体对齐，用比例字体（比如系统默认的英文界面字体）显示时，每行字符宽度不同，画面会歪成斜的。</p>
+      </section>
+
+      <section class="faq-section">
+        <h2>常见问题</h2>
+        <div class="faq-item"><button class="faq-question">字符画能直接复制到哪里用？</button><div class="faq-answer">输出的是纯文本，可以贴进聊天软件、代码注释、README、终端、邮件——只要能显示等宽字体就能看。复制按钮会把整段文本放进剪贴板。</div></div>
+        <div class="faq-item"><button class="faq-question">为什么我转出来的图认不出来？</button><div class="faq-answer">常见三个原因：原图对比度太低（转出来一片糊）、背景太复杂（噪点吃掉主体）、列数太少（细节不够）。把原图对比度提高、去掉背景、把精细度往 100 以上调，通常就能看清了。</div></div>
+        <div class="faq-item"><button class="faq-question">字符画会显示成乱码或错位吗？</button><div class="faq-answer">如果显示环境用了比例字体，或者窗口太窄导致自动换行，画面就会歪。解决办法是换等宽字体、把窗口拉宽，或者把精细度调低到 60 以下。</div></div>
+        <div class="faq-item"><button class="faq-question">支持彩色字符画吗？</button><div class="faq-answer">这个工具输出单色 ASCII，靠字符密度表现明暗。彩色字符画需要终端支持 ANSI 颜色码，用途很窄，也贴不进大多数聊天软件。</div></div>
+        <div class="faq-item"><button class="faq-question">转出来的字符画能商用吗？</button><div class="faq-answer">可以。工具不加水印、不保留副本，输出归你。不过如果原图是他人作品，字符画属于衍生作品，商用仍需授权。</div></div>
+      </section>
+
+    </div>
+  </main>
 <script>
 document.getElementById('dropZone').onclick = () => document.getElementById('fileInput').click();
 document.getElementById('fileInput').onchange = (e) => {
@@ -60,6 +206,38 @@ reader.readAsDataURL(f);
 };
 document.getElementById('copyBtn').onclick = () => {navigator.clipboard.writeText(document.getElementById('asciiOutput').textContent); alert('ASCII art copied to clipboard!');};
 </script>
+<footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="/zh/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>尊重您隐私的免费 AI 图像工具。</p></div>
+        <div class="footer-links footer-links-multi"><h4>工具</h4><a href="/zh/tools/background-remover">Background Remover</a><a href="/zh/tools/compressor">Compressor</a><a href="/zh/tools/converter">Converter</a><a href="/zh/tools/resizer">Resizer</a>
+          <a href="/zh/tools/gif-editor">GIF Editor</a>
+          <a href="/zh/tools/pdf-to-image">PDF to Image</a>
+        </div>
+        <div class="footer-links footer-links-multi"><h4>更多工具</h4>
+          <div class="footer-links-list">
+          <a href="/zh/tools/cropper">Cropper</a><a href="/zh/tools/watermark">Watermark</a><a href="/zh/tools/image-merger">Image Merger</a><a href="/zh/tools/screenshot-to-image">Screenshot to Image</a><a href="/zh/tools/image-filters">Image Filters</a><a href="/zh/tools/svg-to-png">SVG to PNG</a><a href="/zh/tools/image-compare">Image Compare</a><a href="/zh/tools/print-resizer">Print-Ready Resizer</a><a href="/zh/tools/meme-generator">Meme Generator</a>          <a href="/zh/tools/face-blur">Face Blur</a>
+          <a href="/zh/tools/heic-converter">HEIC Converter</a>
+          <a href="/zh/tools/metadata-viewer">Metadata Viewer</a>
+          <a href="/zh/tools/avif-support">AVIF Support</a>
+          <a href="/zh/tools/image-adjust">Image Adjustment</a>
+          <a href="/zh/tools/image-border">Image Border</a>
+          <a href="/zh/tools/image-flip">Image Flip</a>
+          <a href="/zh/tools/image-grayscale">Image Grayscale</a>
+          <a href="/zh/tools/image-shadow">Image Shadow</a>
+          <a href="/zh/tools/image-splitter">Image Splitter</a>
+          <a href="/zh/tools/image-exif-remover">EXIF Remover</a><a href="/zh/tools/circle-crop">Circle Crop</a><a href="/zh/tools/favicon-generator">Favicon Generator</a><a href="/zh/tools/ocr">OCR Text</a><a href="/zh/tools/bulk-processor">Bulk Processor</a><a href="/zh/tools/image-to-pdf">Image to PDF</a>          <a href="/zh/tools/id-photo">ID Photo Maker</a>
+          <a href="/zh/tools/product-white-background">Product White BG</a>
+          <a href="/zh/tools/social-media-post">Social Media Post</a>
+          <a href="/zh/tools/photo-restoration">Photo Restoration</a><a href="/zh/tools/image-enhancer">Image Enhancer</a>
+          </div>
+        </div>
+        <div class="footer-links"><h4>法律</h4><a href="/privacy">隐私政策</a><a href="/terms">服务条款</a><a href="/cookie-policy">Cookie 政策</a>
+        </div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. 保留所有权利. | <a href="https://comprimefotos.com/" rel="nofollow sponsored" style="color: var(--accent); font-weight: 500;">Español: ComprimeFotos — Comprimir Imágenes Online</a></p></div>
+    </div>
+  </footer>
 </body>
 </html>
 

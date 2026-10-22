@@ -3,29 +3,174 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>批量加水印工具 — 给多张图片一键添加文字水印</title>
-<meta name="description" content="免费批量加水印工具。自动给多张图片添加文字水印，保护你的照片。全程在浏览器本地处理，无需上传。">
+<title>批量文字水印 — 一次给多张照片加同一水印</title>
+<meta name="description" content="免费批量文字水印工具：一次上传整批照片，统一添加自定义文字水印并批量下载。全程浏览器本地处理，不上传图片，工具本身不加任何水印。">
 <link rel="canonical" href="https://smartimgkit.com/zh/tools/batch-watermark">
 <link rel="stylesheet" href="/css/style.css?v=12">
+
+<style>
+  .tool-box{background:var(--bg-card,rgba(255,255,255,.04));border:1px solid var(--border-color,rgba(255,255,255,.08));border-radius:14px;padding:20px;margin:22px 0}
+  .tool-box .upload-area{background:transparent!important;color:var(--text-primary,#ededed);border:2px dashed var(--border-color,rgba(255,255,255,.15));border-radius:12px;padding:34px 18px;text-align:center;cursor:pointer;transition:.2s}
+  .tool-box .upload-area:hover{border-color:var(--accent,#6366f1)}
+  .tool-box .controls{display:flex;flex-direction:column;gap:12px;margin:16px 0}
+  .tool-box .controls label{display:flex;align-items:center;gap:10px;font-size:.9rem;color:var(--text-secondary,#a1a1aa);flex-wrap:wrap}
+  .tool-box input[type=text],.tool-box select{background:var(--bg-secondary,#1a1a24);border:1px solid var(--border-color,rgba(255,255,255,.12));border-radius:9px;padding:9px 12px;color:inherit;font-size:.9rem;min-width:200px}
+  .tool-box input[type=range]{flex:1;min-width:150px;accent-color:var(--accent,#6366f1)}
+  .tool-box .result{margin:16px 0;font-size:.9rem;color:var(--text-secondary,#a1a1aa);line-height:1.9}
+  .tool-box .result span{color:var(--text-primary,#ededed);font-variant-numeric:tabular-nums}
+  .tool-box pre{background:var(--bg-secondary,#0f0f16);border:1px solid var(--border-color,rgba(255,255,255,.08));border-radius:10px;padding:14px;overflow:auto;max-height:420px;font-size:8px;line-height:1;color:#9fe0b0;margin-top:14px}
+  .tool-box button{background:var(--accent,#6366f1);color:#fff;border:0;border-radius:10px;padding:10px 20px;font-size:.92rem;cursor:pointer;margin-right:8px}
+  .tool-box button.secondary{background:transparent;border:1px solid var(--border-color,rgba(255,255,255,.15));color:inherit}
+  .tool-box button:disabled{opacity:.5;cursor:not-allowed}
+  .detail-sec{margin:34px 0}
+  .detail-sec h2{font-size:1.28rem;margin-bottom:12px}
+  .detail-sec p{line-height:1.85;margin-bottom:12px;color:var(--text-secondary,#a1a1aa)}
+</style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "批量文字水印",
+  "url": "https://smartimgkit.com/zh/tools/batch-watermark",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "CNY"
+  },
+  "description": "免费批量文字水印工具：一次上传整批照片，统一添加自定义文字水印并批量下载。全程浏览器本地处理，不上传图片，工具本身不加任何水印。"
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "批量加水印会上传我的照片吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不会。整批图片都在浏览器内存里处理，处理完直接生成下载文件，没有任何一个字节发到服务器。断网也能正常用，这一点对未发布的商品图、客户照片尤其重要。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "水印可以加在图片的哪个位置？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "这个工具按统一规则把文字盖在图上，一整批的样式保持一致。需要精确控制到每张图的不同位置时，建议先用单张水印工具调好样式，再对整批套用同一套参数。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "加水印后还能去掉吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能可靠去除。水印像素已经和原图像素混合，任何“去水印”工具都只能靠猜测填补，细节必然损失。所以一定要保留一份未加水印的原图。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "一次能处理多少张？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "没有硬性上限，但一次几十张以上时浏览器内存占用会明显上升，处理期间别关标签页。图片特别大（单张 4000px 以上）时建议分批跑。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "水印用什么颜色和透明度比较好？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "浅色图上用深色半透明，深色图上用浅色半透明，透明度 50%–70% 是通用区间。纯白不透明的水印在浅色背景上会变成一块白斑，纯黑不透明则像一个污点。"
+      }
+    }
+  ]
+}
+  </script>
 </head>
 <body>
 <header class="site-header">
-<a href="/zh/" class="logo">SmartImgKit</a>
-<nav><a href="/zh/tools/">全部工具</a><a href="/zh/blog/">博客</a></nav>
-</header>
-<main class="container">
-<h1>批量文字水印</h1>
-<p class="lead">自动为多张上传的照片批量添加自定义文字水印，全程在浏览器本地处理，无需上传，我们也不给图片加任何水印。</p>
+    <div class="container header-inner">
+      <a href="/zh/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/zh/">首页</a><a href="/zh/tools/">工具</a><a href="/zh/workflows/">工作流</a><a href="/zh/blog/">博客</a><a href="/about">关于</a><a href="/contact">联系我们</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Switch language">🇨🇳 中文</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+            <a href="/fr/" hreflang="fr" lang="fr">🇫🇷 Français</a>
+            <a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a>
+            <a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a>
+            <a href="/zh/" hreflang="zh" lang="zh">🇨🇳 中文</a>
+          </div>
+        </div>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>批量文字水印</span></nav>
+      <div class="tool-page-header">
+        <h1>批量文字水印</h1>
+        <p class="answer-lead">批量给多张照片盖同一个文字水印：一次选好整批图片，填上水印内容（版权署名、店铺名、社交账号都行），一键导出全部。图片在浏览器里处理完就保存到本地，不上传服务器，工具也不会往你的图上额外加水印。</p>
+      </div>
+      <ul class="facts-strip">
+        <li><span class="f-k">处理方式</span><span class="f-v">整批本地处理，不上传</span></li>
+        <li><span class="f-k">水印内容</span><span class="f-v">自定义文字，逐张相同</span></li>
+        <li><span class="f-k">输出</span><span class="f-v">原尺寸图片，批量下载</span></li>
+        <li><span class="f-k">自身水印</span><span class="f-v">不加</span></li>
+      </ul>
+      <div class="tool-box">
 <div class="upload-area" id="dropZone">
 <p>上传多张照片，批量添加水印</p>
 <input type="file" id="fileInput" accept="image/*" multiple hidden>
 </div>
 <div class="controls" style="margin:1rem 0;">
-<input type="text" id="watermarkText" placeholder="Enter your watermark text (e.g. © YourName)" style="padding:0.5rem;width:100%;margin:0.5rem 0;">
-<button id="downloadBtn" class="primary">Download All Watermarked Photos</button>
+<input type="text" id="watermarkText" placeholder="输入水印文字（如 © 你的名字）" style="padding:0.5rem;width:100%;margin:0.5rem 0;">
+<button id="downloadBtn" class="primary">下载全部已加水印的照片</button>
 </div>
 <div id="preview" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:0.5rem;"></div>
-</main>
+      </div>
+      <table class="compare-table">
+        <thead><tr><th></th><th>SmartImgKit</th><th>常见在线替代品</th></tr></thead>
+        <tbody>
+          <tr><th>图片去向</th><td>整批在本机处理</td><td>需先上传到服务器</td></tr>
+          <tr><th>批量能力</th><td>一次选多张，统一输出</td><td>多数免费版限单张</td></tr>
+          <tr><th>水印内容</th><td>文字自定义，无模板限制</td><td>常用固定模板</td></tr>
+          <tr><th>自身水印</th><td>不加</td><td>免费版常强行加 logo</td></tr>
+        </tbody>
+      </table>
+      <section class="detail-sec">
+        <h2>水印写什么，写在哪个位置</h2>
+        <p>水印的第一目的是让图脱离你的控制之后还能被追回来。摄影作品写 © 加年份和名字最直接；电商图写店铺名或域名，让人看到搬运图能搜到你；社交平台发图写账号 ID，比写“禁止盗图”有用得多——前者能带来关注，后者只会让人反感。</p>
+        <p>位置决定防盗强度和观感，两者天生矛盾。压在正中间的大面积水印最难裁掉，但也最毁图，只适合预览图、样片这类本来就不打算给人看清的场合。边角的小水印好看，代价是一裁就没了。实际拍摄和电商场景里更常见的是半透明重复平铺，它没法一刀裁掉，同时对画面的干扰还能接受。</p>
+        <p>还有一个常被忽略的点：水印文字本身要不要可读。纯装饰性的浅色文字只防君子；真要标识来源，字得在缩略图尺寸下也能认出来——把成品缩到 200px 宽自己看一眼，还认得出才算数。</p>
+      </section>
+      <section class="detail-sec">
+        <h2>批量加水印时的几个实际经验</h2>
+        <p>先把尺寸统一，再批量加水印。原因是水印位置通常按比例计算，一批里混着 4:3 和 16:9，水印在每张上的相对位置就不一样，铺在商品列表里会显得很乱。站内的图片缩放可以先把整批统一到同一长边，再回来加水印。</p>
+        <p>永远保留原图。加水印是不可逆的（水印像素已经和原图混在一起），批量处理更容易一口气把整批原图覆盖掉。建议输出到单独目录，原图另存。</p>
+        <p>水印别做得太细。图片上传到社交平台、电商后台都会被二次压缩，1px 的细线、浅灰的描边在重压缩之后最先消失，最后只剩一团糊。粗一点的笔画、稍高的对比度反而更耐压。</p>
+      </section>
+
+      <section class="faq-section">
+        <h2>常见问题</h2>
+        <div class="faq-item"><button class="faq-question">批量加水印会上传我的照片吗？</button><div class="faq-answer">不会。整批图片都在浏览器内存里处理，处理完直接生成下载文件，没有任何一个字节发到服务器。断网也能正常用，这一点对未发布的商品图、客户照片尤其重要。</div></div>
+        <div class="faq-item"><button class="faq-question">水印可以加在图片的哪个位置？</button><div class="faq-answer">这个工具按统一规则把文字盖在图上，一整批的样式保持一致。需要精确控制到每张图的不同位置时，建议先用单张水印工具调好样式，再对整批套用同一套参数。</div></div>
+        <div class="faq-item"><button class="faq-question">加水印后还能去掉吗？</button><div class="faq-answer">不能可靠去除。水印像素已经和原图像素混合，任何“去水印”工具都只能靠猜测填补，细节必然损失。所以一定要保留一份未加水印的原图。</div></div>
+        <div class="faq-item"><button class="faq-question">一次能处理多少张？</button><div class="faq-answer">没有硬性上限，但一次几十张以上时浏览器内存占用会明显上升，处理期间别关标签页。图片特别大（单张 4000px 以上）时建议分批跑。</div></div>
+        <div class="faq-item"><button class="faq-question">水印用什么颜色和透明度比较好？</button><div class="faq-answer">浅色图上用深色半透明，深色图上用浅色半透明，透明度 50%–70% 是通用区间。纯白不透明的水印在浅色背景上会变成一块白斑，纯黑不透明则像一个污点。</div></div>
+      </section>
+
+    </div>
+  </main>
 <script>
 let images = [];
 document.getElementById('dropZone').onclick = () => document.getElementById('fileInput').click();
@@ -52,6 +197,38 @@ const a=document.createElement('a'); a.download='watermarked_'+i+'.jpg'; a.href=
 });
 };
 </script>
+<footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="/zh/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>尊重您隐私的免费 AI 图像工具。</p></div>
+        <div class="footer-links footer-links-multi"><h4>工具</h4><a href="/zh/tools/background-remover">Background Remover</a><a href="/zh/tools/compressor">Compressor</a><a href="/zh/tools/converter">Converter</a><a href="/zh/tools/resizer">Resizer</a>
+          <a href="/zh/tools/gif-editor">GIF Editor</a>
+          <a href="/zh/tools/pdf-to-image">PDF to Image</a>
+        </div>
+        <div class="footer-links footer-links-multi"><h4>更多工具</h4>
+          <div class="footer-links-list">
+          <a href="/zh/tools/cropper">Cropper</a><a href="/zh/tools/watermark">Watermark</a><a href="/zh/tools/image-merger">Image Merger</a><a href="/zh/tools/screenshot-to-image">Screenshot to Image</a><a href="/zh/tools/image-filters">Image Filters</a><a href="/zh/tools/svg-to-png">SVG to PNG</a><a href="/zh/tools/image-compare">Image Compare</a><a href="/zh/tools/print-resizer">Print-Ready Resizer</a><a href="/zh/tools/meme-generator">Meme Generator</a>          <a href="/zh/tools/face-blur">Face Blur</a>
+          <a href="/zh/tools/heic-converter">HEIC Converter</a>
+          <a href="/zh/tools/metadata-viewer">Metadata Viewer</a>
+          <a href="/zh/tools/avif-support">AVIF Support</a>
+          <a href="/zh/tools/image-adjust">Image Adjustment</a>
+          <a href="/zh/tools/image-border">Image Border</a>
+          <a href="/zh/tools/image-flip">Image Flip</a>
+          <a href="/zh/tools/image-grayscale">Image Grayscale</a>
+          <a href="/zh/tools/image-shadow">Image Shadow</a>
+          <a href="/zh/tools/image-splitter">Image Splitter</a>
+          <a href="/zh/tools/image-exif-remover">EXIF Remover</a><a href="/zh/tools/circle-crop">Circle Crop</a><a href="/zh/tools/favicon-generator">Favicon Generator</a><a href="/zh/tools/ocr">OCR Text</a><a href="/zh/tools/bulk-processor">Bulk Processor</a><a href="/zh/tools/image-to-pdf">Image to PDF</a>          <a href="/zh/tools/id-photo">ID Photo Maker</a>
+          <a href="/zh/tools/product-white-background">Product White BG</a>
+          <a href="/zh/tools/social-media-post">Social Media Post</a>
+          <a href="/zh/tools/photo-restoration">Photo Restoration</a><a href="/zh/tools/image-enhancer">Image Enhancer</a>
+          </div>
+        </div>
+        <div class="footer-links"><h4>法律</h4><a href="/privacy">隐私政策</a><a href="/terms">服务条款</a><a href="/cookie-policy">Cookie 政策</a>
+        </div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. 保留所有权利. | <a href="https://comprimefotos.com/" rel="nofollow sponsored" style="color: var(--accent); font-weight: 500;">Español: ComprimeFotos — Comprimir Imágenes Online</a></p></div>
+    </div>
+  </footer>
 </body>
 </html>
 

@@ -3,29 +3,174 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GIF 压缩 — 在线压缩动图文件体积</title>
-<meta name="description" content="免费在线 GIF 压缩工具。即时减小动图文件体积，方便发社交媒体和聊天。100% 本地处理，无需上传。">
+<title>GIF 压缩 — 在线减小动图体积，本地处理</title>
+<meta name="description" content="免费在线 GIF 压缩工具：通过降低分辨率与帧率减小动图体积，显示压缩前后大小与节省比例。浏览器本地处理，不上传文件。">
 <link rel="canonical" href="https://smartimgkit.com/zh/tools/gif-compressor">
 <link rel="stylesheet" href="/css/style.css?v=12">
+
+<style>
+  .tool-box{background:var(--bg-card,rgba(255,255,255,.04));border:1px solid var(--border-color,rgba(255,255,255,.08));border-radius:14px;padding:20px;margin:22px 0}
+  .tool-box .upload-area{background:transparent!important;color:var(--text-primary,#ededed);border:2px dashed var(--border-color,rgba(255,255,255,.15));border-radius:12px;padding:34px 18px;text-align:center;cursor:pointer;transition:.2s}
+  .tool-box .upload-area:hover{border-color:var(--accent,#6366f1)}
+  .tool-box .controls{display:flex;flex-direction:column;gap:12px;margin:16px 0}
+  .tool-box .controls label{display:flex;align-items:center;gap:10px;font-size:.9rem;color:var(--text-secondary,#a1a1aa);flex-wrap:wrap}
+  .tool-box input[type=text],.tool-box select{background:var(--bg-secondary,#1a1a24);border:1px solid var(--border-color,rgba(255,255,255,.12));border-radius:9px;padding:9px 12px;color:inherit;font-size:.9rem;min-width:200px}
+  .tool-box input[type=range]{flex:1;min-width:150px;accent-color:var(--accent,#6366f1)}
+  .tool-box .result{margin:16px 0;font-size:.9rem;color:var(--text-secondary,#a1a1aa);line-height:1.9}
+  .tool-box .result span{color:var(--text-primary,#ededed);font-variant-numeric:tabular-nums}
+  .tool-box pre{background:var(--bg-secondary,#0f0f16);border:1px solid var(--border-color,rgba(255,255,255,.08));border-radius:10px;padding:14px;overflow:auto;max-height:420px;font-size:8px;line-height:1;color:#9fe0b0;margin-top:14px}
+  .tool-box button{background:var(--accent,#6366f1);color:#fff;border:0;border-radius:10px;padding:10px 20px;font-size:.92rem;cursor:pointer;margin-right:8px}
+  .tool-box button.secondary{background:transparent;border:1px solid var(--border-color,rgba(255,255,255,.15));color:inherit}
+  .tool-box button:disabled{opacity:.5;cursor:not-allowed}
+  .detail-sec{margin:34px 0}
+  .detail-sec h2{font-size:1.28rem;margin-bottom:12px}
+  .detail-sec p{line-height:1.85;margin-bottom:12px;color:var(--text-secondary,#a1a1aa)}
+</style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "GIF 压缩工具",
+  "url": "https://smartimgkit.com/zh/tools/gif-compressor",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "CNY"
+  },
+  "description": "免费在线 GIF 压缩工具：通过降低分辨率与帧率减小动图体积，显示压缩前后大小与节省比例。浏览器本地处理，不上传文件。"
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "GIF 压缩会损失画质吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "会。压缩的原理就是降低分辨率和帧率，属于有损处理，压得越狠画面越糊、动作越顿。工具会显示压缩前后的体积和节省比例，方便你在体积和观感之间找平衡点。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "压缩后动图的透明背景还在吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "GIF 的透明是单色透明（一个像素要么全透明要么全不透明），重新编码后透明区域会保留，但边缘可能出现一圈锯齿或杂边。需要平滑的透明效果，应该用带 alpha 通道的 WebP 或 PNG 序列。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "压缩后循环播放的设置会丢吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "GIF 的循环次数写在文件头里。重新编码时如果没显式写入，播放器会按默认无限循环处理，观感和原来基本一致。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么我的 GIF 压缩后还是很大？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "多半是原始尺寸和时长都太大。GIF 的体积大致正比于“分辨率 × 帧数”，5 秒 30fps 就是 150 帧。这种情况继续压 GIF 收益有限，换成 WebP 动图或直接发 MP4 更实际。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "能一次压缩多个 GIF 吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "目前一次处理一张，方便你逐张确认画质。批量需求可以先用站内的批量处理器统一缩尺寸，再逐张压到目标体积。"
+      }
+    }
+  ]
+}
+  </script>
 </head>
 <body>
 <header class="site-header">
-<a href="/zh/" class="logo">SmartImgKit</a>
-<nav><a href="/zh/tools/">全部工具</a><a href="/zh/blog/">博客</a></nav>
-</header>
-<main class="container">
-<h1>GIF 压缩工具</h1>
-<p class="lead">压缩动图 GIF 文件体积，方便发布到社交媒体和聊天工具，全程本地处理，无需上传。</p>
+    <div class="container header-inner">
+      <a href="/zh/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/zh/">首页</a><a href="/zh/tools/">工具</a><a href="/zh/workflows/">工作流</a><a href="/zh/blog/">博客</a><a href="/about">关于</a><a href="/contact">联系我们</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Switch language">🇨🇳 中文</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+            <a href="/fr/" hreflang="fr" lang="fr">🇫🇷 Français</a>
+            <a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a>
+            <a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a>
+            <a href="/zh/" hreflang="zh" lang="zh">🇨🇳 中文</a>
+          </div>
+        </div>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>GIF 压缩工具</span></nav>
+      <div class="tool-page-header">
+        <h1>GIF 压缩工具</h1>
+        <p class="answer-lead">压缩 GIF 动图的文件体积：上传后工具会降低分辨率和帧率重新编码，并直接告诉你压缩前后的体积和节省比例。整个过程在浏览器里完成，动图不上传，适合把大 GIF 压到能发微信、能贴进网页的尺寸。</p>
+      </div>
+      <ul class="facts-strip">
+        <li><span class="f-k">处理方式</span><span class="f-v">浏览器本地，不上传</span></li>
+        <li><span class="f-k">压缩手段</span><span class="f-v">降分辨率 + 降帧率</span></li>
+        <li><span class="f-k">显示</span><span class="f-v">原始/压缩后体积、节省比例</span></li>
+        <li><span class="f-k">输出</span><span class="f-v">GIF</span></li>
+      </ul>
+      <div class="tool-box">
 <div class="upload-area" id="dropZone">
 <p>在这里上传你的 GIF 动图</p>
 <input type="file" id="fileInput" accept=".gif,image/gif" hidden>
 </div>
 <div class="result" style="margin:1rem 0;">
-<p>Original size: <span id="origSize">-</span></p>
-<button id="downloadBtn" class="primary">Download Compressed GIF</button>
+<p>原始大小： <span id="origSize">-</span></p>
+<button id="downloadBtn" class="primary">下载压缩后的 GIF</button>
 </div>
 <p style="font-size:0.9rem;opacity:0.7;">注意：GIF 压缩会通过降低分辨率和帧率来减小文件体积。</p>
-</main>
+      </div>
+      <table class="compare-table">
+        <thead><tr><th></th><th>SmartImgKit</th><th>常见在线替代品</th></tr></thead>
+        <tbody>
+          <tr><th>文件去向</th><td>本机处理</td><td>需上传到服务器</td></tr>
+          <tr><th>结果透明度</th><td>直接显示压缩前后体积</td><td>多数只给下载不给数据</td></tr>
+          <tr><th>收费</th><td>免费，无水印</td><td>常见限 5MB 或加水印</td></tr>
+          <tr><th>批处理</th><td>单张精调</td><td>批量往往不可控</td></tr>
+        </tbody>
+      </table>
+      <section class="detail-sec">
+        <h2>GIF 为什么天生就大</h2>
+        <p>GIF 是 1987 年的格式，每帧最多 256 种颜色，而且帧与帧之间没有运动补偿——它只会记录“这一帧和上一帧哪些像素变了”，遇到摄影类画面（渐变、噪点、光影过渡）几乎每个像素都在变，等于每帧都在存整幅图。</p>
+        <p>所以一段 5 秒、480p 的实拍 GIF 很容易到 5–15MB，而同样内容的 MP4 通常只有它的十分之一。这不是压缩工具不行，是格式本身的效率上限。</p>
+        <p>压缩 GIF 只有两条路：减少像素（降分辨率）或减少帧（降帧率）。颜色数也能降，但 GIF 本来就只有 256 色，再降会出现明显色带，观感崩得比前两者快。</p>
+      </section>
+      <section class="detail-sec">
+        <h2>压缩时该牺牲分辨率还是帧率</h2>
+        <p>优先降分辨率。人对“画面糊”的容忍度远高于“动作卡”，而且 GIF 大多在手机上看，屏幕本身就小，从 800px 降到 480px 肉眼差别有限，体积却掉一半以上。</p>
+        <p>帧率要谨慎降。30fps 降到 15fps 体积能省近一半，但快速动作（甩头、挥手、镜头平移）会明显一顿一顿。表情包、慢动作演示降到 12–15fps 通常可以接受；游戏录屏、舞蹈视频建议守住 20fps 以上。</p>
+        <p>如果压到 15fps、480px 还是超过目标体积，说明选错格式了。微信、主流浏览器、大部分社交平台现在都支持 WebP 动图甚至直接发视频，同样观感下 WebP 动图体积通常只有 GIF 的三到五成。GIF 的意义主要在于兼容性，不是效率。</p>
+      </section>
+
+      <section class="faq-section">
+        <h2>常见问题</h2>
+        <div class="faq-item"><button class="faq-question">GIF 压缩会损失画质吗？</button><div class="faq-answer">会。压缩的原理就是降低分辨率和帧率，属于有损处理，压得越狠画面越糊、动作越顿。工具会显示压缩前后的体积和节省比例，方便你在体积和观感之间找平衡点。</div></div>
+        <div class="faq-item"><button class="faq-question">压缩后动图的透明背景还在吗？</button><div class="faq-answer">GIF 的透明是单色透明（一个像素要么全透明要么全不透明），重新编码后透明区域会保留，但边缘可能出现一圈锯齿或杂边。需要平滑的透明效果，应该用带 alpha 通道的 WebP 或 PNG 序列。</div></div>
+        <div class="faq-item"><button class="faq-question">压缩后循环播放的设置会丢吗？</button><div class="faq-answer">GIF 的循环次数写在文件头里。重新编码时如果没显式写入，播放器会按默认无限循环处理，观感和原来基本一致。</div></div>
+        <div class="faq-item"><button class="faq-question">为什么我的 GIF 压缩后还是很大？</button><div class="faq-answer">多半是原始尺寸和时长都太大。GIF 的体积大致正比于“分辨率 × 帧数”，5 秒 30fps 就是 150 帧。这种情况继续压 GIF 收益有限，换成 WebP 动图或直接发 MP4 更实际。</div></div>
+        <div class="faq-item"><button class="faq-question">能一次压缩多个 GIF 吗？</button><div class="faq-answer">目前一次处理一张，方便你逐张确认画质。批量需求可以先用站内的批量处理器统一缩尺寸，再逐张压到目标体积。</div></div>
+      </section>
+
+    </div>
+  </main>
 <script>
 let compressedBlob = null;
 document.getElementById('dropZone').onclick = () => document.getElementById('fileInput').click();
@@ -41,6 +186,38 @@ a.href = URL.createObjectURL(compressedBlob);
 a.click();
 };
 </script>
+<footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="/zh/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>尊重您隐私的免费 AI 图像工具。</p></div>
+        <div class="footer-links footer-links-multi"><h4>工具</h4><a href="/zh/tools/background-remover">Background Remover</a><a href="/zh/tools/compressor">Compressor</a><a href="/zh/tools/converter">Converter</a><a href="/zh/tools/resizer">Resizer</a>
+          <a href="/zh/tools/gif-editor">GIF Editor</a>
+          <a href="/zh/tools/pdf-to-image">PDF to Image</a>
+        </div>
+        <div class="footer-links footer-links-multi"><h4>更多工具</h4>
+          <div class="footer-links-list">
+          <a href="/zh/tools/cropper">Cropper</a><a href="/zh/tools/watermark">Watermark</a><a href="/zh/tools/image-merger">Image Merger</a><a href="/zh/tools/screenshot-to-image">Screenshot to Image</a><a href="/zh/tools/image-filters">Image Filters</a><a href="/zh/tools/svg-to-png">SVG to PNG</a><a href="/zh/tools/image-compare">Image Compare</a><a href="/zh/tools/print-resizer">Print-Ready Resizer</a><a href="/zh/tools/meme-generator">Meme Generator</a>          <a href="/zh/tools/face-blur">Face Blur</a>
+          <a href="/zh/tools/heic-converter">HEIC Converter</a>
+          <a href="/zh/tools/metadata-viewer">Metadata Viewer</a>
+          <a href="/zh/tools/avif-support">AVIF Support</a>
+          <a href="/zh/tools/image-adjust">Image Adjustment</a>
+          <a href="/zh/tools/image-border">Image Border</a>
+          <a href="/zh/tools/image-flip">Image Flip</a>
+          <a href="/zh/tools/image-grayscale">Image Grayscale</a>
+          <a href="/zh/tools/image-shadow">Image Shadow</a>
+          <a href="/zh/tools/image-splitter">Image Splitter</a>
+          <a href="/zh/tools/image-exif-remover">EXIF Remover</a><a href="/zh/tools/circle-crop">Circle Crop</a><a href="/zh/tools/favicon-generator">Favicon Generator</a><a href="/zh/tools/ocr">OCR Text</a><a href="/zh/tools/bulk-processor">Bulk Processor</a><a href="/zh/tools/image-to-pdf">Image to PDF</a>          <a href="/zh/tools/id-photo">ID Photo Maker</a>
+          <a href="/zh/tools/product-white-background">Product White BG</a>
+          <a href="/zh/tools/social-media-post">Social Media Post</a>
+          <a href="/zh/tools/photo-restoration">Photo Restoration</a><a href="/zh/tools/image-enhancer">Image Enhancer</a>
+          </div>
+        </div>
+        <div class="footer-links"><h4>法律</h4><a href="/privacy">隐私政策</a><a href="/terms">服务条款</a><a href="/cookie-policy">Cookie 政策</a>
+        </div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. 保留所有权利. | <a href="https://comprimefotos.com/" rel="nofollow sponsored" style="color: var(--accent); font-weight: 500;">Español: ComprimeFotos — Comprimir Imágenes Online</a></p></div>
+    </div>
+  </footer>
 </body>
 </html>
 
