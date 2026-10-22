@@ -39,12 +39,12 @@
 
 <style id="enrich-css">
 .selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
-.sp-item{display:flex;align-items:center;gap:8px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:999px;padding:8px 16px;font-size:0.85rem;color:var(--text-secondary);font-weight:500}
+.sp-item{display:flex;align-items:center;gap:8px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:999px;padding:8px 16px;font-size:0.85rem;color:var(--text-secondary);font-weight:500}
 .sp-item span.sp-icon{font-size:1rem}
 .feature-narrative{margin:2.5rem 0;padding:0 1rem}
 .feature-narrative h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
 .feature-narrative .fn-intro{text-align:center;max-width:680px;margin:0 auto 2rem;color:var(--text-secondary);font-size:1rem;line-height:1.6}
-.fn-block{display:flex;gap:1.5rem;align-items:flex-start;margin:1.5rem 0;padding:1.25rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.fn-block{display:flex;gap:1.5rem;align-items:flex-start;margin:1.5rem 0;padding:1.25rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border-color)}
 .fn-block .fn-icon{font-size:2rem;flex-shrink:0;line-height:1}
 .fn-block h3{font-size:1.05rem;color:var(--text-primary);margin:0 0 0.4rem}
 .fn-block p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin:0}
@@ -52,17 +52,59 @@
 .features-grid-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
 .features-grid-section .fg-sub{text-align:center;color:var(--text-secondary);font-size:0.95rem;margin-bottom:2rem}
 .features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;max-width:1000px;margin:0 auto}
-.feature-card{background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;padding:1.25rem;transition:transform .2s,border-color .2s}
+.feature-card{background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:1.25rem;transition:transform .2s,border-color .2s}
 .feature-card:hover{transform:translateY(-2px);border-color:var(--accent)}
 .feature-card .fc-icon{font-size:1.8rem;margin-bottom:0.5rem}
 .feature-card h3{font-size:1rem;color:var(--text-primary);margin:0 0 0.4rem}
 .feature-card p{color:var(--text-secondary);font-size:0.85rem;line-height:1.5;margin:0}
-.trust-badges{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:2rem 0;padding:1.5rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.trust-badges{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:2rem 0;padding:1.5rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border-color)}
 .trust-badge{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;min-width:120px}
 .trust-badge .tb-icon{font-size:1.6rem}
 .trust-badge .tb-title{font-size:0.85rem;font-weight:700;color:var(--text-primary)}
 .trust-badge .tb-desc{font-size:0.72rem;color:var(--text-secondary)}
 @media(max-width:640px){.fn-block{flex-direction:column}.features-grid{grid-template-columns:1fr}.trust-badges{gap:12px}.trust-badge{min-width:90px}}
+/* answer block + quick facts (first screen, AI-extractable) */
+.tool-page-header .answer-lead{max-width:760px;margin:0 auto;font-size:1.02rem;line-height:1.65;color:var(--text-secondary)}
+.facts-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:760px;margin:1.3rem auto 0;padding:0;list-style:none}
+.facts-strip li{background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:10px;padding:.7rem .5rem;text-align:center}
+.facts-strip .f-k{display:block;font-size:.7rem;letter-spacing:.04em;text-transform:uppercase;color:var(--text-secondary);margin-bottom:3px}
+.facts-strip .f-v{display:block;font-size:.86rem;font-weight:600;color:var(--text-primary)}
+.compare-table{width:100%;max-width:800px;margin:0 auto;border-collapse:collapse;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;overflow:hidden;font-size:.9rem}
+.compare-table th,.compare-table td{padding:.7rem .9rem;text-align:left;border-bottom:1px solid var(--border-color)}
+.compare-table thead th{font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;color:var(--text-secondary);font-weight:600}
+.compare-table tbody tr:last-child th,.compare-table tbody tr:last-child td{border-bottom:none}
+.compare-table tbody th{font-weight:500;color:var(--text-secondary)}
+.compare-table .col-ours{color:var(--text-primary);font-weight:600}
+@media(max-width:640px){.facts-strip{grid-template-columns:repeat(2,1fr)}.compare-table{font-size:.82rem}.compare-table th,.compare-table td{padding:.55rem .6rem}}
+/* tool workspace: classes below were never defined in either stylesheet */
+.id-photo-layout{display:grid;grid-template-columns:minmax(280px,340px) 1fr;gap:18px;align-items:start}
+.id-photo-sidebar{display:flex;flex-direction:column;gap:12px}
+.id-photo-canvas-area{display:flex;flex-direction:column;gap:10px}
+.preview-box{display:flex;align-items:center;justify-content:center;min-height:320px;padding:16px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px}
+.preview-box canvas{max-width:100%;height:auto;border-radius:8px}
+.card{background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:14px}
+.card h3{margin:0 0 10px;font-size:.9rem;font-weight:600;color:var(--text-primary)}
+.country-list{display:flex;flex-direction:column;gap:4px;max-height:300px;overflow-y:auto;padding-right:2px}
+.country-btn{display:block;width:100%;padding:7px 10px;font-family:inherit;font-size:.82rem;line-height:1.35;text-align:left;color:var(--text-primary);background:var(--bg-primary);border:1px solid var(--border-color);border-radius:8px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.country-btn:hover{border-color:var(--accent)}
+.country-btn.active{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);font-weight:600}
+.size-detail{margin-top:10px;padding:8px 10px;font-size:.78rem;line-height:1.5;color:var(--text-secondary);background:var(--bg-primary);border-radius:8px}
+.custom-size-row{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:.78rem;flex-wrap:wrap;color:var(--text-secondary)}
+.bg-presets{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.bg-preset-btn{width:30px;height:30px;padding:0;border-radius:50%;border:2px solid var(--border-color);cursor:pointer}
+.bg-preset-btn.white{background:#ffffff}
+.bg-preset-btn.blue{background:#3b82f6}
+.bg-preset-btn.red{background:#ef4444}
+.bg-preset-btn.gray{background:#9ca3af}
+.bg-preset-btn.green{background:#22c55e}
+.bg-preset-btn.active{box-shadow:0 0 0 2px var(--accent);border-color:transparent}
+.btn-group{display:flex;gap:8px;flex-wrap:wrap}
+.btn-group .btn{flex:1 1 auto}
+.progress-bar{height:6px;background:var(--bg-secondary);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:var(--accent);transition:width .3s}
+.status-msg{min-height:18px;font-size:.78rem;color:var(--text-secondary)}
+.print-info{padding:10px 12px;font-size:.78rem;line-height:1.55;color:var(--text-secondary);background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:10px}
+@media(max-width:900px){.id-photo-layout{grid-template-columns:1fr}}
 </style>
 <meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
@@ -79,7 +121,89 @@
     "price": "0",
     "priceCurrency": "USD"
   },
+  "url": "https://smartimgkit.com/tools/id-photo",
+  "featureList": "30+ country ID photo standards, auto-crop to official sizes, AI background removal, white/blue/red background, 300 DPI print-ready PNG, custom sizes",
   "browserRequirements": "Requires JavaScript. Runs in modern browsers."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is this ID photo maker really free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — completely free with no usage limits, no watermarks, and no registration required. All processing runs in your browser using WebAssembly technology, so your data never leaves your device."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use this for official passport applications?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The tool produces photos meeting the size, aspect ratio, and background color requirements of most countries. Double-check your specific country's passport photo guidelines before submitting, as some countries have strict rules about photo paper type, ink quality, and whether the photo can be self-printed."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does the AI background removal work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It uses the imgly background removal model, a neural network running entirely in your browser via WebAssembly and ONNX runtime. Processing happens locally on your device, so your photo never leaves your computer."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What file format and resolution does the output use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A high-resolution PNG rendered at 300 DPI. Dimensions match the selected country standard — for example, a US passport photo (51×51 mm at 300 DPI) is 602×602 pixels. Suitable for both digital uploads and printing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What size is a Schengen visa photo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "35 × 45 mm on a light background. Every Schengen country uses this same standard — Slovakia, Czechia, Austria, Poland, Hungary, Germany, France, Italy, Spain, and the Netherlands included — so one 35 × 45 mm photo works for a Schengen visa, a residence permit, or a national ID."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you offer the country standard I need?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The tool supports 30+ countries and all major ID photo sizes. If your country or document type is not listed, select Custom Size and enter the width and height in millimeters."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I make multiple ID photos for different countries?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. You can select different countries and photo types, change background colors, and generate as many versions as you need from the same uploaded photo, with no limits."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What size is a US passport photo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "2 × 2 inches (51 × 51 mm) on a plain white background — 602 × 602 pixels at 300 DPI. The same size applies to US visas, the Green Card, and most US driver licenses."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I print my ID photo at a pharmacy or photo kiosk?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The export is a 300 DPI PNG sized to your selected country standard. Choose the print-sheet layout and 4 × 6 inch (10 × 15 cm) paper to arrange multiple copies on one sheet, the same way a studio print does."
+      }
+    }
+  ]
 }
 </script>
 </head>
@@ -113,7 +237,13 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span></span></nav>
       <div class="tool-page-header">
         <h1>📸 ID Photo Maker — Passport, Visa & ID Photos</h1>
-        <p>Make passport, visa, and ID photos at home in 30+ country standards — auto-crop, background swap, and print-ready sheets. No upload, no signup.</p>
+        <p class="answer-lead">ID Photo Maker is a free online tool that turns any portrait into a compliant passport, visa, or ID photo in 30+ country standards — including the 2 × 2 inch US passport photo and the 35 × 45 mm Schengen photo used across Europe. It auto-crops to the exact official size, swaps the background to white, blue, or red, and renders a 300 DPI print-ready sheet. Everything runs inside your browser: no upload, no signup, no watermark.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Country sizes</span><span class="f-v">30+ standards</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">300 DPI PNG</span></li>
+          <li><span class="f-k">Price</span><span class="f-v">Free, no watermark</span></li>
+          <li><span class="f-k">Privacy</span><span class="f-v">Never uploaded</span></li>
+        </ul>
       </div>
       <div class="tool-workspace">
 <div class="id-photo-layout">
@@ -209,7 +339,7 @@
           <li><strong>🇺🇸 US Passport</strong> — 2 × 2 inches (51 × 51 mm), white background. Same size for US Visa, Green Card, and Driver License.</li>
           <li><strong>🇬🇧 UK Passport</strong> — 35 × 45 mm, light gray background. UK Visa and BRP use 35 × 45 mm with white background.</li>
           <li><strong>🇨🇳 China Passport</strong> — 33 × 48 mm, white background. China ID Card 26 × 32 mm (white or blue for 2nd Gen), Driver License 22 × 32 mm.</li>
-          <li><strong>🇪🇺 Schengen Visa</strong> — 35 × 45 mm, light background. Same size for Germany, France, Italy, Spain, and Netherlands passports.</li>
+          <li><strong>🇪🇺 Schengen Visa</strong> — 35 × 45 mm, light background. The same 35 × 45 mm size is used for Slovakia, Czechia, Austria, Poland, Hungary, Germany, France, Italy, Spain, and Netherlands passports — one photo covers every Schengen country, for visas, residence permits, and national IDs alike.</li>
           <li><strong>🇮🇳 India Passport</strong> — 35 × 50 mm, white background. Aadhaar is 35 × 35 mm square, PAN Card is 25 × 25 mm.</li>
           <li><strong>🇨🇦 Canada Passport</strong> — 50 × 70 mm, white background (larger than most). Canada Visa is 35 × 45 mm.</li>
           <li><strong>🇯🇵 Japan Passport</strong> — 35 × 45 mm, white background. Japan Visa uses the same dimensions.</li>
@@ -300,31 +430,43 @@
         <div class="faq-item"><button class="faq-question">Can I use this for official passport applications?</button><div class="faq-answer">The tool produces photos meeting the size, aspect ratio, and background color requirements of most countries. However, we recommend double-checking your specific country's passport photo guidelines before submitting, as requirements can vary by issuing office. Some countries have strict rules about photo paper type, ink quality, border thickness, and whether the photo can be self-printed versus professionally printed.</div></div>
         <div class="faq-item"><button class="faq-question">How does the AI background removal work?</button><div class="faq-answer">It uses the imgly background removal model — a state-of-the-art AI neural network that runs entirely in your browser via WebAssembly and ONNX runtime. The AI has been trained on millions of images to accurately detect and separate human subjects from backgrounds. Processing happens locally on your device, so your photo never leaves your computer. No data is sent to any external server.</div></div>
         <div class="faq-item"><button class="faq-question">What file format and resolution does the output use?</button><div class="faq-answer">The output is a high-resolution PNG file rendered at 300 DPI (dots per inch). PNG format ensures lossless quality and preserves fine details needed for official ID photos. The dimensions match the selected country standard at 300 DPI — for example, a US passport photo (51×51 mm at 300 DPI) is 602×602 pixels. The file is suitable for both digital uploads to online application portals and for printing at any photo kiosk or home printer.</div></div>
+        <div class="faq-item"><button class="faq-question">What size is a Schengen visa photo?</button><div class="faq-answer">35 × 45 mm on a light background. Every Schengen country uses this same standard — Slovakia, Czechia, Austria, Poland, Hungary, Germany, France, Italy, Spain, and the Netherlands included — so one 35 × 45 mm photo works for a Schengen visa, a residence permit, or a Slovak, Czech, or Austrian national ID. Select "Schengen Visa" in the country list and the tool crops to exactly 35 × 45 mm at 300 DPI.</div></div>
         <div class="faq-item"><button class="faq-question">Do you offer the country standard I need?</button><div class="faq-answer">We currently support 30+ countries and all major ID photo sizes. If your specific country or document type is not listed, select the "Custom Size" option at the bottom of the country list and enter the width and height in millimeters. The tool will crop and render at your custom dimensions with the selected background color.</div></div>
         <div class="faq-item"><button class="faq-question">Can I make multiple ID photos for different countries?</button><div class="faq-answer">Absolutely. You can select different countries and photo types, change background colors, and generate as many versions as you need — all from the same uploaded photo. Each generation creates a new output with the selected country standards and background color. There are no limits on the number of photos you can generate.</div></div>
+        <div class="faq-item"><button class="faq-question">What size is a US passport photo?</button><div class="faq-answer">2 × 2 inches (51 × 51 mm) on a plain white background. Rendered at 300 DPI that is 602 × 602 pixels. The same 2 × 2 inch size applies to US visas, the Green Card, and most US driver licenses. Select "US Passport" in the country list and the tool produces a print-ready 2 × 2 inch photo automatically.</div></div>
+        <div class="faq-item"><button class="faq-question">Can I print my ID photo at a pharmacy or photo kiosk?</button><div class="faq-answer">Yes. The export is a 300 DPI PNG sized to your selected country standard, so it prints sharply at any photo kiosk, pharmacy printing counter, or home printer. Choose the print-sheet layout and 4 × 6 inch (10 × 15 cm) paper — it arranges multiple copies of your photo on one sheet, the same way a studio print does.</div></div>
 
-      <div class="faq-item"><button class="faq-question">What ID sizes are supported?</button><div class="faq-answer">Passport, visa, and common national ID dimensions.</div></div>
-<div class="faq-item"><button class="faq-question">Can I change the background color?</button><div class="faq-answer">Yes — white, blue, and red background options.</div></div>
-<div class="faq-item"><button class="faq-question">Does AI processing happen on a server?</button><div class="faq-answer">No. The AI models run entirely in your browser using WebAssembly and WebGL.</div></div>
-<div class="faq-item"><button class="faq-question">What if the result is not perfect?</button><div class="faq-answer">AI enhancement is a starting point — use the Edit tools for fine-tuning.</div></div>
       </section>
     </div>
 
       <section class="feature-narrative">
         <h2>ID Photo Maker: Create ID photos with correct sizes and backgrounds</h2>
-        <p class="fn-intro">ID Photo Maker lets you create id photos with correct sizes and backgrounds. Upload a portrait photo and get a compliant ID photo — all processed locally in your browser, with no uploads and no sign-up.</p>
+        <p class="fn-intro">Most people need an ID photo exactly once per document, which makes a paid studio visit hard to justify. ID Photo Maker covers the same job in the browser: official sizes for 30+ countries, AI background removal, and a 300 DPI export ready for both digital uploads and printing.</p>
       <div class="fn-block">
         <div class="fn-icon">⚡</div>
-        <div><h3>Make passport photos at home</h3><p>Make passport photos at home. This is one of the most common reasons people reach for ID Photo Maker — and it handles the job in seconds, entirely in your browser.</p></div>
+        <div><h3>Make passport photos at home</h3><p>Instead of booking a studio appointment, upload any portrait taken against a plain wall, pick your country standard, and get a print-ready passport photo in seconds. The auto-crop aligns head position and proportions to the official specification, so the result passes size checks at first try.</p></div>
       </div>
       <div class="fn-block">
         <div class="fn-icon">🎯</div>
-        <div><h3>Generate visa-size photos</h3><p>Generate visa-size photos. This is one of the most common reasons people reach for ID Photo Maker — and it handles the job in seconds, entirely in your browser.</p></div>
+        <div><h3>Generate visa-size photos</h3><p>Visa requirements differ from passport requirements even within the same country — a US visa is 2 × 2 inches while a Schengen visa is 35 × 45 mm. Select the exact document type from the country list and the tool applies the matching dimensions and background color automatically.</p></div>
       </div>
       <div class="fn-block">
         <div class="fn-icon">🔒</div>
-        <div><h3>Create student or employee ID photos</h3><p>Create student or employee ID photos. This is one of the most common reasons people reach for ID Photo Maker — and it handles the job in seconds, entirely in your browser.</p></div>
+        <div><h3>Create student or employee ID photos</h3><p>Universities, employers, and transit cards each specify their own photo sizes. Use the Custom Size option to enter any width and height in millimeters, choose the required background color, and export a compliant photo without hunting for a photographer.</p></div>
       </div>
+
+        <h2>Free ID photo maker vs. typical alternatives</h2>
+        <table class="compare-table">
+          <thead>
+            <tr><th scope="col"></th><th scope="col">This ID photo maker</th><th scope="col">Typical alternative</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Price</th><td class="col-ours">Free, unlimited photos</td><td>$10–15 per sheet at a studio; free tiers watermark exports</td></tr>
+            <tr><th scope="row">Country sizes</th><td class="col-ours">30+ standards, incl. US 2 × 2 in and Schengen 35 × 45 mm</td><td>Often 3–5 presets or one local standard only</td></tr>
+            <tr><th scope="row">Background</th><td class="col-ours">AI removal with 5 preset colors</td><td>Manual cropping, single background</td></tr>
+            <tr><th scope="row">Where photos go</th><td class="col-ours">Stays in your browser</td><td>Uploaded to a server or taken in person</td></tr>
+          </tbody>
+        </table>
       </section>
 
       <section class="features-grid-section">
