@@ -99,6 +99,74 @@
 }
 </script>
 <style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+<style>
+.merger-workspace { display: flex; gap: 24px; flex-wrap: wrap; }
+        .merger-sidebar { flex: 0 0 280px; display: flex; flex-direction: column; gap: 16px; }
+        .merger-canvas-area { flex: 1; min-width: 300px; }
+
+        .image-list { display: flex; flex-direction: column; gap: 8px; max-height: 360px; overflow-y: auto; padding: 4px; }
+        .image-list-item {
+          display: flex; align-items: center; gap: 10px; padding: 8px 10px;
+          background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px;
+          cursor: grab; transition: box-shadow .2s, transform .15s;
+        }
+        .image-list-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,.2); }
+        .image-list-item.dragging { opacity: 0.5; transform: scale(0.96); }
+        .image-list-item.drag-over { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+        .image-list-item img { width: 48px; height: 48px; object-fit: cover; border-radius: 4px; flex-shrink: 0; }
+        .image-list-item .item-info { flex: 1; min-width: 0; }
+        .image-list-item .item-name { font-size: .8rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .image-list-item .item-size { font-size: .7rem; color: var(--text-secondary); }
+        .image-list-item .item-remove {
+          background: none; border: none; color: var(--text-secondary); cursor: pointer;
+          font-size: 1.1rem; padding: 4px; line-height: 1; border-radius: 4px; transition: background .2s;
+        }
+        .image-list-item .item-remove:hover { background: rgba(255,60,60,.2); color: #ff3c3c; }
+
+        .control-group { display: flex; flex-direction: column; gap: 6px; }
+        .control-group label { font-size: .8rem; color: var(--text-secondary); font-weight: 500; }
+        .control-group select, .control-group input[type="number"] {
+          padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px;
+          background: var(--bg-primary); color: var(--text-primary); font-size: .85rem;
+        }
+        .control-group input[type="color"] {
+          width: 100%; height: 36px; border: 1px solid var(--border); border-radius: 6px;
+          background: var(--bg-primary); cursor: pointer; padding: 2px;
+        }
+        .control-group input[type="range"] { width: 100%; }
+
+        .layout-btns { display: flex; gap: 6px; }
+        .layout-btn {
+          flex: 1; padding: 8px 4px; border: 2px solid var(--border); border-radius: 8px;
+          background: var(--bg-primary); color: var(--text-secondary); cursor: pointer;
+          text-align: center; font-size: .75rem; transition: all .2s; display: flex;
+          flex-direction: column; align-items: center; gap: 4px;
+        }
+        .layout-btn:hover { border-color: var(--accent); color: var(--text-primary); }
+        .layout-btn.active { border-color: var(--accent); background: rgba(99,102,241,.1); color: var(--accent); }
+        .layout-btn .layout-icon { font-size: 1.3rem; }
+
+        .canvas-wrapper {
+          background: repeating-conic-gradient(var(--bg-secondary) 0% 25%, var(--bg-primary) 0% 50%) 50% / 20px 20px;
+          border: 1px solid var(--border); border-radius: 12px; padding: 16px;
+          display: flex; align-items: center; justify-content: center; min-height: 300px;
+          overflow: auto;
+        }
+        .canvas-wrapper canvas { max-width: 100%; max-height: 500px; min-width:0; flex:0 1 auto; border-radius: 4px; }
+
+        .add-more-btn {
+          display: flex; align-items: center; justify-content: center; gap: 6px;
+          padding: 10px; border: 2px dashed var(--border); border-radius: 8px;
+          background: none; color: var(--text-secondary); cursor: pointer;
+          font-size: .85rem; transition: all .2s; width: 100%;
+        }
+        .add-more-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+        @media (max-width: 768px) {
+          .merger-workspace { flex-direction: column; }
+          .merger-sidebar { flex: none; width: 100%; }
+        }
+</style>
 
 <meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
@@ -152,10 +220,10 @@
               <div class="before-after-item-caption after">After — processed</div>
             </div>
           </div>
-        </div>        <input type="file" id="fileInput" accept="image/*" style="display:none;">
+        </div>        <input type="file" id="fileInput" accept="image/*" multiple style="display:none;">
       <label for="fileInput" class="dropzone" id="dropzone">
         <div class="dropzone-icon">📤</div>
-        <h3>Drop images here</h3>
+        <h3>Arraste as imagens aqui</h3>
         <p>ou clique para selecionar</p>
       </label>
 
@@ -165,11 +233,11 @@
           <!-- Sidebar -->
           <div class="merger-sidebar">
             <div class="control-group">
-              <label>Layout Mode</label>
+              <label>Modo de layout</label>
               <div class="layout-btns">
                 <button class="layout-btn active" data-layout="grid">
                   <span class="layout-icon">▦</span>
-                  Grid
+                  Grade
                 </button>
                 <button class="layout-btn" data-layout="horizontal">
                   <span class="layout-icon">▭</span>
@@ -183,9 +251,9 @@
             </div>
 
             <div class="control-group" id="colsGroup">
-              <label>Columns <span id="colsValue">auto</span></label>
+              <label>Colunas <span id="colsValue">auto</span></label>
               <select id="colsSelect">
-                <option value="auto">Auto</option>
+                <option value="auto">Automático</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
@@ -194,17 +262,17 @@
             </div>
 
             <div class="control-group">
-              <label>Spacing: <span id="spacingValue">8</span>px</label>
+              <label>Espaçamento: <span id="spacingValue">8</span>px</label>
               <input type="range" id="spacingSlider" min="0" max="40" value="8">
             </div>
 
             <div class="control-group">
-              <label>Border Radius: <span id="radiusValue">0</span>px</label>
+              <label>Raio da borda: <span id="radiusValue">0</span>px</label>
               <input type="range" id="radiusSlider" min="0" max="30" value="0">
             </div>
 
             <div class="control-group">
-              <label>Background Color</label>
+              <label>Cor de fundo</label>
               <input type="color" id="bgColor" value="#ffffff">
             </div>
 
@@ -218,15 +286,15 @@
             </div>
 
             <div class="control-group">
-              <label>Images (<span id="imageCount">0</span>)</label>
+              <label>Imagens (<span id="imageCount">0</span>)</label>
               <div class="image-list" id="imageList"></div>
-              <button class="add-more-btn" id="addMoreBtn">➕ Add More Images</button>
+              <button class="add-more-btn" id="addMoreBtn">➕ Adicionar mais imagens</button>
               <input type="file" id="addMoreInput" accept="image/*" multiple style="display:none;">
             </div>
 
             <div class="tool-actions" style="flex-direction:column">
-              <button class="btn btn-primary" id="mergeBtn">🖼️ Merge & Download</button>
-              <button class="btn btn-secondary" id="resetBtn">🔄 Start Over</button>
+              <button class="btn btn-primary" id="mergeBtn">🖼️ Unir e baixar</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Recomeçar</button>
             </div>
             <div id="status" class="text-center" style="color:var(--text-secondary);font-size:.85rem"></div>
           </div>
@@ -474,7 +542,7 @@
             <div class="item-name">${item.name}</div>
             <div class="item-size">${item.width} × ${item.height}</div>
           </div>
-          <button class="item-remove" data-idx="${idx}" title="Remove">&times;</button>
+          <button class="item-remove" data-idx="${idx}" title="Remover">&times;</button>
         `;
 
         // Drag reorder
@@ -629,7 +697,7 @@
     mergeBtn.addEventListener('click', async () => {
       if (images.length === 0) return;
       mergeBtn.disabled = true;
-      mergeBtn.textContent = '🔄 Merging...';
+      mergeBtn.textContent = '🔄 Unindo…';
       status.textContent = '';
 
       try {
@@ -637,14 +705,14 @@
         const quality = format === 'image/png' ? undefined : 0.92;
         const blob = await ImageUtils.canvasToBlob(previewCanvas, format, quality);
         const ext = format === 'image/png' ? 'png' : format === 'image/jpeg' ? 'jpg' : 'webp';
-        ImageUtils.download(blob, `merged-image.${ext}`);
-        status.textContent = '✅ Image merged and downloaded!';
+        ImageUtils.download(blob, `imagem-unida.${ext}`);
+        status.textContent = '✅ Imagem unida e baixada!';
       } catch (e) {
         status.textContent = '❌ Error: ' + e.message;
       }
 
       mergeBtn.disabled = false;
-      mergeBtn.textContent = '🖼️ Merge & Download';
+      mergeBtn.textContent = '🖼️ Unir e baixar';
     });
 
     // ===== Reset =====
