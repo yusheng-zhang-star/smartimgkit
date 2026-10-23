@@ -87,6 +87,12 @@
 <footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved.</p></div></div></footer>
 <script src="../../js/main.js?v=8"></script>
 <script src="/js/ad-loader.js?v=4"></script>
+<h2>用 Lighthouse 定位问题</h2>
+<p>别凭感觉优化。Chrome DevTools 跑一次 Lighthouse，看两个直接相关的指标：LCP（最大内容绘制，首页大图通常是元凶）和「高效使用图片格式」审计项。它会明确列出哪张图可以换格式、能省多少 KB，按清单从大到小改，一晚上就能看到分数变化。</p>
+<h2>格式选择的一棵决策树</h2>
+<p>照片类内容：首选 WebP（全浏览器支持），有精力再补 AVIF 版本。图标、logo、需要透明的：SVG 能用矢量就用矢量，位图则 PNG。动图：短动画优先考虑视频（MP4/WebM 比 GIF 小一个数量级），GIF 只做兜底。抓不准就 WebP + JPEG 双版本，用 picture 标签自动切换。</p>
+<h2>懒加载与尺寸声明</h2>
+<p>首屏之外的图片全部加 loading="lazy"（浏览器原生支持，一行属性）。同时给 img 写上宽高或用 aspect-ratio CSS，避免加载时布局跳动——CLS 恶化多数是图片没声明尺寸造成的。CDN 的图片瘦身参数（按宽度裁剪、自动转 WebP）是最后一层保险，配置一次全局生效。</p>
 <h2>常见问题</h2>
 <p><strong>网站图片优化的第一优先级是什么？</strong> 格式升级：把 JPEG/PNG 换成 WebP，同画质体积小 25-50%，这一步就能拿走大部分收益。</p>
 <p><strong>图片多大算太大？</strong> 经验值：首屏内容图 ≤200KB，其他正文图 ≤100KB，缩略图 ≤30KB。用 Lighthouse 看「高效图片格式」和体积建议。</p>
