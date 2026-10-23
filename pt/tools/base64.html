@@ -37,6 +37,18 @@
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Codificador Base64 — SmartImgKit",
+  "url": "https://smartimgkit.com/pt/tools/base64",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Converta imagens para Base64 e decodifique strings Base64 de volta para imagens — direto no navegador, com data URL pronto para HTML e CSS."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
     {
@@ -113,8 +125,8 @@
       </div>
       <div class="tool-workspace">
 <div style="text-align:center;margin-bottom:16px">
-          <button class="tab-btn active" id="encodeTab">Image → Base64</button>
-          <button class="tab-btn" id="decodeTab">Base64 → Image</button>
+          <button class="tab-btn active" id="encodeTab">Imagem → Base64</button>
+          <button class="tab-btn" id="decodeTab">Base64 → Imagem</button>
         </div>
 
         <div id="encodePanel">
@@ -129,15 +141,15 @@
             <div class="preview-container"><img id="previewImg" alt="Pré-visualizar"></div>
             <p id="fileInfo" style="text-align:center;color:var(--text-secondary);font-size:.85rem;margin-top:8px"></p>
             <div class="tool-actions">
-              <button class="btn btn-primary" id="encodeBtn">📋 Encode to Base64</button>
-              <button class="btn btn-secondary" id="resetBtn">🔄 New Image</button>
+              <button class="btn btn-primary" id="encodeBtn">📋 Codificar para Base64</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Nova Imagem</button>
             </div>
             <div id="encodeResult" class="hidden mt-24">
               <label style="color:var(--text-secondary);font-size:.85rem">Base64 Data URL</label>
               <textarea class="base64-output" id="b64Output" readonly></textarea>
               <div class="tool-actions mt-16">
                 <button class="btn btn-secondary" id="copyBtn">📋 Copy</button>
-                <button class="btn btn-secondary" id="downloadTxtBtn">⬇️ Download as .txt</button>
+                <button class="btn btn-secondary" id="downloadTxtBtn">⬇️ Baixar como .txt</button>
               </div>
             </div>
           </div>
@@ -145,11 +157,11 @@
 
         <div id="decodePanel" class="hidden">
           <div style="max-width:600px;margin:0 auto">
-            <label style="color:var(--text-secondary);font-size:.85rem">Paste Base64 string or Data URL</label>
+            <label style="color:var(--text-secondary);font-size:.85rem">Cole uma string Base64 ou Data URL</label>
             <textarea class="base64-output" id="b64Input" placeholder="data:image/png;base64,iVBORw0KGgo..."></textarea>
             <div class="tool-actions mt-16">
-              <button class="btn btn-primary" id="decodeBtn">🔄 Decode to Image</button>
-              <button class="btn btn-secondary hidden" id="dlImgBtn">⬇️ Download Image</button>
+              <button class="btn btn-primary" id="decodeBtn">🔄 Decodificar para Imagem</button>
+              <button class="btn btn-secondary hidden" id="dlImgBtn">⬇️ Baixar Imagem</button>
             </div>
             <div id="decodeResult" class="preview-container hidden" style="margin-top:16px">
               <img id="decodedImg" alt="Decoded">
@@ -175,48 +187,48 @@
           <p>Converta qualquer imagem em uma URL de dados Base64 para incorporar diretamente no código.</p>
           <div class="guide-screenshot">
             <img src="/screenshots/base64.png" alt="Base64 Encoder interface showing encode/decode tabs" loading="lazy">
-            <div class="guide-screenshot-caption">Switch between Encode and Decode modes using the tabs at the top</div>
+            <div class="guide-screenshot-caption">Alterne entre os modos Codificar e Decodificar usando as abas no topo</div>
           </div>
           <ul>
-            <li>Upload an image (JPG, PNG, WebP, GIF, BMP)</li>
-            <li>Click <strong>"Encode to Base64"</strong></li>
-            <li>The full data URL appears in the text area (format: <code>data:image/png;base64,...</code>)</li>
-            <li>Click <strong>"Copy"</strong> to copy to clipboard, or <strong>"Download as .txt"</strong> to save</li>
+            <li>Envie uma imagem (JPG, PNG, WebP, GIF, BMP)</li>
+            <li>Clique em <strong>"Codificar para Base64"</strong></li>
+            <li>O data URL completo aparece na área de texto (formato: <code>data:image/png;base64,...</code>)</li>
+            <li>Clique em <strong>"Copiar"</strong> para copiar, ou <strong>"Baixar como .txt"</strong> para salvar</li>
           </ul>
-          <div class="tip"><strong>When to use:</strong> Embed small icons directly in HTML/CSS to eliminate HTTP requests. Great for email signatures, single-file demos, and CSS background images.</div>
+          <div class="tip"><strong>Quando usar:</strong> incorpore ícones pequenos diretamente em HTML/CSS para eliminar requisições HTTP. Ótimo para assinaturas de e-mail, demos de arquivo único e imagens de fundo em CSS.</div>
         </div>
 
         <div class="guide-block">
           <h3>Modo 2: Base64 → Imagem (Decodificar)</h3>
           <p>Converta uma string Base64 de volta para uma imagem visualizável e baixável.</p>
           <ul>
-            <li>Switch to the <strong>"Base64 → Image"</strong> tab</li>
-            <li>Paste a Base64 string or full data URL into the text area</li>
-            <li>Click <strong>"Decode to Image"</strong></li>
-            <li>The decoded image appears below — click <strong>"Download Image"</strong> to save</li>
+            <li>Mude para a aba <strong>"Base64 → Imagem"</strong></li>
+            <li>Cole uma string Base64 ou um data URL completo na área de texto</li>
+            <li>Clique em <strong>"Decodificar para Imagem"</strong></li>
+            <li>A imagem decodificada aparece abaixo — clique em <strong>"Baixar Imagem"</strong> para salvar</li>
           </ul>
-          <div class="tip"><strong>Note:</strong> If you paste a raw Base64 string without the <code>data:image/...</code> prefix, the tool will auto-detect and add the appropriate header.</div>
+          <div class="tip"><strong>Observação:</strong> se você colar uma string Base64 pura sem o prefixo <code>data:image/...</code>, a ferramenta detecta e adiciona o cabeçalho adequado automaticamente.</div>
         </div>
 
         <div class="guide-block">
           <h3>Melhores Casos de Uso</h3>
           <ul>
-            <li><strong>Inline HTML images</strong> — Embed small icons and logos directly in HTML without external files</li>
-            <li><strong>CSS backgrounds</strong> — Use Base64 in <code>background-image: url()</code> for self-contained stylesheets</li>
-            <li><strong>Email signatures</strong> — Ensure images display correctly in email clients</li>
-            <li><strong>Single-file demos</strong> — Create standalone HTML files with embedded images</li>
-            <li><strong>API testing</strong> — Inspect and decode Base64 image data from API responses</li>
+            <li><strong>Imagens inline em HTML</strong> — incorpore ícones e logos diretamente no HTML sem arquivos externos</li>
+            <li><strong>Fundos em CSS</strong> — use Base64 em <code>background-image: url()</code> para folhas de estilo autossuficientes</li>
+            <li><strong>Assinaturas de e-mail</strong> — garanta que as imagens apareçam corretamente nos clientes de e-mail</li>
+            <li><strong>Demos de arquivo único</strong> — crie arquivos HTML independentes com imagens embutidas</li>
+            <li><strong>Testes de API</strong> — inspecione e decodifique dados de imagem Base64 de respostas de API</li>
           </ul>
         </div>
 
         <div class="guide-block">
           <h3>Dicas Profissionais</h3>
           <ul>
-            <li>Base64 increases file size by approximately 33% — only use it for small images (&lt;50KB ideally)</li>
-            <li>Data URLs work in all modern browsers and most email clients</li>
-            <li>For CSS, use <code>background-image: url('data:image/png;base64,...')</code></li>
-            <li>For HTML, use <code>&lt;img src="data:image/png;base64,..."&gt;</code></li>
-            <li>Very large images (&gt;2MB) will produce extremely long strings that may slow down page rendering</li>
+            <li>O Base64 aumenta o tamanho do arquivo em cerca de 33% — use apenas para imagens pequenas (idealmente &lt;50KB)</li>
+            <li>Data URLs funcionam em todos os navegadores modernos e na maioria dos clientes de e-mail</li>
+            <li>Para CSS, use <code>background-image: url('data:image/png;base64,...')</code></li>
+            <li>Para HTML, use <code>&lt;img src="data:image/png;base64,..."&gt;</code></li>
+            <li>Imagens muito grandes (&gt;2MB) geram strings extremamente longas que podem deixar a renderização lenta</li>
           </ul>
         </div>
 
@@ -329,7 +341,7 @@ const encodeTab = document.getElementById('encodeTab');
     setupDropzone({ dropzoneId: 'dropzone', inputId: 'fileInput', onFile: handleFile });
 
     function handleFile(file) {
-      if (!file.type.startsWith('image/')) { status.textContent = 'Please select an image file.'; return; }
+      if (!file.type.startsWith('image/')) { status.textContent = 'Selecione um arquivo de imagem.'; return; }
       currentFile = file;
       ImageUtils.load(file).then(img => {
         previewImg.src = img.src;
@@ -348,13 +360,13 @@ const encodeTab = document.getElementById('encodeTab');
       reader.onload = () => {
         b64Output.value = reader.result;
         encodeResult.classList.remove('hidden');
-        status.textContent = 'Encoded! String length: ' + reader.result.length.toLocaleString() + ' chars';
-        encodeBtn.disabled = false; encodeBtn.textContent = '📋 Encode to Base64';
+        status.textContent = 'Codificado! Tamanho da string: ' + reader.result.length.toLocaleString() + ' chars';
+        encodeBtn.disabled = false; encodeBtn.textContent = '📋 Codificar para Base64';
       };
       reader.readAsDataURL(currentFile);
     });
 
-    copyBtn.addEventListener('click', () => { navigator.clipboard.writeText(b64Output.value); status.textContent = 'Copied to clipboard!'; });
+    copyBtn.addEventListener('click', () => { navigator.clipboard.writeText(b64Output.value); status.textContent = 'Copiado para a área de transferência!'; });
     downloadTxtBtn.addEventListener('click', () => {
       const blob = new Blob([b64Output.value], {type:'text/plain'});
       ImageUtils.download(blob, currentFile.name.replace(/\.[^.]+$/, '.txt'));
@@ -378,11 +390,11 @@ const encodeTab = document.getElementById('encodeTab');
         decodedImg.src = url;
         decodeResult.classList.remove('hidden');
         dlImgBtn.classList.remove('hidden');
-        status.textContent = 'Decoded successfully!';
+        status.textContent = 'Decodificado com sucesso!';
       } catch (err) {
-        status.textContent = 'Error: Invalid Base64 string';
+        status.textContent = 'Erro: string Base64 inválida';
       } finally {
-        decodeBtn.disabled = false; decodeBtn.textContent = '🔄 Decode to Image';
+        decodeBtn.disabled = false; decodeBtn.textContent = '🔄 Decodificar para Imagem';
       }
     });
 
