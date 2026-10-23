@@ -112,6 +112,18 @@
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Processador de Imagens em Lote — SmartImgKit",
+  "url": "https://smartimgkit.com/pt/tools/bulk-processor",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Redimensione, converta e adicione marca d'água a dezenas de imagens de uma vez, com predefinições prontas e download em ZIP — tudo no navegador."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
     {
@@ -159,7 +171,7 @@
       "name": "O que cada predefinição faz?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Web Optimized: 80% qualidade, máx 1200px — ideal para websites. Print Ready: 100% qualidade, máx 3000px — para impressão física. E-Commerce: 85% qualidade, fundo branco, 1000px — para anúncios. Thumbnail: 60% qualidade, máx 300px — para prévias."
+        "text": "Web Otimizada: 80% qualidade, máx 1200px — ideal para websites. Pronta para Impressão: 100% qualidade, máx 3000px — para impressão física. E-commerce: 85% qualidade, fundo branco, 1000px — para anúncios. Miniatura: 60% qualidade, máx 300px — para prévias."
       }
     },
     {
@@ -222,19 +234,19 @@
         <div class="upload-area" id="uploadArea">
           <input type="file" id="fileInput" accept="image/*" multiple hidden>
           <div class="upload-icon">🖼️</div>
-          <h3>Drop images here</h3>
-          <p>or click to browse (multiple files supported)</p>
-          <p class="upload-hint">Supports JPG, PNG, WebP, BMP — unlimited files</p>
+          <h3>Arraste imagens aqui</h3>
+          <p>ou clique para selecionar (vários arquivos suportados)</p>
+          <p class="upload-hint">Suporta JPG, PNG, WebP, BMP — arquivos ilimitados</p>
         </div>
 
         <div id="workspace" style="display:none">
           <div class="opt-group">
-            <h4>Quick Presets</h4>
+            <h4>Predefinições rápidas</h4>
             <div class="preset-grid">
-              <button class="preset-btn" data-preset="web"><strong>🌐 Web Optimized</strong><span>80% quality · max 1200px</span></button>
-              <button class="preset-btn" data-preset="print"><strong>🖨️ Print Ready</strong><span>100% quality · max 3000px</span></button>
-              <button class="preset-btn" data-preset="ecom"><strong>🛒 E-Commerce</strong><span>85% quality · white bg · 1000px</span></button>
-              <button class="preset-btn" data-preset="thumb"><strong>🔲 Thumbnail</strong><span>60% quality · max 300px</span></button>
+              <button class="preset-btn" data-preset="web"><strong>🌐 Web Otimizada</strong><span>80% de qualidade · máx 1200px</span></button>
+              <button class="preset-btn" data-preset="print"><strong>🖨️ Pronta para Impressão</strong><span>100% de qualidade · máx 3000px</span></button>
+              <button class="preset-btn" data-preset="ecom"><strong>🛒 E-commerce</strong><span>85% de qualidade · fundo branco · 1000px</span></button>
+              <button class="preset-btn" data-preset="thumb"><strong>🔲 Miniatura</strong><span>60% de qualidade · máx 300px</span></button>
             </div>
           </div>
 
@@ -253,30 +265,30 @@
               <div class="opt-group">
                 <h4>Batch Rename</h4>
                 <div class="controls">
-                  <label><input type="checkbox" id="enableRename"> Rename output files</label>
-                  <label>Prefix:</label>
+                  <label><input type="checkbox" id="enableRename"> Renomear arquivos de saída</label>
+                  <label>Prefixo:</label>
                   <input type="text" id="renamePrefix" placeholder="product_" disabled>
-                  <label>Start at:</label>
+                  <label>Começar em:</label>
                   <input type="number" id="renameStart" value="1" min="0" max="9999" style="width:60px" disabled>
-                  <label style="font-size:0.75rem;color:var(--text-muted)">e.g. product_001.jpg</label>
+                  <label style="font-size:0.75rem;color:var(--text-muted)">ex.: produto_001.jpg</label>
                 </div>
               </div>
               <div class="opt-group">
-                <h4>Resize</h4>
+                <h4>Redimensionar</h4>
                 <div class="controls">
-                  <label>Width (px)</label>
+                  <label>Largura (px)</label>
                   <input type="number" id="resizeW" placeholder="auto" style="width:80px">
                   <span>×</span>
                   <input type="number" id="resizeH" placeholder="auto" style="width:80px">
-                  <label><input type="checkbox" id="keepRatio" checked> Keep aspect ratio</label>
+                  <label><input type="checkbox" id="keepRatio" checked> Manter proporção</label>
                 </div>
               </div>
               <div class="opt-group">
-                <h4>Output Format &amp; Quality</h4>
+                <h4>Formato de Saída e Qualidade</h4>
                 <div class="controls">
-                  <label>Format</label>
+                  <label>Formato</label>
                   <select id="outFmt">
-                    <option value="same">Same as input</option>
+                    <option value="same">Mesmo da original</option>
                     <option value="image/jpeg">JPG</option>
                     <option value="image/png">PNG</option>
                     <option value="image/webp">WebP</option>
@@ -290,21 +302,21 @@
                 <h4>Watermark</h4>
                 <div class="controls">
                   <label>Text</label>
-                  <input type="text" id="wmText" placeholder="optional - leave blank to skip" style="width:200px">
+                  <input type="text" id="wmText" placeholder="opcional — deixe em branco para pular" style="width:200px">
                 </div>
                 <div class="controls">
-                  <label>Font size</label>
+                  <label>Tamanho da fonte</label>
                   <input type="number" id="wmSize" value="24" style="width:60px">
-                  <label>Opacity</label>
+                  <label>Opacidade</label>
                   <input type="range" id="wmOpacity" min="10" max="100" value="30" style="width:100px">
                   <span class="range-value" id="opLabel">30%</span>
-                  <label>Position</label>
+                  <label>Posição</label>
                   <select id="wmPos" style="width:100px">
-                    <option value="br">Bottom-right</option>
-                    <option value="bl">Bottom-left</option>
-                    <option value="tr">Top-right</option>
-                    <option value="tl">Top-left</option>
-                    <option value="center">Center</option>
+                    <option value="br">Inferior direito</option>
+                    <option value="bl">Inferior esquerdo</option>
+                    <option value="tr">Superior direito</option>
+                    <option value="tl">Superior esquerdo</option>
+                    <option value="center">Centro</option>
                   </select>
                 </div>
               </div>
@@ -315,58 +327,58 @@
           <div class="status" id="statusText"></div>
 
           <div class="controls" style="justify-content:center;gap:10px">
-            <button class="btn btn-primary" id="processBtn">⚡ Process All</button>
-            <button class="btn btn-success" id="downloadBtn" disabled>📦 Download ZIP</button>
-            <button class="btn btn-secondary" id="clearBtn">🗑️ Clear All</button>
+            <button class="btn btn-primary" id="processBtn">⚡ Processar tudo</button>
+            <button class="btn btn-success" id="downloadBtn" disabled>📦 Baixar ZIP</button>
+            <button class="btn btn-secondary" id="clearBtn">🗑️ Limpar tudo</button>
           </div>
         </div>
       </div>
 <section class="how-to-section">
-        <h2>How to Use the Bulk Image Processor</h2>
-        <p class="section-desc">Batch process dozens of images in under a minute. Here's how:</p>
+        <h2>Como usar o processador de imagens em lote</h2>
+        <p class="section-desc">Processe dezenas de imagens em menos de um minuto. Veja como:</p>
         <div class="how-to-steps">
-          <div class="how-to-step"><div class="step-number">1</div><h4>Drop or Select Images</h4><p>Drag and drop multiple image files, or click the upload area to browse. You can select as many files as you need.</p></div>
-          <div class="how-to-step"><div class="step-number">2</div><h4>Choose a Preset or Customize</h4><p>Pick a quick preset (Web Optimized, Print Ready, E-Commerce, Thumbnail) or expand "Processing Options" for full control over resize, format, quality, and watermark.</p></div>
+          <div class="how-to-step"><div class="step-number">1</div><h4>Arraste ou selecione as imagens</h4><p>Arraste e solte vários arquivos de imagem ou clique na área de upload para selecioná-los. Você pode escolher quantos arquivos precisar.</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>Escolha uma predefinição ou personalize</h4><p>Escolha uma predefinição rápida (Web Otimizada, Pronta para Impressão, E-commerce, Miniatura) ou expanda «Opções de processamento» para controle total de redimensionamento, formato, qualidade e marca d'água.</p></div>
           <div class="how-to-step"><div class="step-number">3</div><h4>Configure Batch Rename</h4><p>Toggle "Rename output files" to set a naming pattern with prefix and auto-numbering (e.g. <code>product_001.jpg</code>).</p></div>
-          <div class="how-to-step"><div class="step-number">4</div><h4>Click Process All</h4><p>Click the "Process All" button. Each file shows its own progress bar, and you'll see live before/after size comparisons.</p></div>
-          <div class="how-to-step"><div class="step-number">5</div><h4>Download ZIP Archive</h4><p>Review the results, check compression savings, then click "Download ZIP" to get all processed images in one file.</p></div>
+          <div class="how-to-step"><div class="step-number">4</div><h4>Clique em Processar tudo</h4><p>Clique no botão «Processar tudo». Cada arquivo mostra sua própria barra de progresso e você acompanha comparações de tamanho antes/depois em tempo real.</p></div>
+          <div class="how-to-step"><div class="step-number">5</div><h4>Baixe o arquivo ZIP</h4><p>Revise os resultados, confira a economia de compressão e clique em «Baixar ZIP» para receber todas as imagens processadas em um único arquivo.</p></div>
         </div>
       </section>
 
 <h2>Guia Detalhada</h2>
 
       <div class="guide-block">
-        <h3>Batch Resize</h3>
-        <p>Insira a largura e/ou altura desejada na seção Redimensionar. Com "Manter proporção" marcado (padrão), a ferramenta calcula automaticamentely scales the other dimension. Leave both empty to keep original dimensions. This is perfect for normalizing product photos or creating uniform social media assets.</p>
+        <h3>Redimensionamento em lote</h3>
+        <p>Insira a largura e/ou a altura desejada na seção Redimensionar. Com «Manter proporção» marcado (padrão), a ferramenta calcula a outra dimensão automaticamente. Deixe os dois campos vazios para manter as dimensões originais. Ideal para padronizar fotos de produtos ou criar ativos uniformes para redes sociais.</p>
         <p><strong>Dica:</strong> Se você inserir apenas a largura, a altura se ajusta automaticamente para manter as proporções — sem necessidade de cálculos.</p>
       </div>
 
       <div class="guide-block">
         <h3>Batch Compress &amp; Convert</h3>
-        <p>Use o menu suspenso Formato de Saída para converter todas as imagens para JPG, PNG ou WebP. JPG é a melhor opção para fotografiass (small file size), PNG preserves transparency, and WebP offers modern compression. The Quality slider (10-100%) lets you balance file size versus visual quality — 80-85% is the sweet spot for web use.</p>
+        <p>Use o menu suspenso Formato de Saída para converter todas as imagens para JPG, PNG ou WebP. JPG é a melhor opção para fotografias (arquivos menores), PNG preserva a transparência e WebP oferece compressão moderna. O controle de Qualidade (10-100%) equilibra tamanho do arquivo e qualidade visual — 80-85% é o ponto ideal para a web.</p>
         <p><strong>Dica:</strong> WebP geralmente pode reduzir o tamanho do arquivo em 25-35% em comparação com JPG no mesmo nível de qualidade.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Batch Watermark</h3>
-        <p>Digite o texto da marca d'água, ajuste o tamanho da fonte e a opacidade, e escolha uma posição (inferior direito, inferior esquerdo, superior direito, superior esquerdot, or center). Leave the text field blank to skip watermarks. Great for branding batch photos before publishing.</p>
+        <h3>Marca d'água em lote</h3>
+        <p>Digite o texto da marca d'água, ajuste o tamanho da fonte e a opacidade e escolha uma posição (inferior direito, inferior esquerdo, superior direito, superior esquerdo ou centro). Deixe o campo em branco para pular a marca d'água. Ótimo para marcar fotos em lote antes de publicar.</p>
         <p><strong>Dica:</strong> Mantenha a opacidade entre 20-40% para uma marca d'água profissional e não intrusiva.</p>
       </div>
 
       <div class="guide-block">
         <h3>Batch Rename</h3>
-        <p>Ative "Renomear arquivos de saída" e defina um prefixo e número inicial. Os arquivos serão nomeados sequencialmente: <code>prefixo_001.ext</code>, <code>prefix_002.ext</code>, etc. The numbering is zero-padded (3 digits by default).</p>
-        <p><strong>Dica:</strong> Use prefixos descritivos como <code>produto_</code>, <code>galeria_</code> ou <code>foto_</code> for easy file organization.</p>
+        <p>Ative «Renomear arquivos de saída» e defina um prefixo e um número inicial. Os arquivos serão nomeados em sequência: prefixo_001.ext, prefixo_002.ext etc. A numeração tem zeros à esquerda (3 dígitos por padrão) para facilitar a organização.</p>
+        <p><strong>Dica:</strong> Use prefixos descritivos como <code>produto_</code>, <code>galeria_</code> ou <code>foto_</code> para facilitar a organização dos arquivos.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Using Presets</h3>
+        <h3>Usando as predefinições</h3>
         <p>Clique em qualquer botão de predefinição para configurar vários ajustes de uma vez instantaneamente:</p>
         <ul>
-          <li><strong>Web Optimized</strong> — 80% quality, max 1200px width. Ideal for blog images, portfolio thumbnails, and website assets.</li>
-          <li><strong>Print Ready</strong> — 100% quality, max 3000px. Best for photo printing, high-res archiving, and professional deliverables.</li>
-          <li><strong>E-Commerce</strong> — 85% quality, max 1000px. Optimized for product listings on marketplaces like Amazon, eBay, or Shopify.</li>
-          <li><strong>Thumbnail</strong> — 60% quality, max 300px. Perfect for preview images, avatars, or gallery thumbnails.</li>
+          <li><strong>Web Otimizada</strong> — 80% de qualidade, largura máxima de 1200px. Ideal para imagens de blog, miniaturas de portfólio e ativos de site.</li>
+          <li><strong>Pronta para Impressão</strong> — 100% de qualidade, máximo de 3000px. Melhor para impressão fotográfica, arquivamento em alta resolução e entregas profissionais.</li>
+          <li><strong>E-commerce</strong> — 85% de qualidade, máximo de 1000px. Otimizada para anúncios de produtos em marketplaces como Amazon, Mercado Livre e Shopify.</li>
+          <li><strong>Miniatura</strong> — 60% de qualidade, máximo de 300px. Perfeita para imagens de prévia, avatares ou miniaturas de galerias.</li>
         </ul>
         <p>Após aplicar uma predefinição, você ainda pode ajustar as configurações individuais no painel de Opções de Processamento.</p>
       </div>
@@ -374,11 +386,11 @@
       <div class="guide-block">
         <h3>Melhores Casos de Uso</h3>
         <ul>
-          <li><strong>Website asset preparation</strong> — batch resize and compress all product photos for your e-commerce site</li>
-          <li><strong>Photo batch compression</strong> — reduce storage footprint of large photo collections</li>
-          <li><strong>Social media content</strong> — standardize image sizes and formats for multiple platforms</li>
-          <li><strong>Photography portfolio</strong> — add watermarks to protect your work while batch exporting</li>
-          <li><strong>Digital asset management</strong> — batch rename and convert archive images for consistent naming</li>
+          <li><strong>Preparação de ativos de site</strong> — redimensione e comprima todas as fotos de produtos da sua loja em lote</li>
+          <li><strong>Compressão de fotos em lote</strong> — reduza o armazenamento de grandes coleções de fotos</li>
+          <li><strong>Conteúdo para redes sociais</strong> — padronize tamanhos e formatos para várias plataformas</li>
+          <li><strong>Portfólio de fotografia</strong> — adicione marca d'água para proteger seu trabalho ao exportar em lote</li>
+          <li><strong>Gestão de ativos digitais</strong> — renomeie e converta imagens de acervo em lote para nomes consistentes</li>
         </ul>
       </div>
 
@@ -416,7 +428,7 @@
     <a href="/pt/tools/resizer" class="related-tool-card">
       <span class="tool-icon">🔧</span>
       <div class="tool-info">
-        <strong>Image Resizer</strong>
+        <strong>Redimensionar Imagem</strong>
         <span class="tool-desc">Altera as dimensões de qualquer imagem</span>
       </div>
       <span class="tool-arrow">→</span>
@@ -579,7 +591,7 @@
     const batchRename = enableRename.checked;
 
     for (let i = 0; i < files.length; i++) {
-      statusText.textContent = 'Processing ' + (i + 1) + '/' + files.length + ': ' + files[i].name;
+      statusText.textContent = 'Processando ' + (i + 1) + '/' + files.length + ': ' + files[i].name;
       progFill.style.width = ((i / files.length) * 100) + '%';
 
       const fstat = $('fstat-' + i);
