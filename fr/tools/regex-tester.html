@@ -35,7 +35,7 @@
   
   "inLanguage": "fr","@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Regex Tester",
+  "name": "Testeur Regex",
   "url": "https://smartimgkit.com/fr/tools/regex-tester",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
@@ -51,31 +51,31 @@
 {
   "@context": "https://schema.org",
   "@type": "HowTo",
-  "name": "How to Use",
+  "name": "Comment tester une expression régulière",
   "step": [
     {
       "@type": "HowToStep",
       "position": 1,
-      "name": "Enter Pattern",
-      "text": "Type your regex pattern in the Pattern field."
+      "name": "Écrivez le motif",
+      "text": "Saisissez votre regex dans le champ Motif ; les résultats se mettent à jour à chaque frappe, sans bouton à cliquer."
     },
     {
       "@type": "HowToStep",
       "position": 2,
-      "name": "Set Flags",
-      "text": "Check flags like g, i, m, s as needed."
+      "name": "Cochez les options",
+      "text": "Activez g pour toutes les correspondances, i pour ignorer la casse, m pour traiter chaque ligne séparément et s pour que le point couvre aussi les retours à la ligne."
     },
     {
       "@type": "HowToStep",
       "position": 3,
-      "name": "Enter Test Text",
-      "text": "Paste or type text to test against."
+      "name": "Collez le texte de test",
+      "text": "Le texte sur lequel valider le motif va dans le champ de test, tel que vous le trouverez dans votre contenu réel."
     },
     {
       "@type": "HowToStep",
       "position": 4,
-      "name": "View Results",
-      "text": "Matches are highlighted and listed with details."
+      "name": "Lisez les résultats",
+      "text": "Chaque correspondance est surlignée dans le texte et listée avec sa position et ses groupes de capture."
     }
   ]
 }
@@ -118,26 +118,50 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Which regex flavor is used?",
+      "name": "Quel dialecte d’expressions régulières est utilisé ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "JavaScript (ES2018+) regex. Supports lookaheads, lookbehinds, named groups, and Unicode."
+        "text": "Le RegExp de JavaScript (ES2018 ou plus récent) : lookaheads, lookbehinds, groupes nommés et propriétés Unicode sont disponibles."
       }
     },
     {
       "@type": "Question",
-      "name": "Do you support PCRE/PHP/Python regex?",
+      "name": "Les motifs PCRE, PHP ou Python fonctionnent-ils ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Not directly. This tool uses JavaScript regex which is slightly different from PCRE."
+        "text": "Beaucoup oui, sans garantie : le moteur ici est JavaScript, avec des différences fines avec PCRE. Validez ici puis testez dans votre langage cible."
       }
     },
     {
       "@type": "Question",
-      "name": "Is my data safe?",
+      "name": "Comment voir toutes les correspondances et pas seulement la première ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. Everything runs in your browser. No data is sent anywhere."
+        "text": "Cochez l’option g ; sans elle, le moteur s’arrête à la première correspondance du texte."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Mon motif ou mon texte sont-ils envoyés à un serveur ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non. L’évaluation se fait dans votre navigateur ; ni le motif ni le texte de test ne quittent votre appareil."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Pourquoi le point ne traverse-t-il pas les retours à la ligne ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Par défaut, le point ne correspond pas aux retours à la ligne ; cochez l’option s pour que le motif couvre plusieurs lignes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Mon motif est-il conservé pour la prochaine visite ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non. Recharger la page efface motif et texte ; copiez ce que vous voulez garder avant de fermer."
       }
     }
   ]
@@ -173,60 +197,60 @@
 <div class="ad-zone ad-header ad-loader-slot" data-ad-type="header" data-current-mobile="0"></div>
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>🔍 Regex Tester</span></nav>
+      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>🔍 Testeur Regex</span></nav>
       <div class="tool-page-header">
-        <h1>🔍 Regex Tester</h1>
-        <p>Test and debug regular expressions with real-time matching — free, in your browser.</p>
+        <h1>🔍 Testeur Regex</h1>
+        <p>Testez et déboguez des expressions régulières avec les correspondances en temps réel — gratuit, dans votre navigateur.</p>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Ce que cet outil sait faire</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🔍</span></div>
-              <div class="before-after-item-caption before">Text + pattern</div>
+              <div class="before-after-item-caption before">Texte et motif</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">✅</span></div>
-              <div class="before-after-item-caption after">Matched results</div>
+              <div class="before-after-item-caption after">Correspondances trouvées</div>
             </div>
           </div>
         </div>
 
 <div class="controls">
-            <h2>🔍 Regex Pattern</h2>
+            <h2>🔍 Motif regex</h2>
             <div class="control-row">
-              <label>Pattern</label>
-              <input type="text" id="pattern" placeholder="e.g. \d+" style="flex:1; font-family:Consolas,monospace;">
+              <label>Motif</label>
+              <input type="text" id="pattern" placeholder="ex. \d+" style="flex:1; font-family:Consolas,monospace;">
             </div>
             <div class="control-row">
-              <label>Flags</label>
-              <label style="min-width:auto;"><input type="checkbox" id="flagG" checked> g (global)</label>
-              <label style="min-width:auto;"><input type="checkbox" id="flagI"> i (case-insensitive)</label>
-              <label style="min-width:auto;"><input type="checkbox" id="flagM"> m (multiline)</label>
-              <label style="min-width:auto;"><input type="checkbox" id="flagS"> s (dotall)</label>
+              <label>Options (flags)</label>
+              <label style="min-width:auto;"><input type="checkbox" id="flagG" checked> g (global, toutes)</label>
+              <label style="min-width:auto;"><input type="checkbox" id="flagI"> i (sans tenir compte de la casse)</label>
+              <label style="min-width:auto;"><input type="checkbox" id="flagM"> m (multiligne)</label>
+              <label style="min-width:auto;"><input type="checkbox" id="flagS"> s (point = tout)</label>
             </div>
         </div>
 
         <div class="controls">
-            <h2>📝 Test String</h2>
-            <textarea id="testStr" placeholder="Enter text to test against..."></textarea>
+            <h2>📝 Texte de test</h2>
+            <textarea id="testStr" placeholder="Collez le texte où chercher..."></textarea>
         </div>
 
         <div class="result-section">
-            <h2>📊 Results</h2>
-            <div id="statusMsg" class="status-text">Enter a pattern and test string</div>
+            <h2>📊 Résultats</h2>
+            <div id="statusMsg" class="status-text">Saisissez un motif et le texte de test</div>
             <div id="matchInfo" style="margin-top:16px;"></div>
-            <h3 style="margin-top:16px;font-size:1rem;">Highlighted Matches:</h3>
+            <h3 style="margin-top:16px;font-size:1rem;">Correspondances surlignées :</h3>
             <div id="highlighted" style="background:var(--bg-secondary);border-radius:8px;padding:16px;font-family:Consolas,monospace;font-size:0.85rem;white-space:pre-wrap;word-break:break-all;margin-top:8px;"></div>
         </div>
 
       </div>
-<section class="how-to-section"><h2>How to Use</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Enter Pattern</h4><p>Type your regex pattern in the Pattern field.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Set Flags</h4><p>Check flags like g, i, m, s as needed.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Enter Test Text</h4><p>Paste or type text to test against.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>View Results</h4><p>Matches are highlighted and listed with details.</p></div></div></section>
-<h2>Detailed User Guide</h2><div class="guide-block"><h3>Enter Pattern</h3><p>Type your regex pattern in the Pattern field.</p></div><div class="guide-block"><h3>Set Flags</h3><p>Check flags like g, i, m, s as needed.</p></div><div class="guide-block"><h3>Enter Test Text</h3><p>Paste or type text to test against.</p></div><div class="guide-block"><h3>View Results</h3><p>Matches are highlighted and listed with details.</p></div>
-<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">Which regex flavor is used?</button><div class="faq-answer">JavaScript (ES2018+) regex. Supports lookaheads, lookbehinds, named groups, and Unicode.</div></div><div class="faq-item"><button class="faq-question">Do you support PCRE/PHP/Python regex?</button><div class="faq-answer">Not directly. This tool uses JavaScript regex which is slightly different from PCRE.</div></div><div class="faq-item"><button class="faq-question">Is my data safe?</button><div class="faq-answer">Yes. Everything runs in your browser. No data is sent anywhere.</div></div></section>
-<section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/json-formatter" class="related-tool-card"><span class="tool-icon">🔧</span><div class="tool-info"><strong>JSON Formatter</strong><span class="tool-desc">Format and validate JSON</span></div><span class="tool-arrow">→</span></a><a href="/tools/text-find-replace" class="related-tool-card"><span class="tool-icon">🔄</span><div class="tool-info"><strong>Find & Replace</strong><span class="tool-desc">Find and replace text with regex</span></div><span class="tool-arrow">→</span></a><a href="/tools/url-encoder" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>URL Encoder</strong><span class="tool-desc">Encode/decode URLs</span></div><span class="tool-arrow">→</span></a></div></section>
+<section class="how-to-section"><h2>Comment tester une expression régulière</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Écrivez le motif</h4><p>Saisissez votre regex dans le champ Motif ; les résultats se mettent à jour à chaque frappe, sans bouton à cliquer.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Cochez les options</h4><p>Activez g pour toutes les correspondances, i pour ignorer la casse, m pour traiter chaque ligne séparément et s pour que le point couvre aussi les retours à la ligne.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Collez le texte de test</h4><p>Le texte sur lequel valider le motif va dans le champ de test, tel que vous le trouverez dans votre contenu réel.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Lisez les résultats</h4><p>Chaque correspondance est surlignée dans le texte et listée avec sa position et ses groupes de capture.</p></div></div></section>
+<h2>Ce que fait et ne fait pas le testeur</h2><div class="guide-block"><h3>Test en direct, sans bouton</h3><p>Chaque frappe relance l’évaluation : motif à gauche, texte à droite, et le panneau de résultats affiche déjà les correspondances surlignées. Rien à enregistrer, rien à envoyer — corrigez le motif et le résultat suit immédiatement.</p></div><div class="guide-block"><h3>Les quatre options et leur effet</h3><p>g cherche toutes les correspondances au lieu de s’arrêter à la première ; i traite majuscules et minuscules comme identiques ; m fait fonctionner les ancres de début et fin de ligne sur chaque ligne ; s autorise le point à couvrir les retours à la ligne. Sans g, une seule correspondance s’affiche, même si le texte en contient vingt.</p></div><div class="guide-block"><h3>La liste détaille position et groupes</h3><p>Chaque correspondance est listée avec son indice dans le texte et ses groupes de capture numérotés. C’est ce qui permet de déboguer un motif à groupes alternatifs : on voit d’un coup d’œil quel groupe a capturé quel fragment.</p></div><div class="guide-block"><h3>Le dialecte est JavaScript, pas PCRE</h3><p>Le moteur est le RegExp du navigateur (ES2018 et suivants) : lookbehind, groupes nommés et propriétés Unicode fonctionnent, mais des différences fines subsistent avec PCRE en PHP ou le module re de Python. Un motif validé ici marchera presque toujours en JavaScript navigateur ou Node ; pour les autres langages, vérifiez à part.</p></div><div class="guide-block"><h3>Les erreurs de motif s’affichent telles quelles</h3><p>Une expression invalide — parenthèse non fermée, quantificateur orphelin — déclenche le message d’erreur du moteur lui-même, en rouge. Ce libellé vient de JavaScript : le rechercher tel quel dans la documentation vous donne l’explication exacte.</p></div><div class="guide-block"><h3>Nos usages de la semaine</h3><p>Mettre au point le motif qui valide l’adresse d’un formulaire, extraire des références ou des dates d’un listing copié depuis une annonce, ou nettoyer un export en collant le texte et en ajustant le motif jusqu’à ce que l’aperçu surligne exactement ce qu’on veut capturer.</p></div><div class="guide-block"><h3>Confidentialité et limites</h3><p>Tout s’évalue dans le navigateur : motif et texte ne partent nulle part. Rien n’est conservé — recharger la page efface motif et texte —, pas de bibliothèque de motifs, et les textes très longs mettent un peu plus de temps à être évalués.</p></div>
+<section class="faq-section"><h2>Questions fréquentes</h2><div class="faq-item"><button class="faq-question">Quel dialecte d’expressions régulières est utilisé ?</button><div class="faq-answer">Le RegExp de JavaScript (ES2018 ou plus récent) : lookaheads, lookbehinds, groupes nommés et propriétés Unicode sont disponibles.</div></div><div class="faq-item"><button class="faq-question">Les motifs PCRE, PHP ou Python fonctionnent-ils ?</button><div class="faq-answer">Beaucoup oui, sans garantie : le moteur ici est JavaScript, avec des différences fines avec PCRE. Validez ici puis testez dans votre langage cible.</div></div><div class="faq-item"><button class="faq-question">Comment voir toutes les correspondances et pas seulement la première ?</button><div class="faq-answer">Cochez l’option g ; sans elle, le moteur s’arrête à la première correspondance du texte.</div></div><div class="faq-item"><button class="faq-question">Mon motif ou mon texte sont-ils envoyés à un serveur ?</button><div class="faq-answer">Non. L’évaluation se fait dans votre navigateur ; ni le motif ni le texte de test ne quittent votre appareil.</div></div><div class="faq-item"><button class="faq-question">Pourquoi le point ne traverse-t-il pas les retours à la ligne ?</button><div class="faq-answer">Par défaut, le point ne correspond pas aux retours à la ligne ; cochez l’option s pour que le motif couvre plusieurs lignes.</div></div><div class="faq-item"><button class="faq-question">Mon motif est-il conservé pour la prochaine visite ?</button><div class="faq-answer">Non. Recharger la page efface motif et texte ; copiez ce que vous voulez garder avant de fermer.</div></div></section>
+<section class="related-tools"><h2>À découvrir aussi</h2><div class="related-tools-grid"><a href="/tools/json-formatter" class="related-tool-card"><span class="tool-icon">🔧</span><div class="tool-info"><strong>JSON Formatter</strong><span class="tool-desc">Formatez et validez du JSON</span></div><span class="tool-arrow">→</span></a><a href="/tools/text-find-replace" class="related-tool-card"><span class="tool-icon">🔄</span><div class="tool-info"><strong>Find & Replace</strong><span class="tool-desc">Cherchez et remplacez du texte par regex</span></div><span class="tool-arrow">→</span></a><a href="/tools/url-encoder" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>URL Encoder</strong><span class="tool-desc">Encodez et décodez des URL</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
@@ -245,7 +269,7 @@
   const flags = ['flagG','flagI','flagM','flagS'];
 
   function test() {
-    if (!pattern.value) { statusMsg.textContent = 'Enter a pattern'; matchInfo.innerHTML=''; highlighted.textContent=''; return; }
+    if (!pattern.value) { statusMsg.textContent = 'Saisissez un motif'; matchInfo.innerHTML=''; highlighted.textContent=''; return; }
     try {
       let fs = '';
       flags.forEach(f => { if (document.getElementById(f).checked) fs += f.replace('flag','').toLowerCase(); });
@@ -255,13 +279,13 @@
       let m;
       if (fs.includes('g')) { while ((m = re.exec(text)) !== null) { matches.push({text:m[0],index:m.index,groups:m.slice(1)}); if (m.index === re.lastIndex) re.lastIndex++; } }
       else { m = re.exec(text); if (m) matches.push({text:m[0],index:m.index,groups:m.slice(1)}); }
-      statusMsg.textContent = `✓ ${matches.length} match(es) found`;
+      statusMsg.textContent = `✓ ${matches.length} correspondance(s) trouvée(s)`;
       statusMsg.style.color = '#22c55e';
-      matchInfo.innerHTML = matches.length ? matches.map((m,i) => `<div style="padding:8px;background:var(--bg-secondary);border-radius:6px;margin-bottom:4px;"><strong>Match ${i+1}:</strong> "${m.text}" at index ${m.index}${m.groups.length?` | Groups: ${m.groups.map((g,j)=>`$${j+1}="${g||''}"`).join(', ')}`:''}</div>`).join('') : '';
+      matchInfo.innerHTML = matches.length ? matches.map((m,i) => `<div style="padding:8px;background:var(--bg-secondary);border-radius:6px;margin-bottom:4px;"><strong>Correspondance ${i+1}:</strong> "${m.text}" à l’indice ${m.index}${m.groups.length?` | Groupes : ${m.groups.map((g,j)=>`$${j+1}="${g||''}"`).join(', ')}`:''}</div>`).join('') : '';
       let hl = ''; let last = 0;
       matches.forEach(m => { hl += escapeHtml(text.slice(last, m.index)); hl += `<mark style="background:rgba(99,102,241,0.3);padding:2px 4px;border-radius:3px;">${escapeHtml(m.text)}</mark>`; last = m.index + m.text.length; });
       hl += escapeHtml(text.slice(last));
-      highlighted.innerHTML = hl || '<em style="color:var(--text-secondary);">No test text entered</em>';
+      highlighted.innerHTML = hl || '<em style="color:var(--text-secondary);">Aucun texte de test</em>';
     } catch(e) { statusMsg.textContent = '✗ Error: ' + e.message; statusMsg.style.color = '#ef4444'; matchInfo.innerHTML=''; highlighted.textContent=''; }
   }
   function escapeHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
