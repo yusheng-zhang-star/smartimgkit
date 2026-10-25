@@ -78,26 +78,50 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Apakah lingkaran punya latar transparan?",
+      "name": "Apakah hasil potongan punya latar transparan?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Ya, area luar lingkaran transparan. Output PNG pertahankan saluran alfa."
+        "text": "Ya: secara bawaan semua area di luar lingkaran transparan dan PNG menyimpan saluran alfanya. Kalau mau ada isian, ganti latar ke putih atau warna khusus sebelum mengunduh."
       }
     },
     {
       "@type": "Question",
-      "name": "Bisakah memotong subjek tidak di tengah?",
+      "name": "Bagaimana kalau wajahnya tidak di tengah foto?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Ya. Gunakan penggeser offset horizontal dan vertikal."
+        "text": "Gunakan geser X dan Y untuk memindahkan lingkaran ke mana pun, sementara ukuran mengatur diameternya. Kombinasikan ketiganya sampai wajah pas di tengah lingkaran."
       }
     },
     {
       "@type": "Question",
-      "name": "Apakah gambar diunggah ke server?",
+      "name": "Apakah gambar saya diunggah ke server?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Tidak. Semua diproses di browser dengan HTML5 Canvas."
+        "text": "Tidak. Pemotongan dihitung di browser Anda lewat HTML5 Canvas; berkas tidak pernah keluar dari perangkat dan hilang begitu halaman dimuat ulang."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Kenapa hasilnya hanya PNG, tidak bisa JPG?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "JPG tidak mendukung transparansi — sudut di luar lingkaran akan terisi warna solid. PNG menyimpan lapisan alfa, dan itulah gunanya potongan berbentuk lingkaran."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Berapa resolusi gambar hasilnya?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Keluarannya berbentuk persegi dengan sisi mengikuti sisi terpendek gambar asli, minimal 300 piksel. Alat ini tidak memperbesar foto: semakin tajam aslinya, semakin tajam hasilnya."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Bisakah dipakai untuk foto profil toko online?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sangat cocok: potong logo atau foto Anda, pilih latar warna brand, lalu unduh. Cara cepat menyamakan tampilan profil toko di lebih dari satu marketplace."
       }
     }
   ]
@@ -156,7 +180,7 @@
       <nav class="breadcrumb"><a href="/">Beranda</a><span>/</span><a href="/id/tools/">Alat</a><span>/</span><span>⭕ Potong Lingkaran</span></nav>
       <div class="tool-page-header">
         <h1>⭕ Potong Lingkaran</h1>
-        <p></p>
+        <p>Potong gambar menjadi lingkaran sempurna dengan latar transparan — gratis, tanpa unggah, tanpa watermark, langsung di browser.</p>
       </div>
       <div class="tool-workspace">
 <div class="upload-area" id="uploadArea">
@@ -164,7 +188,7 @@
     <div class="upload-icon">📁</div>
     <h3>Seret gambar ke sini</h3>
     <p>atau klik untuk mencari</p>
-    <p class="upload-hint">Supports JPG, PNG, WebP, BMP</p>
+    <p class="upload-hint">Mendukung JPG, PNG, WebP, BMP</p>
   </div>
 
   <div id="workspace" style="display:none">
@@ -173,31 +197,31 @@
     </div>
 
     <div class="controls">
-      <label>Circle Size</label>
+      <label>Ukuran lingkaran</label>
       <input type="range" id="sizeSlider" min="10" max="100" value="80">
       <span id="sizeLabel">80%</span>
     </div>
     <div class="controls">
-      <label>Offset X</label>
+      <label>Geser X</label>
       <input type="range" id="offX" min="-50" max="50" value="0">
       <span id="offXLabel">0</span>
-      <label style="margin-left:1rem">Offset Y</label>
+      <label style="margin-left:1rem">Geser Y</label>
       <input type="range" id="offY" min="-50" max="50" value="0">
       <span id="offYLabel">0</span>
     </div>
     <div class="controls">
-      <label>Background</label>
+      <label>Latar belakang</label>
       <select id="bgType">
-        <option value="transparent">Transparent</option>
-        <option value="white">White</option>
-        <option value="custom">Custom Color</option>
+        <option value="transparent">Transparan</option>
+        <option value="white">Putih</option>
+        <option value="custom">Warna khusus</option>
       </select>
       <input type="color" id="bgColor" value="#ffffff" style="display:none;width:40px;height:32px;border:none;cursor:pointer;margin-left:0.5rem">
     </div>
     <div class="controls">
-      <button class="btn btn-primary" id="dlBtn">⬇ Download PNG</button>
+      <button class="btn btn-primary" id="dlBtn">⬇ Unduh PNG</button>
       <button class="btn btn-secondary" id="resetBtn">Atur Ulang</button>
-      <button class="btn btn-secondary" id="newBtn">New Image</button>
+      <button class="btn btn-secondary" id="newBtn">Gambar baru</button>
     </div>
   </div>
       </div>
@@ -235,14 +259,17 @@
 
       <div class="guide-block">
         <h3>Kasus Penggunaan Umum</h3>
-        <ul><li>Social media avatars</li><li>LinkedIn profile</li><li>Team directories</li><li>App icons</li></ul>
+        <ul><li>Foto profil toko Shopee atau Tokopedia agar tampilan etalase rapi</li><li>Avatar grup WhatsApp keluarga, arisan, atau komunitas</li><li>Halaman tim perusahaan: semua wajah seragam satu ukuran lingkaran</li><li>Foto anggota di situs organisasi atau sekolah</li></ul>
       </div>
 
 <section class="faq-section">
   <h2>Pertanyaan Umum</h2>
-      <div class="faq-item"><button class="faq-question">Apakah lingkaran punya latar transparan?</button><div class="faq-answer">Ya, area luar lingkaran transparan. Output PNG pertahankan saluran alfa.</div></div>
-      <div class="faq-item"><button class="faq-question">Bisakah memotong subjek tidak di tengah?</button><div class="faq-answer">Ya. Gunakan penggeser offset horizontal dan vertikal.</div></div>
-      <div class="faq-item"><button class="faq-question">Apakah gambar diunggah ke server?</button><div class="faq-answer">Tidak. Semua diproses di browser dengan HTML5 Canvas.</div></div>
+  <div class="faq-item"><button class="faq-question">Apakah hasil potongan punya latar transparan?</button><div class="faq-answer">Ya: secara bawaan semua area di luar lingkaran transparan dan PNG menyimpan saluran alfanya. Kalau mau ada isian, ganti latar ke putih atau warna khusus sebelum mengunduh.</div></div>
+  <div class="faq-item"><button class="faq-question">Bagaimana kalau wajahnya tidak di tengah foto?</button><div class="faq-answer">Gunakan geser X dan Y untuk memindahkan lingkaran ke mana pun, sementara ukuran mengatur diameternya. Kombinasikan ketiganya sampai wajah pas di tengah lingkaran.</div></div>
+  <div class="faq-item"><button class="faq-question">Apakah gambar saya diunggah ke server?</button><div class="faq-answer">Tidak. Pemotongan dihitung di browser Anda lewat HTML5 Canvas; berkas tidak pernah keluar dari perangkat dan hilang begitu halaman dimuat ulang.</div></div>
+  <div class="faq-item"><button class="faq-question">Kenapa hasilnya hanya PNG, tidak bisa JPG?</button><div class="faq-answer">JPG tidak mendukung transparansi — sudut di luar lingkaran akan terisi warna solid. PNG menyimpan lapisan alfa, dan itulah gunanya potongan berbentuk lingkaran.</div></div>
+  <div class="faq-item"><button class="faq-question">Berapa resolusi gambar hasilnya?</button><div class="faq-answer">Keluarannya berbentuk persegi dengan sisi mengikuti sisi terpendek gambar asli, minimal 300 piksel. Alat ini tidak memperbesar foto: semakin tajam aslinya, semakin tajam hasilnya.</div></div>
+  <div class="faq-item"><button class="faq-question">Bisakah dipakai untuk foto profil toko online?</button><div class="faq-answer">Sangat cocok: potong logo atau foto Anda, pilih latar warna brand, lalu unduh. Cara cepat menyamakan tampilan profil toko di lebih dari satu marketplace.</div></div>
       </section>
 
 <section class="related-tools">
@@ -251,7 +278,7 @@
     <a href="/id/tools/cropper" class="related-tool-card">
       <span class="tool-icon">🔧</span>
       <div class="tool-info">
-        <strong>Image Cropper</strong>
+        <strong>Pemotong Gambar</strong>
         <span class="tool-desc">Potong gambar ke rasio apa pun</span>
       </div>
       <span class="tool-arrow">→</span>
@@ -259,7 +286,7 @@
     <a href="/id/tools/image-exif-remover" class="related-tool-card">
       <span class="tool-icon">🔧</span>
       <div class="tool-info">
-        <strong>EXIF Remover</strong>
+        <strong>Penghapus EXIF</strong>
         <span class="tool-desc">Hapus metadata untuk lindungi privasi</span>
       </div>
       <span class="tool-arrow">→</span>

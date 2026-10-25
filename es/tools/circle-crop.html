@@ -78,26 +78,50 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "¿El círculo tendrá fondo transparente?",
+      "name": "¿El recorte queda con fondo transparente?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Sí, el área fuera del círculo es transparente. El PNG conserva el canal alfa."
+        "text": "Sí: por defecto todo lo que queda fuera del círculo es transparente y el PNG guarda el canal alfa. Si lo prefieres con relleno, cambia el fondo a blanco o a un color personalizado antes de descargar."
       }
     },
     {
       "@type": "Question",
-      "name": "¿Puedo recortar un sujeto descentrado?",
+      "name": "¿Puedo recortar un rostro que no está en el centro?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Sí. Usa los deslizadores de desplazamiento horizontal y vertical."
+        "text": "Para eso sirven los desplazamientos X e Y: mueven el círculo por toda la imagen mientras el tamaño fija el diámetro. Combina los tres controles hasta que el rostro quede justo en el centro del círculo."
       }
     },
     {
       "@type": "Question",
-      "name": "¿Se sube mi imagen a un servidor?",
+      "name": "¿Se sube mi imagen a algún servidor?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Todo sucede en tu navegador con HTML5 Canvas."
+        "text": "No. El recorte se calcula en tu navegador con HTML5 Canvas; el archivo nunca sale de tu dispositivo. Al recargar la página se borra todo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué solo se descarga en PNG y no en JPG?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El JPG no admite transparencia: guardaría el fondo del círculo en un color sólido. El PNG conserva el alfa, que es justo la gracia de un recorte circular."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué resolución tiene la imagen final?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La salida es un cuadrado cuyo lado equivale al lado menor de la imagen original, con un mínimo de 300 píxeles. Recortar no amplía la foto: a más resolución de origen, más nítido el resultado."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Sirve para el avatar de una tienda online?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Claro: recorta tu logo o tu foto, elige un fondo del color de la marca y descarga. Es el mismo flujo que usan los vendedores para unificar el aspecto de sus perfiles en varias plataformas."
       }
     }
   ]
@@ -164,7 +188,7 @@
     <div class="upload-icon">📁</div>
     <h3>Arrastra una imagen aquí</h3>
     <p>o haz clic para buscar</p>
-    <p class="upload-hint">Supports JPG, PNG, WebP, BMP</p>
+    <p class="upload-hint">Admite JPG, PNG, WebP, BMP</p>
   </div>
 
   <div id="workspace" style="display:none">
@@ -173,31 +197,31 @@
     </div>
 
     <div class="controls">
-      <label>Circle Size</label>
+      <label>Tamaño del círculo</label>
       <input type="range" id="sizeSlider" min="10" max="100" value="80">
       <span id="sizeLabel">80%</span>
     </div>
     <div class="controls">
-      <label>Offset X</label>
+      <label>Desplazamiento X</label>
       <input type="range" id="offX" min="-50" max="50" value="0">
       <span id="offXLabel">0</span>
-      <label style="margin-left:1rem">Offset Y</label>
+      <label style="margin-left:1rem">Desplazamiento Y</label>
       <input type="range" id="offY" min="-50" max="50" value="0">
       <span id="offYLabel">0</span>
     </div>
     <div class="controls">
-      <label>Background</label>
+      <label>Fondo</label>
       <select id="bgType">
-        <option value="transparent">Transparent</option>
-        <option value="white">White</option>
-        <option value="custom">Custom Color</option>
+        <option value="transparent">Transparente</option>
+        <option value="white">Blanco</option>
+        <option value="custom">Color personalizado</option>
       </select>
       <input type="color" id="bgColor" value="#ffffff" style="display:none;width:40px;height:32px;border:none;cursor:pointer;margin-left:0.5rem">
     </div>
     <div class="controls">
-      <button class="btn btn-primary" id="dlBtn">⬇ Download PNG</button>
+      <button class="btn btn-primary" id="dlBtn">⬇ Descargar PNG</button>
       <button class="btn btn-secondary" id="resetBtn">Restablecer</button>
-      <button class="btn btn-secondary" id="newBtn">New Image</button>
+      <button class="btn btn-secondary" id="newBtn">Nueva imagen</button>
     </div>
   </div>
       </div>
@@ -225,7 +249,7 @@
 
       <div class="guide-block">
         <h3>Paso 3: Elegir Fondo</h3>
-        <ul><li><strong>Transparent</strong> — Best for avatars and overlays.</li><li><strong>White</strong> — For documents or slides.</li><li><strong>Custom Color</strong> — Match your brand.</li></ul>
+        <ul><li><strong>Transparente</strong> — ideal para avatares y para superponer sobre otros fondos.</li><li><strong>Blanco</strong> — para documentos y presentaciones.</li><li><strong>Color personalizado</strong> — cámbialo al color de tu marca con el selector.</li></ul>
       </div>
 
       <div class="guide-block">
@@ -235,14 +259,17 @@
 
       <div class="guide-block">
         <h3>Casos de Uso Comunes</h3>
-        <ul><li>Social media avatars</li><li>LinkedIn profile</li><li>Team directories</li><li>App icons</li></ul>
+        <ul><li>Foto de perfil de WhatsApp para grupos de familia, vecinos o del club de fútbol</li><li>Avatar del vendedor en MercadoLibre o tu tienda online</li><li>Foto corporativa para el directorio del equipo o la firma de correo</li><li>Iconos de perfil para Discord, Telegram o foros</li></ul>
       </div>
 
 <section class="faq-section">
   <h2>Preguntas Frecuentes</h2>
-      <div class="faq-item"><button class="faq-question">¿El círculo tendrá fondo transparente?</button><div class="faq-answer">Sí, el área fuera del círculo es transparente. El PNG conserva el canal alfa.</div></div>
-      <div class="faq-item"><button class="faq-question">¿Puedo recortar un sujeto descentrado?</button><div class="faq-answer">Sí. Usa los deslizadores de desplazamiento horizontal y vertical.</div></div>
-      <div class="faq-item"><button class="faq-question">¿Se sube mi imagen a un servidor?</button><div class="faq-answer">No. Todo sucede en tu navegador con HTML5 Canvas.</div></div>
+  <div class="faq-item"><button class="faq-question">¿El recorte queda con fondo transparente?</button><div class="faq-answer">Sí: por defecto todo lo que queda fuera del círculo es transparente y el PNG guarda el canal alfa. Si lo prefieres con relleno, cambia el fondo a blanco o a un color personalizado antes de descargar.</div></div>
+  <div class="faq-item"><button class="faq-question">¿Puedo recortar un rostro que no está en el centro?</button><div class="faq-answer">Para eso sirven los desplazamientos X e Y: mueven el círculo por toda la imagen mientras el tamaño fija el diámetro. Combina los tres controles hasta que el rostro quede justo en el centro del círculo.</div></div>
+  <div class="faq-item"><button class="faq-question">¿Se sube mi imagen a algún servidor?</button><div class="faq-answer">No. El recorte se calcula en tu navegador con HTML5 Canvas; el archivo nunca sale de tu dispositivo. Al recargar la página se borra todo.</div></div>
+  <div class="faq-item"><button class="faq-question">¿Por qué solo se descarga en PNG y no en JPG?</button><div class="faq-answer">El JPG no admite transparencia: guardaría el fondo del círculo en un color sólido. El PNG conserva el alfa, que es justo la gracia de un recorte circular.</div></div>
+  <div class="faq-item"><button class="faq-question">¿Qué resolución tiene la imagen final?</button><div class="faq-answer">La salida es un cuadrado cuyo lado equivale al lado menor de la imagen original, con un mínimo de 300 píxeles. Recortar no amplía la foto: a más resolución de origen, más nítido el resultado.</div></div>
+  <div class="faq-item"><button class="faq-question">¿Sirve para el avatar de una tienda online?</button><div class="faq-answer">Claro: recorta tu logo o tu foto, elige un fondo del color de la marca y descarga. Es el mismo flujo que usan los vendedores para unificar el aspecto de sus perfiles en varias plataformas.</div></div>
       </section>
 
 <section class="related-tools">
@@ -251,7 +278,7 @@
     <a href="/es/tools/cropper" class="related-tool-card">
       <span class="tool-icon">🔧</span>
       <div class="tool-info">
-        <strong>Image Cropper</strong>
+        <strong>Recortador de Imagen</strong>
         <span class="tool-desc">Recorta imágenes a cualquier proporción</span>
       </div>
       <span class="tool-arrow">→</span>
@@ -259,7 +286,7 @@
     <a href="/es/tools/image-exif-remover" class="related-tool-card">
       <span class="tool-icon">🔧</span>
       <div class="tool-info">
-        <strong>EXIF Remover</strong>
+        <strong>Eliminador de EXIF</strong>
         <span class="tool-desc">Elimina metadatos para proteger tu privacidad</span>
       </div>
       <span class="tool-arrow">→</span>

@@ -35,7 +35,7 @@
   
   "inLanguage": "fr","@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Circle Crop Image",
+  "name": "Recadrage circulaire",
   "url": "https://smartimgkit.com/fr/tools/circle-crop",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
@@ -100,26 +100,50 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Will the cropped circle have a transparent background?",
+      "name": "Le cercle découpé a-t-il un fond transparent ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes — by default, the area outside the circle is fully transparent. The output PNG preserves alpha."
+        "text": "Oui : par défaut, tout ce qui est hors du cercle est transparent et le PNG conserve le canal alpha. Vous pouvez aussi choisir un fond blanc ou une couleur personnalisée avant de télécharger."
       }
     },
     {
       "@type": "Question",
-      "name": "Can I crop an off-center subject?",
+      "name": "Puis-je recadrer un visage qui n’est pas au centre ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. Use the horizontal and vertical offset sliders to move the circle anywhere in the image."
+        "text": "C’est le rôle des décalages X et Y : ils déplacent le cercle sur toute l’image, tandis que la taille fixe le diamètre. Combinez les trois réglages jusqu’à ce que le sujet soit bien au centre."
       }
     },
     {
       "@type": "Question",
-      "name": "Is my image uploaded to a server?",
+      "name": "Mon image est-elle envoyée sur un serveur ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Everything happens in your browser using HTML5 Canvas."
+        "text": "Non. Le découpage est calculé dans votre navigateur avec HTML5 Canvas ; le fichier ne quitte jamais votre appareil et tout s’efface en rechargeant la page."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Pourquoi uniquement un téléchargement PNG, et pas JPG ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Le JPG ne gère pas la transparence : il remplirait le fond avec une couleur unie. Le PNG conserve l’alpha, ce qui fait tout l’intérêt d’un découpage rond."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quelle est la résolution de l’image obtenue ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La sortie est un carré dont le côté correspond au plus petit côté de l’image d’origine, avec un minimum de 300 pixels. L’outil n’agrandit pas la photo : plus l’original est net, plus le résultat l’est."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Convient-il pour une photo professionnelle ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui : cadrez votre visage, choisissez un fond de la couleur de votre entreprise et téléchargez. C’est le moyen le plus rapide d’obtenir des avatars cohérents pour LinkedIn, un trombinoscope ou une signature."
       }
     }
   ]
@@ -157,10 +181,10 @@
 
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>Circle Crop Image</span></nav>
+      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>⭕ Recadrage circulaire</span></nav>
       <div class="tool-page-header">
-        <h1>Circle Crop Image</h1>
-        <p></p>
+        <h1>⭕ Recadrage circulaire</h1>
+        <p>Découpez une photo en cercle parfait, avec fond transparent si vous le souhaitez — gratuit, sans envoi de fichier, directement dans le navigateur.</p>
       </div>
       <div class="tool-workspace">
 <div class="upload-area" id="uploadArea">
@@ -168,7 +192,7 @@
     <div class="upload-icon">📁</div>
     <h3>Déposer an image here</h3>
     <p>ou cliquez pour parcourir</p>
-    <p class="upload-hint">Supports JPG, PNG, WebP, BMP</p>
+    <p class="upload-hint">Formats pris en charge : JPG, PNG, WebP, BMP</p>
   </div>
 
   <div id="workspace" style="display:none">
@@ -177,15 +201,15 @@
     </div>
 
     <div class="controls">
-      <label>Circle Taille</label>
+      <label>Taille du cercle</label>
       <input type="range" id="sizeSlider" min="10" max="100" value="80">
       <span id="sizeLabel">80%</span>
     </div>
     <div class="controls">
-      <label>Offset X</label>
+      <label>Décalage X</label>
       <input type="range" id="offX" min="-50" max="50" value="0">
       <span id="offXLabel">0</span>
-      <label style="margin-left:1rem">Offset Y</label>
+      <label style="margin-left:1rem">Décalage Y</label>
       <input type="range" id="offY" min="-50" max="50" value="0">
       <span id="offYLabel">0</span>
     </div>
@@ -193,86 +217,96 @@
       <label>Arrière-plan</label>
       <select id="bgType">
         <option value="transparent">Transparent</option>
-        <option value="white">White</option>
-        <option value="custom">Personnalisé Couleur</option>
+        <option value="white">Blanc</option>
+        <option value="custom">Couleur personnalisée</option>
       </select>
       <input type="color" id="bgColor" value="#ffffff" style="display:none;width:40px;height:32px;border:none;cursor:pointer;margin-left:0.5rem">
     </div>
     <div class="controls">
       <button class="btn btn-primary" id="dlBtn">⬇ Télécharger PNG</button>
       <button class="btn btn-secondary" id="resetBtn">Réinitialiser</button>
-      <button class="btn btn-secondary" id="newBtn">New Image</button>
+      <button class="btn btn-secondary" id="newBtn">Nouvelle image</button>
     </div>
   </div>
       </div>
 <section class="how-to-section">
-  <h2>How to Use</h2>
+  <h2>Comment utiliser</h2>
   <div class="how-to-steps">
-    <div class="how-to-step"><div class="step-number">1</div><h4>Upload</h4><p>Drag and drop or click to select an image (JPG, PNG, WebP, BMP).</p></div>
-    <div class="how-to-step"><div class="step-number">2</div><h4>Adjust Circle</h4><p>Use the size and offset sliders to position the circle exactly where you want.</p></div>
-    <div class="how-to-step"><div class="step-number">3</div><h4>Choose Background</h4><p>Pick transparent (best for avatars), solid color, or pick a custom color.</p></div>
-    <div class="how-to-step"><div class="step-number">4</div><h4>Download PNG</h4><p>Click "Download PNG" to save your circular image.</p></div>
+    <div class="how-to-step"><div class="step-number">1</div><h4>Téléverser</h4><p>Glissez-déposez une image ou cliquez pour la choisir (JPG, PNG, WebP, BMP).</p></div>
+    <div class="how-to-step"><div class="step-number">2</div><h4>Cadrer le cercle</h4><p>Réglez la taille puis décalez le cercle pour qu’il entoure exactement votre sujet.</p></div>
+    <div class="how-to-step"><div class="step-number">3</div><h4>Choisir le fond</h4><p>Transparent pour un avatar, blanc pour un document, ou une couleur à vous.</p></div>
+    <div class="how-to-step"><div class="step-number">4</div><h4>Télécharger le PNG</h4><p>Un clic et l’image circulaire est enregistrée sur votre appareil.</p></div>
   </div>
 </section>
 
-<h2>Detailed User Guide</h2>
+<h2>Guide détaillé</h2>
 
       <div class="guide-block">
-        <h3>Step 1: Upload Your Image</h3>
-        <p>Click the dropzone or drag and drop any image file. JPG, PNG, WebP, and BMP are all supported. The image will be loaded onto a canvas for editing.</p>
+        <h3>Étape 1 : téléversez votre image</h3>
+        <p>Cliquez sur la zone de dépôt ou glissez-y un fichier (JPG, PNG, WebP, BMP). La photo se charge sur un canevas dans votre navigateur : rien n’est envoyé sur un serveur.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Step 2: Position the Circle</h3>
-        <p>Use the Size slider to control how big the circle is (10% to 100% of the image). Use the Offset sliders to move the circle horizontally and vertically — useful when the subject is off-center.</p>
+        <h3>Étape 2 : positionnez le cercle</h3>
+        <p>Le curseur de taille règle le diamètre (10 % à 100 % de l’image). Les deux curseurs de décalage déplacent le cercle horizontalement et verticalement — indispensable quand le visage n’est pas au centre de la photo.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Step 3: Choose Background</h3>
-        <ul><li><strong>Transparent</strong> — Best for avatars and overlays.</li><li><strong>White</strong> — For documents or slides.</li><li><strong>Custom Color</strong> — Match your brand.</li></ul>
+        <h3>Étape 3 : choisissez le fond</h3>
+        <ul><li><strong>Transparent</strong> — parfait pour un avatar à poser sur n’importe quel fond.</li><li><strong>Blanc</strong> — pour un document, une présentation ou un trombinoscope.</li><li><strong>Couleur personnalisée</strong> — reprenez la couleur exacte de votre marque via le sélecteur.</li></ul>
       </div>
 
       <div class="guide-block">
-        <h3>Step 4: Download</h3>
-        <p>Click "Download PNG" to save. PNG format preserves alpha (transparency).</p>
+        <h3>Étape 4 : téléchargez</h3>
+        <p>Cliquez sur « Télécharger PNG » : le fichier circulaire s’enregistre directement. Le PNG conserve la transparence, contrairement au JPG.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Common Use Cases</h3>
-        <ul><li>Social media avatars</li><li>LinkedIn profile</li><li>Team directories</li><li>App icons</li></ul>
+        <h3>Cas d’usage les plus fréquents</h3>
+        <ul><li>Photo de profil LinkedIn parfaitement cadrée sur le visage</li><li>Trombinoscope d’équipe : tous les visages au même format circulaire</li><li>Avatar de communauté Discord ou de page professionnelle</li><li>Logo arrondi à intégrer dans un en-tête de site</li><li>Badge rond pour une signature d’e-mail</li></ul>
       </div>
 
+      <div class="guide-block">
+        <h3>Conseils de pro</h3>
+        <ul><li>Visez le visage avec un cercle qui le dépasse légèrement : un cadrage trop serré coupe les cheveux</li>
+            <li>Sur un fond transparent, un sujet clair disparaîtra sur une page blanche — préférez alors un fond blanc ou coloré</li>
+            <li>Pour un trombinoscope, gardez le même pourcentage de taille sur toutes les photos</li>
+            <li>La sortie fait au minimum 300 px de côté ; partez d’une photo nette si vous visez un grand avatar</li></ul>
+      </div>
 <section class="faq-section">
-  <h2>Frequently Asked Questions</h2>
-  <div class="faq-item"><button class="faq-question">Will the cropped circle have a transparent background?</button><div class="faq-answer">Yes — by default, the area outside the circle is fully transparent. The output PNG preserves alpha.</div></div>
-  <div class="faq-item"><button class="faq-question">Can I crop an off-center subject?</button><div class="faq-answer">Yes. Use the horizontal and vertical offset sliders to move the circle anywhere in the image.</div></div>
-  <div class="faq-item"><button class="faq-question">Is my image uploaded to a server?</button><div class="faq-answer">No. Everything happens in your browser using HTML5 Canvas.</div></div>
-</section>
+  <h2>Questions fréquentes</h2>
+  <div class="faq-item"><button class="faq-question">Le cercle découpé a-t-il un fond transparent ?</button><div class="faq-answer">Oui : par défaut, tout ce qui est hors du cercle est transparent et le PNG conserve le canal alpha. Vous pouvez aussi choisir un fond blanc ou une couleur personnalisée avant de télécharger.</div></div>
+  <div class="faq-item"><button class="faq-question">Puis-je recadrer un visage qui n’est pas au centre ?</button><div class="faq-answer">C’est le rôle des décalages X et Y : ils déplacent le cercle sur toute l’image, tandis que la taille fixe le diamètre. Combinez les trois réglages jusqu’à ce que le sujet soit bien au centre.</div></div>
+  <div class="faq-item"><button class="faq-question">Mon image est-elle envoyée sur un serveur ?</button><div class="faq-answer">Non. Le découpage est calculé dans votre navigateur avec HTML5 Canvas ; le fichier ne quitte jamais votre appareil et tout s’efface en rechargeant la page.</div></div>
+  <div class="faq-item"><button class="faq-question">Pourquoi uniquement un téléchargement PNG, et pas JPG ?</button><div class="faq-answer">Le JPG ne gère pas la transparence : il remplirait le fond avec une couleur unie. Le PNG conserve l’alpha, ce qui fait tout l’intérêt d’un découpage rond.</div></div>
+  <div class="faq-item"><button class="faq-question">Quelle est la résolution de l’image obtenue ?</button><div class="faq-answer">La sortie est un carré dont le côté correspond au plus petit côté de l’image d’origine, avec un minimum de 300 pixels. L’outil n’agrandit pas la photo : plus l’original est net, plus le résultat l’est.</div></div>
+  <div class="faq-item"><button class="faq-question">Convient-il pour une photo professionnelle ?</button><div class="faq-answer">Oui : cadrez votre visage, choisissez un fond de la couleur de votre entreprise et téléchargez. C’est le moyen le plus rapide d’obtenir des avatars cohérents pour LinkedIn, un trombinoscope ou une signature.</div></div>
+      </section>
 
 <section class="related-tools">
-  <h2>You Might Also Like</h2>
+  <h2>À découvrir aussi</h2>
   <div class="related-tools-grid">
     <a href="/fr/tools/cropper" class="related-tool-card">
       <span class="tool-icon">✂️</span>
       <div class="tool-info">
-        <strong>Image Cropper</strong>
-        <span class="tool-desc">Crop to any rectangle or custom shape</span>
+        <strong>Recadreur d’image</strong>
+        <span class="tool-desc">Recadrer vers un rectangle ou une forme libre</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
     <a href="/fr/tools/image-exif-remover" class="related-tool-card">
       <span class="tool-icon">🛡️</span>
       <div class="tool-info">
-        <strong>EXIF Remover</strong>
-        <span class="tool-desc">Strip metadata from your avatar</span>
+        <strong>Nettoyeur EXIF</strong>
+        <span class="tool-desc">Supprimer les métadonnées de votre photo de profil</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
     <a href="/fr/tools/compressor" class="related-tool-card">
       <span class="tool-icon">🗜️</span>
       <div class="tool-info">
-        <strong>Image Compressor</strong>
-        <span class="tool-desc">Shrink the cropped file size</span>
+        <strong>Compresseur d’image</strong>
+        <span class="tool-desc">Réduire le poids du fichier recadré</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
