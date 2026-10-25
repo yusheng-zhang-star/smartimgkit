@@ -137,6 +137,308 @@
     fileName: 'processed-image'
   };
 
+  /* ===== Locale detection & UI strings ===== */
+  var LANG = (function() {
+    var m = window.location.pathname.match(/^\/(vi|fr|es|ar|id|pt|zh)(?:\/|$)/);
+    return m ? m[1] : 'en';
+  })();
+
+  var I18N = {
+    en: {
+      title: '✅ Image Processed Successfully',
+      l1: 'Original',
+      l2: 'Processed',
+      l3: 'Saved',
+      watermark: 'Add "Powered by SmartImgKit" watermark',
+      download: '📥 Download Image',
+      copyReport: '📋 Copy Report',
+      share: 'Share:',
+      genCompare: 'Generate comparison preview',
+      embed: 'Embed code',
+      copyEmbed: 'Copy embed code',
+      tip: '💡 Tip: Bookmark SmartImgKit for quick access next time.',
+      emailPh: '(Optional) Enter email for full report',
+      submit: 'Submit',
+      submitting: 'Submitting...',
+      needEmail: 'Please enter an email address.',
+      invalidEmail: 'Invalid email format. Please check and try again.',
+      thanks: '✓ Thank you! Your report will be sent shortly.',
+      failed: 'Submission failed, but your image download is not affected.',
+      copied: '✓ Copied!',
+      systemShareOnly: 'System share is only available on mobile devices.',
+      compareUnavailable: 'Comparison preview unavailable (missing original image data).',
+      downloadComparison: '📥 Download Comparison',
+      before: 'Before',
+      after: 'After',
+      processedBy: 'Processed by SmartImgKit',
+      reportHeader: '✅ Image Processing Complete\n',
+      reportOrig: 'Original: ',
+      reportOut: 'Processed: ',
+      reportThird: 'Saved: ',
+      twitter: 'I just processed an image with SmartImgKit — free online image tools! Try it:',
+      system: 'I just processed an image with SmartImgKit!',
+      close: 'Close dialog',
+      previewAlt: 'Processed image preview',
+    },
+    vi: {
+      title: '✅ Xử lý ảnh thành công',
+      l1: 'Ảnh gốc',
+      l2: 'Kết quả',
+      l3: 'Đã giảm',
+      watermark: 'Thêm watermark "Powered by SmartImgKit"',
+      download: '📥 Tải ảnh xuống',
+      copyReport: '📋 Sao chép báo cáo',
+      share: 'Chia sẻ:',
+      genCompare: 'Tạo ảnh so sánh trước–sau',
+      embed: 'Mã nhúng',
+      copyEmbed: 'Sao chép mã nhúng',
+      tip: '💡 Mẹo: lưu SmartImgKit vào bookmark để mở nhanh lần sau.',
+      emailPh: '(Tùy chọn) Nhập email để nhận báo cáo đầy đủ',
+      submit: 'Gửi',
+      submitting: 'Đang gửi...',
+      needEmail: 'Vui lòng nhập địa chỉ email.',
+      invalidEmail: 'Email không hợp lệ, vui lòng kiểm tra lại.',
+      thanks: '✓ Cảm ơn bạn! Báo cáo sẽ được gửi trong ít phút.',
+      failed: 'Gửi báo cáo thất bại, nhưng ảnh vẫn tải xuống bình thường.',
+      copied: '✓ Đã sao chép!',
+      systemShareOnly: 'Chia sẻ hệ thống chỉ dùng được trên điện thoại.',
+      compareUnavailable: 'Không tạo được ảnh so sánh (thiếu dữ liệu ảnh gốc).',
+      downloadComparison: '📥 Tải ảnh so sánh',
+      before: 'Trước',
+      after: 'Sau',
+      processedBy: 'Xử lý bởi SmartImgKit',
+      reportHeader: '✅ Đã xử lý ảnh xong\n',
+      reportOrig: 'Ảnh gốc: ',
+      reportOut: 'Kết quả: ',
+      reportThird: 'Đã giảm: ',
+      twitter: 'Mình vừa xử lý ảnh bằng SmartImgKit — bộ công cụ ảnh miễn phí chạy ngay trên trình duyệt:',
+      system: 'Mình vừa xử lý ảnh bằng SmartImgKit!',
+      close: 'Đóng hộp thoại',
+      previewAlt: 'Ảnh kết quả',
+    },
+    fr: {
+      title: '✅ Image traitée avec succès',
+      l1: 'Original',
+      l2: 'Résultat',
+      l3: 'Gain',
+      watermark: 'Ajouter le filigrane « Powered by SmartImgKit »',
+      download: '📥 Télécharger l’image',
+      copyReport: '📋 Copier le rapport',
+      share: 'Partager :',
+      genCompare: 'Générer un aperçu comparatif',
+      embed: 'Code d’intégration',
+      copyEmbed: 'Copier le code',
+      tip: '💡 Astuce : ajoutez SmartImgKit à vos favoris pour le retrouver vite.',
+      emailPh: '(Facultatif) E-mail pour recevoir le rapport complet',
+      submit: 'Envoyer',
+      submitting: 'Envoi...',
+      needEmail: 'Merci de saisir une adresse e-mail.',
+      invalidEmail: 'Format d’e-mail invalide, vérifiez et réessayez.',
+      thanks: '✓ Merci ! Votre rapport part dans quelques instants.',
+      failed: 'Envoi impossible, mais le téléchargement de votre image n’est pas affecté.',
+      copied: '✓ Copié !',
+      systemShareOnly: 'Le partage système n’est disponible que sur mobile.',
+      compareUnavailable: 'Aperçu comparatif indisponible (image d’origine manquante).',
+      downloadComparison: '📥 Télécharger la comparaison',
+      before: 'Avant',
+      after: 'Après',
+      processedBy: 'Traité par SmartImgKit',
+      reportHeader: '✅ Traitement terminé\n',
+      reportOrig: 'Original : ',
+      reportOut: 'Résultat : ',
+      reportThird: 'Gain : ',
+      twitter: 'Je viens de traiter une image avec SmartImgKit, des outils photo gratuits qui tournent dans le navigateur :',
+      system: 'Je viens de traiter une image avec SmartImgKit !',
+      close: 'Fermer la fenêtre',
+      previewAlt: 'Aperçu du résultat',
+    },
+    es: {
+      title: '✅ Imagen procesada correctamente',
+      l1: 'Original',
+      l2: 'Resultado',
+      l3: 'Ahorro',
+      watermark: 'Añadir marca de agua «Powered by SmartImgKit»',
+      download: '📥 Descargar imagen',
+      copyReport: '📋 Copiar informe',
+      share: 'Compartir:',
+      genCompare: 'Generar vista comparativa',
+      embed: 'Código para insertar',
+      copyEmbed: 'Copiar código',
+      tip: '💡 Consejo: guarda SmartImgKit en marcadores para volver rápido.',
+      emailPh: '(Opcional) Escribe tu email para recibir el informe completo',
+      submit: 'Enviar',
+      submitting: 'Enviando...',
+      needEmail: 'Escribe una dirección de email.',
+      invalidEmail: 'El formato del email no es válido, revísalo e inténtalo otra vez.',
+      thanks: '✓ ¡Gracias! Te enviaremos el informe en breve.',
+      failed: 'No se pudo enviar, pero la descarga de tu imagen no se ve afectada.',
+      copied: '✓ ¡Copiado!',
+      systemShareOnly: 'Compartir del sistema solo está disponible en móviles.',
+      compareUnavailable: 'Vista comparativa no disponible (falta la imagen original).',
+      downloadComparison: '📥 Descargar comparación',
+      before: 'Antes',
+      after: 'Después',
+      processedBy: 'Procesado con SmartImgKit',
+      reportHeader: '✅ Procesamiento completado\n',
+      reportOrig: 'Original: ',
+      reportOut: 'Resultado: ',
+      reportThird: 'Ahorro: ',
+      twitter: 'Acabo de procesar una imagen con SmartImgKit, herramientas de foto gratis en el navegador:',
+      system: '¡Acabo de procesar una imagen con SmartImgKit!',
+      close: 'Cerrar diálogo',
+      previewAlt: 'Vista previa del resultado',
+    },
+    pt: {
+      title: '✅ Imagem processada com sucesso',
+      l1: 'Original',
+      l2: 'Resultado',
+      l3: 'Economia',
+      watermark: 'Adicionar marca d’água "Powered by SmartImgKit"',
+      download: '📥 Baixar imagem',
+      copyReport: '📋 Copiar relatório',
+      share: 'Compartilhar:',
+      genCompare: 'Gerar prévia comparativa',
+      embed: 'Código de incorporação',
+      copyEmbed: 'Copiar código',
+      tip: '💡 Dica: salve o SmartImgKit nos favoritos para voltar depois.',
+      emailPh: '(Opcional) Digite seu e-mail para receber o relatório completo',
+      submit: 'Enviar',
+      submitting: 'Enviando...',
+      needEmail: 'Digite um endereço de e-mail.',
+      invalidEmail: 'Formato de e-mail inválido, confira e tente de novo.',
+      thanks: '✓ Obrigado! O relatório será enviado em instantes.',
+      failed: 'Não foi possível enviar, mas o download da imagem não foi afetado.',
+      copied: '✓ Copiado!',
+      systemShareOnly: 'O compartilhamento do sistema só funciona no celular.',
+      compareUnavailable: 'Prévia comparativa indisponível (imagem original ausente).',
+      downloadComparison: '📥 Baixar comparação',
+      before: 'Antes',
+      after: 'Depois',
+      processedBy: 'Processado com SmartImgKit',
+      reportHeader: '✅ Processamento concluído\n',
+      reportOrig: 'Original: ',
+      reportOut: 'Resultado: ',
+      reportThird: 'Economia: ',
+      twitter: 'Acabei de processar uma imagem com o SmartImgKit, ferramentas de foto grátis no navegador:',
+      system: 'Acabei de processar uma imagem com o SmartImgKit!',
+      close: 'Fechar janela',
+      previewAlt: 'Prévia do resultado',
+    },
+    id: {
+      title: '✅ Gambar berhasil diproses',
+      l1: 'Asli',
+      l2: 'Hasil',
+      l3: 'Hemat',
+      watermark: 'Tambahkan tanda air "Powered by SmartImgKit"',
+      download: '📥 Unduh gambar',
+      copyReport: '📋 Salin laporan',
+      share: 'Bagikan:',
+      genCompare: 'Buat pratinjau perbandingan',
+      embed: 'Kode semat',
+      copyEmbed: 'Salin kode',
+      tip: '💡 Tips: simpan SmartImgKit di bookmark agar cepat dibuka lagi.',
+      emailPh: '(Opsional) Masukkan email untuk laporan lengkap',
+      submit: 'Kirim',
+      submitting: 'Mengirim...',
+      needEmail: 'Masukkan alamat email.',
+      invalidEmail: 'Format email tidak valid, periksa lagi.',
+      thanks: '✓ Terima kasih! Laporan akan dikirim sebentar lagi.',
+      failed: 'Gagal mengirim, tetapi unduhan gambar Anda tetap aman.',
+      copied: '✓ Tersalin!',
+      systemShareOnly: 'Bagikan sistem hanya tersedia di ponsel.',
+      compareUnavailable: 'Pratinjau perbandingan tidak tersedia (gambar asli tidak ada).',
+      downloadComparison: '📥 Unduh perbandingan',
+      before: 'Sebelum',
+      after: 'Sesudah',
+      processedBy: 'Diproses dengan SmartImgKit',
+      reportHeader: '✅ Pemrosesan selesai\n',
+      reportOrig: 'Asli: ',
+      reportOut: 'Hasil: ',
+      reportThird: 'Hemat: ',
+      twitter: 'Baru saja memproses gambar dengan SmartImgKit, alat foto gratis di browser:',
+      system: 'Baru saja memproses gambar dengan SmartImgKit!',
+      close: 'Tutup dialog',
+      previewAlt: 'Pratinjau hasil',
+    },
+    ar: {
+      title: '✅ تمت معالجة الصورة بنجاح',
+      l1: 'الأصل',
+      l2: 'النتيجة',
+      l3: 'التوفير',
+      watermark: 'إضافة علامة مائية "Powered by SmartImgKit"',
+      download: '📥 تنزيل الصورة',
+      copyReport: '📋 نسخ التقرير',
+      share: 'مشاركة:',
+      genCompare: 'إنشاء معاينة مقارنة',
+      embed: 'كود التضمين',
+      copyEmbed: 'نسخ كود التضمين',
+      tip: '💡 نصيحة: أضف SmartImgKit إلى المفضلة للعودة سريعًا.',
+      emailPh: '(اختياري) أدخل بريدك لاستلام التقرير الكامل',
+      submit: 'إرسال',
+      submitting: 'جارٍ الإرسال...',
+      needEmail: 'يرجى إدخال عنوان بريد إلكتروني.',
+      invalidEmail: 'صيغة البريد غير صحيحة، تحقق منها ثم أعد المحاولة.',
+      thanks: '✓ شكرًا لك! سيصل التقرير بعد قليل.',
+      failed: 'تعذّر الإرسال، لكن تنزيل صورتك لم يتأثر.',
+      copied: '✓ تم النسخ!',
+      systemShareOnly: 'المشاركة عبر النظام متاحة على الهاتف فقط.',
+      compareUnavailable: 'المعاينة المقارنة غير متاحة (الصورة الأصلية مفقودة).',
+      downloadComparison: '📥 تنزيل المقارنة',
+      before: 'قبل',
+      after: 'بعد',
+      processedBy: 'معالجة بواسطة SmartImgKit',
+      reportHeader: '✅ اكتملت المعالجة\n',
+      reportOrig: 'الأصل: ',
+      reportOut: 'النتيجة: ',
+      reportThird: 'التوفير: ',
+      twitter: 'عالجت صورة للتو باستخدام SmartImgKit، أدوات صور مجانية تعمل داخل المتصفح:',
+      system: 'عالجت صورة للتو باستخدام SmartImgKit!',
+      close: 'إغلاق النافذة',
+      previewAlt: 'معاينة النتيجة',
+    },
+    zh: {
+      title: '✅ 图片处理完成',
+      l1: '原图',
+      l2: '结果',
+      l3: '已减小',
+      watermark: '添加「Powered by SmartImgKit」水印',
+      download: '📥 下载图片',
+      copyReport: '📋 复制报告',
+      share: '分享：',
+      genCompare: '生成前后对比图',
+      embed: '嵌入代码',
+      copyEmbed: '复制嵌入代码',
+      tip: '💡 小提示：把 SmartImgKit 加入书签，下次打开更快。',
+      emailPh: '（可选）填写邮箱以接收完整报告',
+      submit: '提交',
+      submitting: '提交中...',
+      needEmail: '请填写邮箱地址。',
+      invalidEmail: '邮箱格式不正确，请检查后重试。',
+      thanks: '✓ 谢谢！报告稍后会发送给你。',
+      failed: '提交失败，但不会影响图片下载。',
+      copied: '✓ 已复制！',
+      systemShareOnly: '系统分享仅在手机上可用。',
+      compareUnavailable: '无法生成对比图（缺少原图数据）。',
+      downloadComparison: '📥 下载对比图',
+      before: '处理前',
+      after: '处理后',
+      processedBy: '由 SmartImgKit 处理',
+      reportHeader: '✅ 图片处理完成\n',
+      reportOrig: '原图：',
+      reportOut: '结果：',
+      reportThird: '已减小：',
+      twitter: '我刚用 SmartImgKit 处理了一张图片，免费在线图片工具，直接在浏览器里完成：',
+      system: '我刚用 SmartImgKit 处理了一张图片！',
+      close: '关闭对话框',
+      previewAlt: '处理结果预览',
+    },
+  };
+
+  function T(key) {
+    var pack = I18N[LANG] || I18N.en;
+    return (pack[key] !== undefined) ? pack[key] : (I18N.en[key] || '');
+  }
+
   /* ===== Detect tool type from URL ===== */
   function detectToolType() {
     try {
@@ -154,7 +456,22 @@
   /* ===== Get tool config ===== */
   function getToolConfig(toolType) {
     toolType = toolType || detectToolType();
-    return TOOL_CONFIGS[toolType] || DEFAULT_CONFIG;
+    var base = TOOL_CONFIGS[toolType] || DEFAULT_CONFIG;
+    if (LANG === 'en') return base;
+    // 非英语：标题/统计标签/分享文案/报告行按本语种界面包重写，文件名沿用工具配置
+    return {
+      title: T('title'),
+      stat1Label: T('l1'),
+      stat2Label: T('l2'),
+      stat3Label: T('l3'),
+      twitterText: T('twitter'),
+      systemText: T('system'),
+      reportHeader: T('reportHeader'),
+      reportLine2: T('reportOrig'),
+      reportLine3: T('reportOut'),
+      reportLine4: T('reportThird'),
+      fileName: base.fileName
+    };
   }
 
   /* ===== State ===== */
@@ -253,47 +570,47 @@
     overlay.setAttribute('aria-labelledby', 'resultModalTitle');
     overlay.innerHTML = `
       <div class="result-modal" role="document">
-        <button class="result-modal-close" id="resultModalClose" aria-label="Close dialog">&times;</button>
+        <button class="result-modal-close" id="resultModalClose" aria-label="${T('close')}">&times;</button>
         <div class="result-modal-body">
-          <h2 id="resultModalTitle">✅ Image Optimization Complete</h2>
+          <h2 id="resultModalTitle">${T('title')}</h2>
           <div class="result-preview">
-            <img id="resultPreviewImg" alt="Processed image preview" />
+            <img id="resultPreviewImg" alt="${T('previewAlt')}" />
           </div>
           <div class="result-stats">
-            <div class="stat-item"><span class="stat-label">Original</span><span class="stat-value" id="statOrigSize">-</span></div>
-            <div class="stat-item"><span class="stat-label">Optimized</span><span class="stat-value" id="statOptSize">-</span></div>
-            <div class="stat-item stat-saved"><span class="stat-label">Saved</span><span class="stat-value" id="statSaveRate">-</span></div>
+            <div class="stat-item"><span class="stat-label">${T('l1')}</span><span class="stat-value" id="statOrigSize" dir="ltr">-</span></div>
+            <div class="stat-item"><span class="stat-label">${T('l2')}</span><span class="stat-value" id="statOptSize" dir="ltr">-</span></div>
+            <div class="stat-item stat-saved"><span class="stat-label">${T('l3')}</span><span class="stat-value" id="statSaveRate" dir="ltr">-</span></div>
           </div>
           <div class="result-toggle-row">
-            <label><input type="checkbox" id="rmWatermarkToggle" /> Add "Powered by SmartImgKit" watermark</label>
+            <label><input type="checkbox" id="rmWatermarkToggle" /> ${T('watermark')}</label>
           </div>
           <div class="result-actions">
-            <button class="rm-btn rm-btn-primary" id="rmDownloadBtn">📥 Download Image</button>
-            <button class="rm-btn rm-btn-secondary" id="rmCopyReportBtn">📋 Copy Report</button>
+            <button class="rm-btn rm-btn-primary" id="rmDownloadBtn">${T('download')}</button>
+            <button class="rm-btn rm-btn-secondary" id="rmCopyReportBtn">${T('copyReport')}</button>
           </div>
           <div class="result-share-section">
-            <span class="share-label">Share:</span>
-            <button class="share-btn" id="rmShareTwitter" title="Share on X (Twitter)" aria-label="Share on X (Twitter)"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></button>
-            <button class="share-btn" id="rmShareFacebook" title="Share on Facebook" aria-label="Share on Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.404 0 .763.008 1.107.022v3.36c-.43-.005-.752-.013-1.052-.013-1.35 0-1.872.617-1.872 2.264v1.925h3.287l-.706 3.667h-2.581v8.061c5.376-.608 9.562-5.218 9.562-10.769C22.061 5.679 17.382 1 12 1S1.939 5.679 1.939 11.7c0 5.551 4.186 10.161 9.562 10.769z"/></svg></button>
-            <button class="share-btn" id="rmShareSystem" title="System Share" aria-label="Share via system"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg></button>
+            <span class="share-label">${T('share')}</span>
+            <button class="share-btn" id="rmShareTwitter" title="X (Twitter)" aria-label="X (Twitter)"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></button>
+            <button class="share-btn" id="rmShareFacebook" title="Facebook" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.404 0 .763.008 1.107.022v3.36c-.43-.005-.752-.013-1.052-.013-1.35 0-1.872.617-1.872 2.264v1.925h3.287l-.706 3.667h-2.581v8.061c5.376-.608 9.562-5.218 9.562-10.769C22.061 5.679 17.382 1 12 1S1.939 5.679 1.939 11.7c0 5.551 4.186 10.161 9.562 10.769z"/></svg></button>
+            <button class="share-btn" id="rmShareSystem" title="Share" aria-label="Share"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg></button>
           </div>
           <div class="result-compare-preview" id="rmComparePreview">
-            <button class="rm-btn rm-btn-secondary" id="rmGenerateCompareBtn">Generate comparison preview</button>
+            <button class="rm-btn rm-btn-secondary" id="rmGenerateCompareBtn">${T('genCompare')}</button>
             <div id="rmCompareImageContainer"></div>
           </div>
           <div class="result-email-section" id="rmEmailSection">
             <div class="result-email-row">
-              <input type="email" id="rmEmailInput" placeholder="(Optional) Enter email for full report" />
-              <button class="rm-btn rm-btn-secondary" id="rmEmailSubmit">Submit</button>
+              <input type="email" id="rmEmailInput" placeholder="${T('emailPh')}" />
+              <button class="rm-btn rm-btn-secondary" id="rmEmailSubmit">${T('submit')}</button>
             </div>
             <div class="email-feedback" id="rmEmailFeedback"></div>
           </div>
           <details class="result-embed">
-            <summary>Embed code</summary>
+            <summary>${T('embed')}</summary>
             <pre id="rmEmbedCode"></pre>
-            <button class="rm-btn rm-btn-secondary result-embed-copy" id="rmCopyEmbedBtn">Copy embed code</button>
+            <button class="rm-btn rm-btn-secondary result-embed-copy" id="rmCopyEmbedBtn">${T('copyEmbed')}</button>
           </details>
-          <p class="result-tip">💡 Tip: Bookmark SmartImgKit for quick access next time.</p>
+          <p class="result-tip">${T('tip')}</p>
         </div>
       </div>
     `;
@@ -361,13 +678,13 @@
       config.reportLine2 + state.origSize + '\n' +
       config.reportLine3 + state.optSize + '\n' +
       config.reportLine4 + state.saveRate + '\n\n' +
-      'Processed by SmartImgKit\n' +
+      T('processedBy') + '\n' +
       SITE_URL;
 
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(function() {
         track('copy_report', {});
-        flashButton('rmCopyReportBtn', '✓ Copied!');
+        flashButton('rmCopyReportBtn', T('copied'));
       }).catch(function() { fallbackCopy(text); });
     } else {
       fallbackCopy(text);
@@ -380,7 +697,7 @@
     ta.style.position = 'fixed'; ta.style.opacity = '0';
     document.body.appendChild(ta);
     ta.select();
-    try { document.execCommand('copy'); track('copy_report', {}); flashButton('rmCopyReportBtn', '✓ Copied!'); }
+    try { document.execCommand('copy'); track('copy_report', {}); flashButton('rmCopyReportBtn', T('copied')); }
     catch(e) {}
     document.body.removeChild(ta);
   }
@@ -429,7 +746,7 @@
         url: SITE_URL
       }).catch(function() {});
     } else {
-      showToast('System share is only available on mobile devices.');
+      showToast(T('systemShareOnly'));
     }
   }
 
@@ -452,7 +769,7 @@
 
     if (!state.originalBlob || !state.resultBlob) {
       var container = document.getElementById('rmCompareImageContainer');
-      container.innerHTML = '<p style="font-size:.8rem;color:var(--text-muted);">Comparison preview unavailable (missing original image data).</p>';
+      container.innerHTML = '<p style="font-size:.8rem;color:var(--text-muted);">' + T('compareUnavailable') + '</p>';
       return;
     }
 
@@ -491,8 +808,8 @@
       ctx.fillStyle = '#5a5a6e';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillText('Before', 6, h + 6);
-      ctx.fillText('After', w1 + gap + 6, h + 6);
+      ctx.fillText(T('before'), 6, h + 6);
+      ctx.fillText(T('after'), w1 + gap + 6, h + 6);
 
       // Watermark
       ctx.font = '10px Inter, Arial, sans-serif';
@@ -504,8 +821,8 @@
       var dataUrl = canvas.toDataURL('image/png');
       var container = document.getElementById('rmCompareImageContainer');
       container.innerHTML =
-        '<img src="' + dataUrl + '" alt="Before and after comparison" style="border-radius:8px;" />' +
-        '<div style="margin-top:8px;"><a href="' + dataUrl + '" download="smartimgkit-comparison.png" class="rm-btn rm-btn-secondary" style="display:inline-flex;text-decoration:none;">📥 Download Comparison</a></div>';
+        '<img src="' + dataUrl + '" alt="' + T('before') + ' / ' + T('after') + '" style="border-radius:8px;" />' +
+        '<div style="margin-top:8px;"><a href="' + dataUrl + '" download="smartimgkit-comparison.png" class="rm-btn rm-btn-secondary" style="display:inline-flex;text-decoration:none;">' + T('downloadComparison') + '</a></div>';
     }
 
     origImg.onload = tryCompose;
@@ -522,14 +839,14 @@
 
     if (!email) {
       feedback.className = 'email-feedback error';
-      feedback.textContent = 'Please enter an email address.';
+      feedback.textContent = T('needEmail');
       return;
     }
 
     var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       feedback.className = 'email-feedback error';
-      feedback.textContent = 'Invalid email format. Please check and try again.';
+      feedback.textContent = T('invalidEmail');
       return;
     }
 
@@ -550,17 +867,17 @@
 
     var submitBtn = document.getElementById('rmEmailSubmit');
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Submitting...';
+    submitBtn.textContent = T('submitting');
 
     if (!N8N_WEBHOOK_URL) {
       // Webhook not configured — simulate success but log warning
       console.warn('[SmartImgKit] N8N_WEBHOOK_URL not configured. Email not submitted.');
       track('email_submit', { status: 'no_webhook' });
       feedback.className = 'email-feedback success';
-      feedback.textContent = '✓ Thank you! Your report will be sent shortly.';
+      feedback.textContent = T('thanks');
       input.value = '';
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Submit';
+      submitBtn.textContent = T('submit');
       return;
     }
 
@@ -572,7 +889,7 @@
       if (res.ok) {
         track('email_submit', { status: 'success' });
         feedback.className = 'email-feedback success';
-        feedback.textContent = '✓ Thank you! Your report will be sent shortly.';
+        feedback.textContent = T('thanks');
         input.value = '';
       } else {
         throw new Error('HTTP ' + res.status);
@@ -580,10 +897,10 @@
     }).catch(function(err) {
       track('email_submit', { status: 'error' });
       feedback.className = 'email-feedback error';
-      feedback.textContent = 'Submission failed, but your image download is not affected.';
+      feedback.textContent = T('failed');
     }).finally(function() {
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Submit';
+      submitBtn.textContent = T('submit');
     });
   }
 
@@ -593,7 +910,7 @@
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(code).then(function() {
         track('copy_embed_code', {});
-        flashButton('rmCopyEmbedBtn', '✓ Copied!');
+        flashButton('rmCopyEmbedBtn', T('copied'));
       }).catch(function() { fallbackCopyEmbed(code); });
     } else {
       fallbackCopyEmbed(code);
@@ -606,7 +923,7 @@
     ta.style.position = 'fixed'; ta.style.opacity = '0';
     document.body.appendChild(ta);
     ta.select();
-    try { document.execCommand('copy'); track('copy_embed_code', {}); flashButton('rmCopyEmbedBtn', '✓ Copied!'); } catch(e) {}
+    try { document.execCommand('copy'); track('copy_embed_code', {}); flashButton('rmCopyEmbedBtn', T('copied')); } catch(e) {}
     document.body.removeChild(ta);
   }
 
