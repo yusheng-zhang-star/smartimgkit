@@ -27,7 +27,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json">
   { 
-  "inLanguage": "es","@context": "https://schema.org", "@type": "WebApplication", "name": "PDF Editor", "url": "https://smartimgkit.com/es/tools/pdf-editor", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }, "description": "Añade texto, imágenes y formas a cualquier página de tu PDF. Coloca, ajusta tamaño y color, y descarga sin subir el archivo." }
+  "inLanguage": "es","@context": "https://schema.org", "@type": "WebApplication", "name": "Editor PDF", "url": "https://smartimgkit.com/es/tools/pdf-editor", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }, "description": "Añade texto, imágenes y formas a cualquier página de tu PDF. Coloca, ajusta tamaño y color, y descarga sin subir el archivo." }
   </script>
 <script type="application/ld+json">
 {
@@ -36,58 +36,58 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How do I place elements?",
+      "name": "¿Cómo coloco un elemento en la página?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Select a mode (Text, Image, or Rectangle), configure the options, then click on the page preview where you want to place the element. A marker shows where it will appear."
+        "text": "Elige un modo (Texto, Imagen o Rectángulo), ajusta sus opciones y haz clic sobre la vista previa en el punto exacto donde quieres que aparezca. El elemento se añade al instante y puedes seguir colocando más."
       }
     },
     {
       "@type": "Question",
-      "name": "Can I edit existing text in the PDF?",
+      "name": "¿Puedo modificar el texto que ya tiene el PDF?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. This tool adds new elements on top of existing pages. Editing existing text content is not supported — that would require reflowing the original layout."
+        "text": "No. Esta herramienta añade elementos nuevos encima de las páginas; modificar o borrar el texto existente requeriría reconstruir todo el documento y aquí no se hace. Para cambiar texto existente, convierte el PDF a Word, edítalo y vuelve a exportarlo."
       }
     },
     {
       "@type": "Question",
-      "name": "Is my PDF uploaded to a server?",
+      "name": "¿Qué elementos puedo añadir?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. All editing happens locally in your browser using pdf-lib."
+        "text": "Cuadros de texto con tamaño y color de letra configurables, imágenes en PNG o JPG, y rectángulos de color con transparencia ajustable. Todos se colocan en la posición exacta que marques."
       }
     },
     {
       "@type": "Question",
-      "name": "What can I add to a PDF?",
+      "name": "¿Mi PDF se sube a algún servidor?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Text boxes, images, and shapes — placed anywhere on a page."
+        "text": "No. Toda la edición ocurre en tu navegador: la vista previa se dibuja con pdf.js y los elementos se aplican con pdf-lib. El documento nunca sale de tu equipo."
       }
     },
     {
       "@type": "Question",
-      "name": "Is the original modified?",
+      "name": "¿Se modifica el archivo original?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No — a new edited PDF is created."
+        "text": "No. El original queda intacto en tu disco; la herramienta genera un PDF nuevo con los elementos añadidos y ese es el que descargas."
       }
     },
     {
       "@type": "Question",
-      "name": "Are my PDFs uploaded to a server?",
+      "name": "¿Hay límite de tamaño?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. All processing happens locally in your browser using pdf-lib and pdf.js."
+        "text": "No hay tope fijo, pero recomendamos no superar los 100 MB: el documento debe caber en la memoria del navegador junto con las imágenes que incorpores."
       }
     },
     {
       "@type": "Question",
-      "name": "Is there a page or file limit?",
+      "name": "¿Para qué lo uso en el día a día?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "There is no hard limit. Very large PDFs (100MB+) may slow down your browser."
+        "text": "Para rellenar un campo que quedó vacío en un formulario, poner la fecha y una nota sobre un informe, insertar el logo en una portada o tapar visualmente un apartado antes de enviarlo."
       }
     }
   ]
@@ -107,7 +107,7 @@
     .editor-sidebar label{display:block;font-size:0.8rem;margin:0.5rem 0 0.25rem;color:var(--text-secondary)}
     .editor-sidebar input[type=text],.editor-sidebar input[type=number],.editor-sidebar select{width:100%;padding:6px 8px;border:1px solid var(--border-color);border-radius:6px;background:var(--bg-primary);color:var(--text-primary);font-size:0.85rem}
     .mode-btns{display:flex;gap:6px;margin-bottom:0.5rem}
-    .mode-btn{flex:1;padding:6px;border:1px solid var(--border-color);border-radius:6px;background:var(--bg-primary);color:var(--text-primary);cursor:pointer;font-size:0.8rem}
+    .mode-btn{flex:1;padding:6px 4px;border:1px solid var(--border-color);border-radius:6px;background:var(--bg-primary);color:var(--text-primary);cursor:pointer;font-size:0.75rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .mode-btn.active{background:#4f46e5;color:#fff;border-color:#4f46e5}
     .page-canvas-wrap{position:relative;background:#fff;border:1px solid var(--border-color);border-radius:8px;overflow:auto;max-height:75vh;display:flex;justify-content:center}
     .page-canvas-wrap canvas{display:block;cursor:crosshair}
@@ -151,10 +151,10 @@
   <header class="site-header">
     <div class="container header-inner">
       <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
-      <nav class="main-nav"><a href="/">Home</a><a href="/es/tools/">Tools</a><a href="/blog/">Blog</a><a href="/about">About</a><a href="/contact">Contact</a></nav>
+      <nav class="main-nav"><a href="/es/">Inicio</a><a href="/es/tools/">Herramientas</a><a href="/es/blog/">Blog</a><a href="/about">Acerca de</a><a href="/contact">Contacto</a></nav>
       <div class="header-actions">
         <div class="lang-switcher" style="position:relative;">
-          <button class="lang-btn" aria-label="Switch language">🇬🇧 EN</button>
+          <button class="lang-btn" aria-label="Cambiar idioma">🇪🇸 ES</button>
           <div class="lang-dropdown" style="position:absolute;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
             <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a><a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a><a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a><a href="/fr/" hreflang="fr" lang="fr">🇫🇷 Français</a><a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a><a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a><a href="/zh/" hreflang="zh" lang="zh">🇨🇳 中文</a>
           </div>
@@ -168,9 +168,9 @@
 
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/es/tools/">Tools</a><span>/</span><span>PDF Editor</span></nav>
+      <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>Editor PDF</span></nav>
       <div class="tool-page-header">
-        <h1>✏️ PDF Editor</h1>
+        <h1>✏️ Editor PDF</h1>
         <p>Añade texto, imágenes y formas a tu PDF. Haz clic en la página para colocar elementos. Ajusta fuente, tamaño y color. 100% en tu navegador.</p>
       </div>
       <div class="tool-workspace">
@@ -187,16 +187,16 @@
           <div id="editorArea" style="display:none">
             <div class="editor-layout">
               <div class="editor-sidebar">
-                <h3>📝 Add Elements</h3>
+                <h3>📝 Añadir elementos</h3>
                 <div class="mode-btns">
-                  <button class="mode-btn active" data-mode="text">Text</button>
-                  <button class="mode-btn" data-mode="image">Image</button>
-                  <button class="mode-btn" data-mode="rect">Rectangle</button>
+                  <button class="mode-btn active" data-mode="text">Texto</button>
+                  <button class="mode-btn" data-mode="image">Imagen</button>
+                  <button class="mode-btn" data-mode="rect">Rectángulo</button>
                 </div>
                 <div id="textControls">
-                  <label>Text Content</label>
+                  <label>Contenido de texto</label>
                   <input type="text" id="textContent" value="Hello PDF" placeholder="Enter text">
-                  <label>Font Size</label>
+                  <label>Tamaño de fuente</label>
                   <input type="number" id="fontSize" value="24" min="6" max="200">
                   <label>Color</label>
                   <input type="color" id="textColor" value="#ff0000" style="width:100%;height:32px;border:none;border-radius:6px;cursor:pointer">
@@ -208,38 +208,38 @@
                   <input type="number" id="imgScale" value="30" min="5" max="100">
                 </div>
                 <div id="rectControls" style="display:none">
-                  <label>Width (px)</label>
+                  <label>Ancho (px)</label>
                   <input type="number" id="rectW" value="120" min="10" max="800">
-                  <label>Height (px)</label>
+                  <label>Alto (px)</label>
                   <input type="number" id="rectH" value="60" min="10" max="800">
                   <label>Color</label>
                   <input type="color" id="rectColor" value="#ffff00" style="width:100%;height:32px;border:none;border-radius:6px;cursor:pointer">
-                  <label>Opacity</label>
+                  <label>Opacidad</label>
                   <input type="range" id="rectOpacity" min="0.1" max="1" step="0.1" value="0.5" style="width:100%">
                 </div>
                 <hr style="border:none;border-top:1px solid var(--border-color);margin:0.75rem 0">
-                <h3>📌 Placements</h3>
-                <div class="placement-list" id="placementList"><p style="color:var(--text-secondary);font-size:0.78rem">Click on the page to add elements.</p></div>
-                <button class="btn btn-secondary" id="clearPlacementsBtn" style="width:100%;margin-top:0.5rem;font-size:0.8rem">Clear All</button>
+                <h3>📌 Elementos colocados</h3>
+                <div class="placement-list" id="placementList"><p style="color:var(--text-secondary);font-size:0.78rem">Haz clic sobre la página para añadir elementos.</p></div>
+                <button class="btn btn-secondary" id="clearPlacementsBtn" style="width:100%;margin-top:0.5rem;font-size:0.8rem">Borrar todo</button>
               </div>
               <div>
                 <div class="page-nav">
-                  <button class="btn btn-secondary" id="prevPage">◀ Prev</button>
+                  <button class="btn btn-secondary" id="prevPage">◀ Anterior</button>
                   <span id="pageInfo">Page 1 / 1</span>
-                  <button class="btn btn-secondary" id="nextPage">Next ▶</button>
+                  <button class="btn btn-secondary" id="nextPage">Siguiente ▶</button>
                 </div>
                 <div class="page-canvas-wrap" id="canvasWrap">
                   <canvas id="pageCanvas"></canvas>
                 </div>
                 <div style="text-align:center;margin-top:0.75rem">
-                  <button class="btn btn-primary" id="downloadBtn">⬇ Download Edited PDF</button>
-                  <button class="btn btn-secondary" id="resetBtn">New File</button>
+                  <button class="btn btn-primary" id="downloadBtn">⬇ Descargar PDF editado</button>
+                  <button class="btn btn-secondary" id="resetBtn">Nuevo archivo</button>
                 </div>
               </div>
         <div class="selling-points">
-  <div class="sp-item"><span class="sp-icon">✅</span>Add text, images, and shapes to PDFs</div>
-  <div class="sp-item"><span class="sp-icon">🎯</span>Annotate contracts before signing</div>
-  <div class="sp-item"><span class="sp-icon">🔒</span>100% private — runs in your browser</div>
+  <div class="sp-item"><span class="sp-icon">✅</span>Añade texto, imágenes y formas a tus PDF</div>
+  <div class="sp-item"><span class="sp-icon">🎯</span>Completa contratos antes de firmarlos</div>
+  <div class="sp-item"><span class="sp-icon">🔒</span>100% privado — funciona en tu navegador</div>
 </div>
             </div>
             <div class="status" id="statusText"></div>
@@ -250,109 +250,93 @@
 
     <section class="amazon-store-section">
       <div class="container">
-        <h2 style="font-size:1.3rem;font-weight:700;text-align:center;margin-bottom:6px;">Recommended Tools for Document Work</h2>
-        <p style="text-align:center;color:var(--text-secondary);font-size:.9rem;margin-bottom:0;">Gear that pairs perfectly with your PDF workflow.</p>
+        <h2 style="font-size:1.3rem;font-weight:700;text-align:center;margin-bottom:6px;">Herramientas recomendadas para trabajar con documentos</h2>
+        <p style="text-align:center;color:var(--text-secondary);font-size:.9rem;margin-bottom:0;">Complementos que encajan de maravilla con tu flujo de trabajo en PDF.</p>
         <div class="amazon-store-grid">
           <a class="amazon-card" href="https://www.amazon.com/dp/B0BF6T86WD?tag=sendafun20-20" target="_blank" rel="noopener sponsored nofollow">
             <h3>Canon SELPHY CP1500</h3>
-            <p>Wireless compact photo printer — print 4x6 photos from your phone.</p>
+            <p>Impresora fotográfica compacta e inalámbrica — imprime fotos de 10×15 directamente desde el móvil.</p>
           </a>
           <a class="amazon-card" href="https://www.amazon.com/dp/B08HN37XC1?tag=sendafun20-20" target="_blank" rel="noopener sponsored nofollow">
             <h3>SanDisk Extreme SSD 1TB</h3>
-            <p>Rugged portable SSD — fast backup for photos, videos, and large files.</p>
+            <p>SSD portátil resistente — copia de seguridad rápida de fotos, vídeos y archivos grandes.</p>
           </a>
           <a class="amazon-card" href="https://www.amazon.com/dp/B0000721Z3?tag=sendafun20-20" target="_blank" rel="noopener sponsored nofollow">
             <h3>Matte Inkjet Art Paper</h3>
-            <p>Matte heavy-weight paper for art prints & graphic works.</p>
+            <p>Papel gramaje grueso con acabado mate para láminas artísticas y trabajos de diseño gráfico.</p>
           </a>
           <a class="amazon-card" href="https://www.amazon.com/dp/B000TT7YRY?tag=sendafun20-20" target="_blank" rel="noopener sponsored nofollow">
             <h3>Glossy Photo Paper</h3>
-            <p>High-quality photo paper for printing your edited pictures.</p>
+            <p>Papel fotográfico de alta calidad para imprimir tus imágenes editadas.</p>
           </a>
         </div>
-        <p class="amazon-disclaimer">As an Amazon Associate, we earn from qualifying purchases.</p>
+        <p class="amazon-disclaimer">Como afiliados de Amazon, obtenemos ingresos por las compras que cumplan los requisitos.</p>
       </div>
     </section>
-<section class="faq-section">
-        <h2>Frequently Asked Questions</h2>
-        <div class="faq-item"><button class="faq-question">How do I place elements?</button><div class="faq-answer">Select a mode (Text, Image, or Rectangle), configure the options, then click on the page preview where you want to place the element. A marker shows where it will appear.</div></div>
-        <div class="faq-item"><button class="faq-question">Can I edit existing text in the PDF?</button><div class="faq-answer">No. This tool adds new elements on top of existing pages. Editing existing text content is not supported — that would require reflowing the original layout.</div></div>
-        <div class="faq-item"><button class="faq-question">Is my PDF uploaded to a server?</button><div class="faq-answer">No. All editing happens locally in your browser using pdf-lib.</div></div>
-      <div class="faq-item"><button class="faq-question">What can I add to a PDF?</button><div class="faq-answer">Text boxes, images, and shapes — placed anywhere on a page.</div></div>
-<div class="faq-item"><button class="faq-question">Is the original modified?</button><div class="faq-answer">No — a new edited PDF is created.</div></div>
-<div class="faq-item"><button class="faq-question">Are my PDFs uploaded to a server?</button><div class="faq-answer">No. All processing happens locally in your browser using pdf-lib and pdf.js.</div></div>
-<div class="faq-item"><button class="faq-question">Is there a page or file limit?</button><div class="faq-answer">There is no hard limit. Very large PDFs (100MB+) may slow down your browser.</div></div>
-      </section>
+<section class="faq-section"><h2>Preguntas frecuentes</h2><div class="faq-item"><button class="faq-question">¿Cómo coloco un elemento en la página?</button><div class="faq-answer">Elige un modo (Texto, Imagen o Rectángulo), ajusta sus opciones y haz clic sobre la vista previa en el punto exacto donde quieres que aparezca. El elemento se añade al instante y puedes seguir colocando más.</div></div><div class="faq-item"><button class="faq-question">¿Puedo modificar el texto que ya tiene el PDF?</button><div class="faq-answer">No. Esta herramienta añade elementos nuevos encima de las páginas; modificar o borrar el texto existente requeriría reconstruir todo el documento y aquí no se hace. Para cambiar texto existente, convierte el PDF a Word, edítalo y vuelve a exportarlo.</div></div><div class="faq-item"><button class="faq-question">¿Qué elementos puedo añadir?</button><div class="faq-answer">Cuadros de texto con tamaño y color de letra configurables, imágenes en PNG o JPG, y rectángulos de color con transparencia ajustable. Todos se colocan en la posición exacta que marques.</div></div><div class="faq-item"><button class="faq-question">¿Mi PDF se sube a algún servidor?</button><div class="faq-answer">No. Toda la edición ocurre en tu navegador: la vista previa se dibuja con pdf.js y los elementos se aplican con pdf-lib. El documento nunca sale de tu equipo.</div></div><div class="faq-item"><button class="faq-question">¿Se modifica el archivo original?</button><div class="faq-answer">No. El original queda intacto en tu disco; la herramienta genera un PDF nuevo con los elementos añadidos y ese es el que descargas.</div></div><div class="faq-item"><button class="faq-question">¿Hay límite de tamaño?</button><div class="faq-answer">No hay tope fijo, pero recomendamos no superar los 100 MB: el documento debe caber en la memoria del navegador junto con las imágenes que incorpores.</div></div><div class="faq-item"><button class="faq-question">¿Para qué lo uso en el día a día?</button><div class="faq-answer">Para rellenar un campo que quedó vacío en un formulario, poner la fecha y una nota sobre un informe, insertar el logo en una portada o tapar visualmente un apartado antes de enviarlo.</div></div></section>
 
       
       <section class="feature-narrative">
-        <h2>PDF Editor: Add text, images, and shapes to PDFs</h2>
-        <p class="fn-intro">PDF Editor lets you add text, images, and shapes to pdfs. Upload a PDF and get an edited PDF — all processed locally in your browser, with no uploads and no sign-up.</p>
+        <h2>Editor PDF: añade texto, imágenes y formas</h2>
+        <p class="fn-intro">Con Editor PDF colocas texto, imágenes y rectángulos donde quieras de cada página, viendo el resultado en vivo sobre la vista previa. Perfecto para completar formularios, añadir notas o insertar un logo; todo dentro de tu navegador.</p>
       <div class="fn-block">
-        <div class="fn-icon">⚡</div>
-        <div><h3>Annotate contracts before signing</h3><p>Annotate contracts before signing. This is one of the most common reasons people reach for PDF Editor — and it handles the job in seconds, entirely in your browser.</p></div>
+        <div class="fn-icon">📝</div>
+        <div><h3>Anotar contratos antes de firmar</h3><p>Cuando te llega un borrador con un hueco sin rellenar o una fecha por concretar, añade un cuadro de texto sobre la vista previa y escribe lo que falta. El documento sale completo sin necesidad de imprimirlo y volver a escanearlo.</p></div>
       </div>
       <div class="fn-block">
-        <div class="fn-icon">🎯</div>
-        <div><h3>Add notes and labels to PDF documents</h3><p>Add notes and labels to PDF documents. This is one of the most common reasons people reach for PDF Editor — and it handles the job in seconds, entirely in your browser.</p></div>
+        <div class="fn-icon">🏷️</div>
+        <div><h3>Poner notas y etiquetas sobre el documento</h3><p>Marca una página como «borrador», añade el nombre del destinatario o numera anexos a mano: un cuadro de texto bien colocado comunica en el propio PDF lo que antes ibas explicando por correo.</p></div>
       </div>
       <div class="fn-block">
-        <div class="fn-icon">🔒</div>
-        <div><h3>Insert images into PDF reports</h3><p>Insert images into PDF reports. This is one of the most common reasons people reach for PDF Editor — and it handles the job in seconds, entirely in your browser.</p></div>
+        <div class="fn-icon">🖼️</div>
+        <div><h3>Insertar imágenes en un PDF</h3><p>Añade el sello de la empresa, una firma escaneada o el logotipo sobre cualquier página. La imagen se coloca en el punto exacto y el PDF resultante la lleva integrada en el contenido.</p></div>
       </div>
       </section>
 
       <section class="features-grid-section">
-        <h2>Everything You Need in a PDF Editor</h2>
-        <p class="fg-sub">Powerful features that make PDF Editor fast, private, and free.</p>
+        <h2>Todo lo que necesitas en un editor de PDF</h2>
+        <p class="fg-sub">Funciones pensadas para que el editor de PDF sea rápido, privado y gratuito.</p>
         <div class="features-grid">
         <div class="feature-card">
           <div class="fc-icon">⚡</div>
-          <h3>Instant Processing</h3>
-          <p>PDFs are processed in your browser the moment you upload.</p>
+          <h3>Procesado al instante</h3>
+          <p>Los PDF se procesan en tu navegador en cuanto los cargas.</p>
         </div>
         <div class="feature-card">
           <div class="fc-icon">🔒</div>
-          <h3>100% Private</h3>
-          <p>Your PDFs never leave your device — no server uploads.</p>
+          <h3>Privacidad total</h3>
+          <p>Tus PDF nunca salen de tu dispositivo: no hay subidas a ningún servidor.</p>
         </div>
         <div class="feature-card">
           <div class="fc-icon">📝</div>
-          <h3>Text-Based Output</h3>
-          <p>Conversions produce real, searchable, selectable text.</p>
+          <h3>Salida basada en texto</h3>
+          <p>Las conversiones generan texto real, buscable y seleccionable.</p>
         </div>
         <div class="feature-card">
           <div class="fc-icon">📄</div>
-          <h3>All-in-One PDF Suite</h3>
-          <p>Merge, split, edit, annotate, convert — 25+ PDF tools.</p>
+          <h3>Suite PDF todo en uno</h3>
+          <p>Unir, dividir, editar, anotar, convertir: más de 25 herramientas PDF.</p>
         </div>
         <div class="feature-card">
           <div class="fc-icon">🆓</div>
-          <h3>Free Forever</h3>
-          <p>No sign-up, no watermarks, no page limits.</p>
+          <h3>Gratis siempre</h3>
+          <p>Sin registro, sin marcas de agua y sin límite de páginas.</p>
         </div>
         <div class="feature-card">
           <div class="fc-icon">🌐</div>
-          <h3>Cross-Platform</h3>
-          <p>Works on Windows, Mac, Linux, iOS, and Android.</p>
+          <h3>Multiplicaforma</h3>
+          <p>Funciona en Windows, Mac, Linux, iOS y Android.</p>
         </div>
         </div>
       </section>
 
 <div class="trust-badges">
-  <div class="trust-badge"><div class="tb-icon">🔒</div><div class="tb-title">100% Private</div><div class="tb-desc">Files never leave your browser</div></div>
-  <div class="trust-badge"><div class="tb-icon">⚡</div><div class="tb-title">Browser-Based</div><div class="tb-desc">No installs, no uploads</div></div>
-  <div class="trust-badge"><div class="tb-icon">💯</div><div class="tb-title">Free Forever</div><div class="tb-desc">No sign-up, no watermarks</div></div>
-  <div class="trust-badge"><div class="tb-icon">🚀</div><div class="tb-title">No Signup</div><div class="tb-desc">Start instantly, no account</div></div>
+  <div class="trust-badge"><div class="tb-icon">🔒</div><div class="tb-title">Privacidad total</div><div class="tb-desc">Los archivos nunca salen de tu navegador</div></div>
+  <div class="trust-badge"><div class="tb-icon">⚡</div><div class="tb-title">En el navegador</div><div class="tb-desc">Sin instalaciones ni subidas</div></div>
+  <div class="trust-badge"><div class="tb-icon">💯</div><div class="tb-title">Gratis siempre</div><div class="tb-desc">Sin registro ni marcas de agua</div></div>
+  <div class="trust-badge"><div class="tb-icon">🚀</div><div class="tb-title">Sin registro</div><div class="tb-desc">Empieza al instante, sin cuenta</div></div>
 </div>
-      <section class="related-tools">
-        <h2>You Might Also Like</h2>
-        <div class="related-tools-grid">
-          <a href="/tools/pdf-annotate" class="related-tool-card"><span class="tool-icon">🖍️</span><div class="tool-info"><strong>PDF Annotate</strong><span class="tool-desc">Highlight and annotate PDFs</span></div><span class="tool-arrow">→</span></a>
-          <a href="/tools/pdf-number-pages" class="related-tool-card"><span class="tool-icon">🔢</span><div class="tool-info"><strong>PDF Number Pages</strong><span class="tool-desc">Add page numbers</span></div><span class="tool-arrow">→</span></a>
-          <a href="/tools/pdf-redact" class="related-tool-card"><span class="tool-icon">⬛</span><div class="tool-info"><strong>Redact PDF</strong><span class="tool-desc">Hide sensitive info</span></div><span class="tool-arrow">→</span></a>
-        </div>
-      </section>
+      <section class="related-tools"><h2>También te puede interesar</h2><div class="related-tools-grid"><a href="/es/tools/pdf-annotate" class="related-tool-card"><span class="tool-icon">🖍️</span><div class="tool-info"><strong>Anotar PDF</strong><span class="tool-desc">Resalta, subraya y añade notas</span></div><span class="tool-arrow">→</span></a><a href="/es/tools/pdf-number-pages" class="related-tool-card"><span class="tool-icon">🔢</span><div class="tool-info"><strong>Numerar páginas PDF</strong><span class="tool-desc">Añade números de página</span></div><span class="tool-arrow">→</span></a><a href="/es/tools/pdf-redact" class="related-tool-card"><span class="tool-icon">⬛</span><div class="tool-info"><strong>tachar de PDF</strong><span class="tool-desc">Oculta información sensible</span></div><span class="tool-arrow">→</span></a></div></section>
 
 
 
@@ -364,11 +348,11 @@
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
-        <div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Fast, private image tools that run 100% in your browser.</p></div>
-        <div class="footer-links"><h4>Top Tools</h4><a href="/tools/background-remover">Background Remover</a><a href="/tools/compressor">Compressor</a><a href="/tools/converter">Converter</a><a href="/tools/resizer">Resizer</a></div>
-        <div class="footer-links"><h4>Legal</h4><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a><a href="/cookie-policy">Cookie Policy</a></div>
+        <div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Herramientas de imagen rápidas y privadas que funcionan 100% en tu navegador.</p></div>
+        <div class="footer-links"><h4>Herramientas destacadas</h4><a href="/es/tools/background-remover">Eliminar fondos</a><a href="/es/tools/compressor">Comprimir imagen</a><a href="/es/tools/converter">Convertir imagen</a><a href="/es/tools/resizer">Redimensionar</a></div>
+        <div class="footer-links"><h4>Legal</h4><a href="/about">Acerca de</a><a href="/contact">Contacto</a><a href="/privacy">Política de Privacidad</a><a href="/terms">Términos del Servicio</a><a href="/cookie-policy">Política de Cookies</a></div>
       </div>
-      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved.</p></div>
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. Todos los derechos reservados.</p></div>
     </div>
   </footer>
 
@@ -419,7 +403,7 @@
       var reader = new FileReader();
       reader.onload = function(ev) {
         var img = new Image();
-        img.onload = function() { overlayImage = img; setStatus('Overlay image loaded. Click on page to place.'); };
+        img.onload = function() { overlayImage = img; setStatus('Imagen cargada. Haz clic sobre la página para colocarla.'); };
         img.src = ev.target.result;
       };
       reader.readAsDataURL(f);
@@ -431,7 +415,7 @@
     dropzone.addEventListener('drop', function(e) { e.preventDefault(); dropzone.style.borderColor = ''; if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
 
     async function handleFile(f) {
-      if (f.type !== 'application/pdf' && !f.name.toLowerCase().endsWith('.pdf')) { setStatus('⚠️ Please select a PDF file.'); return; }
+      if (f.type !== 'application/pdf' && !f.name.toLowerCase().endsWith('.pdf')) { setStatus('⚠️ Selecciona un archivo PDF.'); return; }
       setStatus('⏳ Loading PDF…');
       try {
         pdfBytes = await f.arrayBuffer();
@@ -459,7 +443,7 @@
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       await page.render({ canvasContext: ctx, viewport: viewport }).promise;
       drawPlacements();
-      pageInfo.textContent = 'Page ' + currentPage + ' / ' + numPages;
+      pageInfo.textContent = 'Página ' + currentPage + ' / ' + numPages;
     }
 
     function drawPlacements() {
@@ -498,12 +482,12 @@
       }
       drawPlacements();
       updatePlacementList();
-      setStatus('✅ Element added. Click "Download" to save.');
+      setStatus('✅ Elemento añadido. Pulsa «Descargar» para guardar.');
     });
 
     function updatePlacementList() {
       var items = placements.filter(function(p) { return p.pageIndex === currentPage - 1; });
-      if (!items.length) { placementList.innerHTML = '<p style="color:var(--text-secondary);font-size:0.78rem">Click on the page to add elements.</p>'; return; }
+      if (!items.length) { placementList.innerHTML = '<p style="color:var(--text-secondary);font-size:0.78rem">Haz clic sobre la página para añadir elementos.</p>'; return; }
       placementList.innerHTML = items.map(function(p, i) {
         var idx = placements.indexOf(p);
         var label = p.type === 'text' ? '📝 ' + p.text.slice(0, 12) : p.type === 'image' ? '🖼️ Image' : '⬜ Rect';
@@ -711,7 +695,7 @@ function shareOurTool() {
   const url = window.location.href;
   const text = `I just used this free 100% browser-based ${pageName} — no upload, no watermark, no signup! Try it: ${url}`;
   if (navigator.share) { navigator.share({text: text}); }
-  else { navigator.clipboard.writeText(text); alert("✅ Share text copied! Post it online to help others!"); }
+  else { navigator.clipboard.writeText(text); alert("✅ ¡Texto copiado! Compártelo para ayudar a otros."); }
 }
 </script>
 <button onclick="shareOurTool(event)" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;">💛 Comparte esta herramienta</button>
