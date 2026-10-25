@@ -32,7 +32,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-
+    .shadow-controls { max-width: 460px; margin: 16px auto; }
+    .shadow-control { margin-bottom: 14px; }
+    .shadow-control label { display: flex; justify-content: space-between; color: var(--text-secondary); font-size: .85rem; margin-bottom: 6px; }
+    .shadow-control input[type="range"] { width: 100%; accent-color: var(--primary); }
+    .color-row { display: flex; align-items: center; gap: 10px; }
+    .color-row input[type="color"] { width: 42px; height: 32px; border: 1px solid var(--border); border-radius: 6px; background: transparent; cursor: pointer; padding: 2px; }
+    .color-row span { font-size: .85rem; color: var(--text-muted); }
+    .preview-single { text-align: center; margin-bottom: 16px; }
+    .preview-single img { max-width: 100%; border-radius: 8px; max-height: 400px; object-fit: contain; background: var(--bg-secondary); }
+    .bg-options { display: flex; gap: 10px; margin-top: 8px; }
+    .bg-option { padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary); font-size: .85rem; cursor: pointer; }
+    .bg-option.active { border-color: var(--primary); color: var(--primary); }
   </style>
   <script type="application/ld+json">
 {
@@ -41,26 +52,58 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "¿Funciona la sombra en PNGs transparentes?",
+      "name": "¿Qué ajustes uso para fotos de producto?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Sí. La sombra se dibuja alrededor de las partes visibles."
+        "text": "Desplazamiento 8px en X e Y, desenfoque 12px, color negro y fondo blanco. Con eso la sombra queda suave y el producto parece «apoyado» en vez de flotando. Para catálogos impresos baja el desenfoque a 8–10px."
       }
     },
     {
       "@type": "Question",
-      "name": "¿Puedo hacer la sombra más suave?",
+      "name": "¿La sombra se dibuja sobre PNGs con transparencia?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Aumenta Desenfoque de Sombra. 20-30px crea sombra suave."
+        "text": "Sí, alrededor de las zonas visibles de la imagen; las áreas transparentes no reciben sombra. Sobre un JPG con fondo blanco, en cambio, la sombra solo aparecerá alrededor del rectángulo completo."
       }
     },
     {
       "@type": "Question",
-      "name": "¿Qué fondo usar?",
+      "name": "¿Se conserva el fondo transparente al descargar?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Blanco para productos. Transparente para flexibilidad."
+        "text": "Sí. El archivo de salida siempre es PNG, así que el canal alfa se mantiene. Podrás montar la imagen después en un diseño, catálogo o historia sin fondo de color no deseado."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué el PNG pesa más que mi JPG original?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Porque el resultado se exporta en PNG para conservar la transparencia, y PNG no comprime tan bien las fotos como JPG. Si el peso importa, pasa el archivo por Image Compressor después de descargarlo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo aplicar la sombra varias veces?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, sin problema: cada clic recalcula la sombra desde la imagen original, nunca se acumula sobre el resultado anterior. Prueba combinaciones distintas antes de descargar."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se puede hacer sombra con perspectiva en el suelo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. La herramienta aplica un desplazamiento uniforme con desenfoque — el filtro del canvas no proyecta una sombra 3D que se ensancha hacia la base. Para eso hace falta edición manual en un programa de retoque."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Mis fotos se suben a algún servidor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Todo el proceso ocurre en tu navegador: decodificado, dibujo de la sombra y descarga son locales. No hay registro del archivo y al cerrar la pestaña no queda rastro."
       }
     }
   ]
@@ -77,7 +120,7 @@
   "name": "Sombra para Imágenes",
   "url": "https://smartimgkit.com/es/tools/image-shadow",
   "inLanguage": "es",
-  "description": "Añade una sombra realista a cualquier PNG, foto de producto o captura, ajustando desplazamiento, desenfoque y color.",
+  "description": "Añade sombras realistas a fotos de producto, catálogos y publicaciones. Ajusta desplazamiento, desenfoque y color con deslizadores: todo se procesa en tu navegador, sin subir la imagen a ningún servidor.",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
   "isAccessibleForFree": true,
@@ -86,6 +129,33 @@
     "price": "0",
     "priceCurrency": "USD"
   }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "Cómo añadir sombra a una imagen",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Subir la imagen",
+      "text": "Arrastra el archivo o haz clic para seleccionarlo de tu dispositivo."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Ajustar la sombra",
+      "text": "Mueve los deslizadores de desplazamiento, desenfoque y color, y elige el fondo."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Aplicar y descargar",
+      "text": "Pulsa «Aplicar sombra», revisa la vista previa y guarda el PNG."
+    }
+  ]
 }
 </script>
 </head>
@@ -133,7 +203,7 @@
                 <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
                   <span style="font-size:3rem;opacity:0.5;">🌑</span>
                 </div>
-                <div class="before-after-item-caption after">After — with shadow</div>
+                <div class="before-after-item-caption after">Después — con sombra</div>
               </div>
             </div>
           </div>
@@ -150,30 +220,30 @@
             </div>
             <div class="shadow-controls">
               <div class="shadow-control">
-                <label><span>Shadow Offset X</span><span id="offsetXVal">8px</span></label>
+                <label><span>Desplazamiento X</span><span id="offsetXVal">8px</span></label>
                 <input type="range" id="offsetXRange" min="-50" max="50" value="8">
               </div>
               <div class="shadow-control">
-                <label><span>Shadow Offset Y</span><span id="offsetYVal">8px</span></label>
+                <label><span>Desplazamiento Y</span><span id="offsetYVal">8px</span></label>
                 <input type="range" id="offsetYRange" min="-50" max="50" value="8">
               </div>
               <div class="shadow-control">
-                <label><span>Shadow Blur</span><span id="blurVal">12px</span></label>
+                <label><span>Desenfoque</span><span id="blurVal">12px</span></label>
                 <input type="range" id="blurRange" min="0" max="50" value="12">
               </div>
               <div class="shadow-control">
-                <label><span>Shadow Color</span></label>
+                <label><span>Color de sombra</span></label>
                 <div class="color-row">
                   <input type="color" id="shadowColorPicker" value="#000000">
                   <span id="shadowColorHex">#000000</span>
                 </div>
               </div>
               <div class="shadow-control">
-                <label><span>Background</span></label>
+                <label><span>Fondo</span></label>
                 <div class="bg-options">
-                  <button class="bg-option active" data-bg="white">White</button>
-                  <button class="bg-option" data-bg="transparent">Transparent</button>
-                  <button class="bg-option" data-bg="custom">Custom</button>
+                  <button class="bg-option active" data-bg="white">Blanco</button>
+                  <button class="bg-option" data-bg="transparent">Transparente</button>
+                  <button class="bg-option" data-bg="custom">Personalizado</button>
                 </div>
                 <div class="color-row" id="customBgRow" style="display:none;margin-top:8px;">
                   <input type="color" id="bgColorPicker" value="#ffffff">
@@ -182,64 +252,39 @@
               </div>
             </div>
             <div class="tool-actions">
-              <button class="btn btn-primary" id="applyBtn">✨ Apply Shadow</button>
-              <button class="btn btn-secondary hidden" id="downloadBtn">⬇️ Download</button>
-              <button class="btn btn-secondary" id="resetBtn">🔄 New Image</button>
+              <button class="btn btn-primary" id="applyBtn">✨ Aplicar sombra</button>
+              <button class="btn btn-secondary hidden" id="downloadBtn">⬇️ Descargar</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Nueva imagen</button>
             </div>
             <div id="status" class="text-center mt-16" style="color:var(--text-secondary)">
       </div>
       </div>
       </div>
-<section class="how-to-section">
-        <h2>Cómo Usar</h2>
-        <div class="how-to-steps">
-          <div class="how-to-step"><div class="step-number">1</div><h4>Subir</h4><p>Selecciona una imagen de tu dispositivo o prueba con una muestra.</p></div>
-          <div class="how-to-step"><div class="step-number">2</div><h4>Ajustar Sombra</h4><p>Establece desplazamiento, radio de desenfoque y color de sombra.</p></div>
-          <div class="how-to-step"><div class="step-number">3</div><h4>Descargar</h4><p>Haz clic en Aplicar para procesar, luego en Descargar para guardar.</p></div>
-        </div>
-      </section>
+<section class="how-to-section"> <h2>Cómo Usar</h2> <div class="how-to-steps"> <div class="how-to-step"><div class="step-number">1</div><h4>Subir</h4><p>Arrastra una imagen a la zona de carga o haz clic para elegirla. También puedes probar con la imagen de ejemplo.</p></div> <div class="how-to-step"><div class="step-number">2</div><h4>Ajustar la sombra</h4><p>Mueve los deslizadores de desplazamiento X e Y, desenfoque y color. Elige fondo blanco, transparente o un color propio.</p></div> <div class="how-to-step"><div class="step-number">3</div><h4>Descargar</h4><p>Pulsa «Aplicar sombra» y después «Descargar» para guardar el PNG.</p></div> </div> </section>
 
 <h2>Guía Detallada</h2>
-
-      <div class="guide-block">
-        <h3>Paso 1: Subir tu Imagen</h3>
-        <p>Haz clic en la zona de carga o arrastra y suelta un archivo de imagen (JPG, PNG o WebP). La imagen original se mostrará y puedes previsualizar el efecto de sombra inmediatamente.</p>
-      </div>
-
-      <div class="guide-block">
-        <h3>Paso 2: Personalizar Ajustes de Sombra</h3>
-        <p>Usa los controles para personalizar:</p>
-        <ul>
-          <li><strong>Shadow Offset X</strong> (-50px to 50px) — Horizontal shadow position. Positive values move shadow right.</li>
-          <li><strong>Shadow Offset Y</strong> (-50px to 50px) — Vertical shadow position. Positive values move shadow down.</li>
-          <li><strong>Shadow Blur</strong> (0px to 50px) — How soft the shadow edge is. 0 = hard edge.</li>
-          <li><strong>Shadow Color</strong> — Pick any color for the shadow. Black is the most realistic.</li>
-          <li><strong>Background</strong> — Choose white (for product photos), transparent (for overlays), or custom color.</li>
-        </ul>
-        <div class="tip"><strong>Tip:</strong> For e-commerce product photos, use Offset X=8, Offset Y=8, Blur=12, Color=#000000 for a natural-looking shadow on white background.</div>
-      </div>
-
-      <div class="guide-block">
-        <h3>Paso 3: Aplicar y Descargar</h3>
-        <p>Haz clic en <strong>"Aplicar Sombra"</strong> para renderizar el resultado, luego haz clic en <strong>"Descargar"</strong> para guardar la imagen como archivo PNG.</p>
-      </div>
-
-      <div class="guide-block">
-        <h3>Mejores Casos de Uso</h3>
-        <ul>
-          <li><strong>E-commerce</strong> — Add natural shadows to product photos on white backgrounds</li>
-          <li><strong>Social media</strong> — Make images "pop" from the background</li>
-          <li><strong>Presentations</strong> — Add depth to flat images in slides</li>
-          <li><strong>Web design</strong> — Create lifted-card effects for thumbnails</li>
-        </ul>
-      </div>
-
-<section class="faq-section">
-        <h2>Preguntas Frecuentes</h2>
-      <div class="faq-item"><button class="faq-question">¿Funciona la sombra en PNGs transparentes?</button><div class="faq-answer">Sí. La sombra se dibuja alrededor de las partes visibles.</div></div>
-      <div class="faq-item"><button class="faq-question">¿Puedo hacer la sombra más suave?</button><div class="faq-answer">Aumenta Desenfoque de Sombra. 20-30px crea sombra suave.</div></div>
-      <div class="faq-item"><button class="faq-question">¿Qué fondo usar?</button><div class="faq-answer">Blanco para productos. Transparente para flexibilidad.</div></div>
-      </section>
+<div class="guide-block"> <h3>Cómo se genera la sombra</h3>
+<p>La herramienta usa el filtro de sombra nativo del canvas del navegador: dibuja detrás de tu imagen una copia difuminada de su propia silueta, del color elegido, desplazada según los ejes X e Y. Tu imagen original no se modifica — cada clic en «Aplicar sombra» recalcula desde cero, así que puedes probar combinaciones sin miedo. El lienzo se agranda solo para que la sombra no se corte en los bordes.</p></div>
+<div class="guide-block"> <h3>Los cuatro deslizadores</h3>
+<ul>
+<li><strong>Desplazamiento X (-50 a 50px)</strong> — posición horizontal de la sombra. Valores positivos la mueven a la derecha; para fotos de producto 8–12px suele bastar.</li>
+<li><strong>Desplazamiento Y (-50 a 50px)</strong> — vertical. Positivo hace caer la sombra hacia abajo, lo que transmite «apoyado sobre una superficie».</li>
+<li><strong>Desenfoque (0 a 50px)</strong> — suavidad del borde. 0px es una sombra tajante; 20–30px da una penumbra natural.</li>
+<li><strong>Color de sombra</strong> — el negro puro (#000000) es lo más creíble; un gris oscuro (#333333) queda más suave sobre fondos blancos.</li>
+</ul></div>
+<div class="guide-block"> <h3>Fondo blanco, transparente o personalizado</h3>
+<p><strong>Blanco</strong> es el estándar para publicar en Mercado Libre, Mercado Shops o tu propia tienda: fondo uniforme más sombra suave hace que el producto destaque entre las miniaturas de una lista. <strong>Transparente</strong> deja la sombra solo alrededor de lo visible de la imagen — útil si después vas a montar la foto en un flyer, un catálogo o una historia de Instagram con fondo de color; el PNG exporta conserva la transparencia. <strong>Personalizado</strong> te permite igualar el fondo al color de tu marca.</p></div>
+<div class="guide-block"> <h3>Fotos de venta: la receta rápida</h3>
+<p>Para publicaciones de Mercado Libre: foto sobre fondo blanco, desplazamiento 8px y 8px, desenfoque 12px, fondo blanco. La imagen gana profundidad sin pasar por Photoshop. Para catálogos o volantes impresos, baja el desenfoque a 8–10px porque la impresión endurece los degradados. Para las redes de tu negocio (Instagram, Facebook), fondo transparente con sombra gris sobre foto recortada da un resultado limpio sin estudio fotográfico.</p></div>
+<div class="guide-block"> <h3>Límites que conviene conocer</h3>
+<ul>
+<li>No genera sombras con perspectiva 3D ni «sombra de contacto» ensanchada en la base — el desplazamiento es uniforme, no una proyección realista.</li>
+<li>No hay procesamiento por lotes: una imagen por vez.</li>
+<li>La salida siempre es PNG, incluso si subiste un JPG, así que el archivo pesa más; usa Image Compressor después si necesitas reducirlo.</li>
+<li>La herramienta no recorta fondos: si tu foto tiene el fondo blanco «quemado», el modo transparente no hará nada hasta que quites el fondo con la herramienta correspondiente.</li>
+</ul></div>
+<div class="guide-block"> <h3>Privacidad</h3>
+<p>Nada se sube a ningún servidor: la imagen se decodifica en memoria, el canvas de tu navegador hace el cálculo y el resultado se descarga desde tu propio equipo. No hay cuentas, ni rastreo del archivo, ni copias en la nube. Cierras la pestaña y no queda nada.</p></div><section class="faq-section"> <h2>Preguntas Frecuentes</h2> <div class="faq-item"><button class="faq-question">¿Qué ajustes uso para fotos de producto?</button><div class="faq-answer">Desplazamiento 8px en X e Y, desenfoque 12px, color negro y fondo blanco. Con eso la sombra queda suave y el producto parece «apoyado» en vez de flotando. Para catálogos impresos baja el desenfoque a 8–10px.</div></div> <div class="faq-item"><button class="faq-question">¿La sombra se dibuja sobre PNGs con transparencia?</button><div class="faq-answer">Sí, alrededor de las zonas visibles de la imagen; las áreas transparentes no reciben sombra. Sobre un JPG con fondo blanco, en cambio, la sombra solo aparecerá alrededor del rectángulo completo.</div></div> <div class="faq-item"><button class="faq-question">¿Se conserva el fondo transparente al descargar?</button><div class="faq-answer">Sí. El archivo de salida siempre es PNG, así que el canal alfa se mantiene. Podrás montar la imagen después en un diseño, catálogo o historia sin fondo de color no deseado.</div></div> <div class="faq-item"><button class="faq-question">¿Por qué el PNG pesa más que mi JPG original?</button><div class="faq-answer">Porque el resultado se exporta en PNG para conservar la transparencia, y PNG no comprime tan bien las fotos como JPG. Si el peso importa, pasa el archivo por Image Compressor después de descargarlo.</div></div> <div class="faq-item"><button class="faq-question">¿Puedo aplicar la sombra varias veces?</button><div class="faq-answer">Sí, sin problema: cada clic recalcula la sombra desde la imagen original, nunca se acumula sobre el resultado anterior. Prueba combinaciones distintas antes de descargar.</div></div> <div class="faq-item"><button class="faq-question">¿Se puede hacer sombra con perspectiva en el suelo?</button><div class="faq-answer">No. La herramienta aplica un desplazamiento uniforme con desenfoque — el filtro del canvas no proyecta una sombra 3D que se ensancha hacia la base. Para eso hace falta edición manual en un programa de retoque.</div></div> <div class="faq-item"><button class="faq-question">¿Mis fotos se suben a algún servidor?</button><div class="faq-answer">No. Todo el proceso ocurre en tu navegador: decodificado, dibujo de la sombra y descarga son locales. No hay registro del archivo y al cerrar la pestaña no queda rastro.</div></div> </section>
 
 <section class="related-tools">
   <h2>También te puede interesar</h2>
@@ -248,7 +293,7 @@
       <span class="tool-icon">🔧</span>
       <div class="tool-info">
         <strong>Borde de Imagen</strong>
-        <span class="tool-desc">Añade bordes y marcos a tus imágenes</span>
+        <span class="tool-desc">Esquinas redondeadas y marcos</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
@@ -356,7 +401,7 @@ const dropzone = document.getElementById('dropzone');
     });
 
     function handleFile(file) {
-      if (!file.type.startsWith('image/')) { status.textContent = 'Please select an image file.'; return; }
+      if (!file.type.startsWith('image/')) { status.textContent = 'Selecciona un archivo de imagen.'; return; }
       currentFile = file;
       ImageUtils.load(file).then(async img => {
         originalImg = img;
@@ -374,7 +419,7 @@ const dropzone = document.getElementById('dropzone');
         status.textContent = '';
         downloadBtn.classList.remove('hidden');
       }).catch(err => {
-        status.textContent = 'Error loading image: ' + err.message;
+        status.textContent = 'Error al cargar la imagen: ' + err.message;
       });
     }
 
@@ -427,23 +472,23 @@ const dropzone = document.getElementById('dropzone');
     applyBtn.addEventListener('click', async function() {
       if (!originalImg) return;
       applyBtn.disabled = true;
-      applyBtn.textContent = '🔄 Applying...';
+      applyBtn.textContent = '🔄 Aplicando...';
       status.innerHTML = '<div class="spinner"></div>';
       try {
         await applyShadow();
-        status.textContent = 'Done! Click Download to save.';
+        status.textContent = '¡Listo! Pulsa «Descargar» para guardar.';
       } catch (err) {
         status.textContent = 'Error: ' + err.message;
       } finally {
         applyBtn.disabled = false;
-        applyBtn.textContent = '✨ Apply Shadow';
+        applyBtn.textContent = '✨ Aplicar sombra';
       }
     });
 
     downloadBtn.addEventListener('click', function() {
       if (resultBlob) {
         const base = (currentFile.name || 'image').replace(/\.[^.]+$/, '');
-        ImageUtils.download(resultBlob, base + '-shadow.png');
+        ImageUtils.download(resultBlob, base + '-sombra.png');
         try { SmartImgNextStep.show(); } catch(e) {}
       }
     });

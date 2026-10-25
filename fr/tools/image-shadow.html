@@ -34,8 +34,8 @@
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Ajouter une ombre portée à une image en ligne",
-  "url": "https://smartimgkit.com/tools/image-shadow",
+  "name": "Générateur d’ombre portée",
+  "url": "https://smartimgkit.com/fr/tools/image-shadow",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
   "offers": {
@@ -43,32 +43,33 @@
     "price": "0",
     "priceCurrency": "USD"
   },
-  "description": "Ajoutez une ombre portée réaliste à une image : décalage, flou et couleur réglables, export en PNG transparent. Gratuit et sans envoi."
+  "description": "Ajoutez une ombre portée crédible à vos visuels de boutique, catalogues et réseaux sociaux. Réglez décalage, flou et couleur en direct : tout est traité dans votre navigateur, rien n’est envoyé en ligne.",
+  "inLanguage": "fr"
 }
 </script>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "HowTo",
-  "name": "How to Add Drop Shadow",
+  "name": "Comment ajouter une ombre portée",
   "step": [
     {
       "@type": "HowToStep",
       "position": 1,
-      "name": "Upload Image",
-      "text": "Select an image from your device."
+      "name": "Charger l’image",
+      "text": "Déposez le fichier dans la zone de dépôt ou cliquez pour le sélectionner."
     },
     {
       "@type": "HowToStep",
       "position": 2,
-      "name": "Adjust Shadow",
-      "text": "Set offset, blur radius, and shadow color."
+      "name": "Régler l’ombre",
+      "text": "Ajustez les décalages X et Y, le flou, la couleur, puis choisissez le fond."
     },
     {
       "@type": "HowToStep",
       "position": 3,
-      "name": "Download Result",
-      "text": "Click Apply to process, then Download to save."
+      "name": "Appliquer et télécharger",
+      "text": "Cliquez « Appliquer l’ombre », vérifiez l’aperçu puis enregistrez le PNG."
     }
   ]
 }
@@ -94,26 +95,58 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Will the shadow work on transparent PNGs?",
+      "name": "Mon image est-elle envoyée sur un serveur ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes — the shadow is drawn around the visible (non-transparent) parts of the image. For best results, use PNG images with transparent backgrounds."
+        "text": "Non. L’ombre est calculée par le canvas de votre navigateur, localement : le fichier est décodé en mémoire, traité, puis téléchargé depuis votre machine. Aucune requête n’emporte l’image et rien n’est conservé après fermeture de l’onglet."
       }
     },
     {
       "@type": "Question",
-      "name": "Can I make the shadow softer?",
+      "name": "Quelle différence entre flou et décalage ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Increase the Shadow Blur slider. A value of 20-30px creates a very soft, realistic shadow. Combine with offset for natural light direction."
+        "text": "Le décalage place l’ombre (X pour l’horizontale, Y pour la verticale), le flou adoucit son contour. Un décalage 8px/8px avec flou 12px est un bon point de départ pour une fiche produit ; sans décalage, l’ombre entoure uniformément l’objet."
       }
     },
     {
       "@type": "Question",
-      "name": "What background should I use?",
+      "name": "L’ombre fonctionne-t-elle sur un PNG transparent ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "White is best for product photos. Transparent lets you place the image on any background later. Custom color is useful for themed designs."
+        "text": "Oui — elle épouse les parties visibles de l’image et ignore les zones alpha vides. C’est même le cas idéal ; sur un JPG à fond blanc, l’ombre n’apparaît qu’autour du rectangle entier."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Le fond transparent est-il conservé au téléchargement ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui. La sortie est un PNG, qui conserve la transparence du canal alpha. Vous pouvez ensuite intégrer le visuel dans une maquette Canva, InDesign ou un carousel sans fond parasite."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je obtenir une vraie ombre de perspective, comme au sol ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non, pas avec cet outil : l’ombre est un décalage uniforme flouté, pas une projection 3D qui s’élargit vers le sol. C’est la limite du filtre canvas utilisé ici — pour une ombre de contact réaliste, il faut détourer et dessiner à la main."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Y a-t-il un traitement par lot ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non, une image à la fois. Pour un catalogue complet, il faut recommencer pour chaque visuel ; les réglages se retiennent vite (8/8/12 sur fond blanc couvre la plupart des cas)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je changer la couleur de l’ombre ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui, via le sélecteur de couleur. Le noir reste le plus crédible ; essayez un gris anthracite (#333333) sur fond très clair, ou la couleur de votre charte pour un effet graphique assumé."
       }
     }
   ]
@@ -151,14 +184,14 @@
 
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>🌑 Image Drop Shadow Generator</span></nav>
+      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>🌑 Générateur d’ombre portée</span></nav>
       <div class="tool-page-header">
-        <h1>🌑 Image Drop Shadow Generator</h1>
-        <p>Add realistic drop shadow to images for e-commerce and social media. All processing happens in your browser.</p>
+        <h1>🌑 Générateur d’ombre portée</h1>
+        <p>Ajoutez une ombre portée crédible à vos visuels de boutique, catalogues et réseaux sociaux. Réglez décalage, flou et couleur en direct : tout est traité dans votre navigateur, rien n’est envoyé en ligne.</p>
       </div>
       <div class="tool-workspace">
 <div class="before-after-preview" id="beforeAfterPreview">
-            <div class="before-after-label">✨ See what this tool can do</div>
+            <div class="before-after-label">✨ Ce que cet outil sait faire</div>
             <div class="before-after-images">
               <div class="before-after-item">
                 <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&q=80" alt="Before" loading="lazy" onerror="this.style.display='none';this.parentNode.classList.add('img-fallback')">
@@ -168,7 +201,7 @@
                 <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
                   <span style="font-size:3rem;opacity:0.5;">🌑</span>
                 </div>
-                <div class="before-after-item-caption after">After — with shadow</div>
+                <div class="before-after-item-caption after">Après — ombre ajoutée</div>
               </div>
             </div>
           </div>
@@ -178,35 +211,35 @@
             <h3>Déposez une image ici</h3>
             <p>ou cliquez pour parcourir</p>
           </label>
-          <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Try with a sample image</span>
+          <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Essayer avec un exemple</span>
           <div class="preview-area" id="previewArea">
             <div class="preview-single">
               <div class="preview-container"><img id="resultImg" alt="Résultat"></div>
             </div>
             <div class="shadow-controls">
               <div class="shadow-control">
-                <label><span>Shadow Offset X</span><span id="offsetXVal">8px</span></label>
+                <label><span>Décalage X</span><span id="offsetXVal">8px</span></label>
                 <input type="range" id="offsetXRange" min="-50" max="50" value="8">
               </div>
               <div class="shadow-control">
-                <label><span>Shadow Offset Y</span><span id="offsetYVal">8px</span></label>
+                <label><span>Décalage Y</span><span id="offsetYVal">8px</span></label>
                 <input type="range" id="offsetYRange" min="-50" max="50" value="8">
               </div>
               <div class="shadow-control">
-                <label><span>Shadow Blur</span><span id="blurVal">12px</span></label>
+                <label><span>Flou</span><span id="blurVal">12px</span></label>
                 <input type="range" id="blurRange" min="0" max="50" value="12">
               </div>
               <div class="shadow-control">
-                <label><span>Shadow Couleur</span></label>
+                <label><span>Couleur de l’ombre</span></label>
                 <div class="color-row">
                   <input type="color" id="shadowColorPicker" value="#000000">
                   <span id="shadowColorHex">#000000</span>
                 </div>
               </div>
               <div class="shadow-control">
-                <label><span>Arrière-plan</span></label>
+                <label><span>Fond</span></label>
                 <div class="bg-options">
-                  <button class="bg-option active" data-bg="white">White</button>
+                  <button class="bg-option active" data-bg="white">Blanc</button>
                   <button class="bg-option" data-bg="transparent">Transparent</button>
                   <button class="bg-option" data-bg="custom">Personnalisé</button>
                 </div>
@@ -217,72 +250,47 @@
               </div>
             </div>
             <div class="tool-actions">
-              <button class="btn btn-primary" id="applyBtn">✨ Appliquer Shadow</button>
+              <button class="btn btn-primary" id="applyBtn">✨ Appliquer l’ombre</button>
               <button class="btn btn-secondary hidden" id="downloadBtn">⬇️ Télécharger</button>
-              <button class="btn btn-secondary" id="resetBtn">🔄 New Image</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Nouvelle image</button>
             </div>
             <div id="status" class="text-center mt-16" style="color:var(--text-secondary)"></div>
           </div>
       </div>
-<section class="how-to-section">
-        <h2>How to Use</h2>
-        <div class="how-to-steps">
-          <div class="how-to-step"><div class="step-number">1</div><h4>Upload</h4><p>Select an image from your device or try with a sample.</p></div>
-          <div class="how-to-step"><div class="step-number">2</div><h4>Adjust Shadow</h4><p>Set offset, blur radius, and shadow color.</p></div>
-          <div class="how-to-step"><div class="step-number">3</div><h4>Download</h4><p>Click Apply to process, then Download to save.</p></div>
-        </div>
-      </section>
+<section class="how-to-section"> <h2>Mode d’emploi</h2> <div class="how-to-steps"> <div class="how-to-step"><div class="step-number">1</div><h4>Charger l’image</h4><p>Déposez un fichier dans la zone ou cliquez pour parcourir. Un exemple est disponible pour essayer.</p></div> <div class="how-to-step"><div class="step-number">2</div><h4>Régler l’ombre</h4><p>Décalez l’ombre sur X et Y, dosez le flou, choisissez sa couleur, puis le fond : blanc, transparent ou personnalisé.</p></div> <div class="how-to-step"><div class="step-number">3</div><h4>Enregistrer</h4><p>Cliquez « Appliquer l’ombre » puis « Télécharger » pour récupérer le PNG.</p></div> </div> </section>
 
-<h2>Detailed User Guide</h2>
-
-      <div class="guide-block">
-        <h3>Step 1: Upload Your Image</h3>
-        <p>Click the dropzone or drag and drop an image file (JPG, PNG, or WebP). The original image will be displayed and you can preview the shadow effect immediately.</p>
-      </div>
-
-      <div class="guide-block">
-        <h3>Step 2: Customize Shadow Settings</h3>
-        <p>Use the controls to customize:</p>
-        <ul>
-          <li><strong>Shadow Offset X</strong> (-50px to 50px) — Horizontal shadow position. Positive values move shadow right.</li>
-          <li><strong>Shadow Offset Y</strong> (-50px to 50px) — Vertical shadow position. Positive values move shadow down.</li>
-          <li><strong>Shadow Blur</strong> (0px to 50px) — How soft the shadow edge is. 0 = hard edge.</li>
-          <li><strong>Shadow Color</strong> — Pick any color for the shadow. Black is the most realistic.</li>
-          <li><strong>Background</strong> — Choose white (for product photos), transparent (for overlays), or custom color.</li>
-        </ul>
-        <div class="tip"><strong>Tip:</strong> For e-commerce product photos, use Offset X=8, Offset Y=8, Blur=12, Color=#000000 for a natural-looking shadow on white background.</div>
-      </div>
-
-      <div class="guide-block">
-        <h3>Step 3: Apply & Download</h3>
-        <p>Click <strong>"Apply Shadow"</strong> to render the result, then click <strong>"Download"</strong> to save the image as a PNG file.</p>
-      </div>
-
-      <div class="guide-block">
-        <h3>Best Use Cases</h3>
-        <ul>
-          <li><strong>E-commerce</strong> — Add natural shadows to product photos on white backgrounds</li>
-          <li><strong>Social media</strong> — Make images "pop" from the background</li>
-          <li><strong>Presentations</strong> — Add depth to flat images in slides</li>
-          <li><strong>Web design</strong> — Create lifted-card effects for thumbnails</li>
-        </ul>
-      </div>
-
-<section class="faq-section">
-        <h2>Frequently Asked Questions</h2>
-        <div class="faq-item"><button class="faq-question">Will the shadow work on transparent PNGs?</button><div class="faq-answer">Yes — the shadow is drawn around the visible (non-transparent) parts of the image. For best results, use PNG images with transparent backgrounds.</div></div>
-        <div class="faq-item"><button class="faq-question">Can I make the shadow softer?</button><div class="faq-answer">Increase the Shadow Blur slider. A value of 20-30px creates a very soft, realistic shadow. Combine with offset for natural light direction.</div></div>
-        <div class="faq-item"><button class="faq-question">What background should I use?</button><div class="faq-answer">White is best for product photos. Transparent lets you place the image on any background later. Custom color is useful for themed designs.</div></div>
-      </section>
+<h2>Guide détaillé</h2>
+<div class="guide-block"> <h3>Le mécanisme, concrètement</h3>
+<p>L’outil s’appuie sur le filtre d’ombre natif du canvas : le navigateur dessine derrière votre image une silhouette de sa propre forme, dans la couleur choisie, décalée et floutée selon vos réglages. L’image d’origine reste intacte — l’ombre est recalculée à chaque clic sur « Appliquer l’ombre », ce qui permet d’itérer sans crainte. Le canvas s’agrandit automatiquement pour que l’ombre ne soit jamais coupée sur les bords.</p></div>
+<div class="guide-block"> <h3>Les quatre réglages en détail</h3>
+<ul>
+<li><strong>Décalage X (-50 à 50px)</strong> — position de l’ombre à l’horizontale. Une valeur positive décale l’ombre à droite ; en France, la lumière « naturelle » des maquettes vient souvent du haut-gauche, donc X négatif, Y positif.</li>
+<li><strong>Décalage Y (-50 à 50px)</strong> — vertical. Y positif fait tomber l’ombre sous l’objet, ce qui lit « posé sur un sol ».</li>
+<li><strong>Flou (0 à 50px)</strong> — douceur du contour. 0px donne une ombre nette, genre papier découpé ; 20–30px donne une pénombre crédible.</li>
+<li><strong>Couleur</strong> — le noir reste la valeur sûre ; un gris anthracite (#333333) adoucit sur les fonds clairs sans perdre la lisibilité.</li>
+</ul></div>
+<div class="guide-block"> <h3>Blanc, transparent ou couleur personnalisée</h3>
+<p><strong>Blanc</strong> : le standard des fiches produit — fond uniforme et ombre douce, c’est ce qui détache un objet d’une grille de résultats de recherche. <strong>Transparent</strong> : l’ombre entoure le contour visible de l’image, pratique pour intégrer le visuel dans une maquette Canva, InDesign ou un carousel — le PNG conserve l’alpha. <strong>Personnalisée</strong> : accordez le fond à votre charte graphique, utile pour les visuels de réseaux sociaux au format fixe.</p></div>
+<div class="guide-block"> <h3>Cas d’usage côté français</h3>
+<p>Pour une boutique en ligne indépendante (Etsy, Shopify, own-site), le trio 8px / 8px / flou 12 sur fond blanc suffit à donner du relief à un catalogue entier de fiches produit. Pour un <strong>catalogue imprimé</strong> ou un flyer, l’ombre portée remplace avantageusement le filet gris : gardez le flou bas (8–10px) car l’impression rend les dégradés plus durs qu’à l’écran. Pour LinkedIn ou une page « à propos », un fond transparent + ombre grise sur photo détourée donne un portrait propre sans studio.</p></div>
+<div class="guide-block"> <h3>Ce que l’outil ne fait pas (et pourquoi)</h3>
+<ul>
+<li>Pas d’ombre de contact réaliste ni de perspective : l’ombre est un décalage uniforme, pas une projection au sol qui s’élargit. Pour ça, il faut un vrai logiciel de retouche.</li>
+<li>Pas de traitement par lot : une image à la fois.</li>
+<li>Sortie toujours en PNG, même depuis un JPG source — le fichier sera plus lourd. Passez par Image Compressor ensuite si le poids compte.</li>
+<li>L’outil ne détourne pas : si votre photo a un fond blanc « en dur », le mode transparent ne changera rien — il faut d’abord supprimer le fond avec l’outil dédié.</li>
+</ul></div>
+<div class="guide-block"> <h3>Confidentialité</h3>
+<p>Aucun envoi : l’image est décodée en mémoire, l’ombre est calculée par le canvas de votre navigateur et le résultat est exporté localement. Ni cookie publicitaire, ni compte, ni stockage serveur. Vous pouvez traiter des visuels clients sans leur demander d’autorisation d’hébergement — le fichier ne quitte jamais votre machine.</p></div><section class="faq-section"> <h2>Questions fréquentes</h2> <div class="faq-item"><button class="faq-question">Mon image est-elle envoyée sur un serveur ?</button><div class="faq-answer">Non. L’ombre est calculée par le canvas de votre navigateur, localement : le fichier est décodé en mémoire, traité, puis téléchargé depuis votre machine. Aucune requête n’emporte l’image et rien n’est conservé après fermeture de l’onglet.</div></div> <div class="faq-item"><button class="faq-question">Quelle différence entre flou et décalage ?</button><div class="faq-answer">Le décalage place l’ombre (X pour l’horizontale, Y pour la verticale), le flou adoucit son contour. Un décalage 8px/8px avec flou 12px est un bon point de départ pour une fiche produit ; sans décalage, l’ombre entoure uniformément l’objet.</div></div> <div class="faq-item"><button class="faq-question">L’ombre fonctionne-t-elle sur un PNG transparent ?</button><div class="faq-answer">Oui — elle épouse les parties visibles de l’image et ignore les zones alpha vides. C’est même le cas idéal ; sur un JPG à fond blanc, l’ombre n’apparaît qu’autour du rectangle entier.</div></div> <div class="faq-item"><button class="faq-question">Le fond transparent est-il conservé au téléchargement ?</button><div class="faq-answer">Oui. La sortie est un PNG, qui conserve la transparence du canal alpha. Vous pouvez ensuite intégrer le visuel dans une maquette Canva, InDesign ou un carousel sans fond parasite.</div></div> <div class="faq-item"><button class="faq-question">Puis-je obtenir une vraie ombre de perspective, comme au sol ?</button><div class="faq-answer">Non, pas avec cet outil : l’ombre est un décalage uniforme flouté, pas une projection 3D qui s’élargit vers le sol. C’est la limite du filtre canvas utilisé ici — pour une ombre de contact réaliste, il faut détourer et dessiner à la main.</div></div> <div class="faq-item"><button class="faq-question">Y a-t-il un traitement par lot ?</button><div class="faq-answer">Non, une image à la fois. Pour un catalogue complet, il faut recommencer pour chaque visuel ; les réglages se retiennent vite (8/8/12 sur fond blanc couvre la plupart des cas).</div></div> <div class="faq-item"><button class="faq-question">Puis-je changer la couleur de l’ombre ?</button><div class="faq-answer">Oui, via le sélecteur de couleur. Le noir reste le plus crédible ; essayez un gris anthracite (#333333) sur fond très clair, ou la couleur de votre charte pour un effet graphique assumé.</div></div> </section>
 
 <section class="related-tools">
-        <h2>You Might Also Like</h2>
+        <h2>Outils associés</h2>
         <div class="related-tools-grid">
           <a href="/fr/tools/image-border" class="related-tool-card">
             <span class="tool-icon">🖼️</span>
             <div class="tool-info">
               <strong>Image Border</strong>
-              <span class="tool-desc">Add rounded corners and borders</span>
+              <span class="tool-desc">Coins arrondis et bordures</span>
             </div>
             <span class="tool-arrow">→</span>
           </a>
@@ -290,7 +298,7 @@
             <span class="tool-icon">🎚️</span>
             <div class="tool-info">
               <strong>Image Adjustment</strong>
-              <span class="tool-desc">Adjust brightness, contrast, saturation</span>
+              <span class="tool-desc">Luminosité, contraste, saturation</span>
             </div>
             <span class="tool-arrow">→</span>
           </a>
@@ -298,7 +306,7 @@
             <span class="tool-icon">🎨</span>
             <div class="tool-info">
               <strong>Image Grayscale</strong>
-              <span class="tool-desc">Convert to B&W, sepia, invert</span>
+              <span class="tool-desc">Noir &amp; blanc, sépia, négatif</span>
             </div>
             <span class="tool-arrow">→</span>
           </a>
@@ -359,7 +367,7 @@ const dropzone = document.getElementById('dropzone');
     });
 
     function handleFile(file) {
-      if (!file.type.startsWith('image/')) { status.textContent = 'Please select an image file.'; return; }
+      if (!file.type.startsWith('image/')) { status.textContent = 'Veuillez choisir un fichier image.'; return; }
       currentFile = file;
       ImageUtils.load(file).then(async img => {
         originalImg = img;
@@ -367,7 +375,7 @@ const dropzone = document.getElementById('dropzone');
         try {
           await applyShadow();
         } catch(e) {
-          status.textContent = 'Error: ' + e.message;
+          status.textContent = 'Erreur : ' + e.message;
           return;
         }
         previewArea.classList.add('active');
@@ -377,7 +385,7 @@ const dropzone = document.getElementById('dropzone');
         status.textContent = '';
         downloadBtn.classList.remove('hidden');
       }).catch(err => {
-        status.textContent = 'Error loading image: ' + err.message;
+        status.textContent = 'Erreur de chargement : ' + err.message;
       });
     }
 
@@ -430,23 +438,23 @@ const dropzone = document.getElementById('dropzone');
     applyBtn.addEventListener('click', async function() {
       if (!originalImg) return;
       applyBtn.disabled = true;
-      applyBtn.textContent = '🔄 Applying...';
+      applyBtn.textContent = '🔄 Application...';
       status.innerHTML = '<div class="spinner"></div>';
       try {
         await applyShadow();
-        status.textContent = 'Done! Click Download to save.';
+        status.textContent = 'C’est fait ! Cliquez « Télécharger » pour enregistrer.';
       } catch (err) {
-        status.textContent = 'Error: ' + err.message;
+        status.textContent = 'Erreur : ' + err.message;
       } finally {
         applyBtn.disabled = false;
-        applyBtn.textContent = '✨ Apply Shadow';
+        applyBtn.textContent = '✨ Appliquer l’ombre';
       }
     });
 
     downloadBtn.addEventListener('click', function() {
       if (resultBlob) {
         const base = (currentFile.name || 'image').replace(/\.[^.]+$/, '');
-        ImageUtils.download(resultBlob, base + '-shadow.png');
+        ImageUtils.download(resultBlob, base + '-ombre-portee.png');
         try { SmartImgNextStep.show(); } catch(e) {}
       }
     });
