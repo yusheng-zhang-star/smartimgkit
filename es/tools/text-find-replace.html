@@ -35,7 +35,7 @@
   
   "inLanguage": "es","@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Find & Replace",
+  "name": "Buscar y Reemplazar",
   "url": "https://smartimgkit.com/es/tools/text-find-replace",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
@@ -51,31 +51,31 @@
 {
   "@context": "https://schema.org",
   "@type": "HowTo",
-  "name": "How to Use",
+  "name": "Cómo funciona",
   "step": [
     {
       "@type": "HowToStep",
       "position": 1,
-      "name": "Enter Find & Replace",
-      "text": "Type what to find and what to replace it with."
+      "name": "Pega tu texto",
+      "text": "Copia la descripción de tu anuncio de Wallapop, la ficha de MercadoLibre o cualquier texto que quieras corregir y pégala en el cuadro de entrada."
     },
     {
       "@type": "HowToStep",
       "position": 2,
-      "name": "Set Options",
-      "text": "Choose case sensitivity, regex mode, and replace all."
+      "name": "Define búsqueda y sustituto",
+      "text": "Escribe qué buscar y por qué reemplazarlo: por ejemplo, cambiar «iPhone 11» por «iPhone 12» en toda la ficha del producto."
     },
     {
       "@type": "HowToStep",
       "position": 3,
-      "name": "Enter Text",
-      "text": "Paste your text in the input area."
+      "name": "Elige las opciones",
+      "text": "Activa «Distinguir mayúsculas» si el cambio depende de la caja, «Usar regex» para patrones avanzados y «Reemplazar todo» para repetir el cambio en todo el texto."
     },
     {
       "@type": "HowToStep",
       "position": 4,
-      "name": "Replace",
-      "text": "Click Replace and view the output."
+      "name": "Reemplaza y copia",
+      "text": "Pulsa Reemplazar, revisa el contador de sustituciones y copia el resultado de vuelta a tu anuncio."
     }
   ]
 }
@@ -118,26 +118,50 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Can I use backreferences in regex replace?",
+      "name": "¿Mi texto se envía a algún servidor?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes! Use $1, $2, etc. in the Replace field to reference capture groups."
+        "text": "No. Todo el procesamiento ocurre en tu navegador con JavaScript; ni el texto original ni el resultado salen de tu equipo."
       }
     },
     {
       "@type": "Question",
-      "name": "What does 'Replace all' do?",
+      "name": "¿«Reemplazar todo» solo cambia la primera aparición?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "When checked, all occurrences are replaced. When unchecked, only the first match is replaced."
+        "text": "Al revés: con la opción activada se sustituyen todas las coincidencias; si la desactivas, solo la primera."
       }
     },
     {
       "@type": "Question",
-      "name": "Is regex mode safe?",
+      "name": "¿Puedo usar $1 en el reemplazo con regex?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Regex is executed locally in your browser using JavaScript RegExp. No data is sent."
+        "text": "Sí, $1, $2… referencian los grupos de captura del patrón, igual que en JavaScript."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Distingue entre mayúsculas y minúsculas?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Por defecto no; hay una casilla para activar la distinción exacta de la caja."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo reemplazar saltos de línea o tabulaciones?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Con el modo regex sí: usa \\n para salto de línea y \\t para tabulador. En modo literal se buscan como texto pegado."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué pasa si mi patrón regex tiene un error?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El navegador lo avisa con un mensaje y no se aplica ningún cambio; corrige el patrón y vuelve a intentarlo."
       }
     }
   ]
@@ -173,68 +197,68 @@
 <div class="ad-zone ad-header ad-loader-slot" data-ad-type="header" data-current-mobile="0"></div>
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🔄 Find & Replace</span></nav>
+      <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🔄 Buscar y Reemplazar</span></nav>
       <div class="tool-page-header">
-        <h1>🔄 Find & Replace</h1>
+        <h1>🔄 Buscar y Reemplazar</h1>
         <p>Busca y reemplaza texto con soporte de expresiones regulares — gratis, en tu navegador.</p>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Mira lo que puede hacer esta herramienta</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🔍</span></div>
-              <div class="before-after-item-caption before">Original text</div>
+              <div class="before-after-item-caption before">Texto original</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🔄</span></div>
-              <div class="before-after-item-caption after">Modified text</div>
+              <div class="before-after-item-caption after">Texto modificado</div>
             </div>
           </div>
         </div>
 
 <div class="controls">
-            <h2>🔍 Find & Replace</h2>
+            <h2>🔍 Buscar y Reemplazar</h2>
             <div class="control-row">
-              <label>Find</label>
-              <input type="text" id="findStr" placeholder="Text to find..." style="flex:1;">
+              <label>Buscar</label>
+              <input type="text" id="findStr" placeholder="Texto a buscar..." style="flex:1;">
             </div>
             <div class="control-row">
-              <label>Replace with</label>
-              <input type="text" id="replaceStr" placeholder="Replacement text..." style="flex:1;">
+              <label>Reemplazar con</label>
+              <input type="text" id="replaceStr" placeholder="Texto de reemplazo..." style="flex:1;">
             </div>
             <div class="control-row">
-              <label>Options</label>
-              <label style="min-width:auto;"><input type="checkbox" id="optCase"> Case sensitive</label>
-              <label style="min-width:auto;"><input type="checkbox" id="optRegex"> Use regex</label>
-              <label style="min-width:auto;"><input type="checkbox" id="optGlobal" checked> Replace all</label>
+              <label>Opciones</label>
+              <label style="min-width:auto;"><input type="checkbox" id="optCase"> Distinguir mayúsculas</label>
+              <label style="min-width:auto;"><input type="checkbox" id="optRegex"> Usar regex</label>
+              <label style="min-width:auto;"><input type="checkbox" id="optGlobal" checked> Reemplazar todo</label>
             </div>
         </div>
         <div class="two-col">
           <div class="controls">
-            <h2>📥 Input Text</h2>
-            <textarea id="frInput" placeholder="Enter text..."></textarea>
+            <h2>📥 Texto de entrada</h2>
+            <textarea id="frInput" placeholder="Escribe o pega tu texto..."></textarea>
             <div class="btn-row">
-              <button class="btn btn-primary" id="replaceBtn">🔄 Replace</button>
-              <button class="btn btn-secondary" id="frClearBtn">Clear</button>
+              <button class="btn btn-primary" id="replaceBtn">🔄 Reemplazar</button>
+              <button class="btn btn-secondary" id="frClearBtn">Limpiar</button>
             </div>
           </div>
           <div class="controls">
-            <h2>📤 Output Text</h2>
-            <textarea id="frOutput" readonly placeholder="Result will appear here..."></textarea>
+            <h2>📤 Texto de salida</h2>
+            <textarea id="frOutput" readonly placeholder="El resultado aparecerá aquí..."></textarea>
             <div id="frStats" class="status-text"></div>
             <div class="btn-row">
-              <button class="btn btn-secondary" id="frCopyBtn">📋 Copy</button>
+              <button class="btn btn-secondary" id="frCopyBtn">📋 Copiar</button>
             </div>
           </div>
         </div>
 
       </div>
-<section class="how-to-section"><h2>How to Use</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Enter Find & Replace</h4><p>Type what to find and what to replace it with.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Set Options</h4><p>Choose case sensitivity, regex mode, and replace all.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Enter Text</h4><p>Paste your text in the input area.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Replace</h4><p>Click Replace and view the output.</p></div></div></section>
-<h2>Detailed User Guide</h2><div class="guide-block"><h3>Enter Find & Replace</h3><p>Type what to find and what to replace it with.</p></div><div class="guide-block"><h3>Set Options</h3><p>Choose case sensitivity, regex mode, and replace all.</p></div><div class="guide-block"><h3>Enter Text</h3><p>Paste your text in the input area.</p></div><div class="guide-block"><h3>Replace</h3><p>Click Replace and view the output.</p></div>
-<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">Can I use backreferences in regex replace?</button><div class="faq-answer">Yes! Use $1, $2, etc. in the Replace field to reference capture groups.</div></div><div class="faq-item"><button class="faq-question">What does 'Replace all' do?</button><div class="faq-answer">When checked, all occurrences are replaced. When unchecked, only the first match is replaced.</div></div><div class="faq-item"><button class="faq-question">Is regex mode safe?</button><div class="faq-answer">Regex is executed locally in your browser using JavaScript RegExp. No data is sent.</div></div></section>
-<section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/regex-tester" class="related-tool-card"><span class="tool-icon">🔍</span><div class="tool-info"><strong>Regex Tester</strong><span class="tool-desc">Test regex patterns first</span></div><span class="tool-arrow">→</span></a><a href="/tools/text-diff" class="related-tool-card"><span class="tool-icon">↔️</span><div class="tool-info"><strong>Text Diff</strong><span class="tool-desc">Compare before and after</span></div><span class="tool-arrow">→</span></a><a href="/tools/case-converter" class="related-tool-card"><span class="tool-icon">🔠</span><div class="tool-info"><strong>Case Converter</strong><span class="tool-desc">Convert text case</span></div><span class="tool-arrow">→</span></a></div></section>
+<section class="how-to-section"><h2>Cómo funciona</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Pega tu texto</h4><p>Copia la descripción de tu anuncio de Wallapop, la ficha de MercadoLibre o cualquier texto que quieras corregir y pégala en el cuadro de entrada.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Define búsqueda y sustituto</h4><p>Escribe qué buscar y por qué reemplazarlo: por ejemplo, cambiar «iPhone 11» por «iPhone 12» en toda la ficha del producto.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Elige las opciones</h4><p>Activa «Distinguir mayúsculas» si el cambio depende de la caja, «Usar regex» para patrones avanzados y «Reemplazar todo» para repetir el cambio en todo el texto.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Reemplaza y copia</h4><p>Pulsa Reemplazar, revisa el contador de sustituciones y copia el resultado de vuelta a tu anuncio.</p></div></div></section>
+<h2>Guía detallada</h2><div class="guide-block"><h3>Búsqueda literal sin sustos</h3><p>Sin regex activado, lo que escribas se busca tal cual: puntos, paréntesis o asteriscos se tratan como caracteres normales. Buscar «C/ Mayor, 12» funciona sin escapar nada — la herramienta convierte los caracteres especiales a un patrón seguro antes de aplicar el reemplazo.</p></div><div class="guide-block"><h3>Primera coincidencia o todas</h3><p>Con «Reemplazar todo» se sustituyen todas las apariciones de una vez y el contador indica cuántas fueron. Si lo desactivas, solo cambia la primera: útil para revisar el resultado caso por caso antes de aplicarlo al resto, por ejemplo al corregir el precio en varias secciones de una misma ficha.</p></div><div class="guide-block"><h3>Mayúsculas y minúsculas</h3><p>Por defecto la búsqueda ignora la caja: «madrid» encuentra también «Madrid». Si activas la distinción exacta, el reemplazo respeta la caja tal cual — importante con marcas o siglas como «SEUR» o «BBVA» que no quieres convertir en minúsculas por error.</p></div><div class="guide-block"><h3>Regex con grupos de captura</h3><p>Con regex activo puedes reutilizar lo capturado: buscar <code>(\d{3}) (\d{3}) (\d{3})</code> y reemplazar por <code>$1-$2-$3</code> reformatea un teléfono como 600 123 456 al formato 600-123-456 en una sola pasada. Los grupos se referencian con $1, $2… igual que en JavaScript.</p></div><div class="guide-block"><h3>Casos donde ahorra tiempo</h3><p>Unificar la escritura de una marca en todo el catálogo, cambiar tallas («talla M» por «talla 38») en cada variante, limpiar dobles espacios tras pegar desde Word, o actualizar el año en plantillas de anuncios que reutilizas cada temporada.</p></div><div class="guide-block"><h3>Límites honestos y privacidad</h3><p>El reemplazo se ejecuta con el motor JavaScript de tu navegador: el texto nunca sale de tu equipo, pero tampoco hay historial — copia el resultado antes de cerrar la página. Los saltos de línea se tratan como texto normal: en regex puedes buscarlos con \n. No hay límite estricto de tamaño, aunque textos de varios megabytes tardan más.</p></div>
+<section class="faq-section"><h2>Preguntas frecuentes</h2><div class="faq-item"><button class="faq-question">¿Mi texto se envía a algún servidor?</button><div class="faq-answer">No. Todo el procesamiento ocurre en tu navegador con JavaScript; ni el texto original ni el resultado salen de tu equipo.</div></div><div class="faq-item"><button class="faq-question">¿«Reemplazar todo» solo cambia la primera aparición?</button><div class="faq-answer">Al revés: con la opción activada se sustituyen todas las coincidencias; si la desactivas, solo la primera.</div></div><div class="faq-item"><button class="faq-question">¿Puedo usar $1 en el reemplazo con regex?</button><div class="faq-answer">Sí, $1, $2… referencian los grupos de captura del patrón, igual que en JavaScript.</div></div><div class="faq-item"><button class="faq-question">¿Distingue entre mayúsculas y minúsculas?</button><div class="faq-answer">Por defecto no; hay una casilla para activar la distinción exacta de la caja.</div></div><div class="faq-item"><button class="faq-question">¿Puedo reemplazar saltos de línea o tabulaciones?</button><div class="faq-answer">Con el modo regex sí: usa \n para salto de línea y \t para tabulador. En modo literal se buscan como texto pegado.</div></div><div class="faq-item"><button class="faq-question">¿Qué pasa si mi patrón regex tiene un error?</button><div class="faq-answer">El navegador lo avisa con un mensaje y no se aplica ningún cambio; corrige el patrón y vuelve a intentarlo.</div></div></section>
+<section class="related-tools"><h2>También te puede interesar</h2><div class="related-tools-grid"><a href="/tools/regex-tester" class="related-tool-card"><span class="tool-icon">🔍</span><div class="tool-info"><strong>Regex Tester</strong><span class="tool-desc">Prueba primero tus patrones regex</span></div><span class="tool-arrow">→</span></a><a href="/tools/text-diff" class="related-tool-card"><span class="tool-icon">↔️</span><div class="tool-info"><strong>Text Diff</strong><span class="tool-desc">Compara el antes y el después</span></div><span class="tool-arrow">→</span></a><a href="/tools/case-converter" class="related-tool-card"><span class="tool-icon">🔠</span><div class="tool-info"><strong>Case Converter</strong><span class="tool-desc">Cambia mayúsculas y minúsculas</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
@@ -281,7 +305,7 @@
     const input = document.getElementById('frInput').value || '';
     const find = document.getElementById('findStr').value;
     const replace = document.getElementById('replaceStr').value;
-    if (!find) { alert('Enter text to find.'); return; }
+    if (!find) { alert('Escribe el texto a buscar.'); return; }
     try {
       let result, count = 0;
       const useRegex = document.getElementById('optRegex').checked;
@@ -313,7 +337,7 @@
         }
       }
       document.getElementById('frOutput').value = result;
-      document.getElementById('frStats').textContent = `${count} replacement(s) made`;
+      document.getElementById('frStats').textContent = `${count} sustitución(es) realizada(s)`;
     } catch(e) { alert('Error: ' + e.message); }
   };
   document.getElementById('frCopyBtn').onclick = () => navigator.clipboard.writeText(document.getElementById('frOutput').value);
