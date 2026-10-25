@@ -119,26 +119,26 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Which regex flavor is used?",
+      "name": "工具用的是哪种正则方言？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "JavaScript (ES2018+) regex. Supports lookaheads, lookbehinds, named groups, and Unicode."
+        "text": "浏览器内置的 JavaScript 正则（ES2018+），支持前后查找、命名捕获组和 Unicode 属性（需 u 标志）。与 PCRE 大体兼容但细节有差异，给 PHP、Python 项目写正则请以目标环境实测为准。"
       }
     },
     {
       "@type": "Question",
-      "name": "Do you support PCRE/PHP/Python regex?",
+      "name": "支持 PCRE 或 Python 专有语法吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Not directly. This tool uses JavaScript regex which is slightly different from PCRE."
+        "text": "不直接支持。递归匹配、(?(DEFINE)…) 这类 PCRE 独有写法会报错；Python 的 (?P<name>…) 命名语法在 JavaScript 里应写成 (?<name>…)。"
       }
     },
     {
       "@type": "Question",
-      "name": "Is my data safe?",
+      "name": "我的输入会被上传吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. Everything runs in your browser. No data is sent anywhere."
+        "text": "不会。正则测试完全在你的浏览器里运行，输入的内容不出设备，关闭标签页即全部丢弃，也无需注册登录。"
       }
     },
     {
@@ -146,31 +146,23 @@
       "name": "显示匹配高亮吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "是的——匹配在输入文本中高亮。"
+        "text": "显示。测试文本里每一处匹配都会高亮，下方的匹配列表同时给出起始下标和各组捕获的内容，方便核对分组顺序。"
       }
     },
     {
       "@type": "Question",
-      "name": "用哪种正则？",
+      "name": "为什么我的正则只匹配到第一处？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "标准 JavaScript 正则表达式。"
+        "text": "多半是没勾选 g（全局）标志。JavaScript 正则默认找到第一个匹配就停，勾上 g 才会继续向后扫描。"
       }
     },
     {
       "@type": "Question",
-      "name": "这些工具生产环境够用吗？",
+      "name": "能测试多大的文本？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "够用——遵循标准规范（RFC 3986、JSON 规范等）。"
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "输入会被存储吗？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "不会。全部在浏览器内处理，关闭标签页即丢弃。"
+        "text": "没有硬性上限，但高亮渲染在超大文本（数百万字符）时会明显变慢。建议截取几十到几千行有代表性的片段，测通后再在真实环境中验证。"
       }
     }
   ]
@@ -242,11 +234,11 @@
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ 看看这个工具能做什么</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🔍</span></div>
-              <div class="before-after-item-caption before">Text + pattern</div>
+              <div class="before-after-item-caption before">文本 + 正则</div>
             </div>
         <div class="selling-points">
   <div class="sp-item"><span class="sp-icon">✅</span>实时测试正则表达式</div>
@@ -255,36 +247,36 @@
 </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">✅</span></div>
-              <div class="before-after-item-caption after">Matched results</div>
+              <div class="before-after-item-caption after">匹配结果</div>
             </div>
           </div>
         </div>
 
 <div class="controls">
-            <h2>🔍 Regex Pattern</h2>
+            <h2>🔍 正则表达式</h2>
             <div class="control-row">
-              <label>Pattern</label>
-              <input type="text" id="pattern" placeholder="e.g. \d+" style="flex:1; font-family:Consolas,monospace;">
+              <label>正则</label>
+              <input type="text" id="pattern" placeholder="例如 \d+" style="flex:1; font-family:Consolas,monospace;">
             </div>
             <div class="control-row">
-              <label>Flags</label>
-              <label style="min-width:auto;"><input type="checkbox" id="flagG" checked> g (global)</label>
-              <label style="min-width:auto;"><input type="checkbox" id="flagI"> i (case-insensitive)</label>
-              <label style="min-width:auto;"><input type="checkbox" id="flagM"> m (multiline)</label>
-              <label style="min-width:auto;"><input type="checkbox" id="flagS"> s (dotall)</label>
+              <label>标志</label>
+              <label style="min-width:auto;"><input type="checkbox" id="flagG" checked> g（全局匹配）</label>
+              <label style="min-width:auto;"><input type="checkbox" id="flagI"> i（忽略大小写）</label>
+              <label style="min-width:auto;"><input type="checkbox" id="flagM"> m（多行模式）</label>
+              <label style="min-width:auto;"><input type="checkbox" id="flagS"> s（点号匹配换行）</label>
             </div>
         </div>
 
         <div class="controls">
-            <h2>📝 Test String</h2>
-            <textarea id="testStr" placeholder="Enter text to test against..."></textarea>
+            <h2>📝 测试文本</h2>
+            <textarea id="testStr" placeholder="输入要测试的文本…"></textarea>
         </div>
 
         <div class="result-section">
-            <h2>📊 Results</h2>
-            <div id="statusMsg" class="status-text">Enter a pattern and test string</div>
+            <h2>📊 匹配结果</h2>
+            <div id="statusMsg" class="status-text">输入正则表达式和测试文本</div>
             <div id="matchInfo" style="margin-top:16px;"></div>
-            <h3 style="margin-top:16px;font-size:1rem;">Highlighted Matches:</h3>
+            <h3 style="margin-top:16px;font-size:1rem;">高亮匹配：</h3>
             <div id="highlighted" style="background:var(--bg-secondary);border-radius:8px;padding:16px;font-family:Consolas,monospace;font-size:0.85rem;white-space:pre-wrap;word-break:break-all;margin-top:8px;"></div>
         </div>
 
@@ -295,15 +287,15 @@
         <p class="fn-intro">正则测试器让你实时测试正则表达式。全部在浏览器本地处理，无需上传、无需注册。</p>
       <div class="fn-block">
         <div class="fn-icon">⚡</div>
-        <div><h3>调试正则模式</h3><p>调试正则模式。这是人们使用正则测试器最常见的理由之一——几秒内即可在浏览器中完成。</p></div>
+        <div><h3>调试正则模式</h3><p>写完一条正则不敢直接上线？把模式和一段真实文本贴进来，匹配位置、捕获组、匹配次数立刻呈现。g 标志开着时能一眼看出贪婪匹配吃掉了多少内容，改一个量词马上看到差异，不用来回跑控制台。</p></div>
       </div>
       <div class="fn-block">
         <div class="fn-icon">🎯</div>
-        <div><h3>用样例文本测试匹配</h3><p>用样例文本测试匹配。这是人们使用正则测试器最常见的理由之一——几秒内即可在浏览器中完成。</p></div>
+        <div><h3>用样例文本测试匹配</h3><p>从日志里抽 IP、从订单文本里抢单号、校验手机号格式——先拿几行真实数据试出可靠的正则，再搬到代码里。列表会标出每处匹配的起始下标，定位边界问题时比肉眼数字符快得多。</p></div>
       </div>
       <div class="fn-block">
         <div class="fn-icon">🔒</div>
-        <div><h3>通过实时反馈学习正则</h3><p>通过实时反馈学习正则。这是人们使用正则测试器最常见的理由之一——几秒内即可在浏览器中完成。</p></div>
+        <div><h3>通过实时反馈学习正则</h3><p>正向先行 (?=…)、命名捕获组 (?&lt;name&gt;…) 这些语法光看书容易忘，动手改一下立刻看到匹配变化。正则写错时浏览器原始报错直接显示出来，哪里括号没配对一目了然，比"页面没反应"友好得多。</p></div>
       </div>
       </section>
 
@@ -350,14 +342,10 @@
   <div class="trust-badge"><div class="tb-icon">💯</div><div class="tb-title">永久免费</div><div class="tb-desc">无需注册、无水印</div></div>
   <div class="trust-badge"><div class="tb-icon">🚀</div><div class="tb-title">无需注册</div><div class="tb-desc">即刻开始，无需账号</div></div>
 </div>
-      <section class="how-to-section"><h2>使用方法</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Enter Pattern</h4><p>Type your regex pattern in the Pattern field.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Set Flags</h4><p>Check flags like g, i, m, s as needed.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Enter Test Text</h4><p>Paste or type text to test against.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>View Results</h4><p>Matches are highlighted and listed with details.</p></div></div></section>
-<h2>详细使用指南</h2><div class="guide-block"><h3>Enter Pattern</h3><p>Type your regex pattern in the Pattern field.</p></div><div class="guide-block"><h3>Set Flags</h3><p>Check flags like g, i, m, s as needed.</p></div><div class="guide-block"><h3>Enter Test Text</h3><p>Paste or type text to test against.</p></div><div class="guide-block"><h3>View Results</h3><p>Matches are highlighted and listed with details.</p></div>
-<section class="faq-section"><h2>常见问题</h2><div class="faq-item"><button class="faq-question">Which regex flavor is used?</button><div class="faq-answer">JavaScript (ES2018+) regex. Supports lookaheads, lookbehinds, named groups, and Unicode.</div></div><div class="faq-item"><button class="faq-question">Do you support PCRE/PHP/Python regex?</button><div class="faq-answer">Not directly. This tool uses JavaScript regex which is slightly different from PCRE.</div></div><div class="faq-item"><button class="faq-question">Is my data safe?</button><div class="faq-answer">Yes. Everything runs in your browser. No data is sent anywhere.</div></div><div class="faq-item"><button class="faq-question">显示匹配高亮吗？</button><div class="faq-answer">是的——匹配在输入文本中高亮。</div></div>
-<div class="faq-item"><button class="faq-question">用哪种正则？</button><div class="faq-answer">标准 JavaScript 正则表达式。</div></div>
-<div class="faq-item"><button class="faq-question">这些工具生产环境够用吗？</button><div class="faq-answer">够用——遵循标准规范（RFC 3986、JSON 规范等）。</div></div>
-<div class="faq-item"><button class="faq-question">输入会被存储吗？</button><div class="faq-answer">不会。全部在浏览器内处理，关闭标签页即丢弃。</div></div>
-      </section>
-<section class="related-tools"><h2>你可能还喜欢</h2><div class="related-tools-grid"><a href="/zh/tools/json-formatter" class="related-tool-card"><span class="tool-icon">🔧</span><div class="tool-info"><strong>JSON Formatter</strong><span class="tool-desc">Format and validate JSON</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/text-find-replace" class="related-tool-card"><span class="tool-icon">🔄</span><div class="tool-info"><strong>Find & Replace</strong><span class="tool-desc">Find and replace text with regex</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/url-encoder" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>URL Encoder</strong><span class="tool-desc">Encode/decode URLs</span></div><span class="tool-arrow">→</span></a></div></section>
+      <section class="how-to-section"><h2>使用方法</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>输入正则</h4><p>在"正则表达式"输入框写下模式，例如 \d+ 匹配一串数字。</p></div><div class="how-to-step"><div class="step-number">2</div><h4>勾选标志</h4><p>按需勾选 g、i、m、s：全局、忽略大小写、多行、点号匹配换行。</p></div><div class="how-to-step"><div class="step-number">3</div><h4>粘贴测试文本</h4><p>把要处理的文本粘进测试框，结果随输入实时刷新，无需点击按钮。</p></div><div class="how-to-step"><div class="step-number">4</div><h4>查看结果</h4><p>匹配在原文中高亮，下方列表给出每处匹配的位置与捕获组。</p></div></div></section>
+<h2>详细使用指南</h2><div class="guide-block"><h3>输入即测，无需按钮</h3><p>正则和测试文本两个输入框任意一个变化，结果就重新计算。调正则时最怕"改一下、跑一下"的往返——这里每次按键都能看到新的匹配范围，贪婪与懒惰量词的差别一改便知。</p></div><div class="guide-block"><h3>四个标志各管什么</h3><p>g 让正则找出全部匹配而不是停在第一处；i 让字母匹配忽略大小写；m 让 ^ 和 $ 按行生效而不是只认整段开头结尾；s 让点号也能匹配换行符。写多行日志解析时 m 和 s 经常要一起开。</p></div><div class="guide-block"><h3>匹配列表包含哪些信息</h3><p>除高亮外，每处匹配标注了起始下标和捕获组内容。写替换逻辑前先确认分组顺序，避免 $1、$2 张冠李戴。命名捕获组（?&lt;名称&gt;…）同样能正常解析。</p></div><div class="guide-block"><h3>这是 JavaScript 方言</h3><p>工具用的是浏览器内置的 JavaScript 正则（ES2018+），支持前后查找与命名分组，但与 PCRE 有细节差异：例如 \p{…} Unicode 属性需要 u 标志、递归匹配不支持。给 PHP 或 Python 写正则时请以各自运行环境为准。</p></div><div class="guide-block"><h3>报错原样显示</h3><p>模式不合法时，页面直接展示浏览器的原始错误信息，比如"缺少终止括号"。比起静默失败，你能立刻定位是哪个字符写错了。</p></div><div class="guide-block"><h3>隐私与边界</h3><p>全部计算在本机浏览器完成，输入不会上传。工具只做匹配测试，不生成代码、不保存历史；超大文本（几十万行）渲染高亮会变慢，建议截取有代表性的片段测试。</p></div>
+<section class="faq-section"><h2>常见问题</h2><div class="faq-item"><button class="faq-question">工具用的是哪种正则方言？</button><div class="faq-answer">浏览器内置的 JavaScript 正则（ES2018+），支持前后查找、命名捕获组和 Unicode 属性（需 u 标志）。与 PCRE 大体兼容但细节有差异，给 PHP、Python 项目写正则请以目标环境实测为准。</div></div><div class="faq-item"><button class="faq-question">支持 PCRE 或 Python 专有语法吗？</button><div class="faq-answer">不直接支持。递归匹配、(?(DEFINE)…) 这类 PCRE 独有写法会报错；Python 的 (?P&lt;name&gt;…) 命名语法在 JavaScript 里应写成 (?&lt;name&gt;…)。</div></div><div class="faq-item"><button class="faq-question">我的输入会被上传吗？</button><div class="faq-answer">不会。正则测试完全在你的浏览器里运行，输入的内容不出设备，关闭标签页即全部丢弃，也无需注册登录。</div></div><div class="faq-item"><button class="faq-question">显示匹配高亮吗？</button><div class="faq-answer">显示。测试文本里每一处匹配都会高亮，下方的匹配列表同时给出起始下标和各组捕获的内容，方便核对分组顺序。</div></div><div class="faq-item"><button class="faq-question">为什么我的正则只匹配到第一处？</button><div class="faq-answer">多半是没勾选 g（全局）标志。JavaScript 正则默认找到第一个匹配就停，勾上 g 才会继续向后扫描。</div></div><div class="faq-item"><button class="faq-question">能测试多大的文本？</button><div class="faq-answer">没有硬性上限，但高亮渲染在超大文本（数百万字符）时会明显变慢。建议截取几十到几千行有代表性的片段，测通后再在真实环境中验证。</div></div></section>
+<section class="related-tools"><h2>你可能还喜欢</h2><div class="related-tools-grid"><a href="/zh/tools/json-formatter" class="related-tool-card"><span class="tool-icon">🔧</span><div class="tool-info"><strong>JSON 格式化</strong><span class="tool-desc">格式化并校验 JSON 数据</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/text-find-replace" class="related-tool-card"><span class="tool-icon">🔄</span><div class="tool-info"><strong>查找与替换</strong><span class="tool-desc">用正则批量查找替换文本</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/url-encoder" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>URL 编码</strong><span class="tool-desc">URL 编码与解码</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
@@ -408,7 +396,7 @@
   const flags = ['flagG','flagI','flagM','flagS'];
 
   function test() {
-    if (!pattern.value) { statusMsg.textContent = 'Enter a pattern'; matchInfo.innerHTML=''; highlighted.textContent=''; return; }
+    if (!pattern.value) { statusMsg.textContent = '请输入正则表达式'; matchInfo.innerHTML=''; highlighted.textContent=''; return; }
     try {
       let fs = '';
       flags.forEach(f => { if (document.getElementById(f).checked) fs += f.replace('flag','').toLowerCase(); });
@@ -418,14 +406,14 @@
       let m;
       if (fs.includes('g')) { while ((m = re.exec(text)) !== null) { matches.push({text:m[0],index:m.index,groups:m.slice(1)}); if (m.index === re.lastIndex) re.lastIndex++; } }
       else { m = re.exec(text); if (m) matches.push({text:m[0],index:m.index,groups:m.slice(1)}); }
-      statusMsg.textContent = `✓ ${matches.length} match(es) found`;
+      statusMsg.textContent = `✓ 找到 ${matches.length} 处匹配`;
       statusMsg.style.color = '#22c55e';
       matchInfo.innerHTML = matches.length ? matches.map((m,i) => `<div style="padding:8px;background:var(--bg-secondary);border-radius:6px;margin-bottom:4px;"><strong>Match ${i+1}:</strong> "${m.text}" at index ${m.index}${m.groups.length?` | Groups: ${m.groups.map((g,j)=>`$${j+1}="${g||''}"`).join(', ')}`:''}</div>`).join('') : '';
       let hl = ''; let last = 0;
       matches.forEach(m => { hl += escapeHtml(text.slice(last, m.index)); hl += `<mark style="background:rgba(99,102,241,0.3);padding:2px 4px;border-radius:3px;">${escapeHtml(m.text)}</mark>`; last = m.index + m.text.length; });
       hl += escapeHtml(text.slice(last));
       highlighted.innerHTML = hl || '<em style="color:var(--text-secondary);">No test text entered</em>';
-    } catch(e) { statusMsg.textContent = '✗ Error: ' + e.message; statusMsg.style.color = '#ef4444'; matchInfo.innerHTML=''; highlighted.textContent=''; }
+    } catch(e) { statusMsg.textContent = '✗ 错误：' + e.message; statusMsg.style.color = '#ef4444'; matchInfo.innerHTML=''; highlighted.textContent=''; }
   }
   function escapeHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
   [pattern, testStr].forEach(el => el.addEventListener('input', test));

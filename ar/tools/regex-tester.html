@@ -35,7 +35,7 @@
   
   "inLanguage": "ar","@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Regex Tester",
+  "name": "أداة اختبار التعبيرات النمطية",
   "url": "https://smartimgkit.com/ar/tools/regex-tester",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
@@ -118,26 +118,50 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Which regex flavor is used?",
+      "name": "أي محرك تعبيرات نمطية تستخدم الأداة؟",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "JavaScript (ES2018+) regex. Supports lookaheads, lookbehinds, named groups, and Unicode."
+        "text": "محرك جافاسكربت المدمج (ES2018+) ويدعم التأكيدات والمجموعات المسماة وخصائص يونيكود مع الرمز u. متوافق مع PCRE في الغالب لكن ليس حرفياً، فاختبر في بيئة الهدف عند العمل بلغات أخرى."
       }
     },
     {
       "@type": "Question",
-      "name": "Do you support PCRE/PHP/Python regex?",
+      "name": "هل تدعم صيغ PCRE أو PHP أو Python؟",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Not directly. This tool uses JavaScript regex which is slightly different from PCRE."
+        "text": "ليست دعماً مباشراً. صيغ التعاود في PCRE تُظهر خطأ، وتسمية المجموعات في بايثون بصيغة (?P<name>…) يجب إعادة كتابتها إلى (?<name>…)."
       }
     },
     {
       "@type": "Question",
-      "name": "Is my data safe?",
+      "name": "هل بياناتي آمنة؟",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. Everything runs in your browser. No data is sent anywhere."
+        "text": "نعم، كل شيء يعمل داخل متصفحك ولا يُرسل أي نص إلى أي مكان. أغلق التبويب فتختفي كل شيء نهائياً."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "لماذا تظهر مطابقة واحدة فقط؟",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "السبب الأشهر هو عدم تفعيل الرمز g. المحرك يتوقف عند أول مطابقة افتراضياً، وفعّل g للبحث في كامل النص. إن كنت تريد إيقاف المجموعة عند أول فرصة، أضف ? بعد المُكمّم لجعله كسولاً."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "هل أستطيع اختبار نص كبير جداً؟",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "لا حد صارم، لكن تلوين ملايين الأحرف يبطئ الصفحة. جرّب مقاطع من عشرات إلى آلاف الأسطر ثم وسّع النطاق تدريجياً."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "هل تدعم المجموعات المسماة؟",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "نعم بصيغة (?<name>…) الخاصة بجافاسكربت، وتظهر قيمتها في قائمة النتائج مع موضع كل مطابقة."
       }
     }
   ]
@@ -197,58 +221,58 @@
     <div class="container">
       <nav class="breadcrumb"><a href="/">الرئيسية</a><span>/</span><a href="/ar/tools/">الأدوات</a><span>/</span><span>🔍 Regex Tester</span></nav>
       <div class="tool-page-header">
-        <h1>🔍 Regex Tester</h1>
-        <p>Test and debug regular expressions with real-time matching — free, in your browser.</p>
+        <h1>🔍 أداة اختبار التعبيرات النمطية</h1>
+        <p>اختبر وصحّح التعبيرات النمطية بنتائج فورية — مجاناً وداخل متصفحك.</p>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ ماذا تفعل هذه الأداة</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🔍</span></div>
-              <div class="before-after-item-caption before">Text + pattern</div>
+              <div class="before-after-item-caption before">نص + نمط</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">✅</span></div>
-              <div class="before-after-item-caption after">Matched results</div>
+              <div class="before-after-item-caption after">نتائج المطابقة</div>
             </div>
           </div>
         </div>
 
 <div class="controls">
-            <h2>🔍 Regex Pattern</h2>
+            <h2>🔍 النمط</h2>
             <div class="control-row">
-              <label>Pattern</label>
-              <input type="text" id="pattern" placeholder="e.g. \d+" style="flex:1; font-family:Consolas,monospace;">
+              <label>النمط</label>
+              <input type="text" id="pattern" placeholder="مثال: \d+" style="flex:1; font-family:Consolas,monospace;">
             </div>
             <div class="control-row">
-              <label>Flags</label>
-              <label style="min-width:auto;"><input type="checkbox" id="flagG" checked> g (global)</label>
-              <label style="min-width:auto;"><input type="checkbox" id="flagI"> i (case-insensitive)</label>
-              <label style="min-width:auto;"><input type="checkbox" id="flagM"> m (multiline)</label>
-              <label style="min-width:auto;"><input type="checkbox" id="flagS"> s (dotall)</label>
+              <label>الرموز</label>
+              <label style="min-width:auto;"><input type="checkbox" id="flagG" checked> g (كل النتائج)</label>
+              <label style="min-width:auto;"><input type="checkbox" id="flagI"> i (تجاهل الحالة)</label>
+              <label style="min-width:auto;"><input type="checkbox" id="flagM"> m (عدة أسطر)</label>
+              <label style="min-width:auto;"><input type="checkbox" id="flagS"> s (النقطة تشمل السطر الجديد)</label>
             </div>
         </div>
 
         <div class="controls">
-            <h2>📝 Test String</h2>
-            <textarea id="testStr" placeholder="Enter text to test against..."></textarea>
+            <h2>📝 النص التجريبي</h2>
+            <textarea id="testStr" placeholder="الصق النص الذي تريد اختباره…"></textarea>
         </div>
 
         <div class="result-section">
-            <h2>📊 Results</h2>
-            <div id="statusMsg" class="status-text">Enter a pattern and test string</div>
+            <h2>📊 النتائج</h2>
+            <div id="statusMsg" class="status-text">أدخل نمطاً ونصاً للبدء</div>
             <div id="matchInfo" style="margin-top:16px;"></div>
-            <h3 style="margin-top:16px;font-size:1rem;">Highlighted Matches:</h3>
+            <h3 style="margin-top:16px;font-size:1rem;">المطابقات المميزة:</h3>
             <div id="highlighted" style="background:var(--bg-secondary);border-radius:8px;padding:16px;font-family:Consolas,monospace;font-size:0.85rem;white-space:pre-wrap;word-break:break-all;margin-top:8px;"></div>
         </div>
 
       </div>
-<section class="how-to-section"><h2>How to Use</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Enter Pattern</h4><p>Type your regex pattern in the Pattern field.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Set Flags</h4><p>Check flags like g, i, m, s as needed.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Enter Test Text</h4><p>Paste or type text to test against.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>View Results</h4><p>Matches are highlighted and listed with details.</p></div></div></section>
-<h2>Detailed User Guide</h2><div class="guide-block"><h3>Enter Pattern</h3><p>Type your regex pattern in the Pattern field.</p></div><div class="guide-block"><h3>Set Flags</h3><p>Check flags like g, i, m, s as needed.</p></div><div class="guide-block"><h3>Enter Test Text</h3><p>Paste or type text to test against.</p></div><div class="guide-block"><h3>View Results</h3><p>Matches are highlighted and listed with details.</p></div>
-<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">Which regex flavor is used?</button><div class="faq-answer">JavaScript (ES2018+) regex. Supports lookaheads, lookbehinds, named groups, and Unicode.</div></div><div class="faq-item"><button class="faq-question">Do you support PCRE/PHP/Python regex?</button><div class="faq-answer">Not directly. This tool uses JavaScript regex which is slightly different from PCRE.</div></div><div class="faq-item"><button class="faq-question">Is my data safe?</button><div class="faq-answer">Yes. Everything runs in your browser. No data is sent anywhere.</div></div></section>
-<section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/json-formatter" class="related-tool-card"><span class="tool-icon">🔧</span><div class="tool-info"><strong>JSON Formatter</strong><span class="tool-desc">Format and validate JSON</span></div><span class="tool-arrow">→</span></a><a href="/tools/text-find-replace" class="related-tool-card"><span class="tool-icon">🔄</span><div class="tool-info"><strong>Find & Replace</strong><span class="tool-desc">Find and replace text with regex</span></div><span class="tool-arrow">→</span></a><a href="/tools/url-encoder" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>URL Encoder</strong><span class="tool-desc">Encode/decode URLs</span></div><span class="tool-arrow">→</span></a></div></section>
+<section class="how-to-section"><h2>كيفية الاستخدام</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>اكتب النمط</h4><p>أدخل التعبير النمطي في حقل النمط، مثل \d+ لمطابقة سلسلة أرقام.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>اختر الرموز</h4><p>فعّل g أو i أو m أو s حسب حاجتك: الشمولية، تجاهل الحالة، تعدد الأسطر، أو شمول النقطة للسطر الجديد.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>ألصق النص</h4><p>ضع النص المراد اختباره، وتتحدث النتائج فورياً مع كل ضغطة مفتاح دون زر.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>راجع النتائج</h4><p>تُميّز المطابقات داخل النص، ويعرض الجدول موضع كل مطابقة ومجموعاتها الملتقطة.</p></div></div></section>
+<h2>دليل الاستخدام المفصّل</h2><div class="guide-block"><h3>اختبار فوري دون زر</h3><p>أي تغيير في النمط أو النص يعيد الحساب فوراً. هذه أسرع طريقة لضبط التعبيرات: عدّل المُكمّم وسترى حدود المطابقة تتمدد أو تتقلص أمامك مباشرة، بدل التنقل بين المحرر والطرفية.</p></div><div class="guide-block"><h3>ماذا يفعل كل رمز</h3><p>الرمز g يجعل الأداة تعرض كل المطابقات بدى التوقف عند الأولى؛ وi يوحّد الحالة بين الأحرف؛ وm يجعل ^ و$ يركزان على بداية كل سطر وآخره؛ وs يسمح للنقطة بمطابقة السطر الجديد. عند تحليل سجلات متعددة الأسطر ستحتاج غالباً m وs معاً.</p></div><div class="guide-block"><h3>قراءة قائمة المطابقات</h3><p>كل مطابقة ترافقها بدايتها الرقمية داخل النص ومحتويات المجموعات الملتقطة. تحقق من ترتيب المجموعات قبل كتابة منطق الاستبدال حتى لا تخلط بين $1 و$2؛ والمجموعات المسماة بصيغة (?&lt;name&gt;…) مدعومة كذلك.</p></div><div class="guide-block"><h3>اللهجة المستخدمة هي جافاسكربت</h3><p>تعتمد الأداة على محرك التعبيرات النمطية المدمج في المتصفح (ES2018+): يدعم التأكيدات السابقة واللاحقة والمجموعات المسماة وخصائص يونيكود مع الرمز u، لكنه يختلف عن PCRE في تفاصيل مثل مطابقة التعاود غير المدعومة. إن كنت تكتب لـ PHP أو Python فاختبر دائماً في بيئة التشغيل نفسها.</p></div><div class="guide-block"><h3>رسائل الخطأ تُعرض كما هي</h3><p>عندما يكون النمط غير صالح، يظهر خطأ المتصفح الأصلي حرفياً — مثل قوس إغلاق مفقود — فتعرف الحرف المسبب للمشكلة فوراً بدى رسالة صامتة.</p></div><div class="guide-block"><h3>الخصوصية والحدود</h3><p>كل المعالجة تجري على جهازك ولا يُرسل شيء إلى أي خادم. الأداة للاختبار فقط: لا تُنشئ كوداً ولا تحفظ سجلاً. النصوص الضخمة جداً تبطئ تلوين النتائج، فاختبر مقاطع ممثلة ثم طبّق في بيئتك.</p></div><div class="guide-block"><h3>أمثلة من عملنا اليومي</h3><p>نستخدمها أسبوعياً للتحقق من أرقام الجوال الخليجية بنمط مثل (\+?966|0)?5\d{8} قبل ربطه بنموذج تسجيل، ولإخراج معرّفات الطلبات من سجلات المتجر، ولتنظيف حقول CSV قبل الاستيراد إلى قاعدة البيانات.</p></div><div class="guide-block"><h3>أنماط جاهزة للنسخ</h3><p>بريد إلكتروني مبسّط: [\w.+-]+@[\w-]+\.[\w.]+؛ تاريخ بصيغة يوم-شهر-سنة: \d{2}/\d{2}/\d{4}؛ وكلمة كاملة بدى أن تحويها: \bكلمة\b. انسخ النمط، عدّله على بياناتك الحقيقية، ثم خذ نسخة نهائية إلى كودك.</p></div><div class="guide-block"><h3>الاختبار شيء والاستبدال شيء آخر</h3><p>الأداة تختبر المطابقة فقط ولا تعدّل ملفاتك. بعد الوصول إلى نمط سليم، نفّذ الاستبدال في محررك أو كودك باستخدام المجموعات نفسها التي رأيتها في القائمة — ما تراه هنا هو بالضبط ما سيقبضه المحرك هناك.</p></div><div class="guide-block"><h3>خطوات مرتبة لتصحيح نمط عنيد</h3><p>ابدأ بأقصر نمط يطابق جزءاً واحداً، ثم أضف قطعة قطعة مع النظر إلى القائمة بعد كل تعديل. إذا قفزت عدد المطابقات فجأة، فالسبب غالباً مُكمّم جشع — جرّب إضافة علامة الاستفهام بعده لتحويله إلى وضع كسول.</p></div>
+<section class="faq-section"><h2>الأسئلة الشائعة</h2><div class="faq-item"><button class="faq-question">أي محرك تعبيرات نمطية تستخدم الأداة؟</button><div class="faq-answer">محرك جافاسكربت المدمج (ES2018+) ويدعم التأكيدات والمجموعات المسماة وخصائص يونيكود مع الرمز u. متوافق مع PCRE في الغالب لكن ليس حرفياً، فاختبر في بيئة الهدف عند العمل بلغات أخرى.</div></div><div class="faq-item"><button class="faq-question">هل تدعم صيغ PCRE أو PHP أو Python؟</button><div class="faq-answer">ليست دعماً مباشراً. صيغ التعاود في PCRE تُظهر خطأ، وتسمية المجموعات في بايثون بصيغة (?P&lt;name&gt;…) يجب إعادة كتابتها إلى (?&lt;name&gt;…).</div></div><div class="faq-item"><button class="faq-question">هل بياناتي آمنة؟</button><div class="faq-answer">نعم، كل شيء يعمل داخل متصفحك ولا يُرسل أي نص إلى أي مكان. أغلق التبويب فتختفي كل شيء نهائياً.</div></div><div class="faq-item"><button class="faq-question">لماذا تظهر مطابقة واحدة فقط؟</button><div class="faq-answer">السبب الأشهر هو عدم تفعيل الرمز g. المحرك يتوقف عند أول مطابقة افتراضياً، وفعّل g للبحث في كامل النص. إن كنت تريد إيقاف المجموعة عند أول فرصة، أضف ? بعد المُكمّم لجعله كسولاً.</div></div><div class="faq-item"><button class="faq-question">هل أستطيع اختبار نص كبير جداً؟</button><div class="faq-answer">لا حد صارم، لكن تلوين ملايين الأحرف يبطئ الصفحة. جرّب مقاطع من عشرات إلى آلاف الأسطر ثم وسّع النطاق تدريجياً.</div></div><div class="faq-item"><button class="faq-question">هل تدعم المجموعات المسماة؟</button><div class="faq-answer">نعم بصيغة (?&lt;name&gt;…) الخاصة بجافاسكربت، وتظهر قيمتها في قائمة النتائج مع موضع كل مطابقة.</div></div></section>
+<section class="related-tools"><h2>قد يعجبك أيضاً</h2><div class="related-tools-grid"><a href="/ar/tools/json-formatter" class="related-tool-card"><span class="tool-icon">🔧</span><div class="tool-info"><strong>منسّق JSON</strong><span class="tool-desc">تنسيق بيانات JSON والتحقق منها</span></div><span class="tool-arrow">→</span></a><a href="/ar/tools/text-find-replace" class="related-tool-card"><span class="tool-icon">🔄</span><div class="tool-info"><strong>بحث واستبدال النصوص</strong><span class="tool-desc">بحث واستبدال دفعي بالتعبيرات النمطية</span></div><span class="tool-arrow">→</span></a><a href="/ar/tools/url-encoder" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>مشفّر الروابط</strong><span class="tool-desc">ترميز الروابط وفك ترميزها</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
@@ -267,7 +291,7 @@
   const flags = ['flagG','flagI','flagM','flagS'];
 
   function test() {
-    if (!pattern.value) { statusMsg.textContent = 'Enter a pattern'; matchInfo.innerHTML=''; highlighted.textContent=''; return; }
+    if (!pattern.value) { statusMsg.textContent = 'أدخل النمط أولاً'; matchInfo.innerHTML=''; highlighted.textContent=''; return; }
     try {
       let fs = '';
       flags.forEach(f => { if (document.getElementById(f).checked) fs += f.replace('flag','').toLowerCase(); });
@@ -277,14 +301,14 @@
       let m;
       if (fs.includes('g')) { while ((m = re.exec(text)) !== null) { matches.push({text:m[0],index:m.index,groups:m.slice(1)}); if (m.index === re.lastIndex) re.lastIndex++; } }
       else { m = re.exec(text); if (m) matches.push({text:m[0],index:m.index,groups:m.slice(1)}); }
-      statusMsg.textContent = `✓ ${matches.length} match(es) found`;
+      statusMsg.textContent = `✓ وُجد ${matches.length} من المطابقات`;
       statusMsg.style.color = '#22c55e';
       matchInfo.innerHTML = matches.length ? matches.map((m,i) => `<div style="padding:8px;background:var(--bg-secondary);border-radius:6px;margin-bottom:4px;"><strong>Match ${i+1}:</strong> "${m.text}" at index ${m.index}${m.groups.length?` | Groups: ${m.groups.map((g,j)=>`$${j+1}="${g||''}"`).join(', ')}`:''}</div>`).join('') : '';
       let hl = ''; let last = 0;
       matches.forEach(m => { hl += escapeHtml(text.slice(last, m.index)); hl += `<mark style="background:rgba(99,102,241,0.3);padding:2px 4px;border-radius:3px;">${escapeHtml(m.text)}</mark>`; last = m.index + m.text.length; });
       hl += escapeHtml(text.slice(last));
       highlighted.innerHTML = hl || '<em style="color:var(--text-secondary);">No test text entered</em>';
-    } catch(e) { statusMsg.textContent = '✗ Error: ' + e.message; statusMsg.style.color = '#ef4444'; matchInfo.innerHTML=''; highlighted.textContent=''; }
+    } catch(e) { statusMsg.textContent = '✗ خطأ: ' + e.message; statusMsg.style.color = '#ef4444'; matchInfo.innerHTML=''; highlighted.textContent=''; }
   }
   function escapeHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
   [pattern, testStr].forEach(el => el.addEventListener('input', test));

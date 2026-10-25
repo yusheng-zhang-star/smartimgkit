@@ -35,7 +35,7 @@
   
   "inLanguage": "vi","@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Regex Tester",
+  "name": "Công cụ kiểm tra Regex",
   "url": "https://smartimgkit.com/vi/tools/regex-tester",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
@@ -118,26 +118,50 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Which regex flavor is used?",
+      "name": "Công cụ dùng loại regex nào?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "JavaScript (ES2018+) regex. Supports lookaheads, lookbehinds, named groups, and Unicode."
+        "text": "Regex JavaScript tích hợp trong trình duyệt (ES2018+), hỗ trợ lookahead/lookbehind, nhóm đặt tên và thuộc tính Unicode (cần cờ u). Tương thích phần lớn với PCRE nhưng không hoàn toàn — hãy kiểm tra trong môi trường đích khi viết cho PHP hay Python."
       }
     },
     {
       "@type": "Question",
-      "name": "Do you support PCRE/PHP/Python regex?",
+      "name": "Có hỗ trợ cú pháp riêng của PCRE hay Python không?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Not directly. This tool uses JavaScript regex which is slightly different from PCRE."
+        "text": "Không trực tiếp. Đệ quy của PCRE sẽ báo lỗi; nhóm đặt tên kiểu Python (?P<name>…) cần viết lại thành (?<name>…) theo chuẩn JavaScript."
       }
     },
     {
       "@type": "Question",
-      "name": "Is my data safe?",
+      "name": "Dữ liệu tôi có được gửi đi đâu không?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. Everything runs in your browser. No data is sent anywhere."
+        "text": "Không. Toàn bộ việc khớp diễn ra trong trình duyệt của bạn, văn bản không rời khỏi thiết bị và không cần đăng nhập."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Vì sao chỉ ra một chỗ khớp?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Thường do chưa bật cờ g. Engine mặc định dừng ở khớp đầu tiên; bật g để quét hết văn bản."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Có nhóm đặt tên không?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Có, theo cú pháp (?<name>…). Giá trị từng nhóm hiện trong danh sách kết quả kèm vị trí, tiện đối chiếu trước khi dùng trong code."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Văn bản lớn bao nhiêu là quá nặng?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Không có giới hạn cứng, nhưng tô sáng hàng triệu ký tự sẽ chậm rõ rệt. Nên thử với vài trăm đến vài nghìn dòng đại diện rồi mới mở rộng."
       }
     }
   ]
@@ -175,58 +199,58 @@
     <div class="container">
       <nav class="breadcrumb"><a href="/">Trang chủ</a><span>/</span><a href="/vi/">Công cụ</a><span>/</span><span>🔍 Regex Tester</span></nav>
       <div class="tool-page-header">
-        <h1>🔍 Regex Tester</h1>
-        <p>Test and debug regular expressions with real-time matching — free, in your browser.</p>
+        <h1>🔍 Công cụ kiểm tra Regex</h1>
+        <p>Kiểm tra và gỡ lỗi biểu thức chính quy với kết quả tức thời — miễn phí, ngay trên trình duyệt.</p>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Công cụ này làm được gì</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🔍</span></div>
-              <div class="before-after-item-caption before">Text + pattern</div>
+              <div class="before-after-item-caption before">Văn bản + biểu thức</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">✅</span></div>
-              <div class="before-after-item-caption after">Matched results</div>
+              <div class="before-after-item-caption after">Kết quả khớp</div>
             </div>
           </div>
         </div>
 
 <div class="controls">
-            <h2>🔍 Regex Pattern</h2>
+            <h2>🔍 Biểu thức chính quy</h2>
             <div class="control-row">
-              <label>Pattern</label>
-              <input type="text" id="pattern" placeholder="e.g. \d+" style="flex:1; font-family:Consolas,monospace;">
+              <label>Biểu thức</label>
+              <input type="text" id="pattern" placeholder="ví dụ: \d+" style="flex:1; font-family:Consolas,monospace;">
             </div>
             <div class="control-row">
-              <label>Flags</label>
-              <label style="min-width:auto;"><input type="checkbox" id="flagG" checked> g (global)</label>
-              <label style="min-width:auto;"><input type="checkbox" id="flagI"> i (case-insensitive)</label>
-              <label style="min-width:auto;"><input type="checkbox" id="flagM"> m (multiline)</label>
-              <label style="min-width:auto;"><input type="checkbox" id="flagS"> s (dotall)</label>
+              <label>Cờ</label>
+              <label style="min-width:auto;"><input type="checkbox" id="flagG" checked> g (khớp tất cả)</label>
+              <label style="min-width:auto;"><input type="checkbox" id="flagI"> i (không phân biệt hoa thường)</label>
+              <label style="min-width:auto;"><input type="checkbox" id="flagM"> m (nhiều dòng)</label>
+              <label style="min-width:auto;"><input type="checkbox" id="flagS"> s (dấu chấm khớp cả xuống dòng)</label>
             </div>
         </div>
 
         <div class="controls">
-            <h2>📝 Test String</h2>
-            <textarea id="testStr" placeholder="Enter text to test against..."></textarea>
+            <h2>📝 Văn bản kiểm tra</h2>
+            <textarea id="testStr" placeholder="Dán văn bản cần kiểm tra…"></textarea>
         </div>
 
         <div class="result-section">
-            <h2>📊 Results</h2>
-            <div id="statusMsg" class="status-text">Enter a pattern and test string</div>
+            <h2>📊 Kết quả</h2>
+            <div id="statusMsg" class="status-text">Nhập biểu thức và văn bản để bắt đầu</div>
             <div id="matchInfo" style="margin-top:16px;"></div>
-            <h3 style="margin-top:16px;font-size:1rem;">Highlighted Matches:</h3>
+            <h3 style="margin-top:16px;font-size:1rem;">Các chỗ khớp được làm nổi:</h3>
             <div id="highlighted" style="background:var(--bg-secondary);border-radius:8px;padding:16px;font-family:Consolas,monospace;font-size:0.85rem;white-space:pre-wrap;word-break:break-all;margin-top:8px;"></div>
         </div>
 
       </div>
-<section class="how-to-section"><h2>How to Use</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Enter Pattern</h4><p>Type your regex pattern in the Pattern field.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Set Flags</h4><p>Check flags like g, i, m, s as needed.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Enter Test Text</h4><p>Paste or type text to test against.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>View Results</h4><p>Matches are highlighted and listed with details.</p></div></div></section>
-<h2>Detailed User Guide</h2><div class="guide-block"><h3>Enter Pattern</h3><p>Type your regex pattern in the Pattern field.</p></div><div class="guide-block"><h3>Set Flags</h3><p>Check flags like g, i, m, s as needed.</p></div><div class="guide-block"><h3>Enter Test Text</h3><p>Paste or type text to test against.</p></div><div class="guide-block"><h3>View Results</h3><p>Matches are highlighted and listed with details.</p></div>
-<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">Which regex flavor is used?</button><div class="faq-answer">JavaScript (ES2018+) regex. Supports lookaheads, lookbehinds, named groups, and Unicode.</div></div><div class="faq-item"><button class="faq-question">Do you support PCRE/PHP/Python regex?</button><div class="faq-answer">Not directly. This tool uses JavaScript regex which is slightly different from PCRE.</div></div><div class="faq-item"><button class="faq-question">Is my data safe?</button><div class="faq-answer">Yes. Everything runs in your browser. No data is sent anywhere.</div></div></section>
-<section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/json-formatter" class="related-tool-card"><span class="tool-icon">🔧</span><div class="tool-info"><strong>JSON Formatter</strong><span class="tool-desc">Format and validate JSON</span></div><span class="tool-arrow">→</span></a><a href="/tools/text-find-replace" class="related-tool-card"><span class="tool-icon">🔄</span><div class="tool-info"><strong>Find & Replace</strong><span class="tool-desc">Find and replace text with regex</span></div><span class="tool-arrow">→</span></a><a href="/tools/url-encoder" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>URL Encoder</strong><span class="tool-desc">Encode/decode URLs</span></div><span class="tool-arrow">→</span></a></div></section>
+<section class="how-to-section"><h2>Cách dùng</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Nhập biểu thức</h4><p>Gõ biểu thức chính quy vào ô biểu thức, ví dụ \d+ để khớp một dãy số.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Chọn cờ</h4><p>Bật g, i, m hoặc s theo nhu cầu: khớp toàn bộ, bỏ qua hoa thường, nhiều dòng, hoặc dấu chấm khớp cả xuống dòng.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Dán văn bản</h4><p>Cho văn bản cần kiểm tra vào — kết quả cập nhật ngay khi bạn gõ, không cần bấm nút.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Xem kết quả</h4><p>Chỗ khớp được tô sáng trong văn bản gốc, kèm danh sách vị trí và nhóm bắt được.</p></div></div></section>
+<h2>Hướng dẫn chi tiết</h2><div class="guide-block"><h3>Kiểm tra tức thời, không cần nút</h3><p>Mỗi lần bạn sửa biểu thức hay văn bản, kết quả được tính lại ngay. Đây là cách nhanh nhất để tinh chỉnh: đổi một lượng từ và xem vùng khớp giãn ra hay thu lại trước mắt, thay vì chạy đi chạy lại giữa trình soạn thảo và terminal.</p></div><div class="guide-block"><h3>Từng cờ làm gì</h3><p>g để tìm tất cả chỗ khớp thay vì dừng ở chỗ đầu tiên; i để bỏ qua hoa thường; m để ^ và $ áp dụng cho từng dòng; s để dấu chấm khớp cả ký tự xuống dòng. Khi phân tích log nhiều dòng, bạn thường cần bật cả m và s.</p></div><div class="guide-block"><h3>Đọc danh sách kết quả</h3><p>Mỗi chỗ khớp kèm vị trí bắt đầu trong văn bản và giá trị các nhóm bắt. Hãy kiểm tra thứ tự nhóm trước khi viết logic thay thế để không nhầm $1 với $2; nhóm đặt tên (?&lt;name&gt;…) cũng hoạt động bình thường.</p></div><div class="guide-block"><h3>Đây là dialect JavaScript</h3><p>Công cụ dùng engine regex có sẵn của trình duyệt (ES2018+): hỗ trợ lookahead/lookbehind, nhóm đặt tên và thuộc tính Unicode với cờ u, nhưng khác PCRE ở một số chi tiết và không hỗ trợ đệ quy. Nếu bạn viết regex cho PHP hay Python, hãy kiểm tra lại trong môi trường chạy thật.</p></div><div class="guide-block"><h3>Lỗi hiển thị nguyên văn</h3><p>Biểu thức sai cú pháp sẽ hiện đúng thông báo lỗi của trình duyệt — chẳng hạn thiếu dấu ngoặc đóng — nên bạn biết ngay ký tự nào gây lỗi thay vì đoán mò.</p></div><div class="guide-block"><h3>Quyền riêng tư và giới hạn</h3><p>Mọi phép tính diễn ra trên máy bạn, không gửi đi đâu. Công cụ chỉ để kiểm tra: không sinh code, không lưu lịch sử. Văn bản quá lớn (hàng trăm nghìn dòng) sẽ làm chậm việc tô sáng — hãy thử với đoạn đại diện trước.</p></div><div class="guide-block"><h3>Ví dụ từ công việc thực tế</h3><p>Chúng tôi dùng nó hàng tuần để thử biểu thức số điện thoại Việt Nam như (\+?84|0)?9\d{8} trước khi gắn vào form đặt hàng, để bóc mã đơn Shopee khỏi log chốt đơn, và để làm sạch cột dữ liệu trước khi nhập vào Google Sheets.</p></div><div class="guide-block"><h3>Mẫu sẵn dùng để tham khảo</h3><p>Email đơn giản: [\w.+-]+@[\w-]+\.[\w.]+; ngày tháng kiểu ngày/tháng/năm: \d{2}/\d{2}/\d{4}; và khớp nguyên một từ: \btừ\b. Chép mẫu vào đây, chỉnh trên dữ liệu thật của bạn, rồi mới đưa phiên bản cuối vào code.</p></div><div class="guide-block"><h3>Kiểm tra khác thay thế</h3><p>Công cụ này chỉ kiểm tra chỗ khớp, không sửa file của bạn. Khi mẫu đã chuẩn, hãy chạy thay thế trong trình soạn thảo hoặc code bằng đúng các nhóm bạn thấy trong danh sách — điều hiện ở đây chính là engine sẽ bắt ở đó.</p></div>
+<section class="faq-section"><h2>Câu hỏi thường gặp</h2><div class="faq-item"><button class="faq-question">Công cụ dùng loại regex nào?</button><div class="faq-answer">Regex JavaScript tích hợp trong trình duyệt (ES2018+), hỗ trợ lookahead/lookbehind, nhóm đặt tên và thuộc tính Unicode (cần cờ u). Tương thích phần lớn với PCRE nhưng không hoàn toàn — hãy kiểm tra trong môi trường đích khi viết cho PHP hay Python.</div></div><div class="faq-item"><button class="faq-question">Có hỗ trợ cú pháp riêng của PCRE hay Python không?</button><div class="faq-answer">Không trực tiếp. Đệ quy của PCRE sẽ báo lỗi; nhóm đặt tên kiểu Python (?P&lt;name&gt;…) cần viết lại thành (?&lt;name&gt;…) theo chuẩn JavaScript.</div></div><div class="faq-item"><button class="faq-question">Dữ liệu tôi có được gửi đi đâu không?</button><div class="faq-answer">Không. Toàn bộ việc khớp diễn ra trong trình duyệt của bạn, văn bản không rời khỏi thiết bị và không cần đăng nhập.</div></div><div class="faq-item"><button class="faq-question">Vì sao chỉ ra một chỗ khớp?</button><div class="faq-answer">Thường do chưa bật cờ g. Engine mặc định dừng ở khớp đầu tiên; bật g để quét hết văn bản.</div></div><div class="faq-item"><button class="faq-question">Có nhóm đặt tên không?</button><div class="faq-answer">Có, theo cú pháp (?&lt;name&gt;…). Giá trị từng nhóm hiện trong danh sách kết quả kèm vị trí, tiện đối chiếu trước khi dùng trong code.</div></div><div class="faq-item"><button class="faq-question">Văn bản lớn bao nhiêu là quá nặng?</button><div class="faq-answer">Không có giới hạn cứng, nhưng tô sáng hàng triệu ký tự sẽ chậm rõ rệt. Nên thử với vài trăm đến vài nghìn dòng đại diện rồi mới mở rộng.</div></div></section>
+<section class="related-tools"><h2>Có thể bạn cũng thích</h2><div class="related-tools-grid"><a href="/vi/tools/json-formatter" class="related-tool-card"><span class="tool-icon">🔧</span><div class="tool-info"><strong>Định dạng JSON</strong><span class="tool-desc">Định dạng và kiểm tra dữ liệu JSON</span></div><span class="tool-arrow">→</span></a><a href="/vi/tools/text-find-replace" class="related-tool-card"><span class="tool-icon">🔄</span><div class="tool-info"><strong>Tìm và thay thế</strong><span class="tool-desc">Tìm thay văn bản hàng loạt bằng regex</span></div><span class="tool-arrow">→</span></a><a href="/vi/tools/url-encoder" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>Mã hóa URL</strong><span class="tool-desc">Mã hóa và giải mã URL</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
@@ -245,7 +269,7 @@
   const flags = ['flagG','flagI','flagM','flagS'];
 
   function test() {
-    if (!pattern.value) { statusMsg.textContent = 'Enter a pattern'; matchInfo.innerHTML=''; highlighted.textContent=''; return; }
+    if (!pattern.value) { statusMsg.textContent = 'Hãy nhập biểu thức trước'; matchInfo.innerHTML=''; highlighted.textContent=''; return; }
     try {
       let fs = '';
       flags.forEach(f => { if (document.getElementById(f).checked) fs += f.replace('flag','').toLowerCase(); });
@@ -255,14 +279,14 @@
       let m;
       if (fs.includes('g')) { while ((m = re.exec(text)) !== null) { matches.push({text:m[0],index:m.index,groups:m.slice(1)}); if (m.index === re.lastIndex) re.lastIndex++; } }
       else { m = re.exec(text); if (m) matches.push({text:m[0],index:m.index,groups:m.slice(1)}); }
-      statusMsg.textContent = `✓ ${matches.length} match(es) found`;
+      statusMsg.textContent = `✓ Tìm thấy ${matches.length} chỗ khớp`;
       statusMsg.style.color = '#22c55e';
       matchInfo.innerHTML = matches.length ? matches.map((m,i) => `<div style="padding:8px;background:var(--bg-secondary);border-radius:6px;margin-bottom:4px;"><strong>Match ${i+1}:</strong> "${m.text}" at index ${m.index}${m.groups.length?` | Groups: ${m.groups.map((g,j)=>`$${j+1}="${g||''}"`).join(', ')}`:''}</div>`).join('') : '';
       let hl = ''; let last = 0;
       matches.forEach(m => { hl += escapeHtml(text.slice(last, m.index)); hl += `<mark style="background:rgba(99,102,241,0.3);padding:2px 4px;border-radius:3px;">${escapeHtml(m.text)}</mark>`; last = m.index + m.text.length; });
       hl += escapeHtml(text.slice(last));
       highlighted.innerHTML = hl || '<em style="color:var(--text-secondary);">No test text entered</em>';
-    } catch(e) { statusMsg.textContent = '✗ Error: ' + e.message; statusMsg.style.color = '#ef4444'; matchInfo.innerHTML=''; highlighted.textContent=''; }
+    } catch(e) { statusMsg.textContent = '✗ Lỗi: ' + e.message; statusMsg.style.color = '#ef4444'; matchInfo.innerHTML=''; highlighted.textContent=''; }
   }
   function escapeHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
   [pattern, testStr].forEach(el => el.addEventListener('input', test));
