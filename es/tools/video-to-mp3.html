@@ -32,54 +32,33 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json">
 {
-  
-  "inLanguage": "es","@context": "https://schema.org",
+  "inLanguage": "es",
+  "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Video to MP3",
+  "name": "Vídeo a MP3",
   "url": "https://smartimgkit.com/es/tools/video-to-mp3",
-  "applicationCategory": "DeveloperApplication",
+  "applicationCategory": "GraphicsApplication",
   "operatingSystem": "Any",
   "offers": {
     "@type": "Offer",
     "price": "0",
     "priceCurrency": "USD"
   },
-  "description": "Extrae la pista de audio de MP4, WebM y otros vídeos a MP3 con buena calidad. Procesamiento local, sin subir el archivo."
+  "description": "Extrae el audio de cualquier vídeo a MP3 con bitrate ajustable, sin subir el archivo a ningún servidor."
 }
 </script>
-  <script type="application/ld+json">
-{
+<script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "HowTo",
-  "name": "How to Use",
+  "name": "Cómo funciona",
+  "inLanguage": "es",
   "step": [
-    {
-      "@type": "HowToStep",
-      "position": 1,
-      "name": "Upload Video",
-      "text": "Select a video file."
-    },
-    {
-      "@type": "HowToStep",
-      "position": 2,
-      "name": "Configure",
-      "text": "Set output options."
-    },
-    {
-      "@type": "HowToStep",
-      "position": 3,
-      "name": "Process",
-      "text": "Click Process (ffmpeg.wasm loads on first use)."
-    },
-    {
-      "@type": "HowToStep",
-      "position": 4,
-      "name": "Download",
-      "text": "Get your converted video."
-    }
+    { "@type": "HowToStep", "position": 1, "name": "Sube el vídeo", "text": "Elige el archivo del que quieres el audio: una clase grabada, un pódcast en vídeo o la música de un concierto casero." },
+    { "@type": "HowToStep", "position": 2, "name": "Elige la calidad", "text": "192 kbps es el equilibrio habitual para voz y música; 128 kbps si vas a ahorrar espacio, 320 kbps si el archivo es el máster de algo importante." },
+    { "@type": "HowToStep", "position": 3, "name": "Procesa", "text": "Pulsa Procesar: ffmpeg extrae la pista de audio con el codificador libmp3lame sin tocar la calidad de origen." },
+    { "@type": "HowToStep", "position": 4, "name": "Descarga el MP3", "text": "Guarda el archivo con el mismo nombre que el vídeo original — listo para el móvil, el reproductor o tu biblioteca de pódcast." }
   ]
-}
-</script>
+}</script>
   <style>
 
     .tool-workspace { display: flex; flex-direction: column; gap: 24px; }
@@ -118,26 +97,58 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Why does it load slowly the first time?",
+      "name": "¿Qué bitrate debería elegir?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "ffmpeg.wasm is ~25MB. It caches in your browser after the first load."
+        "text": "Para voz, 96–128 kbps es suficiente; para música, 192–256 kbps. Solo elige 320 kbps si vas a re-editar el audio después — para escuchar, la diferencia ya no es perceptible."
       }
     },
     {
       "@type": "Question",
-      "name": "Is my video uploaded?",
+      "name": "¿El audio pierde calidad al extraerlo?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Everything runs in your browser. Your video never leaves your device."
+        "text": "Se decodifica y se re-codifica a MP3, lo que implica una compresión con pérdida — pero al bitrate estándar el resultado es prácticamente indistinguible del original para escucha normal."
       }
     },
     {
       "@type": "Question",
-      "name": "What formats are supported?",
+      "name": "¿Funciona con vídeos de YouTube u otras plataformas?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Most common formats: MP4, WebM, MOV, AVI, MKV, etc. Outputs MP4 or WebM."
+        "text": "La herramienta procesa archivos que subes tú — primero descarga el vídeo legalmente y luego extrae el audio aquí. No descarga de plataformas ni atajos de derechos de autor."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué tarda la primera vez?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Se descarga el núcleo de ffmpeg.wasm (~25 MB) una única vez; después queda en caché del navegador y la extracción es inmediata."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se puede extraer solo una parte del audio?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Esta herramienta extrae la pista completa. Si necesitas un fragmento, corta el vídeo primero o edita el MP3 resultante con un editor de audio."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Mi vídeo se procesa en la nube?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No — todo ocurre en tu navegador con WebAssembly. El archivo nunca sale de tu dispositivo, ni el vídeo ni el MP3 resultante."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué formatos de vídeo admite?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "MP4, WebM, MOV, AVI, MKV y los contenedores habituales. La pista de audio puede estar en AAC, MP3, Opus u otros códecs — siempre se entrega como MP3."
       }
     }
   ]
@@ -201,23 +212,23 @@
 <div class="ad-zone ad-header ad-loader-slot" data-ad-type="header" data-current-mobile="0"></div>
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🎵 Video to MP3</span></nav>
+      <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🎵 Vídeo a MP3</span></nav>
       <div class="tool-page-header">
-        <h1>🎵 Video to MP3</h1>
+        <h1>🎵 Vídeo a MP3</h1>
         <p>Extrae audio MP3 de alta calidad de archivos de video — gratis.</p>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Mira lo que hace esta herramienta</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🎬</span></div>
-              <div class="before-after-item-caption before">Video</div>
+              <div class="before-after-item-caption before">Vídeo</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🎵</span></div>
-              <div class="before-after-item-caption after">MP3 audio</div>
+              <div class="before-after-item-caption after">Audio MP3</div>
             </div>
           </div>
         </div>
@@ -230,34 +241,33 @@
           <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:8px;">⚠️ La primera vez tarda unos 30 s en cargar ffmpeg.wasm (25 MB).</p>
         </label>
         <div class="controls hidden" id="controlsSection">
-          <h2>📹 Video Info</h2>
+          <h2>📹 Información del vídeo</h2>
           <div class="pdf-info" id="videoInfo"></div>
           <div class="control-row">
-            <label>Quality</label>
+            <label>Calidad</label>
             <select id="mp3Quality">
-              <option value="64k">64 kbps (small)</option>
-              <option value="128k">128 kbps (standard)</option>
-              <option value="192k" selected>192 kbps (good)</option>
-              <option value="256k">256 kbps (high)</option>
-              <option value="320k">320 kbps (best)</option>
+              <option value="64k">64 kbps (ligero)</option>
+              <option value="128k">128 kbps (estándar)</option>
+              <option value="192k" selected>192 kbps (bueno)</option>
+              <option value="256k">256 kbps (alto)</option>
+              <option value="320k">320 kbps (máximo)</option>
             </select>
           </div>
           <div class="btn-row">
-            <button class="btn btn-primary" id="processBtn">🎵 Process</button>
-            <button class="btn btn-secondary" id="resetBtn">Reset</button>
+            <button class="btn btn-primary" id="processBtn">🎵 Procesar</button>
+            <button class="btn btn-secondary" id="resetBtn">Reiniciar</button>
           </div>
         </div>
         <div class="status-text hidden" id="statusSection"></div>
         <div class="result-section hidden" id="resultSection">
-          <h2>✅ Result</h2>
+          <h2>✅ Resultado</h2>
           <div id="resultContent" style="text-align:center;"></div>
         </div>
 
       </div>
-<section class="how-to-section"><h2>How to Use</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Upload Video</h4><p>Select a video file.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Configure</h4><p>Set output options.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Process</h4><p>Click Process (ffmpeg.wasm loads on first use).</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Get your converted video.</p></div></div></section>
-<h2>Detailed User Guide</h2><div class="guide-block"><h3>Upload Video</h3><p>Select a video file.</p></div><div class="guide-block"><h3>Configure</h3><p>Set output options.</p></div><div class="guide-block"><h3>Process</h3><p>Click Process (ffmpeg.wasm loads on first use).</p></div><div class="guide-block"><h3>Download</h3><p>Get your converted video.</p></div>
-<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">Why does it load slowly the first time?</button><div class="faq-answer">ffmpeg.wasm is ~25MB. It caches in your browser after the first load.</div></div><div class="faq-item"><button class="faq-question">Is my video uploaded?</button><div class="faq-answer">No. Everything runs in your browser. Your video never leaves your device.</div></div><div class="faq-item"><button class="faq-question">What formats are supported?</button><div class="faq-answer">Most common formats: MP4, WebM, MOV, AVI, MKV, etc. Outputs MP4 or WebM.</div></div></section>
-<section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/video-to-gif" class="related-tool-card"><span class="tool-icon">🎞️</span><div class="tool-info"><strong>Video to GIF</strong><span class="tool-desc">Convert video to GIF</span></div><span class="tool-arrow">→</span></a><a href="/tools/compressor" class="related-tool-card"><span class="tool-icon">🗜️</span><div class="tool-info"><strong>Image Compressor</strong><span class="tool-desc">Compress images</span></div><span class="tool-arrow">→</span></a></div></section>
+<section class="how-to-section"><h2>Cómo funciona</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Sube el vídeo</h4><p>Elige el archivo del que quieres el audio: una clase grabada, un pódcast en vídeo o la música de un concierto casero.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Elige la calidad</h4><p>192 kbps es el equilibrio habitual para voz y música; 128 kbps si vas a ahorrar espacio, 320 kbps si el archivo es el máster de algo importante.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Procesa</h4><p>Pulsa Procesar: ffmpeg extrae la pista de audio con el codificador libmp3lame sin tocar la calidad de origen.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Descarga el MP3</h4><p>Guarda el archivo con el mismo nombre que el vídeo original — listo para el móvil, el reproductor o tu biblioteca de pódcast.</p></div></div></section>
+<h2>Guía detallada</h2><div class="guide-block"><h3>Clases y charlas: escúchalas en cualquier lado</h3><p>Las clases grabadas en vídeo rara vez se re-visuallizan — pero sí se escuchan. Extraer el MP3 te permite repasar la clase en el trayecto al trabajo, a 1/5 del peso del vídeo original. Con 128 kbps, una clase de una hora queda en unos 55 MB.</p></div><div class="guide-block"><h3>Qué bitrate elegir en cada caso</h3><p>Para voz — clases, reuniones, pódcast — 96–128 kbps sobra: el oído no distingue más en voz hablada. Para música con instrumentación completa, 192–256 kbps marca la diferencia; y 320 kbps solo compensa si vas a re-editar el audio después, porque cada re-codificación acumula pérdida.</p></div><div class="guide-block"><h3>Qué hace el codificador por dentro</h3><p>La herramienta descarta la pista de vídeo con la opción -vn y codifica la pista de audio con libmp3lame al bitrate elegido. No hay remuestreo ni cambios de canal: el MP3 hereda la tasa de muestreo y los canales del vídeo original.</p></div><div class="guide-block"><h3>Formatos de vídeo admitidos</h3><p>MP4, WebM, MOV, AVI, MKV y la mayoría de contenedores: si el vídeo se reproduce en tu navegador, la extracción funciona. La pista de audio original puede ser AAC, MP3, Opus o cualquier códec — ffmpeg la decodifica y la re-empaqueta en MP3.</p></div><div class="guide-block"><h3>Cuánto tarda</h3><p>Es la operación más ligera de la familia de vídeo: solo procesa la pista de audio, así que un archivo de 500 MB termina en pocos segundos una vez cargado el núcleo ffmpeg. La primera ejecución descarga ese núcleo (25 MB) y lo deja en caché.</p></div><div class="guide-block"><h3>Privacidad: el archivo no sale del equipo</h3><p>Como en el resto de herramientas de vídeo del sitio, todo el proceso sucede en tu navegador. Ideal para grabaciones internas, reuniones confidenciales o material de clientes que no debe tocar un servidor externo.</p></div><section class="faq-section"><h2>Preguntas frecuentes</h2><div class="faq-item"><button class="faq-question">¿Qué bitrate debería elegir?</button><div class="faq-answer">Para voz, 96–128 kbps es suficiente; para música, 192–256 kbps. Solo elige 320 kbps si vas a re-editar el audio después — para escuchar, la diferencia ya no es perceptible.</div></div><div class="faq-item"><button class="faq-question">¿El audio pierde calidad al extraerlo?</button><div class="faq-answer">Se decodifica y se re-codifica a MP3, lo que implica una compresión con pérdida — pero al bitrate estándar el resultado es prácticamente indistinguible del original para escucha normal.</div></div><div class="faq-item"><button class="faq-question">¿Funciona con vídeos de YouTube u otras plataformas?</button><div class="faq-answer">La herramienta procesa archivos que subes tú — primero descarga el vídeo legalmente y luego extrae el audio aquí. No descarga de plataformas ni atajos de derechos de autor.</div></div><div class="faq-item"><button class="faq-question">¿Por qué tarda la primera vez?</button><div class="faq-answer">Se descarga el núcleo de ffmpeg.wasm (~25 MB) una única vez; después queda en caché del navegador y la extracción es inmediata.</div></div><div class="faq-item"><button class="faq-question">¿Se puede extraer solo una parte del audio?</button><div class="faq-answer">Esta herramienta extrae la pista completa. Si necesitas un fragmento, corta el vídeo primero o edita el MP3 resultante con un editor de audio.</div></div><div class="faq-item"><button class="faq-question">¿Mi vídeo se procesa en la nube?</button><div class="faq-answer">No — todo ocurre en tu navegador con WebAssembly. El archivo nunca sale de tu dispositivo, ni el vídeo ni el MP3 resultante.</div></div><div class="faq-item"><button class="faq-question">¿Qué formatos de vídeo admite?</button><div class="faq-answer">MP4, WebM, MOV, AVI, MKV y los contenedores habituales. La pista de audio puede estar en AAC, MP3, Opus u otros códecs — siempre se entrega como MP3.</div></div></section>
+<section class="related-tools"><h2>Herramientas relacionadas</h2><div class="related-tools-grid"><a href="/es/tools/video-to-gif" class="related-tool-card"><span class="tool-icon">🎞️</span><div class="tool-info"><strong>Vídeo a GIF</strong><span class="tool-desc">Convierte tramos en GIF animado</span></div><span class="tool-arrow">→</span></a><a href="/es/tools/video-compressor" class="related-tool-card"><span class="tool-icon">🗜️</span><div class="tool-info"><strong>Comprimir vídeo</strong><span class="tool-desc">Reduce el peso del archivo</span></div><span class="tool-arrow">→</span></a><a href="/es/tools/video-speed" class="related-tool-card"><span class="tool-icon">⏩</span><div class="tool-info"><strong>Cambiar velocidad</strong><span class="tool-desc">Acelera o ralentiza el vídeo</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
@@ -319,20 +329,20 @@
     file = f; fileName = f.name.replace(/\.[^.]+$/, '');
     var ba = document.getElementById('beforeAfterPreview'); if (ba) ba.classList.add('hidden');
     statusSection.classList.remove('hidden');
-    statusSection.textContent = 'Loading video info...';
+    statusSection.textContent = 'Leyendo información del vídeo…';
     const v = document.createElement('video');
     v.preload = 'metadata';
     v.onloadedmetadata = () => {
-      videoInfo.innerHTML = `<strong>File:</strong> ${f.name} &nbsp;|&nbsp; <strong>Size:</strong> ${(f.size/1024/1024).toFixed(2)} MB &nbsp;|&nbsp; <strong>Duration:</strong> ${v.duration.toFixed(1)}s &nbsp;|&nbsp; <strong>Resolution:</strong> ${v.videoWidth}x${v.videoHeight}`;
+      videoInfo.innerHTML = `<strong>Archivo:</strong> ${f.name} &nbsp;|&nbsp; <strong>Tamaño:</strong> ${(f.size/1024/1024).toFixed(2)} MB &nbsp;|&nbsp; <strong>Duración:</strong> ${v.duration.toFixed(1)}s &nbsp;|&nbsp; <strong>Resolución:</strong> ${v.videoWidth}x${v.videoHeight}`;
       controlsSection.classList.remove('hidden');
       statusSection.classList.add('hidden');
     };
-    v.onerror = () => { statusSection.textContent = '✗ Error: Unable to read video file.'; };
+    v.onerror = () => { statusSection.textContent = '✗ Error: no se pudo leer el archivo de vídeo.'; };
     v.src = URL.createObjectURL(f);
   }
   async function loadFFmpeg() {
     if (window.FFmpeg) return window.FFmpeg;
-    statusSection.textContent = 'Loading ffmpeg.wasm (this may take a while)...';
+    statusSection.textContent = 'Cargando ffmpeg.wasm (puede tardar un rato)…';
     await loadScript('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.min.js');
     return window.FFmpeg;
   }
@@ -341,23 +351,23 @@
   window.__downloadBlob__ = downloadBlob;
   processBtn.addEventListener('click', async () => {
     statusSection.classList.remove('hidden');
-    statusSection.textContent = 'Loading ffmpeg.wasm...';
+    statusSection.textContent = 'Cargando ffmpeg.wasm…';
     processBtn.disabled = true; resultSection.classList.add('hidden');
     try {
       const { createFFmpeg, fetchFile } = await loadFFmpeg();
       const ffmpeg = createFFmpeg({ log: true });
       ffmpeg.setLogger(({ message }) => { });
-      ffmpeg.setProgress(({ ratio }) => { statusSection.textContent = `Processing... ${Math.round(ratio*100)}%`; });
-      if (!ffmpeg.isLoaded()) { statusSection.textContent = 'Loading ffmpeg core (25MB, first time only)...'; await ffmpeg.load(); }
-      statusSection.textContent = 'Reading file...';
+      ffmpeg.setProgress(({ ratio }) => { statusSection.textContent = `Procesando… ${Math.round(ratio*100)}%`; });
+      if (!ffmpeg.isLoaded()) { statusSection.textContent = 'Cargando el núcleo de ffmpeg (25 MB, solo la primera vez)…'; await ffmpeg.load(); }
+      statusSection.textContent = 'Leyendo el archivo…';
       ffmpeg.FS('writeFile', 'input.mp4', await fetchFile(file));
       const q = document.getElementById('mp3Quality').value;
-      statusSection.textContent = 'Extracting audio...';
+      statusSection.textContent = 'Extrayendo el audio…';
       await ffmpeg.run('-i', 'input.mp4', '-vn', '-acodec', 'libmp3lame', '-b:a', q, 'output.mp3');
       const data = ffmpeg.FS('readFile', 'output.mp3');
       resultSection.classList.remove('hidden');
-      resultContent.innerHTML = `<audio controls style="width:100%;"><source src="${URL.createObjectURL(new Blob([data.buffer], {type:'audio/mpeg'}))}" type="audio/mpeg"></audio><br><button class="btn btn-primary" style="margin-top:16px;" onclick="window.__downloadBlob__(${JSON.stringify([...data])}, '${fileName}.mp3', 'audio/mpeg')">⬇️ Download MP3</button>`;
-      statusSection.textContent = '✓ Audio extracted!';
+      resultContent.innerHTML = `<audio controls style="width:100%;"><source src="${URL.createObjectURL(new Blob([data.buffer], {type:'audio/mpeg'}))}" type="audio/mpeg"></audio><br><button class="btn btn-primary" style="margin-top:16px;" onclick="window.__downloadBlob__(${JSON.stringify([...data])}, '${fileName}.mp3', 'audio/mpeg')">⬇️ Descargar MP3</button>`;
+      statusSection.textContent = '✓ ¡Audio extraído!';
     } catch(e) { statusSection.textContent = '✗ Error: ' + e.message; }
     processBtn.disabled = false;
   });

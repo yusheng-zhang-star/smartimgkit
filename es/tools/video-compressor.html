@@ -32,54 +32,33 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json">
 {
-  
-  "inLanguage": "es","@context": "https://schema.org",
+  "inLanguage": "es",
+  "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Video Compressor",
+  "name": "Comprimir vídeo",
   "url": "https://smartimgkit.com/es/tools/video-compressor",
-  "applicationCategory": "DeveloperApplication",
+  "applicationCategory": "GraphicsApplication",
   "operatingSystem": "Any",
   "offers": {
     "@type": "Offer",
     "price": "0",
     "priceCurrency": "USD"
   },
-  "description": "Reduce el peso de tus vídeos ajustando resolución, bitrate y calidad. Todo el proceso en tu navegador, sin subir el archivo."
+  "description": "Reduce el peso del vídeo eligiendo calidad CRF y resolución, con porcentaje de ahorro visible antes de descargar."
 }
 </script>
-  <script type="application/ld+json">
-{
+<script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "HowTo",
-  "name": "How to Use",
+  "name": "Cómo funciona",
+  "inLanguage": "es",
   "step": [
-    {
-      "@type": "HowToStep",
-      "position": 1,
-      "name": "Upload Video",
-      "text": "Select a video file."
-    },
-    {
-      "@type": "HowToStep",
-      "position": 2,
-      "name": "Configure",
-      "text": "Set output options."
-    },
-    {
-      "@type": "HowToStep",
-      "position": 3,
-      "name": "Process",
-      "text": "Click Process (ffmpeg.wasm loads on first use)."
-    },
-    {
-      "@type": "HowToStep",
-      "position": 4,
-      "name": "Download",
-      "text": "Get your converted video."
-    }
+    { "@type": "HowToStep", "position": 1, "name": "Sube el vídeo", "text": "Elige el clip que pesa demasiado: la grabación de la reunión que el correo rechaza o el vídeo del producto que tarda en cargar en la ficha." },
+    { "@type": "HowToStep", "position": 2, "name": "Elige calidad y resolución", "text": "La calidad media (CRF 24) y 720p son la combinación habitual: reduce mucho el archivo manteniendo una imagen correcta en pantallas normales." },
+    { "@type": "HowToStep", "position": 3, "name": "Procesa", "text": "Pulsa Procesar: ffmpeg re-codifica el vídeo en H.264 con el nivel de calidad y resolución elegidos, y ajusta el audio a 128 kbps." },
+    { "@type": "HowToStep", "position": 4, "name": "Compara y descarga", "text": "El estado final te muestra el porcentaje exacto de reducción conseguido antes de descargar el MP4 comprimido." }
   ]
-}
-</script>
+}</script>
   <style>
 
     .tool-workspace { display: flex; flex-direction: column; gap: 24px; }
@@ -118,26 +97,58 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Why does it load slowly the first time?",
+      "name": "¿Cuánto puede reducir el tamaño?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "ffmpeg.wasm is ~25MB. It caches in your browser after the first load."
+        "text": "Depende del origen: grabaciones con bitrate alto o resolución sobredimensionada se reducen entre un 50% y un 90%. El porcentaje exacto aparece al terminar el proceso, antes de descargar."
       }
     },
     {
       "@type": "Question",
-      "name": "Is my video uploaded?",
+      "name": "¿Qué nivel de calidad debo elegir?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Everything runs in your browser. Your video never leaves your device."
+        "text": "La media (CRF 24) sirve para la mayoría de casos: se ve bien y pesa poco. Usa alta (CRF 20) si el vídeo se va a re-editar, y baja (CRF 28) para archivo o borradores internos."
       }
     },
     {
       "@type": "Question",
-      "name": "What formats are supported?",
+      "name": "¿Bajar la resolución o la calidad?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Most common formats: MP4, WebM, MOV, AVI, MKV, etc. Outputs MP4 or WebM."
+        "text": "Bajar resolución ahorra más: de 1080p a 720p se procesa un 56% menos de píxeles. La calidad baja comprime más cada fotograma pero mantiene la resolución — combinar ambas es lo habitual."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿El audio también se comprime?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí — la pista de audio se ajusta a AAC 128 kbps, un estándar transparente para la escucha normal que reduce notablemente su peso."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué tarda más que las otras herramientas de vídeo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Porque re-codifica todos los fotogramas del vídeo — es la operación más costosa. Un clip de 5 minutos en 1080p puede tardar varios minutos en un equipo normal."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿El vídeo se sube a un servidor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Toda la compresión ocurre en tu navegador con ffmpeg.wasm; el archivo original y el comprimido permanecen en tu dispositivo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se mantiene la resolución original si la elijo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí — la opción «Original» mantiene las dimensiones del vídeo de origen y solo re-codifica con el CRF elegido, útil cuando la resolución ya es correcta y el exceso de peso viene del bitrate."
       }
     }
   ]
@@ -201,23 +212,23 @@
 <div class="ad-zone ad-header ad-loader-slot" data-ad-type="header" data-current-mobile="0"></div>
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🗜️ Video Compressor</span></nav>
+      <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🗜️ Comprimir vídeo</span></nav>
       <div class="tool-page-header">
-        <h1>🗜️ Video Compressor</h1>
+        <h1>🗜️ Comprimir vídeo</h1>
         <p>Reduce el tamaño del archivo de video ajustando calidad y resolución — gratis.</p>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Mira lo que hace esta herramienta</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🎬</span></div>
-              <div class="before-after-item-caption before">Large video</div>
+              <div class="before-after-item-caption before">Vídeo pesado</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🗜️</span></div>
-              <div class="before-after-item-caption after">Smaller video</div>
+              <div class="before-after-item-caption after">Vídeo ligero</div>
             </div>
           </div>
         </div>
@@ -230,19 +241,19 @@
           <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:8px;">⚠️ La primera vez tarda unos 30 s en cargar ffmpeg.wasm (25 MB).</p>
         </label>
         <div class="controls hidden" id="controlsSection">
-          <h2>📹 Video Info</h2>
+          <h2>📹 Información del vídeo</h2>
           <div class="pdf-info" id="videoInfo"></div>
           <div class="control-row">
-            <label>Quality</label>
+            <label>Calidad</label>
             <select id="quality">
-              <option value="28">Low (smallest)</option>
-              <option value="24" selected>Medium (recommended)</option>
-              <option value="20">High (better quality)</option>
-              <option value="16">Very High (largest)</option>
+              <option value="28">Baja (menor peso)</option>
+              <option value="24" selected>Media (recomendado)</option>
+              <option value="20">Alta (mejor calidad)</option>
+              <option value="16">Muy alta (mayor peso)</option>
             </select>
           </div>
           <div class="control-row">
-            <label>Resolution</label>
+            <label>Resolución</label>
             <select id="resolution">
               <option value="original">Original</option>
               <option value="1920x1080">1080p</option>
@@ -252,21 +263,20 @@
             </select>
           </div>
           <div class="btn-row">
-            <button class="btn btn-primary" id="processBtn">🗜️ Process</button>
-            <button class="btn btn-secondary" id="resetBtn">Reset</button>
+            <button class="btn btn-primary" id="processBtn">🗜️ Procesar</button>
+            <button class="btn btn-secondary" id="resetBtn">Reiniciar</button>
           </div>
         </div>
         <div class="status-text hidden" id="statusSection"></div>
         <div class="result-section hidden" id="resultSection">
-          <h2>✅ Result</h2>
+          <h2>✅ Resultado</h2>
           <div id="resultContent" style="text-align:center;"></div>
         </div>
 
       </div>
-<section class="how-to-section"><h2>How to Use</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Upload Video</h4><p>Select a video file.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Configure</h4><p>Set output options.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Process</h4><p>Click Process (ffmpeg.wasm loads on first use).</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Get your converted video.</p></div></div></section>
-<h2>Detailed User Guide</h2><div class="guide-block"><h3>Upload Video</h3><p>Select a video file.</p></div><div class="guide-block"><h3>Configure</h3><p>Set output options.</p></div><div class="guide-block"><h3>Process</h3><p>Click Process (ffmpeg.wasm loads on first use).</p></div><div class="guide-block"><h3>Download</h3><p>Get your converted video.</p></div>
-<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">Why does it load slowly the first time?</button><div class="faq-answer">ffmpeg.wasm is ~25MB. It caches in your browser after the first load.</div></div><div class="faq-item"><button class="faq-question">Is my video uploaded?</button><div class="faq-answer">No. Everything runs in your browser. Your video never leaves your device.</div></div><div class="faq-item"><button class="faq-question">What formats are supported?</button><div class="faq-answer">Most common formats: MP4, WebM, MOV, AVI, MKV, etc. Outputs MP4 or WebM.</div></div></section>
-<section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/video-to-gif" class="related-tool-card"><span class="tool-icon">🎞️</span><div class="tool-info"><strong>Video to GIF</strong><span class="tool-desc">Convert video to GIF</span></div><span class="tool-arrow">→</span></a><a href="/tools/compressor" class="related-tool-card"><span class="tool-icon">🗜️</span><div class="tool-info"><strong>Image Compressor</strong><span class="tool-desc">Compress images</span></div><span class="tool-arrow">→</span></a></div></section>
+<section class="how-to-section"><h2>Cómo funciona</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Sube el vídeo</h4><p>Elige el clip que pesa demasiado: la grabación de la reunión que el correo rechaza o el vídeo del producto que tarda en cargar en la ficha.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Elige calidad y resolución</h4><p>La calidad media (CRF 24) y 720p son la combinación habitual: reduce mucho el archivo manteniendo una imagen correcta en pantallas normales.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Procesa</h4><p>Pulsa Procesar: ffmpeg re-codifica el vídeo en H.264 con el nivel de calidad y resolución elegidos, y ajusta el audio a 128 kbps.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Compara y descarga</h4><p>El estado final te muestra el porcentaje exacto de reducción conseguido antes de descargar el MP4 comprimido.</p></div></div></section>
+<h2>Guía detallada</h2><div class="guide-block"><h3>El límite que más dues duele: el adjunto de correo</h3><p>La mayoría de proveedores cortan en 20–25 MB. Una grabación de 10 minutos en 1080p supera con creces ese límite; comprimida a 720p con calidad media queda habitualmente por debajo de 15 MB sin que se note a simple vista. Es el caso de uso más repetido de esta herramienta.</p></div><div class="guide-block"><h3>CRF: qué significa cada nivel</h3><p>El control de calidad usa la escala CRF de x264: números más altos comprimen más y pierden algo de detalle. CRF 24 (media) es la recomendación general; CRF 20 (alta) para material que se va a re-editar; CRF 28 (baja) para material de archivo donde el espacio importa más que la nitidez.</p></div><div class="guide-block"><h3>Bajar resolución ahorra más que bajar calidad</h3><p>De 1080p a 720p el número de píxeles cae un 56% — la reducción más efectiva con diferencia. Si el vídeo se verá en móviles o incrustado en una web, 720p suele ser suficiente: pocas pantallas aprovechan más en ese contexto.</p></div><div class="guide-block"><h3>Cómo se comprime por dentro</h3><p>ffmpeg vuelve a codificar el vídeo con libx264 al CRF elegido, reescala a la resolución seleccionada y ajusta el audio a AAC 128 kbps — el estándar universal. El resultado es siempre MP4, el contenedor que todas las plataformas aceptan.</p></div><div class="guide-block"><h3>Tiempo de proceso realista</h3><p>La re-codificación es la operación más pesada de la familia de vídeo: como referencia, un clip de 5 minutos en 1080p tarda varios minutos en un portátil medio. La primera ejecución descarga el núcleo ffmpeg (25 MB) que luego queda cacheado.</p></div><div class="guide-block"><h3>Confidencialidad garantizada</h3><p>Todo corre en tu navegador con WebAssembly: el vídeo original y el comprimido nunca salen de tu equipo. Perfecto para material de empresa, grabaciones de reuniones o contenido de clientes aún no publicado.</p></div><section class="faq-section"><h2>Preguntas frecuentes</h2><div class="faq-item"><button class="faq-question">¿Cuánto puede reducir el tamaño?</button><div class="faq-answer">Depende del origen: grabaciones con bitrate alto o resolución sobredimensionada se reducen entre un 50% y un 90%. El porcentaje exacto aparece al terminar el proceso, antes de descargar.</div></div><div class="faq-item"><button class="faq-question">¿Qué nivel de calidad debo elegir?</button><div class="faq-answer">La media (CRF 24) sirve para la mayoría de casos: se ve bien y pesa poco. Usa alta (CRF 20) si el vídeo se va a re-editar, y baja (CRF 28) para archivo o borradores internos.</div></div><div class="faq-item"><button class="faq-question">¿Bajar la resolución o la calidad?</button><div class="faq-answer">Bajar resolución ahorra más: de 1080p a 720p se procesa un 56% menos de píxeles. La calidad baja comprime más cada fotograma pero mantiene la resolución — combinar ambas es lo habitual.</div></div><div class="faq-item"><button class="faq-question">¿El audio también se comprime?</button><div class="faq-answer">Sí — la pista de audio se ajusta a AAC 128 kbps, un estándar transparente para la escucha normal que reduce notablemente su peso.</div></div><div class="faq-item"><button class="faq-question">¿Por qué tarda más que las otras herramientas de vídeo?</button><div class="faq-answer">Porque re-codifica todos los fotogramas del vídeo — es la operación más costosa. Un clip de 5 minutos en 1080p puede tardar varios minutos en un equipo normal.</div></div><div class="faq-item"><button class="faq-question">¿El vídeo se sube a un servidor?</button><div class="faq-answer">No. Toda la compresión ocurre en tu navegador con ffmpeg.wasm; el archivo original y el comprimido permanecen en tu dispositivo.</div></div><div class="faq-item"><button class="faq-question">¿Se mantiene la resolución original si la elijo?</button><div class="faq-answer">Sí — la opción «Original» mantiene las dimensiones del vídeo de origen y solo re-codifica con el CRF elegido, útil cuando la resolución ya es correcta y el exceso de peso viene del bitrate.</div></div></section>
+<section class="related-tools"><h2>Herramientas relacionadas</h2><div class="related-tools-grid"><a href="/es/tools/video-to-mp3" class="related-tool-card"><span class="tool-icon">🎵</span><div class="tool-info"><strong>Vídeo a MP3</strong><span class="tool-desc">Extrae solo el audio del clip</span></div><span class="tool-arrow">→</span></a><a href="/es/tools/video-rotate" class="related-tool-card"><span class="tool-icon">🔃</span><div class="tool-info"><strong>Rotar vídeo</strong><span class="tool-desc">Corrige la orientación antes de comprimir</span></div><span class="tool-arrow">→</span></a><a href="/es/tools/image-compressor" class="related-tool-card"><span class="tool-icon">🗜️</span><div class="tool-info"><strong>Comprimir imagen</strong><span class="tool-desc">Reduce el peso de fotos JPG/PNG</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
@@ -328,20 +338,20 @@
     file = f; fileName = f.name.replace(/\.[^.]+$/, '');
     var ba = document.getElementById('beforeAfterPreview'); if (ba) ba.classList.add('hidden');
     statusSection.classList.remove('hidden');
-    statusSection.textContent = 'Loading video info...';
+    statusSection.textContent = 'Leyendo información del vídeo…';
     const v = document.createElement('video');
     v.preload = 'metadata';
     v.onloadedmetadata = () => {
-      videoInfo.innerHTML = `<strong>File:</strong> ${f.name} &nbsp;|&nbsp; <strong>Size:</strong> ${(f.size/1024/1024).toFixed(2)} MB &nbsp;|&nbsp; <strong>Duration:</strong> ${v.duration.toFixed(1)}s &nbsp;|&nbsp; <strong>Resolution:</strong> ${v.videoWidth}x${v.videoHeight}`;
+      videoInfo.innerHTML = `<strong>Archivo:</strong> ${f.name} &nbsp;|&nbsp; <strong>Tamaño:</strong> ${(f.size/1024/1024).toFixed(2)} MB &nbsp;|&nbsp; <strong>Duración:</strong> ${v.duration.toFixed(1)}s &nbsp;|&nbsp; <strong>Resolución:</strong> ${v.videoWidth}x${v.videoHeight}`;
       controlsSection.classList.remove('hidden');
       statusSection.classList.add('hidden');
     };
-    v.onerror = () => { statusSection.textContent = '✗ Error: Unable to read video file.'; };
+    v.onerror = () => { statusSection.textContent = '✗ Error: no se pudo leer el archivo de vídeo.'; };
     v.src = URL.createObjectURL(f);
   }
   async function loadFFmpeg() {
     if (window.FFmpeg) return window.FFmpeg;
-    statusSection.textContent = 'Loading ffmpeg.wasm (this may take a while)...';
+    statusSection.textContent = 'Cargando ffmpeg.wasm (puede tardar un rato)…';
     await loadScript('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.min.js');
     return window.FFmpeg;
   }
@@ -350,28 +360,28 @@
   window.__downloadBlob__ = downloadBlob;
   processBtn.addEventListener('click', async () => {
     statusSection.classList.remove('hidden');
-    statusSection.textContent = 'Loading ffmpeg.wasm...';
+    statusSection.textContent = 'Cargando ffmpeg.wasm…';
     processBtn.disabled = true; resultSection.classList.add('hidden');
     try {
       const { createFFmpeg, fetchFile } = await loadFFmpeg();
       const ffmpeg = createFFmpeg({ log: true });
       ffmpeg.setLogger(({ message }) => { });
-      ffmpeg.setProgress(({ ratio }) => { statusSection.textContent = `Processing... ${Math.round(ratio*100)}%`; });
-      if (!ffmpeg.isLoaded()) { statusSection.textContent = 'Loading ffmpeg core (25MB, first time only)...'; await ffmpeg.load(); }
-      statusSection.textContent = 'Reading file...';
+      ffmpeg.setProgress(({ ratio }) => { statusSection.textContent = `Procesando… ${Math.round(ratio*100)}%`; });
+      if (!ffmpeg.isLoaded()) { statusSection.textContent = 'Cargando el núcleo de ffmpeg (25 MB, solo la primera vez)…'; await ffmpeg.load(); }
+      statusSection.textContent = 'Leyendo el archivo…';
       ffmpeg.FS('writeFile', 'input.mp4', await fetchFile(file));
       const crf = document.getElementById('quality').value;
       const res = document.getElementById('resolution').value;
       const vf = res === 'original' ? '' : `-vf scale=${res.split('x')[0]}:-2`;
-      statusSection.textContent = 'Compressing video...';
+      statusSection.textContent = 'Comprimiendo el vídeo…';
       await ffmpeg.run('-i', 'input.mp4', '-vcodec', 'libx264', '-crf', crf, ...(vf ? vf.split(' ') : []), '-acodec', 'aac', '-b:a', '128k', 'output.mp4');
       const data = ffmpeg.FS('readFile', 'output.mp4');
       resultSection.classList.remove('hidden');
       const origSize = file.size;
       const newSize = data.length;
       const savings = ((1 - newSize/origSize) * 100).toFixed(1);
-      resultContent.innerHTML = `<div style="margin-bottom:16px;"><strong>Original:</strong> ${(origSize/1024/1024).toFixed(2)} MB → <strong>Compressed:</strong> ${(newSize/1024/1024).toFixed(2)} MB (${savings}% smaller)</div><video controls style="max-width:100%;border-radius:8px;"><source src="${URL.createObjectURL(new Blob([data.buffer], {type:'video/mp4'}))}" type="video/mp4"></video><br><button class="btn btn-primary" style="margin-top:16px;" onclick="window.__downloadBlob__(${JSON.stringify([...data])}, '${fileName}-compressed.mp4', 'video/mp4')">⬇️ Download</button>`;
-      statusSection.textContent = `✓ Compressed! ${savings}% smaller.`;
+      resultContent.innerHTML = `<div style="margin-bottom:16px;"><strong>Original:</strong> ${(origSize/1024/1024).toFixed(2)} MB → <strong>Compressed:</strong> ${(newSize/1024/1024).toFixed(2)} MB (${savings}% smaller)</div><video controls style="max-width:100%;border-radius:8px;"><source src="${URL.createObjectURL(new Blob([data.buffer], {type:'video/mp4'}))}" type="video/mp4"></video><br><button class="btn btn-primary" style="margin-top:16px;" onclick="window.__downloadBlob__(${JSON.stringify([...data])}, '${fileName}-compressed.mp4', 'video/mp4')">⬇️ Descargar</button>`;
+      statusSection.textContent = `✓ ¡Comprimido! ${savings}% más ligero.`;
     } catch(e) { statusSection.textContent = '✗ Error: ' + e.message; }
     processBtn.disabled = false;
   });

@@ -32,54 +32,33 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json">
 {
-  
-  "inLanguage": "es","@context": "https://schema.org",
+  "inLanguage": "es",
+  "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Video to GIF",
+  "name": "Vídeo a GIF",
   "url": "https://smartimgkit.com/es/tools/video-to-gif",
-  "applicationCategory": "DeveloperApplication",
+  "applicationCategory": "GraphicsApplication",
   "operatingSystem": "Any",
   "offers": {
     "@type": "Offer",
     "price": "0",
     "priceCurrency": "USD"
   },
-  "description": "Convierte MP4, WebM y otros vídeos en GIF animados eligiendo inicio, duración y calidad. Sin subir archivos ni registrarte."
+  "description": "Convierte un fragmento de vídeo en GIF animado con ancho y FPS ajustables, procesando todo en tu navegador."
 }
 </script>
-  <script type="application/ld+json">
-{
+<script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "HowTo",
-  "name": "How to Use",
+  "name": "Cómo funciona",
+  "inLanguage": "es",
   "step": [
-    {
-      "@type": "HowToStep",
-      "position": 1,
-      "name": "Upload Video",
-      "text": "Select a video file."
-    },
-    {
-      "@type": "HowToStep",
-      "position": 2,
-      "name": "Configure",
-      "text": "Set output options."
-    },
-    {
-      "@type": "HowToStep",
-      "position": 3,
-      "name": "Process",
-      "text": "Click Process (ffmpeg.wasm loads on first use)."
-    },
-    {
-      "@type": "HowToStep",
-      "position": 4,
-      "name": "Download",
-      "text": "Get your converted video."
-    }
+    { "@type": "HowToStep", "position": 1, "name": "Sube el clip", "text": "Elige el vídeo del que quieres sacar un GIF: el momento de una jugada, una reacción en una videollamada o el paso clave de un proceso." },
+    { "@type": "HowToStep", "position": 2, "name": "Define el fragmento", "text": "Marca el segundo de inicio y la duración (hasta 60 s): no hace falta convertir el vídeo entero, solo el tramo que merece ser GIF." },
+    { "@type": "HowToStep", "position": 3, "name": "Ajusta tamaño y fluidez", "text": "Elige el ancho en píxeles y los fotogramas por segundo — 480 px y 10 fps son valores equilibrados para compartir por chat o insertar en una web." },
+    { "@type": "HowToStep", "position": 4, "name": "Genera y descarga", "text": "Pulsa Procesar y descarga el GIF resultante, listo para pegar en WhatsApp, un ticket de soporte o la documentación del producto." }
   ]
-}
-</script>
+}</script>
   <style>
 
     .tool-workspace { display: flex; flex-direction: column; gap: 24px; }
@@ -118,26 +97,58 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Why does it load slowly the first time?",
+      "name": "¿Por qué el GIF pesa tanto más que el vídeo?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "ffmpeg.wasm is ~25MB. It caches in your browser after the first load."
+        "text": "El formato GIF no usa compresión entre fotogramas como el vídeo: cada imagen se guarda completa. Por eso recomendamos fragmentos cortos con ancho moderado — así el GIF resultante queda entre 2 y 8 MB."
       }
     },
     {
       "@type": "Question",
-      "name": "Is my video uploaded?",
+      "name": "¿El GIF se reproduce en bucle?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Everything runs in your browser. Your video never leaves your device."
+        "text": "El GIF generado se configura para reproducirse una vez por pasada del navegador; la mayoría de visores lo repiten automáticamente. Si necesitas bucle forzado, la etiqueta de la web donde lo incrustes controla el comportamiento."
       }
     },
     {
       "@type": "Question",
-      "name": "What formats are supported?",
+      "name": "¿Puedo incluir el audio en el GIF?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Most common formats: MP4, WebM, MOV, AVI, MKV, etc. Outputs MP4 or WebM."
+        "text": "No — el formato GIF no admite sonido. Si el audio importa, comparte el vídeo o conviértelo a MP3/MP4 con las herramientas correspondientes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué resolución final tiene el GIF?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El ancho que elijas; el alto se ajusta proporcionalmente. La resolución original del vídeo solo importa como tope: no se puede generar un GIF más grande que el vídeo de origen."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué los colores se ven un poco degradados?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El formato GIF limita cada fotograma a una paleta de 256 colores. En degradados suaves o pieles puede notarse bandas — es una limitación del formato, no del proceso de conversión."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué tarda la primera vez?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La primera conversión descarga el núcleo de ffmpeg.wasm (~25 MB). Queda en caché del navegador y las siguientes generan el GIF directamente."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Mi vídeo se sube a algún servidor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Todo el proceso corre en tu navegador con WebAssembly; el clip y el GIF generado nunca salen de tu dispositivo."
       }
     }
   ]
@@ -201,23 +212,23 @@
 <div class="ad-zone ad-header ad-loader-slot" data-ad-type="header" data-current-mobile="0"></div>
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🎞️ Video to GIF</span></nav>
+      <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🎞️ Vídeo a GIF</span></nav>
       <div class="tool-page-header">
-        <h1>🎞️ Video to GIF</h1>
+        <h1>🎞️ Vídeo a GIF</h1>
         <p>Convierte clips de video en GIF animados — gratis, en tu navegador.</p>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Mira lo que hace esta herramienta</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🎬</span></div>
-              <div class="before-after-item-caption before">Video clip</div>
+              <div class="before-after-item-caption before">Clip de vídeo</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🎞️</span></div>
-              <div class="before-after-item-caption after">Animated GIF</div>
+              <div class="before-after-item-caption after">GIF animado</div>
             </div>
           </div>
         </div>
@@ -230,18 +241,18 @@
           <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:8px;">⚠️ La primera vez tarda unos 30 s en cargar ffmpeg.wasm (25 MB).</p>
         </label>
         <div class="controls hidden" id="controlsSection">
-          <h2>📹 Video Info</h2>
+          <h2>📹 Información del vídeo</h2>
           <div class="pdf-info" id="videoInfo"></div>
           <div class="control-row">
-            <label>Start Time (s)</label>
+            <label>Inicio (s)</label>
             <input type="number" id="gifStart" value="0" min="0" step="0.1" style="width:100px;">
           </div>
           <div class="control-row">
-            <label>Duration (s)</label>
+            <label>Duración (s)</label>
             <input type="number" id="gifDuration" value="5" min="1" max="60" style="width:100px;">
           </div>
           <div class="control-row">
-            <label>Width (px)</label>
+            <label>Ancho (px)</label>
             <input type="number" id="gifWidth" value="480" min="100" max="1280" style="width:100px;">
           </div>
           <div class="control-row">
@@ -249,21 +260,20 @@
             <input type="number" id="gifFps" value="10" min="5" max="30" style="width:100px;">
           </div>
           <div class="btn-row">
-            <button class="btn btn-primary" id="processBtn">🎞️ Process</button>
-            <button class="btn btn-secondary" id="resetBtn">Reset</button>
+            <button class="btn btn-primary" id="processBtn">🎞️ Procesar</button>
+            <button class="btn btn-secondary" id="resetBtn">Reiniciar</button>
           </div>
         </div>
         <div class="status-text hidden" id="statusSection"></div>
         <div class="result-section hidden" id="resultSection">
-          <h2>✅ Result</h2>
+          <h2>✅ Resultado</h2>
           <div id="resultContent" style="text-align:center;"></div>
         </div>
 
       </div>
-<section class="how-to-section"><h2>How to Use</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Upload Video</h4><p>Select a video file.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Configure</h4><p>Set output options.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Process</h4><p>Click Process (ffmpeg.wasm loads on first use).</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Get your converted video.</p></div></div></section>
-<h2>Detailed User Guide</h2><div class="guide-block"><h3>Upload Video</h3><p>Select a video file.</p></div><div class="guide-block"><h3>Configure</h3><p>Set output options.</p></div><div class="guide-block"><h3>Process</h3><p>Click Process (ffmpeg.wasm loads on first use).</p></div><div class="guide-block"><h3>Download</h3><p>Get your converted video.</p></div>
-<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">Why does it load slowly the first time?</button><div class="faq-answer">ffmpeg.wasm is ~25MB. It caches in your browser after the first load.</div></div><div class="faq-item"><button class="faq-question">Is my video uploaded?</button><div class="faq-answer">No. Everything runs in your browser. Your video never leaves your device.</div></div><div class="faq-item"><button class="faq-question">What formats are supported?</button><div class="faq-answer">Most common formats: MP4, WebM, MOV, AVI, MKV, etc. Outputs MP4 or WebM.</div></div></section>
-<section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/video-to-gif" class="related-tool-card"><span class="tool-icon">🎞️</span><div class="tool-info"><strong>Video to GIF</strong><span class="tool-desc">Convert video to GIF</span></div><span class="tool-arrow">→</span></a><a href="/tools/compressor" class="related-tool-card"><span class="tool-icon">🗜️</span><div class="tool-info"><strong>Image Compressor</strong><span class="tool-desc">Compress images</span></div><span class="tool-arrow">→</span></a></div></section>
+<section class="how-to-section"><h2>Cómo funciona</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Sube el clip</h4><p>Elige el vídeo del que quieres sacar un GIF: el momento de una jugada, una reacción en una videollamada o el paso clave de un proceso.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Define el fragmento</h4><p>Marca el segundo de inicio y la duración (hasta 60 s): no hace falta convertir el vídeo entero, solo el tramo que merece ser GIF.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Ajusta tamaño y fluidez</h4><p>Elige el ancho en píxeles y los fotogramas por segundo — 480 px y 10 fps son valores equilibrados para compartir por chat o insertar en una web.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Genera y descarga</h4><p>Pulsa Procesar y descarga el GIF resultante, listo para pegar en WhatsApp, un ticket de soporte o la documentación del producto.</p></div></div></section>
+<h2>Guía detallada</h2><div class="guide-block"><h3>Por qué solo un fragmento</h3><p>Un GIF completo multiplica el peso por varios segundos de animación repetida. Recortar desde el segundo exacto con 3–6 segundos de duración da GIF de 2–8 MB — mientras que convertir el vídeo entero produciría decenas de megas que ningún chat ni correo acepta con gusto.</p></div><div class="guide-block"><h3>Ancho: 480 px es el punto dulce</h3><p>Los GIF suelen verse incrustados en chats y artículos: 480 px se ve nítido en móvil y escritorio sin disparar el tamaño de archivo. Usa 320 px para iconos animados o incrustaciones pequeñas, y 640 px solo si el detalle de la imagen importa más que el peso.</p></div><div class="guide-block"><h3>FPS: fluidez frente a peso</h3><p>Con 10 fps el GIF se ve fluido para la mayoría de contenidos; bajar a 5–7 fps aligera el archivo notablemente en clips con poco movimiento, y subir a 15–20 fps solo tiene sentido para acciones rápidas — y el peso crece casi en proporción directa.</p></div><div class="guide-block"><h3>Cómo se genera por dentro</h3><p>ffmpeg extrae el tramo indicado, reescala con el filtro lanczos — el que mejor conserva los bordes al reducir — y lo empaqueta como GIF sin bucle infinito adicional. La paleta de 256 colores es una limitación del propio formato GIF, no de la herramienta: los degradados muy suaves pueden mostrar bandas.</p></div><div class="guide-block"><h3>Alternativa moderna: vídeo corto con audio</h3><p>Para escenas donde el sonido importa — una risa, un efecto — un vídeo corto pesa menos y suena mejor. El GIF brilla cuando el contenido funciona en silencio y se reproduce automáticamente: una demo de un error de software, por ejemplo, o el gesto exacto de una técnica.</p></div><div class="guide-block"><h3>Privacidad y límites</h3><p>El clip se procesa en tu navegador con ffmpeg.wasm: no se sube a ningún servidor. Duración máxima 60 s por conversión — para tramos más largos, genera varios GIF o usa formato de vídeo.</p></div><section class="faq-section"><h2>Preguntas frecuentes</h2><div class="faq-item"><button class="faq-question">¿Por qué el GIF pesa tanto más que el vídeo?</button><div class="faq-answer">El formato GIF no usa compresión entre fotogramas como el vídeo: cada imagen se guarda completa. Por eso recomendamos fragmentos cortos con ancho moderado — así el GIF resultante queda entre 2 y 8 MB.</div></div><div class="faq-item"><button class="faq-question">¿El GIF se reproduce en bucle?</button><div class="faq-answer">El GIF generado se configura para reproducirse una vez por pasada del navegador; la mayoría de visores lo repiten automáticamente. Si necesitas bucle forzado, la etiqueta de la web donde lo incrustes controla el comportamiento.</div></div><div class="faq-item"><button class="faq-question">¿Puedo incluir el audio en el GIF?</button><div class="faq-answer">No — el formato GIF no admite sonido. Si el audio importa, comparte el vídeo o conviértelo a MP3/MP4 con las herramientas correspondientes.</div></div><div class="faq-item"><button class="faq-question">¿Qué resolución final tiene el GIF?</button><div class="faq-answer">El ancho que elijas; el alto se ajusta proporcionalmente. La resolución original del vídeo solo importa como tope: no se puede generar un GIF más grande que el vídeo de origen.</div></div><div class="faq-item"><button class="faq-question">¿Por qué los colores se ven un poco degradados?</button><div class="faq-answer">El formato GIF limita cada fotograma a una paleta de 256 colores. En degradados suaves o pieles puede notarse bandas — es una limitación del formato, no del proceso de conversión.</div></div><div class="faq-item"><button class="faq-question">¿Por qué tarda la primera vez?</button><div class="faq-answer">La primera conversión descarga el núcleo de ffmpeg.wasm (~25 MB). Queda en caché del navegador y las siguientes generan el GIF directamente.</div></div><div class="faq-item"><button class="faq-question">¿Mi vídeo se sube a algún servidor?</button><div class="faq-answer">No. Todo el proceso corre en tu navegador con WebAssembly; el clip y el GIF generado nunca salen de tu dispositivo.</div></div></section>
+<section class="related-tools"><h2>Herramientas relacionadas</h2><div class="related-tools-grid"><a href="/es/tools/video-to-frames" class="related-tool-card"><span class="tool-icon">🖼️</span><div class="tool-info"><strong>Vídeo a fotogramas</strong><span class="tool-desc">Extrae imágenes fijas del clip</span></div><span class="tool-arrow">→</span></a><a href="/es/tools/video-to-mp3" class="related-tool-card"><span class="tool-icon">🎵</span><div class="tool-info"><strong>Vídeo a MP3</strong><span class="tool-desc">Quedate solo con el audio</span></div><span class="tool-arrow">→</span></a><a href="/es/tools/video-compressor" class="related-tool-card"><span class="tool-icon">🗜️</span><div class="tool-info"><strong>Comprimir vídeo</strong><span class="tool-desc">Reduce el peso del MP4</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
@@ -325,20 +335,20 @@
     file = f; fileName = f.name.replace(/\.[^.]+$/, '');
     var ba = document.getElementById('beforeAfterPreview'); if (ba) ba.classList.add('hidden');
     statusSection.classList.remove('hidden');
-    statusSection.textContent = 'Loading video info...';
+    statusSection.textContent = 'Leyendo información del vídeo…';
     const v = document.createElement('video');
     v.preload = 'metadata';
     v.onloadedmetadata = () => {
-      videoInfo.innerHTML = `<strong>File:</strong> ${f.name} &nbsp;|&nbsp; <strong>Size:</strong> ${(f.size/1024/1024).toFixed(2)} MB &nbsp;|&nbsp; <strong>Duration:</strong> ${v.duration.toFixed(1)}s &nbsp;|&nbsp; <strong>Resolution:</strong> ${v.videoWidth}x${v.videoHeight}`;
+      videoInfo.innerHTML = `<strong>Archivo:</strong> ${f.name} &nbsp;|&nbsp; <strong>Tamaño:</strong> ${(f.size/1024/1024).toFixed(2)} MB &nbsp;|&nbsp; <strong>Duración:</strong> ${v.duration.toFixed(1)}s &nbsp;|&nbsp; <strong>Resolución:</strong> ${v.videoWidth}x${v.videoHeight}`;
       controlsSection.classList.remove('hidden');
       statusSection.classList.add('hidden');
     };
-    v.onerror = () => { statusSection.textContent = '✗ Error: Unable to read video file.'; };
+    v.onerror = () => { statusSection.textContent = '✗ Error: no se pudo leer el archivo de vídeo.'; };
     v.src = URL.createObjectURL(f);
   }
   async function loadFFmpeg() {
     if (window.FFmpeg) return window.FFmpeg;
-    statusSection.textContent = 'Loading ffmpeg.wasm (this may take a while)...';
+    statusSection.textContent = 'Cargando ffmpeg.wasm (puede tardar un rato)…';
     await loadScript('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.min.js');
     return window.FFmpeg;
   }
@@ -347,26 +357,26 @@
   window.__downloadBlob__ = downloadBlob;
   processBtn.addEventListener('click', async () => {
     statusSection.classList.remove('hidden');
-    statusSection.textContent = 'Loading ffmpeg.wasm...';
+    statusSection.textContent = 'Cargando ffmpeg.wasm…';
     processBtn.disabled = true; resultSection.classList.add('hidden');
     try {
       const { createFFmpeg, fetchFile } = await loadFFmpeg();
       const ffmpeg = createFFmpeg({ log: true });
       ffmpeg.setLogger(({ message }) => { });
-      ffmpeg.setProgress(({ ratio }) => { statusSection.textContent = `Processing... ${Math.round(ratio*100)}%`; });
-      if (!ffmpeg.isLoaded()) { statusSection.textContent = 'Loading ffmpeg core (25MB, first time only)...'; await ffmpeg.load(); }
-      statusSection.textContent = 'Reading file...';
+      ffmpeg.setProgress(({ ratio }) => { statusSection.textContent = `Procesando… ${Math.round(ratio*100)}%`; });
+      if (!ffmpeg.isLoaded()) { statusSection.textContent = 'Cargando el núcleo de ffmpeg (25 MB, solo la primera vez)…'; await ffmpeg.load(); }
+      statusSection.textContent = 'Leyendo el archivo…';
       ffmpeg.FS('writeFile', 'input.mp4', await fetchFile(file));
       const ss = document.getElementById('gifStart').value;
       const t = document.getElementById('gifDuration').value;
       const w = document.getElementById('gifWidth').value;
       const fps = document.getElementById('gifFps').value;
-      statusSection.textContent = 'Converting to GIF...';
+      statusSection.textContent = 'Convirtiendo a GIF…';
       await ffmpeg.run('-i', 'input.mp4', '-ss', ss, '-t', t, '-vf', `fps=${fps},scale=${w}:-1:flags=lanczos`, '-loop', '0', 'output.gif');
       const data = ffmpeg.FS('readFile', 'output.gif');
       resultSection.classList.remove('hidden');
-      resultContent.innerHTML = `<img src="${URL.createObjectURL(new Blob([data.buffer], {type:'image/gif'}))}" style="max-width:100%;border-radius:8px;"><br><button class="btn btn-primary" style="margin-top:16px;" onclick="window.__downloadBlob__(${JSON.stringify([...data])}, '${fileName}.gif', 'image/gif')">⬇️ Download GIF</button>`;
-      statusSection.textContent = '✓ GIF created!';
+      resultContent.innerHTML = `<img src="${URL.createObjectURL(new Blob([data.buffer], {type:'image/gif'}))}" style="max-width:100%;border-radius:8px;"><br><button class="btn btn-primary" style="margin-top:16px;" onclick="window.__downloadBlob__(${JSON.stringify([...data])}, '${fileName}.gif', 'image/gif')">⬇️ Descargar GIF</button>`;
+      statusSection.textContent = '✓ ¡GIF creado!';
     } catch(e) { statusSection.textContent = '✗ Error: ' + e.message; }
     processBtn.disabled = false;
   });
