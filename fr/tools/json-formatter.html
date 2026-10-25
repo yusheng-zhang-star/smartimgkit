@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr" data-theme="dark" data-tool-id="json-formatter">
 <head>
   <meta charset="UTF-8">
@@ -261,6 +261,37 @@
 <p>Ici, le formatage se fait dans la page : rien ne part. Le corollaire est qu'il n'y a ni historique ni partage par lien. Si vous devez transmettre un JSON à un collègue, passez par un fichier, pas par un outil de formatage.</p>
 </section>
 
+
+<section class="localization-section" style="max-width:800px;margin:40px auto;padding:0 20px;">
+  <h2 style="text-align:center;margin-bottom:20px;">JSON pour les développeurs et les données en France</h2>
+  <p>Le JSON est le format d'échange le plus utilisé dans les projets français : API de paiement, données Open Data du gouvernement, exports de Shopify, fichiers de configuration d'applications. Un JSON mal formaté provoque des erreurs de parsing dans les scripts, et les équipes passent des minutes à chercher une virgule manquante ou une accolade fermée au mauvais endroit.</p>
+  <h3 style="margin-top:24px;">Quand ce formateur vous fait gagner du temps</h3>
+  <ul style="line-height:1.8;">
+    <li><strong>Intégration d'API :</strong> Avant d'envoyer une requête vers une API bancaire ou une API de transport, vérifier la validité du JSON évite un 400 côté serveur.</li>
+    <li><strong>Données Open Data :</strong> Les jeux de données publiés par les institutions françaises (data.gouv.fr) sont volumineux ; reformater et valider un extrait aide à comprendre la structure avant de l'importer.</li>
+    <li><strong>Fichiers de configuration :</strong> Les fichiers de config JSON d'applications (package.json, fichiers CI) doivent être strictement valides ; un outil de vérification instantanée débloque un build.</li>
+    <li><strong>Échanges entre collègues :</strong> Partager un JSON formaté avec indentation lisible facilite la revue de code et les discussions d'architecture.</li>
+  </ul>
+  <p style="margin-top:16px;">Le formateur indente, vérifie la syntaxe et signale la ligne exacte de l'erreur — inutile de chercher à l'œil. Tout se passe dans le navigateur : vos données, parfois confidentielles (clés d'API, exports clients), ne quittent jamais votre machine.</p>
+  <p style="margin-top:12px;">Pour un travail d'équipe, formatez d'abord, puis comparez avec un diff pour repérer les changements réels : le JSON formaté rend la revue beaucoup plus rapide qu'un fichier minifié sur une seule ligne.</p>
+
+  <h3 style="margin-top:24px;">Erreurs classiques et bonnes pratiques</h3>
+  <ul style="line-height:1.8;">
+    <li><strong>Virgule traînante :</strong> Un JSON avec une virgule après le dernier élément échoue au parsing dans la plupart des langages ; le validateur le signale immédiatement.</li>
+    <li><strong>Clés entre guillemets :</strong> En JSON strict, les clés doivent être entre guillemets doubles ; un fichier sans guillemets est du JavaScript, pas du JSON.</li>
+    <li><strong>Encodage :</strong> Les accents français dans les données JSON demandent un fichier en UTF-8 ; sinon les caractères s'affichent mal côté client.</li>
+  </ul>
+  <p style="margin-top:12px;">Pour les données d'API en production, validez toujours la réponse avant de l'intégrer : un champ manquant ou un type inattendu provoque des erreurs silencieuses dans les scripts. Le formateur fonctionne entièrement dans le navigateur, ce qui permet de vérifier des exports contenant des données clients ou des clés d'API sans les exposer à un serveur externe.</p>
+
+  <p style="margin-top:12px;">Un cas typique : récupérer l'export JSON d'une boutique en ligne ou d'un CRM, puis le transformer pour l'import dans un autre outil. Le formateur rend la structure lisible (indentation, hiérarchie des objets), et le validateur confirme que l'export est exploitable avant toute transformation. Sans cette vérification, une erreur silencieuse se propage dans tout le pipeline de données.</p>
+  <p style="margin-top:12px;">Enfin, pour les recruteurs et les agences, un JSON bien formaté fait partie de la qualité perçue d'une livraison technique : un fichier minifié sur une seule ligne est difficile à relire, alors qu'un JSON indenté se partage facilement dans une revue de code ou une documentation.</p>
+
+  <p style="margin-top:12px;">Pour les data analysts et les développeurs qui manipulent des exports d'API française (type data.gouv.fr ou API de la Banque de France), le formateur sert à vérifier qu'un extrait est complet avant de l'exploiter : un objet fermé à la mauvaise place ou un crochet manquant casse tout le traitement en aval, et l'erreur n'apparaît souvent qu'à la troisième transformation.</p>
+
+  <p style="margin-top:12px;">Une bonne pratique d'équipe : formater et valider le JSON avant de le committer, puis utiliser un diff pour comparer les versions. Les erreurs de structure deviennent alors visibles en une seconde, au lieu de provoquer une recherche longue dans un fichier minifié.</p>
+
+  <p style="margin-top:12px;">Enfin, si le JSON vient d'un export avec des dates, vérifiez le format des dates (ISO 8601 de préférence) avant de l'importer : c'est l'erreur la plus courante dans les échanges de données entre outils français.</p>
+</section>
 <section class="faq-section"><h2>Questions fréquentes</h2>
         <div class="faq-item"><button class="faq-question">Le JSON doit-il être indenté avec 2 ou 4 espaces ?</button><div class="faq-answer">Aucune règle ne l'impose, c'est une convention d'équipe. 2 espaces est le choix le plus courant dans l'écosystème JavaScript, 4 espaces se lit mieux sur un écran large. L'important est de rester cohérent dans un même projet.</div></div>
         <div class="faq-item"><button class="faq-question">Pourquoi mon JSON est-il refusé alors qu'il me semble correct ?</button><div class="faq-answer">Cherchez une virgule finale, des guillemets simples au lieu de guillemets doubles, ou un commentaire. Ce sont les trois causes les plus fréquentes. Le message d'erreur indique la position, ce qui permet de trancher rapidement.</div></div>
