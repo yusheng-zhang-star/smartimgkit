@@ -31,6 +31,87 @@
   }
 }
 </script>
+<style id="tool-longform-css">
+p.answer-lead{max-width:820px;margin:1.1rem auto 1.4rem;padding:1rem 1.2rem;background:var(--bg-secondary);border-left:4px solid var(--accent);border-radius:10px;font-size:1.02rem;line-height:1.7;color:var(--text-primary)}
+.detail-sec{max-width:820px;margin:32px auto}
+.detail-sec h2{font-size:1.3rem;margin-bottom:10px;color:var(--text-primary)}
+.detail-sec h3{font-size:1.02rem;margin:18px 0 8px;color:var(--text-primary)}
+.detail-sec p{line-height:1.85;margin-bottom:12px;color:var(--text-secondary)}
+.detail-sec li{line-height:1.9;margin-left:20px;color:var(--text-secondary)}
+.detail-sec code{background:var(--bg-tertiary);padding:1px 5px;border-radius:4px;font-size:.9em;color:var(--text-primary)}
+.detail-sec ul{margin-bottom:12px}
+/* 工具区控件样式：.controls / .secondary 在全站 style.css 里没有定义，
+   这 4 个页面原本是裸类，滑块与按钮挤成一行。先在本页作用域内补齐。 */
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin:1rem 0}
+.controls label{display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-secondary)}
+.controls input[type=range]{width:180px;vertical-align:middle}
+.controls button,button.secondary{padding:.55rem 1rem;border-radius:8px;border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-primary);font-size:.9rem;cursor:pointer;transition:border-color .2s,color .2s}
+.controls button:hover,button.secondary:hover{border-color:var(--accent);color:var(--accent)}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Can the output keep the original colours?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Only brightness is measured — red, green and blue are collapsed into a single luma value before the character is chosen, so hue and saturation are discarded. Colour ASCII art needs ANSI escape codes or HTML spans, which this tool does not emit."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why did my transparent PNG turn into a solid block of @ characters?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because the alpha channel is ignored. A fully transparent pixel still reports RGB 0,0,0, which is the darkest possible value and therefore maps to @. Flatten the image onto white first if you want the transparent areas to come out as spaces."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What Detail value should I use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Around 80 if the result is going into a chat message, 120–150 for reading on screen, and 250–300 only if you plan to zoom in or print. Higher values do not add real detail — they add one character per pixel, which also means one character per pixel of noise."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I download the result as an image?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not from this page; the tool copies plain text to the clipboard. If you need a picture, screenshot the preview area — that also preserves the exact font and spacing, which a copy-paste into another app would not."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it work offline?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Once the page has loaded, the conversion is pure JavaScript running on your machine. Disconnecting the network does not affect it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a file size limit?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There is no hard limit in the code, but the whole image is decoded into memory and read back through getImageData. Photos up to roughly 20 megapixels are comfortable on a modern phone; much larger files may stutter before the result appears."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does the art look scrambled when I paste it into WeChat or email?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Those apps render text in a proportional font, where an i is narrower than an m. The art was built for a fixed-width grid of twice-as-tall cells, so any proportional font shears it. Wrapping the text in a code block, or sending a screenshot, fixes it."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -39,7 +120,7 @@
 </header>
 <main class="container">
 <h1>Image to ASCII Art Converter</h1>
-<p class="lead">Turn any photo into retro ASCII text art instantly, 100% local processing, no upload, no signup.</p>
+<p class="lead answer-lead">This converter rewrites a photo as text art: each pixel&#x27;s brightness is measured and replaced by one of ten characters, from @ for the darkest areas to a space for the brightest. Everything runs inside your browser tab — the file is read locally with the FileReader API and never sent to a server. The output is plain selectable text, so you can copy it into a document, a code comment, or a chat window.</p>
 <div class="upload-area" id="dropZone">
 <p>Upload your photo to convert to ASCII art</p>
 <input type="file" id="fileInput" accept="image/*" hidden>
@@ -49,6 +130,110 @@
 <button id="copyBtn" class="secondary">Copy Text Art</button>
 </div>
 <pre id="asciiOutput" style="font-family:monospace;font-size:8px;line-height:8px;background:#000;color:#0f0;padding:1rem;overflow:auto;max-height:600px;"></pre>
+<div data-longform="1">
+<section class="detail-sec">
+<h2>How the conversion actually works</h2>
+<p>The tool does three things in sequence. Everything you see in the output is a direct consequence
+of these three steps, and knowing them makes the results far easier to control.</p>
+<h3>Step 1: shrink the photo to character resolution</h3>
+<p>Your image is drawn onto an offscreen canvas whose width equals the Detail value. The height is
+derived from the image's own aspect ratio: <code>height = round(detail × imageHeight ÷ imageWidth ÷ 2)</code>.
+That canvas is never added to the page — it exists only long enough to be read back pixel by pixel.</p>
+<h3>Step 2: measure the brightness of each cell</h3>
+<p>For every pixel the script pulls the red, green and blue channels and combines them with
+<code>0.299 R + 0.587 G + 0.114 B</code>. This is ITU-R BT.601 luma, the same weighting broadcast
+television used for black-and-white sets. The weights are not arbitrary: human vision resolves
+green detail far better than blue, so green carries more than half the total weight and blue barely
+a ninth. Two colours with the same luma — a saturated red and a mid grey, for instance — will
+produce the same character.</p>
+<h3>Step 3: map luma to a character</h3>
+<p>The ramp is exactly ten characters: <code>@%#*+=-:.&nbsp;</code> — ordered from the densest glyph to
+an empty space. The lookup is <code>index = floor(luma ÷ 256 × 10)</code>. A pixel at the black end
+lands on <code>@</code>; a pixel at pure white lands on the space. Nothing else influences the
+character choice: not hue, not saturation, not alpha.</p>
+</section>
+
+<section class="detail-sec">
+<h2>Why the text comes out half as tall</h2>
+<p>In a typical monospace font the character cell is roughly twice as tall as it is wide — an 8 by
+16 pixel cell is standard. If the script kept the image's true proportions, every circle would come
+out as a tall ellipse. Dividing the row count by two compensates for that cell shape, which is why
+a perfectly square photo produces text that looks square on screen even though the character grid
+is not.</p>
+<p>The practical consequence: if you change the font of the result, you also change the aspect
+ratio of the picture. The art is only geometrically correct in a font whose characters are twice
+as tall as they are wide, and at a line-height equal to the font size.</p>
+</section>
+
+<section class="detail-sec">
+<h2>What ten characters can and cannot show</h2>
+<p>Ten steps means the full 0–255 brightness range is squeezed into ten buckets, so smooth gradients
+turn into visible bands. That is a deliberate trade: these ten characters exist in essentially every
+font, every terminal, every chat app, and they all share the same advance width. Heavier ramps built
+from Unicode block elements such as █ ▓ ▒ ░ can render smoother gradients, but they break alignment
+in fonts that lack them or fall back to a proportional glyph — and misaligned art is unreadable art.</p>
+<p>If a portrait looks muddy, the usual cause is not the ramp but the source: low-contrast photos
+collapse several neighbouring brightness levels into the same character. Raising contrast or
+converting to grayscale first, in any editor, gives the ramp more distinct values to work with.</p>
+</section>
+
+<section class="detail-sec">
+<h2>Choosing the Detail value</h2>
+<p>Detail sets the number of character columns, from 50 to 300. It is the single control that
+matters most.</p>
+<ul>
+<li><strong>50–80</strong> — a thumbnail. Fast, readable on a phone, and short enough to paste into a
+chat message without being truncated.</li>
+<li><strong>100–150</strong> — the default range. Enough columns to recognise a face or a building,
+still small enough to scroll in one screen.</li>
+<li><strong>200–300</strong> — poster territory. Each character represents a single source pixel, so
+noise and JPEG artefacts become visible as scattered characters, and long outputs get heavy for the
+browser to lay out.</li>
+</ul>
+<p>A rough size estimate: 150 columns by 100 rows is about 15,000 characters, which is roughly 15 KB
+of text. Most messaging apps truncate or split pastes far earlier than that, so if the destination
+is a chat window, stay near 80 columns or send a screenshot instead.</p>
+</section>
+
+<section class="detail-sec">
+<h2>Known limits</h2>
+<ul>
+<li><strong>No colour.</strong> Only brightness is used, so a red apple and a green apple with the same
+luma become identical characters. There is no ANSI colour output.</li>
+<li><strong>Transparency is treated as black.</strong> The alpha channel is ignored, and a fully
+transparent pixel reports 0,0,0 — the darkest value — so a transparent PNG logo turns into a solid
+block of <code>@</code> characters.</li>
+<li><strong>Text only.</strong> The result is copied to the clipboard as plain text. To get a picture
+back, take a screenshot of the preview.</li>
+<li><strong>Very large photos.</strong> Decoding a 50-megapixel image and reading it back costs memory;
+on older phones this can stall for a second or two. Downscaling first is quicker.</li>
+<li><strong>Font dependence.</strong> Outside a monospace font with a 2:1 cell, the art shears. Pasted
+into a proportional-font chat, it looks scrambled.</li>
+</ul>
+</section>
+
+<section class="detail-sec">
+<h2>Common mistakes</h2>
+<ul>
+<li>Pasting straight into a chat app and concluding the tool is broken — the glyphs are fine, the font
+is not monospace. Screenshot the preview instead.</li>
+<li>Maxing out Detail on a noisy photo, then blaming the ramp for the speckle. Noise is per-pixel;
+more columns means more visible noise.</li>
+<li>Expecting a transparent background when converting a logo. Alpha is dropped, so transparent areas
+become solid dark characters.</li>
+<li>Converting a colour photo with heavy shadows and expecting detail there. Ten levels cannot resolve
+deep shadow; lift the shadows first.</li>
+</ul>
+</section>
+
+<section class="detail-sec">
+<h2>Privacy</h2>
+<p>The file is read with <code>FileReader</code>, drawn to an in-memory canvas, and converted to a
+string. No fetch, no XHR, no form submission — you can load the page, disconnect from the network,
+and the converter still works. Nothing about your image reaches a server, which matters if the photo
+is a document, an ID card, or anything you would not email to a stranger.</p>
+</section>
+<section class="detail-sec" id="faq"><h2>FAQ</h2><div class="faq-item"><button class="faq-question" type="button">Can the output keep the original colours?</button><div class="faq-answer"><p>No. Only brightness is measured — red, green and blue are collapsed into a single luma value before the character is chosen, so hue and saturation are discarded. Colour ASCII art needs ANSI escape codes or HTML spans, which this tool does not emit.</p></div></div><div class="faq-item"><button class="faq-question" type="button">Why did my transparent PNG turn into a solid block of @ characters?</button><div class="faq-answer"><p>Because the alpha channel is ignored. A fully transparent pixel still reports RGB 0,0,0, which is the darkest possible value and therefore maps to @. Flatten the image onto white first if you want the transparent areas to come out as spaces.</p></div></div><div class="faq-item"><button class="faq-question" type="button">What Detail value should I use?</button><div class="faq-answer"><p>Around 80 if the result is going into a chat message, 120–150 for reading on screen, and 250–300 only if you plan to zoom in or print. Higher values do not add real detail — they add one character per pixel, which also means one character per pixel of noise.</p></div></div><div class="faq-item"><button class="faq-question" type="button">Can I download the result as an image?</button><div class="faq-answer"><p>Not from this page; the tool copies plain text to the clipboard. If you need a picture, screenshot the preview area — that also preserves the exact font and spacing, which a copy-paste into another app would not.</p></div></div><div class="faq-item"><button class="faq-question" type="button">Does it work offline?</button><div class="faq-answer"><p>Yes. Once the page has loaded, the conversion is pure JavaScript running on your machine. Disconnecting the network does not affect it.</p></div></div><div class="faq-item"><button class="faq-question" type="button">Is there a file size limit?</button><div class="faq-answer"><p>There is no hard limit in the code, but the whole image is decoded into memory and read back through getImageData. Photos up to roughly 20 megapixels are comfortable on a modern phone; much larger files may stutter before the result appears.</p></div></div><div class="faq-item"><button class="faq-question" type="button">Why does the art look scrambled when I paste it into WeChat or email?</button><div class="faq-answer"><p>Those apps render text in a proportional font, where an i is narrower than an m. The art was built for a fixed-width grid of twice-as-tall cells, so any proportional font shears it. Wrapping the text in a code block, or sending a screenshot, fixes it.</p></div></div></section></div>
 </main>
 <script>
 document.getElementById('dropZone').onclick = () => document.getElementById('fileInput').click();

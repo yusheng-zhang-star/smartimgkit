@@ -25,6 +25,87 @@
   }
 }
 </script>
+<style id="tool-longform-css">
+p.answer-lead{max-width:820px;margin:1.1rem auto 1.4rem;padding:1rem 1.2rem;background:var(--bg-secondary);border-left:4px solid var(--accent);border-radius:10px;font-size:1.02rem;line-height:1.7;color:var(--text-primary)}
+.detail-sec{max-width:820px;margin:32px auto}
+.detail-sec h2{font-size:1.3rem;margin-bottom:10px;color:var(--text-primary)}
+.detail-sec h3{font-size:1.02rem;margin:18px 0 8px;color:var(--text-primary)}
+.detail-sec p{line-height:1.85;margin-bottom:12px;color:var(--text-secondary)}
+.detail-sec li{line-height:1.9;margin-left:20px;color:var(--text-secondary)}
+.detail-sec code{background:var(--bg-tertiary);padding:1px 5px;border-radius:4px;font-size:.9em;color:var(--text-primary)}
+.detail-sec ul{margin-bottom:12px}
+/* 工具区控件样式：.controls / .secondary 在全站 style.css 里没有定义，
+   这 4 个页面原本是裸类，滑块与按钮挤成一行。先在本页作用域内补齐。 */
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin:1rem 0}
+.controls label{display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text-secondary)}
+.controls input[type=range]{width:180px;vertical-align:middle}
+.controls button,button.secondary{padding:.55rem 1rem;border-radius:8px;border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-primary);font-size:.9rem;cursor:pointer;transition:border-color .2s,color .2s}
+.controls button:hover,button.secondary:hover{border-color:var(--accent);color:var(--accent)}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Se pueden conservar los colores originales?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Solo se mide el brillo: rojo, verde y azul se colapsan en un único valor de luminancia antes de elegir el carácter, así que el tono y la saturación se descartan. El arte ASCII en color necesita códigos de escape ANSI o etiquetas span de HTML, y esta herramienta no los genera."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué mi PNG transparente se ha convertido en un bloque de @?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Porque el canal alfa se ignora. Un píxel totalmente transparente sigue devolviendo RGB 0,0,0, el valor más oscuro posible, y por eso cae en @. Aplana la imagen sobre blanco antes si quieres que las zonas transparentes salgan como espacios."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué valor de Detalle debo usar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Alrededor de 80 si el resultado va a un chat, 120–150 para leerlo en pantalla y 250–300 solo si piensas ampliarlo o imprimirlo. Los valores altos no añaden detalle real: añaden un carácter por píxel, y eso incluye un carácter por píxel de ruido."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo descargar el resultado como imagen?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No desde esta página: la herramienta copia texto plano al portapapeles. Si necesitas una imagen, haz una captura de la zona de previsualización, que además conserva la fuente y el espaciado exactos que un copiar y pegar en otra aplicación perdería."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Funciona sin conexión?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí. Una vez cargada la página, la conversión es JavaScript puro ejecutándose en tu equipo. Desconectar la red no la afecta."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Hay un límite de tamaño de archivo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El código no impone un límite duro, pero la imagen completa se decodifica en memoria y se relee con getImageData. Hasta unos 20 megapíxeles va cómodo en un móvil actual; archivos mucho mayores pueden tardar en mostrar el resultado."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué se ve descolocado al pegarlo en WhatsApp o en un correo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Esas aplicaciones usan tipografías proporcionales, donde una i ocupa menos que una m. El dibujo está construido para una rejilla de ancho fijo con celdas del doble de alto, así que cualquier fuente proporcional lo deforma. Meterlo en un bloque de código o enviar una captura lo resuelve."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -33,7 +114,7 @@
 </header>
 <main class="container">
 <h1>Convertir Imagen a Arte ASCII</h1>
-<p class="lead">Convierte cualquier foto en arte de texto ASCII retro al instante, 100% local, sin subida ni registro.</p>
+<p class="lead answer-lead">Esta herramienta reescribe una foto como arte de texto: mide el brillo de cada píxel y lo sustituye por uno de diez caracteres, desde @ para las zonas más oscuras hasta un espacio para las más claras. Todo ocurre dentro de tu navegador, con el archivo leído en local mediante FileReader y sin enviarlo a ningún servidor. El resultado es texto seleccionable: puedes copiarlo a un documento, a un comentario de código o a un chat.</p>
 <div class="upload-area" id="dropZone">
 <p>Sube tu foto para convertirla en arte ASCII</p>
 <input type="file" id="fileInput" accept="image/*" hidden>
@@ -43,6 +124,112 @@
 <button id="copyBtn" class="secondary">Copy Text Art</button>
 </div>
 <pre id="asciiOutput" style="font-family:monospace;font-size:8px;line-height:8px;background:#000;color:#0f0;padding:1rem;overflow:auto;max-height:600px;"></pre>
+<div data-longform="1">
+<section class="detail-sec">
+<h2>Cómo funciona la conversión, paso a paso</h2>
+<p>El conversor hace tres cosas en cadena. Todo lo que ves en el resultado sale de esos tres pasos, y
+entenderlos es lo que permite controlar el aspecto final en lugar de probar valores al azar.</p>
+<h3>Paso 1: reducir la foto a la resolución del texto</h3>
+<p>La imagen se dibuja en un canvas oculto cuyo ancho es igual al valor de Detalle. La altura se
+calcula a partir de la proporción original: <code>altura = round(detalle × altoImagen ÷ anchoImagen ÷ 2)</code>.
+Ese canvas nunca se añade a la página; solo existe el tiempo necesario para leerlo píxel a píxel.</p>
+<h3>Paso 2: medir el brillo de cada celda</h3>
+<p>Para cada píxel se toman los canales rojo, verde y azul y se combinan con
+<code>0.299 R + 0.587 G + 0.114 B</code>. Es la luminancia ITU-R BT.601, la misma ponderación que
+usaba la televisión en blanco y negro. Los pesos no son arbitrarios: el ojo resuelve el detalle verde
+mucho mejor que el azul, así que el verde aporta más de la mitad del total y el azul apenas una
+novena parte. Dos colores con la misma luminancia —un rojo saturado y un gris medio, por ejemplo—
+producen exactamente el mismo carácter.</p>
+<h3>Paso 3: convertir la luminancia en un carácter</h3>
+<p>La rampa tiene exactamente diez caracteres: <code>@%#*+=-:.&nbsp;</code>, ordenados del glifo más
+denso al espacio vacío. La búsqueda es <code>índice = floor(luminancia ÷ 256 × 10)</code>. Un píxel
+negro cae en <code>@</code>; un píxel blanco puro cae en el espacio. Nada más influye en la elección:
+ni el tono, ni la saturación, ni el canal alfa.</p>
+</section>
+
+<section class="detail-sec">
+<h2>Por qué el texto sale a media altura</h2>
+<p>En una tipografía monoespaciada típica la celda de un carácter es aproximadamente el doble de alta
+que de ancha: la celda estándar mide 8 por 16 píxeles. Si el script respetara la proporción real de la
+imagen, cualquier círculo saldría como una elipse alargada. Dividir el número de filas entre dos
+compensa esa forma de la celda, y por eso una foto cuadrada produce un texto que se ve cuadrado en
+pantalla aunque la rejilla de caracteres no lo sea.</p>
+<p>La consecuencia práctica: si cambias la fuente del resultado, cambias también la proporción del
+dibujo. El arte solo es geométricamente correcto en una tipografía cuyos caracteres sean el doble de
+altos que anchos, y con un interlineado igual al tamaño de la fuente.</p>
+</section>
+
+<section class="detail-sec">
+<h2>Qué pueden y qué no pueden mostrar diez caracteres</h2>
+<p>Diez niveles significa que todo el rango 0–255 se comprime en diez cubos, así que los degradados
+suaves se convierten en bandas visibles. Es un intercambio deliberado: esos diez caracteres existen en
+prácticamente cualquier tipografía, cualquier terminal y cualquier aplicación de mensajería, y todos
+comparten el mismo ancho. Las rampas más densas hechas con bloques Unicode como █ ▓ ▒ ░ consiguen
+degradados más finos, pero rompen la alineación en fuentes que no los tienen o que caen en un glifo de
+ancho variable, y un dibujo desalineado es un dibujo ilegible.</p>
+<p>Si un retrato sale embarrado, la causa habitual no es la rampa sino el original: las fotos de bajo
+contraste agrupan varios niveles de brillo vecinos en el mismo carácter. Subir el contraste o pasar a
+escala de grises antes, en cualquier editor, le da a la rampa valores más distintos con los que
+trabajar.</p>
+</section>
+
+<section class="detail-sec">
+<h2>Elegir el valor de Detalle</h2>
+<p>Detalle fija el número de columnas de caracteres, de 50 a 300. Es el control que más cambia el
+resultado.</p>
+<ul>
+<li><strong>50–80</strong>: miniatura. Rápido, legible en el móvil y lo bastante corto para pegarlo en
+un chat sin que te lo corten.</li>
+<li><strong>100–150</strong>: el rango por defecto. Columnas suficientes para reconocer una cara o un
+edificio, y todavía cabe en una pantalla.</li>
+<li><strong>200–300</strong>: territorio de póster. Cada carácter representa un píxel del original, así
+que el ruido y los artefactos JPEG aparecen como caracteres sueltos, y las salidas largas pesan
+demasiado para que el navegador las maquete con soltura.</li>
+</ul>
+<p>Un cálculo aproximado: 150 columnas por 100 filas son unos 15.000 caracteres, es decir, unos 15 KB
+de texto. La mayoría de las aplicaciones de mensajería cortan o dividen mucho antes, así que si el
+destino es un chat, quédate cerca de 80 columnas o envía una captura de pantalla.</p>
+</section>
+
+<section class="detail-sec">
+<h2>Límites conocidos</h2>
+<ul>
+<li><strong>Sin color.</strong> Solo se usa el brillo, así que una manzana roja y una verde con la misma
+luminancia acaban como el mismo carácter. No hay salida en color ANSI.</li>
+<li><strong>La transparencia se trata como negro.</strong> El canal alfa se ignora y un píxel
+completamente transparente devuelve 0,0,0, el valor más oscuro; por eso un logo PNG con transparencia
+se convierte en un bloque macizo de <code>@</code>.</li>
+<li><strong>Solo texto.</strong> El resultado se copia al portapapeles como texto plano. Para recuperar
+una imagen, haz una captura de la previsualización.</li>
+<li><strong>Fotos muy grandes.</strong> Decodificar 50 megapíxeles y volver a leerlos cuesta memoria; en
+móviles antiguos puede quedarse parado uno o dos segundos. Reducir antes es más rápido.</li>
+<li><strong>Depende de la fuente.</strong> Fuera de una monoespaciada con celda 2:1 el dibujo se
+deforma. Pegado en un chat con tipografía proporcional, se ve desbaratado.</li>
+</ul>
+</section>
+
+<section class="detail-sec">
+<h2>Errores habituales</h2>
+<ul>
+<li>Pegar el resultado en un chat y concluir que la herramienta falla: los glifos están bien, la fuente
+no es monoespaciada. Haz una captura de la previsualización.</li>
+<li>Subir Detalle al máximo en una foto con ruido y culpar a la rampa del moteado. El ruido es por
+píxel: más columnas, más ruido visible.</li>
+<li>Esperar fondo transparente al convertir un logo. El alfa se descarta, así que las zonas
+transparentes se vuelven caracteres oscuros macizos.</li>
+<li>Convertir una foto con sombras muy cerradas y esperar detalle ahí. Diez niveles no resuelven una
+sombra profunda; aclara las sombras antes.</li>
+</ul>
+</section>
+
+<section class="detail-sec">
+<h2>Privacidad</h2>
+<p>El archivo se lee con <code>FileReader</code>, se dibuja en un canvas en memoria y se convierte en
+una cadena. No hay fetch, ni XHR, ni envío de formularios: puedes cargar la página, desconectar la red
+y el conversor sigue funcionando. Nada de tu imagen llega a un servidor, algo que importa si la foto es
+un documento, un carné o cualquier cosa que no enviarías por correo a un desconocido.</p>
+</section>
+<section class="detail-sec" id="faq"><h2>FAQ</h2><div class="faq-item"><button class="faq-question" type="button">¿Se pueden conservar los colores originales?</button><div class="faq-answer"><p>No. Solo se mide el brillo: rojo, verde y azul se colapsan en un único valor de luminancia antes de elegir el carácter, así que el tono y la saturación se descartan. El arte ASCII en color necesita códigos de escape ANSI o etiquetas span de HTML, y esta herramienta no los genera.</p></div></div><div class="faq-item"><button class="faq-question" type="button">¿Por qué mi PNG transparente se ha convertido en un bloque de @?</button><div class="faq-answer"><p>Porque el canal alfa se ignora. Un píxel totalmente transparente sigue devolviendo RGB 0,0,0, el valor más oscuro posible, y por eso cae en @. Aplana la imagen sobre blanco antes si quieres que las zonas transparentes salgan como espacios.</p></div></div><div class="faq-item"><button class="faq-question" type="button">¿Qué valor de Detalle debo usar?</button><div class="faq-answer"><p>Alrededor de 80 si el resultado va a un chat, 120–150 para leerlo en pantalla y 250–300 solo si piensas ampliarlo o imprimirlo. Los valores altos no añaden detalle real: añaden un carácter por píxel, y eso incluye un carácter por píxel de ruido.</p></div></div><div class="faq-item"><button class="faq-question" type="button">¿Puedo descargar el resultado como imagen?</button><div class="faq-answer"><p>No desde esta página: la herramienta copia texto plano al portapapeles. Si necesitas una imagen, haz una captura de la zona de previsualización, que además conserva la fuente y el espaciado exactos que un copiar y pegar en otra aplicación perdería.</p></div></div><div class="faq-item"><button class="faq-question" type="button">¿Funciona sin conexión?</button><div class="faq-answer"><p>Sí. Una vez cargada la página, la conversión es JavaScript puro ejecutándose en tu equipo. Desconectar la red no la afecta.</p></div></div><div class="faq-item"><button class="faq-question" type="button">¿Hay un límite de tamaño de archivo?</button><div class="faq-answer"><p>El código no impone un límite duro, pero la imagen completa se decodifica en memoria y se relee con getImageData. Hasta unos 20 megapíxeles va cómodo en un móvil actual; archivos mucho mayores pueden tardar en mostrar el resultado.</p></div></div><div class="faq-item"><button class="faq-question" type="button">¿Por qué se ve descolocado al pegarlo en WhatsApp o en un correo?</button><div class="faq-answer"><p>Esas aplicaciones usan tipografías proporcionales, donde una i ocupa menos que una m. El dibujo está construido para una rejilla de ancho fijo con celdas del doble de alto, así que cualquier fuente proporcional lo deforma. Meterlo en un bloque de código o enviar una captura lo resuelve.</p></div></div></section></div>
 </main>
 <script>
 document.getElementById('dropZone').onclick = () => document.getElementById('fileInput').click();
@@ -78,6 +265,7 @@ reader.readAsDataURL(f);
 };
 document.getElementById('copyBtn').onclick = () => {navigator.clipboard.writeText(document.getElementById('asciiOutput').textContent); alert('ASCII art copied to clipboard!');};
 </script>
+  <script src="/js/main.js?v=8"></script>
 </body>
 </html>
 
