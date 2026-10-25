@@ -74,34 +74,50 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Format gambar didukung?",
+      "name": "Apakah kualitas gambar menurun setelah disesuaikan?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Input: JPG, PNG, WebP, AVIF. Output: JPG."
+        "text": "Proses penyesuaiannya sendiri merender ulang piksel lewat filter Canvas, jadi mutu mengikuti nilai slider. Saat disimpan sebagai JPG ada kompresi ringan (kualitas 92%) — unduh sekali, hindari menyunting ulang berkas hasil unduhan."
       }
     },
     {
       "@type": "Question",
-      "name": "Kualitas turun saat penyesuaian?",
+      "name": "Format gambar apa saja yang didukung?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Penyesuaian lossless. Simpan JPG ada kompresi ringan."
+        "text": "Untuk masukan: JPG, PNG, WebP, AVIF, dan format gambar lain yang dikenali browser. Hasil akhir selalu JPG agar kompatibel di mana saja — dari galeri ponsel sampai formulir unggah marketplace."
       }
     },
     {
       "@type": "Question",
-      "name": "Sesuaikan beberapa gambar?",
+      "name": "Kenapa pratinjau tidak berubah saat saya menggeser slider?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Satu per satu. Klik Gambar Baru untuk lainnya."
+        "text": "Memang begitu: menggeser slider baru memperbarui angka persentasenya. Gambar hasil ter-render ketika tombol \"Terapkan Penyesuaian\" diklik — jadi atur ketiga nilai sekaligus, terapkan, lalu lihat hasilnya."
       }
     },
     {
       "@type": "Question",
-      "name": "Kenapa terlihat beda setelah download?",
+      "name": "Bisa menyesuaikan beberapa gambar sekaligus?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Pratinjau instan. JPG download di-recode 92%."
+        "text": "Belum — satu gambar per satu proses. Setelah mengunduh, klik \"Gambar Baru\" untuk memuat gambar berikutnya. Untuk puluhan foto katalog sekaligus, gunakan alat lain seperti kompresor atau pengubah ukuran massal."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Kenapa hasil unduhan terlihat sedikit berbeda dari pratinjau?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Pratinjau ditampilkan langsung dari kanvas di browser, sedangkan berkas JPG dienkode ulang pada kualitas 92% sebagai keseimbangan ukuran dan mutu. Pergeseran warna kecil saat konversi ke JPG adalah hal normal."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Apakah gambar saya diunggah ke server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Tidak. Seluruh proses berjalan di browser perangkat Anda; berkas tidak pernah dikirim ke mana pun. Menutup atau memuat ulang halaman menghapus semuanya."
       }
     }
   ]
@@ -174,7 +190,7 @@
                 <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
                   <span style="font-size:3rem;opacity:0.5;">🎚️</span>
                 </div>
-                <div class="before-after-item-caption after">After — adjusted</div>
+                <div class="before-after-item-caption after">Sesudah — disesuaikan</div>
               </div>
             </div>
           </div>
@@ -187,26 +203,26 @@
           <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Coba dengan gambar contoh</span>
           <div class="preview-area" id="previewArea">
             <div class="preview-single">
-              <div class="preview-container"><img id="resultImg" alt="Adjusted result"></div>
+              <div class="preview-container"><img id="resultImg" alt="Hasil penyesuaian"></div>
             </div>
             <div class="slider-row">
               <div class="adjust-slider">
-                <label><span>Brightness</span><span id="brightnessVal">100%</span></label>
+                <label><span>Kecerahan</span><span id="brightnessVal">100%</span></label>
                 <input type="range" id="brightnessRange" min="0" max="200" value="100">
               </div>
               <div class="adjust-slider">
-                <label><span>Contrast</span><span id="contrastVal">100%</span></label>
+                <label><span>Kontras</span><span id="contrastVal">100%</span></label>
                 <input type="range" id="contrastRange" min="0" max="200" value="100">
               </div>
               <div class="adjust-slider">
-                <label><span>Saturation</span><span id="saturationVal">100%</span></label>
+                <label><span>Saturasi</span><span id="saturationVal">100%</span></label>
                 <input type="range" id="saturationRange" min="0" max="300" value="100">
               </div>
             </div>
             <div class="tool-actions">
-              <button class="btn btn-primary" id="applyBtn">✨ Apply Adjustments</button>
-              <button class="btn btn-secondary hidden" id="downloadBtn">⬇️ Download</button>
-              <button class="btn btn-secondary" id="resetBtn">🔄 New Image</button>
+              <button class="btn btn-primary" id="applyBtn">✨ Terapkan Penyesuaian</button>
+              <button class="btn btn-secondary hidden" id="downloadBtn">⬇️ Unduh</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Gambar Baru</button>
             </div>
             <div id="status" class="text-center mt-16" style="color:var(--text-secondary)">
       </div>
@@ -232,11 +248,11 @@
         <h3>Langkah 2: Sesuaikan Kecerahan, Kontras & Saturasi</h3>
         <p>Gunakan tiga slider untuk menyempurnakan gambar Anda:</p>
         <ul>
-          <li><strong>Brightness</strong> (0%–200%) — Darken or brighten the image. 100% is the original brightness.</li>
-          <li><strong>Contrast</strong> (0%–200%) — Reduce or increase color contrast. 100% is the original contrast.</li>
-          <li><strong>Saturation</strong> (0%–300%) — Desaturate (grayscale at 0%) or boost colors. 100% is the original saturation.</li>
+          <li><strong>Kecerahan</strong> (0%–200%) — menggelapkan atau mencerahkan gambar. 100% berarti setingkat gambar asli.</li>
+          <li><strong>Kontras</strong> (0%–200%) — meredam atau mendongkrak kontras warna. 100% berarti setingkat gambar asli.</li>
+          <li><strong>Saturasi</strong> (0%–300%) — memudarkan warna (0% jadi hitam-putih) atau menguatkan warna. 100% berarti setingkat gambar asli.</li>
         </ul>
-        <div class="tip"><strong>Tip:</strong> Click "Apply Adjustments" after setting the sliders. The preview updates so you can see the exact effect before downloading.</div>
+        <div class="tip"><strong>Tip:</strong> atur dulu ketiga slider, lalu klik "Terapkan Penyesuaian". Pratinjau baru ter-render setelah itu — beginilah cara memastikan efeknya pas sebelum mengunduh.</div>
       </div>
 
       <div class="guide-block">
@@ -247,30 +263,24 @@
       <div class="guide-block">
         <h3>Kasus Penggunaan Terbaik</h3>
         <ul>
-          <li><strong>Fix underexposed photos</strong> — Increase brightness to recover detail in dark images</li>
-          <li><strong>Make colors pop</strong> — Boost saturation for social media posts</li>
-          <li><strong>Fix washed-out images</strong> — Increase contrast to add depth</li>
-          <li><strong>Create B&W effects</strong> — Reduce saturation to 0% for grayscale</li>
+          <li><strong>Selamatkan foto kurang cahaya</strong> — naikkan kecerahan untuk mengembalikan detail di bagian gelap</li>
+          <li><strong>Bikin warna lebih keluar</strong> — dongkrak saturasi untuk foto katalog Shopee atau feed Instagram</li>
+          <li><strong>Perbaiki foto yang pucat</strong> — tambah kontras supaya ada ketegasan</li>
+          <li><strong>Buat efek hitam-putih</strong> — turunkan saturasi ke 0% untuk hasil grayscale</li>
         </ul>
       </div>
 
       <div class="guide-block">
         <h3>Tips Profesional</h3>
         <ul>
-          <li>For portrait photos, avoid pushing brightness above 150% — skin tones can look unnatural</li>
-          <li>Combine slight contrast boost (+20%) with slight saturation boost (+15%) for a quick "vibrant" look</li>
-          <li>If the image looks too flat after reducing contrast, try increasing saturation slightly</li>
-          <li>For printing, keep brightness at or below 110% to avoid washed-out prints</li>
+          <li>Untuk foto orang, jangan dorong kecerahan lewat 150% — warna kulit bisa terlihat tidak alami</li>
+          <li>Gabungkan kenaikan kontras tipis (+20%) dengan saturasi tipis (+15%) untuk kesan "vibrant" instan pada foto produk</li>
+          <li>Kalau gambar terasa datar setelah kontras diturunkan, coba naikkan saturasi sedikit</li>
+          <li>Untuk cetak, jaga kecerahan maksimal 110% supaya hasil cetak tidak luntur</li>
         </ul>
       </div>
 
-<section class="faq-section">
-        <h2>Pertanyaan Umum</h2>
-      <div class="faq-item"><button class="faq-question">Format gambar didukung?</button><div class="faq-answer">Input: JPG, PNG, WebP, AVIF. Output: JPG.</div></div>
-      <div class="faq-item"><button class="faq-question">Kualitas turun saat penyesuaian?</button><div class="faq-answer">Penyesuaian lossless. Simpan JPG ada kompresi ringan.</div></div>
-      <div class="faq-item"><button class="faq-question">Sesuaikan beberapa gambar?</button><div class="faq-answer">Satu per satu. Klik Gambar Baru untuk lainnya.</div></div>
-      <div class="faq-item"><button class="faq-question">Kenapa terlihat beda setelah download?</button><div class="faq-answer">Pratinjau instan. JPG download di-recode 92%.</div></div>
-      </section>
+<section class="faq-section"><h2>Pertanyaan Umum</h2><div class="faq-item"><button class="faq-question">Apakah kualitas gambar menurun setelah disesuaikan?</button><div class="faq-answer">Proses penyesuaiannya sendiri merender ulang piksel lewat filter Canvas, jadi mutu mengikuti nilai slider. Saat disimpan sebagai JPG ada kompresi ringan (kualitas 92%) — unduh sekali, hindari menyunting ulang berkas hasil unduhan.</div></div><div class="faq-item"><button class="faq-question">Format gambar apa saja yang didukung?</button><div class="faq-answer">Untuk masukan: JPG, PNG, WebP, AVIF, dan format gambar lain yang dikenali browser. Hasil akhir selalu JPG agar kompatibel di mana saja — dari galeri ponsel sampai formulir unggah marketplace.</div></div><div class="faq-item"><button class="faq-question">Kenapa pratinjau tidak berubah saat saya menggeser slider?</button><div class="faq-answer">Memang begitu: menggeser slider baru memperbarui angka persentasenya. Gambar hasil ter-render ketika tombol "Terapkan Penyesuaian" diklik — jadi atur ketiga nilai sekaligus, terapkan, lalu lihat hasilnya.</div></div><div class="faq-item"><button class="faq-question">Bisa menyesuaikan beberapa gambar sekaligus?</button><div class="faq-answer">Belum — satu gambar per satu proses. Setelah mengunduh, klik "Gambar Baru" untuk memuat gambar berikutnya. Untuk puluhan foto katalog sekaligus, gunakan alat lain seperti kompresor atau pengubah ukuran massal.</div></div><div class="faq-item"><button class="faq-question">Kenapa hasil unduhan terlihat sedikit berbeda dari pratinjau?</button><div class="faq-answer">Pratinjau ditampilkan langsung dari kanvas di browser, sedangkan berkas JPG dienkode ulang pada kualitas 92% sebagai keseimbangan ukuran dan mutu. Pergeseran warna kecil saat konversi ke JPG adalah hal normal.</div></div><div class="faq-item"><button class="faq-question">Apakah gambar saya diunggah ke server?</button><div class="faq-answer">Tidak. Seluruh proses berjalan di browser perangkat Anda; berkas tidak pernah dikirim ke mana pun. Menutup atau memuat ulang halaman menghapus semuanya.</div></div></section>
 
 <section class="related-tools">
   <h2>Anda Mungkin Juga Suka</h2>
@@ -370,7 +380,7 @@ const dropzone = document.getElementById('dropzone');
     saturationRange.addEventListener('input', () => { saturationVal.textContent = saturationRange.value + '%'; });
 
     function handleFile(file) {
-      if (!file.type.startsWith('image/')) { status.textContent = 'Please select an image file.'; return; }
+      if (!file.type.startsWith('image/')) { status.textContent = 'Silakan pilih berkas gambar.'; return; }
       currentFile = file;
       ImageUtils.load(file).then(async img => {
         originalImg = img;
@@ -378,7 +388,7 @@ const dropzone = document.getElementById('dropzone');
         try {
           await applyAdjustment();
         } catch(e) {
-          status.textContent = 'Error: ' + e.message;
+          status.textContent = 'Galat: ' + e.message;
           return;
         }
         previewArea.classList.add('active');
@@ -388,7 +398,7 @@ const dropzone = document.getElementById('dropzone');
         status.textContent = '';
         downloadBtn.classList.remove('hidden');
       }).catch(err => {
-        status.textContent = 'Error loading image: ' + err.message;
+        status.textContent = 'Gagal memuat gambar: ' + err.message;
       });
     }
 
@@ -414,23 +424,23 @@ const dropzone = document.getElementById('dropzone');
     applyBtn.addEventListener('click', async function() {
       if (!originalImg) return;
       applyBtn.disabled = true;
-      applyBtn.textContent = '🔄 Applying...';
+      applyBtn.textContent = '🔄 Memproses...';
       status.innerHTML = '<div class="spinner"></div>';
       try {
         await applyAdjustment();
-        status.textContent = 'Done! Click Download to save.';
+        status.textContent = 'Selesai! Klik Unduh untuk menyimpan.';
       } catch (err) {
-        status.textContent = 'Error: ' + err.message;
+        status.textContent = 'Galat: ' + err.message;
       } finally {
         applyBtn.disabled = false;
-        applyBtn.textContent = '✨ Apply Adjustments';
+        applyBtn.textContent = '✨ Terapkan Penyesuaian';
       }
     });
 
     downloadBtn.addEventListener('click', function() {
       if (resultBlob) {
         var base = (currentFile.name || 'image').replace(/\.[^.]+$/, '');
-        ImageUtils.download(resultBlob, base + '-adjusted.jpg');
+        ImageUtils.download(resultBlob, base + '-disesuaikan.jpg');
         try { SmartImgNextStep.show(); } catch(e) {}
       }
     });

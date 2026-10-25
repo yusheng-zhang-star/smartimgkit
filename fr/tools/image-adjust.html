@@ -35,7 +35,7 @@
   
   "inLanguage": "fr","@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Image Adjustment Tool",
+  "name": "Ajuster l’image",
   "url": "https://smartimgkit.com/fr/tools/image-adjust",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
@@ -51,25 +51,25 @@
 {
   "@context": "https://schema.org",
   "@type": "HowTo",
-  "name": "How to Adjust Image Brightness & Contrast",
+  "name": "Comment utiliser",
   "step": [
     {
       "@type": "HowToStep",
       "position": 1,
-      "name": "Upload Image",
-      "text": "Select an image from your device or try with a sample image."
+      "name": "Téléverser",
+      "text": "Choisissez une photo depuis votre appareil ou essayez avec l’image d’exemple."
     },
     {
       "@type": "HowToStep",
       "position": 2,
-      "name": "Adjust Settings",
-      "text": "Use the sliders to adjust brightness, contrast, and saturation."
+      "name": "Ajuster",
+      "text": "Utilisez les trois curseurs pour régler luminosité, contraste et saturation."
     },
     {
       "@type": "HowToStep",
       "position": 3,
-      "name": "Download Result",
-      "text": "Click Apply to process, then Download to save the adjusted image."
+      "name": "Télécharger",
+      "text": "Cliquez sur Appliquer pour générer le rendu, puis sur Télécharger pour enregistrer."
     }
   ]
 }
@@ -90,34 +90,50 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "What image formats are supported?",
+      "name": "Quels formats d’image sont pris en charge ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Input: JPG, PNG, WebP, AVIF, and most browser-supported formats. Output: JPG (for broad compatibility)."
+        "text": "En entrée : JPG, PNG, WebP, AVIF et la plupart des formats reconnus par le navigateur. En sortie : JPG, pour une compatibilité maximale — galerie du téléphone, formulaires d’upload, pièces jointes."
       }
     },
     {
       "@type": "Question",
-      "name": "Will the adjusted image lose quality?",
+      "name": "L’image ajustée perd-elle en qualité ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The adjustment itself is lossless (pixel manipulation via Canvas filter). However, saving as JPG applies slight lossy compression. For best quality, download once and avoid re-editing the downloaded file."
+        "text": "Le réglage lui-même recalcule les pixels via un filtre Canvas ; la perte vient de l’enregistrement en JPG, compressé à 92 %. Téléchargez une seule fois et évitez de rééditer le fichier téléchargé."
       }
     },
     {
       "@type": "Question",
-      "name": "Can I adjust multiple images?",
+      "name": "Pourquoi l’aperçu ne bouge-t-il pas quand je déplace les curseurs ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Currently one image at a time. Click \"New Image\" to process another image after downloading."
+        "text": "C’est voulu : les curseurs ne mettent à jour que les pourcentages affichés. Le rendu se génère au clic sur « Appliquer les réglages ». Réglez les trois valeurs, appliquez, puis jugez le résultat."
       }
     },
     {
       "@type": "Question",
-      "name": "Why does my image look different after downloading?",
+      "name": "Puis-je ajuster plusieurs images à la suite ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The preview uses a data URL for instant display. The downloaded JPG is re-encoded at 92% quality for a good balance of file size and visual quality. Minor color shift is normal when converting to JPG."
+        "text": "Une image à la fois. Après le téléchargement, cliquez sur « Nouvelle image » pour en charger une autre. Pour traiter un lot entier, orientez-vous vers un outil de redimensionnement ou de compression par lot."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Pourquoi l’image téléchargée diffère-t-elle légèrement de l’aperçu ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "L’aperçu vient du canevas affiché dans le navigateur, tandis que le JPG est réencodé à 92 % pour équilibrer poids et qualité. Un léger décalage des couleurs à la conversion en JPG est normal."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Mes images sont-elles envoyées sur un serveur ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non. Tout est calculé dans votre navigateur ; aucun fichier ne quitte votre appareil. Recharger la page efface l’image et les réglages."
       }
     }
   ]
@@ -155,24 +171,24 @@
 
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>🎚️ Image Adjustment Tool</span></nav>
+      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>🎚️ Ajuster l’image</span></nav>
       <div class="tool-page-header">
-        <h1>🎚️ Image Adjustment Tool</h1>
-        <p>Adjust brightness, contrast, and saturation with real-time preview. All processing happens in your browser.</p>
+        <h1>🎚️ Ajuster l’image</h1>
+        <p>Réglez la luminosité, le contraste et la saturation d’une photo, puis comparez le résultat à l’original. Tout se passe dans votre navigateur.</p>
       </div>
       <div class="tool-workspace">
 <div class="before-after-preview" id="beforeAfterPreview">
-            <div class="before-after-label">✨ See what this tool can do</div>
+            <div class="before-after-label">✨ Ce que cet outil sait faire</div>
             <div class="before-after-images">
               <div class="before-after-item">
-                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&q=80" alt="Before" loading="lazy" onerror="this.style.display='none';this.parentNode.classList.add('img-fallback')">
-                <div class="before-after-item-caption before">Original</div>
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&q=80" alt="Avant" loading="lazy" onerror="this.style.display='none';this.parentNode.classList.add('img-fallback')">
+                <div class="before-after-item-caption before">Originale</div>
               </div>
               <div class="before-after-item">
                 <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
                   <span style="font-size:3rem;opacity:0.5;">🎚️</span>
                 </div>
-                <div class="before-after-item-caption after">After — adjusted</div>
+                <div class="before-after-item-caption after">Après — ajustée</div>
               </div>
             </div>
           </div>
@@ -182,18 +198,18 @@
             <h3>Déposez une image ici</h3>
             <p>ou cliquez pour parcourir</p>
           </label>
-          <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Try with a sample image</span>
+          <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Essayer avec une image d’exemple</span>
           <div class="preview-area" id="previewArea">
             <div class="preview-single">
-              <div class="preview-container"><img id="resultImg" alt="Adjusted result"></div>
+              <div class="preview-container"><img id="resultImg" alt="Résultat ajusté"></div>
             </div>
             <div class="slider-row">
               <div class="adjust-slider">
-                <label><span>Brightness</span><span id="brightnessVal">100%</span></label>
+                <label><span>Luminosité</span><span id="brightnessVal">100%</span></label>
                 <input type="range" id="brightnessRange" min="0" max="200" value="100">
               </div>
               <div class="adjust-slider">
-                <label><span>Contrast</span><span id="contrastVal">100%</span></label>
+                <label><span>Contraste</span><span id="contrastVal">100%</span></label>
                 <input type="range" id="contrastRange" min="0" max="200" value="100">
               </div>
               <div class="adjust-slider">
@@ -202,97 +218,90 @@
               </div>
             </div>
             <div class="tool-actions">
-              <button class="btn btn-primary" id="applyBtn">✨ Appliquer Adjustments</button>
+              <button class="btn btn-primary" id="applyBtn">✨ Appliquer les réglages</button>
               <button class="btn btn-secondary hidden" id="downloadBtn">⬇️ Télécharger</button>
-              <button class="btn btn-secondary" id="resetBtn">🔄 New Image</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Nouvelle image</button>
             </div>
             <div id="status" class="text-center mt-16" style="color:var(--text-secondary)"></div>
           </div>
       </div>
 <section class="how-to-section">
-        <h2>How to Use</h2>
+        <h2>Comment utiliser</h2>
         <div class="how-to-steps">
-          <div class="how-to-step"><div class="step-number">1</div><h4>Upload</h4><p>Select an image from your device or try with a sample image.</p></div>
-          <div class="how-to-step"><div class="step-number">2</div><h4>Adjust</h4><p>Use the sliders to adjust brightness, contrast, and saturation.</p></div>
-          <div class="how-to-step"><div class="step-number">3</div><h4>Download</h4><p>Click Apply to process, then Download to save the result.</p></div>
+          <div class="how-to-step"><div class="step-number">1</div><h4>Téléverser</h4><p>Choisissez une photo depuis votre appareil ou essayez avec l’image d’exemple.</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>Ajuster</h4><p>Utilisez les trois curseurs pour régler luminosité, contraste et saturation.</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>Télécharger</h4><p>Cliquez sur Appliquer pour générer le rendu, puis sur Télécharger pour enregistrer.</p></div>
         </div>
       </section>
 
-<h2>Detailed User Guide</h2>
+<h2>Guide détaillé</h2>
 
       <div class="guide-block">
-        <h3>Step 1: Upload Your Image</h3>
-        <p>Click the dropzone or drag and drop an image file (JPG, PNG, or WebP). The original image will be displayed in the preview area, and you can start adjusting immediately.</p>
+        <h3>Étape 1 : téléversez votre image</h3>
+        <p>Cliquez sur la zone de dépôt ou glissez-déposez un fichier image (JPG, PNG ou WebP). L’originale s’affiche dans la zone d’aperçu et vous pouvez commencer à régler tout de suite.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Step 2: Adjust Brightness, Contrast & Saturation</h3>
-        <p>Use the three sliders to fine-tune your image:</p>
+        <h3>Étape 2 : réglez luminosité, contraste et saturation</h3>
+        <p>Trois curseurs suffisent pour affiner le rendu :</p>
         <ul>
-          <li><strong>Brightness</strong> (0%–200%) — Darken or brighten the image. 100% is the original brightness.</li>
-          <li><strong>Contrast</strong> (0%–200%) — Reduce or increase color contrast. 100% is the original contrast.</li>
-          <li><strong>Saturation</strong> (0%–300%) — Desaturate (grayscale at 0%) or boost colors. 100% is the original saturation.</li>
+          <li><strong>Luminosité</strong> (0 %–200 %) — assombrit ou éclaircit l’image ; 100 % correspond à la luminosité d’origine.</li>
+          <li><strong>Contraste</strong> (0 %–200 %) — durcit ou adoucit l’écart entre les tons ; 100 % correspond au contraste d’origine.</li>
+          <li><strong>Saturation</strong> (0 %–300 %) — désature (0 % = noir et blanc) ou ravive les couleurs ; 100 % correspond à la saturation d’origine.</li>
         </ul>
-        <div class="tip"><strong>Tip:</strong> Click "Apply Adjustments" after setting the sliders. The preview updates so you can see the exact effect before downloading.</div>
+        <div class="tip"><strong>Astuce :</strong> les curseurs ne mettent à jour que les pourcentages ; le rendu de l’image se génère quand vous cliquez sur « Appliquer les réglages ». Ajustez les trois valeurs, appliquez, puis jugez à l’œil.</div>
       </div>
 
       <div class="guide-block">
-        <h3>Step 3: Apply & Download</h3>
-        <p>Click <strong>"Apply Adjustments"</strong> to render the final result with all three adjustments combined, then click <strong>"Download"</strong> to save the adjusted image as a JPG file.</p>
+        <h3>Étape 3 : appliquez et téléchargez</h3>
+        <p>Cliquez sur <strong>« Appliquer les réglages »</strong> pour générer le rendu final avec les trois réglages combinés, puis sur <strong>« Télécharger »</strong> pour enregistrer l’image ajustée en JPG.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Best Use Cases</h3>
+        <h3>Cas d’usage les plus fréquents</h3>
         <ul>
-          <li><strong>Fix underexposed photos</strong> — Increase brightness to recover detail in dark images</li>
-          <li><strong>Make colors pop</strong> — Boost saturation for social media posts</li>
-          <li><strong>Fix washed-out images</strong> — Increase contrast to add depth</li>
-          <li><strong>Create B&W effects</strong> — Reduce saturation to 0% for grayscale</li>
-        </ul>
-      </div>
-
-      <div class="guide-block">
-        <h3>Pro Tips</h3>
-        <ul>
-          <li>For portrait photos, avoid pushing brightness above 150% — skin tones can look unnatural</li>
-          <li>Combine slight contrast boost (+20%) with slight saturation boost (+15%) for a quick "vibrant" look</li>
-          <li>If the image looks too flat after reducing contrast, try increasing saturation slightly</li>
-          <li>For printing, keep brightness at or below 110% to avoid washed-out prints</li>
+          <li><strong>Rattraper une photo sous-exposée</strong> — augmentez la luminosité pour retrouver le détail dans les zones sombres</li>
+          <li><strong>Raviver les couleurs d’une annonce</strong> — un coup de saturation sur les photos d’un article Leboncoin les rend plus attirantes</li>
+          <li><strong>Donner du relief à un portrait LinkedIn</strong> — un léger gain de contraste suffit, sans excès</li>
+          <li><strong>Obtenir un rendu noir et blanc</strong> — descente de saturation à 0 %</li>
         </ul>
       </div>
 
-<section class="faq-section">
-        <h2>Frequently Asked Questions</h2>
-        <div class="faq-item"><button class="faq-question">What image formats are supported?</button><div class="faq-answer">Input: JPG, PNG, WebP, AVIF, and most browser-supported formats. Output: JPG (for broad compatibility).</div></div>
-        <div class="faq-item"><button class="faq-question">Will the adjusted image lose quality?</button><div class="faq-answer">The adjustment itself is lossless (pixel manipulation via Canvas filter). However, saving as JPG applies slight lossy compression. For best quality, download once and avoid re-editing the downloaded file.</div></div>
-        <div class="faq-item"><button class="faq-question">Can I adjust multiple images?</button><div class="faq-answer">Currently one image at a time. Click "New Image" to process another image after downloading.</div></div>
-        <div class="faq-item"><button class="faq-question">Why does my image look different after downloading?</button><div class="faq-answer">The preview uses a data URL for instant display. The downloaded JPG is re-encoded at 92% quality for a good balance of file size and visual quality. Minor color shift is normal when converting to JPG.</div></div>
-      </section>
+      <div class="guide-block">
+        <h3>Conseils de pro</h3>
+        <ul>
+          <li>Sur un portrait, ne dépassez pas 150 % de luminosité : les tons de peau deviennent artificiels</li>
+          <li>Combinez +20 % de contraste et +15 % de saturation pour un rendu « vif » immédiat</li>
+          <li>Si l’image semble plate après une baisse de contraste, remontez légèrement la saturation</li>
+          <li>Pour l’impression, restez à 110 % de luminosité maximum : l’écran (RVB) envoie plus de lumière qu’une feuille imprimée</li>
+        </ul>
+      </div>
+<section class="faq-section"><h2>Questions fréquentes</h2><div class="faq-item"><button class="faq-question">Quels formats d’image sont pris en charge ?</button><div class="faq-answer">En entrée : JPG, PNG, WebP, AVIF et la plupart des formats reconnus par le navigateur. En sortie : JPG, pour une compatibilité maximale — galerie du téléphone, formulaires d’upload, pièces jointes.</div></div><div class="faq-item"><button class="faq-question">L’image ajustée perd-elle en qualité ?</button><div class="faq-answer">Le réglage lui-même recalcule les pixels via un filtre Canvas ; la perte vient de l’enregistrement en JPG, compressé à 92 %. Téléchargez une seule fois et évitez de rééditer le fichier téléchargé.</div></div><div class="faq-item"><button class="faq-question">Pourquoi l’aperçu ne bouge-t-il pas quand je déplace les curseurs ?</button><div class="faq-answer">C’est voulu : les curseurs ne mettent à jour que les pourcentages affichés. Le rendu se génère au clic sur « Appliquer les réglages ». Réglez les trois valeurs, appliquez, puis jugez le résultat.</div></div><div class="faq-item"><button class="faq-question">Puis-je ajuster plusieurs images à la suite ?</button><div class="faq-answer">Une image à la fois. Après le téléchargement, cliquez sur « Nouvelle image » pour en charger une autre. Pour traiter un lot entier, orientez-vous vers un outil de redimensionnement ou de compression par lot.</div></div><div class="faq-item"><button class="faq-question">Pourquoi l’image téléchargée diffère-t-elle légèrement de l’aperçu ?</button><div class="faq-answer">L’aperçu vient du canevas affiché dans le navigateur, tandis que le JPG est réencodé à 92 % pour équilibrer poids et qualité. Un léger décalage des couleurs à la conversion en JPG est normal.</div></div><div class="faq-item"><button class="faq-question">Mes images sont-elles envoyées sur un serveur ?</button><div class="faq-answer">Non. Tout est calculé dans votre navigateur ; aucun fichier ne quitte votre appareil. Recharger la page efface l’image et les réglages.</div></div></section>
 
 <section class="related-tools">
-        <h2>You Might Also Like</h2>
+        <h2>À découvrir aussi</h2>
         <div class="related-tools-grid">
           <a href="/fr/tools/image-filters" class="related-tool-card">
             <span class="tool-icon">🎨</span>
             <div class="tool-info">
-              <strong>Image Filters</strong>
-              <span class="tool-desc">Apply preset filters like vintage, sepia, and more</span>
+              <strong>Filtres d’image</strong>
+              <span class="tool-desc">Appliquez des filtres vintage, sépia et plus</span>
             </div>
             <span class="tool-arrow">→</span>
           </a>
           <a href="/fr/tools/image-upscaler" class="related-tool-card">
             <span class="tool-icon">🔍</span>
             <div class="tool-info">
-              <strong>Image Upscaler</strong>
-              <span class="tool-desc">Increase image resolution without quality loss</span>
+              <strong>Agrandisseur d’image</strong>
+              <span class="tool-desc">Augmentez la résolution sans perte visible</span>
             </div>
             <span class="tool-arrow">→</span>
           </a>
           <a href="/fr/tools/compressor" class="related-tool-card">
             <span class="tool-icon">🗜️</span>
             <div class="tool-info">
-              <strong>Image Compressor</strong>
-              <span class="tool-desc">Reduce file size after adjusting</span>
+              <strong>Compresseur d’image</strong>
+              <span class="tool-desc">Réduisez le poids du fichier après ajustement</span>
             </div>
             <span class="tool-arrow">→</span>
           </a>
@@ -336,7 +345,7 @@ const dropzone = document.getElementById('dropzone');
     saturationRange.addEventListener('input', () => { saturationVal.textContent = saturationRange.value + '%'; });
 
     function handleFile(file) {
-      if (!file.type.startsWith('image/')) { status.textContent = 'Please select an image file.'; return; }
+      if (!file.type.startsWith('image/')) { status.textContent = 'Veuillez choisir un fichier image.'; return; }
       currentFile = file;
       ImageUtils.load(file).then(async img => {
         originalImg = img;
@@ -344,7 +353,7 @@ const dropzone = document.getElementById('dropzone');
         try {
           await applyAdjustment();
         } catch(e) {
-          status.textContent = 'Error: ' + e.message;
+          status.textContent = 'Erreur : ' + e.message;
           return;
         }
         previewArea.classList.add('active');
@@ -354,7 +363,7 @@ const dropzone = document.getElementById('dropzone');
         status.textContent = '';
         downloadBtn.classList.remove('hidden');
       }).catch(err => {
-        status.textContent = 'Error loading image: ' + err.message;
+        status.textContent = 'Échec du chargement de l’image : ' + err.message;
       });
     }
 
@@ -380,23 +389,23 @@ const dropzone = document.getElementById('dropzone');
     applyBtn.addEventListener('click', async function() {
       if (!originalImg) return;
       applyBtn.disabled = true;
-      applyBtn.textContent = '🔄 Applying...';
+      applyBtn.textContent = '🔄 Traitement...';
       status.innerHTML = '<div class="spinner"></div>';
       try {
         await applyAdjustment();
-        status.textContent = 'Done! Click Download to save.';
+        status.textContent = 'C’est fait ! Cliquez sur Télécharger pour enregistrer.';
       } catch (err) {
-        status.textContent = 'Error: ' + err.message;
+        status.textContent = 'Erreur : ' + err.message;
       } finally {
         applyBtn.disabled = false;
-        applyBtn.textContent = '✨ Apply Adjustments';
+        applyBtn.textContent = '✨ Appliquer les réglages';
       }
     });
 
     downloadBtn.addEventListener('click', function() {
       if (resultBlob) {
         var base = (currentFile.name || 'image').replace(/\.[^.]+$/, '');
-        ImageUtils.download(resultBlob, base + '-adjusted.jpg');
+        ImageUtils.download(resultBlob, base + '-ajustee.jpg');
         try { SmartImgNextStep.show(); } catch(e) {}
       }
     });
