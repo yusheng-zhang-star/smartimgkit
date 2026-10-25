@@ -35,7 +35,7 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Faire pivoter une image",
-  "url": "https://smartimgkit.com/tools/image-rotator",
+  "url": "https://smartimgkit.com/fr/tools/image-rotator",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
   "offers": {
@@ -127,26 +127,58 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "What rotation angles are supported?",
+      "name": "La rotation réduit-elle la qualité de l’image ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Any angle with custom rotation."
+        "text": "Les rotations à 90° et 180° sont sans perte — les pixels sont simplement réorganisés. Les rotations à angle personnalisé utilisent une interpolation bicubique de haute qualité, qui peut très légèrement adoucir l’image aux angles extrêmes. Dans la plupart des cas, la qualité est excellente."
       }
     },
     {
       "@type": "Question",
-      "name": "Can I auto-rotate based on EXIF?",
+      "name": "Mon image est-elle envoyée à un serveur ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. EXIF orientation is auto-detected."
+        "text": "Non. Tout le traitement se fait entièrement dans votre navigateur via l’API Canvas. Vos images ne quittent jamais votre appareil — aucun serveur ne reçoit ni ne stocke vos fichiers."
       }
     },
     {
       "@type": "Question",
-      "name": "Is my image uploaded to a server?",
+      "name": "Que devient la taille du canevas lors de la rotation ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. All rotation happens locally."
+        "text": "À 90° et 270°, la largeur et la hauteur du canevas s’échangent pour épouser parfaitement l’image pivotée. À angle personnalisé, le canevas s’agrandit pour contenir toute l’image, et la couleur de fond remplit l’espace nouvellement apparu."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Peut-on pivoter et retourner en même temps ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui. Réglez d’abord l’angle de rotation, puis cliquez sur un bouton de retournement ; le retournement s’applique par-dessus la rotation en cours. Les deux transformations sont combinées dans le résultat final."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quelle différence entre pivoter à 180° et retourner verticalement ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Pivoter à 180° met l’image tête-bêche (le haut devient le bas, la gauche devient la droite). Retourner verticalement ne fait qu’une symétrie haut–bas (la gauche reste à gauche). Les deux résultats diffèrent, sauf si l’image est parfaitement symétrique."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Peut-on faire pivoter des images GIF ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Vous pouvez charger un GIF, mais seule la première image sera pivotée ; le résultat est une image fixe (PNG, JPG ou WebP), pas un GIF animé. Pour pivoter un GIF animé, il faut un outil spécialisé."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Y a-t-il une limite de taille de fichier ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Aucune limite artificielle, mais les images très grandes (plus de 50 mégapixels) peuvent être lentes à traiter dans le navigateur. La plupart des photos de téléphone ou d’appareil photo sont traitées instantanément."
       }
     }
   ]
@@ -184,26 +216,26 @@
 
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>🔄 Image Rotator & Flipper</span></nav>
+      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>🔄 Faire pivoter ou retourner une image</span></nav>
       <div class="tool-page-header">
-        <h1>🔄 Image Rotator & Flipper</h1>
-        <p>Rotate images by any angle or flip them horizontally and vertically. Quick 90° rotations, custom angles, and mirror effects — all in your browser.</p>
+        <h1>🔄 Faire pivoter ou retourner une image</h1>
+        <p>Faites pivoter vos images selon n'importe quel angle ou retournez-les horizontalement et verticalement. Rotations rapides à 90°, angles personnalisés et effets miroir — le tout dans votre navigateur.</p>
       </div>
       <div class="tool-workspace">
 <!-- Upload Area -->
               <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Ce que cet outil sait faire</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400&q=80" alt="Before" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
-              <div class="before-after-item-caption before">Before</div>
+              <div class="before-after-item-caption before">Avant</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
                 <span style="font-size:3rem;opacity:0.5;">🔄</span>
               </div>
-              <div class="before-after-item-caption after">After — processed</div>
+              <div class="before-after-item-caption after">Après — traité</div>
             </div>
           </div>
         </div>        <input type="file" id="fileInput" accept="image/*" style="display:none;">
@@ -212,7 +244,7 @@
         <h3>Déposez une image ici</h3>
         <p>ou cliquez pour parcourir</p>
       </label>
-      <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Try with a sample image</span>
+      <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Essayer avec un exemple</span>
 
       <!-- Workspace -->
       <div id="workspace" style="display:none">
@@ -220,23 +252,23 @@
           <!-- Sidebar -->
           <div class="rotate-sidebar">
             <div class="control-group">
-              <label>Quick Rotate</label>
+              <label>Rotation rapide</label>
               <div class="quick-actions">
-                <button class="quick-btn" id="rotateLeftBtn"><span class="btn-icon">↺</span> 90° Left</button>
-                <button class="quick-btn" id="rotateRightBtn"><span class="btn-icon">↻</span> 90° Right</button>
+                <button class="quick-btn" id="rotateLeftBtn"><span class="btn-icon">↺</span> Gauche 90°</button>
+                <button class="quick-btn" id="rotateRightBtn"><span class="btn-icon">↻</span> Droite 90°</button>
                 <button class="quick-btn" id="rotate180Btn"><span class="btn-icon">🔄</span> 180°</button>
                 <button class="quick-btn" id="resetAngleBtn"><span class="btn-icon">↩</span> Réinitialiser</button>
               </div>
             </div>
 
             <div class="control-group">
-              <label>Personnalisé Angle</label>
+              <label>Angle personnalisé</label>
               <input type="range" id="angleSlider" min="0" max="360" value="0" step="1">
               <div class="angle-display"><span id="angleValue">0</span>°</div>
             </div>
 
             <div class="control-group">
-              <label>Flip</label>
+              <label>Retourner</label>
               <div class="quick-actions">
                 <button class="quick-btn" id="flipHBtn"><span class="btn-icon">↔</span> Horizontal</button>
                 <button class="quick-btn" id="flipVBtn"><span class="btn-icon">↕</span> Vertical</button>
@@ -244,7 +276,7 @@
             </div>
 
             <div class="control-group">
-              <label>Arrière-plan Couleur (for rotated corners)</label>
+              <label>Couleur de fond (pour les coins après rotation)</label>
               <input type="color" id="bgColor" value="#ffffff" style="width:100%;height:36px;border:1px solid var(--border);border-radius:6px;background:var(--bg-primary);cursor:pointer;padding:2px;">
             </div>
 
@@ -259,7 +291,7 @@
 
             <div class="tool-actions" style="flex-direction:column">
               <button class="btn btn-primary" id="downloadBtn">💾 Télécharger</button>
-              <button class="btn btn-secondary" id="resetBtn">🔄 Démarrer Over</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Recommencer</button>
             </div>
             <div id="status" class="text-center" style="color:var(--text-secondary);font-size:.85rem"></div>
           </div>
@@ -274,85 +306,85 @@
       </div>
       </div>
 <section class="how-to-section">
-        <h2>How to Use</h2>
+        <h2>Comment utiliser</h2>
         <div class="how-to-steps">
-          <div class="how-to-step"><div class="step-number">1</div><h4>Upload Image</h4><p>Click the upload area or drag and drop your image file.</p></div>
-          <div class="how-to-step"><div class="step-number">2</div><h4>Rotate or Flip</h4><p>Use quick rotation buttons (90° left/right), custom angle slider, or flip buttons.</p></div>
-          <div class="how-to-step"><div class="step-number">3</div><h4>Preview</h4><p>See the result instantly. The preview updates in real-time as you adjust.</p></div>
-          <div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Click Download to save the rotated or flipped image.</p></div>
+          <div class="how-to-step"><div class="step-number">1</div><h4>Charger l'image</h4><p>Cliquez sur la zone de dépôt ou glissez-y votre fichier image.</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>Pivoter ou retourner</h4><p>Utilisez les boutons de rotation rapide (gauche/droite 90°), le curseur d'angle personnalisé ou les boutons de retournement.</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>Aperçu</h4><p>Le résultat s'affiche instantanément et se met à jour en temps réel à chaque réglage.</p></div>
+          <div class="how-to-step"><div class="step-number">4</div><h4>Télécharger</h4><p>Cliquez sur Télécharger pour enregistrer l'image pivotée ou retournée.</p></div>
         </div>
       </section>
 
-<h2>Detailed User Guide</h2>
+<h2>Guide détaillé</h2>
 
         <div class="guide-block">
-          <h3>Step 1: Upload Your Image</h3>
-          <p>Click anywhere in the upload area or drag and drop an image file. Supported formats include JPG, PNG, WebP, GIF, and BMP. The image loads instantly and appears in the preview canvas. No data is sent to any server — everything stays in your browser.</p>
+          <h3>Étape 1 : chargez votre image</h3>
+          <p>Cliquez n'importe où dans la zone de dépôt ou glissez-y un fichier image. Les formats pris en charge sont JPG, PNG, WebP, GIF et BMP. L'image se charge instantanément et apparaît dans l'aperçu. Aucune donnée n'est envoyée à un serveur — tout se passe dans votre navigateur.</p>
         </div>
 
         <div class="guide-block">
-          <h3>Step 2: Choose Your Transformation</h3>
-          <p>You have several options for transforming your image:</p>
+          <h3>Étape 2 : choisissez la transformation</h3>
+          <p>Plusieurs options s'offrent à vous :</p>
           <ul>
-            <li><strong>Quick Rotate:</strong> Click "90° Left" or "90° Right" for common quarter-turn rotations. Use "180°" to flip the image upside down. These are the most common rotations for fixing photos taken in the wrong orientation.</li>
-            <li><strong>Custom Angle:</strong> Drag the angle slider from 0° to 360° for precise rotation at any angle. The current angle is displayed below the slider. Great for straightening tilted photos or creative effects.</li>
-            <li><strong>Flip:</strong> "Horizontal" creates a mirror image (left-right flip). "Vertical" flips the image top-to-bottom. These are perfect for creating reflections, mirror effects, or correcting scanned documents.</li>
+            <li><strong>Rotation rapide :</strong> cliquez sur « Gauche 90° » ou « Droite 90° » pour le quart de tour habituel, ou « 180° » pour mettre l'image à l'envers. C'est le moyen le plus courant de redresser une photo prise dans le mauvais sens.</li>
+            <li><strong>Angle personnalisé :</strong> faites glisser le curseur de 0° à 360° pour une rotation précise à n'importe quel angle. L'angle en cours s'affiche sous le curseur. Idéal pour redresser une photo penchée ou créer un effet original.</li>
+            <li><strong>Retourner :</strong> « Horizontal » crée un effet miroir (symétrie gauche–droite), « Vertical » retourne l'image de haut en bas. Parfait pour des reflets, des effets miroir ou des documents numérisés à l'envers.</li>
           </ul>
         </div>
 
         <div class="guide-block">
-          <h3>Step 3: Fine-Tune the Result</h3>
-          <p>The preview updates in real-time so you can see exactly how your image will look. When rotating by custom angles, the canvas expands to fit the entire image. You can choose a background color to fill the new corners that appear after rotation. Set it to white for printing, black for dark themes, or use the color picker to match any background.</p>
+          <h3>Étape 3 : ajustez le résultat</h3>
+          <p>L'aperçu se met à jour en temps réel : vous voyez exactement ce que donnera votre image. Lors d'une rotation à angle personnalisé, le canevas s'agrandit pour contenir toute l'image. Vous pouvez choisir une couleur de fond pour combler les coins apparus après la rotation : blanc pour l'impression, noir pour les thèmes sombres, ou la teinte exacte de votre fond grâce à la pipette.</p>
         </div>
 
         <div class="guide-block">
-          <h3>Step 4: Download</h3>
-          <p>When you're happy with the result, choose your output format (PNG for quality, JPG for smaller files, WebP for modern use) and click <strong>"Download"</strong>. The file saves to your device immediately — no watermarks, no quality loss, no server uploads.</p>
+          <h3>Étape 4 : téléchargez</h3>
+          <p>Une fois satisfait, choisissez le format de sortie (PNG pour la qualité, JPG pour des fichiers plus légers, WebP pour un usage moderne) puis cliquez sur <strong>« Télécharger »</strong>. Le fichier est enregistré immédiatement sur votre appareil — sans filigrane, sans perte de qualité, sans envoi à un serveur.</p>
         </div>
 
         <div class="guide-block">
-          <h3>Best Use Cases</h3>
+          <h3>Cas d'usage</h3>
           <ul>
-            <li><strong>Fix photo orientation</strong> — Rotate sideways or upside-down photos from your camera roll</li>
-            <li><strong>Straighten tilted photos</strong> — Use the custom angle slider to fine-tune the horizon line</li>
-            <li><strong>Mirror selfies</strong> — Flip horizontally to create a true mirror reflection</li>
-            <li><strong>Creative compositions</strong> — Rotate at unusual angles for artistic effects</li>
-            <li><strong>Scanned documents</strong> — Flip or rotate scanned pages that came in the wrong orientation</li>
-            <li><strong>Social media prep</strong> — Rotate landscape to portrait or vice versa for different platforms</li>
+            <li><strong>Redresser l'orientation</strong> — remettez d'aplomb les photos prises de travers ou à l'envers</li>
+            <li><strong>Nivellement fin</strong> — ajustez la ligne d'horizon au degré près avec le curseur d'angle</li>
+            <li><strong>Miroir pour selfies</strong> — retournez horizontalement pour retrouver l'image telle que vous la voyez dans un miroir</li>
+            <li><strong>Compositions créatives</strong> — pivotez à des angles inhabituels pour un effet artistique</li>
+            <li><strong>Documents numérisés</strong> — retournez ou pivotez les pages scannées dans le mauvais sens</li>
+            <li><strong>Réseaux sociaux</strong> — passez du format paysage au portrait (ou l'inverse) selon la plateforme</li>
           </ul>
         </div>
 
         <div class="guide-block">
-          <h3>Pro Tips</h3>
+          <h3>Conseils</h3>
           <ul>
-            <li>For quick orientation fixes, use the 90° buttons — they're faster than the slider</li>
-            <li>When rotating by custom angles, choose a background color that matches your target background</li>
-            <li>PNG format preserves transparency — if your image has a transparent background, use PNG</li>
-            <li>You can combine rotation and flipping — rotate first, then flip for unique effects</li>
-            <li>Use "Reset" to go back to the original orientation without re-uploading</li>
-            <li>For straightening photos, try small angles (1-5°) and watch the preview closely</li>
+            <li>Pour un correctif d'orientation rapide, préférez les boutons 90° — plus rapides que le curseur</li>
+            <li>Lors d'une rotation personnalisée, choisissez une couleur de fond proche de votre fond de destination</li>
+            <li>Le format PNG conserve la transparence — si votre image a un fond transparent, choisissez PNG</li>
+            <li>Vous pouvez combiner rotation et retournement — pivotez d'abord, puis retournez pour un effet unique</li>
+            <li>« Réinitialiser » ramène à l'image d'origine sans devoir la recharger</li>
+            <li>Pour redresser une photo, essayez de petits angles (1–5°) en surveillant l'aperçu</li>
           </ul>
         </div>
 
 <section class="faq-section">
-        <h2>Frequently Asked Questions</h2>
-        <div class="faq-item"><button class="faq-question">Does rotation reduce image quality?</button><div class="faq-answer">90° and 180° rotations are lossless — pixels are simply rearranged. Custom angle rotations use high-quality bicubic interpolation, which may introduce very slight softening at extreme angles. For most purposes, the quality is excellent.</div></div>
-      <div class="faq-item"><button class="faq-question">Will my image be uploaded to a server?</button><div class="faq-answer">No. All processing happens entirely in your browser using the Canvas API. Your images never leave your device. There is no server that receives or stores your files.</div></div>
-      <div class="faq-item"><button class="faq-question">What happens to the canvas size when I rotate?</button><div class="faq-answer">For 90° and 270° rotations, the canvas width and height swap to fit the rotated image perfectly. For custom angles, the canvas expands to contain the entire rotated image, and the background color fills any new space.</div></div>
-      <div class="faq-item"><button class="faq-question">Can I rotate and flip at the same time?</button><div class="faq-answer">Yes. Set your rotation angle first, then click a flip button. The flip applies on top of the current rotation. Both transformations are combined in the final output.</div></div>
-      <div class="faq-item"><button class="faq-question">What's the difference between rotating 180° and flipping vertically?</button><div class="faq-answer">Rotating 180° turns the image upside down (top becomes bottom, left becomes right). Flipping vertically only mirrors top-to-bottom (left stays left). They produce different results unless the image is perfectly symmetrical.</div></div>
-      <div class="faq-item"><button class="faq-question">Can I rotate GIF images?</button><div class="faq-answer">You can upload a GIF, but only the first frame will be rotated. The output will be a static image (PNG, JPG, or WebP), not an animated GIF. For animated GIF rotation, a specialized tool is needed.</div></div>
-      <div class="faq-item"><button class="faq-question">Is there a file size limit?</button><div class="faq-answer">There's no artificial limit, but very large images (over 50 megapixels) may be slow to process in the browser. Most photos from phones and cameras work instantly.</div></div>
+        <h2>Questions fréquentes</h2>
+        <div class="faq-item"><button class="faq-question">La rotation réduit-elle la qualité de l’image ?</button><div class="faq-answer">Les rotations à 90° et 180° sont sans perte — les pixels sont simplement réorganisés. Les rotations à angle personnalisé utilisent une interpolation bicubique de haute qualité, qui peut très légèrement adoucir l’image aux angles extrêmes. Dans la plupart des cas, la qualité est excellente.</div></div>
+      <div class="faq-item"><button class="faq-question">Mon image est-elle envoyée à un serveur ?</button><div class="faq-answer">Non. Tout le traitement se fait entièrement dans votre navigateur via l’API Canvas. Vos images ne quittent jamais votre appareil — aucun serveur ne reçoit ni ne stocke vos fichiers.</div></div>
+      <div class="faq-item"><button class="faq-question">Que devient la taille du canevas lors de la rotation ?</button><div class="faq-answer">À 90° et 270°, la largeur et la hauteur du canevas s’échangent pour épouser parfaitement l’image pivotée. À angle personnalisé, le canevas s’agrandit pour contenir toute l’image, et la couleur de fond remplit l’espace nouvellement apparu.</div></div>
+      <div class="faq-item"><button class="faq-question">Peut-on pivoter et retourner en même temps ?</button><div class="faq-answer">Oui. Réglez d’abord l’angle de rotation, puis cliquez sur un bouton de retournement ; le retournement s’applique par-dessus la rotation en cours. Les deux transformations sont combinées dans le résultat final.</div></div>
+      <div class="faq-item"><button class="faq-question">Quelle différence entre pivoter à 180° et retourner verticalement ?</button><div class="faq-answer">Pivoter à 180° met l’image tête-bêche (le haut devient le bas, la gauche devient la droite). Retourner verticalement ne fait qu’une symétrie haut–bas (la gauche reste à gauche). Les deux résultats diffèrent, sauf si l’image est parfaitement symétrique.</div></div>
+      <div class="faq-item"><button class="faq-question">Peut-on faire pivoter des images GIF ?</button><div class="faq-answer">Vous pouvez charger un GIF, mais seule la première image sera pivotée ; le résultat est une image fixe (PNG, JPG ou WebP), pas un GIF animé. Pour pivoter un GIF animé, il faut un outil spécialisé.</div></div>
+      <div class="faq-item"><button class="faq-question">Y a-t-il une limite de taille de fichier ?</button><div class="faq-answer">Aucune limite artificielle, mais les images très grandes (plus de 50 mégapixels) peuvent être lentes à traiter dans le navigateur. La plupart des photos de téléphone ou d’appareil photo sont traitées instantanément.</div></div>
       </section>
 
 <section class="related-tools">
-  <h2>You Might Also Like</h2>
+  <h2>Vous aimerez aussi</h2>
   <div class="related-tools-grid">
     <a href="/fr/tools/cropper" class="related-tool-card">
       <span class="tool-icon">🖼️</span>
       <div class="tool-info">
         <strong>Image Cropper</strong>
-        <span class="tool-desc">Crop after rotating to perfect composition</span>
+        <span class="tool-desc">Recadrez après la rotation pour une composition parfaite</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
@@ -360,7 +392,7 @@
       <span class="tool-icon">🗜️</span>
       <div class="tool-info">
         <strong>Image Compressor</strong>
-        <span class="tool-desc">Compress rotated images for sharing</span>
+        <span class="tool-desc">Compressez les images pivotées pour les partager</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
@@ -368,7 +400,7 @@
       <span class="tool-icon">🖨️</span>
       <div class="tool-info">
         <strong>Print-Ready Resizer</strong>
-        <span class="tool-desc">Get exact print dimensions after rotation</span>
+        <span class="tool-desc">Obtenez les dimensions d’impression exactes après rotation</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
@@ -498,7 +530,7 @@
     downloadBtn.addEventListener('click', async () => {
       if (!originalImg) return;
       downloadBtn.disabled = true;
-      downloadBtn.textContent = '🔄 Processing...';
+      downloadBtn.textContent = '🔄 Traitement...';
       status.textContent = '';
       let blob = null;
       let ext = 'png';
@@ -508,12 +540,12 @@
         blob = await ImageUtils.canvasToBlob(previewCanvas, format, quality);
         ext = format === 'image/png' ? 'png' : format === 'image/jpeg' ? 'jpg' : 'webp';
         ImageUtils.download(blob, `rotated-image.${ext}`);
-        status.textContent = '✅ Image downloaded!';
+        status.textContent = '✅ Image téléchargée !';
       } catch (e) {
-        status.textContent = '❌ Error: ' + e.message;
+        status.textContent = '❌ Erreur : ' + e.message;
       }
       downloadBtn.disabled = false;
-      downloadBtn.textContent = '💾 Download';
+      downloadBtn.textContent = '💾 Télécharger';
     });
 
     // ===== Reset =====

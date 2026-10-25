@@ -35,7 +35,7 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Xoay và lật ảnh online miễn phí",
-  "url": "https://smartimgkit.com/tools/image-rotator",
+  "url": "https://smartimgkit.com/vi/tools/image-rotator",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
   "offers": {
@@ -127,26 +127,58 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "What rotation angles are supported?",
+      "name": "Xoay ảnh có làm giảm chất lượng không?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Any angle with custom rotation."
+        "text": "Xoay 90° và 180° không hề mất chất lượng — các điểm ảnh chỉ được sắp xếp lại vị trí. Xoay góc tùy chọn dùng nội suy bicubic chất lượng cao, chỉ có thể hơi mềm ở các góc cực đoan. Với hầu hết nhu cầu, chất lượng đầu ra là rất tốt."
       }
     },
     {
       "@type": "Question",
-      "name": "Can I auto-rotate based on EXIF?",
+      "name": "Ảnh của tôi có bị tải lên máy chủ không?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. EXIF orientation is auto-detected."
+        "text": "Không. Toàn bộ quá trình xử lý diễn ra ngay trong trình duyệt bằng Canvas API. Ảnh không bao giờ rời khỏi thiết bị của bạn — không có máy chủ nào nhận hay lưu tệp."
       }
     },
     {
       "@type": "Question",
-      "name": "Is my image uploaded to a server?",
+      "name": "Khung ảnh thay đổi thế nào khi tôi xoay?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. All rotation happens locally."
+        "text": "Ở 90° và 270°, chiều rộng và chiều cao khung hoán đổi cho nhau để khớp vừa khít ảnh đã xoay. Ở góc tùy chọn, khung mở rộng để chứa toàn bộ ảnh, còn phần trống mới xuất hiện được tô bằng màu nền bạn đã chọn."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Có thể vừa xoay vừa lật cùng lúc không?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Có. Đặt góc xoay trước, sau đó bấm nút lật; hiệu ứng lật sẽ áp dụng trên trạng thái đã xoay. Cả hai biến đổi được kết hợp với nhau trong kết quả cuối cùng."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Xoay 180° khác gì lật dọc?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Xoay 180° lộn ngược ảnh (trên thành dưới, trái thành phải). Lật dọc chỉ đối xứng trên–dưới (trái vẫn là trái). Hai kết quả khác nhau, trừ khi ảnh đối xứng hoàn hảo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Có xoay được ảnh GIF không?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Bạn có thể tải GIF lên nhưng chỉ khung hình đầu tiên được xoay; kết quả là ảnh tĩnh (PNG, JPG hoặc WebP) chứ không phải GIF động. Muốn xoay GIF động thì cần công cụ chuyên dụng."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Có giới hạn dung lượng tệp không?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Không có giới hạn cứng, nhưng ảnh rất lớn (trên 50 megapixel) có thể xử lý chậm trong trình duyệt. Ảnh chụp từ điện thoại và máy ảnh thông thường đều xử lý gần như ngay lập tức."
       }
     }
   ]
@@ -184,26 +216,26 @@
 
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Trang chủ</a><span>/</span><a href="/">Công cụ</a><span>/</span><span>🔄 Image Rotator & Flipper</span></nav>
+      <nav class="breadcrumb"><a href="/">Trang chủ</a><span>/</span><a href="/">Công cụ</a><span>/</span><span>🔄 Xoay và lật ảnh</span></nav>
       <div class="tool-page-header">
-        <h1>🔄 Image Rotator & Flipper</h1>
-        <p>Rotate images by any angle or flip them horizontally and vertically. Quick 90° rotations, custom angles, and mirror effects — all in your browser.</p>
+        <h1>🔄 Xoay và lật ảnh</h1>
+        <p>Xoay ảnh theo mọi góc độ hoặc lật ngang, lật dọc. Xoay nhanh 90°, góc tùy chọn và hiệu ứng gương — tất cả ngay trong trình duyệt của bạn.</p>
       </div>
       <div class="tool-workspace">
 <!-- Upload Area -->
               <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Công cụ này làm được gì</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400&q=80" alt="Before" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
-              <div class="before-after-item-caption before">Before</div>
+              <div class="before-after-item-caption before">Trước</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
                 <span style="font-size:3rem;opacity:0.5;">🔄</span>
               </div>
-              <div class="before-after-item-caption after">After — processed</div>
+              <div class="before-after-item-caption after">Sau — đã xử lý</div>
             </div>
           </div>
         </div>        <input type="file" id="fileInput" accept="image/*" style="display:none;">
@@ -212,7 +244,7 @@
         <h3>Thả ảnh vào đây</h3>
         <p>hoặc bấm để chọn tệp</p>
       </label>
-      <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Try with a sample image</span>
+      <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Thử với một ảnh mẫu</span>
 
       <!-- Workspace -->
       <div id="workspace" style="display:none">
@@ -220,31 +252,31 @@
           <!-- Sidebar -->
           <div class="rotate-sidebar">
             <div class="control-group">
-              <label>Quick Rotate</label>
+              <label>Xoay nhanh</label>
               <div class="quick-actions">
-                <button class="quick-btn" id="rotateLeftBtn"><span class="btn-icon">↺</span> 90° Left</button>
-                <button class="quick-btn" id="rotateRightBtn"><span class="btn-icon">↻</span> 90° Right</button>
+                <button class="quick-btn" id="rotateLeftBtn"><span class="btn-icon">↺</span> Trái 90°</button>
+                <button class="quick-btn" id="rotateRightBtn"><span class="btn-icon">↻</span> Phải 90°</button>
                 <button class="quick-btn" id="rotate180Btn"><span class="btn-icon">🔄</span> 180°</button>
                 <button class="quick-btn" id="resetAngleBtn"><span class="btn-icon">↩</span> Đặt lại</button>
               </div>
             </div>
 
             <div class="control-group">
-              <label>Custom Angle</label>
+              <label>Góc tùy chọn</label>
               <input type="range" id="angleSlider" min="0" max="360" value="0" step="1">
               <div class="angle-display"><span id="angleValue">0</span>°</div>
             </div>
 
             <div class="control-group">
-              <label>Flip</label>
+              <label>Lật</label>
               <div class="quick-actions">
-                <button class="quick-btn" id="flipHBtn"><span class="btn-icon">↔</span> Horizontal</button>
-                <button class="quick-btn" id="flipVBtn"><span class="btn-icon">↕</span> Vertical</button>
+                <button class="quick-btn" id="flipHBtn"><span class="btn-icon">↔</span> Ngang</button>
+                <button class="quick-btn" id="flipVBtn"><span class="btn-icon">↕</span> Dọc</button>
               </div>
             </div>
 
             <div class="control-group">
-              <label>Background Màu sắc (for rotated corners)</label>
+              <label>Màu nền (cho các góc sau khi xoay)</label>
               <input type="color" id="bgColor" value="#ffffff" style="width:100%;height:36px;border:1px solid var(--border);border-radius:6px;background:var(--bg-primary);cursor:pointer;padding:2px;">
             </div>
 
@@ -259,7 +291,7 @@
 
             <div class="tool-actions" style="flex-direction:column">
               <button class="btn btn-primary" id="downloadBtn">💾 Tải xuống</button>
-              <button class="btn btn-secondary" id="resetBtn">🔄 Bắt đầu Over</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Bắt đầu lại</button>
             </div>
             <div id="status" class="text-center" style="color:var(--text-secondary);font-size:.85rem"></div>
           </div>
@@ -274,85 +306,85 @@
       </div>
       </div>
 <section class="how-to-section">
-        <h2>How to Use</h2>
+        <h2>Cách sử dụng</h2>
         <div class="how-to-steps">
-          <div class="how-to-step"><div class="step-number">1</div><h4>Upload Image</h4><p>Click the upload area or drag and drop your image file.</p></div>
-          <div class="how-to-step"><div class="step-number">2</div><h4>Rotate or Flip</h4><p>Use quick rotation buttons (90° left/right), custom angle slider, or flip buttons.</p></div>
-          <div class="how-to-step"><div class="step-number">3</div><h4>Preview</h4><p>See the result instantly. The preview updates in real-time as you adjust.</p></div>
-          <div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Click Download to save the rotated or flipped image.</p></div>
+          <div class="how-to-step"><div class="step-number">1</div><h4>Tải ảnh lên</h4><p>Bấm vào vùng tải lên hoặc kéo thả tệp ảnh của bạn vào.</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>Xoay hoặc lật</h4><p>Dùng nút xoay nhanh (trái/phải 90°), thanh trượt góc tùy chọn hoặc các nút lật.</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>Xem trước</h4><p>Kết quả hiện ngay lập tức và cập nhật theo thời gian thực mỗi khi bạn điều chỉnh.</p></div>
+          <div class="how-to-step"><div class="step-number">4</div><h4>Tải xuống</h4><p>Bấm Tải xuống để lưu ảnh đã xoay hoặc đã lật về máy.</p></div>
         </div>
       </section>
 
-<h2>Detailed User Guide</h2>
+<h2>Hướng dẫn chi tiết</h2>
 
         <div class="guide-block">
-          <h3>Step 1: Upload Your Image</h3>
-          <p>Click anywhere in the upload area or drag and drop an image file. Supported formats include JPG, PNG, WebP, GIF, and BMP. The image loads instantly and appears in the preview canvas. No data is sent to any server — everything stays in your browser.</p>
+          <h3>Bước 1: Tải ảnh của bạn lên</h3>
+          <p>Bấm vào bất kỳ đâu trong vùng tải lên hoặc kéo thả tệp ảnh vào. Các định dạng được hỗ trợ gồm JPG, PNG, WebP, GIF và BMP. Ảnh được nạp ngay lập tức và hiện trên khung xem trước. Không có dữ liệu nào được gửi tới máy chủ — mọi thứ diễn ra ngay trên trình duyệt của bạn.</p>
         </div>
 
         <div class="guide-block">
-          <h3>Step 2: Choose Your Transformation</h3>
-          <p>You have several options for transforming your image:</p>
+          <h3>Bước 2: Chọn kiểu biến đổi</h3>
+          <p>Bạn có vài cách để biến đổi ảnh:</p>
           <ul>
-            <li><strong>Quick Rotate:</strong> Click "90° Left" or "90° Right" for common quarter-turn rotations. Use "180°" to flip the image upside down. These are the most common rotations for fixing photos taken in the wrong orientation.</li>
-            <li><strong>Custom Angle:</strong> Drag the angle slider from 0° to 360° for precise rotation at any angle. The current angle is displayed below the slider. Great for straightening tilted photos or creative effects.</li>
-            <li><strong>Flip:</strong> "Horizontal" creates a mirror image (left-right flip). "Vertical" flips the image top-to-bottom. These are perfect for creating reflections, mirror effects, or correcting scanned documents.</li>
+            <li><strong>Xoay nhanh:</strong> Bấm "Trái 90°" hoặc "Phải 90°" cho các lần quay tư thế thông thường, hoặc "180°" để lộn ngược ảnh. Đây là cách khắc phục phổ biến nhất cho ảnh chụp bị sai chiều.</li>
+            <li><strong>Góc tùy chọn:</strong> Kéo thanh trượt từ 0° đến 360° để xoay chính xác ở mọi góc. Góc hiện tại hiển thị ngay dưới thanh trượt. Hợp với việc nắn thẳng ảnh bị nghiêng hoặc tạo hiệu ứng sáng tạo.</li>
+            <li><strong>Lật:</strong> "Ngang" tạo ảnh phản chiếu (lật trái–phải), "Dọc" lật ảnh từ trên xuống dưới. Phù hợp để tạo hiệu ứng gương hoặc xử lý tài liệu quét bị ngược chiều.</li>
           </ul>
         </div>
 
         <div class="guide-block">
-          <h3>Step 3: Fine-Tune the Result</h3>
-          <p>The preview updates in real-time so you can see exactly how your image will look. When rotating by custom angles, the canvas expands to fit the entire image. You can choose a background color to fill the new corners that appear after rotation. Set it to white for printing, black for dark themes, or use the color picker to match any background.</p>
+          <h3>Bước 3: Tinh chỉnh kết quả</h3>
+          <p>Khung xem trước cập nhật theo thời gian thực nên bạn thấy ngay ảnh sẽ trông thế nào. Khi xoay góc tùy chọn, khung ảnh tự mở rộng để chứa trọn vẹn ảnh. Bạn có thể chọn màu nền lấp các góc trống xuất hiện sau khi xoay: chọn trắng để in ấn, đen cho giao diện tối, hoặc lấy đúng màu nền đích bằng bộ chọn màu.</p>
         </div>
 
         <div class="guide-block">
-          <h3>Step 4: Download</h3>
-          <p>When you're happy with the result, choose your output format (PNG for quality, JPG for smaller files, WebP for modern use) and click <strong>"Download"</strong>. The file saves to your device immediately — no watermarks, no quality loss, no server uploads.</p>
+          <h3>Bước 4: Tải xuống</h3>
+          <p>Khi vừa lòng với kết quả, chọn định dạng đầu ra (PNG để giữ chất lượng, JPG cho tệp nhẹ hơn, WebP cho nhu cầu hiện đại) rồi bấm <strong>"Tải xuống"</strong>. Tệp được lưu ngay lên thiết bị — không đóng dấu, không giảm chất lượng, không tải lên máy chủ.</p>
         </div>
 
         <div class="guide-block">
-          <h3>Best Use Cases</h3>
+          <h3>Nên dùng khi nào</h3>
           <ul>
-            <li><strong>Fix photo orientation</strong> — Rotate sideways or upside-down photos from your camera roll</li>
-            <li><strong>Straighten tilted photos</strong> — Use the custom angle slider to fine-tune the horizon line</li>
-            <li><strong>Mirror selfies</strong> — Flip horizontally to create a true mirror reflection</li>
-            <li><strong>Creative compositions</strong> — Rotate at unusual angles for artistic effects</li>
-            <li><strong>Scanned documents</strong> — Flip or rotate scanned pages that came in the wrong orientation</li>
-            <li><strong>Social media prep</strong> — Rotate landscape to portrait or vice versa for different platforms</li>
+            <li><strong>Sửa chiều ảnh chụp</strong> — Xoay lại những tấm ảnh bị nghiêng 90° hoặc chụp ngược trong thư viện</li>
+            <li><strong>Nắn thẳng ảnh lệch</strong> — Dùng thanh trượt góc tùy chọn để chỉnh lại đường chân trời</li>
+            <li><strong>Ảnh selfie gương</strong> — Lật ngang để tạo đúng hình phản chiếu như khi soi gương</li>
+            <li><strong>Bố cục sáng tạo</strong> — Xoay lệch góc để tạo hiệu ứng nghệ thuật</li>
+            <li><strong>Tài liệu quét</strong> — Lật hoặc xoay lại trang quét bị sai chiều</li>
+            <li><strong>Chuẩn bị đăng mạng xã hội</strong> — Đổi ảnh ngang thành dọc hoặc ngược lại cho từng nền tảng</li>
           </ul>
         </div>
 
         <div class="guide-block">
-          <h3>Pro Tips</h3>
+          <h3>Mẹo hay</h3>
           <ul>
-            <li>For quick orientation fixes, use the 90° buttons — they're faster than the slider</li>
-            <li>When rotating by custom angles, choose a background color that matches your target background</li>
-            <li>PNG format preserves transparency — if your image has a transparent background, use PNG</li>
-            <li>You can combine rotation and flipping — rotate first, then flip for unique effects</li>
-            <li>Use "Reset" to go back to the original orientation without re-uploading</li>
-            <li>For straightening photos, try small angles (1-5°) and watch the preview closely</li>
+            <li>Cần sửa chiều nhanh thì dùng các nút 90° — nhanh hơn kéo thanh trượt</li>
+            <li>Khi xoay góc tùy chọn, hãy chọn màu nền trùng với nền nơi bạn sẽ đặt ảnh</li>
+            <li>Định dạng PNG giữ được độ trong suốt — ảnh có nền trong suốt thì hãy chọn PNG</li>
+            <li>Có thể kết hợp xoay và lật — xoay trước rồi lật để tạo hiệu ứng riêng</li>
+            <li>Dùng "Đặt lại" để quay về ảnh gốc mà không cần tải lại tệp</li>
+            <li>Khi nắn thẳng ảnh, thử góc nhỏ (1–5°) và quan sát kỹ khung xem trước</li>
           </ul>
         </div>
 
 <section class="faq-section">
-        <h2>Frequently Asked Questions</h2>
-        <div class="faq-item"><button class="faq-question">Does rotation reduce image quality?</button><div class="faq-answer">90° and 180° rotations are lossless — pixels are simply rearranged. Custom angle rotations use high-quality bicubic interpolation, which may introduce very slight softening at extreme angles. For most purposes, the quality is excellent.</div></div>
-      <div class="faq-item"><button class="faq-question">Will my image be uploaded to a server?</button><div class="faq-answer">No. All processing happens entirely in your browser using the Canvas API. Your images never leave your device. There is no server that receives or stores your files.</div></div>
-      <div class="faq-item"><button class="faq-question">What happens to the canvas size when I rotate?</button><div class="faq-answer">For 90° and 270° rotations, the canvas width and height swap to fit the rotated image perfectly. For custom angles, the canvas expands to contain the entire rotated image, and the background color fills any new space.</div></div>
-      <div class="faq-item"><button class="faq-question">Can I rotate and flip at the same time?</button><div class="faq-answer">Yes. Set your rotation angle first, then click a flip button. The flip applies on top of the current rotation. Both transformations are combined in the final output.</div></div>
-      <div class="faq-item"><button class="faq-question">What's the difference between rotating 180° and flipping vertically?</button><div class="faq-answer">Rotating 180° turns the image upside down (top becomes bottom, left becomes right). Flipping vertically only mirrors top-to-bottom (left stays left). They produce different results unless the image is perfectly symmetrical.</div></div>
-      <div class="faq-item"><button class="faq-question">Can I rotate GIF images?</button><div class="faq-answer">You can upload a GIF, but only the first frame will be rotated. The output will be a static image (PNG, JPG, or WebP), not an animated GIF. For animated GIF rotation, a specialized tool is needed.</div></div>
-      <div class="faq-item"><button class="faq-question">Is there a file size limit?</button><div class="faq-answer">There's no artificial limit, but very large images (over 50 megapixels) may be slow to process in the browser. Most photos from phones and cameras work instantly.</div></div>
+        <h2>Câu hỏi thường gặp</h2>
+        <div class="faq-item"><button class="faq-question">Xoay ảnh có làm giảm chất lượng không?</button><div class="faq-answer">Xoay 90° và 180° không hề mất chất lượng — các điểm ảnh chỉ được sắp xếp lại vị trí. Xoay góc tùy chọn dùng nội suy bicubic chất lượng cao, chỉ có thể hơi mềm ở các góc cực đoan. Với hầu hết nhu cầu, chất lượng đầu ra là rất tốt.</div></div>
+      <div class="faq-item"><button class="faq-question">Ảnh của tôi có bị tải lên máy chủ không?</button><div class="faq-answer">Không. Toàn bộ quá trình xử lý diễn ra ngay trong trình duyệt bằng Canvas API. Ảnh không bao giờ rời khỏi thiết bị của bạn — không có máy chủ nào nhận hay lưu tệp.</div></div>
+      <div class="faq-item"><button class="faq-question">Khung ảnh thay đổi thế nào khi tôi xoay?</button><div class="faq-answer">Ở 90° và 270°, chiều rộng và chiều cao khung hoán đổi cho nhau để khớp vừa khít ảnh đã xoay. Ở góc tùy chọn, khung mở rộng để chứa toàn bộ ảnh, còn phần trống mới xuất hiện được tô bằng màu nền bạn đã chọn.</div></div>
+      <div class="faq-item"><button class="faq-question">Có thể vừa xoay vừa lật cùng lúc không?</button><div class="faq-answer">Có. Đặt góc xoay trước, sau đó bấm nút lật; hiệu ứng lật sẽ áp dụng trên trạng thái đã xoay. Cả hai biến đổi được kết hợp với nhau trong kết quả cuối cùng.</div></div>
+      <div class="faq-item"><button class="faq-question">Xoay 180° khác gì lật dọc?</button><div class="faq-answer">Xoay 180° lộn ngược ảnh (trên thành dưới, trái thành phải). Lật dọc chỉ đối xứng trên–dưới (trái vẫn là trái). Hai kết quả khác nhau, trừ khi ảnh đối xứng hoàn hảo.</div></div>
+      <div class="faq-item"><button class="faq-question">Có xoay được ảnh GIF không?</button><div class="faq-answer">Bạn có thể tải GIF lên nhưng chỉ khung hình đầu tiên được xoay; kết quả là ảnh tĩnh (PNG, JPG hoặc WebP) chứ không phải GIF động. Muốn xoay GIF động thì cần công cụ chuyên dụng.</div></div>
+      <div class="faq-item"><button class="faq-question">Có giới hạn dung lượng tệp không?</button><div class="faq-answer">Không có giới hạn cứng, nhưng ảnh rất lớn (trên 50 megapixel) có thể xử lý chậm trong trình duyệt. Ảnh chụp từ điện thoại và máy ảnh thông thường đều xử lý gần như ngay lập tức.</div></div>
       </section>
 
 <section class="related-tools">
-  <h2>You Might Also Like</h2>
+  <h2>Bạn cũng có thể thích</h2>
   <div class="related-tools-grid">
     <a href="/vi/tools/cropper" class="related-tool-card">
       <span class="tool-icon">🖼️</span>
       <div class="tool-info">
         <strong>Image Cropper</strong>
-        <span class="tool-desc">Crop after rotating to perfect composition</span>
+        <span class="tool-desc">Cắt ảnh sau khi xoay để có bố cục hoàn hảo</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
@@ -360,7 +392,7 @@
       <span class="tool-icon">🗜️</span>
       <div class="tool-info">
         <strong>Image Compressor</strong>
-        <span class="tool-desc">Compress rotated images for sharing</span>
+        <span class="tool-desc">Nén ảnh đã xoay để chia sẻ nhẹ hơn</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
@@ -368,7 +400,7 @@
       <span class="tool-icon">🖨️</span>
       <div class="tool-info">
         <strong>Print-Ready Resizer</strong>
-        <span class="tool-desc">Get exact print dimensions after rotation</span>
+        <span class="tool-desc">Lấy kích thước in chính xác sau khi xoay</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
@@ -498,7 +530,7 @@
     downloadBtn.addEventListener('click', async () => {
       if (!originalImg) return;
       downloadBtn.disabled = true;
-      downloadBtn.textContent = '🔄 Processing...';
+      downloadBtn.textContent = '🔄 Đang xử lý...';
       status.textContent = '';
       let blob = null;
       let ext = 'png';
@@ -508,12 +540,12 @@
         blob = await ImageUtils.canvasToBlob(previewCanvas, format, quality);
         ext = format === 'image/png' ? 'png' : format === 'image/jpeg' ? 'jpg' : 'webp';
         ImageUtils.download(blob, `rotated-image.${ext}`);
-        status.textContent = '✅ Image downloaded!';
+        status.textContent = '✅ Đã tải ảnh xuống!';
       } catch (e) {
-        status.textContent = '❌ Error: ' + e.message;
+        status.textContent = '❌ Lỗi: ' + e.message;
       }
       downloadBtn.disabled = false;
-      downloadBtn.textContent = '💾 Download';
+      downloadBtn.textContent = '💾 Tải xuống';
     });
 
     // ===== Reset =====
