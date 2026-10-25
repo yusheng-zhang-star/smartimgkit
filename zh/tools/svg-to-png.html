@@ -127,90 +127,50 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Is my SVG uploaded to a server?",
+      "name": "我的 SVG 会被上传到服务器吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. All conversion happens entirely in your browser using the Canvas API. Your SVG file or code never leaves your device."
+        "text": "不会。转换完全在浏览器内通过 Canvas API 完成，文件和代码都不出设备，关掉标签页即全部丢弃。"
       }
     },
     {
       "@type": "Question",
-      "name": "What is the maximum SVG size supported?",
+      "name": "支持多大的 SVG 文件？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "There is no hard file size limit. However, very large SVGs (e.g., 2000×2000+ pixels at 4x scale) may take longer to render. Most SVGs under 1MB convert instantly."
+        "text": "没有硬性上限，但超大 SVG（4x 下渲染 2000×2000 以上像素）耗时更久。1 MB 以内的文件基本都是瞬间完成。"
       }
     },
     {
       "@type": "Question",
-      "name": "Why does my converted image look different from the SVG?",
+      "name": "转换结果和设计稿不一致怎么办？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "This can happen if your SVG uses external resources (linked images, fonts) or CSS styles not embedded in the SVG. For best results, use self-contained SVG code with embedded fonts or convert fonts to paths in your design tool before exporting."
+        "text": "通常是 SVG 引用了外部资源（链接图片、字体）或带了未嵌入的 CSS 样式。改用自包含的 SVG：字体嵌入或转曲后再导出。"
       }
     },
     {
       "@type": "Question",
-      "name": "Can I convert animated SVGs (SVG + SMIL)?",
+      "name": "缩放倍数选多少合适？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Animated SVGs will be converted at their initial static state. The Canvas API renders a single frame. For animated outputs, consider exporting individual frames from your animation tool."
+        "text": "网页和 App 界面用 2x 起步，覆盖视网膜屏；普通展示 1x 即可；印刷物料直接 4x。"
       }
     },
     {
       "@type": "Question",
-      "name": "What scale factor should I use for web use?",
+      "name": "可以把转换结果商用吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Use 2x scale for most web use — this ensures crisp display on retina/ high-DPI screens. Use 1x for standard displays, or 3-4x for print."
+        "text": "可以，输出图片归你自由使用。若 SVG 内嵌了商业授权字体，请注意字体授权范围以授权协议为准。"
       }
     },
     {
       "@type": "Question",
-      "name": "Can I use the output for commercial projects?",
+      "name": "支持 SVG 滤镜和特效吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. The output images are yours to use for any purpose. Note that font licensing may apply if your SVG uses embedded commercial fonts — check your font license."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Does this support SVG filters and effects?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes, most SVG filters (blur, drop shadow, color matrix) and effects are supported as long as the browser's SVG renderer supports them. Modern Chrome, Firefox, and Safari have excellent SVG support."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "支持哪些缩放倍数？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "1x、2x、3x、4x，输出清晰高 DPI。"
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "可以粘贴 SVG 代码而非上传吗？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "可以——直接粘贴 SVG 标记到工具中。"
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "有文件大小限制吗？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "支持最大 100MB 的文件。超大文件可能需要多几秒处理。"
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "需要安装任何东西吗？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "不需要。全部在浏览器内运行——无需应用、插件或扩展。"
+        "text": "支持浏览器能渲染的大部分滤镜（模糊、投影、颜色矩阵）。Chrome、Firefox、Safari 的兼容性都很好，个别冷门滤镜可能不生效。"
       }
     }
   ]
@@ -276,7 +236,7 @@
 
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>📐 SVG to PNG Converter</span></nav>
+      <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>📐 SVG 转 PNG</span></nav>
       <div class="tool-page-header">
         <h1>📐 SVG 转 PNG</h1>
         <p>将 SVG 矢量文件转换为 PNG、JPG 或 WebP，可自定义倍率高清晰度栅格化。设计师和开发者的常用工具。100% 在浏览器中完成。</p>
@@ -285,11 +245,11 @@
 <!-- Upload / Paste Area -->
               <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ 看看这个工具能做什么</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <img src="https://images.unsplash.com/photo-1493552152660-f915ab47ae9d?w=400&q=80" alt="Before" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
-              <div class="before-after-item-caption before">Before</div>
+              <div class="before-after-item-caption before">原图</div>
             </div>
         <div class="selling-points">
   <div class="sp-item"><span class="sp-icon">✅</span>将 SVG 矢量图栅格化为高分辨率图片</div>
@@ -300,7 +260,7 @@
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
                 <span style="font-size:3rem;opacity:0.5;">🖼️</span>
               </div>
-              <div class="before-after-item-caption after">After — processed</div>
+              <div class="before-after-item-caption after">处理后</div>
             </div>
           </div>
         </div>        <input type="file" id="fileInput" accept="image/*" style="display:none;">
@@ -315,41 +275,41 @@
         <div class="svg-workspace">
           <div class="svg-sidebar">
             <div class="input-tabs">
-              <button class="input-tab active" data-tab="upload">Upload File</button>
-              <button class="input-tab" data-tab="paste">Paste SVG Code</button>
+              <button class="input-tab active" data-tab="upload">上传文件</button>
+              <button class="input-tab" data-tab="paste">粘贴 SVG 代码</button>
             </div>
 
             <div id="tab-upload" class="tab-panel active">
-              <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:10px;">SVG file loaded. You can also <a href="#" id="reuploadLink" style="color:var(--accent);">re-upload</a>.</p>
+              <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:10px;">SVG 已加载。也可以<a href="#" id="reuploadLink" style="color:var(--accent);">重新上传</a>。</p>
             </div>
 
             <div id="tab-paste" class="tab-panel">
               <textarea class="svg-code-area" id="svgCodeArea" placeholder="Paste your SVG code here...&#10;&#10;<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>&#10;  <circle cx='100' cy='100' r='80' fill='%236366f1'/>&#10;</svg>"></textarea>
-              <button class="btn btn-secondary" id="applySvgCode" style="margin-top:8px;width:100%;">Apply SVG Code</button>
+              <button class="btn btn-secondary" id="applySvgCode" style="margin-top:8px;width:100%;">应用 SVG 代码</button>
             </div>
 
             <div>
-              <label style="font-size:.8rem;color:var(--text-secondary);font-weight:500;display:block;margin-bottom:6px;">Output Format</label>
+              <label style="font-size:.8rem;color:var(--text-secondary);font-weight:500;display:block;margin-bottom:6px;">输出格式</label>
               <select id="outputFormat" style="width:100%;padding:8px 10px;border:1px solid var(--border-color);border-radius:6px;background:var(--bg-primary);color:var(--text-primary);font-size:.85rem;">
-                <option value="image/png">PNG (Lossless)</option>
-                <option value="image/jpeg">JPG (Smaller file)</option>
-                <option value="image/webp">WebP (Modern)</option>
+                <option value="image/png">PNG（无损）</option>
+                <option value="image/jpeg">JPG（文件更小）</option>
+                <option value="image/webp">WebP（现代格式）</option>
               </select>
             </div>
 
             <div>
-              <label style="font-size:.8rem;color:var(--text-secondary);font-weight:500;display:block;margin-bottom:6px;">Scale Factor</label>
+              <label style="font-size:.8rem;color:var(--text-secondary);font-weight:500;display:block;margin-bottom:6px;">缩放倍数</label>
               <select id="scaleFactor" style="width:100%;padding:8px 10px;border:1px solid var(--border-color);border-radius:6px;background:var(--bg-primary);color:var(--text-primary);font-size:.85rem;">
-                <option value="1">1x (Original)</option>
-                <option value="2" selected>2x (Retina)</option>
-                <option value="3">3x (High-DPI)</option>
-                <option value="4">4x (Print quality)</option>
+                <option value="1">1x（原始尺寸）</option>
+                <option value="2" selected>2x（视网膜屏）</option>
+                <option value="3">3x（高分辨率屏）</option>
+                <option value="4">4x（印刷级）</option>
               </select>
             </div>
 
             <div class="tool-actions" style="flex-direction:column;">
-              <button class="btn btn-primary" id="downloadBtn">💾 Download</button>
-              <button class="btn btn-secondary" id="resetBtn">🔄 Start Over</button>
+              <button class="btn btn-primary" id="downloadBtn">💾 下载</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 重新开始</button>
             </div>
             <div id="status" class="text-center" style="color:var(--text-secondary);font-size:.85rem;"></div>
           </div>
@@ -359,8 +319,8 @@
               <canvas id="previewCanvas"></canvas>
             </div>
             <div class="info-row" id="infoRow">
-              <span>📐 SVG Size: <b id="svgSize">-</b></span>
-              <span>🖼️ Output: <b id="outSize">-</b></span>
+              <span>📐 SVG 尺寸: <b id="svgSize">-</b></span>
+              <span>🖼️ 输出: <b id="outSize">-</b></span>
             </div>
           </div>
         </div>
@@ -428,79 +388,78 @@
   <div class="trust-badge"><div class="tb-icon">🚀</div><div class="tb-title">无需注册</div><div class="tb-desc">即刻开始，无需账号</div></div>
 </div>
       <section class="how-to-section">
-        <h2>使用方法</h2>
+        <h2>如何把 SVG 转成 PNG</h2>
         <div class="how-to-steps">
-          <div class="how-to-step"><div class="step-number">1</div><h4>Upload SVG</h4><p>Drop an SVG file or paste SVG code directly.</p></div>
-          <div class="how-to-step"><div class="step-number">2</div><h4>Set Options</h4><p>Choose output format and scale factor for high-resolution output.</p></div>
-          <div class="how-to-step"><div class="step-number">3</div><h4>Convert</h4><p>The SVG is rasterized instantly in your browser.</p></div>
-          <div class="how-to-step"><div class="step-number">4</div><h4>下载</h4><p>Save your PNG, JPG, or WebP file.</p></div>
+          <div class="how-to-step"><div class="step-number">1</div><h4>导入 SVG</h4><p>把 <code>.svg</code> 文件拖进上传区，或直接把 SVG 代码粘到"粘贴代码"标签页。</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>设置参数</h4><p>选好输出格式和缩放倍数，决定最终分辨率。</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>实时出图</h4><p>SVG 在浏览器里即时栅格化，改参数立刻看到新效果。</p></div>
+          <div class="how-to-step"><div class="step-number">4</div><h4>下载保存</h4><p>保存 PNG、JPG 或 WebP 文件——全程不经过服务器。</p></div>
         </div>
       </section>
 
 <h2>详细使用指南</h2>
         <div class="guide-block">
-          <h3>Step 1: Upload or Paste SVG</h3>
-          <p>You can either upload an <code>.svg</code> file by dragging it to the drop zone, or switch to the "Paste SVG Code" tab and paste raw SVG markup. This is useful when you have SVG code from Figma, Sketch, Adobe Illustrator, or hand-written SVG.</p>
+          <h3>上传或粘贴 SVG</h3>
+          <p>两种入口任选：把 <code>.svg</code> 文件拖入上传区，或切到"粘贴 SVG 代码"标签页直接贴 markup。从设计工具里复制出来的矢量（Figma、Sketch、Illustrator 都行）不用先落盘存文件，粘进来就能预览。</p>
         </div>
         <div class="guide-block">
-          <h3>Step 2: Choose Output Format</h3>
-          <p>Select the output format that fits your needs:</p>
+          <h3>选输出格式</h3>
+          <p>三种格式对应三种用途：</p>
           <ul>
-            <li><strong>PNG:</strong> Lossless compression, supports transparency. Best for UI assets, logos, and icons.</li>
-            <li><strong>JPG:</strong> Smaller file size, no transparency. Best for photos and complex graphics with many colors.</li>
-            <li><strong>WebP:</strong> Modern format with excellent compression. Best for web use.</li>
+            <li><strong>PNG：</strong>无损压缩、保留透明通道，图标和界面素材的首选。</li>
+            <li><strong>JPG：</strong>体积更小但没有透明度，适合不透明的复杂插画。</li>
+            <li><strong>WebP：</strong>同等画质下体积最小，网页加载的首选。</li>
           </ul>
         </div>
         <div class="guide-block">
-          <h3>Step 3: Set Scale Factor</h3>
-          <p>The scale factor controls the output resolution:</p>
+          <h3>设缩放倍数</h3>
+          <p>缩放倍数决定输出分辨率：</p>
           <ul>
-            <li><strong>1x:</strong> Same pixel dimensions as the SVG width/height</li>
-            <li><strong>2x:</strong> Double resolution — perfect for retina displays (@2x assets)</li>
-            <li><strong>3x:</strong> Triple resolution — for high-DPI displays</li>
-            <li><strong>4x:</strong> Quadruple resolution — for print-quality output</li>
+            <li><strong>1x：</strong>与 SVG 声明的宽高一致</li>
+            <li><strong>2x：</strong>双倍分辨率，视网膜屏显示必需（@2x 素材）</li>
+            <li><strong>3x：</strong>三倍，覆盖高分辨率屏</li>
+            <li><strong>4x：</strong>四倍，印刷场景使用</li>
           </ul>
-          <p>Since SVG is a vector format, scaling up produces no quality loss. A 100×100 SVG at 4x scale produces a crisp 400×400 PNG.</p>
+          <p>SVG 是矢量格式，放大不损失清晰度：100×100 的图标在 4x 下输出 400×400 依然锐利。</p>
         </div>
         <div class="guide-block">
-          <h3>Step 4: Download</h3>
-          <p>Click <strong>下载</strong> to save the rasterized image. The file is generated entirely in your browser — no server processing.</p>
+          <h3>下载成品</h3>
+          <p>点<strong>下载</strong>保存栅格化后的图片。文件完全在你的浏览器里生成，没有任何服务器参与。</p>
         </div>
         <div class="guide-block">
-          <h3>Best Use Cases</h3>
+          <h3>典型使用场景</h3>
           <ul>
-            <li><strong>UI/UX designers:</strong> Export SVG icons to PNG for Android/iOS app assets</li>
-            <li><strong>Web developers:</strong> Convert inline SVG to static images for <code>&lt;img&gt;</code> tags or CSS <code>background-image</code></li>
-            <li><strong>Print designers:</strong> Convert SVG logos to high-res PNG (4x scale) for print materials</li>
-            <li><strong>Presentations:</strong> Convert SVG charts/graphs to PNG for PowerPoint or Keynote</li>
-            <li><strong>Social media:</strong> Convert SVG illustrations to PNG for Instagram/Facebook posts</li>
+            <li><strong>小程序开发：</strong>把设计师给的 SVG 图标导出成各尺寸 PNG，直接填进 icon 目录</li>
+            <li><strong>前端切图：</strong>把内联 SVG 固化成静态图，供 <code>&lt;img&gt;</code> 标签或 CSS <code>background-image</code> 使用</li>
+            <li><strong>公众号排版：</strong>编辑器不认 SVG？转成 PNG 再插入正文</li>
+            <li><strong>文档与汇报：</strong>把流程图、架构图转成 PNG 塞进 PPT 或 Word</li>
+            <li><strong>印刷物料：</strong>logo 放大到 4x 输出，保证名片和易拉宝不糊</li>
           </ul>
         </div>
         <div class="guide-block">
-          <h3>Pro Tips</h3>
+          <h3>实用技巧</h3>
           <ul>
-            <li>For sharp @2x mobile app assets, set Scale Factor to 2x and output as PNG</li>
-            <li>If your SVG has transparency, use PNG format to preserve it</li>
-            <li>For smallest file size with good quality, use WebP format at 2x scale</li>
-            <li>SVG <code>&lt;text&gt;</code> elements may render differently across browsers — convert to PNG to lock in fonts</li>
-            <li>For print, use 4x scale + PNG for maximum quality</li>
-            <li>You can paste SVG code directly — great for quick one-off conversions without saving a file</li>
+            <li>做手机端 @2x 素材：缩放选 2x、格式选 PNG</li>
+            <li>SVG 带透明区域就别选 JPG，否则透明处会填充白底</li>
+            <li>追求小体积用 WebP + 2x 的组合</li>
+            <li><code>&lt;text&gt;</code> 元素各浏览器渲染不一，交付前先在设计工具里转曲</li>
+            <li>印刷一律 4x + PNG，别在分辨率上省</li>
+            <li>临时验证一个小图形，粘代码比存文件快</li>
           </ul>
+        </div>
+        <div class="guide-block">
+          <h3>边界说明</h3>
+          <p>渲染依赖浏览器的 SVG 引擎：滤镜和未嵌入字体的表现可能与设计稿有出入。超大文件（几十 MB）会让预览变慢，建议先简化矢量再转换。</p>
         </div>
 
 <section class="faq-section">
         <h2>常见问题</h2>
-        <div class="faq-item"><button class="faq-question">Is my SVG uploaded to a server?</button><div class="faq-answer">No. All conversion happens entirely in your browser using the Canvas API. Your SVG file or code never leaves your device.</div></div>
-      <div class="faq-item"><button class="faq-question">What is the maximum SVG size supported?</button><div class="faq-answer">There is no hard file size limit. However, very large SVGs (e.g., 2000×2000+ pixels at 4x scale) may take longer to render. Most SVGs under 1MB convert instantly.</div></div>
-      <div class="faq-item"><button class="faq-question">Why does my converted image look different from the SVG?</button><div class="faq-answer">This can happen if your SVG uses external resources (linked images, fonts) or CSS styles not embedded in the SVG. For best results, use self-contained SVG code with embedded fonts or convert fonts to paths in your design tool before exporting.</div></div>
-      <div class="faq-item"><button class="faq-question">Can I convert animated SVGs (SVG + SMIL)?</button><div class="faq-answer">Animated SVGs will be converted at their initial static state. The Canvas API renders a single frame. For animated outputs, consider exporting individual frames from your animation tool.</div></div>
-      <div class="faq-item"><button class="faq-question">What scale factor should I use for web use?</button><div class="faq-answer">Use 2x scale for most web use — this ensures crisp display on retina/ high-DPI screens. Use 1x for standard displays, or 3-4x for print.</div></div>
-      <div class="faq-item"><button class="faq-question">Can I use the output for commercial projects?</button><div class="faq-answer">Yes. The output images are yours to use for any purpose. Note that font licensing may apply if your SVG uses embedded commercial fonts — check your font license.</div></div>
-      <div class="faq-item"><button class="faq-question">Does this support SVG filters and effects?</button><div class="faq-answer">Yes, most SVG filters (blur, drop shadow, color matrix) and effects are supported as long as the browser's SVG renderer supports them. Modern Chrome, Firefox, and Safari have excellent SVG support.</div></div>
-      <div class="faq-item"><button class="faq-question">支持哪些缩放倍数？</button><div class="faq-answer">1x、2x、3x、4x，输出清晰高 DPI。</div></div>
-<div class="faq-item"><button class="faq-question">可以粘贴 SVG 代码而非上传吗？</button><div class="faq-answer">可以——直接粘贴 SVG 标记到工具中。</div></div>
-<div class="faq-item"><button class="faq-question">有文件大小限制吗？</button><div class="faq-answer">支持最大 100MB 的文件。超大文件可能需要多几秒处理。</div></div>
-<div class="faq-item"><button class="faq-question">需要安装任何东西吗？</button><div class="faq-answer">不需要。全部在浏览器内运行——无需应用、插件或扩展。</div></div>
+        <div class="faq-item"><button class="faq-question">我的 SVG 会被上传到服务器吗？</button><div class="faq-answer">不会。转换完全在浏览器内通过 Canvas API 完成，文件和代码都不出设备，关掉标签页即全部丢弃。</div></div>
+        <div class="faq-item"><button class="faq-question">支持多大的 SVG 文件？</button><div class="faq-answer">没有硬性上限，但超大 SVG（4x 下渲染 2000×2000 以上像素）耗时更久。1 MB 以内的文件基本都是瞬间完成。</div></div>
+        <div class="faq-item"><button class="faq-question">转换结果和设计稿不一致怎么办？</button><div class="faq-answer">通常是 SVG 引用了外部资源（链接图片、字体）或带了未嵌入的 CSS 样式。改用自包含的 SVG：字体嵌入或转曲后再导出。</div></div>
+        <div class="faq-item"><button class="faq-question">缩放倍数选多少合适？</button><div class="faq-answer">网页和 App 界面用 2x 起步，覆盖视网膜屏；普通展示 1x 即可；印刷物料直接 4x。</div></div>
+        <div class="faq-item"><button class="faq-question">可以把转换结果商用吗？</button><div class="faq-answer">可以，输出图片归你自由使用。若 SVG 内嵌了商业授权字体，请注意字体授权范围以授权协议为准。</div></div>
+        <div class="faq-item"><button class="faq-question">支持 SVG 滤镜和特效吗？</button><div class="faq-answer">支持浏览器能渲染的大部分滤镜（模糊、投影、颜色矩阵）。Chrome、Firefox、Safari 的兼容性都很好，个别冷门滤镜可能不生效。</div></div>
       </section>
 
 <section class="related-tools">
@@ -509,24 +468,24 @@
     <a href="/zh/tools/image-upscaler" class="related-tool-card">
       <span class="tool-icon">🔍</span>
       <div class="tool-info">
-        <strong>Image Upscaler</strong>
-        <span class="tool-desc">Upscale SVG rasterization output</span>
+        <strong>图片无损放大</strong>
+        <span class="tool-desc">把栅格化结果再放大不失真</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
     <a href="/zh/tools/compressor" class="related-tool-card">
       <span class="tool-icon">🗜️</span>
       <div class="tool-info">
-        <strong>Image Compressor</strong>
-        <span class="tool-desc">Compress converted PNG/JPG files</span>
+        <strong>图片压缩</strong>
+        <span class="tool-desc">压缩转换后的 PNG/JPG 文件</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
     <a href="/zh/tools/converter" class="related-tool-card">
       <span class="tool-icon">🔄</span>
       <div class="tool-info">
-        <strong>Image Converter</strong>
-        <span class="tool-desc">Convert rasterized images to WebP</span>
+        <strong>图片格式转换</strong>
+        <span class="tool-desc">JPG、PNG、WebP 等格式互转</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
@@ -612,7 +571,7 @@
           dropzone.style.display = 'none';
           workspace.style.display = 'block';
         } catch (e) {
-          ImageUtils.showToast('Failed to read SVG file', 'error');
+          ImageUtils.showToast('读取 SVG 文件失败', 'error');
         }
       }
     });
@@ -620,7 +579,7 @@
     // ===== Paste SVG Code =====
     applySvgCodeBtn.addEventListener('click', () => {
       const code = svgCodeArea.value.trim();
-      if (!code) { ImageUtils.showToast('Please paste SVG code first', 'error'); return; }
+      if (!code) { ImageUtils.showToast('请先粘贴 SVG 代码', 'error'); return; }
       svgSource = code;
       parseAndRender(code);
       dropzone.style.display = 'none';
@@ -659,7 +618,7 @@
     // ===== Render =====
     function parseAndRender(svgString) {
       const dims = getSvgDimensions(svgString);
-      if (!dims) { ImageUtils.showToast('Invalid SVG code', 'error'); return; }
+      if (!dims) { ImageUtils.showToast('SVG 代码无效', 'error'); return; }
       svgSize = dims;
       document.getElementById('svgSize').textContent = dims.w + ' x ' + dims.h;
 
@@ -673,7 +632,7 @@
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
         document.getElementById('outSize').textContent = canvas.width + ' x ' + canvas.height;
       };
-      img.onerror = () => { ImageUtils.showToast('Failed to render SVG', 'error'); };
+      img.onerror = () => { ImageUtils.showToast('SVG 渲染失败', 'error'); };
       // Use data URL for SVG
       const dataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgString);
       img.src = dataUrl;
@@ -706,7 +665,7 @@
         // Small delay to let canvas render
         setTimeout(() => {
           ImageUtils.download(canvas, 'converted.' + ext, mime);
-          ImageUtils.showToast('Image downloaded!');
+          ImageUtils.showToast('图片已下载！');
         }, 100);
       }
     });

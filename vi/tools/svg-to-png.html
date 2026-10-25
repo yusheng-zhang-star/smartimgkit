@@ -35,7 +35,7 @@
   
   "inLanguage": "vi","@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "SVG to PNG Converter",
+  "name": "Chuyển SVG sang PNG",
   "url": "https://smartimgkit.com/vi/tools/svg-to-png",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
@@ -126,58 +126,50 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Is my SVG uploaded to a server?",
+      "name": "SVG của tôi có bị tải lên máy chủ không?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. All conversion happens entirely in your browser using the Canvas API. Your SVG file or code never leaves your device."
+        "text": "Không. Toàn bộ chuyển đổi chạy trong trình duyệt qua Canvas API, file hay mã đều không rời thiết bị — quan trọng khi xử lý thiết kế của khách."
       }
     },
     {
       "@type": "Question",
-      "name": "What is the maximum SVG size supported?",
+      "name": "SVG lớn nhất hỗ trợ bao nhiêu?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "There is no hard file size limit. However, very large SVGs (e.g., 2000×2000+ pixels at 4x scale) may take longer to render. Most SVGs under 1MB convert instantly."
+        "text": "Không giới hạn cứng, nhưng SVG nặng (render 2000×2000+ ở 4x) sẽ chậm hơn. Đa số file dưới 1 MB chuyển gần như tức thời."
       }
     },
     {
       "@type": "Question",
-      "name": "Why does my converted image look different from the SVG?",
+      "name": "Vì sao kết quả khác bản thiết kế SVG?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "This can happen if your SVG uses external resources (linked images, fonts) or CSS styles not embedded in the SVG. For best results, use self-contained SVG code with embedded fonts or convert fonts to paths in your design tool before exporting."
+        "text": "Do SVG tham chiếu tài nguyên ngoài (ảnh liên kết, font) hoặc CSS chưa nhúng. Hãy dùng SVG tự chứa: nhúng font hoặc chuyển chữ thành nét trước khi xuất."
       }
     },
     {
       "@type": "Question",
-      "name": "Can I convert animated SVGs (SVG + SMIL)?",
+      "name": "SVG có animation chuyển được không?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Animated SVGs will be converted at their initial static state. The Canvas API renders a single frame. For animated outputs, consider exporting individual frames from your animation tool."
+        "text": "Canvas chỉ chụp trạng thái tĩnh ban đầu của animation. Muốn khung hình cụ thể, chỉnh giá trị trong mã SVG trước khi chuyển."
       }
     },
     {
       "@type": "Question",
-      "name": "What scale factor should I use for web use?",
+      "name": "Nên chọn hệ số phóng bao nhiêu?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Use 2x scale for most web use — this ensures crisp display on retina/ high-DPI screens. Use 1x for standard displays, or 3-4x for print."
+        "text": "2x cho web và ứng dụng — đủ sắc trên màn retina. 1x cho màn thường, 3-4x dành cho in ấn."
       }
     },
     {
       "@type": "Question",
-      "name": "Can I use the output for commercial projects?",
+      "name": "Dùng ảnh đầu ra cho mục đích thương mại được không?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. The output images are yours to use for any purpose. Note that font licensing may apply if your SVG uses embedded commercial fonts — check your font license."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Does this support SVG filters and effects?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes, most SVG filters (blur, drop shadow, color matrix) and effects are supported as long as the browser's SVG renderer supports them. Modern Chrome, Firefox, and Safari have excellent SVG support."
+        "text": "Được, ảnh kết quả thuộc về bạn. Riêng font nhúng trong SVG có thể ràng buộc giấy phép — kiểm tra trước khi dùng rộng rãi."
       }
     }
   ]
@@ -215,26 +207,26 @@
 
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Trang chủ</a><span>/</span><a href="/">Công cụ</a><span>/</span><span>📐 SVG to PNG Converter</span></nav>
+      <nav class="breadcrumb"><a href="/">Trang chủ</a><span>/</span><a href="/">Công cụ</a><span>/</span><span>📐 Chuyển SVG sang PNG</span></nav>
       <div class="tool-page-header">
-        <h1>📐 SVG to PNG Converter</h1>
-        <p>Convert SVG vector files to PNG, JPG, or WebP. High-quality rasterization at custom scale. Perfect for designers and developers. 100% browser-based.</p>
+        <h1>📐 Chuyển SVG sang PNG</h1>
+        <p>Chuyển tệp SVG sang PNG, JPG hoặc WebP: raster hoá sắc nét ở tỷ lệ bạn chọn, giữ nguyên vùng trong suốt. Công cụ dành cho designer, đội ngũ sản phẩm và người làm in ấn cần ảnh xuất chuẩn từng pixel — chạy thẳng trong trình duyệt.</p>
       </div>
       <div class="tool-workspace">
 <!-- Upload / Paste Area -->
               <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Công cụ này làm được gì</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <img src="https://images.unsplash.com/photo-1493552152660-f915ab47ae9d?w=400&q=80" alt="Before" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
-              <div class="before-after-item-caption before">Before</div>
+              <div class="before-after-item-caption before">Trước</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
                 <span style="font-size:3rem;opacity:0.5;">🖼️</span>
               </div>
-              <div class="before-after-item-caption after">After — processed</div>
+              <div class="before-after-item-caption after">Sau — đã xử lý</div>
             </div>
           </div>
         </div>        <input type="file" id="fileInput" accept="image/*" style="display:none;">
@@ -254,7 +246,7 @@
             </div>
 
             <div id="tab-upload" class="tab-panel active">
-              <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:10px;">SVG file loaded. You can also <a href="#" id="reuploadLink" style="color:var(--accent);">re-upload</a>.</p>
+              <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:10px;">Đã nạp file SVG. Bạn cũng có thể <a href="#" id="reuploadLink" style="color:var(--accent);">nạp file khác</a>.</p>
             </div>
 
             <div id="tab-paste" class="tab-panel">
@@ -263,31 +255,31 @@
 <svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>
   <circle cx='100' cy='100' r='80' fill='%236366f1'/>
 </svg>"></textarea>
-              <button class="btn btn-secondary" id="applySvgCode" style="margin-top:8px;width:100%;">Áp dụng SVG Code</button>
+              <button class="btn btn-secondary" id="applySvgCode" style="margin-top:8px;width:100%;">Dùng mã SVG</button>
             </div>
 
             <div>
               <label style="font-size:.8rem;color:var(--text-secondary);font-weight:500;display:block;margin-bottom:6px;">Định dạng đầu ra</label>
               <select id="outputFormat" style="width:100%;padding:8px 10px;border:1px solid var(--border-color);border-radius:6px;background:var(--bg-primary);color:var(--text-primary);font-size:.85rem;">
-                <option value="image/png">PNG (Lossless)</option>
-                <option value="image/jpeg">JPG (Smaller file)</option>
-                <option value="image/webp">WebP (Modern)</option>
+                <option value="image/png">PNG (không mất dữ liệu)</option>
+                <option value="image/jpeg">JPG (nhẹ hơn)</option>
+                <option value="image/webp">WebP (hiện đại)</option>
               </select>
             </div>
 
             <div>
-              <label style="font-size:.8rem;color:var(--text-secondary);font-weight:500;display:block;margin-bottom:6px;">Scale Factor</label>
+              <label style="font-size:.8rem;color:var(--text-secondary);font-weight:500;display:block;margin-bottom:6px;">Hệ số phóng</label>
               <select id="scaleFactor" style="width:100%;padding:8px 10px;border:1px solid var(--border-color);border-radius:6px;background:var(--bg-primary);color:var(--text-primary);font-size:.85rem;">
                 <option value="1">1x (Gốc)</option>
-                <option value="2" selected>2x (Retina)</option>
-                <option value="3">3x (High-DPI)</option>
-                <option value="4">4x (Print quality)</option>
+                <option value="2" selected>2x (màn hình retina)</option>
+                <option value="3">3x (màn DPI cao)</option>
+                <option value="4">4x (chuẩn in ấn)</option>
               </select>
             </div>
 
             <div class="tool-actions" style="flex-direction:column;">
               <button class="btn btn-primary" id="downloadBtn">💾 Tải xuống</button>
-              <button class="btn btn-secondary" id="resetBtn">🔄 Bắt đầu Over</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Làm lại</button>
             </div>
             <div id="status" class="text-center" style="color:var(--text-secondary);font-size:.85rem;"></div>
           </div>
@@ -297,109 +289,112 @@
               <canvas id="previewCanvas"></canvas>
             </div>
             <div class="info-row" id="infoRow">
-              <span>📐 SVG Size: <b id="svgSize">-</b></span>
-              <span>🖼️ Output: <b id="outSize">-</b></span>
+              <span>📐 Kích thước SVG: <b id="svgSize">-</b></span>
+              <span>🖼️ Đầu ra: <b id="outSize">-</b></span>
             </div>
           </div>
         </div>
       </div>
       </div>
 <section class="how-to-section">
-        <h2>How to Use</h2>
+        <h2>Cách chuyển SVG sang PNG</h2>
         <div class="how-to-steps">
-          <div class="how-to-step"><div class="step-number">1</div><h4>Upload SVG</h4><p>Drop an SVG file or paste SVG code directly.</p></div>
-          <div class="how-to-step"><div class="step-number">2</div><h4>Set Options</h4><p>Choose output format and scale factor for high-resolution output.</p></div>
-          <div class="how-to-step"><div class="step-number">3</div><h4>Convert</h4><p>The SVG is rasterized instantly in your browser.</p></div>
-          <div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Save your PNG, JPG, or WebP file.</p></div>
+          <div class="how-to-step"><div class="step-number">1</div><h4>Nạp SVG</h4><p>Kéo thả file <code>.svg</code> vào vùng tải lên, hoặc dán trực tiếp mã SVG vào tab riêng.</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>Chọn tham số</h4><p>Chọn định dạng xuất và hệ số phóng cho độ phân giải mong muốn.</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>Xem kết quả ngay</h4><p>SVG được raster hóa tức thời trong trình duyệt, không cần bấm nút.</p></div>
+          <div class="how-to-step"><div class="step-number">4</div><h4>Tải về</h4><p>Lưu file PNG, JPG hoặc WebP — toàn bộ xử lý nằm trên máy bạn.</p></div>
         </div>
       </section>
 
-<h2>Detailed User Guide</h2>
+<h2>Hướng dẫn chi tiết</h2>
         <div class="guide-block">
-          <h3>Step 1: Upload or Paste SVG</h3>
-          <p>You can either upload an <code>.svg</code> file by dragging it to the drop zone, or switch to the "Paste SVG Code" tab and paste raw SVG markup. This is useful when you have SVG code from Figma, Sketch, Adobe Illustrator, or hand-written SVG.</p>
+          <h3>Tải lên hoặc dán mã</h3>
+          <p>Hai cách nhập: kéo thả file <code>.svg</code> vào vùng tải lên, hoặc chuyển sang tab dán mã rồi đưa markup thô vào. Khi nhận bản thiết kế từ team thiết kế qua Figma, bạn chỉ cần copy đoạn SVG rồi dán — không cần lưu file trung gian.</p>
         </div>
         <div class="guide-block">
-          <h3>Step 2: Choose Output Format</h3>
-          <p>Select the output format that fits your needs:</p>
+          <h3>Chọn định dạng xuất</h3>
+          <p>Ba định dạng, ba mục đích:</p>
           <ul>
-            <li><strong>PNG:</strong> Lossless compression, supports transparency. Best for UI assets, logos, and icons.</li>
-            <li><strong>JPG:</strong> Smaller file size, no transparency. Best for photos and complex graphics with many colors.</li>
-            <li><strong>WebP:</strong> Modern format with excellent compression. Best for web use.</li>
+            <li><strong>PNG:</strong> nén không mất dữ liệu, giữ trong suốt — chuẩn cho icon và giao diện.</li>
+            <li><strong>JPG:</strong> nhẹ hơn nhưng mất trong suốt, hợp ảnh dày màu không cần nền trong.</li>
+            <li><strong>WebP:</strong> cân bằng tốt nhất giữa dung lượng và chất lượng cho web.</li>
           </ul>
         </div>
         <div class="guide-block">
-          <h3>Step 3: Set Scale Factor</h3>
-          <p>The scale factor controls the output resolution:</p>
+          <h3>Đặt hệ số phóng</h3>
+          <p>Hệ số phóng quyết định độ phân giải đầu ra:</p>
           <ul>
-            <li><strong>1x:</strong> Same pixel dimensions as the SVG width/height</li>
-            <li><strong>2x:</strong> Double resolution — perfect for retina displays (@2x assets)</li>
-            <li><strong>3x:</strong> Triple resolution — for high-DPI displays</li>
-            <li><strong>4x:</strong> Quadruple resolution — for print-quality output</li>
+            <li><strong>1x:</strong> bằng đúng kích thước khai báo trong SVG</li>
+            <li><strong>2x:</strong> gấp đôi — bắt buộc cho màn hình retina (ảnh @2x)</li>
+            <li><strong>3x:</strong> gấp ba, phủ các màn DPI cao</li>
+            <li><strong>4x:</strong> gấp bốn, dùng cho in ấn</li>
           </ul>
-          <p>Since SVG is a vector format, scaling up produces no quality loss. A 100×100 SVG at 4x scale produces a crisp 400×400 PNG.</p>
+          <p>SVG là vector nên phóng to không răng cưa: logo 100×100 ở 4x cho PNG 400×400 sắc nét.</p>
         </div>
         <div class="guide-block">
-          <h3>Step 4: Download</h3>
-          <p>Click <strong>Download</strong> to save the rasterized image. The file is generated entirely in your browser — no server processing.</p>
+          <h3>Tải kết quả</h3>
+          <p>Bấm <strong>Tải xuống</strong> để lưu ảnh đã raster hóa. File sinh ra hoàn toàn trong trình duyệt, không qua máy chủ nào.</p>
         </div>
         <div class="guide-block">
-          <h3>Best Use Cases</h3>
+          <h3>Tình huống thực tế</h3>
           <ul>
-            <li><strong>UI/UX designers:</strong> Export SVG icons to PNG for Android/iOS app assets</li>
-            <li><strong>Web developers:</strong> Convert inline SVG to static images for <code>&lt;img&gt;</code> tags or CSS <code>background-image</code></li>
-            <li><strong>Print designers:</strong> Convert SVG logos to high-res PNG (4x scale) for print materials</li>
-            <li><strong>Presentations:</strong> Convert SVG charts/graphs to PNG for PowerPoint or Keynote</li>
-            <li><strong>Social media:</strong> Convert SVG illustrations to PNG for Instagram/Facebook posts</li>
+            <li><strong>Bán hàng online:</strong> xuất logo cửa hàng Shopee thành PNG nền trong để đặt lên banner</li>
+            <li><strong>Zalo / mạng xã hội:</strong> chuyển illustration SVG thành PNG cho ảnh đại diện nhóm, khung zin</li>
+            <li><strong>Lập trình viên:</strong> cố định SVG inline thành ảnh tĩnh cho thẻ <code>&lt;img&gt;</code> hoặc <code>background-image</code></li>
+            <li><strong>Thuyết trình:</strong> đưa biểu đồ SVG vào slide PowerPoint dạng PNG</li>
+            <li><strong>In ấn:</strong> xuất catalog, tờ rơi từ vector ở 4x</li>
           </ul>
         </div>
         <div class="guide-block">
-          <h3>Pro Tips</h3>
+          <h3>Mẹo hay dùng</h3>
           <ul>
-            <li>For sharp @2x mobile app assets, set Scale Factor to 2x and output as PNG</li>
-            <li>If your SVG has transparency, use PNG format to preserve it</li>
-            <li>For smallest file size with good quality, use WebP format at 2x scale</li>
-            <li>SVG <code>&lt;text&gt;</code> elements may render differently across browsers — convert to PNG to lock in fonts</li>
-            <li>For print, use 4x scale + PNG for maximum quality</li>
-            <li>You can paste SVG code directly — great for quick one-off conversions without saving a file</li>
+            <li>Ảnh @2x cho app di động: hệ số 2x kết hợp PNG</li>
+            <li>SVG có vùng trong suốt thì tránh JPG — nền trong sẽ bị lấp đầy</li>
+            <li>WebP ở 2x cho file nhẹ nhất với chất lượng tương đương</li>
+            <li>Phần tử <code>&lt;text&gt;</code> hiển thị khác nhau giữa các trình duyệt — convert font thành đường nét trước</li>
+            <li>In ấn thì 4x + PNG, đừng tiết kiệm độ phân giải</li>
+            <li>Thử nhanh một hình nhỏ: dán mã nhanh hơn lưu file</li>
           </ul>
+        </div>
+        <div class="guide-block">
+          <h3>Giới hạn cần biết</h3>
+          <p>Kết quả phụ thuộc engine SVG của trình duyệt: filter lạ hoặc font chưa nhúng có thể khác bản thiết kế. File quá nặng (hàng chục MB) làm chậm xem trước — hãy đơn giản hóa vector trước khi chuyển.</p>
         </div>
 
 <section class="faq-section">
-        <h2>Frequently Asked Questions</h2>
-        <div class="faq-item"><button class="faq-question">Is my SVG uploaded to a server?</button><div class="faq-answer">No. All conversion happens entirely in your browser using the Canvas API. Your SVG file or code never leaves your device.</div></div>
-      <div class="faq-item"><button class="faq-question">What is the maximum SVG size supported?</button><div class="faq-answer">There is no hard file size limit. However, very large SVGs (e.g., 2000×2000+ pixels at 4x scale) may take longer to render. Most SVGs under 1MB convert instantly.</div></div>
-      <div class="faq-item"><button class="faq-question">Why does my converted image look different from the SVG?</button><div class="faq-answer">This can happen if your SVG uses external resources (linked images, fonts) or CSS styles not embedded in the SVG. For best results, use self-contained SVG code with embedded fonts or convert fonts to paths in your design tool before exporting.</div></div>
-      <div class="faq-item"><button class="faq-question">Can I convert animated SVGs (SVG + SMIL)?</button><div class="faq-answer">Animated SVGs will be converted at their initial static state. The Canvas API renders a single frame. For animated outputs, consider exporting individual frames from your animation tool.</div></div>
-      <div class="faq-item"><button class="faq-question">What scale factor should I use for web use?</button><div class="faq-answer">Use 2x scale for most web use — this ensures crisp display on retina/ high-DPI screens. Use 1x for standard displays, or 3-4x for print.</div></div>
-      <div class="faq-item"><button class="faq-question">Can I use the output for commercial projects?</button><div class="faq-answer">Yes. The output images are yours to use for any purpose. Note that font licensing may apply if your SVG uses embedded commercial fonts — check your font license.</div></div>
-      <div class="faq-item"><button class="faq-question">Does this support SVG filters and effects?</button><div class="faq-answer">Yes, most SVG filters (blur, drop shadow, color matrix) and effects are supported as long as the browser's SVG renderer supports them. Modern Chrome, Firefox, and Safari have excellent SVG support.</div></div>
+        <h2>Câu hỏi thường gặp</h2>
+        <div class="faq-item"><button class="faq-question">SVG của tôi có bị tải lên máy chủ không?</button><div class="faq-answer">Không. Toàn bộ chuyển đổi chạy trong trình duyệt qua Canvas API, file hay mã đều không rời thiết bị — quan trọng khi xử lý thiết kế của khách.</div></div>
+        <div class="faq-item"><button class="faq-question">SVG lớn nhất hỗ trợ bao nhiêu?</button><div class="faq-answer">Không giới hạn cứng, nhưng SVG nặng (render 2000×2000+ ở 4x) sẽ chậm hơn. Đa số file dưới 1 MB chuyển gần như tức thời.</div></div>
+        <div class="faq-item"><button class="faq-question">Vì sao kết quả khác bản thiết kế SVG?</button><div class="faq-answer">Do SVG tham chiếu tài nguyên ngoài (ảnh liên kết, font) hoặc CSS chưa nhúng. Hãy dùng SVG tự chứa: nhúng font hoặc chuyển chữ thành nét trước khi xuất.</div></div>
+        <div class="faq-item"><button class="faq-question">SVG có animation chuyển được không?</button><div class="faq-answer">Canvas chỉ chụp trạng thái tĩnh ban đầu của animation. Muốn khung hình cụ thể, chỉnh giá trị trong mã SVG trước khi chuyển.</div></div>
+        <div class="faq-item"><button class="faq-question">Nên chọn hệ số phóng bao nhiêu?</button><div class="faq-answer">2x cho web và ứng dụng — đủ sắc trên màn retina. 1x cho màn thường, 3-4x dành cho in ấn.</div></div>
+        <div class="faq-item"><button class="faq-question">Dùng ảnh đầu ra cho mục đích thương mại được không?</button><div class="faq-answer">Được, ảnh kết quả thuộc về bạn. Riêng font nhúng trong SVG có thể ràng buộc giấy phép — kiểm tra trước khi dùng rộng rãi.</div></div>
       </section>
 
 <section class="related-tools">
-  <h2>You Might Also Like</h2>
+  <h2>Có thể bạn cũng thích</h2>
   <div class="related-tools-grid">
     <a href="/vi/tools/image-upscaler" class="related-tool-card">
       <span class="tool-icon">🔍</span>
       <div class="tool-info">
-        <strong>Image Upscaler</strong>
-        <span class="tool-desc">Upscale SVG rasterization output</span>
+        <strong>Phóng đại ảnh</strong>
+        <span class="tool-desc">Phóng kết quả raster hóa không răng cưa</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
     <a href="/vi/tools/compressor" class="related-tool-card">
       <span class="tool-icon">🗜️</span>
       <div class="tool-info">
-        <strong>Image Compressor</strong>
-        <span class="tool-desc">Compress converted PNG/JPG files</span>
+        <strong>Nén ảnh</strong>
+        <span class="tool-desc">Giảm dung lượng PNG/JPG sau chuyển đổi</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
     <a href="/vi/tools/converter" class="related-tool-card">
       <span class="tool-icon">🔄</span>
       <div class="tool-info">
-        <strong>Image Converter</strong>
-        <span class="tool-desc">Convert rasterized images to WebP</span>
+        <strong>Chuyển đổi ảnh</strong>
+        <span class="tool-desc">Đổi giữa JPG, PNG, WebP và hơn nữa</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
@@ -454,7 +449,7 @@
           dropzone.style.display = 'none';
           workspace.style.display = 'block';
         } catch (e) {
-          ImageUtils.showToast('Failed to read SVG file', 'error');
+          ImageUtils.showToast('Không đọc được tệp SVG', 'error');
         }
       }
     });
@@ -462,7 +457,7 @@
     // ===== Paste SVG Code =====
     applySvgCodeBtn.addEventListener('click', () => {
       const code = svgCodeArea.value.trim();
-      if (!code) { ImageUtils.showToast('Please paste SVG code first', 'error'); return; }
+      if (!code) { ImageUtils.showToast('Vui lòng dán mã SVG trước', 'error'); return; }
       svgSource = code;
       parseAndRender(code);
       dropzone.style.display = 'none';
@@ -501,7 +496,7 @@
     // ===== Render =====
     function parseAndRender(svgString) {
       const dims = getSvgDimensions(svgString);
-      if (!dims) { ImageUtils.showToast('Invalid SVG code', 'error'); return; }
+      if (!dims) { ImageUtils.showToast('Mã SVG không hợp lệ', 'error'); return; }
       svgSize = dims;
       document.getElementById('svgSize').textContent = dims.w + ' x ' + dims.h;
 
@@ -515,7 +510,7 @@
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
         document.getElementById('outSize').textContent = canvas.width + ' x ' + canvas.height;
       };
-      img.onerror = () => { ImageUtils.showToast('Failed to render SVG', 'error'); };
+      img.onerror = () => { ImageUtils.showToast('Không thể hiển thị SVG', 'error'); };
       // Use data URL for SVG
       const dataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgString);
       img.src = dataUrl;
@@ -548,7 +543,7 @@
         // Small delay to let canvas render
         setTimeout(() => {
           ImageUtils.download(canvas, 'converted.' + ext, mime);
-          ImageUtils.showToast('Image downloaded!');
+          ImageUtils.showToast('Đã tải xuống hình ảnh!');
         }, 100);
       }
     });
