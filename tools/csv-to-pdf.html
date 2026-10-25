@@ -36,11 +36,69 @@
   ] }
   </script>
   <script type="application/ld+json">
-  { "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
-    { "@type": "Question", "name": "Does it handle quoted fields?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Fields wrapped in quotes (including those with commas or newlines inside) are parsed correctly." } },
-    { "@type": "Question", "name": "Is my CSV uploaded to a server?", "acceptedAnswer": { "@type": "Answer", "text": "No. All processing happens locally in your browser." } }
-  ] }
-  </script>
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does it handle fields with commas inside quotes?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The parser correctly handles RFC 4180 quoted fields, including embedded commas, newlines, and escaped double-quotes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the row limit?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There's no hard limit, but very large CSVs (tens of thousands of rows) may slow down your browser. The table auto-paginates across multiple PDF pages."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my CSV uploaded to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All processing happens locally in your browser using jsPDF + autotable."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it handle quoted fields?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — RFC 4180 compliant, including commas inside quotes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are large datasets supported?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, with auto-pagination across pages."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are my PDFs uploaded to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All processing happens locally in your browser using pdf-lib and pdf.js."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a page or file limit?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There is no hard limit. Very large PDFs (100MB+) may slow down your browser."
+      }
+    }
+  ]
+}
+</script>
   <style>
     .tool-container{max-width:900px;margin:2rem auto;padding:0 1rem}
     .btn{padding:10px 22px;border:none;border-radius:8px;font-size:0.95rem;cursor:pointer;font-weight:600;transition:all .2s}

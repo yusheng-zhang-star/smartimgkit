@@ -128,26 +128,90 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "What rotation angles are supported?",
+      "name": "Does rotation reduce image quality?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Any angle with custom rotation."
+        "text": "90° and 180° rotations are lossless — pixels are simply rearranged. Custom angle rotations use high-quality bicubic interpolation, which may introduce very slight softening at extreme angles. For most purposes, the quality is excellent."
       }
     },
     {
       "@type": "Question",
-      "name": "Can I auto-rotate based on EXIF?",
+      "name": "Will my image be uploaded to a server?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. EXIF orientation is auto-detected."
+        "text": "No. All processing happens entirely in your browser using the Canvas API. Your images never leave your device. There is no server that receives or stores your files."
       }
     },
     {
       "@type": "Question",
-      "name": "Is my image uploaded to a server?",
+      "name": "What happens to the canvas size when I rotate?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. All rotation happens locally."
+        "text": "For 90° and 270° rotations, the canvas width and height swap to fit the rotated image perfectly. For custom angles, the canvas expands to contain the entire rotated image, and the background color fills any new space."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I rotate and flip at the same time?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Set your rotation angle first, then click a flip button. The flip applies on top of the current rotation. Both transformations are combined in the final output."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the difference between rotating 180° and flipping vertically?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Rotating 180° turns the image upside down (top becomes bottom, left becomes right). Flipping vertically only mirrors top-to-bottom (left stays left). They produce different results unless the image is perfectly symmetrical."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I rotate GIF images?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can upload a GIF, but only the first frame will be rotated. The output will be a static image (PNG, JPG, or WebP), not an animated GIF. For animated GIF rotation, a specialized tool is needed."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a file size limit?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There's no artificial limit, but very large images (over 50 megapixels) may be slow to process in the browser. Most photos from phones and cameras work instantly."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "可以自定义角度旋转吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "可以——任意角度，加快速 90° 按钮。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "翻转和镜像有何区别？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "翻转水平或垂直交换像素；旋转转动整张图。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "编辑可撤销吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "可以——下载前随时重置为原图。源文件不受影响。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "所有图片格式都支持吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "支持 JPG、PNG、WebP 等常见格式。"
       }
     }
   ]

@@ -144,26 +144,90 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "What upscale factors are supported?",
+      "name": "How is this different from simply resizing?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "2x and 4x."
+        "text": "Regular resizing uses basic interpolation which produces blurry results. Our upscaler uses high-quality bicubic interpolation combined with a sharpening filter that enhances edges and restores detail clarity. The result is noticeably crisper than a simple resize."
       }
     },
     {
       "@type": "Question",
-      "name": "Will upscaling add detail?",
+      "name": "Will my image be uploaded to a server?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Basic upscaling preserves pixels. For AI-powered detail enhancement, use a dedicated tool."
+        "text": "No. All processing happens entirely in your browser using the Canvas API. Your images never leave your device. No server ever receives or stores your files."
       }
     },
     {
       "@type": "Question",
-      "name": "Is my image uploaded to a server?",
+      "name": "Can I upscale to a custom scale factor?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. All upscaling happens locally."
+        "text": "Currently we support 2x, 3x, and 4x as these are the most commonly needed factors. If you need a specific size, try using our Image Resizer tool after upscaling to get the exact dimensions you need."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does upscaling actually add detail?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Upscaling cannot create detail that doesn't exist in the original image. What it does is intelligently interpolate between existing pixels and apply sharpening to maintain the perception of sharpness. The result looks better than a simple resize, but won't match a natively high-resolution photo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the sharpening filter doing?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The sharpening filter is an unsharp mask technique that enhances edge contrast. It works by subtracting a blurred version of the image from the original, which makes edges appear crisper. The slider controls the intensity of this effect."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a file size or resolution limit?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There's no artificial limit, but very large outputs (e.g., 4x on a 5000px image = 20000px) may be slow or run into browser memory constraints. Most typical photo upscales complete in seconds."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I use PNG or JPG for upscaled images?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use PNG for images with sharp edges (logos, screenshots, text) or when quality is paramount. Use JPG for photographs where file size matters more than pixel-perfect accuracy. WebP is a good modern alternative that balances both."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What scale factors are supported?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "2x and 4x upscaling."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does upscaling add real detail?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "AI upscaling intelligently fills in detail, though it cannot create information that is not present."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does AI processing happen on a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The AI models run entirely in your browser using WebAssembly and WebGL."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What if the result is not perfect?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "AI enhancement is a starting point — use the Edit tools for fine-tuning."
       }
     }
   ]

@@ -126,26 +126,90 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "支持哪些 SVG 特性？",
+      "name": "Is my SVG uploaded to a server?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "支持路径、文本、渐变和滤镜等所有标准 SVG 特性。"
+        "text": "No. All conversion happens entirely in your browser using the Canvas API. Your SVG file or code never leaves your device."
       }
     },
     {
       "@type": "Question",
-      "name": "有哪些输出尺寸可选？",
+      "name": "What is the maximum SVG size supported?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "可自定义宽度和高度，可选 DPI 控制。"
+        "text": "There is no hard file size limit. However, very large SVGs (e.g., 2000×2000+ pixels at 4x scale) may take longer to render. Most SVGs under 1MB convert instantly."
       }
     },
     {
       "@type": "Question",
-      "name": "我的 SVG 会上传到服务器吗？",
+      "name": "Why does my converted image look different from the SVG?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "不会，所有转换都在本地完成。"
+        "text": "This can happen if your SVG uses external resources (linked images, fonts) or CSS styles not embedded in the SVG. For best results, use self-contained SVG code with embedded fonts or convert fonts to paths in your design tool before exporting."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I convert animated SVGs (SVG + SMIL)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Animated SVGs will be converted at their initial static state. The Canvas API renders a single frame. For animated outputs, consider exporting individual frames from your animation tool."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What scale factor should I use for web use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use 2x scale for most web use — this ensures crisp display on retina/ high-DPI screens. Use 1x for standard displays, or 3-4x for print."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use the output for commercial projects?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The output images are yours to use for any purpose. Note that font licensing may apply if your SVG uses embedded commercial fonts — check your font license."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this support SVG filters and effects?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, most SVG filters (blur, drop shadow, color matrix) and effects are supported as long as the browser's SVG renderer supports them. Modern Chrome, Firefox, and Safari have excellent SVG support."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "支持哪些缩放倍数？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "1x、2x、3x、4x，输出清晰高 DPI。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "可以粘贴 SVG 代码而非上传吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "可以——直接粘贴 SVG 标记到工具中。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "有文件大小限制吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "支持最大 100MB 的文件。超大文件可能需要多几秒处理。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "需要安装任何东西吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不需要。全部在浏览器内运行——无需应用、插件或扩展。"
       }
     }
   ]
