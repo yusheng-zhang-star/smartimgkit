@@ -28,7 +28,7 @@
   <link rel="alternate" hreflang="pt" href="https://smartimgkit.com/pt/tools/meme-generator">
   <link rel="alternate" hreflang="vi" href="https://smartimgkit.com/vi/tools/meme-generator">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/meme-generator">
-  <link rel="stylesheet" href="/css/style.css?v=14">
+  <link rel="stylesheet" href="/css/style.css?v=15">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
@@ -88,6 +88,11 @@
   }
 }
 </script>
+<style id="meme-layout-css">
+#workspace { grid-template-columns: minmax(260px, 340px) 1fr; gap: 20px; align-items: start; }
+#workspace .meme-canvas-area { margin-bottom: 0; }
+@media (max-width: 900px) { #workspace { grid-template-columns: 1fr; } }
+</style>
 </head>
 <body>
   <!-- Header: exact match image-rotator compact format -->
@@ -410,7 +415,7 @@
           document.querySelectorAll('.template-btn').forEach(b => b.classList.remove('active'));
           dropzone.style.display = 'none';
           templateSection.style.display = 'block';
-          workspace.style.display = 'block';
+          workspace.style.display = 'grid';
           renderPreview();
         } catch (e) {
           ImageUtils.showToast('Failed to load image', 'error');
