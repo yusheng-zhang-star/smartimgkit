@@ -34,8 +34,8 @@
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Xoá metadata EXIF khỏi ảnh",
-  "url": "https://smartimgkit.com/tools/image-exif-remover",
+  "name": "🗑️ Xóa metadata EXIF",
+  "url": "https://smartimgkit.com/vi/tools/image-exif-remover",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
   "offers": {
@@ -43,32 +43,33 @@
     "price": "0",
     "priceCurrency": "USD"
   },
-  "description": "Xoá dữ liệu EXIF gồm vị trí GPS và thông tin máy ảnh trước khi đăng ảnh. Miễn phí, xử lý ngay trong trình duyệt, không tải lên."
+  "description": "Xoá dữ liệu EXIF gồm vị trí GPS và thông tin máy ảnh trước khi đăng ảnh. Miễn phí, xử lý ngay trong trình duyệt, không tải lên.",
+  "inLanguage": "vi"
 }
 </script>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "HowTo",
-  "name": "How to Remove EXIF Metadata",
+  "name": "Cách xóa metadata EXIF khỏi ảnh",
   "step": [
     {
       "@type": "HowToStep",
       "position": 1,
-      "name": "Upload Image",
-      "text": "Select an image from your device."
+      "name": "Tải ảnh lên",
+      "text": "Chọn tệp JPEG từ thiết bị của bạn."
     },
     {
       "@type": "HowToStep",
       "position": 2,
-      "name": "Remove EXIF",
-      "text": "Click Remove EXIF to strip all metadata."
+      "name": "Gỡ bỏ EXIF",
+      "text": "Bấm Gỡ bỏ EXIF để xóa toàn bộ metadata ẩn."
     },
     {
       "@type": "HowToStep",
       "position": 3,
-      "name": "Download Clean Image",
-      "text": "Download the image with all metadata removed."
+      "name": "Tải kết quả",
+      "text": "Tải ảnh sạch về máy dưới dạng PNG."
     }
   ]
 }
@@ -89,26 +90,58 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Will removing EXIF reduce image quality?",
+      "name": "Xóa EXIF có làm giảm chất lượng ảnh không?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The visual quality stays identical — pixels are unchanged. The output is saved as PNG to avoid re-compression. If you need JPEG, use the Image Converter tool after downloading."
+        "text": "Không. Ảnh được vẽ lại trên canvas với từng điểm ảnh giữ nguyên giá trị, rồi lưu dưới dạng PNG — một định dạng nén không mất dữ liệu. Chất lượng hiển thị hoàn toàn giống ảnh gốc."
       }
     },
     {
       "@type": "Question",
-      "name": "Can I remove EXIF from multiple images at once?",
+      "name": "Ảnh của tôi có bị tải lên máy chủ không?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "This tool processes one image at a time. For batch processing, use the Image Compressor tool (which re-saves images and strips metadata) or process images one by one."
+        "text": "Không. Cả việc dò tìm lẫn xóa metadata đều chạy trong trình duyệt bằng Canvas API, trên bộ nhớ của thiết bị bạn. Không tệp nào được gửi đi đâu cả."
       }
     },
     {
       "@type": "Question",
-      "name": "Is the output format always PNG?",
+      "name": "Ảnh PNG có cần xóa EXIF không?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes — PNG ensures no metadata is re-embedded. If you need JPEG, use the Image Converter tool to convert the PNG back to JPEG after downloading."
+        "text": "PNG thông thường không chứa khối EXIF như JPEG, nên gần như luôn an toàn. Công cụ vẫn nhận diện được trường hợp này và báo cho bạn biết ảnh đã sạch."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Có gỡ metadata cho nhiều ảnh cùng lúc không?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Chưa — mỗi lần một ảnh. Cần xử lý cả album thì bạn lặp lại vài lần; mỗi ảnh chỉ mất vài giây."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Tại sao tệp PNG tải về nặng hơn JPEG gốc?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Vì kết quả luôn xuất ra PNG: định dạng này giữ nguyên từng điểm ảnh nên nén kém hơn JPEG với ảnh chụp. Muốn tệp nhẹ hơn, chạy qua Image Compressor sau khi tải."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Xóa EXIF có mất luôn cả ngày giờ chụp không?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Có. Toàn bộ metadata — vị trí, ngày giờ, thông số máy — đều nằm trong khối bị loại bỏ. Hãy tự ghi nhớ hoặc đổi tên tệp nếu bạn cần thông tin đó sau này."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Làm sao kiểm tra ảnh còn sót metadata?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Tải ảnh kết quả lên công cụ Metadata Viewer: nếu không còn hiện khối EXIF nào thì ảnh đã sạch hoàn toàn."
       }
     }
   ]
@@ -146,24 +179,24 @@
 
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Trang chủ</a><span>/</span><a href="/">Công cụ</a><span>/</span><span>🗑️ EXIF Remover</span></nav>
+      <nav class="breadcrumb"><a href="/">Trang chủ</a><span>/</span><a href="/">Công cụ</a><span>/</span><span>🗑️ Xóa metadata EXIF</span></nav>
       <div class="tool-page-header">
-        <h1>🗑️ EXIF Remover</h1>
-        <p>Strip hidden metadata from images to protect your privacy. All processing happens in your browser.</p>
+        <h1>🗑️ Xóa metadata EXIF</h1>
+        <p>Xóa thông tin ẩn như vị trí GPS, dòng máy ảnh, thời gian chụp khỏi ảnh trước khi chia sẻ. Mọi thứ xử lý ngay trên trình duyệt, ảnh không rời khỏi máy bạn.</p>
       </div>
       <div class="tool-workspace">
 <div class="before-after-preview" id="beforeAfterPreview">
-            <div class="before-after-label">✨ See what this tool can do</div>
+            <div class="before-after-label">✨ Công cụ này làm được gì</div>
             <div class="before-after-images">
               <div class="before-after-item">
                 <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&q=80" alt="Before" loading="lazy" onerror="this.style.display='none';this.parentNode.classList.add('img-fallback')">
-                <div class="before-after-item-caption before">Gốc (with EXIF)</div>
+                <div class="before-after-item-caption before">Gốc (còn EXIF)</div>
               </div>
               <div class="before-after-item">
                 <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
                   <span style="font-size:3rem;opacity:0.5;">🗑️</span>
                 </div>
-                <div class="before-after-item-caption after">After — EXIF removed</div>
+                <div class="before-after-item-caption after">Sau — đã gỡ EXIF</div>
               </div>
             </div>
           </div>
@@ -173,7 +206,7 @@
             <h3>Thả ảnh vào đây</h3>
             <p>hoặc bấm để chọn tệp</p>
           </label>
-          <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Try with a sample image</span>
+          <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Thử với một ảnh mẫu</span>
           <div class="preview-area" id="previewArea">
             <div class="preview-single">
               <div class="preview-container"><img id="resultImg" alt="Kết quả"></div>
@@ -184,70 +217,80 @@
             <div class="tool-actions">
               <button class="btn btn-primary" id="applyBtn">🗑️ Gỡ bỏ EXIF</button>
               <button class="btn btn-secondary hidden" id="downloadBtn">⬇️ Tải xuống</button>
-              <button class="btn btn-secondary" id="resetBtn">🔄 New Hình ảnh</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Ảnh mới</button>
             </div>
             <div id="status" class="text-center mt-16" style="color:var(--text-secondary)"></div>
           </div>
       </div>
 <section class="how-to-section">
-        <h2>How to Use</h2>
+        <h2>Cách sử dụng</h2>
         <div class="how-to-steps">
-          <div class="how-to-step"><div class="step-number">1</div><h4>Upload</h4><p>Select an image from your device or try with a sample.</p></div>
-          <div class="how-to-step"><div class="step-number">2</div><h4>Remove EXIF</h4><p>Click "Remove EXIF" to strip all metadata.</p></div>
-          <div class="how-to-step"><div class="step-number">3</div><h4>Download</h4><p>Download the clean image with no hidden data.</p></div>
+          <div class="how-to-step"><div class="step-number">1</div><h4>Tải ảnh lên</h4><p>Chọn tệp từ thiết bị; việc quét metadata diễn ra ngay lập tức.</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>Gỡ bỏ EXIF</h4><p>Bấm một nút, toàn bộ metadata ẩn bị xóa khỏi ảnh.</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>Tải xuống</h4><p>Lưu ảnh đã sạch về máy dưới dạng PNG.</p></div>
         </div>
       </section>
 
-<h2>Detailed User Guide</h2>
+<h2>Hướng dẫn chi tiết</h2>
 
-      <div class="guide-block">
-        <h3>Step 1: Upload Your Image</h3>
-        <p>Click the dropzone or drag and drop an image file (JPG, PNG, or WebP). Photos taken with smartphones or cameras usually contain EXIF metadata. The tool will detect and display any metadata found.</p>
-      </div>
+        <div class="guide-block">
+          <h3>Metadata EXIF thực chất chứa những gì</h3>
+          <p>Mỗi lần bạn chụp ảnh, máy ảnh và điện thoại không chỉ lưu điểm ảnh mà còn cài thêm một khối dữ liệu tên là EXIF vào tệp JPEG. Khối này nằm ngay sau phần đầu của tệp, trong vùng đánh dấu APP1, và thường bao gồm: tọa độ GPS nơi bấm máy, hãng và dòng máy, thông số ống kính, ngày giờ chính xác đến giây, và phần mềm đã chỉnh sửa ảnh (nếu có). Công cụ này đọc trực tiếp từng byte của tệp JPEG để tìm các marker 0xFFE1 — cách làm việc cùng kiểu như các trình xem metadata chuyên dụng.</p>
+        </div>
 
-      <div class="guide-block">
-        <h3>Step 2: Remove EXIF Metadata</h3>
-        <p>Click <strong>"Remove EXIF"</strong> to strip all hidden metadata from the image. This includes:</p>
-        <ul>
-          <li><strong>GPS location</strong> — Precise coordinates where the photo was taken</li>
-          <li><strong>Camera info</strong> — Make, model, lens, and camera settings</li>
-          <li><strong>Timestamp</strong> — Date and time the photo was taken</li>
-          <li><strong>Software info</strong> — Editing software and version</li>
-          <li><strong>Copyright</strong> — Copyright notice and artist info</li>
-        </ul>
-        <div class="tip"><strong>Privacy Tip:</strong> Always remove EXIF before sharing photos online. GPS data can reveal your home address, daily routine, and private locations.</div>
-      </div>
+        <div class="guide-block">
+          <h3>Công cụ gỡ metadata bằng cách nào</h3>
+          <p>Đây là phần quan trọng nhất: công cụ không "sửa" tệp cũ mà vẽ lại ảnh lên một khung canvas mới rồi lưu thành tệm PNG hoàn toàn mới. Vì tệp mới được tạo từ số 0 và chỉ chứa điểm ảnh, mọi metadata — EXIF, XMP, IPTC, kể cả cấu hình màu ICC — đều không theo sang. Điểm ảnh thì không thay đổi giá trị nào, nên nhìn bằng mắt bạn không phân biệt được ảnh trước và sau khi gỡ.</p>
+        </div>
 
-      <div class="guide-block">
-        <h3>Step 3: Download Clean Image</h3>
-        <p>After processing, click <strong>"Download"</strong> to save the clean image as a PNG file. PNG format ensures no metadata can be re-embedded during save.</p>
-      </div>
+        <div class="guide-block">
+          <h3>Phát hiện metadata: nói thẳng phạm vi</h3>
+          <p>Việc dò tìm chỉ áp dụng cho JPEG: PNG và WebP thông thường không chứa EXIF nên không cần quét. Cơ chế dò đọc các chuỗi ASCII trong khối EXIF, vì vậy nó nhận diện được dữ liệu GPS và thông tin máy ảnh/phần mềm nhưng không liệt kê đầy đủ từng tag như phần mềm chuyên nghiệp — đủ để bạn biết ảnh có "leak" thông tin hay không trước khi đăng.</p>
+        </div>
 
-      <div class="guide-block">
-        <h3>Why Remove EXIF?</h3>
-        <ul>
-          <li><strong>Privacy</strong> — Prevent strangers from knowing where and when you took a photo</li>
-          <li><strong>File size</strong> — EXIF can add 10-50KB per image; removing it makes files smaller</li>
-          <li><strong>Security</strong> — Some EXIF fields reveal software versions, which can be exploited</li>
-          <li><strong>Anonymity</strong> — Remove copyright and author info before sharing</li>
-        </ul>
-      </div>
+        <div class="guide-block">
+          <h3>Những tình huống người Việt nên gỡ EXIF</h3>
+          <ul>
+            <li><strong>Bán nhà, bán xe trên Chợ Tốt hay Facebook Marketplace:</strong> ảnh chụp tại nhà để của bạn mang tọa độ GPS — người lạ có thể xác định được địa chỉ chỉ bằng một công cụ xem metadata miễn phí.</li>
+            <li><strong>Ảnh con nhỏ đi học, đi chơi:</strong> giờ học, giờ tan trường và địa điểm quen thuộc lặp lại mỗi ngày là dữ liệu không nên để lộ.</li>
+            <li><strong>Gửi ảnh giấy tờ qua Zalo:</strong> ảnh chụp CCCD, sổ hộ khẩu thường kèm vị trí và thời điểm chụp; gỡ EXIF trước khi gửi cho bất kỳ ai, kể cả khi对方 là người thân.</li>
+          </ul>
+        </div>
+
+        <div class="guide-block">
+          <h3>Mẹo nhỏ về Zalo và các ứng dụng nhắn tin</h3>
+          <p>Khi gửi ảnh ở chế độ ảnh thường, Zalo và đa số ứng dụng nhắn tin sẽ nén lại ảnh — quá trình nén này tự động làm rơi EXIF. Nhưng nếu bạn gửi dưới dạng <em>tệp</em> để giữ chất lượng gốc, tệp được chuyển nguyên vẹn, metadata và tất cả. Đây là chi tiết nhiều người dùng không biết: càng giữ chất lượng cao, càng cần gỡ EXIF chủ động trước.</p>
+        </div>
+
+        <div class="guide-block">
+          <h3>Giới hạn cần biết trước khi dùng</h3>
+          <ul>
+            <li>Chưa hỗ trợ xử lý hàng loạt — mỗi lần một ảnh; cần gỡ cho cả album thì lặp lại vài lần.</li>
+            <li>Đầu ra luôn là PNG, nên tệp thường nặng hơn JPEG gốc; nếu cần nhẹ hơn, chạy qua Image Compressor sau khi tải.</li>
+            <li>Cấu hình màu ICC cũng bị xóa theo — ảnh trên màn hình quản màu nghiêm ngặt có thể hiện màu chênh rất nhẹ.</li>
+            <li>Công cụ không đọc được EXIF của PNG — nhưng như trên, PNG thông thường cũng không có.</li>
+          </ul>
+        </div>
 
 <section class="faq-section">
-        <h2>Frequently Asked Questions</h2>
-        <div class="faq-item"><button class="faq-question">Will removing EXIF reduce image quality?</button><div class="faq-answer">The visual quality stays identical — pixels are unchanged. The output is saved as PNG to avoid re-compression. If you need JPEG, use the Image Converter tool after downloading.</div></div>
-        <div class="faq-item"><button class="faq-question">Can I remove EXIF from multiple images at once?</button><div class="faq-answer">This tool processes one image at a time. For batch processing, use the Image Compressor tool (which re-saves images and strips metadata) or process images one by one.</div></div>
-        <div class="faq-item"><button class="faq-question">Is the output format always PNG?</button><div class="faq-answer">Yes — PNG ensures no metadata is re-embedded. If you need JPEG, use the Image Converter tool to convert the PNG back to JPEG after downloading.</div></div>
+        <h2>Câu hỏi thường gặp</h2>
+        <div class="faq-item"><button class="faq-question">Xóa EXIF có làm giảm chất lượng ảnh không?</button><div class="faq-answer">Không. Ảnh được vẽ lại trên canvas với từng điểm ảnh giữ nguyên giá trị, rồi lưu dưới dạng PNG — một định dạng nén không mất dữ liệu. Chất lượng hiển thị hoàn toàn giống ảnh gốc.</div></div>
+      <div class="faq-item"><button class="faq-question">Ảnh của tôi có bị tải lên máy chủ không?</button><div class="faq-answer">Không. Cả việc dò tìm lẫn xóa metadata đều chạy trong trình duyệt bằng Canvas API, trên bộ nhớ của thiết bị bạn. Không tệp nào được gửi đi đâu cả.</div></div>
+      <div class="faq-item"><button class="faq-question">Ảnh PNG có cần xóa EXIF không?</button><div class="faq-answer">PNG thông thường không chứa khối EXIF như JPEG, nên gần như luôn an toàn. Công cụ vẫn nhận diện được trường hợp này và báo cho bạn biết ảnh đã sạch.</div></div>
+      <div class="faq-item"><button class="faq-question">Có gỡ metadata cho nhiều ảnh cùng lúc không?</button><div class="faq-answer">Chưa — mỗi lần một ảnh. Cần xử lý cả album thì bạn lặp lại vài lần; mỗi ảnh chỉ mất vài giây.</div></div>
+      <div class="faq-item"><button class="faq-question">Tại sao tệp PNG tải về nặng hơn JPEG gốc?</button><div class="faq-answer">Vì kết quả luôn xuất ra PNG: định dạng này giữ nguyên từng điểm ảnh nên nén kém hơn JPEG với ảnh chụp. Muốn tệp nhẹ hơn, chạy qua Image Compressor sau khi tải.</div></div>
+      <div class="faq-item"><button class="faq-question">Xóa EXIF có mất luôn cả ngày giờ chụp không?</button><div class="faq-answer">Có. Toàn bộ metadata — vị trí, ngày giờ, thông số máy — đều nằm trong khối bị loại bỏ. Hãy tự ghi nhớ hoặc đổi tên tệp nếu bạn cần thông tin đó sau này.</div></div>
+      <div class="faq-item"><button class="faq-question">Làm sao kiểm tra ảnh còn sót metadata?</button><div class="faq-answer">Tải ảnh kết quả lên công cụ Metadata Viewer: nếu không còn hiện khối EXIF nào thì ảnh đã sạch hoàn toàn.</div></div>
       </section>
 
 <section class="related-tools">
-        <h2>You Might Also Like</h2>
+        <h2>Bạn cũng có thể thích</h2>
         <div class="related-tools-grid">
           <a href="/vi/tools/metadata-viewer" class="related-tool-card">
             <span class="tool-icon">📋</span>
             <div class="tool-info">
               <strong>Metadata Viewer</strong>
-              <span class="tool-desc">View EXIF and hidden image info</span>
+              <span class="tool-desc">Xem EXIF và thông tin ẩn trong ảnh</span>
             </div>
             <span class="tool-arrow">→</span>
           </a>
@@ -255,7 +298,7 @@
             <span class="tool-icon">🗜️</span>
             <div class="tool-info">
               <strong>Image Compressor</strong>
-              <span class="tool-desc">Reduce file size (also strips metadata)</span>
+              <span class="tool-desc">Giảm dung lượng (cũng tự gỡ metadata)</span>
             </div>
             <span class="tool-arrow">→</span>
           </a>
@@ -263,7 +306,7 @@
             <span class="tool-icon">✂️</span>
             <div class="tool-info">
               <strong>Image Splitter</strong>
-              <span class="tool-desc">Split images into grid pieces</span>
+              <span class="tool-desc">Chia ảnh thành nhiều ô lưới</span>
             </div>
             <span class="tool-arrow">→</span>
           </a>
@@ -301,13 +344,13 @@ const dropzone = document.getElementById('dropzone');
     // Simple EXIF detection for JPEG files
     async function detectExif(file) {
       if (!file.type.includes('jpeg') && !file.name.match(/\.jpe?g$/i)) {
-        return { hasExif: false, info: 'Not a JPEG file — no EXIF data possible.' };
+        return { hasExif: false, info: 'Không phải tệp JPEG — không thể có EXIF.' };
       }
       try {
         const buf = await file.arrayBuffer();
         const view = new DataView(buf);
         if (view.getUint16(0) !== 0xFFD8) {
-          return { hasExif: false, info: 'Not a valid JPEG file.' };
+          return { hasExif: false, info: 'Tệp JPEG không hợp lệ.' };
         }
         let offset = 2;
         let exifFound = false;
@@ -322,7 +365,7 @@ const dropzone = document.getElementById('dropzone');
             const exifStart = offset + 4;
             const exifHeader = String.fromCharCode(...new Uint8Array(buf, exifStart, 6));
             if (exifHeader.includes('Exif')) {
-              tags.push('EXIF block detected');
+              tags.push('Phát hiện khối EXIF');
               // Try to read some EXIF tags
               try {
                 const exifBuf = new Uint8Array(buf, exifStart, len - 2);
@@ -337,14 +380,14 @@ const dropzone = document.getElementById('dropzone');
           offset += 2 + segLen;
         }
         if (!exifFound) {
-          return { hasExif: false, info: 'No EXIF data found in this image.' };
+          return { hasExif: false, info: 'Không tìm thấy EXIF trong ảnh này.' };
         }
-        let msg = '<span class="exif-warn">⚠️ EXIF metadata detected:</span><br>';
+        let msg = '<span class="exif-warn">⚠️ Phát hiện metadata EXIF:</span><br>';
         tags.forEach(t => { msg += '• ' + t + '<br>'; });
-        if (gpsFound) msg += '<br><span class="exif-warn">⚠️ GPS location data found — remove it to protect your privacy!</span>';
+        if (gpsFound) msg += '<br><span class="exif-warn">⚠️ Phát hiện dữ liệu vị trí GPS — hãy gỡ bỏ để bảo vệ quyền riêng tư!</span>';
         return { hasExif: true, info: msg };
       } catch(e) {
-        return { hasExif: false, info: 'Could not read file metadata.' };
+        return { hasExif: false, info: 'Không đọc được metadata của tệp.' };
       }
     }
 
@@ -354,34 +397,34 @@ const dropzone = document.getElementById('dropzone');
       try {
         // Very basic: look for ASCII strings in EXIF data
         const str = String.fromCharCode(...buf);
-        if (str.includes('GPS')) { gps = true; tags.push('GPS location data'); }
-        if (str.match(/[A-Za-z]{3,}/)) { tags.push('Camera/software info present'); }
+        if (str.includes('GPS')) { gps = true; tags.push('Dữ liệu vị trí GPS'); }
+        if (str.match(/[A-Za-z]{3,}/)) { tags.push('Có thông tin máy ảnh/phần mềm'); }
       } catch(e) {}
       return { tags, gps };
     }
 
     async function handleFile(file) {
-      if (!file.type.startsWith('image/')) { status.textContent = 'Please select an image file.'; return; }
+      if (!file.type.startsWith('image/')) { status.textContent = 'Vui lòng chọn một tệp ảnh.'; return; }
       currentFile = file;
       ImageUtils.load(file).then(async img => {
         originalImg = img;
-        status.innerHTML = '<div class="spinner"></div> Checking metadata...';
+        status.innerHTML = '<div class="spinner"></div> Đang kiểm tra metadata...';
         const exif = await detectExif(file);
         if (exif.hasExif) {
           exifInfo.innerHTML = exif.info;
           exifStatus.style.display = 'block';
         } else {
-          exifInfo.innerHTML = '<span class="exif-clear">✅ No EXIF metadata detected. Your image is already clean.</span>';
+          exifInfo.innerHTML = '<span class="exif-clear">✅ Không có metadata EXIF. Ảnh của bạn vốn đã sạch.</span>';
           exifStatus.style.display = 'block';
         }
         previewArea.classList.add('active');
         const bp = document.getElementById('beforeAfterPreview');
         if (bp) bp.classList.add('hidden');
         dropzone.classList.add('hidden');
-        status.textContent = 'Click "Remove EXIF" to strip metadata.';
+        status.textContent = 'Bấm "Gỡ bỏ EXIF" để xóa metadata.';
         downloadBtn.classList.add('hidden');
       }).catch(err => {
-        status.textContent = 'Error loading image: ' + err.message;
+        status.textContent = 'Lỗi khi tải ảnh: ' + err.message;
       });
     }
 
@@ -405,25 +448,25 @@ const dropzone = document.getElementById('dropzone');
     applyBtn.addEventListener('click', async function() {
       if (!originalImg) return;
       applyBtn.disabled = true;
-      applyBtn.textContent = '🔄 Removing...';
+      applyBtn.textContent = '🔄 Đang gỡ...';
       status.innerHTML = '<div class="spinner"></div>';
       try {
         await removeExif();
-        exifInfo.innerHTML = '<span class="exif-clear">✅ EXIF metadata successfully removed! The image is now clean.</span>';
-        status.textContent = 'Done! Click Download to save the clean image.';
+        exifInfo.innerHTML = '<span class="exif-clear">✅ Đã gỡ xong metadata EXIF! Ảnh giờ đã sạch.</span>';
+        status.textContent = 'Xong! Bấm Tải xuống để lưu ảnh sạch.';
         downloadBtn.classList.remove('hidden');
       } catch (err) {
         status.textContent = 'Error: ' + err.message;
       } finally {
         applyBtn.disabled = false;
-        applyBtn.textContent = '🗑️ Remove EXIF';
+        applyBtn.textContent = '🗑️ Gỡ bỏ EXIF';
       }
     });
 
     downloadBtn.addEventListener('click', function() {
       if (resultBlob) {
         const base = (currentFile.name || 'image').replace(/\.[^.]+$/, '');
-        ImageUtils.download(resultBlob, base + '-clean.png');
+        ImageUtils.download(resultBlob, base + '-da-xoa-exif.png');
         try { SmartImgNextStep.show(); } catch(e) {}
       }
     });

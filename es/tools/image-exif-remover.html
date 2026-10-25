@@ -41,26 +41,58 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "¿Eliminar EXIF reduce calidad?",
+      "name": "¿Eliminar los EXIF resta calidad a la foto?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Los píxeles no cambian. Salida PNG evita recompresión."
+        "text": "Ninguna. La imagen se redibuja píxel a píxel sin alterar valores y se guarda en PNG, un formato sin pérdidas: el resultado se ve exactamente igual que el original."
       }
     },
     {
       "@type": "Question",
-      "name": "¿Eliminar EXIF de varias?",
+      "name": "¿Mi imagen se sube a algún servidor?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Una a la vez. Para lotes usa el Compresor de Imágenes."
+        "text": "No. El análisis y el borrado ocurren en tu navegador con la API Canvas, en la memoria de tu propio dispositivo. Ningún archivo sale de tu equipo."
       }
     },
     {
       "@type": "Question",
-      "name": "¿Siempre PNG?",
+      "name": "¿Los PNG también llevan EXIF?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Sí. PNG evita que se reincrusten metadatos."
+        "text": "Los PNG normales no incluyen el bloque EXIF típico del JPEG, así que suelen ser seguros. La herramienta lo comprueba y te confirma si la imagen ya está limpia."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo limpiar varias imágenes de una vez?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Todavía no: una imagen por cada pasada. Para un álbum completo, repite el proceso; cada foto tarda solo unos segundos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué el PNG final pesa más que el JPEG?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Porque la salida es siempre PNG: conserva cada píxel y comprime peor que el JPEG en fotos. Pasa el resultado por Image Compressor si necesitas un archivo más ligero."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se pierde también la fecha en que tomé la foto?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí. Todo el bloque desaparece: ubicación, fecha, hora y parámetros de cámara. Si te sirven esos datos, renombra el archivo o apúntalos antes de limpiar."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo compruebo que una imagen quedó limpia?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sube el resultado al visor de Metadata Viewer: si no aparece ningún bloque EXIF, la imagen está totalmente depurada."
       }
     }
   ]
@@ -127,13 +159,13 @@
             <div class="before-after-images">
               <div class="before-after-item">
                 <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&q=80" alt="Antes" loading="lazy" onerror="this.style.display='none';this.parentNode.classList.add('img-fallback')">
-                <div class="before-after-item-caption before">Original (with EXIF)</div>
+                <div class="before-after-item-caption before">Original (con EXIF)</div>
               </div>
               <div class="before-after-item">
                 <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
                   <span style="font-size:3rem;opacity:0.5;">🗑️</span>
                 </div>
-                <div class="before-after-item-caption after">After — EXIF removed</div>
+                <div class="before-after-item-caption after">Después — EXIF eliminados</div>
               </div>
             </div>
           </div>
@@ -152,63 +184,72 @@
               <div class="exif-info" id="exifInfo"></div>
             </div>
             <div class="tool-actions">
-              <button class="btn btn-primary" id="applyBtn">🗑️ Remove EXIF</button>
+              <button class="btn btn-primary" id="applyBtn">🗑️ Eliminar EXIF</button>
               <button class="btn btn-secondary hidden" id="downloadBtn">⬇️ Download</button>
-              <button class="btn btn-secondary" id="resetBtn">🔄 New Image</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Nueva imagen</button>
             </div>
             <div id="status" class="text-center mt-16" style="color:var(--text-secondary)">
       </div>
       </div>
       </div>
 <section class="how-to-section">
-        <h2>Cómo Usar</h2>
+        <h2>Cómo usar</h2>
         <div class="how-to-steps">
-          <div class="how-to-step"><div class="step-number">1</div><h4>Subir</h4><p>Selecciona una imagen de tu dispositivo o prueba con una muestra.</p></div>
-          <div class="how-to-step"><div class="step-number">2</div><h4>Eliminar EXIF</h4><p>Haz clic en "Eliminar EXIF" para quitar todos los metadatos.</p></div>
-          <div class="how-to-step"><div class="step-number">3</div><h4>Descargar</h4><p>Descarga la imagen limpia sin datos ocultos.</p></div>
+          <div class="how-to-step"><div class="step-number">1</div><h4>Subir</h4><p>Elige una imagen; el análisis de metadatos es instantáneo.</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>Eliminar EXIF</h4><p>Un clic y desaparecen todos los metadatos ocultos.</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>Descargar</h4><p>Guarda la imagen limpia en tu dispositivo como PNG.</p></div>
         </div>
       </section>
 
-<h2>Guía Detallada</h2>
+<h2>Guía detallada</h2>
 
-      <div class="guide-block">
-        <h3>Paso 1: Subir tu Imagen</h3>
-        <p>Haz clic en la zona de carga o arrastra y suelta un archivo de imagen (JPG, PNG o WebP). Las fotos tomadas con smartphones o cámaras suelen contener metadatos EXIF. La herramienta detectará y mostrará cualquier metadato encontrado.</p>
-      </div>
+        <div class="guide-block">
+          <h3>Qué contiene realmente el bloque EXIF</h3>
+          <p>Cuando fotografías con el móvil, la cámara guarda los píxeles y además escribe un bloque de metadatos llamado EXIF dentro del JPEG, justo tras la cabecera, en una sección marcada como APP1. Ahí viajan las coordenadas GPS del disparo, la marca y el modelo del teléfono, los ajustes de la óptica, la fecha y hora exactas al segundo y, si tocó editar, el nombre del programa usado. Esta herramienta lee el archivo byte a byte buscando los marcadores 0xFFE1, igual que hacen los visores de metadatos especializados.</p>
+        </div>
 
-      <div class="guide-block">
-        <h3>Paso 2: Eliminar Metadatos EXIF</h3>
-        <p>Haz clic en <strong>"Eliminar EXIF"</strong> para quitar todos los metadatos ocultos de la imagen. Esto incluye:</p>
-        <ul>
-          <li><strong>GPS location</strong> — Precise coordinates where the photo was taken</li>
-          <li><strong>Camera info</strong> — Make, model, lens, and camera settings</li>
-          <li><strong>Timestamp</strong> — Date and time the photo was taken</li>
-          <li><strong>Software info</strong> — Editing software and version</li>
-          <li><strong>Copyright</strong> — Copyright notice and artist info</li>
-        </ul>
-        <div class="tip"><strong>Privacy Tip:</strong> Always remove EXIF before sharing photos online. GPS data can reveal your home address, daily routine, and private locations.</div>
-      </div>
+        <div class="guide-block">
+          <h3>El borrado: cómo funciona de verdad</h3>
+          <p>Lo importante: la herramienta no «parchea» el archivo original. Redibuja la imagen en un lienzo nuevo y la guarda como un PNG recién creado. Como ese archivo nace solo con píxeles, no sobrevive ningún metadato: ni EXIF, ni XMP, ni IPTC, ni tampoco el perfil de color ICC. Los píxeles quedan idénticos, por lo que a simple vista no se distingue la imagen antes y después.</p>
+        </div>
 
-      <div class="guide-block">
-        <h3>Paso 3: Descargar Imagen Limpia</h3>
-        <p>Después del procesamiento, haz clic en <strong>"Descargar"</strong> para guardar la imagen limpia como archivo PNG. El formato PNG garantiza que no se puedan volver a incrustar metadatos durante el guardado.</p>
-      </div>
+        <div class="guide-block">
+          <h3>Detección: hasta dónde llega</h3>
+          <p>El análisis se aplica solo al JPEG: los PNG y WebP normales no llevan EXIF, así que no hay nada que rastrear. La lectura se basa en las cadenas de texto del bloque EXIF; detecta con fiabilidad los datos GPS y la información de cámara o software, aunque no enumera cada etiqueta como un programa profesional. Para saber si una foto filtra información antes de publicarla, sobra.</p>
+        </div>
 
-      <div class="guide-block">
-        <h3>¿Por Qué Eliminar EXIF?</h3>
-        <ul>
-          <li><strong>Privacy</strong> — Prevent strangers from knowing where and when you took a photo</li>
-          <li><strong>File size</strong> — EXIF can add 10-50KB per image; removing it makes files smaller</li>
-          <li><strong>Security</strong> — Some EXIF fields reveal software versions, which can be exploited</li>
-          <li><strong>Anonymity</strong> — Remove copyright and author info before sharing</li>
-        </ul>
-      </div>
+        <div class="guide-block">
+          <h3>Casos donde no es opcional</h3>
+          <ul>
+            <li><strong>Anuncios en Wallapop, Milanuncios o Fotocasa:</strong> la foto del salón hecha en casa lleva las coordenadas GPS — cualquiera puede localizar tu dirección con un visor de metadatos gratuito.</li>
+            <li><strong>Coche en venta:</strong> además del GPS, la matrícula visible y los alrededores del barrio dicen mucho; los EXIF lo hacen todavía más fácil.</li>
+            <li><strong>Fotos de menores en el colegio:</strong> horarios y lugares repetidos dibujan una rutina que no debería publicarse.</li>
+          </ul>
+        </div>
+
+        <div class="guide-block">
+          <h3>WhatsApp: el detalle que casi nadie conoce</h3>
+          <p>Al enviar una imagen en modo foto, WhatsApp la recomprime y los EXIF se pierden por el camino — una limpieza accidental pero real. En cambio, si la envías como <em>documento</em> para conservar la calidad original, el archivo viaja intacto, metadatos incluidos. Cuanto más te preocupas por la calidad, más importante es limpiar el EXIF antes de enviar.</p>
+        </div>
+
+        <div class="guide-block">
+          <h3>Límites que conviene conocer</h3>
+          <ul>
+            <li>Sin procesamiento por lotes: una imagen cada vez; para un álbum, repite la operación.</li>
+            <li>La salida siempre es PNG, normalmente más pesada que el JPEG original; pásala por Image Compressor si necesitas aligerar.</li>
+            <li>El perfil ICC se elimina con el resto — en pantallas bien calibradas puede notarse un cambio de color mínimo.</li>
+          </ul>
+        </div>
 
 <section class="faq-section">
-        <h2>Preguntas Frecuentes</h2>
-      <div class="faq-item"><button class="faq-question">¿Eliminar EXIF reduce calidad?</button><div class="faq-answer">No. Los píxeles no cambian. Salida PNG evita recompresión.</div></div>
-      <div class="faq-item"><button class="faq-question">¿Eliminar EXIF de varias?</button><div class="faq-answer">Una a la vez. Para lotes usa el Compresor de Imágenes.</div></div>
-      <div class="faq-item"><button class="faq-question">¿Siempre PNG?</button><div class="faq-answer">Sí. PNG evita que se reincrusten metadatos.</div></div>
+        <h2>Preguntas frecuentes</h2>
+        <div class="faq-item"><button class="faq-question">¿Eliminar los EXIF resta calidad a la foto?</button><div class="faq-answer">Ninguna. La imagen se redibuja píxel a píxel sin alterar valores y se guarda en PNG, un formato sin pérdidas: el resultado se ve exactamente igual que el original.</div></div>
+      <div class="faq-item"><button class="faq-question">¿Mi imagen se sube a algún servidor?</button><div class="faq-answer">No. El análisis y el borrado ocurren en tu navegador con la API Canvas, en la memoria de tu propio dispositivo. Ningún archivo sale de tu equipo.</div></div>
+      <div class="faq-item"><button class="faq-question">¿Los PNG también llevan EXIF?</button><div class="faq-answer">Los PNG normales no incluyen el bloque EXIF típico del JPEG, así que suelen ser seguros. La herramienta lo comprueba y te confirma si la imagen ya está limpia.</div></div>
+      <div class="faq-item"><button class="faq-question">¿Puedo limpiar varias imágenes de una vez?</button><div class="faq-answer">Todavía no: una imagen por cada pasada. Para un álbum completo, repite el proceso; cada foto tarda solo unos segundos.</div></div>
+      <div class="faq-item"><button class="faq-question">¿Por qué el PNG final pesa más que el JPEG?</button><div class="faq-answer">Porque la salida es siempre PNG: conserva cada píxel y comprime peor que el JPEG en fotos. Pasa el resultado por Image Compressor si necesitas un archivo más ligero.</div></div>
+      <div class="faq-item"><button class="faq-question">¿Se pierde también la fecha en que tomé la foto?</button><div class="faq-answer">Sí. Todo el bloque desaparece: ubicación, fecha, hora y parámetros de cámara. Si te sirven esos datos, renombra el archivo o apúntalos antes de limpiar.</div></div>
+      <div class="faq-item"><button class="faq-question">¿Cómo compruebo que una imagen quedó limpia?</button><div class="faq-answer">Sube el resultado al visor de Metadata Viewer: si no aparece ningún bloque EXIF, la imagen está totalmente depurada.</div></div>
       </section>
 
 <section class="related-tools">
@@ -303,13 +344,13 @@ const dropzone = document.getElementById('dropzone');
     // Simple EXIF detection for JPEG files
     async function detectExif(file) {
       if (!file.type.includes('jpeg') && !file.name.match(/\.jpe?g$/i)) {
-        return { hasExif: false, info: 'Not a JPEG file — no EXIF data possible.' };
+        return { hasExif: false, info: 'No es un archivo JPEG: no puede contener EXIF.' };
       }
       try {
         const buf = await file.arrayBuffer();
         const view = new DataView(buf);
         if (view.getUint16(0) !== 0xFFD8) {
-          return { hasExif: false, info: 'Not a valid JPEG file.' };
+          return { hasExif: false, info: 'Archivo JPEG no válido.' };
         }
         let offset = 2;
         let exifFound = false;
@@ -324,7 +365,7 @@ const dropzone = document.getElementById('dropzone');
             const exifStart = offset + 4;
             const exifHeader = String.fromCharCode(...new Uint8Array(buf, exifStart, 6));
             if (exifHeader.includes('Exif')) {
-              tags.push('EXIF block detected');
+              tags.push('Bloque EXIF detectado');
               // Try to read some EXIF tags
               try {
                 const exifBuf = new Uint8Array(buf, exifStart, len - 2);
@@ -339,14 +380,14 @@ const dropzone = document.getElementById('dropzone');
           offset += 2 + segLen;
         }
         if (!exifFound) {
-          return { hasExif: false, info: 'No EXIF data found in this image.' };
+          return { hasExif: false, info: 'No se encontraron datos EXIF en esta imagen.' };
         }
-        let msg = '<span class="exif-warn">⚠️ EXIF metadata detected:</span><br>';
+        let msg = '<span class="exif-warn">⚠️ Metadatos EXIF detectados:</span><br>';
         tags.forEach(t => { msg += '• ' + t + '<br>'; });
-        if (gpsFound) msg += '<br><span class="exif-warn">⚠️ GPS location data found — remove it to protect your privacy!</span>';
+        if (gpsFound) msg += '<br><span class="exif-warn">⚠️ Datos de ubicación GPS encontrados: elimínalos para proteger tu privacidad</span>';
         return { hasExif: true, info: msg };
       } catch(e) {
-        return { hasExif: false, info: 'Could not read file metadata.' };
+        return { hasExif: false, info: 'No se pudieron leer los metadatos.' };
       }
     }
 
@@ -356,34 +397,34 @@ const dropzone = document.getElementById('dropzone');
       try {
         // Very basic: look for ASCII strings in EXIF data
         const str = String.fromCharCode(...buf);
-        if (str.includes('GPS')) { gps = true; tags.push('GPS location data'); }
-        if (str.match(/[A-Za-z]{3,}/)) { tags.push('Camera/software info present'); }
+        if (str.includes('GPS')) { gps = true; tags.push('Datos de ubicación GPS'); }
+        if (str.match(/[A-Za-z]{3,}/)) { tags.push('Información de cámara/software presente'); }
       } catch(e) {}
       return { tags, gps };
     }
 
     async function handleFile(file) {
-      if (!file.type.startsWith('image/')) { status.textContent = 'Please select an image file.'; return; }
+      if (!file.type.startsWith('image/')) { status.textContent = 'Selecciona un archivo de imagen.'; return; }
       currentFile = file;
       ImageUtils.load(file).then(async img => {
         originalImg = img;
-        status.innerHTML = '<div class="spinner"></div> Checking metadata...';
+        status.innerHTML = '<div class="spinner"></div> Analizando metadatos...';
         const exif = await detectExif(file);
         if (exif.hasExif) {
           exifInfo.innerHTML = exif.info;
           exifStatus.style.display = 'block';
         } else {
-          exifInfo.innerHTML = '<span class="exif-clear">✅ No EXIF metadata detected. Your image is already clean.</span>';
+          exifInfo.innerHTML = '<span class="exif-clear">✅ Sin metadatos EXIF. Tu imagen ya está limpia.</span>';
           exifStatus.style.display = 'block';
         }
         previewArea.classList.add('active');
         const bp = document.getElementById('beforeAfterPreview');
         if (bp) bp.classList.add('hidden');
         dropzone.classList.add('hidden');
-        status.textContent = 'Click "Remove EXIF" to strip metadata.';
+        status.textContent = 'Haz clic en «Eliminar EXIF» para borrar los metadatos.';
         downloadBtn.classList.add('hidden');
       }).catch(err => {
-        status.textContent = 'Error loading image: ' + err.message;
+        status.textContent = 'Error al cargar la imagen: ' + err.message;
       });
     }
 
@@ -407,25 +448,25 @@ const dropzone = document.getElementById('dropzone');
     applyBtn.addEventListener('click', async function() {
       if (!originalImg) return;
       applyBtn.disabled = true;
-      applyBtn.textContent = '🔄 Removing...';
+      applyBtn.textContent = '🔄 Eliminando...';
       status.innerHTML = '<div class="spinner"></div>';
       try {
         await removeExif();
-        exifInfo.innerHTML = '<span class="exif-clear">✅ EXIF metadata successfully removed! The image is now clean.</span>';
-        status.textContent = 'Done! Click Download to save the clean image.';
+        exifInfo.innerHTML = '<span class="exif-clear">✅ ¡Metadatos EXIF eliminados! La imagen ya está limpia.</span>';
+        status.textContent = '¡Listo! Haz clic en Descargar para guardar la imagen limpia.';
         downloadBtn.classList.remove('hidden');
       } catch (err) {
         status.textContent = 'Error: ' + err.message;
       } finally {
         applyBtn.disabled = false;
-        applyBtn.textContent = '🗑️ Remove EXIF';
+        applyBtn.textContent = '🗑️ Eliminar EXIF';
       }
     });
 
     downloadBtn.addEventListener('click', function() {
       if (resultBlob) {
         const base = (currentFile.name || 'image').replace(/\.[^.]+$/, '');
-        ImageUtils.download(resultBlob, base + '-clean.png');
+        ImageUtils.download(resultBlob, base + '-limpia.png');
         try { SmartImgNextStep.show(); } catch(e) {}
       }
     });
