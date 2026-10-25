@@ -32,54 +32,33 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json">
 {
-  
-  "inLanguage": "es","@context": "https://schema.org",
+  "inLanguage": "es",
+  "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Video Speed Changer",
+  "name": "Cambiar velocidad del vídeo",
   "url": "https://smartimgkit.com/es/tools/video-speed",
-  "applicationCategory": "DeveloperApplication",
+  "applicationCategory": "GraphicsApplication",
   "operatingSystem": "Any",
   "offers": {
     "@type": "Offer",
     "price": "0",
     "priceCurrency": "USD"
   },
-  "description": "Acelera o ralentiza la reproducción de un vídeo de 0,25x a 4x manteniendo la calidad. Sin subir el archivo."
+  "description": "Acelera o ralentiza vídeos de 0.25x a 4x con audio sincronizado, sin subir el archivo a ningún servidor."
 }
 </script>
-  <script type="application/ld+json">
-{
+<script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "HowTo",
-  "name": "How to Use",
+  "name": "Cómo funciona",
+  "inLanguage": "es",
   "step": [
-    {
-      "@type": "HowToStep",
-      "position": 1,
-      "name": "Upload Video",
-      "text": "Select a video file."
-    },
-    {
-      "@type": "HowToStep",
-      "position": 2,
-      "name": "Configure",
-      "text": "Set output options."
-    },
-    {
-      "@type": "HowToStep",
-      "position": 3,
-      "name": "Process",
-      "text": "Click Process (ffmpeg.wasm loads on first use)."
-    },
-    {
-      "@type": "HowToStep",
-      "position": 4,
-      "name": "Download",
-      "text": "Get your converted video."
-    }
+    { "@type": "HowToStep", "position": 1, "name": "Sube el vídeo", "text": "Elige el clip que quieres acelerar o ralentizar: un timelapse casero, una demo de producto que va demasiado lenta o un tutorial que los clientes siguen a medias." },
+    { "@type": "HowToStep", "position": 2, "name": "Elige la velocidad", "text": "Selecciona de 0.25x a 4x en el desplegable. Para resúmenes rápidos funciona 2x o 4x; para ver detalles de un movimiento, 0.5x o 0.25x." },
+    { "@type": "HowToStep", "position": 3, "name": "Procesa", "text": "Pulsa Procesar y espera: el audio se ajusta a la nueva velocidad junto con el vídeo, sin desincronizarse." },
+    { "@type": "HowToStep", "position": 4, "name": "Descarga", "text": "Revisa el resultado en el reproductor integrado y descarga el MP4 con el nombre de archivo indicando la velocidad aplicada." }
   ]
-}
-</script>
+}</script>
   <style>
 
     .tool-workspace { display: flex; flex-direction: column; gap: 24px; }
@@ -118,26 +97,58 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Why does it load slowly the first time?",
+      "name": "¿El audio se acelera también?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "ffmpeg.wasm is ~25MB. It caches in your browser after the first load."
+        "text": "Sí — la pista de audio se ajusta al mismo tempo que el vídeo, de modo que ambos siguen sincronizados. En 4x la voz suena acelerada; si prefieres música limpia, cámbiala después en tu editor."
       }
     },
     {
       "@type": "Question",
-      "name": "Is my video uploaded?",
+      "name": "¿Qué velocidades están disponibles?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Everything runs in your browser. Your video never leaves your device."
+        "text": "De 0.25x (cuatro veces más lento) a 4x (cuatro veces más rápido), con pasos intermedios: 0.5x, 0.75x, 1.5x, 2x y 3x."
       }
     },
     {
       "@type": "Question",
-      "name": "What formats are supported?",
+      "name": "¿Por qué la primera vez tarda?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Most common formats: MP4, WebM, MOV, AVI, MKV, etc. Outputs MP4 or WebM."
+        "text": "Se descarga el núcleo de ffmpeg.wasm (~25 MB). Queda en caché del navegador y las siguientes ejecuciones procesan sin esa espera."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se mantiene la calidad del vídeo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El vídeo se recodifica en H.264 a calidad estándar, sin cambios de resolución. Ralentizar mucho reduce la fluidez porque se repiten fotogramas; es un límite físico, no de la herramienta."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuánto dura el vídeo resultante?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La duración original dividida por la velocidad: un clip de 4 minutos a 2x queda en unos 2 minutos; a 0.5x, en unos 8."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Mi vídeo se procesa en la nube?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No — todo ocurre dentro de tu navegador con WebAssembly. El archivo no sale de tu equipo en ningún momento."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Sirve para acelerar clases o tutoriales largos?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, es uno de los usos más habituales: 1.5x o 2x es el punto dulce para revisar tutoriales sin perder detalle, y el audio acelerado sigue siendo comprensible."
       }
     }
   ]
@@ -201,23 +212,23 @@
 <div class="ad-zone ad-header ad-loader-slot" data-ad-type="header" data-current-mobile="0"></div>
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>⏩ Video Speed Changer</span></nav>
+      <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>⏩ Cambiar velocidad del vídeo</span></nav>
       <div class="tool-page-header">
-        <h1>⏩ Video Speed Changer</h1>
+        <h1>⏩ Cambiar velocidad del vídeo</h1>
         <p>Acelera o ralentiza videos (0.25x a 4x) — gratis, en tu navegador.</p>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Mira lo que hace esta herramienta</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">▶️</span></div>
-              <div class="before-after-item-caption before">Normal speed</div>
+              <div class="before-after-item-caption before">Velocidad normal</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">⏩</span></div>
-              <div class="before-after-item-caption after">Custom speed</div>
+              <div class="before-after-item-caption after">Velocidad ajustada</div>
             </div>
           </div>
         </div>
@@ -230,37 +241,36 @@
           <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:8px;">⚠️ La primera vez tarda unos 30 s en cargar ffmpeg.wasm (25 MB).</p>
         </label>
         <div class="controls hidden" id="controlsSection">
-          <h2>📹 Video Info</h2>
+          <h2>📹 Información del vídeo</h2>
           <div class="pdf-info" id="videoInfo"></div>
           <div class="control-row">
-            <label>Speed</label>
+            <label>Velocidad</label>
             <select id="speed">
-              <option value="0.25">0.25x (very slow)</option>
-              <option value="0.5">0.5x (slow)</option>
+              <option value="0.25">0.25x (muy lento)</option>
+              <option value="0.5">0.5x (lento)</option>
               <option value="0.75">0.75x</option>
               <option value="1" selected>1x (normal)</option>
               <option value="1.5">1.5x</option>
-              <option value="2">2x (fast)</option>
+              <option value="2">2x (rápido)</option>
               <option value="3">3x</option>
-              <option value="4">4x (very fast)</option>
+              <option value="4">4x (muy rápido)</option>
             </select>
           </div>
           <div class="btn-row">
-            <button class="btn btn-primary" id="processBtn">⏩ Process</button>
-            <button class="btn btn-secondary" id="resetBtn">Reset</button>
+            <button class="btn btn-primary" id="processBtn">⏩ Procesar</button>
+            <button class="btn btn-secondary" id="resetBtn">Reiniciar</button>
           </div>
         </div>
         <div class="status-text hidden" id="statusSection"></div>
         <div class="result-section hidden" id="resultSection">
-          <h2>✅ Result</h2>
+          <h2>✅ Resultado</h2>
           <div id="resultContent" style="text-align:center;"></div>
         </div>
 
       </div>
-<section class="how-to-section"><h2>How to Use</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Upload Video</h4><p>Select a video file.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Configure</h4><p>Set output options.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Process</h4><p>Click Process (ffmpeg.wasm loads on first use).</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Get your converted video.</p></div></div></section>
-<h2>Detailed User Guide</h2><div class="guide-block"><h3>Upload Video</h3><p>Select a video file.</p></div><div class="guide-block"><h3>Configure</h3><p>Set output options.</p></div><div class="guide-block"><h3>Process</h3><p>Click Process (ffmpeg.wasm loads on first use).</p></div><div class="guide-block"><h3>Download</h3><p>Get your converted video.</p></div>
-<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">Why does it load slowly the first time?</button><div class="faq-answer">ffmpeg.wasm is ~25MB. It caches in your browser after the first load.</div></div><div class="faq-item"><button class="faq-question">Is my video uploaded?</button><div class="faq-answer">No. Everything runs in your browser. Your video never leaves your device.</div></div><div class="faq-item"><button class="faq-question">What formats are supported?</button><div class="faq-answer">Most common formats: MP4, WebM, MOV, AVI, MKV, etc. Outputs MP4 or WebM.</div></div></section>
-<section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/video-to-gif" class="related-tool-card"><span class="tool-icon">🎞️</span><div class="tool-info"><strong>Video to GIF</strong><span class="tool-desc">Convert video to GIF</span></div><span class="tool-arrow">→</span></a><a href="/tools/compressor" class="related-tool-card"><span class="tool-icon">🗜️</span><div class="tool-info"><strong>Image Compressor</strong><span class="tool-desc">Compress images</span></div><span class="tool-arrow">→</span></a></div></section>
+<section class="how-to-section"><h2>Cómo funciona</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Sube el vídeo</h4><p>Elige el clip que quieres acelerar o ralentizar: un timelapse casero, una demo de producto que va demasiado lenta o un tutorial que los clientes siguen a medias.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Elige la velocidad</h4><p>Selecciona de 0.25x a 4x en el desplegable. Para resúmenes rápidos funciona 2x o 4x; para ver detalles de un movimiento, 0.5x o 0.25x.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Procesa</h4><p>Pulsa Procesar y espera: el audio se ajusta a la nueva velocidad junto con el vídeo, sin desincronizarse.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Descarga</h4><p>Revisa el resultado en el reproductor integrado y descarga el MP4 con el nombre de archivo indicando la velocidad aplicada.</p></div></div></section>
+<h2>Guía detallada</h2><div class="guide-block"><h3>Resúmenes y timelapses sin cámara especial</h3><p>No necesitas modo timelapse en el móvil: graba a velocidad normal y aplica 4x u 8x aquí. Es el truco habitual para vídeos de montaje de muebles, preparación de recetas o desobres de tienda — el cliente ve el proceso completo en segundos.</p></div><div class="guide-block"><h3>Ralentizar para analizar el detalle</h3><p>0.5x y 0.25x sirven para revisar jugadas deportivas, gestos técnicos o fallos de un proceso de fabricación. Ten en cuenta que ralentizar mucho deja el movimiento menos fluido, porque se repiten fotogramas: para análisis informal funciona bien, para cámara lenta cinematográfica se necesita grabar a más fps.</p></div><div class="guide-block"><h3>El audio se ajusta junto con el vídeo</h3><p>La pista de sonido se procesa con el filtro de tempo de ffmpeg, de modo que voz y música siguen sincronizadas a la nueva velocidad. En aceleraciones fuertes (4x) el audio queda con un efecto acelerado característico — si quieres el vídeo acelerado pero con música limpia, sustituye la pista de audio después en tu editor.</p></div><div class="guide-block"><h3>Qué códigocula usa por dentro</h3><p>El vídeo se vuelve a codificar en H.264 y el audio en AAC — la combinación que todas las plataformas aceptan. La duración final es aproximadamente la original dividida (o multiplicada) por la velocidad elegida.</p></div><div class="guide-block"><h3>Límites prácticos</h3><p>El primer procesado descarga el núcleo ffmpeg (25 MB) que queda cacheado en el navegador. Clips largos en 1080p tardan más — para vídeos de más de 10 minutos, procesa por tramos si tu equipo se queda corto de memoria.</p></div><div class="guide-block"><h3>Privacidad por diseño</h3><p>Como todo el flujo usa ffmpeg.wasm dentro del navegador, el vídeo jamás se sube a un servidor. Puedes trabajar incluso sin conexión una vez cargado el núcleo.</p></div><section class="faq-section"><h2>Preguntas frecuentes</h2><div class="faq-item"><button class="faq-question">¿El audio se acelera también?</button><div class="faq-answer">Sí — la pista de audio se ajusta al mismo tempo que el vídeo, de modo que ambos siguen sincronizados. En 4x la voz suena acelerada; si prefieres música limpia, cámbiala después en tu editor.</div></div><div class="faq-item"><button class="faq-question">¿Qué velocidades están disponibles?</button><div class="faq-answer">De 0.25x (cuatro veces más lento) a 4x (cuatro veces más rápido), con pasos intermedios: 0.5x, 0.75x, 1.5x, 2x y 3x.</div></div><div class="faq-item"><button class="faq-question">¿Por qué la primera vez tarda?</button><div class="faq-answer">Se descarga el núcleo de ffmpeg.wasm (~25 MB). Queda en caché del navegador y las siguientes ejecuciones procesan sin esa espera.</div></div><div class="faq-item"><button class="faq-question">¿Se mantiene la calidad del vídeo?</button><div class="faq-answer">El vídeo se recodifica en H.264 a calidad estándar, sin cambios de resolución. Ralentizar mucho reduce la fluidez porque se repiten fotogramas; es un límite físico, no de la herramienta.</div></div><div class="faq-item"><button class="faq-question">¿Cuánto dura el vídeo resultante?</button><div class="faq-answer">La duración original dividida por la velocidad: un clip de 4 minutos a 2x queda en unos 2 minutos; a 0.5x, en unos 8.</div></div><div class="faq-item"><button class="faq-question">¿Mi vídeo se procesa en la nube?</button><div class="faq-answer">No — todo ocurre dentro de tu navegador con WebAssembly. El archivo no sale de tu equipo en ningún momento.</div></div><div class="faq-item"><button class="faq-question">¿Sirve para acelerar clases o tutoriales largos?</button><div class="faq-answer">Sí, es uno de los usos más habituales: 1.5x o 2x es el punto dulce para revisar tutoriales sin perder detalle, y el audio acelerado sigue siendo comprensible.</div></div></section>
+<section class="related-tools"><h2>Herramientas relacionadas</h2><div class="related-tools-grid"><a href="/es/tools/video-rotate" class="related-tool-card"><span class="tool-icon">🔃</span><div class="tool-info"><strong>Rotar vídeo</strong><span class="tool-desc">Corrige la orientación del clip</span></div><span class="tool-arrow">→</span></a><a href="/es/tools/video-to-gif" class="related-tool-card"><span class="tool-icon">🎞️</span><div class="tool-info"><strong>Vídeo a GIF</strong><span class="tool-desc">Convierte el tramo en GIF animado</span></div><span class="tool-arrow">→</span></a><a href="/es/tools/video-to-mp3" class="related-tool-card"><span class="tool-icon">🎵</span><div class="tool-info"><strong>Vídeo a MP3</strong><span class="tool-desc">Extrae solo el audio del vídeo</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
@@ -322,20 +332,20 @@
     file = f; fileName = f.name.replace(/\.[^.]+$/, '');
     var ba = document.getElementById('beforeAfterPreview'); if (ba) ba.classList.add('hidden');
     statusSection.classList.remove('hidden');
-    statusSection.textContent = 'Loading video info...';
+    statusSection.textContent = 'Leyendo información del vídeo…';
     const v = document.createElement('video');
     v.preload = 'metadata';
     v.onloadedmetadata = () => {
-      videoInfo.innerHTML = `<strong>File:</strong> ${f.name} &nbsp;|&nbsp; <strong>Size:</strong> ${(f.size/1024/1024).toFixed(2)} MB &nbsp;|&nbsp; <strong>Duration:</strong> ${v.duration.toFixed(1)}s &nbsp;|&nbsp; <strong>Resolution:</strong> ${v.videoWidth}x${v.videoHeight}`;
+      videoInfo.innerHTML = `<strong>Archivo:</strong> ${f.name} &nbsp;|&nbsp; <strong>Tamaño:</strong> ${(f.size/1024/1024).toFixed(2)} MB &nbsp;|&nbsp; <strong>Duración:</strong> ${v.duration.toFixed(1)}s &nbsp;|&nbsp; <strong>Resolución:</strong> ${v.videoWidth}x${v.videoHeight}`;
       controlsSection.classList.remove('hidden');
       statusSection.classList.add('hidden');
     };
-    v.onerror = () => { statusSection.textContent = '✗ Error: Unable to read video file.'; };
+    v.onerror = () => { statusSection.textContent = '✗ Error: no se pudo leer el archivo de vídeo.'; };
     v.src = URL.createObjectURL(f);
   }
   async function loadFFmpeg() {
     if (window.FFmpeg) return window.FFmpeg;
-    statusSection.textContent = 'Loading ffmpeg.wasm (this may take a while)...';
+    statusSection.textContent = 'Cargando ffmpeg.wasm (puede tardar un rato)…';
     await loadScript('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.min.js');
     return window.FFmpeg;
   }
@@ -344,25 +354,25 @@
   window.__downloadBlob__ = downloadBlob;
   processBtn.addEventListener('click', async () => {
     statusSection.classList.remove('hidden');
-    statusSection.textContent = 'Loading ffmpeg.wasm...';
+    statusSection.textContent = 'Cargando ffmpeg.wasm…';
     processBtn.disabled = true; resultSection.classList.add('hidden');
     try {
       const { createFFmpeg, fetchFile } = await loadFFmpeg();
       const ffmpeg = createFFmpeg({ log: true });
       ffmpeg.setLogger(({ message }) => { });
-      ffmpeg.setProgress(({ ratio }) => { statusSection.textContent = `Processing... ${Math.round(ratio*100)}%`; });
-      if (!ffmpeg.isLoaded()) { statusSection.textContent = 'Loading ffmpeg core (25MB, first time only)...'; await ffmpeg.load(); }
-      statusSection.textContent = 'Reading file...';
+      ffmpeg.setProgress(({ ratio }) => { statusSection.textContent = `Procesando… ${Math.round(ratio*100)}%`; });
+      if (!ffmpeg.isLoaded()) { statusSection.textContent = 'Cargando el núcleo de ffmpeg (25 MB, solo la primera vez)…'; await ffmpeg.load(); }
+      statusSection.textContent = 'Leyendo el archivo…';
       ffmpeg.FS('writeFile', 'input.mp4', await fetchFile(file));
       const spd = document.getElementById('speed').value;
       const atempo = spd; // audio tempo
       const vtmp = 1 / parseFloat(spd); // video pts
-      statusSection.textContent = 'Changing speed...';
+      statusSection.textContent = 'Cambiando la velocidad…';
       await ffmpeg.run('-i', 'input.mp4', '-filter_complex', `[0:v]setpts=${vtmp}*PTS[v];[0:a]atempo=${atempo}[a]`, '-map', '[v]', '-map', '[a]', '-vcodec', 'libx264', '-acodec', 'aac', 'output.mp4');
       const data = ffmpeg.FS('readFile', 'output.mp4');
       resultSection.classList.remove('hidden');
-      resultContent.innerHTML = `<video controls style="max-width:100%;border-radius:8px;"><source src="${URL.createObjectURL(new Blob([data.buffer], {type:'video/mp4'}))}" type="video/mp4"></video><br><button class="btn btn-primary" style="margin-top:16px;" onclick="window.__downloadBlob__(${JSON.stringify([...data])}, '${fileName}-${spd}x.mp4', 'video/mp4')">⬇️ Download</button>`;
-      statusSection.textContent = `✓ Speed changed to ${spd}x!`;
+      resultContent.innerHTML = `<video controls style="max-width:100%;border-radius:8px;"><source src="${URL.createObjectURL(new Blob([data.buffer], {type:'video/mp4'}))}" type="video/mp4"></video><br><button class="btn btn-primary" style="margin-top:16px;" onclick="window.__downloadBlob__(${JSON.stringify([...data])}, '${fileName}-${spd}x.mp4', 'video/mp4')">⬇️ Descargar</button>`;
+      statusSection.textContent = `✓ ¡Velocidad cambiada a ${spd}x!`;
     } catch(e) { statusSection.textContent = '✗ Error: ' + e.message; }
     processBtn.disabled = false;
   });
