@@ -35,7 +35,7 @@
   
   "inLanguage": "fr","@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Video Cropper",
+  "name": "Découpe Vidéo",
   "url": "https://smartimgkit.com/fr/tools/video-crop",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
@@ -51,31 +51,31 @@
 {
   "@context": "https://schema.org",
   "@type": "HowTo",
-  "name": "How to Use",
+  "name": "Mode d’emploi",
   "step": [
     {
       "@type": "HowToStep",
       "position": 1,
-      "name": "Upload Video",
-      "text": "Select a video file."
+      "name": "Chargez la vidéo",
+      "text": "Glissez le fichier dans la zone ou cliquez pour le parcourir. Rien n’est envoyé sur un serveur."
     },
     {
       "@type": "HowToStep",
       "position": 2,
-      "name": "Configure",
-      "text": "Set output options."
+      "name": "Notez le début",
+      "text": "Saisissez la seconde à laquelle votre extrait doit commencer, au dixième de seconde près."
     },
     {
       "@type": "HowToStep",
       "position": 3,
-      "name": "Process",
-      "text": "Click Process (ffmpeg.wasm loads on first use)."
+      "name": "Notez la fin",
+      "text": "Indiquez où l’extrait s’arrête. Un message vous prévient si la fin précède le début."
     },
     {
       "@type": "HowToStep",
       "position": 4,
-      "name": "Download",
-      "text": "Get your converted video."
+      "name": "Traitez, puis récupérez",
+      "text": "Cliquez sur Traiter : le MP4 s’affiche avec un lecteur intégré et le bouton de téléchargement."
     }
   ]
 }
@@ -118,26 +118,50 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Why does it load slowly the first time?",
+      "name": "Ma vidéo est-elle envoyée sur un serveur ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "ffmpeg.wasm is ~25MB. It caches in your browser after the first load."
+        "text": "Non. La découpe tourne dans votre navigateur avec ffmpeg.wasm ; ni l’original ni l’extrait ne quittent votre appareil."
       }
     },
     {
       "@type": "Question",
-      "name": "Is my video uploaded?",
+      "name": "L’extrait perd-il en qualité ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Everything runs in your browser. Your video never leaves your device."
+        "text": "Non. La copie sans réencodage (-c copy) conserve exactement la qualité du fichier d’origine."
       }
     },
     {
       "@type": "Question",
-      "name": "What formats are supported?",
+      "name": "Puis-je rogner les bords de l’image ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Most common formats: MP4, WebM, MOV, AVI, MKV, etc. Outputs MP4 or WebM."
+        "text": "Non, l’outil coupe dans le temps. Rogner l’image supposerait de recalculer chaque image, ce qui n’est pas implémenté ici."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Pourquoi le premier lancement est-il long ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Il télécharge le moteur ffmpeg.wasm, environ 25 Mo. Ensuite il reste en cache et les découpes suivantes sont immédiates."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quels formats sont acceptés en entrée ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ceux que votre navigateur lit : MP4, WebM, MOV de smartphone et similaires. La sortie est un MP4 sans réencodage."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Que se passe-t-il si la fin est avant le début ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Un message s’affiche et rien n’est traité ; corrigez les temps puis relancez Traiter."
       }
     }
   ]
@@ -201,23 +225,23 @@
 <div class="ad-zone ad-header ad-loader-slot" data-ad-type="header" data-current-mobile="0"></div>
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>✂️ Video Cropper</span></nav>
+      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>✂️ Découpe Vidéo</span></nav>
       <div class="tool-page-header">
-        <h1>✂️ Video Cropper</h1>
-        <p>Trim and cut videos to remove unwanted parts — free, in your browser.</p>
+        <h1>✂️ Découpe Vidéo</h1>
+        <p>Coupez vos vidéos pour ne garder que les passages utiles — gratuit, dans votre navigateur.</p>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Ce que cet outil sait faire</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🎬</span></div>
-              <div class="before-after-item-caption before">Long video</div>
+              <div class="before-after-item-caption before">Vidéo brute</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">✂️</span></div>
-              <div class="before-after-item-caption after">Trimmed video</div>
+              <div class="before-after-item-caption after">Extrait conservé</div>
             </div>
           </div>
         </div>
@@ -230,32 +254,32 @@
           <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:8px;">⚠️ Le premier chargement de ffmpeg.wasm (25 Mo) prend environ 30 s.</p>
         </label>
         <div class="controls hidden" id="controlsSection">
-          <h2>📹 Video Info</h2>
+          <h2>📹 Infos vidéo</h2>
           <div class="pdf-info" id="videoInfo"></div>
           <div class="control-row">
-            <label>Start Time (s)</label>
+            <label>Début (s)</label>
             <input type="number" id="cropStart" value="0" min="0" step="0.1" style="width:100px;">
           </div>
           <div class="control-row">
-            <label>End Time (s)</label>
+            <label>Fin (s)</label>
             <input type="number" id="cropEnd" value="10" min="0" step="0.1" style="width:100px;">
           </div>
           <div class="btn-row">
-            <button class="btn btn-primary" id="processBtn">✂️ Process</button>
-            <button class="btn btn-secondary" id="resetBtn">Reset</button>
+            <button class="btn btn-primary" id="processBtn">✂️ Traiter</button>
+            <button class="btn btn-secondary" id="resetBtn">Réinitialiser</button>
           </div>
         </div>
         <div class="status-text hidden" id="statusSection"></div>
         <div class="result-section hidden" id="resultSection">
-          <h2>✅ Result</h2>
+          <h2>✅ Résultat</h2>
           <div id="resultContent" style="text-align:center;"></div>
         </div>
 
       </div>
-<section class="how-to-section"><h2>How to Use</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Upload Video</h4><p>Select a video file.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Configure</h4><p>Set output options.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Process</h4><p>Click Process (ffmpeg.wasm loads on first use).</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Get your converted video.</p></div></div></section>
-<h2>Detailed User Guide</h2><div class="guide-block"><h3>Upload Video</h3><p>Select a video file.</p></div><div class="guide-block"><h3>Configure</h3><p>Set output options.</p></div><div class="guide-block"><h3>Process</h3><p>Click Process (ffmpeg.wasm loads on first use).</p></div><div class="guide-block"><h3>Download</h3><p>Get your converted video.</p></div>
-<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">Why does it load slowly the first time?</button><div class="faq-answer">ffmpeg.wasm is ~25MB. It caches in your browser after the first load.</div></div><div class="faq-item"><button class="faq-question">Is my video uploaded?</button><div class="faq-answer">No. Everything runs in your browser. Your video never leaves your device.</div></div><div class="faq-item"><button class="faq-question">What formats are supported?</button><div class="faq-answer">Most common formats: MP4, WebM, MOV, AVI, MKV, etc. Outputs MP4 or WebM.</div></div></section>
-<section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/video-to-gif" class="related-tool-card"><span class="tool-icon">🎞️</span><div class="tool-info"><strong>Video to GIF</strong><span class="tool-desc">Convert video to GIF</span></div><span class="tool-arrow">→</span></a><a href="/tools/compressor" class="related-tool-card"><span class="tool-icon">🗜️</span><div class="tool-info"><strong>Image Compressor</strong><span class="tool-desc">Compress images</span></div><span class="tool-arrow">→</span></a></div></section>
+<section class="how-to-section"><h2>Mode d’emploi</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Chargez la vidéo</h4><p>Glissez le fichier dans la zone ou cliquez pour le parcourir. Rien n’est envoyé sur un serveur.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Notez le début</h4><p>Saisissez la seconde à laquelle votre extrait doit commencer, au dixième de seconde près.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Notez la fin</h4><p>Indiquez où l’extrait s’arrête. Un message vous prévient si la fin précède le début.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Traitez, puis récupérez</h4><p>Cliquez sur Traiter : le MP4 s’affiche avec un lecteur intégré et le bouton de téléchargement.</p></div></div></section>
+<h2>Ce que fait vraiment l’outil</h2><div class="guide-block"><h3>Une découpe dans le temps, pas dans l’image</h3><p>Ici, « découper » signifie garder un passage entre deux instants choisis à la seconde. L’outil ne rogne pas les bords du cadre et ne change pas la définition : une vidéo verticale reste verticale. Recadrer l’image obligerait à recalculer chaque image du film, et ce n’est pas ce que fait cette page — autant le savoir avant de commencer.</p></div><div class="guide-block"><h3>Copie sans réencodage, donc sans perte</h3><p>Sous le capot, la commande s’appuie sur -c copy : le flux vidéo est recopié tel quel d’un point à l’autre, sans nouvelle compression. Résultat : quelques secondes de traitement même sur un fichier de plusieurs centaines de Mo, et une qualité strictement identique à l’original.</p></div><div class="guide-block"><h3>Le point de coupe suit l’image clé précédente</h3><p>Sans réencodage, le démarrage de l’extrait peut reculer jusqu’à l’image clé qui précède (souvent une à deux secondes). C’est la contrepartie de la vitesse ; une coupe au frame près exigerait de réencoder toute la vidéo.</p></div><div class="guide-block"><h3>Des temps vérifiés avant tout traitement</h3><p>Si la fin est antérieure ou égale au début, un message s’affiche et rien n’est lancé. La durée de l’extrait se calcule toute seule à partir des deux champs — vous pouvez corriger le début sans refaire le calcul.</p></div><div class="guide-block"><h3>Formats acceptés et fichier obtenu</h3><p>L’outil accepte ce que votre navigateur sait lire : MP4, WebM, MOV de smartphone et apparentés. Vous récupérez toujours un MP4 ; faute de réencodage, il conserve le codec et le débit binaires du fichier d’origine.</p></div><div class="guide-block"><h3>Nos usages du quotidien</h3><p>Raccourcir une captation pour un résumé en Short, retirer le début hésitant d’une vidéo de présentation envoyée à un recruteur sur LinkedIn, garder uniquement la visite de la pièce qui intéresse l’acquéreur dans une annonce immobilière, ou extraire une citation d’un entretien filmé.</p></div><div class="guide-block"><h3>Confidentialité et limites assumées</h3><p>Tout se joue dans le navigateur : le fichier ne quitte pas votre machine et aucun historique n’est conservé, pensez donc à récupérer l’extrait avant de fermer l’onglet. Le premier lancement télécharge environ 25 Mo de moteur ffmpeg, mis en cache ensuite ; les découpes suivantes sont quasi instantanées, même sur un film d’une heure.</p></div>
+<section class="faq-section"><h2>Questions fréquentes</h2><div class="faq-item"><button class="faq-question">Ma vidéo est-elle envoyée sur un serveur ?</button><div class="faq-answer">Non. La découpe tourne dans votre navigateur avec ffmpeg.wasm ; ni l’original ni l’extrait ne quittent votre appareil.</div></div><div class="faq-item"><button class="faq-question">L’extrait perd-il en qualité ?</button><div class="faq-answer">Non. La copie sans réencodage (-c copy) conserve exactement la qualité du fichier d’origine.</div></div><div class="faq-item"><button class="faq-question">Puis-je rogner les bords de l’image ?</button><div class="faq-answer">Non, l’outil coupe dans le temps. Rogner l’image supposerait de recalculer chaque image, ce qui n’est pas implémenté ici.</div></div><div class="faq-item"><button class="faq-question">Pourquoi le premier lancement est-il long ?</button><div class="faq-answer">Il télécharge le moteur ffmpeg.wasm, environ 25 Mo. Ensuite il reste en cache et les découpes suivantes sont immédiates.</div></div><div class="faq-item"><button class="faq-question">Quels formats sont acceptés en entrée ?</button><div class="faq-answer">Ceux que votre navigateur lit : MP4, WebM, MOV de smartphone et similaires. La sortie est un MP4 sans réencodage.</div></div><div class="faq-item"><button class="faq-question">Que se passe-t-il si la fin est avant le début ?</button><div class="faq-answer">Un message s’affiche et rien n’est traité ; corrigez les temps puis relancez Traiter.</div></div></section>
+<section class="related-tools"><h2>À découvrir aussi</h2><div class="related-tools-grid"><a href="/tools/video-to-gif" class="related-tool-card"><span class="tool-icon">🎞️</span><div class="tool-info"><strong>Video to GIF</strong><span class="tool-desc">Convertissez une vidéo en GIF</span></div><span class="tool-arrow">→</span></a><a href="/tools/compressor" class="related-tool-card"><span class="tool-icon">🗜️</span><div class="tool-info"><strong>Image Compressor</strong><span class="tool-desc">Compressez vos images</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
@@ -281,24 +305,24 @@
   dropzone.addEventListener('drop', e => { e.preventDefault(); dropzone.classList.remove('dragover'); if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
   fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
   function handleFile(f) {
-    if (!f.type.startsWith('video/')) { alert('Please upload a video file.'); return; }
+    if (!f.type.startsWith('video/')) { alert('Chargez un fichier vidéo.'); return; }
     file = f; fileName = f.name.replace(/\.[^.]+$/, '');
     var ba = document.getElementById('beforeAfterPreview'); if (ba) ba.classList.add('hidden');
     statusSection.classList.remove('hidden');
-    statusSection.textContent = 'Loading video info...';
+    statusSection.textContent = 'Lecture des infos de la vidéo...';
     const v = document.createElement('video');
     v.preload = 'metadata';
     v.onloadedmetadata = () => {
-      videoInfo.innerHTML = `<strong>File:</strong> ${f.name} &nbsp;|&nbsp; <strong>Size:</strong> ${(f.size/1024/1024).toFixed(2)} MB &nbsp;|&nbsp; <strong>Duration:</strong> ${v.duration.toFixed(1)}s &nbsp;|&nbsp; <strong>Resolution:</strong> ${v.videoWidth}x${v.videoHeight}`;
+      videoInfo.innerHTML = `<strong>Fichier :</strong> ${f.name} &nbsp;|&nbsp; <strong>Taille :</strong> ${(f.size/1024/1024).toFixed(2)} MB &nbsp;|&nbsp; <strong>Durée :</strong> ${v.duration.toFixed(1)}s &nbsp;|&nbsp; <strong>Résolution :</strong> ${v.videoWidth}x${v.videoHeight}`;
       controlsSection.classList.remove('hidden');
       statusSection.classList.add('hidden');
     };
-    v.onerror = () => { statusSection.textContent = '✗ Error: Unable to read video file.'; };
+    v.onerror = () => { statusSection.textContent = '✗ Erreur : impossible de lire le fichier vidéo.'; };
     v.src = URL.createObjectURL(f);
   }
   async function loadFFmpeg() {
     if (window.FFmpeg) return window.FFmpeg;
-    statusSection.textContent = 'Loading ffmpeg.wasm (this may take a while)...';
+    statusSection.textContent = 'Chargement de ffmpeg.wasm (cela peut prendre un moment)...';
     await loadScript('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.min.js');
     return window.FFmpeg;
   }
@@ -307,27 +331,27 @@
   window.__downloadBlob__ = downloadBlob;
   processBtn.addEventListener('click', async () => {
     statusSection.classList.remove('hidden');
-    statusSection.textContent = 'Loading ffmpeg.wasm...';
+    statusSection.textContent = 'Chargement de ffmpeg.wasm...';
     processBtn.disabled = true; resultSection.classList.add('hidden');
     try {
       const { createFFmpeg, fetchFile } = await loadFFmpeg();
       const ffmpeg = createFFmpeg({ log: true });
       ffmpeg.setLogger(({ message }) => { });
-      ffmpeg.setProgress(({ ratio }) => { statusSection.textContent = `Processing... ${Math.round(ratio*100)}%`; });
-      if (!ffmpeg.isLoaded()) { statusSection.textContent = 'Loading ffmpeg core (25MB, first time only)...'; await ffmpeg.load(); }
-      statusSection.textContent = 'Reading file...';
+      ffmpeg.setProgress(({ ratio }) => { statusSection.textContent = `Traitement... ${Math.round(ratio*100)}%`; });
+      if (!ffmpeg.isLoaded()) { statusSection.textContent = 'Chargement du cœur ffmpeg (25 Mo, première fois seulement)...'; await ffmpeg.load(); }
+      statusSection.textContent = 'Lecture du fichier...';
       ffmpeg.FS('writeFile', 'input.mp4', await fetchFile(file));
       const ss = document.getElementById('cropStart').value;
       const to = document.getElementById('cropEnd').value;
       const dur = (parseFloat(to) - parseFloat(ss)).toFixed(2);
-      if (dur <= 0) { alert('End time must be greater than start time.'); return; }
-      statusSection.textContent = 'Cropping video...';
+      if (dur <= 0) { alert("L'heure de fin doit être postérieure à l'heure de début."); return; }
+      statusSection.textContent = 'Découpe de la vidéo...';
       await ffmpeg.run('-i', 'input.mp4', '-ss', ss, '-t', dur, '-c', 'copy', 'output.mp4');
       const data = ffmpeg.FS('readFile', 'output.mp4');
       resultSection.classList.remove('hidden');
-      resultContent.innerHTML = `<video controls style="max-width:100%;border-radius:8px;"><source src="${URL.createObjectURL(new Blob([data.buffer], {type:'video/mp4'}))}" type="video/mp4"></video><br><button class="btn btn-primary" style="margin-top:16px;" onclick="window.__downloadBlob__(${JSON.stringify([...data])}, '${fileName}-cropped.mp4', 'video/mp4')">⬇️ Download</button>`;
-      statusSection.textContent = '✓ Video cropped!';
-    } catch(e) { statusSection.textContent = '✗ Error: ' + e.message; }
+      resultContent.innerHTML = `<video controls style="max-width:100%;border-radius:8px;"><source src="${URL.createObjectURL(new Blob([data.buffer], {type:'video/mp4'}))}" type="video/mp4"></video><br><button class="btn btn-primary" style="margin-top:16px;" onclick="window.__downloadBlob__(${JSON.stringify([...data])}, '${fileName}-extrait.mp4', 'video/mp4')">⬇️ Télécharger</button>`;
+      statusSection.textContent = '✓ Vidéo découpée !';
+    } catch(e) { statusSection.textContent = '✗ Erreur : ' + e.message; }
     processBtn.disabled = false;
   });
   resetBtn.addEventListener('click', () => { file = null; controlsSection.classList.add('hidden'); statusSection.classList.add('hidden'); resultSection.classList.add('hidden'); fileInput.value = ''; var ba = document.getElementById('beforeAfterPreview'); if (ba) ba.classList.remove('hidden'); });
