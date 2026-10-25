@@ -46,6 +46,24 @@
   </style>
 <meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Générateur de QR Code",
+  "url": "https://smartimgkit.com/fr/tools/qr-code-generator",
+  "inLanguage": "fr",
+  "description": "Créez un QR Code pour un lien, un texte ou un réseau Wi-Fi, avec taille et couleurs personnalisables, puis téléchargez le PNG. Gratuit, sans compte.",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
 </head>
 <body>
   <header class="site-header">
@@ -211,7 +229,7 @@
 
   function generate() {
     const content = getContent();
-    if (!content) { alert('Please enter some content.'); return; }
+    if (!content) { alert('Saisissez un contenu.'); return; }
     const size = parseInt(document.getElementById('qrSize').value) || 300;
     const fg = document.getElementById('fgColor').value;
     const bg = document.getElementById('bgColor').value;
@@ -229,25 +247,30 @@
 
   generateBtn.addEventListener('click', generate);
 
-  'qrcode.png';
-    link.href = canvas.toDataURL('image/png');
-    link.click();
+  downloadPngBtn.addEventListener('click', () => {
+    const canvas = qrContainer.querySelector('canvas');
+    if (!canvas) { alert('Générez d’abord un QR Code.'); return; }
+    (function() {
+      var link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png');
+      link.setAttribute('download', 'qrcode.png');
+      link.style.display = 'none';
+      document.body.appendChild(link);
+      var _e = new MouseEvent('click', {view: window, bubbles: true, cancelable: true});
+      link.dispatchEvent(_e);
+      setTimeout(function() { if (link.parentNode) link.parentNode.removeChild(link); }, 4000);
+    })();
   });
 
   downloadSvgBtn.addEventListener('click', () => {
     const img = qrContainer.querySelector('img');
-    if (!img) { alert('Generate a QR code first.'); return; }
+    if (!img) { alert('Générez d’abord un QR Code.'); return; }
     const svgSrc = img.src;
     if (svgSrc.startsWith('data:image/svg+xml')) {
-      link = document.createElement('a');
-      link.download = 'qrcode.svg';
-      link.href = svgSrc;
-      link.click();
-    } 'qrcode.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
+      (function() { var link = document.createElement('a');
+
+ link.href = svgSrc; link.setAttribute('download', 'qrcode.svg'); link.style.display = 'none'; document.body.appendChild(link); var _e = new MouseEvent('click', {view: window, bubbles: true, cancelable: true}); link.dispatchEvent(_e); setTimeout(function() { if(link.parentNode) link.parentNode.removeChild(link); }, 4000); })();
       }
-    }
   });
 
   // Auto-generate on load
