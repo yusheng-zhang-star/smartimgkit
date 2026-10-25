@@ -34,8 +34,8 @@
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Ảnh đen trắng, sepia và âm bản",
-  "url": "https://smartimgkit.com/tools/image-grayscale",
+  "name": "🎨 Ảnh đen trắng & hiệu ứng màu",
+  "url": "https://smartimgkit.com/vi/tools/image-grayscale",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
   "offers": {
@@ -43,32 +43,33 @@
     "price": "0",
     "priceCurrency": "USD"
   },
-  "description": "Chuyển ảnh sang đen trắng, sepia hoặc âm bản, chỉnh mức độ hiệu ứng rồi tải về. Miễn phí, xử lý trên máy bạn, không tải lên máy chủ."
+  "description": "Chuyển ảnh sang đen trắng, sepia hoặc âm bản, chỉnh mức độ hiệu ứng rồi tải về. Miễn phí, xử lý trên máy bạn, không tải lên máy chủ.",
+  "inLanguage": "vi"
 }
 </script>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "HowTo",
-  "name": "How to Apply Color Effects",
+  "name": "Cách áp hiệu ứng màu cho ảnh",
   "step": [
     {
       "@type": "HowToStep",
       "position": 1,
-      "name": "Upload Image",
-      "text": "Select an image from your device."
+      "name": "Tải ảnh lên",
+      "text": "Chọn tệp ảnh từ thiết bị của bạn."
     },
     {
       "@type": "HowToStep",
       "position": 2,
-      "name": "Choose Effect",
-      "text": "Select grayscale, sepia, invert, or other color effects."
+      "name": "Chọn hiệu ứng",
+      "text": "Chọn đen trắng, sepia, âm bản, posterize, làm mờ hoặc làm nét."
     },
     {
       "@type": "HowToStep",
       "position": 3,
-      "name": "Download Result",
-      "text": "Click Apply to process, then Download to save."
+      "name": "Tải kết quả",
+      "text": "Bấm Áp dụng để xử lý, rồi Tải xuống để lưu tệp PNG."
     }
   ]
 }
@@ -92,26 +93,58 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Which format is best for B&W; photos?",
+      "name": "Ảnh của tôi có bị tải lên máy chủ nào không?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "PNG preserves the full grayscale range without compression artifacts. If you need a smaller file, use the Image Compressor tool after downloading."
+        "text": "Không. Toàn bộ hiệu ứng được tính ngay trong trình duyệt bằng Canvas API, trên bộ nhớ của chính thiết bị bạn. Không có tệp nào được gửi đi hay lưu ở bất kỳ máy chủ nào — bạn có thể ngắt mạng rồi vẫn dùng bình thường."
       }
     },
     {
       "@type": "Question",
-      "name": "Can I adjust the effect intensity?",
+      "name": "Chuyển đen trắng có làm mất chất lượng ảnh không?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Currently each effect applies at 100% strength. For adjustable intensity, use the Image Adjustment tool to fine-tune brightness and contrast before applying an effect."
+        "text": "Không mất chi tiết. Các điểm ảnh chỉ được tính lại theo công thức độ sáng chuẩn (kênh xanh lá chiếm tỉ trọng lớn nhất vì mắt người nhạy với xanh lá nhất), nên chi tiết và độ tương phản được giữ nguyên; chỉ có màu sắc bị khử bỏ."
       }
     },
     {
       "@type": "Question",
-      "name": "Will the effect work on transparent PNGs?",
+      "name": "Ảnh PNG nền trong suốt có giữ được độ trong suốt không?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes — transparency is preserved for all effects except Blur and Invert, which fill transparent areas with black. For best results, use on opaque images."
+        "text": "Có. Cả sáu hiệu ứng chỉ biến đổi các kênh màu, không đụng vào kênh độ trong suốt (alpha), nên vùng trong suốt vẫn giữ nguyên sau khi áp hiệu ứng."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Có chỉnh được cường độ hiệu ứng không?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hiện tại mỗi hiệu ứng áp ở cường độ 100%, chưa có thanh trượt. Muốn kết quả nhẹ nhàng hơn, hãy chỉnh độ sáng và độ tương phản trước bằng công cụ Image Adjustment rồi mới áp hiệu ứng ở đây."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Công cụ hỗ trợ những định dạng nào?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "JPG, PNG, WebP, GIF và BMP đều nạp được. Kết quả luôn lưu dưới dạng PNG để giữ trọn chất lượng sau biến đổi; với GIF động, thường chỉ khung hình đầu tiên được xử lý."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Tại sao tệp tải về lại nặng hơn ảnh gốc?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Vì kết quả luôn xuất ra PNG — định dạng giữ chất lượng nhưng nén yếu hơn JPEG với ảnh chụp thông thường. Nếu cần tệp nhẹ để gửi Zalo hay đăng bài, hãy chạy kết quả qua công cụ Image Compressor."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Có xử lý được nhiều ảnh cùng lúc không?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Chưa. Công cụ xử lý từng ảnh một để mọi thứ chạy nhanh ngay trên trình duyệt. Nếu cần đổi kích thước hàng loạt, hãy dùng công cụ Batch Resizer."
       }
     }
   ]
@@ -149,14 +182,14 @@
 
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Trang chủ</a><span>/</span><a href="/">Công cụ</a><span>/</span><span>🎨 Image Grayscale & Color Effects</span></nav>
+      <nav class="breadcrumb"><a href="/">Trang chủ</a><span>/</span><a href="/">Công cụ</a><span>/</span><span>🎨 Ảnh đen trắng & hiệu ứng màu</span></nav>
       <div class="tool-page-header">
-        <h1>🎨 Image Grayscale & Color Effects</h1>
-        <p>Convert images to grayscale, sepia, invert colors, and more. All processing happens in your browser.</p>
+        <h1>🎨 Ảnh đen trắng & hiệu ứng màu</h1>
+        <p>Chuyển ảnh sang đen trắng, sepia, âm bản, posterize, làm mờ hoặc làm nét ngay trên trình duyệt. Ảnh không rời khỏi máy bạn, không cần đăng ký, không đóng dấu.</p>
       </div>
       <div class="tool-workspace">
 <div class="before-after-preview" id="beforeAfterPreview">
-            <div class="before-after-label">✨ See what this tool can do</div>
+            <div class="before-after-label">✨ Công cụ này làm được gì</div>
             <div class="before-after-images">
               <div class="before-after-item">
                 <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&q=80" alt="Before" loading="lazy" onerror="this.style.display='none';this.parentNode.classList.add('img-fallback')">
@@ -166,7 +199,7 @@
                 <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
                   <span style="font-size:3rem;opacity:0.5;">🎨</span>
                 </div>
-                <div class="before-after-item-caption after">After — color effect</div>
+                <div class="before-after-item-caption after">Sau — đã áp hiệu ứng</div>
               </div>
             </div>
           </div>
@@ -176,92 +209,109 @@
             <h3>Thả ảnh vào đây</h3>
             <p>hoặc bấm để chọn tệp</p>
           </label>
-          <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Try with a sample image</span>
+          <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Thử với một ảnh mẫu</span>
           <div class="preview-area" id="previewArea">
             <div class="preview-single">
               <div class="preview-container"><img id="resultImg" alt="Kết quả"></div>
             </div>
             <div class="gs-controls">
               <div class="gs-control">
-                <label><span>Effect</span></label>
+                <label><span>Hiệu ứng</span></label>
                 <select id="effectSelect" class="gs-select">
-                  <option value="grayscale">Grayscale (B&W)</option>
-                  <option value="sepia">Sepia (Vintage)</option>
-                  <option value="invert">Invert (Negative)</option>
-                  <option value="posterize">Posterize (Reduce Colors)</option>
-                  <option value="blur">Blur</option>
-                  <option value="sharpen">Sharpen</option>
+                  <option value="grayscale">Đen trắng (B&W)</option>
+                  <option value="sepia">Sepia (hoài cổ)</option>
+                  <option value="invert">Âm bản (đảo màu)</option>
+                  <option value="posterize">Posterize (giảm màu)</option>
+                  <option value="blur">Làm mờ</option>
+                  <option value="sharpen">Làm nét</option>
                 </select>
               </div>
             </div>
             <div class="tool-actions">
-              <button class="btn btn-primary" id="applyBtn">✨ Áp dụng Effect</button>
+              <button class="btn btn-primary" id="applyBtn">✨ Áp dụng hiệu ứng</button>
               <button class="btn btn-secondary hidden" id="downloadBtn">⬇️ Tải xuống</button>
-              <button class="btn btn-secondary" id="resetBtn">🔄 New Hình ảnh</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Ảnh mới</button>
             </div>
             <div id="status" class="text-center mt-16" style="color:var(--text-secondary)"></div>
           </div>
       </div>
 <section class="how-to-section">
-        <h2>How to Use</h2>
+        <h2>Cách sử dụng</h2>
         <div class="how-to-steps">
-          <div class="how-to-step"><div class="step-number">1</div><h4>Upload</h4><p>Select an image from your device or try with a sample.</p></div>
-          <div class="how-to-step"><div class="step-number">2</div><h4>Choose Effect</h4><p>Pick grayscale, sepia, invert, or other effects.</p></div>
-          <div class="how-to-step"><div class="step-number">3</div><h4>Download</h4><p>Click Apply to process, then Download to save.</p></div>
+          <div class="how-to-step"><div class="step-number">1</div><h4>Tải ảnh lên</h4><p>Chọn tệp từ thiết bị của bạn hoặc dùng ảnh mẫu có sẵn.</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>Chọn hiệu ứng</h4><p>Đen trắng, sepia, âm bản, posterize, làm mờ hoặc làm nét.</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>Áp dụng và tải xuống</h4><p>Bấm Áp dụng để xử lý, sau đó Tải xuống để lưu tệp PNG.</p></div>
         </div>
       </section>
 
-<h2>Detailed User Guide</h2>
+<h2>Hướng dẫn chi tiết</h2>
 
-      <div class="guide-block">
-        <h3>Step 1: Upload Your Image</h3>
-        <p>Click the dropzone or drag and drop an image file (JPG, PNG, or WebP). The original image will be displayed and you can preview the effect immediately.</p>
-      </div>
+        <div class="guide-block">
+          <h3>Hiệu ứng hoạt động theo nguyên lý nào</h3>
+          <p>Công cụ đọc từng điểm ảnh của ảnh trên một phần tử canvas rồi biến đổi trực tiếp các giá trị đỏ–xanh lá–xanh dương. Hiệu ứng đen trắng không đơn thuần lấy trung bình ba kênh màu: mỗi kênh được nhân với hệ số 0,299 (đỏ), 0,587 (xanh lá) và 0,114 (xanh dương) — chính là độ nhạy khác nhau của mắt người với ba màu này. Nhờ vậy ảnh đen trắng giữ được sắc thái đậm nhạt tự nhiên thay vì bị bệt xám. Hiệu ứng sepia dùng ma trận chuyển đổi chuẩn để phủ tông nâu ấm lên nền đen trắng; hiệu ứng âm bản đảo mỗi kênh màu thành 255 trừ đi giá trị cũ.</p>
+        </div>
 
-      <div class="guide-block">
-        <h3>Step 2: Choose a Color Effect</h3>
-        <p>Select from six built-in effects:</p>
-        <ul>
-          <li><strong>Grayscale</strong> — Convert to black & white. Great for documentary or minimalist looks.</li>
-          <li><strong>Sepia</strong> — Warm brown vintage tone. Classic for portraits and landscapes.</li>
-          <li><strong>Invert</strong> — Negative film effect. Reverses all colors.</li>
-          <li><strong>Posterize</strong> — Reduces the number of colors for a poster / pop art look.</li>
-          <li><strong>Blur</strong> — Softens the image. Useful for backgrounds or dreamy effects.</li>
-          <li><strong>Sharpen</strong> — Enhances edges for a crisper look.</li>
-        </ul>
-        <div class="tip"><strong>Tip:</strong> Grayscale is the most searched effect — perfect for creating B&W social media posts that stand out.</div>
-      </div>
+        <div class="guide-block">
+          <h3>Sáu hiệu ứng, sáu cảm giác khác nhau</h3>
+          <ul>
+            <li><strong>Đen trắng:</strong> khử hoàn toàn màu sắc nhưng giữ nguyên chi tiết và độ tương phản. Phù hợp với ảnh chân dung, ảnh chụp đường phố và mọi phong cách tối giản.</li>
+            <li><strong>Sepia:</strong> tông nâu hoài cổ gợi cảm giác ảnh phim cũ. Dùng cho ảnh cưới, ảnh kỷ yếu hoặc minh họa bài viết kể chuyện quá khứ.</li>
+            <li><strong>Âm bản:</strong> đảo ngược mọi màu sắc như ảnh phim negatives. Tạo hiệu ứng ghê rợn đặc trưng cho ảnh Halloween hoặc đồ họa sáng tạo.</li>
+            <li><strong>Posterize:</strong> mỗi kênh màu chỉ còn 4 mức, cả ảnh tối đa khoảng 64 màu — trông như tranh in lưới hay phong cách pop art.</li>
+            <li><strong>Làm mờ:</strong> làm mềm ảnh với bán kính cố định 4 pixel, hợp để làm nền mờ phía sau chữ.</li>
+            <li><strong>Làm nét:</strong> dùng thuật toán unsharp mask — làm mờ một bản sao rồi lấy hiệu giữa bản gốc và bản mờ để kéo rõ viền chi tiết.</li>
+          </ul>
+        </div>
 
-      <div class="guide-block">
-        <h3>Step 3: Apply & Download</h3>
-        <p>Click <strong>"Apply Effect"</strong> to process the image, then click <strong>"Download"</strong> to save the result as a PNG file.</p>
-      </div>
+        <div class="guide-block">
+          <h3>Những giới hạn bạn cần biết trước</h3>
+          <p>Để tránh hiểu lầm, đây là những gì công cụ <em>không</em> làm được: mỗi hiệu ứng chỉ áp ở cường độ 100% — không có thanh trượt chỉnh đậm nhạt; độ mờ cố định 4 pixel, không chỉnh bán kính; kết quả luôn lưu dưới dạng PNG kể cả khi ảnh gốc là JPG; ảnh động GIF thường chỉ lấy khung hình đầu tiên; và không hỗ trợ xử lý hàng loạt — mỗi lần một ảnh. Nếu bạn cần chỉnh cường độ, hãy chỉnh độ sáng và độ tương phản trước bằng công cụ Image Adjustment rồi mới quay lại áp hiệu ứng.</p>
+        </div>
 
-      <div class="guide-block">
-        <h3>Best Use Cases</h3>
-        <ul>
-          <li><strong>Social media</strong> — B&W or vintage sepia posts get more engagement</li>
-          <li><strong>Product photography</strong> — Grayscale makes product details pop</li>
-          <li><strong>Art projects</strong> — Invert or posterize for creative effects</li>
-          <li><strong>Backgrounds</strong> — Blur an image to use as a soft background</li>
-        </ul>
-      </div>
+        <div class="guide-block">
+          <h3>Gợi ý dùng cho ảnh của người Việt</h3>
+          <ul>
+            <li><strong>Ảnh đại diện Zalo, Facebook:</strong> đen trắng hoặc sepia giúp chân dung trông nghiêm túc và khác biệt giữa biển avatar toàn màu sắc.</li>
+            <li><strong>Ảnh sản phẩm đăng Shopee, Lazada:</strong> với sản phẩm nền trắng, chuyển đen trắng làm chi tiết kim loại, vải nổi rõ hơn — nhưng nhớ giữ màu cho nhóm hàng mà người mua cần xem đúng màu thực tế.</li>
+            <li><strong>Bìa bài đăng và banner:</strong> posterize tạo cảm giác đồ họa ấn tượng cho bìa sự kiện, poster khuyến mãi.</li>
+            <li><strong>Nền slide thuyết trình:</strong> làm mờ ảnh để chữ trên slide dễ đọc hơn.</li>
+          </ul>
+        </div>
+
+        <div class="guide-block">
+          <h3>Lỗi thường gặp và cách tránh</h3>
+          <ul>
+            <li>Ảnh áp hiệu ứng trông "xám bệt" — thường do ảnh gốc quá tối hoặc quá sáng; chỉnh ánh sáng trước khi khử màu.</li>
+            <li>Tệp tải về nặng hơn ảnh gốc — vì đầu ra luôn là PNG. Muốn nhẹ hơn, chạy qua công cụ Image Compressor sau khi tải.</li>
+            <li>Áp nhầm hiệu ứng — bấm "Ảnh mới" để quay về trạng thái ban đầu rồi chọn lại; ảnh gốc không bị ghi đè trên đĩa.</li>
+            <li>Quên định dạng đầu ra — kết quả luôn là PNG, đuôi tệp là <code>-hieu-ung.png</code> để bạn dễ nhận diện.</li>
+          </ul>
+        </div>
+
+        <div class="guide-block">
+          <h3>Riêng tư và hiệu năng</h3>
+          <p>Toàn bộ xử lý diễn ra trong bộ nhớ của trình duyệt bằng Canvas API — không một byte ảnh nào được gửi lên máy chủ. Bạn có thể tắt mạng rồi vẫn dùng bình thường. Ảnh tới 20–30 megapixel vẫn xử lý mượt trên máy tính hiện đại; điện thoại đời cũ có thể chậm hơn với ảnh chụp độ phân giải rất cao.</p>
+        </div>
 
 <section class="faq-section">
-        <h2>Frequently Asked Questions</h2>
-        <div class="faq-item"><button class="faq-question">Which format is best for B&W photos?</button><div class="faq-answer">PNG preserves the full grayscale range without compression artifacts. If you need a smaller file, use the Image Compressor tool after downloading.</div></div>
-        <div class="faq-item"><button class="faq-question">Can I adjust the effect intensity?</button><div class="faq-answer">Currently each effect applies at 100% strength. For adjustable intensity, use the Image Adjustment tool to fine-tune brightness and contrast before applying an effect.</div></div>
-        <div class="faq-item"><button class="faq-question">Will the effect work on transparent PNGs?</button><div class="faq-answer">Yes — transparency is preserved for all effects except Blur and Invert, which fill transparent areas with black. For best results, use on opaque images.</div></div>
+        <h2>Câu hỏi thường gặp</h2>
+        <div class="faq-item"><button class="faq-question">Ảnh của tôi có bị tải lên máy chủ nào không?</button><div class="faq-answer">Không. Toàn bộ hiệu ứng được tính ngay trong trình duyệt bằng Canvas API, trên bộ nhớ của chính thiết bị bạn. Không có tệp nào được gửi đi hay lưu ở bất kỳ máy chủ nào — bạn có thể ngắt mạng rồi vẫn dùng bình thường.</div></div>
+      <div class="faq-item"><button class="faq-question">Chuyển đen trắng có làm mất chất lượng ảnh không?</button><div class="faq-answer">Không mất chi tiết. Các điểm ảnh chỉ được tính lại theo công thức độ sáng chuẩn (kênh xanh lá chiếm tỉ trọng lớn nhất vì mắt người nhạy với xanh lá nhất), nên chi tiết và độ tương phản được giữ nguyên; chỉ có màu sắc bị khử bỏ.</div></div>
+      <div class="faq-item"><button class="faq-question">Ảnh PNG nền trong suốt có giữ được độ trong suốt không?</button><div class="faq-answer">Có. Cả sáu hiệu ứng chỉ biến đổi các kênh màu, không đụng vào kênh độ trong suốt (alpha), nên vùng trong suốt vẫn giữ nguyên sau khi áp hiệu ứng.</div></div>
+      <div class="faq-item"><button class="faq-question">Có chỉnh được cường độ hiệu ứng không?</button><div class="faq-answer">Hiện tại mỗi hiệu ứng áp ở cường độ 100%, chưa có thanh trượt. Muốn kết quả nhẹ nhàng hơn, hãy chỉnh độ sáng và độ tương phản trước bằng công cụ Image Adjustment rồi mới áp hiệu ứng ở đây.</div></div>
+      <div class="faq-item"><button class="faq-question">Công cụ hỗ trợ những định dạng nào?</button><div class="faq-answer">JPG, PNG, WebP, GIF và BMP đều nạp được. Kết quả luôn lưu dưới dạng PNG để giữ trọn chất lượng sau biến đổi; với GIF động, thường chỉ khung hình đầu tiên được xử lý.</div></div>
+      <div class="faq-item"><button class="faq-question">Tại sao tệp tải về lại nặng hơn ảnh gốc?</button><div class="faq-answer">Vì kết quả luôn xuất ra PNG — định dạng giữ chất lượng nhưng nén yếu hơn JPEG với ảnh chụp thông thường. Nếu cần tệp nhẹ để gửi Zalo hay đăng bài, hãy chạy kết quả qua công cụ Image Compressor.</div></div>
+      <div class="faq-item"><button class="faq-question">Có xử lý được nhiều ảnh cùng lúc không?</button><div class="faq-answer">Chưa. Công cụ xử lý từng ảnh một để mọi thứ chạy nhanh ngay trên trình duyệt. Nếu cần đổi kích thước hàng loạt, hãy dùng công cụ Batch Resizer.</div></div>
       </section>
 
 <section class="related-tools">
-        <h2>You Might Also Like</h2>
+        <h2>Bạn cũng có thể thích</h2>
         <div class="related-tools-grid">
           <a href="/vi/tools/image-adjust" class="related-tool-card">
             <span class="tool-icon">🎚️</span>
             <div class="tool-info">
               <strong>Image Adjustment</strong>
-              <span class="tool-desc">Adjust brightness, contrast, saturation</span>
+              <span class="tool-desc">Chỉnh độ sáng, độ tương phản, độ bão hòa</span>
             </div>
             <span class="tool-arrow">→</span>
           </a>
@@ -269,7 +319,7 @@
             <span class="tool-icon">🎨</span>
             <div class="tool-info">
               <strong>Image Filters</strong>
-              <span class="tool-desc">Apply preset aesthetic filters</span>
+              <span class="tool-desc">Áp dụng bộ lọc nghệ thuật có sẵn</span>
             </div>
             <span class="tool-arrow">→</span>
           </a>
@@ -277,7 +327,7 @@
             <span class="tool-icon">🔄</span>
             <div class="tool-info">
               <strong>Image Flip</strong>
-              <span class="tool-desc">Flip horizontally or vertically</span>
+              <span class="tool-desc">Lật ngang hoặc lật dọc</span>
             </div>
             <span class="tool-arrow">→</span>
           </a>
@@ -312,7 +362,7 @@ const dropzone = document.getElementById('dropzone');
     setupDropzone({ dropzoneId: 'dropzone', inputId: 'fileInput', onFile: handleFile });
 
     function handleFile(file) {
-      if (!file.type.startsWith('image/')) { status.textContent = 'Please select an image file.'; return; }
+      if (!file.type.startsWith('image/')) { status.textContent = 'Vui lòng chọn một tệp ảnh.'; return; }
       currentFile = file;
       ImageUtils.load(file).then(async img => {
         originalImg = img;
@@ -320,7 +370,7 @@ const dropzone = document.getElementById('dropzone');
         try {
           await applyEffect();
         } catch(e) {
-          status.textContent = 'Error: ' + e.message;
+          status.textContent = 'Lỗi: ' + e.message;
           return;
         }
         previewArea.classList.add('active');
@@ -330,7 +380,7 @@ const dropzone = document.getElementById('dropzone');
         status.textContent = '';
         downloadBtn.classList.remove('hidden');
       }).catch(err => {
-        status.textContent = 'Error loading image: ' + err.message;
+        status.textContent = 'Lỗi khi tải ảnh: ' + err.message;
       });
     }
 
@@ -413,23 +463,23 @@ const dropzone = document.getElementById('dropzone');
     applyBtn.addEventListener('click', async function() {
       if (!originalImg) return;
       applyBtn.disabled = true;
-      applyBtn.textContent = '🔄 Applying...';
+      applyBtn.textContent = '🔄 Đang áp dụng...';
       status.innerHTML = '<div class="spinner"></div>';
       try {
         await applyEffect();
-        status.textContent = 'Done! Click Download to save.';
+        status.textContent = 'Xong! Bấm Tải xuống để lưu.';
       } catch (err) {
-        status.textContent = 'Error: ' + err.message;
+        status.textContent = 'Lỗi: ' + err.message;
       } finally {
         applyBtn.disabled = false;
-        applyBtn.textContent = '✨ Apply Effect';
+        applyBtn.textContent = '✨ Áp dụng hiệu ứng';
       }
     });
 
     downloadBtn.addEventListener('click', function() {
       if (resultBlob) {
         const base = (currentFile.name || 'image').replace(/\.[^.]+$/, '');
-        ImageUtils.download(resultBlob, base + '-effect.png');
+        ImageUtils.download(resultBlob, base + '-hieu-ung.png');
         try { SmartImgNextStep.show(); } catch(e) {}
       }
     });
