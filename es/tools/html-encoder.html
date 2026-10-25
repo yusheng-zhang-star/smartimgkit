@@ -35,7 +35,7 @@
   
   "inLanguage": "es","@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "HTML Encoder / Decoder",
+  "name": "Codificador HTML",
   "url": "https://smartimgkit.com/es/tools/html-encoder",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
@@ -51,31 +51,31 @@
 {
   "@context": "https://schema.org",
   "@type": "HowTo",
-  "name": "How to Use",
+  "name": "Cómo codificar entidades HTML",
   "step": [
     {
       "@type": "HowToStep",
       "position": 1,
-      "name": "Enter Text",
-      "text": "Paste text or HTML in the input area."
+      "name": "Pega el texto o el HTML",
+      "text": "Escribe en el cuadro de la izquierda el fragmento que quieres convertir: una línea de código, una firma o un párrafo entero."
     },
     {
       "@type": "HowToStep",
       "position": 2,
-      "name": "Encode or Decode",
-      "text": "Click Encode to create entities, Decode to reverse."
+      "name": "Elige la dirección",
+      "text": "«Codificar HTML» convierte los caracteres especiales en entidades; «Decodificar entidades» hace el camino inverso."
     },
     {
       "@type": "HowToStep",
       "position": 3,
-      "name": "View Result",
-      "text": "Encoded/decoded text appears on the right."
+      "name": "Revisa el resultado",
+      "text": "El texto convertido aparece en el cuadro de la derecha, listo para usar."
     },
     {
       "@type": "HowToStep",
       "position": 4,
-      "name": "Copy",
-      "text": "Click Copy to copy the result."
+      "name": "Copia y pega",
+      "text": "Un clic en Copiar lleva el resultado al portapapeles; nada se guarda ni se envía a ningún sitio."
     }
   ]
 }
@@ -118,26 +118,50 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Which entities are encoded?",
+      "name": "¿Qué caracteres se convierten al codificar?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The 5 standard XML/HTML entities: & (&), < (<), > (>), \\\" (\"), \\' (')."
+        "text": "Solo los tres reservados de la sintaxis HTML — ampersand, «menor que» y «mayor que» —, cada uno sustituido por su entidad estándar (amp, lt, gt) precedida de ampersand. Las comillas no se convierten porque no hacen falta dentro del contenido de una etiqueta."
       }
     },
     {
       "@type": "Question",
-      "name": "Why encode HTML?",
+      "name": "¿Por qué las comillas quedan igual?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "To display HTML code as text on a web page without the browser rendering it."
+        "text": "Las comillas solo son especiales dentro de los valores de los atributos HTML. Este codificador trabaja con nodos de texto, donde no representan ningún riesgo."
       }
     },
     {
       "@type": "Question",
-      "name": "What about Unicode?",
+      "name": "¿Puedo decodificar entidades con nombre y numéricas?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Unicode characters are preserved as-is. Only the 5 reserved HTML characters are encoded."
+        "text": "Sí: la decodificación nativa del navegador reconoce tanto las entidades con nombre como las numéricas — siempre con la sintaxis ampersand + código + punto y coma —, incluidas las que generan otros CMS."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué pasa con los acentos y la eñe?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Se conservan tal cual: á, ñ, ü y el resto de Unicode no se convierten en entidades, solo los tres caracteres reservados."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Mi texto se envía a algún servidor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. La conversión usa funciones nativas del navegador; ni el original ni el resultado salen de tu equipo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Sirve para evitar que se ejecute mi código?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí: al convertir < y > en entidades, el navegador muestra el código como texto en lugar de interpretarlo como etiquetas."
       }
     }
   ]
@@ -173,51 +197,51 @@
 <div class="ad-zone ad-header ad-loader-slot" data-ad-type="header" data-current-mobile="0"></div>
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🏷️ HTML Encoder / Decoder</span></nav>
+      <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🏷️ Codificador HTML</span></nav>
       <div class="tool-page-header">
-        <h1>🏷️ HTML Encoder / Decoder</h1>
+        <h1>🏷️ Codificador HTML</h1>
         <p>Codifica y decodifica entidades HTML — gratis, en tu navegador.</p>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Mira para qué sirve esta herramienta</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">📄</span></div>
-              <div class="before-after-item-caption before">Plain text/HTML</div>
+              <div class="before-after-item-caption before">Texto plano / HTML</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🏷️</span></div>
-              <div class="before-after-item-caption after">HTML entities</div>
+              <div class="before-after-item-caption after">Entidades HTML</div>
             </div>
           </div>
         </div>
 
 <div class="two-col">
           <div class="controls">
-            <h2>📥 Input</h2>
-            <textarea id="htmlInput" placeholder="Enter text or HTML..."></textarea>
+            <h2>📥 Entrada</h2>
+            <textarea id="htmlInput" placeholder="Escribe o pega texto o HTML..."></textarea>
             <div class="btn-row">
-              <button class="btn btn-primary" id="encodeHtmlBtn">🏷️ Encode HTML</button>
-              <button class="btn btn-primary" id="decodeHtmlBtn">📄 Decode Entities</button>
-              <button class="btn btn-secondary" id="htmlClearBtn">Clear</button>
+              <button class="btn btn-primary" id="encodeHtmlBtn">🏷️ Codificar HTML</button>
+              <button class="btn btn-primary" id="decodeHtmlBtn">📄 Decodificar entidades</button>
+              <button class="btn btn-secondary" id="htmlClearBtn">Limpiar</button>
             </div>
           </div>
           <div class="controls">
-            <h2>📤 Output</h2>
-            <textarea id="htmlOutput" readonly placeholder="Result will appear here..."></textarea>
+            <h2>📤 Salida</h2>
+            <textarea id="htmlOutput" readonly placeholder="El resultado aparecerá aquí..."></textarea>
             <div class="btn-row">
-              <button class="btn btn-secondary" id="htmlCopyBtn">📋 Copy</button>
+              <button class="btn btn-secondary" id="htmlCopyBtn">📋 Copiar</button>
             </div>
           </div>
         </div>
 
       </div>
-<section class="how-to-section"><h2>How to Use</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Enter Text</h4><p>Paste text or HTML in the input area.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Encode or Decode</h4><p>Click Encode to create entities, Decode to reverse.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>View Result</h4><p>Encoded/decoded text appears on the right.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Copy</h4><p>Click Copy to copy the result.</p></div></div></section>
-<h2>Detailed User Guide</h2><div class="guide-block"><h3>Enter Text</h3><p>Paste text or HTML in the input area.</p></div><div class="guide-block"><h3>Encode or Decode</h3><p>Click Encode to create entities, Decode to reverse.</p></div><div class="guide-block"><h3>View Result</h3><p>Encoded/decoded text appears on the right.</p></div><div class="guide-block"><h3>Copy</h3><p>Click Copy to copy the result.</p></div>
-<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">Which entities are encoded?</button><div class="faq-answer">The 5 standard XML/HTML entities: & (&amp;), < (&lt;), > (&gt;), \" (&quot;), \&#39; (&#39;).</div></div><div class="faq-item"><button class="faq-question">Why encode HTML?</button><div class="faq-answer">To display HTML code as text on a web page without the browser rendering it.</div></div><div class="faq-item"><button class="faq-question">What about Unicode?</button><div class="faq-answer">Unicode characters are preserved as-is. Only the 5 reserved HTML characters are encoded.</div></div></section>
-<section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/url-encoder" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>URL Encoder</strong><span class="tool-desc">Encode/decode URLs</span></div><span class="tool-arrow">→</span></a><a href="/tools/base64" class="related-tool-card"><span class="tool-icon">🔐</span><div class="tool-info"><strong>Base64 Converter</strong><span class="tool-desc">Encode/decode Base64</span></div><span class="tool-arrow">→</span></a><a href="/tools/json-formatter" class="related-tool-card"><span class="tool-icon">🔧</span><div class="tool-info"><strong>JSON Formatter</strong><span class="tool-desc">Format JSON</span></div><span class="tool-arrow">→</span></a></div></section>
+<section class="how-to-section"><h2>Cómo codificar entidades HTML</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Pega el texto o el HTML</h4><p>Escribe en el cuadro de la izquierda el fragmento que quieres convertir: una línea de código, una firma o un párrafo entero.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Elige la dirección</h4><p>«Codificar HTML» convierte los caracteres especiales en entidades; «Decodificar entidades» hace el camino inverso.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Revisa el resultado</h4><p>El texto convertido aparece en el cuadro de la derecha, listo para usar.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Copia y pega</h4><p>Un clic en Copiar lleva el resultado al portapapeles; nada se guarda ni se envía a ningún sitio.</p></div></div></section>
+<h2>Qué hace exactamente el codificador</h2><div class="guide-block"><h3>Convierte caracteres especiales en entidades</h3><p>Codificar significa sustituir los caracteres que HTML reserva para su sintaxis por su equivalente en entidad: el símbolo menor que pasa a &lt;, el mayor que a &gt; y el ampersand a &amp;. Así el navegador muestra el texto tal cual en lugar de interpretarlo como código.</p></div><div class="guide-block"><h3>Solo se escapan tres caracteres, y es a propósito</h3><p>Este codificador usa la conversión nativa del navegador para nodos de texto, que escapa &, < y > — y nada más. Las comillas no se convierten porque dentro del contenido de una etiqueta no hace falta: solo son peligrosas dentro de un atributo. Si vas a pegar el resultado en un atributo HTML, escapa las comillas aparte.</p></div><div class="guide-block"><h3>La decodificación entiende todas las entidades</h3><p>En sentido inverso reconoce tanto las entidades con nombre (&amp;copy;, &amp;aacute;) como las numéricas (&amp;#169;, &amp;#225;), así que puedes decodificar fragmentos que venían de otros CMS o de exportaciones antiguas sin preocuparte de qué tabla usaron.</p></div><div class="guide-block"><h3>Para qué sirve en el día a día</h3><p>Publicar un fragmento de código en una entrada del blog sin que el navegador lo ejecute, enviar por correo una plantilla HTML que el cliente de correo desconfiguraría, o pegar texto con símbolos conflictivos en un formulario que espera entidades.</p></div><div class="guide-block"><h3>El texto con acentos se queda igual</h3><p>Las vocales acentuadas, la eñe y el resto de caracteres Unicode no se tocan: aparecen tal cual en el resultado. Solo los tres caracteres reservados cambian; si tu publicación necesita entidades para todo, esta herramienta no es el camino — y conviene saberlo antes.</p></div><div class="guide-block"><h3>Un botón para cada dirección, sin opciones</h3><p>No hay casillas ni modos: un botón codifica y otro decodifica. La ausencia de ajustes elimina los errores de configuración, y el resultado es siempre predecible — lo que ves es exactamente lo que obtendrás al pegarlo.</p></div><div class="guide-block"><h3>Privacidad y límites</h3><p>Todo ocurre en tu navegador con las funciones nativas de DOM: el texto nunca sale de tu equipo. No hay historial ni límite práctico de tamaño, aunque para textos muy largos conviene copiar el resultado antes de recargar la página.</p></div>
+<section class="faq-section"><h2>Preguntas frecuentes</h2><div class="faq-item"><button class="faq-question">¿Qué caracteres se convierten al codificar?</button><div class="faq-answer">Solo los tres reservados de la sintaxis HTML — ampersand, «menor que» y «mayor que» —, cada uno sustituido por su entidad estándar (amp, lt, gt) precedida de ampersand. Las comillas no se convierten porque no hacen falta dentro del contenido de una etiqueta.</div></div><div class="faq-item"><button class="faq-question">¿Por qué las comillas quedan igual?</button><div class="faq-answer">Las comillas solo son especiales dentro de los valores de los atributos HTML. Este codificador trabaja con nodos de texto, donde no representan ningún riesgo.</div></div><div class="faq-item"><button class="faq-question">¿Puedo decodificar entidades con nombre y numéricas?</button><div class="faq-answer">Sí: la decodificación nativa del navegador reconoce tanto las entidades con nombre como las numéricas — siempre con la sintaxis ampersand + código + punto y coma —, incluidas las que generan otros CMS.</div></div><div class="faq-item"><button class="faq-question">¿Qué pasa con los acentos y la eñe?</button><div class="faq-answer">Se conservan tal cual: á, ñ, ü y el resto de Unicode no se convierten en entidades, solo los tres caracteres reservados.</div></div><div class="faq-item"><button class="faq-question">¿Mi texto se envía a algún servidor?</button><div class="faq-answer">No. La conversión usa funciones nativas del navegador; ni el original ni el resultado salen de tu equipo.</div></div><div class="faq-item"><button class="faq-question">¿Sirve para evitar que se ejecute mi código?</button><div class="faq-answer">Sí: al convertir < y > en entidades, el navegador muestra el código como texto en lugar de interpretarlo como etiquetas.</div></div></section>
+<section class="related-tools"><h2>También te puede interesar</h2><div class="related-tools-grid"><a href="/tools/url-encoder" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>URL Encoder</strong><span class="tool-desc">Codifica y decodifica URLs</span></div><span class="tool-arrow">→</span></a><a href="/tools/base64" class="related-tool-card"><span class="tool-icon">🔐</span><div class="tool-info"><strong>Base64 Converter</strong><span class="tool-desc">Codifica y decodifica Base64</span></div><span class="tool-arrow">→</span></a><a href="/tools/json-formatter" class="related-tool-card"><span class="tool-icon">🔧</span><div class="tool-info"><strong>JSON Formatter</strong><span class="tool-desc">Formatea JSON</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>

@@ -35,7 +35,7 @@
   
   "inLanguage": "fr","@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "HTML Encoder / Decoder",
+  "name": "Encodeur HTML",
   "url": "https://smartimgkit.com/fr/tools/html-encoder",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
@@ -51,31 +51,31 @@
 {
   "@context": "https://schema.org",
   "@type": "HowTo",
-  "name": "How to Use",
+  "name": "Mode d’emploi",
   "step": [
     {
       "@type": "HowToStep",
       "position": 1,
-      "name": "Enter Text",
-      "text": "Paste text or HTML in the input area."
+      "name": "Collez votre texte ou HTML",
+      "text": "Saisissez dans le cadre de gauche le passage à convertir : une ligne de code, une signature, un paragraphe entier."
     },
     {
       "@type": "HowToStep",
       "position": 2,
-      "name": "Encode or Decode",
-      "text": "Click Encode to create entities, Decode to reverse."
+      "name": "Choisissez le sens",
+      "text": "« Encoder le HTML » remplace les caractères spéciaux par leurs entités ; « Décoder les entités » fait l’opération inverse."
     },
     {
       "@type": "HowToStep",
       "position": 3,
-      "name": "View Result",
-      "text": "Encoded/decoded text appears on the right."
+      "name": "Vérifiez le résultat",
+      "text": "Le texte converti s’affiche dans le cadre de droite, prêt à l’emploi."
     },
     {
       "@type": "HowToStep",
       "position": 4,
-      "name": "Copy",
-      "text": "Click Copy to copy the result."
+      "name": "Copiez-collez",
+      "text": "Un clic sur Copier place le résultat dans le presse-papiers ; rien n’est conservé ni envoyé ailleurs."
     }
   ]
 }
@@ -118,26 +118,50 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Which entities are encoded?",
+      "name": "Quels caractères sont convertis à l’encodage ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The 5 standard XML/HTML entities: & (&), < (<), > (>), \\\" (\"), \\' (')."
+        "text": "Seuls les trois réservés de la syntaxe HTML — esperluette, chevron ouvrant et chevron fermant — sont convertis, chacun vers son entité standard (amp, lt, gt) précédée d’une esperluette. Les guillemets ne sont pas convertis car ils sont sans danger dans le contenu d’une balise."
       }
     },
     {
       "@type": "Question",
-      "name": "Why encode HTML?",
+      "name": "Pourquoi les guillemets restent-ils inchangés ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "To display HTML code as text on a web page without the browser rendering it."
+        "text": "Les guillemets ne sont spéciaux que dans les valeurs d’attributs HTML. Cet encodeur travaille sur des nœuds de texte, où ils ne présentent aucun risque."
       }
     },
     {
       "@type": "Question",
-      "name": "What about Unicode?",
+      "name": "Peut-on décoder des entités nommées et numériques ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Unicode characters are preserved as-is. Only the 5 reserved HTML characters are encoded."
+        "text": "Oui : le décodage natif du navigateur reconnaît aussi bien les entités nommées que les numériques — toujours selon la syntaxe esperluette + code + point-virgule —, y compris celles produites par d’autres CMS."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Que deviennent les accents et les cédilles ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ils restent tels quels : é, è, ç et l’ensemble d’Unicode ne sont pas convertis en entités, seuls les trois caractères réservés le sont."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Mon texte est-il envoyé à un serveur ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non. La conversion utilise les fonctions natives du navigateur ; ni l’original ni le résultat ne quittent votre appareil."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "À quoi sert l’encodage concrètement ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "À empêcher le navigateur d’interpréter votre code : en convertissant < et > en entités, il affiche le code comme du texte au lieu de l’exécuter."
       }
     }
   ]
@@ -173,51 +197,51 @@
 <div class="ad-zone ad-header ad-loader-slot" data-ad-type="header" data-current-mobile="0"></div>
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>🏷️ HTML Encoder / Decoder</span></nav>
+      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>🏷️ Encodeur HTML</span></nav>
       <div class="tool-page-header">
-        <h1>🏷️ HTML Encoder / Decoder</h1>
-        <p>Encode and decode HTML entities — free, in your browser.</p>
+        <h1>🏷️ Encodeur HTML</h1>
+        <p>Encodez et décodez les entités HTML — gratuit, dans votre navigateur.</p>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Ce que cet outil sait faire</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">📄</span></div>
-              <div class="before-after-item-caption before">Plain text/HTML</div>
+              <span class="swap-label">Texte brut / HTML</span>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🏷️</span></div>
-              <div class="before-after-item-caption after">HTML entities</div>
+              <div class="before-after-item-caption after">Entités HTML</div>
             </div>
           </div>
         </div>
 
 <div class="two-col">
           <div class="controls">
-            <h2>📥 Input</h2>
-            <textarea id="htmlInput" placeholder="Enter text or HTML..."></textarea>
+            <h2>📥 Entrée</h2>
+            <textarea id="htmlInput" placeholder="Saisissez ou collez du texte ou du HTML..."></textarea>
             <div class="btn-row">
-              <button class="btn btn-primary" id="encodeHtmlBtn">🏷️ Encode HTML</button>
-              <button class="btn btn-primary" id="decodeHtmlBtn">📄 Decode Entities</button>
-              <button class="btn btn-secondary" id="htmlClearBtn">Clear</button>
+              <button class="btn btn-primary" id="encodeHtmlBtn">🏷️ Encoder le HTML</button>
+              <button class="btn btn-primary" id="decodeHtmlBtn">📄 Décoder les entités</button>
+              <button class="btn btn-secondary" id="htmlClearBtn">Effacer</button>
             </div>
           </div>
           <div class="controls">
-            <h2>📤 Output</h2>
-            <textarea id="htmlOutput" readonly placeholder="Result will appear here..."></textarea>
+            <h2>📤 Sortie</h2>
+            <textarea id="htmlOutput" readonly placeholder="Le résultat apparaîtra ici..."></textarea>
             <div class="btn-row">
-              <button class="btn btn-secondary" id="htmlCopyBtn">📋 Copy</button>
+              <button class="btn btn-secondary" id="htmlCopyBtn">📋 Copier</button>
             </div>
           </div>
         </div>
 
       </div>
-<section class="how-to-section"><h2>How to Use</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Enter Text</h4><p>Paste text or HTML in the input area.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Encode or Decode</h4><p>Click Encode to create entities, Decode to reverse.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>View Result</h4><p>Encoded/decoded text appears on the right.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Copy</h4><p>Click Copy to copy the result.</p></div></div></section>
-<h2>Detailed User Guide</h2><div class="guide-block"><h3>Enter Text</h3><p>Paste text or HTML in the input area.</p></div><div class="guide-block"><h3>Encode or Decode</h3><p>Click Encode to create entities, Decode to reverse.</p></div><div class="guide-block"><h3>View Result</h3><p>Encoded/decoded text appears on the right.</p></div><div class="guide-block"><h3>Copy</h3><p>Click Copy to copy the result.</p></div>
-<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">Which entities are encoded?</button><div class="faq-answer">The 5 standard XML/HTML entities: & (&amp;), < (&lt;), > (&gt;), \" (&quot;), \&#39; (&#39;).</div></div><div class="faq-item"><button class="faq-question">Why encode HTML?</button><div class="faq-answer">To display HTML code as text on a web page without the browser rendering it.</div></div><div class="faq-item"><button class="faq-question">What about Unicode?</button><div class="faq-answer">Unicode characters are preserved as-is. Only the 5 reserved HTML characters are encoded.</div></div></section>
-<section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/url-encoder" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>URL Encoder</strong><span class="tool-desc">Encode/decode URLs</span></div><span class="tool-arrow">→</span></a><a href="/tools/base64" class="related-tool-card"><span class="tool-icon">🔐</span><div class="tool-info"><strong>Base64 Converter</strong><span class="tool-desc">Encode/decode Base64</span></div><span class="tool-arrow">→</span></a><a href="/tools/json-formatter" class="related-tool-card"><span class="tool-icon">🔧</span><div class="tool-info"><strong>JSON Formatter</strong><span class="tool-desc">Format JSON</span></div><span class="tool-arrow">→</span></a></div></section>
+<section class="how-to-section"><h2>Mode d’emploi</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Collez votre texte ou HTML</h4><p>Saisissez dans le cadre de gauche le passage à convertir : une ligne de code, une signature, un paragraphe entier.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Choisissez le sens</h4><p>« Encoder le HTML » remplace les caractères spéciaux par leurs entités ; « Décoder les entités » fait l’opération inverse.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Vérifiez le résultat</h4><p>Le texte converti s’affiche dans le cadre de droite, prêt à l’emploi.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Copiez-collez</h4><p>Un clic sur Copier place le résultat dans le presse-papiers ; rien n’est conservé ni envoyé ailleurs.</p></div></div></section>
+<h2>Ce que fait réellement l’encodeur</h2><div class="guide-block"><h3>Transformer les caractères spéciaux en entités</h3><p>Encoder, c’est remplacer les caractères que le HTML réserve à sa propre syntaxe par leur équivalent en entité : le chevron ouvrant devient &lt;, le fermant &gt;, et l’esperluette &amp;. Le navigateur affiche alors le texte tel quel au lieu de l’interpréter comme du code.</p></div><div class="guide-block"><h3>Trois caractères seulement, et c’est voulu</h3><p>Cet encodeur s’appuie sur la conversion native du navigateur pour les nœuds de texte, qui échappe &, < et > — rien de plus. Les guillemets ne sont pas convertis car ils ne posent problème qu’à l’intérieur d’un attribut. Si vous destinez le résultat à un attribut HTML, échappez-les à part.</p></div><div class="guide-block"><h3>Le décodeur comprend toutes les entités</h3><p>Dans l’autre sens, il reconnaît aussi bien les entités nommées (&amp;copy;, &amp;eacute;) que les numériques (&amp;#169;, &amp;#233;) — pratique pour décoder des extraits venus d’un autre CMS ou d’exportations anciennes, quelle que soit la table utilisée.</p></div><div class="guide-block"><h3>Nos usages de tous les jours</h3><p>Publier un extrait de code dans un article de blog sans que le navigateur ne l’exécute, transmettre par e-mail un gabarit HTML que le client de messagerie casserait sinon, ou documenter une balise dans un guide technique interne en gardant les chevrons visibles.</p></div><div class="guide-block"><h3>Les accents restent tels quels</h3><p>Les lettres accentuées, les cédilles et l’ensemble des caractères Unicode ne sont pas touchés : ils apparaissent identiques dans le résultat. Seuls les trois caractères réservés changent — si votre publication exige des entités pour tout le monde, ce n’est pas l’outil qu’il vous faut, autant le savoir avant.</p></div><div class="guide-block"><h3>Deux boutons, zéro réglage</h3><p>Aucune case à cocher, aucun mode : un bouton encode, l’autre décode. L’absence d’options supprime les erreurs de configuration et rend le résultat prévisible — ce que vous voyez est exactement ce que vous obtiendrez.</p></div><div class="guide-block"><h3>Confidentialité et limites</h3><p>Tout se passe dans le navigateur avec les fonctions natives du DOM : le texte ne quitte jamais votre machine. Pas d’historique ni de limite pratique de taille, mais pour les textes très longs, copiez le résultat avant de recharger la page.</p></div>
+<section class="faq-section"><h2>Questions fréquentes</h2><div class="faq-item"><button class="faq-question">Quels caractères sont convertis à l’encodage ?</button><div class="faq-answer">Seuls les trois réservés de la syntaxe HTML — esperluette, chevron ouvrant et chevron fermant — sont convertis, chacun vers son entité standard (amp, lt, gt) précédée d’une esperluette. Les guillemets ne sont pas convertis car ils sont sans danger dans le contenu d’une balise.</div></div><div class="faq-item"><button class="faq-question">Pourquoi les guillemets restent-ils inchangés ?</button><div class="faq-answer">Les guillemets ne sont spéciaux que dans les valeurs d’attributs HTML. Cet encodeur travaille sur des nœuds de texte, où ils ne présentent aucun risque.</div></div><div class="faq-item"><button class="faq-question">Peut-on décoder des entités nommées et numériques ?</button><div class="faq-answer">Oui : le décodage natif du navigateur reconnaît aussi bien les entités nommées que les numériques — toujours selon la syntaxe esperluette + code + point-virgule —, y compris celles produites par d’autres CMS.</div></div><div class="faq-item"><button class="faq-question">Que deviennent les accents et les cédilles ?</button><div class="faq-answer">Ils restent tels quels : é, è, ç et l’ensemble d’Unicode ne sont pas convertis en entités, seuls les trois caractères réservés le sont.</div></div><div class="faq-item"><button class="faq-question">Mon texte est-il envoyé à un serveur ?</button><div class="faq-answer">Non. La conversion utilise les fonctions natives du navigateur ; ni l’original ni le résultat ne quittent votre appareil.</div></div><div class="faq-item"><button class="faq-question">À quoi sert l’encodage concrètement ?</button><div class="faq-answer">À empêcher le navigateur d’interpréter votre code : en convertissant < et > en entités, il affiche le code comme du texte au lieu de l’exécuter.</div></div></section>
+<section class="related-tools"><h2>À découvrir aussi</h2><div class="related-tools-grid"><a href="/tools/url-encoder" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>URL Encoder</strong><span class="tool-desc">Encodez et décodez des URLs</span></div><span class="tool-arrow">→</span></a><a href="/tools/base64" class="related-tool-card"><span class="tool-icon">🔐</span><div class="tool-info"><strong>Base64 Converter</strong><span class="tool-desc">Encodez et décodez du Base64</span></div><span class="tool-arrow">→</span></a><a href="/tools/json-formatter" class="related-tool-card"><span class="tool-icon">🔧</span><div class="tool-info"><strong>JSON Formatter</strong><span class="tool-desc">Formatez du JSON</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
