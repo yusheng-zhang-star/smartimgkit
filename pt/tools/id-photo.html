@@ -31,19 +31,91 @@
   <link rel="stylesheet" href="/css/style.css?v=14">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <style>
-
-  </style>
+  <style id="enrich-css">
+.selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
+.sp-item{display:flex;align-items:center;gap:8px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:999px;padding:8px 16px;font-size:0.85rem;color:var(--text-secondary);font-weight:500}
+.sp-item span.sp-icon{font-size:1rem}
+.feature-narrative{margin:2.5rem 0;padding:0 1rem}
+.feature-narrative h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.feature-narrative .fn-intro{text-align:center;max-width:680px;margin:0 auto 2rem;color:var(--text-secondary);font-size:1rem;line-height:1.6}
+.fn-block{display:flex;gap:1.5rem;align-items:flex-start;margin:1.5rem 0;padding:1.25rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border-color)}
+.fn-block .fn-icon{font-size:2rem;flex-shrink:0;line-height:1}
+.fn-block h3{font-size:1.05rem;color:var(--text-primary);margin:0 0 0.4rem}
+.fn-block p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin:0}
+.features-grid-section{margin:2.5rem 0;padding:0 1rem}
+.features-grid-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.features-grid-section .fg-sub{text-align:center;color:var(--text-secondary);font-size:0.95rem;margin-bottom:2rem}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;max-width:1000px;margin:0 auto}
+.feature-card{background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:1.25rem;transition:transform .2s,border-color .2s}
+.feature-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.feature-card .fc-icon{font-size:1.8rem;margin-bottom:0.5rem}
+.feature-card h3{font-size:1rem;color:var(--text-primary);margin:0 0 0.4rem}
+.feature-card p{color:var(--text-secondary);font-size:0.85rem;line-height:1.5;margin:0}
+.trust-badges{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:2rem 0;padding:1.5rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border-color)}
+.trust-badge{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;min-width:120px}
+.trust-badge .tb-icon{font-size:1.6rem}
+.trust-badge .tb-title{font-size:0.85rem;font-weight:700;color:var(--text-primary)}
+.trust-badge .tb-desc{font-size:0.72rem;color:var(--text-secondary)}
+@media(max-width:640px){.fn-block{flex-direction:column}.features-grid{grid-template-columns:1fr}.trust-badges{gap:12px}.trust-badge{min-width:90px}}
+/* answer block + quick facts (first screen, AI-extractable) */
+.tool-page-header .answer-lead{max-width:760px;margin:0 auto;font-size:1.02rem;line-height:1.65;color:var(--text-secondary)}
+.facts-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:760px;margin:1.3rem auto 0;padding:0;list-style:none}
+.facts-strip li{background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:10px;padding:.7rem .5rem;text-align:center}
+.facts-strip .f-k{display:block;font-size:.7rem;letter-spacing:.04em;text-transform:uppercase;color:var(--text-secondary);margin-bottom:3px}
+.facts-strip .f-v{display:block;font-size:.86rem;font-weight:600;color:var(--text-primary)}
+.compare-table{width:100%;max-width:800px;margin:0 auto;border-collapse:collapse;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;overflow:hidden;font-size:.9rem}
+.compare-table th,.compare-table td{padding:.7rem .9rem;text-align:left;border-bottom:1px solid var(--border-color)}
+.compare-table thead th{font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;color:var(--text-secondary);font-weight:600}
+.compare-table tbody tr:last-child th,.compare-table tbody tr:last-child td{border-bottom:none}
+.compare-table tbody th{font-weight:500;color:var(--text-secondary)}
+.compare-table .col-ours{color:var(--text-primary);font-weight:600}
+@media(max-width:640px){.facts-strip{grid-template-columns:repeat(2,1fr)}.compare-table{font-size:.82rem}.compare-table th,.compare-table td{padding:.55rem .6rem}}
+/* tool workspace: classes below were never defined in either stylesheet */
+.id-photo-layout{display:grid;grid-template-columns:minmax(280px,340px) 1fr;gap:18px;align-items:start}
+.id-photo-sidebar{display:flex;flex-direction:column;gap:12px}
+.id-photo-canvas-area{display:flex;flex-direction:column;gap:10px}
+.preview-box{display:flex;align-items:center;justify-content:center;min-height:320px;padding:16px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px}
+.preview-box canvas{max-width:100%;height:auto;border-radius:8px}
+.card{background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:14px}
+.card h3{margin:0 0 10px;font-size:.9rem;font-weight:600;color:var(--text-primary)}
+.country-list{display:flex;flex-direction:column;gap:4px;max-height:300px;overflow-y:auto;padding-right:2px}
+.country-btn{display:block;width:100%;padding:7px 10px;font-family:inherit;font-size:.82rem;line-height:1.35;text-align:left;color:var(--text-primary);background:var(--bg-primary);border:1px solid var(--border-color);border-radius:8px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.country-btn:hover{border-color:var(--accent)}
+.country-btn.active{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);font-weight:600}
+.size-detail{margin-top:10px;padding:8px 10px;font-size:.78rem;line-height:1.5;color:var(--text-secondary);background:var(--bg-primary);border-radius:8px}
+.custom-size-row{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:.78rem;flex-wrap:wrap;color:var(--text-secondary)}
+.bg-presets{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.bg-preset-btn{width:30px;height:30px;padding:0;border-radius:50%;border:2px solid var(--border-color);cursor:pointer}
+.bg-preset-btn.white{background:#ffffff}
+.bg-preset-btn.blue{background:#3b82f6}
+.bg-preset-btn.red{background:#ef4444}
+.bg-preset-btn.gray{background:#9ca3af}
+.bg-preset-btn.green{background:#22c55e}
+.bg-preset-btn.active{box-shadow:0 0 0 2px var(--accent);border-color:transparent}
+.btn-group{display:flex;gap:8px;flex-wrap:wrap}
+.btn-group .btn{flex:1 1 auto}
+.progress-bar{height:6px;background:var(--bg-secondary);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:var(--accent);transition:width .3s}
+.status-msg{min-height:18px;font-size:.78rem;color:var(--text-secondary)}
+.print-info{padding:10px 12px;font-size:.78rem;line-height:1.55;color:var(--text-secondary);background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:10px}
+@media(max-width:900px){.id-photo-layout{grid-template-columns:1fr}}
+.photo-tips{margin:8px 0 0;padding-left:20px;font-size:.88rem;line-height:1.7;color:var(--text-secondary)}
+</style>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Criador de Foto 3x4 e Foto de Documento — SmartImgKit",
+  "name": "Foto para Documento",
   "url": "https://smartimgkit.com/pt/tools/id-photo",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "description": "Crie foto 3x4, de passaporte ou visto em casa: mais de 30 padrões oficiais, remoção de fundo com IA e download em 300 DPI — tudo no navegador."
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Crie foto 3x4, de passaporte ou visto em casa: mais de 30 padrões oficiais, remoção de fundo com IA e download em 300 DPI — tudo no navegador.",
+  "inLanguage": "pt"
 }
 </script>
 <script type="application/ld+json">
