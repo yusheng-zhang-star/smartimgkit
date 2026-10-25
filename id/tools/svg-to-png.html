@@ -125,6 +125,30 @@
         "@type": "Answer",
         "text": "Ini bisa terjadi jika SVG Anda menggunakan sumber daya eksternal (gambar tertaut, font) atau gaya CSS yang tidak disematkan. Untuk hasil terbaik, gunakan kode SVG mandiri."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Bisakah hasil PNG lebih tajam dari ukuran aslinya?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Bisa. Karena SVG adalah vektor, naikkan faktor skala ke 2x atau 4x sebelum mengonversi: ikon 64×64 menjadi 256×256 tanpa buram. Yang dibesarkan adalah hasil render, bukan file SVG-nya."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Format mana yang paling cocok untuk ikon aplikasi?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "PNG pada skala 2x atau 3x, karena masing-masing toko aplikasi menuntut ukuran tetap (misalnya 512×512). PNG juga menyimpan transparansi, jadi ikon tetap rapi di latar terang maupun gelap."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Apakah SVG animasi bisa dikonversi?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yang terekspor hanya frame statis di awal animasi. Jika butuh frame tertentu, ubah dulu nilainya di kode SVG, lalu konversi. PNG memang tidak mendukung animasi — untuk itu gunakan format GIF atau video."
+      }
     }
   ]
 }
@@ -198,7 +222,7 @@
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
                 <span style="font-size:3rem;opacity:0.5;">🖼️</span>
               </div>
-              <div class="before-after-item-caption after">After — processed</div>
+              <div class="before-after-item-caption after">Sesudah — diproses</div>
             </div>
           </div>
         </div>        <input type="file" id="fileInput" accept="image/*" style="display:none;">
@@ -213,41 +237,41 @@
         <div class="svg-workspace">
           <div class="svg-sidebar">
             <div class="input-tabs">
-              <button class="input-tab active" data-tab="upload">Upload File</button>
-              <button class="input-tab" data-tab="paste">Paste SVG Code</button>
+              <button class="input-tab active" data-tab="upload">Unggah file</button>
+              <button class="input-tab" data-tab="paste">Tempel kode SVG</button>
             </div>
 
             <div id="tab-upload" class="tab-panel active">
-              <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:10px;">SVG file loaded. You can also <a href="#" id="reuploadLink" style="color:var(--accent);">re-upload</a>.</p>
+              <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:10px;">File SVG dimuat. Anda juga bisa <a href="#" id="reuploadLink" style="color:var(--accent);">mengunggah ulang</a>.</p>
             </div>
 
             <div id="tab-paste" class="tab-panel">
-              <textarea class="svg-code-area" id="svgCodeArea" placeholder="Paste your SVG code here...&#10;&#10;<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>&#10;  <circle cx='100' cy='100' r='80' fill='%236366f1'/>&#10;</svg>"></textarea>
-              <button class="btn btn-secondary" id="applySvgCode" style="margin-top:8px;width:100%;">Apply SVG Code</button>
+              <textarea class="svg-code-area" id="svgCodeArea" placeholder="Tempel kode SVG Anda di sini...&#10;&#10;<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>&#10;  <circle cx='100' cy='100' r='80' fill='%236366f1'/>&#10;</svg>"></textarea>
+              <button class="btn btn-secondary" id="applySvgCode" style="margin-top:8px;width:100%;">Terapkan kode</button>
             </div>
 
             <div>
               <label style="font-size:.8rem;color:var(--text-secondary);font-weight:500;display:block;margin-bottom:6px;">Format Output</label>
               <select id="outputFormat" style="width:100%;padding:8px 10px;border:1px solid var(--border-color);border-radius:6px;background:var(--bg-primary);color:var(--text-primary);font-size:.85rem;">
-                <option value="image/png">PNG (Lossless)</option>
-                <option value="image/jpeg">JPG (Smaller file)</option>
-                <option value="image/webp">WebP (Modern)</option>
+                <option value="image/png">PNG (tanpa kehilangan)</option>
+                <option value="image/jpeg">JPG (file lebih kecil)</option>
+                <option value="image/webp">WebP (modern)</option>
               </select>
             </div>
 
             <div>
-              <label style="font-size:.8rem;color:var(--text-secondary);font-weight:500;display:block;margin-bottom:6px;">Scale Factor</label>
+              <label style="font-size:.8rem;color:var(--text-secondary);font-weight:500;display:block;margin-bottom:6px;">Faktor skala</label>
               <select id="scaleFactor" style="width:100%;padding:8px 10px;border:1px solid var(--border-color);border-radius:6px;background:var(--bg-primary);color:var(--text-primary);font-size:.85rem;">
-                <option value="1">1x (Original)</option>
-                <option value="2" selected>2x (Retina)</option>
-                <option value="3">3x (High-DPI)</option>
-                <option value="4">4x (Print quality)</option>
+                <option value="1">1x (asli)</option>
+                <option value="2" selected>2x (layar retina)</option>
+                <option value="3">3x (layar DPI tinggi)</option>
+                <option value="4">4x (kualitas cetak)</option>
               </select>
             </div>
 
             <div class="tool-actions" style="flex-direction:column;">
-              <button class="btn btn-primary" id="downloadBtn">💾 Download</button>
-              <button class="btn btn-secondary" id="resetBtn">🔄 Start Over</button>
+              <button class="btn btn-primary" id="downloadBtn">💾 Unduh</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Mulai ulang</button>
             </div>
             <div id="status" class="text-center" style="color:var(--text-secondary);font-size:.85rem;"></div>
           </div>
@@ -257,8 +281,8 @@
               <canvas id="previewCanvas"></canvas>
             </div>
             <div class="info-row" id="infoRow">
-              <span>📐 SVG Size: <b id="svgSize">-</b></span>
-              <span>🖼️ Output: <b id="outSize">-</b></span>
+              <span>📐 Ukuran SVG: <b id="svgSize">-</b></span>
+              <span>🖼️ Hasil: <b id="outSize">-</b></span>
             </div>
           </div>
         </div>
@@ -283,19 +307,19 @@
           <h3>Langkah 2: Pilih Format Output</h3>
           <p>Pilih format output yang sesuai dengan kebutuhan Anda:</p>
           <ul>
-            <li><strong>PNG:</strong> Lossless compression, supports transparency. Best for UI assets, logos, and icons.</li>
-            <li><strong>JPG:</strong> Smaller file size, no transparency. Best for photos and complex graphics with many colors.</li>
-            <li><strong>WebP:</strong> Modern format with excellent compression. Best for web use.</li>
+            <li><strong>PNG:</strong> kompresi tanpa kehilangan dan mendukung transparansi. Cocok untuk aset antarmuka, logo, dan ikon.</li>
+            <li><strong>JPG:</strong> file lebih kecil tetapi tanpa transparansi. Lebih cocok untuk ilustrasi kompleks dengan banyak warna.</li>
+            <li><strong>WebP:</strong> format modern dengan kompresi sangat baik. Pilihan terbaik untuk web.</li>
           </ul>
         </div>
         <div class="guide-block">
           <h3>Langkah 3: Atur Faktor Skala</h3>
           <p>Faktor skala mengontrol resolusi output:</p>
           <ul>
-            <li><strong>1x:</strong> Same pixel dimensions as the SVG width/height</li>
-            <li><strong>2x:</strong> Double resolution — perfect for retina displays (@2x assets)</li>
-            <li><strong>3x:</strong> Triple resolution — for high-DPI displays</li>
-            <li><strong>4x:</strong> Quadruple resolution — for print-quality output</li>
+            <li><strong>1x:</strong> dimensi piksel sama dengan lebar dan tinggi SVG</li>
+            <li><strong>2x:</strong> resolusi dua kali lipat — pas untuk layar retina (aset @2x)</li>
+            <li><strong>3x:</strong> resolusi tiga kali lipat — untuk layar DPI tinggi</li>
+            <li><strong>4x:</strong> resolusi empat kali lipat — untuk kualitas cetak</li>
           </ul>
           <p>Karena SVG adalah format vektor, memperbesar tidak menghasilkan kehilangan kualitas. SVG 100×100 pada skala 4x menghasilkan PNG 400×400 yang tajam.</p>
         </div>
@@ -306,22 +330,22 @@
         <div class="guide-block">
           <h3>Kasus Penggunaan Terbaik</h3>
           <ul>
-            <li><strong>UI/UX designers:</strong> Export SVG icons to PNG for Android/iOS app assets</li>
-            <li><strong>Web developers:</strong> Convert inline SVG to static images for <code>&lt;img&gt;</code> tags or CSS <code>background-image</code></li>
-            <li><strong>Print designers:</strong> Convert SVG logos to high-res PNG (4x scale) for print materials</li>
-            <li><strong>Presentations:</strong> Convert SVG charts/graphs to PNG for PowerPoint or Keynote</li>
-            <li><strong>Social media:</strong> Convert SVG illustrations to PNG for Instagram/Facebook posts</li>
+            <li><strong>Desainer UI/UX:</strong> ekspor ikon SVG ke PNG sebagai aset aplikasi Android/iOS</li>
+            <li><strong>Pengembang web:</strong> ubah SVG inline menjadi gambar statis untuk tag <code>&lt;img&gt;</code> atau <code>background-image</code> di CSS</li>
+            <li><strong>Desainer cetak:</strong> ubah logo SVG ke PNG resolusi tinggi (skala 4x) untuk bahan cetak</li>
+            <li><strong>Presentasi:</strong> ubah grafik SVG ke PNG untuk PowerPoint atau Keynote</li>
+            <li><strong>Media sosial:</strong> ubah ilustrasi SVG ke PNG untuk kiriman Instagram atau Facebook</li>
           </ul>
         </div>
         <div class="guide-block">
           <h3>Tips Profesional</h3>
           <ul>
-            <li>For sharp @2x mobile app assets, set Scale Factor to 2x and output as PNG</li>
-            <li>If your SVG has transparency, use PNG format to preserve it</li>
-            <li>For smallest file size with good quality, use WebP format at 2x scale</li>
-            <li>SVG <code>&lt;text&gt;</code> elements may render differently across browsers — convert to PNG to lock in fonts</li>
-            <li>For print, use 4x scale + PNG for maximum quality</li>
-            <li>You can paste SVG code directly — great for quick one-off conversions without saving a file</li>
+            <li>Untuk aset @2x yang tajam di aplikasi seluler, atur faktor skala ke 2x dan ekspor sebagai PNG</li>
+            <li>Jika SVG Anda memiliki transparansi, gunakan format PNG agar tetap terjaga</li>
+            <li>Untuk ukuran file terkecil dengan kualitas baik, gunakan WebP pada skala 2x</li>
+            <li>Elemen <code>&lt;text&gt;</code> SVG bisa tampil berbeda antar peramban — konversi ke PNG untuk mengunci font</li>
+            <li>Untuk cetak, gunakan skala 4x + PNG demi kualitas maksimal</li>
+            <li>Anda bisa menempelkan kode SVG langsung — praktis untuk konversi sekali pakai tanpa menyimpan file</li>
           </ul>
         </div>
 
@@ -330,6 +354,9 @@
       <div class="faq-item"><button class="faq-question">Apakah SVG saya diunggah ke server?</button><div class="faq-answer">Tidak. Semua konversi terjadi sepenuhnya di browser Anda menggunakan Canvas API. File atau kode SVG Anda tidak pernah meninggalkan perangkat Anda.</div></div>
       <div class="faq-item"><button class="faq-question">Apa ukuran maksimum SVG yang didukung?</button><div class="faq-answer">Tidak ada batas ukuran file yang ketat. Namun, SVG yang sangat besar (mis., 2000×2000+ piksel pada skala 4x) mungkin membutuhkan waktu lebih lama untuk dirender.</div></div>
       <div class="faq-item"><button class="faq-question">Mengapa gambar yang dikonversi terlihat berbeda dari SVG?</button><div class="faq-answer">Ini bisa terjadi jika SVG Anda menggunakan sumber daya eksternal (gambar tertaut, font) atau gaya CSS yang tidak disematkan. Untuk hasil terbaik, gunakan kode SVG mandiri.</div></div>
+      <div class="faq-item"><button class="faq-question">Bisakah hasil PNG lebih tajam dari ukuran aslinya?</button><div class="faq-answer">Bisa. Karena SVG adalah vektor, naikkan faktor skala ke 2x atau 4x sebelum mengonversi: ikon 64×64 menjadi 256×256 tanpa buram. Yang dibesarkan adalah hasil render, bukan file SVG-nya.</div></div>
+      <div class="faq-item"><button class="faq-question">Format mana yang paling cocok untuk ikon aplikasi?</button><div class="faq-answer">PNG pada skala 2x atau 3x, karena masing-masing toko aplikasi menuntut ukuran tetap (misalnya 512×512). PNG juga menyimpan transparansi, jadi ikon tetap rapi di latar terang maupun gelap.</div></div>
+      <div class="faq-item"><button class="faq-question">Apakah SVG animasi bisa dikonversi?</button><div class="faq-answer">Yang terekspor hanya frame statis di awal animasi. Jika butuh frame tertentu, ubah dulu nilainya di kode SVG, lalu konversi. PNG memang tidak mendukung animasi — untuk itu gunakan format GIF atau video.</div></div>
       </section>
 
 <section class="related-tools">
@@ -441,7 +468,7 @@
           dropzone.style.display = 'none';
           workspace.style.display = 'block';
         } catch (e) {
-          ImageUtils.showToast('Failed to read SVG file', 'error');
+          ImageUtils.showToast('Gagal membaca file SVG', 'error');
         }
       }
     });
@@ -449,7 +476,7 @@
     // ===== Paste SVG Code =====
     applySvgCodeBtn.addEventListener('click', () => {
       const code = svgCodeArea.value.trim();
-      if (!code) { ImageUtils.showToast('Please paste SVG code first', 'error'); return; }
+      if (!code) { ImageUtils.showToast('Tempel kode SVG terlebih dahulu', 'error'); return; }
       svgSource = code;
       parseAndRender(code);
       dropzone.style.display = 'none';
@@ -488,7 +515,7 @@
     // ===== Render =====
     function parseAndRender(svgString) {
       const dims = getSvgDimensions(svgString);
-      if (!dims) { ImageUtils.showToast('Invalid SVG code', 'error'); return; }
+      if (!dims) { ImageUtils.showToast('Kode SVG tidak valid', 'error'); return; }
       svgSize = dims;
       document.getElementById('svgSize').textContent = dims.w + ' x ' + dims.h;
 
@@ -502,7 +529,7 @@
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
         document.getElementById('outSize').textContent = canvas.width + ' x ' + canvas.height;
       };
-      img.onerror = () => { ImageUtils.showToast('Failed to render SVG', 'error'); };
+      img.onerror = () => { ImageUtils.showToast('Gagal merender SVG', 'error'); };
       // Use data URL for SVG
       const dataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgString);
       img.src = dataUrl;
@@ -535,7 +562,7 @@
         // Small delay to let canvas render
         setTimeout(() => {
           ImageUtils.download(canvas, 'converted.' + ext, mime);
-          ImageUtils.showToast('Image downloaded!');
+          ImageUtils.showToast('Gambar berhasil diunduh!');
         }, 100);
       }
     });

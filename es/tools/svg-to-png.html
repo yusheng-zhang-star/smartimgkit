@@ -125,6 +125,30 @@
         "@type": "Answer",
         "text": "Esto puede ocurrir si tu SVG usa recursos externos (imágenes vinculadas, fuentes) o estilos CSS no incrustados. Para mejores resultados, usa código SVG autocontenido."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué escala debo usar para imprimir un logotipo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Para impresión elige 4x: un SVG de 100×100 se convierte en un PNG de 400×400, suficiente para tarjetas y papel membretado. Si el logo irá en un cartel grande, trabaja directamente con el archivo vectorial en lugar de rasterizarlo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se conservan las fuentes de texto del SVG?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Solo si están incrustadas en el propio archivo o convertidas en trazados. Si el SVG depende de fuentes instaladas en tu equipo, el navegador usa una tipografía sustituta al rasterizar; convierte el texto a curvas en tu editor para un resultado fiel."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué pasa con un SVG animado?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El lienzo captura el estado estático inicial de la animación. Si necesitas un cuadro concreto, edita el código SVG y ajusta los valores antes de convertirlo; la exportación a PNG siempre produce una imagen fija."
+      }
     }
   ]
 }
@@ -198,7 +222,7 @@
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
                 <span style="font-size:3rem;opacity:0.5;">🖼️</span>
               </div>
-              <div class="before-after-item-caption after">After — processed</div>
+              <div class="before-after-item-caption after">Después — procesada</div>
             </div>
           </div>
         </div>        <input type="file" id="fileInput" accept="image/*" style="display:none;">
@@ -213,41 +237,41 @@
         <div class="svg-workspace">
           <div class="svg-sidebar">
             <div class="input-tabs">
-              <button class="input-tab active" data-tab="upload">Upload File</button>
-              <button class="input-tab" data-tab="paste">Paste SVG Code</button>
+              <button class="input-tab active" data-tab="upload">Subir archivo</button>
+              <button class="input-tab" data-tab="paste">Pegar código SVG</button>
             </div>
 
             <div id="tab-upload" class="tab-panel active">
-              <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:10px;">SVG file loaded. You can also <a href="#" id="reuploadLink" style="color:var(--accent);">re-upload</a>.</p>
+              <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:10px;">Archivo SVG cargado. También puedes <a href="#" id="reuploadLink" style="color:var(--accent);">cargar otro</a>.</p>
             </div>
 
             <div id="tab-paste" class="tab-panel">
-              <textarea class="svg-code-area" id="svgCodeArea" placeholder="Paste your SVG code here...&#10;&#10;<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>&#10;  <circle cx='100' cy='100' r='80' fill='%236366f1'/>&#10;</svg>"></textarea>
-              <button class="btn btn-secondary" id="applySvgCode" style="margin-top:8px;width:100%;">Apply SVG Code</button>
+              <textarea class="svg-code-area" id="svgCodeArea" placeholder="Pega aquí tu código SVG...&#10;&#10;<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>&#10;  <circle cx='100' cy='100' r='80' fill='%236366f1'/>&#10;</svg>"></textarea>
+              <button class="btn btn-secondary" id="applySvgCode" style="margin-top:8px;width:100%;">Aplicar código SVG</button>
             </div>
 
             <div>
               <label style="font-size:.8rem;color:var(--text-secondary);font-weight:500;display:block;margin-bottom:6px;">Formato de salida</label>
               <select id="outputFormat" style="width:100%;padding:8px 10px;border:1px solid var(--border-color);border-radius:6px;background:var(--bg-primary);color:var(--text-primary);font-size:.85rem;">
-                <option value="image/png">PNG (Lossless)</option>
-                <option value="image/jpeg">JPG (Smaller file)</option>
-                <option value="image/webp">WebP (Modern)</option>
+                <option value="image/png">PNG (sin pérdida)</option>
+                <option value="image/jpeg">JPG (archivo más pequeño)</option>
+                <option value="image/webp">WebP (moderno)</option>
               </select>
             </div>
 
             <div>
-              <label style="font-size:.8rem;color:var(--text-secondary);font-weight:500;display:block;margin-bottom:6px;">Scale Factor</label>
+              <label style="font-size:.8rem;color:var(--text-secondary);font-weight:500;display:block;margin-bottom:6px;">Factor de escala</label>
               <select id="scaleFactor" style="width:100%;padding:8px 10px;border:1px solid var(--border-color);border-radius:6px;background:var(--bg-primary);color:var(--text-primary);font-size:.85rem;">
-                <option value="1">1x (Original)</option>
-                <option value="2" selected>2x (Retina)</option>
-                <option value="3">3x (High-DPI)</option>
-                <option value="4">4x (Print quality)</option>
+                <option value="1">1x (original)</option>
+                <option value="2" selected>2x (pantallas retina)</option>
+                <option value="3">3x (pantallas de alta densidad)</option>
+                <option value="4">4x (calidad de impresión)</option>
               </select>
             </div>
 
             <div class="tool-actions" style="flex-direction:column;">
-              <button class="btn btn-primary" id="downloadBtn">💾 Download</button>
-              <button class="btn btn-secondary" id="resetBtn">🔄 Start Over</button>
+              <button class="btn btn-primary" id="downloadBtn">💾 Descargar</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Empezar de nuevo</button>
             </div>
             <div id="status" class="text-center" style="color:var(--text-secondary);font-size:.85rem;"></div>
           </div>
@@ -257,8 +281,8 @@
               <canvas id="previewCanvas"></canvas>
             </div>
             <div class="info-row" id="infoRow">
-              <span>📐 SVG Size: <b id="svgSize">-</b></span>
-              <span>🖼️ Output: <b id="outSize">-</b></span>
+              <span>📐 Tamaño SVG: <b id="svgSize">-</b></span>
+              <span>🖼️ Salida: <b id="outSize">-</b></span>
             </div>
           </div>
         </div>
@@ -283,19 +307,19 @@
           <h3>Paso 2: Elegir Formato de Salida</h3>
           <p>Selecciona el formato de salida que se adapte a tus necesidades:</p>
           <ul>
-            <li><strong>PNG:</strong> Lossless compression, supports transparency. Best for UI assets, logos, and icons.</li>
-            <li><strong>JPG:</strong> Smaller file size, no transparency. Best for photos and complex graphics with many colors.</li>
-            <li><strong>WebP:</strong> Modern format with excellent compression. Best for web use.</li>
+            <li><strong>PNG:</strong> compresión sin pérdida y transparencia. Ideal para recursos de interfaz, logotipos e iconos.</li>
+            <li><strong>JPG:</strong> archivo más pequeño pero sin transparencia. Mejor para ilustraciones complejas con muchos colores planos.</li>
+            <li><strong>WebP:</strong> formato moderno con compresión excelente. La mejor opción para la web.</li>
           </ul>
         </div>
         <div class="guide-block">
           <h3>Paso 3: Establecer Factor de Escala</h3>
           <p>El factor de escala controla la resolución de salida:</p>
           <ul>
-            <li><strong>1x:</strong> Same pixel dimensions as the SVG width/height</li>
-            <li><strong>2x:</strong> Double resolution — perfect for retina displays (@2x assets)</li>
-            <li><strong>3x:</strong> Triple resolution — for high-DPI displays</li>
-            <li><strong>4x:</strong> Quadruple resolution — for print-quality output</li>
+            <li><strong>1x:</strong> mismas dimensiones en píxeles que el ancho y alto del SVG</li>
+            <li><strong>2x:</strong> doble resolución — perfecto para pantallas retina (recursos @2x)</li>
+            <li><strong>3x:</strong> triple resolución — para pantallas de alta densidad</li>
+            <li><strong>4x:</strong> cuádruple resolución — para calidad de impresión</li>
           </ul>
           <p>Como SVG es un formato vectorial, ampliarlo no produce pérdida de calidad. Un SVG de 100×100 a escala 4x produce un PNG nítido de 400×400.</p>
         </div>
@@ -306,22 +330,22 @@
         <div class="guide-block">
           <h3>Mejores Casos de Uso</h3>
           <ul>
-            <li><strong>UI/UX designers:</strong> Export SVG icons to PNG for Android/iOS app assets</li>
-            <li><strong>Web developers:</strong> Convert inline SVG to static images for <code>&lt;img&gt;</code> tags or CSS <code>background-image</code></li>
-            <li><strong>Print designers:</strong> Convert SVG logos to high-res PNG (4x scale) for print materials</li>
-            <li><strong>Presentations:</strong> Convert SVG charts/graphs to PNG for PowerPoint or Keynote</li>
-            <li><strong>Social media:</strong> Convert SVG illustrations to PNG for Instagram/Facebook posts</li>
+            <li><strong>Diseñadores UI/UX:</strong> exporta iconos SVG a PNG como recursos para apps de Android/iOS</li>
+            <li><strong>Desarrolladores web:</strong> convierte SVG en línea a imágenes estáticas para etiquetas <code>&lt;img&gt;</code> o <code>background-image</code> en CSS</li>
+            <li><strong>Diseñadores de impresión:</strong> convierte logotipos SVG a PNG de alta resolución (escala 4x) para material impreso</li>
+            <li><strong>Presentaciones:</strong> convierte gráficos SVG a PNG para PowerPoint o Keynote</li>
+            <li><strong>Redes sociales:</strong> convierte ilustraciones SVG a PNG para publicaciones en Instagram o Facebook</li>
           </ul>
         </div>
         <div class="guide-block">
           <h3>Consejos Profesionales</h3>
           <ul>
-            <li>For sharp @2x mobile app assets, set Scale Factor to 2x and output as PNG</li>
-            <li>If your SVG has transparency, use PNG format to preserve it</li>
-            <li>For smallest file size with good quality, use WebP format at 2x scale</li>
-            <li>SVG <code>&lt;text&gt;</code> elements may render differently across browsers — convert to PNG to lock in fonts</li>
-            <li>For print, use 4x scale + PNG for maximum quality</li>
-            <li>You can paste SVG code directly — great for quick one-off conversions without saving a file</li>
+            <li>Para recursos nítidos @2x en apps móviles, pon el factor de escala en 2x y exporta como PNG</li>
+            <li>Si tu SVG tiene transparencia, usa el formato PNG para conservarla</li>
+            <li>Para el archivo más pequeño con buena calidad, usa WebP a escala 2x</li>
+            <li>Los elementos <code>&lt;text&gt;</code> del SVG pueden verse distinto según el navegador — conviértelo a PNG para fijar la tipografía</li>
+            <li>Para impresión, usa escala 4x + PNG para la máxima calidad</li>
+            <li>Puedes pegar el código SVG directamente — perfecto para conversiones puntuales sin guardar un archivo</li>
           </ul>
         </div>
 
@@ -330,6 +354,9 @@
       <div class="faq-item"><button class="faq-question">¿Se sube mi SVG a un servidor?</button><div class="faq-answer">No. Toda la conversión ocurre completamente en tu navegador usando la API Canvas. Tu archivo o código SVG nunca sale de tu dispositivo.</div></div>
       <div class="faq-item"><button class="faq-question">¿Cuál es el tamaño máximo de SVG compatible?</button><div class="faq-answer">No hay un límite estricto. Sin embargo, SVGs muy grandes (ej., 2000×2000+ píxeles a escala 4x) pueden tardar más en renderizarse. La mayoría de SVGs de menos de 1 MB se convierten al instante.</div></div>
       <div class="faq-item"><button class="faq-question">¿Por qué mi imagen convertida se ve diferente del SVG?</button><div class="faq-answer">Esto puede ocurrir si tu SVG usa recursos externos (imágenes vinculadas, fuentes) o estilos CSS no incrustados. Para mejores resultados, usa código SVG autocontenido.</div></div>
+      <div class="faq-item"><button class="faq-question">¿Qué escala debo usar para imprimir un logotipo?</button><div class="faq-answer">Para impresión elige 4x: un SVG de 100×100 se convierte en un PNG de 400×400, suficiente para tarjetas y papel membretado. Si el logo irá en un cartel grande, trabaja directamente con el archivo vectorial en lugar de rasterizarlo.</div></div>
+      <div class="faq-item"><button class="faq-question">¿Se conservan las fuentes de texto del SVG?</button><div class="faq-answer">Solo si están incrustadas en el propio archivo o convertidas en trazados. Si el SVG depende de fuentes instaladas en tu equipo, el navegador usa una tipografía sustituta al rasterizar; convierte el texto a curvas en tu editor para un resultado fiel.</div></div>
+      <div class="faq-item"><button class="faq-question">¿Qué pasa con un SVG animado?</button><div class="faq-answer">El lienzo captura el estado estático inicial de la animación. Si necesitas un cuadro concreto, edita el código SVG y ajusta los valores antes de convertirlo; la exportación a PNG siempre produce una imagen fija.</div></div>
       </section>
 
 <section class="related-tools">
@@ -441,7 +468,7 @@
           dropzone.style.display = 'none';
           workspace.style.display = 'block';
         } catch (e) {
-          ImageUtils.showToast('Failed to read SVG file', 'error');
+          ImageUtils.showToast('No se pudo leer el archivo SVG', 'error');
         }
       }
     });
@@ -449,7 +476,7 @@
     // ===== Paste SVG Code =====
     applySvgCodeBtn.addEventListener('click', () => {
       const code = svgCodeArea.value.trim();
-      if (!code) { ImageUtils.showToast('Please paste SVG code first', 'error'); return; }
+      if (!code) { ImageUtils.showToast('Pega primero el código SVG', 'error'); return; }
       svgSource = code;
       parseAndRender(code);
       dropzone.style.display = 'none';
@@ -488,7 +515,7 @@
     // ===== Render =====
     function parseAndRender(svgString) {
       const dims = getSvgDimensions(svgString);
-      if (!dims) { ImageUtils.showToast('Invalid SVG code', 'error'); return; }
+      if (!dims) { ImageUtils.showToast('Código SVG no válido', 'error'); return; }
       svgSize = dims;
       document.getElementById('svgSize').textContent = dims.w + ' x ' + dims.h;
 
@@ -502,7 +529,7 @@
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
         document.getElementById('outSize').textContent = canvas.width + ' x ' + canvas.height;
       };
-      img.onerror = () => { ImageUtils.showToast('Failed to render SVG', 'error'); };
+      img.onerror = () => { ImageUtils.showToast('No se pudo renderizar el SVG', 'error'); };
       // Use data URL for SVG
       const dataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgString);
       img.src = dataUrl;
@@ -535,7 +562,7 @@
         // Small delay to let canvas render
         setTimeout(() => {
           ImageUtils.download(canvas, 'converted.' + ext, mime);
-          ImageUtils.showToast('Image downloaded!');
+          ImageUtils.showToast('¡Imagen descargada!');
         }, 100);
       }
     });
