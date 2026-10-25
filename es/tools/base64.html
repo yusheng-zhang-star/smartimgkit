@@ -63,47 +63,7 @@
 .trust-badge .tb-desc{font-size:0.72rem;color:var(--text-secondary)}
 @media(max-width:640px){.fn-block{flex-direction:column}.features-grid{grid-template-columns:1fr}.trust-badges{gap:12px}.trust-badge{min-width:90px}}
 </style>
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "¿Qué es la codificación Base64?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Base64 codifica datos binarios como texto. Incrusta imágenes en HTML/CSS."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "¿Para qué usar imágenes Base64?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Reducen solicitudes HTTP. Útiles para iconos y firmas. Aumentan tamaño ~33%."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "¿Hay límite de tamaño?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Imágenes >5MB generan cadenas largas. Funciona mejor con <2MB."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "¿Decodificar cualquier Base64?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Debe ser imagen válida (data:image/...). Sin prefijo se detecta automáticamente."
-      }
-    }
-  ]
-}
-</script>
-<style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+  <style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
 
 <meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
@@ -123,6 +83,70 @@
     "price": "0",
     "priceCurrency": "USD"
   }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Qué es Base64 y para qué sirve?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Es una forma de representar datos binarios con solo 64 caracteres seguros de texto (letras, números, + y /). Sirve para incrustar imágenes en HTML o CSS, enviar adjuntos en correos electrónicos y meter datos binarios en formatos que solo aceptan texto, como JSON."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Base64 es un sistema de cifrado?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No, y es el malentendido más común: Base64 solo cambia la representación de los datos, no los protege. Cualquiera puede decodificarlo al instante. Para proteger información, usa cifrado real y deja Base64 solo para transporte."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué el resultado ocupa un tercio más?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Base64 empaqueta cada 3 bytes en 4 caracteres, así que el texto codificado crece alrededor de un 33% más que el original. Tenlo en cuenta al incrustar imágenes grandes: conviene optimizarlas antes de convertirlas."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Funciona con la codificación de imágenes en la web?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí: es el formato que usan las URLs de datos (data:image/...) para incrustar PNG, JPG, WebP o GIF directamente en el HTML o en la hoja de estilos, sin ficheros externos ni peticiones al servidor."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Mis imágenes o datos se suben a algún servidor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. La codificación y decodificación ocurren dentro de tu navegador y nada viaja por Internet. Puedes procesar capturas internas, logotipos de empresa o datos confidenciales sin exponerlos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo decodifico una cadena que empieza por data:image/png;base64,?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ese prefijo es la etiqueta que usan las URLs de datos en HTML y CSS. Pega la cadena completa o quita todo hasta la coma: la herramienta detecta la cabecera y reconstruye la imagen original."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puede fallar la decodificación?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, si la cadena contiene caracteres ajenos al alfabeto Base64, si la longitud no es múltiplo de 4 o si se perdieron los caracteres de relleno (=). Copia la cadena completa, sin saltos de línea añadidos, y vuelve a intentarlo."
+      }
+    }
+  ]
 }
 </script>
 </head>
@@ -160,8 +184,8 @@
       </div>
       <div class="tool-workspace">
 <div style="text-align:center;margin-bottom:16px">
-          <button class="tab-btn active" id="encodeTab">Image → Base64</button>
-          <button class="tab-btn" id="decodeTab">Base64 → Image</button>
+          <button class="tab-btn active" id="encodeTab">Imagen → Base64</button>
+          <button class="tab-btn" id="decodeTab">Base64 → Imagen</button>
         </div>
 
         <div id="encodePanel">
@@ -176,15 +200,15 @@
             <div class="preview-container"><img id="previewImg" alt="Vista previa"></div>
             <p id="fileInfo" style="text-align:center;color:var(--text-secondary);font-size:.85rem;margin-top:8px"></p>
             <div class="tool-actions">
-              <button class="btn btn-primary" id="encodeBtn">📋 Encode to Base64</button>
-              <button class="btn btn-secondary" id="resetBtn">🔄 New Image</button>
+              <button class="btn btn-primary" id="encodeBtn">📋 Codificar a Base64</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Nueva imagen</button>
             </div>
             <div id="encodeResult" class="hidden mt-24">
-              <label style="color:var(--text-secondary);font-size:.85rem">Base64 Data URL</label>
+              <label style="color:var(--text-secondary);font-size:.85rem">URL de datos Base64</label>
               <textarea class="base64-output" id="b64Output" readonly></textarea>
               <div class="tool-actions mt-16">
-                <button class="btn btn-secondary" id="copyBtn">📋 Copy</button>
-                <button class="btn btn-secondary" id="downloadTxtBtn">⬇️ Download as .txt</button>
+                <button class="btn btn-secondary" id="copyBtn">📋 Copiar</button>
+                <button class="btn btn-secondary" id="downloadTxtBtn">⬇️ Descargar como .txt</button>
               </div>
             </div>
           </div>
@@ -192,11 +216,11 @@
 
         <div id="decodePanel" class="hidden">
           <div style="max-width:600px;margin:0 auto">
-            <label style="color:var(--text-secondary);font-size:.85rem">Paste Base64 string or Data URL</label>
+            <label style="color:var(--text-secondary);font-size:.85rem">Pega una cadena Base64 o una URL de datos</label>
             <textarea class="base64-output" id="b64Input" placeholder="data:image/png;base64,iVBORw0KGgo..."></textarea>
             <div class="tool-actions mt-16">
-              <button class="btn btn-primary" id="decodeBtn">🔄 Decode to Image</button>
-              <button class="btn btn-secondary hidden" id="dlImgBtn">⬇️ Download Image</button>
+              <button class="btn btn-primary" id="decodeBtn">🔄 Decodificar a imagen</button>
+              <button class="btn btn-secondary hidden" id="dlImgBtn">⬇️ Descargar imagen</button>
             </div>
             <div id="decodeResult" class="preview-container hidden" style="margin-top:16px">
               <img id="decodedImg" alt="Decoded">
@@ -222,88 +246,54 @@
           <p>Convierte cualquier imagen a una URL de datos Base64 para incrustar directamente en código.</p>
           <div class="guide-screenshot">
             <img src="/screenshots/base64.png" alt="Base64 Encoder interface showing encode/decode tabs" loading="lazy">
-            <div class="guide-screenshot-caption">Switch between Encode and Decode modes using the tabs at the top</div>
+            <div class="guide-screenshot-caption">Alterna entre los modos Codificar y Decodificar con las pestañas superiores</div>
           </div>
           <ul>
-            <li>Upload an image (JPG, PNG, WebP, GIF, BMP)</li>
-            <li>Click <strong>"Encode to Base64"</strong></li>
-            <li>The full data URL appears in the text area (format: <code>data:image/png;base64,...</code>)</li>
-            <li>Click <strong>"Copy"</strong> to copy to clipboard, or <strong>"Download as .txt"</strong> to save</li>
+            <li>Sube una imagen (JPG, PNG, WebP, GIF o BMP)</li>
+            <li>Pulsa <strong>«Codificar a Base64»</strong></li>
+            <li>La URL de datos completa aparece en el cuadro de texto (formato <code>data:image/png;base64,...</code>)</li>
+            <li>Pulsa <strong>«Copiar»</strong> para llevarla al portapapeles o <strong>«Descargar como .txt»</strong> para guardarla</li>
           </ul>
-          <div class="tip"><strong>When to use:</strong> Embed small icons directly in HTML/CSS to eliminate HTTP requests. Great for email signatures, single-file demos, and CSS background images.</div>
+          <div class="tip"><strong>Cuándo usarlo:</strong> incrusta iconos pequeños directamente en HTML o CSS para eliminar peticiones HTTP. Perfecto para firmas de correo, demos de un solo archivo e imágenes de fondo en CSS.</div>
         </div>
 
         <div class="guide-block">
           <h3>Modo 2: Base64 → Imagen (Decodificar)</h3>
           <p>Convierte una cadena Base64 de vuelta a una imagen visible y descargable.</p>
           <ul>
-            <li>Switch to the <strong>"Base64 → Image"</strong> tab</li>
-            <li>Paste a Base64 string or full data URL into the text area</li>
-            <li>Click <strong>"Decode to Image"</strong></li>
-            <li>The decoded image appears below — click <strong>"Download Image"</strong> to save</li>
+            <li>Cambia a la pestaña <strong>«Base64 → Imagen»</strong></li>
+            <li>Pega una cadena Base64 o una URL de datos completa en el cuadro de texto</li>
+            <li>Pulsa <strong>«Decodificar a imagen»</strong></li>
+            <li>La imagen decodificada aparece debajo: pulsa <strong>«Descargar imagen»</strong> para guardarla</li>
           </ul>
-          <div class="tip"><strong>Note:</strong> If you paste a raw Base64 string without the <code>data:image/...</code> prefix, the tool will auto-detect and add the appropriate header.</div>
+          <div class="tip"><strong>Nota:</strong> si pegas una cadena Base64 sin el prefijo <code>data:image/...</code>, la herramienta lo detecta y añade la cabecera correcta automáticamente.</div>
         </div>
 
         <div class="guide-block">
           <h3>Mejores Casos de Uso</h3>
           <ul>
-            <li><strong>Inline HTML images</strong> — Embed small icons and logos directly in HTML without external files</li>
-            <li><strong>CSS backgrounds</strong> — Use Base64 in <code>background-image: url()</code> for self-contained stylesheets</li>
-            <li><strong>Email signatures</strong> — Ensure images display correctly in email clients</li>
-            <li><strong>Single-file demos</strong> — Create standalone HTML files with embedded images</li>
-            <li><strong>API testing</strong> — Inspect and decode Base64 image data from API responses</li>
+            <li><strong>Imágenes incrustadas en HTML</strong> — mete iconos y logotipos pequeños directamente en el HTML, sin ficheros externos</li>
+            <li><strong>Fondos CSS</strong> — usa Base64 en <code>background-image: url()</code> para hojas de estilo autocontenidas</li>
+            <li><strong>Firmas de correo</strong> — asegura que las imágenes se vean bien en los clientes de correo</li>
+            <li><strong>Demos de un solo archivo</strong> — crea HTML autónomos con las imágenes incrustadas</li>
+            <li><strong>Pruebas de API</strong> — inspecciona y decodifica imágenes Base64 dentro de respuestas de API</li>
           </ul>
         </div>
 
         <div class="guide-block">
           <h3>Consejos Profesionales</h3>
           <ul>
-            <li>Base64 increases file size by approximately 33% — only use it for small images (&lt;50KB ideally)</li>
-            <li>Data URLs work in all modern browsers and most email clients</li>
-            <li>For CSS, use <code>background-image: url('data:image/png;base64,...')</code></li>
+            <li>Base64 aumenta el tamaño alrededor de un 33%: úsalo solo con imágenes pequeñas (idealmente por debajo de 50 KB)</li>
+            <li>Las URLs de datos funcionan en todos los navegadores modernos y en la mayoría de clientes de correo</li>
+            <li>En CSS, usa <code>background-image: url('data:image/png;base64,...')</code></li>
             <li>For HTML, use <code>&lt;img src="data:image/png;base64,..."&gt;</code></li>
-            <li>Very large images (&gt;2MB) will produce extremely long strings that may slow down page rendering</li>
+            <li>Las imágenes muy grandes (más de 2 MB) generan cadenas larguísimas que pueden ralentizar la renderización de la página</li>
           </ul>
         </div>
 
-<section class="faq-section">
-        <h2>Preguntas Frecuentes</h2>
-      <div class="faq-item"><button class="faq-question">¿Qué es la codificación Base64?</button><div class="faq-answer">Base64 codifica datos binarios como texto. Incrusta imágenes en HTML/CSS.</div></div>
-      <div class="faq-item"><button class="faq-question">¿Para qué usar imágenes Base64?</button><div class="faq-answer">Reducen solicitudes HTTP. Útiles para iconos y firmas. Aumentan tamaño ~33%.</div></div>
-      <div class="faq-item"><button class="faq-question">¿Hay límite de tamaño?</button><div class="faq-answer">Imágenes &gt;5MB generan cadenas largas. Funciona mejor con &lt;2MB.</div></div>
-      <div class="faq-item"><button class="faq-question">¿Decodificar cualquier Base64?</button><div class="faq-answer">Debe ser imagen válida (data:image/...). Sin prefijo se detecta automáticamente.</div></div>
-      </section>
+<section class="faq-section"><h2>Preguntas frecuentes</h2><div class="faq-item"><button class="faq-question">¿Qué es Base64 y para qué sirve?</button><div class="faq-answer">Es una forma de representar datos binarios con solo 64 caracteres seguros de texto (letras, números, + y /). Sirve para incrustar imágenes en HTML o CSS, enviar adjuntos en correos electrónicos y meter datos binarios en formatos que solo aceptan texto, como JSON.</div></div><div class="faq-item"><button class="faq-question">¿Base64 es un sistema de cifrado?</button><div class="faq-answer">No, y es el malentendido más común: Base64 solo cambia la representación de los datos, no los protege. Cualquiera puede decodificarlo al instante. Para proteger información, usa cifrado real y deja Base64 solo para transporte.</div></div><div class="faq-item"><button class="faq-question">¿Por qué el resultado ocupa un tercio más?</button><div class="faq-answer">Base64 empaqueta cada 3 bytes en 4 caracteres, así que el texto codificado crece alrededor de un 33% más que el original. Tenlo en cuenta al incrustar imágenes grandes: conviene optimizarlas antes de convertirlas.</div></div><div class="faq-item"><button class="faq-question">¿Funciona con la codificación de imágenes en la web?</button><div class="faq-answer">Sí: es el formato que usan las URLs de datos (<code>data:image/...</code>) para incrustar PNG, JPG, WebP o GIF directamente en el HTML o en la hoja de estilos, sin ficheros externos ni peticiones al servidor.</div></div><div class="faq-item"><button class="faq-question">¿Mis imágenes o datos se suben a algún servidor?</button><div class="faq-answer">No. La codificación y decodificación ocurren dentro de tu navegador y nada viaja por Internet. Puedes procesar capturas internas, logotipos de empresa o datos confidenciales sin exponerlos.</div></div><div class="faq-item"><button class="faq-question">¿Cómo decodifico una cadena que empieza por data:image/png;base64,?</button><div class="faq-answer">Ese prefijo es la etiqueta que usan las URLs de datos en HTML y CSS. Pega la cadena completa o quita todo hasta la coma: la herramienta detecta la cabecera y reconstruye la imagen original.</div></div><div class="faq-item"><button class="faq-question">¿Puede fallar la decodificación?</button><div class="faq-answer">Sí, si la cadena contiene caracteres ajenos al alfabeto Base64, si la longitud no es múltiplo de 4 o si se perdieron los caracteres de relleno (=). Copia la cadena completa, sin saltos de línea añadidos, y vuelve a intentarlo.</div></div></section>
 
-<section class="related-tools">
-  <h2>También te puede interesar</h2>
-  <div class="related-tools-grid">
-    <a href="/es/tools/compressor" class="related-tool-card">
-      <span class="tool-icon">🔧</span>
-      <div class="tool-info">
-        <strong>Compresor de Imagen</strong>
-        <span class="tool-desc">Reduce el tamaño de archivo sin perder calidad</span>
-      </div>
-      <span class="tool-arrow">→</span>
-    </a>
-    <a href="/es/tools/converter" class="related-tool-card">
-      <span class="tool-icon">🔧</span>
-      <div class="tool-info">
-        <strong>Conversor de Imagen</strong>
-        <span class="tool-desc">Convierte entre JPG, PNG, WebP y más</span>
-      </div>
-      <span class="tool-arrow">→</span>
-    </a>
-    <a href="/es/tools/metadata-viewer" class="related-tool-card">
-      <span class="tool-icon">🔧</span>
-      <div class="tool-info">
-        <strong>Visor de Metadatos</strong>
-        <span class="tool-desc">Inspecciona los metadatos de tus imágenes</span>
-      </div>
-      <span class="tool-arrow">→</span>
-    </a>
-  </div>
-</section>
+<section class="related-tools"><h2>También te puede interesar</h2><div class="related-tools-grid"><a href="/es/tools/url-encoder" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>Codificador URL</strong><span class="tool-desc">Codifica y decodifica cadenas URL</span></div><span class="tool-arrow">→</span></a><a href="/es/tools/json-formatter" class="related-tool-card"><span class="tool-icon">🔧</span><div class="tool-info"><strong>Formatear JSON</strong><span class="tool-desc">Embellece y valida tu JSON</span></div><span class="tool-arrow">→</span></a><a href="/es/tools/uuid-generator" class="related-tool-card"><span class="tool-icon">🆔</span><div class="tool-info"><strong>Generador UUID</strong><span class="tool-desc">UUID v1, v4 y v7 en lote</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
@@ -376,7 +366,7 @@ const encodeTab = document.getElementById('encodeTab');
     setupDropzone({ dropzoneId: 'dropzone', inputId: 'fileInput', onFile: handleFile });
 
     function handleFile(file) {
-      if (!file.type.startsWith('image/')) { status.textContent = 'Please select an image file.'; return; }
+      if (!file.type.startsWith('image/')) { status.textContent = 'Selecciona un archivo de imagen.'; return; }
       currentFile = file;
       ImageUtils.load(file).then(img => {
         previewImg.src = img.src;
@@ -395,13 +385,13 @@ const encodeTab = document.getElementById('encodeTab');
       reader.onload = () => {
         b64Output.value = reader.result;
         encodeResult.classList.remove('hidden');
-        status.textContent = 'Encoded! String length: ' + reader.result.length.toLocaleString() + ' chars';
-        encodeBtn.disabled = false; encodeBtn.textContent = '📋 Encode to Base64';
+        status.textContent = '¡Codificado! Longitud de la cadena: ' + reader.result.length.toLocaleString() + ' chars';
+        encodeBtn.disabled = false; encodeBtn.textContent = '📋 Codificar a Base64';
       };
       reader.readAsDataURL(currentFile);
     });
 
-    copyBtn.addEventListener('click', () => { navigator.clipboard.writeText(b64Output.value); status.textContent = 'Copied to clipboard!'; });
+    copyBtn.addEventListener('click', () => { navigator.clipboard.writeText(b64Output.value); status.textContent = '¡Copiado al portapapeles!'; });
     downloadTxtBtn.addEventListener('click', () => {
       const blob = new Blob([b64Output.value], {type:'text/plain'});
       ImageUtils.download(blob, currentFile.name.replace(/\.[^.]+$/, '.txt'));
@@ -425,7 +415,7 @@ const encodeTab = document.getElementById('encodeTab');
         decodedImg.src = url;
         decodeResult.classList.remove('hidden');
         dlImgBtn.classList.remove('hidden');
-        status.textContent = 'Decoded successfully!';
+        status.textContent = '¡Decodificado correctamente!';
       } catch (err) {
         status.textContent = 'Error: Invalid Base64 string';
       } finally {

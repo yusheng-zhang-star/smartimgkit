@@ -35,7 +35,7 @@
   
   "inLanguage": "es","@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "UUID Generator",
+  "name": "Generador de UUID",
   "url": "https://smartimgkit.com/es/tools/uuid-generator",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
@@ -51,31 +51,94 @@
 {
   "@context": "https://schema.org",
   "@type": "HowTo",
-  "name": "How to Use",
+  "name": "Cómo se usa",
   "step": [
     {
       "@type": "HowToStep",
       "position": 1,
-      "name": "Choose Version",
-      "text": "Select UUID v4 (random), v7 (time-ordered), or v1 (timestamp)."
+      "name": "Elige la versión",
+      "text": "v4 si solo quieres aleatoriedad pura; v7 si los identificadores deben ordenarse por fecha de creación; v1 si necesitas compatibilidad con sistemas antiguos."
     },
     {
       "@type": "HowToStep",
       "position": 2,
-      "name": "Set Count",
-      "text": "Enter how many UUIDs to generate (1-10000)."
+      "name": "Fija cantidad y formato",
+      "text": "Genera desde 1 hasta cientos en lote y elige el formato de salida que espera tu sistema."
     },
     {
       "@type": "HowToStep",
       "position": 3,
-      "name": "Choose Format",
-      "text": "Select hyphens, uppercase, braces as needed."
+      "name": "Genera",
+      "text": "Pulsa «Generar UUID» y la lista aparece al instante, con la cantidad pedida y sin duplicados."
     },
     {
       "@type": "HowToStep",
       "position": 4,
-      "name": "Generate",
-      "text": "Click Generate and copy the results."
+      "name": "Copia y usa",
+      "text": "«Copiar todo» pasa la lista completa al portapapeles, lista para pegar en tu código, CSV o base de datos."
+    }
+  ] }
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Puede repetirse un UUID generado aquí?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "En v4, la probabilidad de colisión con 122 bits aleatorios es tan baja que, generando miles de millones de UUID, seguiría siendo despreciable. En v7 y v1 añaden marca de tiempo, lo que reduce aún más el riesgo en la práctica."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué versión debo usar para una base de datos?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "v4 funciona siempre y es la elección por defecto. Si la tabla va a crecer mucho y te preocupa el rendimiento del índice, prueba v7: al ordenarse por tiempo, las inserciones nuevas caen al final del índice y generan menos reorganizaciones."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Los UUID generados son aleatorios de verdad?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "v4 usa crypto.getRandomValues del navegador, una fuente criptográficamente segura; v7 y v1 combinan tiempo con bits aleatorios. Nada de contadores predecibles ni patrones inventados."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se guardan o envían mis UUID?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Se generan en tu navegador y desaparecen al recargar. No hay ningún registro ni envío: si cierras la página, la lista anterior no es recuperable, así que copia antes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo generar UUID en minúsculas o mayúsculas?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El formato estándar es minúsculas, que es lo que genera esta herramienta. Casi todos los sistemas comparan UUID sin distinguir mayúsculas; si el tuyo es excepcional, conviértelas al pegar."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Para qué sirve el formato sin guiones?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Algunos sistemas almacenan los 32 caracteres hexadecimales sin guiones para ahorrar espacio o por compatibilidad con formatos antiguos. Elige el formato que espere tu sistema y pega sin limpiar a mano."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Sirven los UUID como contraseñas o tokens de seguridad?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Un UUID es un identificador, no un secreto: los UUID v4 son difíciles de adivinar, pero no están pensados para autenticación ni viajan con las garantías de un token. Para credenciales usa el generador de contraseñas."
+      }
     }
   ]
 }
@@ -111,39 +174,7 @@
     }
 
   </style>
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Which UUID version should I use?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "v4 (random) is most common. v7 (time-ordered) is great for databases as they sort chronologically. v1 includes MAC address."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Are these truly random?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "v4 uses crypto.getRandomValues() (CSPRNG). v7 uses CSPRNG + timestamp. Both are cryptographically secure."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is the maximum count?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "10,000 per generation. You can click Generate multiple times for more."
-      }
-    }
-  ]
-}
-</script>
-<style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+  <style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
 
 <meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
@@ -173,64 +204,64 @@
 <div class="ad-zone ad-header ad-loader-slot" data-ad-type="header" data-current-mobile="0"></div>
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🆔 UUID Generator</span></nav>
+      <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🆔 Generador de UUID</span></nav>
       <div class="tool-page-header">
-        <h1>🆔 UUID Generator</h1>
+        <h1>🆔 Generador de UUID</h1>
         <p>Genera UUID v1, v4 y v7 en lote — gratis, en tu navegador.</p>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Descubre lo que puede hacer esta herramienta</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">❌</span></div>
-              <div class="before-after-item-caption before">Nothing</div>
+              <div class="before-after-item-caption before">Sin identificador</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🆔</span></div>
-              <div class="before-after-item-caption after">Unique UUIDs</div>
+              <div class="before-after-item-caption after">UUID único</div>
             </div>
           </div>
         </div>
 
 <div class="controls">
-            <h2>⚙️ Options</h2>
+            <h2>⚙️ Opciones</h2>
             <div class="control-row">
-              <label>Version</label>
+              <label>Versión</label>
               <select id="uuidVersion">
-                <option value="v4">UUID v4 (Random)</option>
-                <option value="v7">UUID v7 (Time-ordered)</option>
-                <option value="v1">UUID v1 (Timestamp)</option>
+                <option value="v4">UUID v4 (aleatorio)</option>
+                <option value="v7">UUID v7 (ordenado por tiempo)</option>
+                <option value="v1">UUID v1 (marca de tiempo)</option>
               </select>
             </div>
             <div class="control-row">
-              <label>Count</label>
+              <label>Cantidad</label>
               <input type="number" id="uuidCount" value="10" min="1" max="10000" style="width:100px;">
             </div>
             <div class="control-row">
-              <label>Format</label>
-              <label style="min-width:auto;"><input type="checkbox" id="fmtHyphen" checked> Hyphens (xxxxxxxx-xxxx-...)</label>
-              <label style="min-width:auto;"><input type="checkbox" id="fmtUpper"> Uppercase</label>
-              <label style="min-width:auto;"><input type="checkbox" id="fmtBraces"> Braces {...}</label>
+              <label>Formato</label>
+              <label style="min-width:auto;"><input type="checkbox" id="fmtHyphen" checked> Guiones (xxxxxxxx-xxxx-...)</label>
+              <label style="min-width:auto;"><input type="checkbox" id="fmtUpper"> Mayúsculas</label>
+              <label style="min-width:auto;"><input type="checkbox" id="fmtBraces"> Llaves {...}</label>
             </div>
             <div class="btn-row">
-              <button class="btn btn-primary" id="generateBtn">🆔 Generate UUIDs</button>
-              <button class="btn btn-secondary" id="copyAllBtn">📋 Copy All</button>
-              <button class="btn btn-secondary" id="clearBtn">Clear</button>
+              <button class="btn btn-primary" id="generateBtn">🆔 Generar UUID</button>
+              <button class="btn btn-secondary" id="copyAllBtn">📋 Copiar todo</button>
+              <button class="btn btn-secondary" id="clearBtn">Limpiar</button>
             </div>
         </div>
 
         <div class="result-section">
-            <h2>📤 Generated UUIDs (<span id="uuidTotal">0</span>)</h2>
-            <textarea id="uuidOutput" readonly placeholder="Click Generate to create UUIDs..."></textarea>
+            <h2>📤 UUID generados (<span id="uuidTotal">0</span>)</h2>
+            <textarea id="uuidOutput" readonly placeholder="Pulsa Generar para crear UUID..."></textarea>
         </div>
 
       </div>
-<section class="how-to-section"><h2>How to Use</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Choose Version</h4><p>Select UUID v4 (random), v7 (time-ordered), or v1 (timestamp).</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Set Count</h4><p>Enter how many UUIDs to generate (1-10000).</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Choose Format</h4><p>Select hyphens, uppercase, braces as needed.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Generate</h4><p>Click Generate and copy the results.</p></div></div></section>
-<h2>Detailed User Guide</h2><div class="guide-block"><h3>Choose Version</h3><p>Select UUID v4 (random), v7 (time-ordered), or v1 (timestamp).</p></div><div class="guide-block"><h3>Set Count</h3><p>Enter how many UUIDs to generate (1-10000).</p></div><div class="guide-block"><h3>Choose Format</h3><p>Select hyphens, uppercase, braces as needed.</p></div><div class="guide-block"><h3>Generate</h3><p>Click Generate and copy the results.</p></div>
-<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">Which UUID version should I use?</button><div class="faq-answer">v4 (random) is most common. v7 (time-ordered) is great for databases as they sort chronologically. v1 includes MAC address.</div></div><div class="faq-item"><button class="faq-question">Are these truly random?</button><div class="faq-answer">v4 uses crypto.getRandomValues() (CSPRNG). v7 uses CSPRNG + timestamp. Both are cryptographically secure.</div></div><div class="faq-item"><button class="faq-question">What is the maximum count?</button><div class="faq-answer">10,000 per generation. You can click Generate multiple times for more.</div></div></section>
-<section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/password-generator" class="related-tool-card"><span class="tool-icon">🔐</span><div class="tool-info"><strong>Password Generator</strong><span class="tool-desc">Create secure passwords</span></div><span class="tool-arrow">→</span></a><a href="/tools/word-counter" class="related-tool-card"><span class="tool-icon">📝</span><div class="tool-info"><strong>Word Counter</strong><span class="tool-desc">Count words and characters</span></div><span class="tool-arrow">→</span></a><a href="/tools/base64" class="related-tool-card"><span class="tool-icon">🔐</span><div class="tool-info"><strong>Base64 Converter</strong><span class="tool-desc">Encode/decode Base64</span></div><span class="tool-arrow">→</span></a></div></section>
+<section class="how-to-section"><h2>Cómo se usa</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Elige la versión</h4><p>v4 si solo quieres aleatoriedad pura; v7 si los identificadores deben ordenarse por fecha de creación; v1 si necesitas compatibilidad con sistemas antiguos.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Fija cantidad y formato</h4><p>Genera desde 1 hasta cientos en lote y elige el formato de salida que espera tu sistema.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Genera</h4><p>Pulsa «Generar UUID» y la lista aparece al instante, con la cantidad pedida y sin duplicados.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Copia y usa</h4><p>«Copiar todo» pasa la lista completa al portapapeles, lista para pegar en tu código, CSV o base de datos.</p></div></div></section>
+<h2>Guía detallada de uso</h2><p>Un UUID es un identificador de 128 bits que se escribe como 36 caracteres con guiones. Su gracia es que puedes generarlos en cualquier equipo, sin coordinarte con nadie, y la probabilidad de colisión es despreciable. Esta herramienta usa el generador criptográfico del navegador.</p><div class="guide-block"><h3>v4: el comodín para casi todo</h3><p>La versión 4 genera 122 bits aleatorios y es la más usada: claves primarias de bases de datos, identificadores de sesión, nombres de ficheros únicos, trazas de telemetría. Si no tienes un motivo concreto para otra versión, usa v4.</p></div><div class="guide-block"><h3>v7: orden cronológico incluido</h3><p>La v7 arranca con una marca de tiempo en milisegundos y rellena el resto con aleatoriedad. Los identificadores se ordenan cronológicamente, lo que reduce la fragmentación en índices de base de datos y te permite ordenar registros por su propio ID.</p></div><div class="guide-block"><h3>v1: compatibilidad con sistemas antiguos</h3><p>La v1 combina marca de tiempo y datos del nodo. Es la versión histórica, aún presente en protocolos y ficheros legados (como algunos metadatos de documentos Office). Genérala solo cuando el sistema que va a consumir los UUID la exija.</p></div><div class="guide-block"><h3>Lotes sin duplicados</h3><p>Generar cientos de UUID en una tirada es perfecto para poblar datos de prueba, crear identificadores de pedidos por adelantado o repartir IDs entre varios entornos sin un servidor central que los asigne.</p></div>
+<section class="faq-section"><h2>Preguntas frecuentes</h2><div class="faq-item"><button class="faq-question">¿Puede repetirse un UUID generado aquí?</button><div class="faq-answer">En v4, la probabilidad de colisión con 122 bits aleatorios es tan baja que, generando miles de millones de UUID, seguiría siendo despreciable. En v7 y v1 añaden marca de tiempo, lo que reduce aún más el riesgo en la práctica.</div></div><div class="faq-item"><button class="faq-question">¿Qué versión debo usar para una base de datos?</button><div class="faq-answer">v4 funciona siempre y es la elección por defecto. Si la tabla va a crecer mucho y te preocupa el rendimiento del índice, prueba v7: al ordenarse por tiempo, las inserciones nuevas caen al final del índice y generan menos reorganizaciones.</div></div><div class="faq-item"><button class="faq-question">¿Los UUID generados son aleatorios de verdad?</button><div class="faq-answer">v4 usa crypto.getRandomValues del navegador, una fuente criptográficamente segura; v7 y v1 combinan tiempo con bits aleatorios. Nada de contadores predecibles ni patrones inventados.</div></div><div class="faq-item"><button class="faq-question">¿Se guardan o envían mis UUID?</button><div class="faq-answer">No. Se generan en tu navegador y desaparecen al recargar. No hay ningún registro ni envío: si cierras la página, la lista anterior no es recuperable, así que copia antes.</div></div><div class="faq-item"><button class="faq-question">¿Puedo generar UUID en minúsculas o mayúsculas?</button><div class="faq-answer">El formato estándar es minúsculas, que es lo que genera esta herramienta. Casi todos los sistemas comparan UUID sin distinguir mayúsculas; si el tuyo es excepcional, conviértelas al pegar.</div></div><div class="faq-item"><button class="faq-question">¿Para qué sirve el formato sin guiones?</button><div class="faq-answer">Algunos sistemas almacenan los 32 caracteres hexadecimales sin guiones para ahorrar espacio o por compatibilidad con formatos antiguos. Elige el formato que espere tu sistema y pega sin limpiar a mano.</div></div><div class="faq-item"><button class="faq-question">¿Sirven los UUID como contraseñas o tokens de seguridad?</button><div class="faq-answer">No. Un UUID es un identificador, no un secreto: los UUID v4 son difíciles de adivinar, pero no están pensados para autenticación ni viajan con las garantías de un token. Para credenciales usa el generador de contraseñas.</div></div></section>
+<section class="related-tools"><h2>También te puede interesar</h2><div class="related-tools-grid"><a href="/es/tools/password-generator" class="related-tool-card"><span class="tool-icon">🔐</span><div class="tool-info"><strong>Generador de contraseñas</strong><span class="tool-desc">Contraseñas fuertes y aleatorias</span></div><span class="tool-arrow">→</span></a><a href="/es/tools/json-formatter" class="related-tool-card"><span class="tool-icon">🔧</span><div class="tool-info"><strong>Formatear JSON</strong><span class="tool-desc">Embellece y valida tu JSON</span></div><span class="tool-arrow">→</span></a><a href="/es/tools/base64" class="related-tool-card"><span class="tool-icon">📋</span><div class="tool-info"><strong>Codificador Base64</strong><span class="tool-desc">Codifica y decodifica Base64</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
@@ -241,11 +272,11 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Herramientas de imagen gratuitas con IA que respetan tu privacidad.</p></div>
-        <div class="footer-links footer-links-multi"><h4>Tools</h4><a href="/es/tools/background-remover">Background Remover</a><a href="/es/tools/compressor">Compressor</a><a href="/es/tools/converter">Converter</a><a href="/es/tools/resizer">Resizer</a>
+        <div class="footer-links footer-links-multi"><h4>Herramientas</h4><a href="/es/tools/background-remover">Background Remover</a><a href="/es/tools/compressor">Compressor</a><a href="/es/tools/converter">Converter</a><a href="/es/tools/resizer">Resizer</a>
           <a href="/es/tools/gif-editor">GIF Editor</a>
           <a href="/es/tools/pdf-to-image">PDF to Image</a>
         </div>
-        <div class="footer-links footer-links-multi"><h4>More Tools</h4>
+        <div class="footer-links footer-links-multi"><h4>Más herramientas</h4>
           <div class="footer-links-list">
           <a href="/es/tools/cropper">Cropper</a><a href="/es/tools/watermark">Watermark</a><a href="/es/tools/image-merger">Image Merger</a><a href="/es/tools/screenshot-to-image">Screenshot to Image</a><a href="/es/tools/image-filters">Image Filters</a><a href="/es/tools/svg-to-png">SVG to PNG</a><a href="/es/tools/image-compare">Image Compare</a><a href="/es/tools/print-resizer">Print-Ready Resizer</a><a href="/es/tools/meme-generator">Meme Generator</a>          <a href="/es/tools/face-blur">Face Blur</a>
           <a href="/es/tools/heic-converter">HEIC Converter</a>

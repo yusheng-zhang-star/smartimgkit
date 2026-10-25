@@ -35,7 +35,7 @@
   
   "inLanguage": "es","@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "JSON Formatter",
+  "name": "Formatear JSON",
   "url": "https://smartimgkit.com/es/tools/json-formatter",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
@@ -51,31 +51,94 @@
 {
   "@context": "https://schema.org",
   "@type": "HowTo",
-  "name": "How to Use",
+  "name": "Cómo se usa",
   "step": [
     {
       "@type": "HowToStep",
       "position": 1,
-      "name": "Paste JSON",
-      "text": "Paste your JSON into the input area."
+      "name": "Pega tu JSON",
+      "text": "Copia la respuesta de una API o el contenido de tu fichero .json en el cuadro de entrada."
     },
     {
       "@type": "HowToStep",
       "position": 2,
-      "name": "Choose Action",
-      "text": "Click Format, Minify, or Validate."
+      "name": "Elige la acción",
+      "text": "Formatear con sangría de 2 o 4 espacios, minificar para ahorrar bytes o validar sin cambiar nada."
     },
     {
       "@type": "HowToStep",
       "position": 3,
-      "name": "View Result",
-      "text": "Output appears with status indicator."
+      "name": "Lee los errores con calma",
+      "text": "Si el JSON no es válido, verás el mensaje del parser con la posición aproximada del problema."
     },
     {
       "@type": "HowToStep",
       "position": 4,
-      "name": "Copy",
-      "text": "Click Copy to copy the result."
+      "name": "Copia el resultado",
+      "text": "El JSON formateado o minificado queda en el cuadro de salida; pulsa «Copiar» y pégalo donde lo necesites."
+    }
+  ] }
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Qué diferencia hay entre Formatear y Validar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Validar solo comprueba si el texto es JSON correcto y te avisa del error si no lo es. Formatear además reescribe el texto con sangría. Si solo quieres saber si tu fichero vale, usa Validar; si quieres leerlo, usa Formatear."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuánta sangría debo usar, ¿2 o 4 espacios?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Es cuestión de convención del equipo: 2 espacios es lo habitual en JavaScript y en la mayoría de guías de estilo de API; 4 espacios es común en entornos Python o en documentación impresa. El resultado es equivalente; solo cambia la legibilidad."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Minificar rompe el JSON?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Minificar elimina espacios y saltos de línea que el propio estándar permite quitar, sin tocar claves ni valores. El resultado es el mismo objeto, solo que en una línea y pesando menos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué me dice que el JSON no es válido si parece correcto?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Los sospechosos habituales: comas colgantes antes de una llave de cierre, comillas simples en vez de dobles, claves sin comillas o comentarios (el JSON estándar no admite // ni /* */). El mensaje del parser señala la posición aproximada del problema."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Mi JSON se sube a algún servidor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. El texto se procesa dentro de tu navegador y nunca sale de tu equipo. Puedes pegar respuestas con datos personales, tokens o configuración interna sin exponerlos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Maneja JSON grandes?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El parser nativo es rápido: ficheros de varios megabytes se formatean en un instante. Con textos enormes, la única limitación es la memoria del navegador, no la herramienta."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Conserva el orden de las claves?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El estándar JSON no garantiza orden, y el parser del navegador conserva el orden en que aparecen las claves en el texto. Si tu objeto depende del orden de las claves, revisa el resultado tras formatear."
+      }
     }
   ]
 }
@@ -111,39 +174,7 @@
     }
 
   </style>
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "What JSON standards are supported?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Full JSON (RFC 8259). JSON5/JSONC (comments) are NOT supported — use standard JSON only."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is my data uploaded?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. All processing is local in your browser."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is the maximum size?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "We recommend under 10MB for performance. Very large files may slow down your browser."
-      }
-    }
-  ]
-}
-</script>
-<style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+  <style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
 
 <meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
@@ -173,55 +204,55 @@
 <div class="ad-zone ad-header ad-loader-slot" data-ad-type="header" data-current-mobile="0"></div>
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🔧 JSON Formatter</span></nav>
+      <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🔧 Formatear JSON</span></nav>
       <div class="tool-page-header">
-        <h1>🔧 JSON Formatter</h1>
+        <h1>🔧 Formatear JSON</h1>
         <p>Formatea, valida, minimiza y embellece JSON — gratis, en tu navegador.</p>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Descubre lo que puede hacer esta herramienta</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">📄</span></div>
-              <div class="before-after-item-caption before">Unformatted JSON</div>
+              <div class="before-after-item-caption before">JSON compacto</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🔧</span></div>
-              <div class="before-after-item-caption after">Beautiful, valid JSON</div>
+              <div class="before-after-item-caption after">JSON legible</div>
             </div>
           </div>
         </div>
 
 <div class="controls">
-            <h2>📥 Input JSON</h2>
+            <h2>📥 JSON de entrada</h2>
             <textarea id="inputJson" placeholder='Paste your JSON here, e.g. {"name":"John"}'></textarea>
         </div>
 
         <div class="controls">
-            <h2>⚙️ Actions</h2>
+            <h2>⚙️ Acciones</h2>
             <div class="btn-row">
-              <button class="btn btn-primary" id="formatBtn">✨ Format (2 spaces)</button>
-              <button class="btn btn-primary" id="format4Btn">✨ Format (4 spaces)</button>
-              <button class="btn btn-primary" id="minifyBtn">📦 Minify</button>
-              <button class="btn btn-primary" id="validateBtn">✓ Validate</button>
-              <button class="btn btn-secondary" id="copyBtn">📋 Copy</button>
-              <button class="btn btn-secondary" id="clearBtn">Clear</button>
+              <button class="btn btn-primary" id="formatBtn">✨ Formatear (2 espacios)</button>
+              <button class="btn btn-primary" id="format4Btn">✨ Formatear (4 espacios)</button>
+              <button class="btn btn-primary" id="minifyBtn">📦 Minificar</button>
+              <button class="btn btn-primary" id="validateBtn">✓ Validar</button>
+              <button class="btn btn-secondary" id="copyBtn">📋 Copiar</button>
+              <button class="btn btn-secondary" id="clearBtn">Limpiar</button>
             </div>
         </div>
 
         <div class="result-section">
-            <h2>📤 Output</h2>
+            <h2>📤 Resultado</h2>
             <div id="statusMsg" class="status-text" style="display:none;"></div>
-            <textarea id="outputJson" readonly placeholder="Output will appear here..."></textarea>
+            <textarea id="outputJson" readonly placeholder="Aquí aparecerá el resultado..."></textarea>
         </div>
 
       </div>
-<section class="how-to-section"><h2>How to Use</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Paste JSON</h4><p>Paste your JSON into the input area.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Choose Action</h4><p>Click Format, Minify, or Validate.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>View Result</h4><p>Output appears with status indicator.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Copy</h4><p>Click Copy to copy the result.</p></div></div></section>
-<h2>Detailed User Guide</h2><div class="guide-block"><h3>Paste JSON</h3><p>Paste your JSON into the input area.</p></div><div class="guide-block"><h3>Choose Action</h3><p>Click Format, Minify, or Validate.</p></div><div class="guide-block"><h3>View Result</h3><p>Output appears with status indicator.</p></div><div class="guide-block"><h3>Copy</h3><p>Click Copy to copy the result.</p></div>
-<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">What JSON standards are supported?</button><div class="faq-answer">Full JSON (RFC 8259). JSON5/JSONC (comments) are NOT supported — use standard JSON only.</div></div><div class="faq-item"><button class="faq-question">Is my data uploaded?</button><div class="faq-answer">No. All processing is local in your browser.</div></div><div class="faq-item"><button class="faq-question">What is the maximum size?</button><div class="faq-answer">We recommend under 10MB for performance. Very large files may slow down your browser.</div></div></section>
-<section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/url-encoder" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>URL Encoder</strong><span class="tool-desc">Encode/decode URL strings</span></div><span class="tool-arrow">→</span></a><a href="/tools/base64" class="related-tool-card"><span class="tool-icon">🔐</span><div class="tool-info"><strong>Base64 Converter</strong><span class="tool-desc">Encode/decode Base64 strings</span></div><span class="tool-arrow">→</span></a><a href="/tools/regex-tester" class="related-tool-card"><span class="tool-icon">🔍</span><div class="tool-info"><strong>Regex Tester</strong><span class="tool-desc">Test regular expressions</span></div><span class="tool-arrow">→</span></a></div></section>
+<section class="how-to-section"><h2>Cómo se usa</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Pega tu JSON</h4><p>Copia la respuesta de una API o el contenido de tu fichero .json en el cuadro de entrada.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Elige la acción</h4><p>Formatear con sangría de 2 o 4 espacios, minificar para ahorrar bytes o validar sin cambiar nada.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Lee los errores con calma</h4><p>Si el JSON no es válido, verás el mensaje del parser con la posición aproximada del problema.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Copia el resultado</h4><p>El JSON formateado o minificado queda en el cuadro de salida; pulsa «Copiar» y pégalo donde lo necesites.</p></div></div></section>
+<h2>Guía detallada de uso</h2><p>El formateo usa el parser JSON nativo del navegador: primero valida y después reescribe con la sangría que elijas. No interpreta el contenido, solo la estructura, así que claves y valores viajan intactos del cuadro de entrada al de salida.</p><div class="guide-block"><h3>Depura respuestas de API sin dolor</h3><p>La respuesta en crudo de un endpoint llega en una sola línea imposible de leer. Pégala aquí, formatea con sangría de 2 espacios y verás de un vistazo qué campos devuelve, qué tipos tienen y dónde se esconde el dato que buscas.</p></div><div class="guide-block"><h3>Distingue comas de dos puntos a simple vista</h3><p>Los errores de sintaxis más comunes —coma colgante, comilla simple, clave sin comillas— son fáciles de ver en el JSON sangrado. Si prefieres confirmación automática, «Validar» te dice si el parser acepta el texto sin tocarlo.</p></div><div class="guide-block"><h3>Minifica antes de guardar o enviar</h3><p>Un JSON con sangría puede pesar el doble o el triple que el mismo contenido compactado. Minifícalo para ficheros de configuración, fixtures de pruebas o carga útil que viaja por la red, y recuperarás los espacios cuando quieras con un simple formateo.</p></div><div class="guide-block"><h3>Todo en local, sin pegarlo en servicios ajenos</h3><p>El JSON se procesa en tu navegador: ideal para respuestas con datos de clientes, tokens o configuración interna que no deberías pegar en herramientas web de terceros.</p></div>
+<section class="faq-section"><h2>Preguntas frecuentes</h2><div class="faq-item"><button class="faq-question">¿Qué diferencia hay entre Formatear y Validar?</button><div class="faq-answer">Validar solo comprueba si el texto es JSON correcto y te avisa del error si no lo es. Formatear además reescribe el texto con sangría. Si solo quieres saber si tu fichero vale, usa Validar; si quieres leerlo, usa Formatear.</div></div><div class="faq-item"><button class="faq-question">¿Cuánta sangría debo usar, ¿2 o 4 espacios?</button><div class="faq-answer">Es cuestión de convención del equipo: 2 espacios es lo habitual en JavaScript y en la mayoría de guías de estilo de API; 4 espacios es común en entornos Python o en documentación impresa. El resultado es equivalente; solo cambia la legibilidad.</div></div><div class="faq-item"><button class="faq-question">¿Minificar rompe el JSON?</button><div class="faq-answer">No. Minificar elimina espacios y saltos de línea que el propio estándar permite quitar, sin tocar claves ni valores. El resultado es el mismo objeto, solo que en una línea y pesando menos.</div></div><div class="faq-item"><button class="faq-question">¿Por qué me dice que el JSON no es válido si parece correcto?</button><div class="faq-answer">Los sospechosos habituales: comas colgantes antes de una llave de cierre, comillas simples en vez de dobles, claves sin comillas o comentarios (el JSON estándar no admite // ni /* */). El mensaje del parser señala la posición aproximada del problema.</div></div><div class="faq-item"><button class="faq-question">¿Mi JSON se sube a algún servidor?</button><div class="faq-answer">No. El texto se procesa dentro de tu navegador y nunca sale de tu equipo. Puedes pegar respuestas con datos personales, tokens o configuración interna sin exponerlos.</div></div><div class="faq-item"><button class="faq-question">¿Maneja JSON grandes?</button><div class="faq-answer">El parser nativo es rápido: ficheros de varios megabytes se formatean en un instante. Con textos enormes, la única limitación es la memoria del navegador, no la herramienta.</div></div><div class="faq-item"><button class="faq-question">¿Conserva el orden de las claves?</button><div class="faq-answer">El estándar JSON no garantiza orden, y el parser del navegador conserva el orden en que aparecen las claves en el texto. Si tu objeto depende del orden de las claves, revisa el resultado tras formatear.</div></div></section>
+<section class="related-tools"><h2>También te puede interesar</h2><div class="related-tools-grid"><a href="/es/tools/base64" class="related-tool-card"><span class="tool-icon">📋</span><div class="tool-info"><strong>Codificador Base64</strong><span class="tool-desc">Codifica y decodifica Base64</span></div><span class="tool-arrow">→</span></a><a href="/es/tools/url-encoder" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>Codificador URL</strong><span class="tool-desc">Codifica y decodifica cadenas URL</span></div><span class="tool-arrow">→</span></a><a href="/es/tools/uuid-generator" class="related-tool-card"><span class="tool-icon">🆔</span><div class="tool-info"><strong>Generador UUID</strong><span class="tool-desc">UUID v1, v4 y v7 en lote</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
@@ -232,11 +263,11 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Herramientas de imagen gratuitas con IA que respetan tu privacidad.</p></div>
-        <div class="footer-links footer-links-multi"><h4>Tools</h4><a href="/es/tools/background-remover">Background Remover</a><a href="/es/tools/compressor">Compressor</a><a href="/es/tools/converter">Converter</a><a href="/es/tools/resizer">Resizer</a>
+        <div class="footer-links footer-links-multi"><h4>Herramientas</h4><a href="/es/tools/background-remover">Background Remover</a><a href="/es/tools/compressor">Compressor</a><a href="/es/tools/converter">Converter</a><a href="/es/tools/resizer">Resizer</a>
           <a href="/es/tools/gif-editor">GIF Editor</a>
           <a href="/es/tools/pdf-to-image">PDF to Image</a>
         </div>
-        <div class="footer-links footer-links-multi"><h4>More Tools</h4>
+        <div class="footer-links footer-links-multi"><h4>Más herramientas</h4>
           <div class="footer-links-list">
           <a href="/es/tools/cropper">Cropper</a><a href="/es/tools/watermark">Watermark</a><a href="/es/tools/image-merger">Image Merger</a><a href="/es/tools/screenshot-to-image">Screenshot to Image</a><a href="/es/tools/image-filters">Image Filters</a><a href="/es/tools/svg-to-png">SVG to PNG</a><a href="/es/tools/image-compare">Image Compare</a><a href="/es/tools/print-resizer">Print-Ready Resizer</a><a href="/es/tools/meme-generator">Meme Generator</a>          <a href="/es/tools/face-blur">Face Blur</a>
           <a href="/es/tools/heic-converter">HEIC Converter</a>
@@ -280,12 +311,12 @@
     try {
       const obj = JSON.parse(input.value);
       output.value = indent === 0 ? JSON.stringify(obj) : JSON.stringify(obj, null, indent);
-      show('✓ Valid JSON', false);
-    } catch(e) { show('✗ Invalid: ' + e.message, true); }
+      show('✓ JSON válido', false);
+    } catch(e) { show('✗ No válido: ' + e.message, true); }
   }
   function validate() {
     try { JSON.parse(input.value); show('✓ Valid JSON!', false); }
-    catch(e) { show('✗ Invalid: ' + e.message, true); }
+    catch(e) { show('✗ No válido: ' + e.message, true); }
   }
 })();
   </script>

@@ -35,7 +35,7 @@
   
   "inLanguage": "es","@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "URL Encoder / Decoder",
+  "name": "Codificar y decodificar URL",
   "url": "https://smartimgkit.com/es/tools/url-encoder",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
@@ -51,31 +51,94 @@
 {
   "@context": "https://schema.org",
   "@type": "HowTo",
-  "name": "How to Use",
+  "name": "Cómo se usa",
   "step": [
     {
       "@type": "HowToStep",
       "position": 1,
-      "name": "Enter Text",
-      "text": "Paste or type your text in the input area."
+      "name": "Pega el texto o la URL",
+      "text": "Escribe el texto con acentos, espacios o símbolos que quieres mandar por URL, o la cadena ya codificada que quieras leer."
     },
     {
       "@type": "HowToStep",
       "position": 2,
-      "name": "Choose Action",
-      "text": "Click Encode, Decode, or Encode Component."
+      "name": "Codifica o decodifica",
+      "text": "«Codificar» usa la variante de componente (estricta, para parámetros); «Decodificar» revierte los caracteres %XX a su forma original."
     },
     {
       "@type": "HowToStep",
       "position": 3,
-      "name": "View Result",
-      "text": "Output appears in the right panel."
+      "name": "Revisa el resultado",
+      "text": "Los espacios pasan a %20, las tildes a secuencias UTF-8 y los símbolos reservados se escapan; al decodificar recuperas el texto tal cual lo escribiste."
     },
     {
       "@type": "HowToStep",
       "position": 4,
-      "name": "Copy or Swap",
-      "text": "Copy the result or swap input/output."
+      "name": "Copia o invierte",
+      "text": "Copia el resultado con «Copiar» o usa «Intercambiar» para convertir la salida en la entrada y hacer la operación contraria."
+    }
+  ] }
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Qué diferencia hay entre Codificar y Codificar componente?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "«Codificar componente» usa encodeURIComponent y escapa todo lo reservado: barras, dos puntos, ampersands. Es lo correcto para valores de parámetros. El modo simple equivale a encodeURI, que conserva los caracteres estructurales de una URL completa. Si dudas, usa componente para valores y simple para direcciones enteras."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué un espacio a veces aparece como %20 y otras como +?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El signo + es la convención de los formularios HTML (application/x-www-form-urlencoded); el %20 es la codificación estándar de URLs. Ambos significan espacio al decodificar parámetros, pero al generar enlaces conviene %20 porque es lo que entienden todos los servidores."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se conservan las tildes y las eñes?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí: se codifican como secuencias UTF-8 en porcentaje (la ñ pasa a %C3%B1) y al decodificar recuperas exactamente la letra original. Nada se pierde ni se sustituye por caracteres aproximados."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Mi texto se sube a algún servidor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. La codificación y decodificación ocurren dentro de tu navegador con funciones nativas de JavaScript. Puedes procesar URLs de sistemas internos o con tokens sin exponerlos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo decodificar una URL que ya decodifiqué una vez?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí puedes, pero cuidado: si el texto original contenía porcentajes literales (por ejemplo «100% fiable»), una segunda decodificación puede alterarlos. Decodifica una sola vez y revisa el resultado si el texto procede de una cadena ya ambigua."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Sirve para depurar enlaces de campañas de marketing?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Es un uso habitual: los enlaces con parámetros utm suelen acumular codificación. Decodifica el enlace, revisa qué valor lleva cada parámetro y corige lo que esté mal antes de lanzar la campaña."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Hay límite de longitud?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No lo impone la herramienta, sino los navegadores y servidores que reciben la URL (a menudo unos miles de caracteres). Para textos largos, considera pasarlos como cuerpo de una petición en vez de como parámetro."
+      }
     }
   ]
 }
@@ -111,39 +174,7 @@
     }
 
   </style>
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "What is the difference between Encode and Encode Component?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "encodeURI preserves URL separators like / and ?. encodeURIComponent encodes everything including them — use for query parameters."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is this RFC 3986 compliant?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes, using the native JavaScript encodeURIComponent function which follows the standard."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Why does decode sometimes fail?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "If the input contains invalid percent sequences (like %ZZ), decode will fail. Check your input."
-      }
-    }
-  ]
-}
-</script>
-<style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
+  <style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
 
 <meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
@@ -173,53 +204,53 @@
 <div class="ad-zone ad-header ad-loader-slot" data-ad-type="header" data-current-mobile="0"></div>
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🔗 URL Encoder / Decoder</span></nav>
+      <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🔗 Codificar y decodificar URL</span></nav>
       <div class="tool-page-header">
-        <h1>🔗 URL Encoder / Decoder</h1>
+        <h1>🔗 Codificar y decodificar URL</h1>
         <p>Codifica y decodifica cadenas URL con codificación porcentual — gratis, en tu navegador.</p>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Descubre lo que puede hacer esta herramienta</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🔓</span></div>
-              <div class="before-after-item-caption before">Plain text</div>
+              <div class="before-after-item-caption before">Texto con símbolos</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🔗</span></div>
-              <div class="before-after-item-caption after">Encoded URL</div>
+              <div class="before-after-item-caption after">Texto codificado</div>
             </div>
           </div>
         </div>
 
 <div class="two-col">
           <div class="controls">
-            <h2>📥 Input</h2>
-            <textarea id="inputText" placeholder="Enter text to encode/decode..."></textarea>
+            <h2>📥 Entrada</h2>
+            <textarea id="inputText" placeholder="Texto o URL para codificar/decodificar..."></textarea>
             <div class="btn-row">
-              <button class="btn btn-primary" id="encodeBtn">🔗 Encode</button>
-              <button class="btn btn-primary" id="decodeBtn">🔓 Decode</button>
-              <button class="btn btn-secondary" id="encodeCompBtn">🔗 Encode Component</button>
-              <button class="btn btn-secondary" id="clearBtn">Clear</button>
+              <button class="btn btn-primary" id="encodeBtn">🔗 Codificar</button>
+              <button class="btn btn-primary" id="decodeBtn">🔓 Decodificar</button>
+              <button class="btn btn-secondary" id="encodeCompBtn">🔗 Codificar componente</button>
+              <button class="btn btn-secondary" id="clearBtn">Limpiar</button>
             </div>
           </div>
           <div class="controls">
-            <h2>📤 Output</h2>
-            <textarea id="outputText" readonly placeholder="Result will appear here..."></textarea>
+            <h2>📤 Resultado</h2>
+            <textarea id="outputText" readonly placeholder="Aquí aparecerá el resultado..."></textarea>
             <div class="btn-row">
-              <button class="btn btn-secondary" id="copyBtn">📋 Copy</button>
-              <button class="btn btn-secondary" id="swapBtn">↔ Swap Input/Output</button>
+              <button class="btn btn-secondary" id="copyBtn">📋 Copiar</button>
+              <button class="btn btn-secondary" id="swapBtn">↔ Intercambiar entrada y salida</button>
             </div>
           </div>
         </div>
 
       </div>
-<section class="how-to-section"><h2>How to Use</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Enter Text</h4><p>Paste or type your text in the input area.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Choose Action</h4><p>Click Encode, Decode, or Encode Component.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>View Result</h4><p>Output appears in the right panel.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Copy or Swap</h4><p>Copy the result or swap input/output.</p></div></div></section>
-<h2>Detailed User Guide</h2><div class="guide-block"><h3>Enter Text</h3><p>Paste or type your text in the input area.</p></div><div class="guide-block"><h3>Choose Action</h3><p>Click Encode, Decode, or Encode Component.</p></div><div class="guide-block"><h3>View Result</h3><p>Output appears in the right panel.</p></div><div class="guide-block"><h3>Copy or Swap</h3><p>Copy the result or swap input/output.</p></div>
-<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">What is the difference between Encode and Encode Component?</button><div class="faq-answer">encodeURI preserves URL separators like / and ?. encodeURIComponent encodes everything including them — use for query parameters.</div></div><div class="faq-item"><button class="faq-question">Is this RFC 3986 compliant?</button><div class="faq-answer">Yes, using the native JavaScript encodeURIComponent function which follows the standard.</div></div><div class="faq-item"><button class="faq-question">Why does decode sometimes fail?</button><div class="faq-answer">If the input contains invalid percent sequences (like %ZZ), decode will fail. Check your input.</div></div></section>
-<section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/base64" class="related-tool-card"><span class="tool-icon">🔐</span><div class="tool-info"><strong>Base64 Converter</strong><span class="tool-desc">Encode/decode Base64</span></div><span class="tool-arrow">→</span></a><a href="/tools/json-formatter" class="related-tool-card"><span class="tool-icon">🔧</span><div class="tool-info"><strong>JSON Formatter</strong><span class="tool-desc">Format and validate JSON</span></div><span class="tool-arrow">→</span></a><a href="/tools/uuid-generator" class="related-tool-card"><span class="tool-icon">🆔</span><div class="tool-info"><strong>UUID Generator</strong><span class="tool-desc">Generate unique IDs</span></div><span class="tool-arrow">→</span></a></div></section>
+<section class="how-to-section"><h2>Cómo se usa</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Pega el texto o la URL</h4><p>Escribe el texto con acentos, espacios o símbolos que quieres mandar por URL, o la cadena ya codificada que quieras leer.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Codifica o decodifica</h4><p>«Codificar» usa la variante de componente (estricta, para parámetros); «Decodificar» revierte los caracteres %XX a su forma original.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Revisa el resultado</h4><p>Los espacios pasan a %20, las tildes a secuencias UTF-8 y los símbolos reservados se escapan; al decodificar recuperas el texto tal cual lo escribiste.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Copia o invierte</h4><p>Copia el resultado con «Copiar» o usa «Intercambiar» para convertir la salida en la entrada y hacer la operación contraria.</p></div></div></section>
+<h2>Guía detallada de uso</h2><p>La codificación URL convierte los caracteres que una dirección no puede llevar en crudo —espacios, tildes, eñes, símbolos como & o =— en secuencias seguras de porcentaje. Esta herramienta usa las funciones nativas del navegador: lo que veas aquí es exactamente lo que se enviará en una petición real.</p><div class="guide-block"><h3>Construye parámetros que no se rompan</h3><p>Un valor de búsqueda que lleva un ampersand dentro rompe la URL: el servidor lo interpreta como separador de parámetros. Codifica cada valor con «Codificar componente» y el & pasa a %26 sin ambigüedad. Es el mismo mecanismo que aplican los formularios web al enviarse.</p></div><div class="guide-block"><h3>Comparte enlaces con texto en español</h3><p>Un enlace tipo buscador con «búsqueda: café con leche» solo funciona si los espacios y los dos puntos van codificados. Codifícalo aquí y tendrás la URL que puedes pegar en un correo, un QR o un documento sin que se corte.</p></div><div class="guide-block"><h3>Decodifica URLs ilegibles</h3><p>Recibes un enlace lleno de %20, %C3%B1 y símbolos raros, típico de los enlaces de seguimiento. Pégalo y decodifícalo para leer qué contiene cada parámetro antes de hacer clic en él.</p></div><div class="guide-block"><h3>Componente frente a URL completa</h3><p>«Codificar componente» (encodeURIComponent) escapa también los caracteres estructurales de una URL, pensado para valores individuales. Para una URL completa que debe seguir teniendo sus barras y dos puntos, la decodificación es segura en ambos casos; para codificar valores de parámetros, usa siempre el modo componente.</p></div>
+<section class="faq-section"><h2>Preguntas frecuentes</h2><div class="faq-item"><button class="faq-question">¿Qué diferencia hay entre Codificar y Codificar componente?</button><div class="faq-answer">«Codificar componente» usa encodeURIComponent y escapa todo lo reservado: barras, dos puntos, ampersands. Es lo correcto para valores de parámetros. El modo simple equivale a encodeURI, que conserva los caracteres estructurales de una URL completa. Si dudas, usa componente para valores y simple para direcciones enteras.</div></div><div class="faq-item"><button class="faq-question">¿Por qué un espacio a veces aparece como %20 y otras como +?</button><div class="faq-answer">El signo + es la convención de los formularios HTML (application/x-www-form-urlencoded); el %20 es la codificación estándar de URLs. Ambos significan espacio al decodificar parámetros, pero al generar enlaces conviene %20 porque es lo que entienden todos los servidores.</div></div><div class="faq-item"><button class="faq-question">¿Se conservan las tildes y las eñes?</button><div class="faq-answer">Sí: se codifican como secuencias UTF-8 en porcentaje (la ñ pasa a %C3%B1) y al decodificar recuperas exactamente la letra original. Nada se pierde ni se sustituye por caracteres aproximados.</div></div><div class="faq-item"><button class="faq-question">¿Mi texto se sube a algún servidor?</button><div class="faq-answer">No. La codificación y decodificación ocurren dentro de tu navegador con funciones nativas de JavaScript. Puedes procesar URLs de sistemas internos o con tokens sin exponerlos.</div></div><div class="faq-item"><button class="faq-question">¿Puedo decodificar una URL que ya decodifiqué una vez?</button><div class="faq-answer">Sí puedes, pero cuidado: si el texto original contenía porcentajes literales (por ejemplo «100% fiable»), una segunda decodificación puede alterarlos. Decodifica una sola vez y revisa el resultado si el texto procede de una cadena ya ambigua.</div></div><div class="faq-item"><button class="faq-question">¿Sirve para depurar enlaces de campañas de marketing?</button><div class="faq-answer">Es un uso habitual: los enlaces con parámetros utm suelen acumular codificación. Decodifica el enlace, revisa qué valor lleva cada parámetro y corige lo que esté mal antes de lanzar la campaña.</div></div><div class="faq-item"><button class="faq-question">¿Hay límite de longitud?</button><div class="faq-answer">No lo impone la herramienta, sino los navegadores y servidores que reciben la URL (a menudo unos miles de caracteres). Para textos largos, considera pasarlos como cuerpo de una petición en vez de como parámetro.</div></div></section>
+<section class="related-tools"><h2>También te puede interesar</h2><div class="related-tools-grid"><a href="/es/tools/base64" class="related-tool-card"><span class="tool-icon">📋</span><div class="tool-info"><strong>Codificador Base64</strong><span class="tool-desc">Codifica y decodifica Base64</span></div><span class="tool-arrow">→</span></a><a href="/es/tools/json-formatter" class="related-tool-card"><span class="tool-icon">🔧</span><div class="tool-info"><strong>Formatear JSON</strong><span class="tool-desc">Embellece y valida tu JSON</span></div><span class="tool-arrow">→</span></a><a href="/es/tools/uuid-generator" class="related-tool-card"><span class="tool-icon">🆔</span><div class="tool-info"><strong>Generador UUID</strong><span class="tool-desc">UUID v1, v4 y v7 en lote</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
@@ -230,11 +261,11 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Herramientas de imagen gratuitas con IA que respetan tu privacidad.</p></div>
-        <div class="footer-links footer-links-multi"><h4>Tools</h4><a href="/es/tools/background-remover">Background Remover</a><a href="/es/tools/compressor">Compressor</a><a href="/es/tools/converter">Converter</a><a href="/es/tools/resizer">Resizer</a>
+        <div class="footer-links footer-links-multi"><h4>Herramientas</h4><a href="/es/tools/background-remover">Background Remover</a><a href="/es/tools/compressor">Compressor</a><a href="/es/tools/converter">Converter</a><a href="/es/tools/resizer">Resizer</a>
           <a href="/es/tools/gif-editor">GIF Editor</a>
           <a href="/es/tools/pdf-to-image">PDF to Image</a>
         </div>
-        <div class="footer-links footer-links-multi"><h4>More Tools</h4>
+        <div class="footer-links footer-links-multi"><h4>Más herramientas</h4>
           <div class="footer-links-list">
           <a href="/es/tools/cropper">Cropper</a><a href="/es/tools/watermark">Watermark</a><a href="/es/tools/image-merger">Image Merger</a><a href="/es/tools/screenshot-to-image">Screenshot to Image</a><a href="/es/tools/image-filters">Image Filters</a><a href="/es/tools/svg-to-png">SVG to PNG</a><a href="/es/tools/image-compare">Image Compare</a><a href="/es/tools/print-resizer">Print-Ready Resizer</a><a href="/es/tools/meme-generator">Meme Generator</a>          <a href="/es/tools/face-blur">Face Blur</a>
           <a href="/es/tools/heic-converter">HEIC Converter</a>
