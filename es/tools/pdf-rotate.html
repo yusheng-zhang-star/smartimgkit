@@ -6,7 +6,7 @@
   <meta name="robots" content="index, follow">
   <title>Rotar PDF — gira páginas 90°, 180° o 270°</title>
   <meta name="description" content="Gira todas las páginas o solo un rango de tu PDF. Corrección instantánea en el navegador, sin subir el documento.">
-  <meta name="keywords" content="PDF rotator, rotate PDF, rotate PDF pages, flip PDF online">
+  <meta name="keywords" content="rotar PDF, girar páginas PDF, rotar PDF online, corregir orientación PDF">
   <link rel="canonical" href="https://smartimgkit.com/es/tools/pdf-rotate">
   <meta name="theme-color" content="#6366f1">
   <meta property="og:title" content="Rotar PDF — gira páginas 90°, 180° o 270°">
@@ -35,7 +35,7 @@
   
   "inLanguage": "es","@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "PDF Rotator",
+  "name": "Rotar páginas PDF",
   "url": "https://smartimgkit.com/es/tools/pdf-rotate",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
@@ -51,31 +51,96 @@
 {
   "@context": "https://schema.org",
   "@type": "HowTo",
-  "name": "How to Use",
+  "name": "Cómo rotar un PDF",
+  "inLanguage": "es",
   "step": [
     {
       "@type": "HowToStep",
       "position": 1,
-      "name": "Upload PDF",
-      "text": "Select a PDF file."
+      "name": "Sube el documento",
+      "text": "Arrastra tu PDF a la zona de carga o haz clic para buscarlo en el equipo. El archivo nunca sale de tu navegador."
     },
     {
       "@type": "HowToStep",
       "position": 2,
-      "name": "Configure",
-      "text": "Set options."
+      "name": "Elige el ángulo",
+      "text": "Selecciona 90° (girar a la derecha), 180° (media vuelta) o 270° (girar a la izquierda) según cómo esté torcida la página."
     },
     {
       "@type": "HowToStep",
       "position": 3,
-      "name": "Process",
-      "text": "Click the action button."
+      "name": "Indica las páginas",
+      "text": "Deja el campo vacío para girar todo el documento, o escribe un rango como 1-3, 5 si solo algunas páginas están mal orientadas."
     },
     {
       "@type": "HowToStep",
       "position": 4,
-      "name": "Download",
-      "text": "Get the result."
+      "name": "Gira y descarga",
+      "text": "Pulsa «Girar PDF», revisa el aviso de confirmación y guarda el archivo corregido en tu equipo."
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Mi PDF se sube a algún servidor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Todo el proceso ocurre dentro de tu navegador con la librería pdf-lib: el archivo se lee en tu equipo, se modifica en memoria y se descarga desde ahí. Ninguna copia viaja a Internet."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo indico las páginas que quiero girar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "En el campo de rango puedes escribir páginas sueltas separadas por comas (por ejemplo 2, 7) e intervalos con guion (por ejemplo 4-9). Si dejas el campo vacío, se gira el documento entero."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Girar un PDF hace que el texto quede mal?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Solo cambia el atributo de rotación de la página; el texto, las imágenes y las anotaciones se conservan tal cual. En escaneos con capa de texto OCR, la capa gira junto con la imagen, así que conviene verificar una página tras descargar."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuál es el tamaño máximo admitido?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No hay un límite fijo, pero recomendamos no pasarte de 100 MB: el documento completo debe cargarse en la memoria del navegador y archivos enormes pueden agotarla en equipos modestos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Funciona con PDF protegidos con contraseña?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Si el PDF pide contraseña al abrirlo, esta herramienta no puede leerlo. Descifra el documento con el programa con el que lo protegiste y después gira las páginas aquí."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿El PDF resultante pierde calidad?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ninguna. Al no regenerar el contenido, el archivo de salida es una copia del original con el ángulo de rotación actualizado; el peso y la calidad se mantienen idénticos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se pueden girar páginas distintas con ángulos distintos?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "En una sola pasada no: se aplica el mismo ángulo a todo el rango indicado. Si necesitas combinar giros, ejecuta la herramienta varias veces sobre el archivo descargado (por ejemplo primero 90° para las pares y luego 270° para las impares)."
+      }
     }
   ]
 }
@@ -83,6 +148,12 @@
   <style>
 
     .tool-workspace { display: flex; flex-direction: column; gap: 24px; }
+    .controls { display: block !important; }
+    .controls h2 { display: block; }
+    .controls .control-row { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+    .controls .control-row label { min-width: 0; }
+    .controls .control-row select,
+    .controls .control-row input[type="text"] { width: 100%; max-width: 420px; }
     .controls { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
     .controls h2 { font-size: 1.2rem; color: var(--text-primary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--accent); }
     .control-row { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
@@ -111,38 +182,6 @@
     }
 
   </style>
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Is my PDF uploaded?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. Everything runs in your browser."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Max file size?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Under 100MB recommended."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Password protected PDFs?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Not supported."
-      }
-    }
-  ]
-}
-</script>
 <style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
 
 <meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
@@ -201,23 +240,23 @@
 <div class="ad-zone ad-header ad-loader-slot" data-ad-type="header" data-current-mobile="0"></div>
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🔄 PDF Rotator</span></nav>
+      <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🔄 Rotar páginas PDF</span></nav>
       <div class="tool-page-header">
-        <h1>🔄 PDF Rotator</h1>
-        <p>Rota páginas PDF 90°, 180° o 270° — gratis, en tu navegador.</p>
+        <h1>🔄 Rotar páginas PDF</h1>
+        <p>Corrige la orientación de un PDF página por página o de una sola vez — gratis, sin subir el documento.</p>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Mira lo que hace esta herramienta</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">↩️</span></div>
-              <div class="before-after-item-caption before">PDF (wrong)</div>
+              <div class="before-after-item-caption before">PDF torcido</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🔄</span></div>
-              <div class="before-after-item-caption after">PDF (rotated)</div>
+              <div class="before-after-item-caption after">PDF corregido</div>
             </div>
           </div>
         </div>
@@ -229,32 +268,32 @@
           <p>o haz clic para seleccionar.</p>
         </label>
         <div class="controls hidden" id="controlsSection">
-          <h2>⚙️ Options</h2>
+          <h2>⚙️ Opciones</h2>
           <div class="pdf-info" id="pdfInfo"></div>
           <div class="control-row">
-            <label>Rotate By</label>
+            <label>Ángulo de giro</label>
             <select id="rotDeg">
-              <option value="90">90° Clockwise</option>
-              <option value="180">180°</option>
-              <option value="270">270° Clockwise</option>
+              <option value="90">90° hacia la derecha</option>
+              <option value="180">180° (media vuelta)</option>
+              <option value="270">90° hacia la izquierda</option>
             </select>
           </div>
           <div class="control-row">
-            <label>Page Range</label>
-            <input type="text" id="rotPages" placeholder="e.g. 1-3, 5 (blank = all)" style="flex:1;">
+            <label>Páginas a girar</label>
+            <input type="text" id="rotPages" placeholder="p. ej. 1-3, 5 (vacío = todas)" style="flex:1;">
           </div>
           <div class="btn-row">
-            <button class="btn btn-primary" id="processBtn">🔄 Rotate PDF</button>
-            <button class="btn btn-secondary" id="resetBtn">Reset</button>
+            <button class="btn btn-primary" id="processBtn">🔄 Girar PDF</button>
+            <button class="btn btn-secondary" id="resetBtn">Restablecer</button>
           </div>
         </div>
         <div class="status-text hidden" id="statusSection"></div>
 
       </div>
-<section class="how-to-section"><h2>How to Use</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Upload PDF</h4><p>Select a PDF file.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Configure</h4><p>Set options.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Process</h4><p>Click the action button.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Get the result.</p></div></div></section>
-<h2>Detailed User Guide</h2><div class="guide-block"><h3>Upload PDF</h3><p>Select a PDF file.</p></div><div class="guide-block"><h3>Configure</h3><p>Set options.</p></div><div class="guide-block"><h3>Process</h3><p>Click the action button.</p></div><div class="guide-block"><h3>Download</h3><p>Get the result.</p></div>
-<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">Is my PDF uploaded?</button><div class="faq-answer">No. Everything runs in your browser.</div></div><div class="faq-item"><button class="faq-question">Max file size?</button><div class="faq-answer">Under 100MB recommended.</div></div><div class="faq-item"><button class="faq-question">Password protected PDFs?</button><div class="faq-answer">Not supported.</div></div></section>
-<section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/pdf-to-image" class="related-tool-card"><span class="tool-icon">📄</span><div class="tool-info"><strong>PDF to Image</strong><span class="tool-desc">Convert PDF to images</span></div><span class="tool-arrow">→</span></a><a href="/tools/pdf-merge" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>PDF Merge</strong><span class="tool-desc">Combine PDFs</span></div><span class="tool-arrow">→</span></a></div></section>
+<section class="how-to-section"><h2>Cómo rotar un PDF</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Sube el documento</h4><p>Arrastra tu PDF a la zona de carga o haz clic para buscarlo en el equipo. El archivo nunca sale de tu navegador.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Elige el ángulo</h4><p>Selecciona 90° (girar a la derecha), 180° (media vuelta) o 270° (girar a la izquierda) según cómo esté torcida la página.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Indica las páginas</h4><p>Deja el campo vacío para girar todo el documento, o escribe un rango como 1-3, 5 si solo algunas páginas están mal orientadas.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Gira y descarga</h4><p>Pulsa «Girar PDF», revisa el aviso de confirmación y guarda el archivo corregido en tu equipo.</p></div></div></section>
+<h2>Guía detallada de uso</h2><div class="guide-block"><h3>Orientación mixta tras escanear</h3><p>Es muy habitual que un proveedor envíe facturas escaneadas con las páginas mezcladas: unas verticales y otras tumbadas. En lugar de volver a escanear todo el lote, sube el PDF aquí, escribe en el rango solo los números de página afectados y gíralos 90° o 270°. El resto del documento queda intacto.</p></div><div class="guide-block"><h3>Qué hace exactamente la herramienta</h3><p>Internamente se usa la librería pdf-lib en tu navegador: para cada página seleccionada se actualiza el atributo de rotación (/Rotate) en el diccionario de página del PDF. No se recodifica el contenido ni se vuelve a renderizar nada, por eso el proceso es instantáneo y el archivo resultante pesa prácticamente lo mismo.</p></div><div class="guide-block"><h3>Límites honestos que conviene saber</h3><p>Los documentos protegidos con contraseña no se pueden abrir aquí, así que quítala antes si hace tu PDF no legible. El giro se guarda como múltiplo de 90° (90/180/270): los PDF de texto puro giran sin problema, pero si el escaneo tiene el texto reconocido sobre una capa, comprueba tras descargar que el texto sigue seleccionable. No recomendamos pasarte de 100 MB porque el archivo completo debe caber en la memoria del navegador.</p></div>
+<section class="faq-section"><h2>Preguntas frecuentes</h2><div class="faq-item"><button class="faq-question">¿Mi PDF se sube a algún servidor?</button><div class="faq-answer">No. Todo el proceso ocurre dentro de tu navegador con la librería pdf-lib: el archivo se lee en tu equipo, se modifica en memoria y se descarga desde ahí. Ninguna copia viaja a Internet.</div></div><div class="faq-item"><button class="faq-question">¿Cómo indico las páginas que quiero girar?</button><div class="faq-answer">En el campo de rango puedes escribir páginas sueltas separadas por comas (por ejemplo 2, 7) e intervalos con guion (por ejemplo 4-9). Si dejas el campo vacío, se gira el documento entero.</div></div><div class="faq-item"><button class="faq-question">¿Girar un PDF hace que el texto quede mal?</button><div class="faq-answer">No. Solo cambia el atributo de rotación de la página; el texto, las imágenes y las anotaciones se conservan tal cual. En escaneos con capa de texto OCR, la capa gira junto con la imagen, así que conviene verificar una página tras descargar.</div></div><div class="faq-item"><button class="faq-question">¿Cuál es el tamaño máximo admitido?</button><div class="faq-answer">No hay un límite fijo, pero recomendamos no pasarte de 100 MB: el documento completo debe cargarse en la memoria del navegador y archivos enormes pueden agotarla en equipos modestos.</div></div><div class="faq-item"><button class="faq-question">¿Funciona con PDF protegidos con contraseña?</button><div class="faq-answer">No. Si el PDF pide contraseña al abrirlo, esta herramienta no puede leerlo. Descifra el documento con el programa con el que lo protegiste y después gira las páginas aquí.</div></div><div class="faq-item"><button class="faq-question">¿El PDF resultante pierde calidad?</button><div class="faq-answer">Ninguna. Al no regenerar el contenido, el archivo de salida es una copia del original con el ángulo de rotación actualizado; el peso y la calidad se mantienen idénticos.</div></div><div class="faq-item"><button class="faq-question">¿Se pueden girar páginas distintas con ángulos distintos?</button><div class="faq-answer">En una sola pasada no: se aplica el mismo ángulo a todo el rango indicado. Si necesitas combinar giros, ejecuta la herramienta varias veces sobre el archivo descargado (por ejemplo primero 90° para las pares y luego 270° para las impares).</div></div></section>
+<section class="related-tools"><h2>También te puede interesar</h2><div class="related-tools-grid"><a href="/es/tools/pdf-merge" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>Unir PDF</strong><span class="tool-desc">Combina varios PDF en uno</span></div><span class="tool-arrow">→</span></a><a href="/es/tools/pdf-organize" class="related-tool-card"><span class="tool-icon">🗂️</span><div class="tool-info"><strong>Organizar PDF</strong><span class="tool-desc">Reordena o elimina páginas</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
@@ -310,36 +349,36 @@
   dropzone.addEventListener('drop', e => { e.preventDefault(); dropzone.classList.remove('dragover'); if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
   fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
   function handleFile(file) {
-    if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) { alert('Please upload a PDF.'); return; }
+    if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) { alert('Sube un archivo PDF.'); return; }
     fileName = file.name.replace('.pdf', '');
     var ba = document.getElementById('beforeAfterPreview'); if (ba) ba.classList.add('hidden');
     statusSection.classList.remove('hidden');
-    statusSection.textContent = 'Loading...';
+    statusSection.textContent = 'Cargando...';
     const r = new FileReader();
     r.onload = async (e) => {
       try {
         fileBytes = e.target.result;
         if (!window.PDFLib) {
-          statusSection.textContent = 'Loading pdf-lib...';
+          statusSection.textContent = 'Cargando pdf-lib...';
           await loadScript('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js');
         }
-        statusSection.textContent = 'Parsing PDF...';
+        statusSection.textContent = 'Analizando el PDF...';
         const { PDFDocument } = window.PDFLib;
         const pdf = await PDFDocument.load(fileBytes);
         numPages = pdf.getPageCount();
-        pdfInfo.innerHTML = `<strong>File:</strong> ${file.name} &nbsp;|&nbsp; <strong>Pages:</strong> ${numPages}`;
+        pdfInfo.innerHTML = `<strong>Archivo:</strong> ${file.name} &nbsp;|&nbsp; <strong>Páginas:</strong> ${numPages}`;
         controlsSection.classList.remove('hidden');
         statusSection.classList.add('hidden');
       } catch(err) {
         statusSection.textContent = '✗ Error: ' + err.message;
       }
     };
-    r.onerror = () => { statusSection.textContent = '✗ Error reading file.'; };
+    r.onerror = () => { statusSection.textContent = '✗ Error al leer el archivo.'; };
     r.readAsArrayBuffer(file);
   }
   processBtn.addEventListener('click', async () => {
     statusSection.classList.remove('hidden');
-    statusSection.textContent = 'Processing...';
+    statusSection.textContent = 'Procesando...';
     processBtn.disabled = true;
     try {
       if (!window.PDFLib) { await loadScript('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js'); }
@@ -361,8 +400,8 @@
       }
       targetPages.forEach(i => { pages[i].setRotation(degrees(deg)); });
       const bytes = await src.save();
-      window.__downloadBlob__(bytes, `${fileName}-rotated.pdf`);
-      statusSection.textContent = `✓ Rotated ${targetPages.length} page(s) by ${deg}°.`;
+      window.__downloadBlob__(bytes, `${fileName}-girado.pdf`);
+      statusSection.textContent = `✓ ${targetPages.length} página(s) giradas ${deg}°.`;
     } catch(e) { statusSection.textContent = '✗ Error: ' + e.message; }
     processBtn.disabled = false;
   });

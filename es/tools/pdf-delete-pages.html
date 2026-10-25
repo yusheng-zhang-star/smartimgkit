@@ -6,7 +6,7 @@
   <meta name="robots" content="index, follow">
   <title>Eliminar páginas de PDF — borra hojas online gratis</title>
   <meta name="description" content="Borra páginas concretas o rangos completos de un PDF en segundos. Procesamiento local: el documento nunca sale de tu equipo.">
-  <meta name="keywords" content="delete PDF pages, remove PDF pages, delete pages from PDF, extract PDF pages">
+  <meta name="keywords" content="eliminar páginas PDF, borrar páginas de PDF, quitar páginas PDF, recortar PDF">
   <link rel="canonical" href="https://smartimgkit.com/es/tools/pdf-delete-pages">
   <meta name="theme-color" content="#6366f1">
   <meta property="og:title" content="Eliminar páginas de PDF — borra hojas online gratis">
@@ -35,7 +35,7 @@
   
   "inLanguage": "es","@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Delete PDF Pages",
+  "name": "Eliminar páginas de un PDF",
   "url": "https://smartimgkit.com/es/tools/pdf-delete-pages",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
@@ -51,31 +51,96 @@
 {
   "@context": "https://schema.org",
   "@type": "HowTo",
-  "name": "How to Use",
+  "name": "Cómo eliminar páginas de un PDF",
+  "inLanguage": "es",
   "step": [
     {
       "@type": "HowToStep",
       "position": 1,
-      "name": "Upload PDF",
-      "text": "Select a PDF file."
+      "name": "Carga el PDF",
+      "text": "Suelta el documento en la zona de carga o selecciónalo desde tu disco. No se envía a ningún servidor."
     },
     {
       "@type": "HowToStep",
       "position": 2,
-      "name": "Configure",
-      "text": "Set options."
+      "name": "Marca las páginas a eliminar",
+      "text": "Escribe los números o rangos de las páginas que quieres quitar, por ejemplo 2, 5-7, 10."
     },
     {
       "@type": "HowToStep",
       "position": 3,
-      "name": "Process",
-      "text": "Click the action button."
+      "name": "Ejecuta el recorte",
+      "text": "Pulsa «Eliminar páginas». La herramienta reconstruye el PDF conservando todas las demás en su orden original."
     },
     {
       "@type": "HowToStep",
       "position": 4,
-      "name": "Download",
-      "text": "Get the result."
+      "name": "Descarga el resultado",
+      "text": "Guarda el archivo recortado; el original en tu equipo no se toca en ningún momento."
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿El PDF original se modifica?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Tu archivo local nunca se toca. La herramienta carga una copia en memoria del navegador, construye un PDF nuevo sin las páginas indicadas y te ofrece ese resultado para descargar."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo escribo las páginas que quiero borrar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Separa con comas: números sueltos (3, 8) o intervalos con guion (5-9). Puedes combinar ambas formas en el mismo campo, por ejemplo 2, 5-7, 10."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se pierde calidad en las páginas que quedan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Las páginas supervivientes se copian tal cual al documento nuevo, sin volver a renderizar ni comprimir nada: el contenido y el peso son los mismos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo eliminar todas las páginas de golpe?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Técnicamente sí si listas todas, pero el PDF resultante no tendría páginas y podría no abrirse. Deja siempre al menos una página en el resultado."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Funciona con PDF protegidos con contraseña?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Si el documento pide contraseña para abrirse, esta herramienta no puede procesarlo. Desprotege primero y vuelve a intentarlo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Hay un límite de tamaño?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No hay límite estricto, pero aconsejamos 100 MB como máximo práctico: el PDF completo debe residir en la memoria del navegador durante el proceso."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se conservan los enlaces y el índice interno?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Los enlaces y anotaciones de las páginas que se conservan siguen funcionando. Los marcadores del documento que apuntaban a páginas eliminadas pueden perderse, algo habitual en cualquier editor de PDF."
+      }
     }
   ]
 }
@@ -83,6 +148,12 @@
   <style>
 
     .tool-workspace { display: flex; flex-direction: column; gap: 24px; }
+    .controls { display: block !important; }
+    .controls h2 { display: block; }
+    .controls .control-row { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+    .controls .control-row label { min-width: 0; }
+    .controls .control-row select,
+    .controls .control-row input[type="text"] { width: 100%; max-width: 420px; }
     .controls { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
     .controls h2 { font-size: 1.2rem; color: var(--text-primary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--accent); }
     .control-row { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
@@ -111,38 +182,6 @@
     }
 
   </style>
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Is my PDF uploaded?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. Everything runs in your browser."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Max file size?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Under 100MB recommended."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Password protected PDFs?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Not supported."
-      }
-    }
-  ]
-}
-</script>
 <style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
 
 <meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
@@ -201,23 +240,23 @@
 <div class="ad-zone ad-header ad-loader-slot" data-ad-type="header" data-current-mobile="0"></div>
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🗑️ Delete PDF Pages</span></nav>
+      <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🗑️ Eliminar páginas PDF</span></nav>
       <div class="tool-page-header">
-        <h1>🗑️ Delete PDF Pages</h1>
-        <p>Elimina páginas o rangos específicos de un PDF — gratis, en tu navegador.</p>
+        <h1>🗑️ Eliminar páginas de un PDF</h1>
+        <p>Recorta del PDF las páginas que no quieres: en blanco, duplicadas o confidenciales — gratis y sin subir nada.</p>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Mira lo que hace esta herramienta</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">📄</span></div>
-              <div class="before-after-item-caption before">Full PDF</div>
+              <div class="before-after-item-caption before">PDF completo</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🗑️</span></div>
-              <div class="before-after-item-caption after">PDF (minus pages)</div>
+              <div class="before-after-item-caption after">PDF recortado</div>
             </div>
           </div>
         </div>
@@ -229,25 +268,25 @@
           <p>o haz clic para seleccionar.</p>
         </label>
         <div class="controls hidden" id="controlsSection">
-          <h2>⚙️ Options</h2>
+          <h2>⚙️ Opciones</h2>
           <div class="pdf-info" id="pdfInfo"></div>
           <div class="control-row">
-            <label>Pages to Delete</label>
-            <input type="text" id="delPages" placeholder="e.g. 2, 5-7, 10" style="flex:1;">
+            <label>Páginas a eliminar</label>
+            <input type="text" id="delPages" placeholder="p. ej. 2, 5-7, 10" style="flex:1;">
           </div>
-          <p style="color:var(--text-secondary);font-size:0.85rem;">Enter page numbers and ranges separated by commas.</p>
+          <p style="color:var(--text-secondary);font-size:0.85rem;">Escribe números de página o rangos separados por comas.</p>
           <div class="btn-row">
-            <button class="btn btn-primary" id="processBtn">🗑️ Delete Pages</button>
-            <button class="btn btn-secondary" id="resetBtn">Reset</button>
+            <button class="btn btn-primary" id="processBtn">🗑️ Eliminar páginas</button>
+            <button class="btn btn-secondary" id="resetBtn">Restablecer</button>
           </div>
         </div>
         <div class="status-text hidden" id="statusSection"></div>
 
       </div>
-<section class="how-to-section"><h2>How to Use</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Upload PDF</h4><p>Select a PDF file.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Configure</h4><p>Set options.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Process</h4><p>Click the action button.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Get the result.</p></div></div></section>
-<h2>Detailed User Guide</h2><div class="guide-block"><h3>Upload PDF</h3><p>Select a PDF file.</p></div><div class="guide-block"><h3>Configure</h3><p>Set options.</p></div><div class="guide-block"><h3>Process</h3><p>Click the action button.</p></div><div class="guide-block"><h3>Download</h3><p>Get the result.</p></div>
-<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">Is my PDF uploaded?</button><div class="faq-answer">No. Everything runs in your browser.</div></div><div class="faq-item"><button class="faq-question">Max file size?</button><div class="faq-answer">Under 100MB recommended.</div></div><div class="faq-item"><button class="faq-question">Password protected PDFs?</button><div class="faq-answer">Not supported.</div></div></section>
-<section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/pdf-to-image" class="related-tool-card"><span class="tool-icon">📄</span><div class="tool-info"><strong>PDF to Image</strong><span class="tool-desc">Convert PDF to images</span></div><span class="tool-arrow">→</span></a><a href="/tools/pdf-merge" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>PDF Merge</strong><span class="tool-desc">Combine PDFs</span></div><span class="tool-arrow">→</span></a></div></section>
+<section class="how-to-section"><h2>Cómo eliminar páginas de un PDF</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Carga el PDF</h4><p>Suelta el documento en la zona de carga o selecciónalo desde tu disco. No se envía a ningún servidor.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Marca las páginas a eliminar</h4><p>Escribe los números o rangos de las páginas que quieres quitar, por ejemplo 2, 5-7, 10.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Ejecuta el recorte</h4><p>Pulsa «Eliminar páginas». La herramienta reconstruye el PDF conservando todas las demás en su orden original.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Descarga el resultado</h4><p>Guarda el archivo recortado; el original en tu equipo no se toca en ningún momento.</p></div></div></section>
+<h2>Guía detallada de uso</h2><div class="guide-block"><h3>Un uso típico: limpiar escaneos a doble cara</h3><p>Si escaneas un expediente a doble cara, las páginas traseras en blanco se cuelan en el archivo final. En lugar de reescanear, sube el PDF, mira qué números corresponden a las hojas vacías y eliminalos de una vez con un rango tipo 2, 4, 6-8. El documento queda más corto, más ligero y más profesional antes de enviarlo a un cliente o a la administración.</p></div><div class="guide-block"><h3>Qué hace exactamente la herramienta</h3><p>Se usa pdf-lib dentro del navegador: el PDF original se carga en memoria, se crea un documento nuevo y solo se copian a él las páginas que NO están en tu lista. Por eso las páginas restantes conservan intacta su calidad, sus marcadores internos y sus enlaces; el resultado pesa menos porque ya no incluye los recursos de las páginas borradas.</p></div><div class="guide-block"><h3>Límites honestos que conviene saber</h3><p>No admite documentos con contraseña: desprotege el PDF antes. No se puede recuperar una página desde el archivo descargado, así que revisa bien la lista antes de confirmar (el original sigue en tu equipo, eso sí). Recomendamos no superar 100 MB porque todo el documento debe caber en la memoria del navegador.</p></div>
+<section class="faq-section"><h2>Preguntas frecuentes</h2><div class="faq-item"><button class="faq-question">¿El PDF original se modifica?</button><div class="faq-answer">No. Tu archivo local nunca se toca. La herramienta carga una copia en memoria del navegador, construye un PDF nuevo sin las páginas indicadas y te ofrece ese resultado para descargar.</div></div><div class="faq-item"><button class="faq-question">¿Cómo escribo las páginas que quiero borrar?</button><div class="faq-answer">Separa con comas: números sueltos (3, 8) o intervalos con guion (5-9). Puedes combinar ambas formas en el mismo campo, por ejemplo 2, 5-7, 10.</div></div><div class="faq-item"><button class="faq-question">¿Se pierde calidad en las páginas que quedan?</button><div class="faq-answer">No. Las páginas supervivientes se copian tal cual al documento nuevo, sin volver a renderizar ni comprimir nada: el contenido y el peso son los mismos.</div></div><div class="faq-item"><button class="faq-question">¿Puedo eliminar todas las páginas de golpe?</button><div class="faq-answer">Técnicamente sí si listas todas, pero el PDF resultante no tendría páginas y podría no abrirse. Deja siempre al menos una página en el resultado.</div></div><div class="faq-item"><button class="faq-question">¿Funciona con PDF protegidos con contraseña?</button><div class="faq-answer">No. Si el documento pide contraseña para abrirse, esta herramienta no puede procesarlo. Desprotege primero y vuelve a intentarlo.</div></div><div class="faq-item"><button class="faq-question">¿Hay un límite de tamaño?</button><div class="faq-answer">No hay límite estricto, pero aconsejamos 100 MB como máximo práctico: el PDF completo debe residir en la memoria del navegador durante el proceso.</div></div><div class="faq-item"><button class="faq-question">¿Se conservan los enlaces y el índice interno?</button><div class="faq-answer">Los enlaces y anotaciones de las páginas que se conservan siguen funcionando. Los marcadores del documento que apuntaban a páginas eliminadas pueden perderse, algo habitual en cualquier editor de PDF.</div></div></section>
+<section class="related-tools"><h2>También te puede interesar</h2><div class="related-tools-grid"><a href="/es/tools/pdf-extract-pages" class="related-tool-card"><span class="tool-icon">📑</span><div class="tool-info"><strong>Extraer páginas PDF</strong><span class="tool-desc">Guarda un rango como PDF nuevo</span></div><span class="tool-arrow">→</span></a><a href="/es/tools/pdf-merge" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>Unir PDF</strong><span class="tool-desc">Combina varios documentos en uno</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
@@ -303,43 +342,43 @@
   dropzone.addEventListener('drop', e => { e.preventDefault(); dropzone.classList.remove('dragover'); if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
   fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
   function handleFile(file) {
-    if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) { alert('Please upload a PDF.'); return; }
+    if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) { alert('Sube un archivo PDF.'); return; }
     fileName = file.name.replace('.pdf', '');
     var ba = document.getElementById('beforeAfterPreview'); if (ba) ba.classList.add('hidden');
     statusSection.classList.remove('hidden');
-    statusSection.textContent = 'Loading...';
+    statusSection.textContent = 'Cargando...';
     const r = new FileReader();
     r.onload = async (e) => {
       try {
         fileBytes = e.target.result;
         if (!window.PDFLib) {
-          statusSection.textContent = 'Loading pdf-lib...';
+          statusSection.textContent = 'Cargando pdf-lib...';
           await loadScript('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js');
         }
-        statusSection.textContent = 'Parsing PDF...';
+        statusSection.textContent = 'Analizando el PDF...';
         const { PDFDocument } = window.PDFLib;
         const pdf = await PDFDocument.load(fileBytes);
         numPages = pdf.getPageCount();
-        pdfInfo.innerHTML = `<strong>File:</strong> ${file.name} &nbsp;|&nbsp; <strong>Pages:</strong> ${numPages}`;
+        pdfInfo.innerHTML = `<strong>Archivo:</strong> ${file.name} &nbsp;|&nbsp; <strong>Páginas:</strong> ${numPages}`;
         controlsSection.classList.remove('hidden');
         statusSection.classList.add('hidden');
       } catch(err) {
         statusSection.textContent = '✗ Error: ' + err.message;
       }
     };
-    r.onerror = () => { statusSection.textContent = '✗ Error reading file.'; };
+    r.onerror = () => { statusSection.textContent = '✗ Error al leer el archivo.'; };
     r.readAsArrayBuffer(file);
   }
   processBtn.addEventListener('click', async () => {
     statusSection.classList.remove('hidden');
-    statusSection.textContent = 'Processing...';
+    statusSection.textContent = 'Procesando...';
     processBtn.disabled = true;
     try {
       if (!window.PDFLib) { await loadScript('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js'); }
       const { PDFDocument, degrees } = window.PDFLib;
       const src = await PDFDocument.load(fileBytes);
       const delStr = document.getElementById('delPages').value;
-      if (!delStr) { alert('Enter pages to delete.'); return; }
+      if (!delStr) { alert('Indica las páginas a eliminar.'); return; }
       const toDelete = new Set();
       delStr.split(',').forEach(r => {
         r = r.trim();
@@ -354,8 +393,8 @@
       const pages = await newPdf.copyPages(src, indices);
       pages.forEach(p => newPdf.addPage(p));
       const bytes = await newPdf.save();
-      window.__downloadBlob__(bytes, `${fileName}-deleted.pdf`);
-      statusSection.textContent = `✓ Deleted ${toDelete.size} page(s). ${pages.length} pages remain.`;
+      window.__downloadBlob__(bytes, `${fileName}-sin-paginas.pdf`);
+      statusSection.textContent = `✓ ${toDelete.size} página(s) eliminadas. Quedan ${pages.length}.`;
     } catch(e) { statusSection.textContent = '✗ Error: ' + e.message; }
     processBtn.disabled = false;
   });
