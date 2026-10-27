@@ -32,10 +32,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json">
 {
-  
-  "inLanguage": "vi","@context": "https://schema.org",
+  "inLanguage": "vi",
+  "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "PDF Splitter",
+  "name": "✂️ Tách PDF",
   "url": "https://smartimgkit.com/vi/tools/pdf-split",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
@@ -51,31 +51,31 @@
 {
   "@context": "https://schema.org",
   "@type": "HowTo",
-  "name": "How to Use",
+  "name": "Cách sử dụng",
   "step": [
     {
       "@type": "HowToStep",
       "position": 1,
-      "name": "Upload PDF",
-      "text": "Select one or more PDF files."
+      "name": "Chọn tệp PDF cần tách",
+      "text": "Kéo thả hoặc bấm để duyệt. Thông tin số trang và dung lượng hiển thị ngay dưới khung tải lên để bạn định trước cách chia."
     },
     {
       "@type": "HowToStep",
       "position": 2,
-      "name": "Configure",
-      "text": "Set your options."
+      "name": "Chọn chế độ tách",
+      "text": "Cứ mỗi N trang dùng khi muốn chia đều, ví dụ mỗi phần 5 trang. Khoảng trang cụ thể dùng khi cần lấy đúng vài đoạn, ví dụ 1-3, 5, 7-10. Mỗi trang một tệp dùng khi cần tách hết thành từng trang riêng."
     },
     {
       "@type": "HowToStep",
       "position": 3,
-      "name": "Process",
-      "text": "Click the action button."
+      "name": "Nhập tham số và bấm Tách",
+      "text": "Với chế độ khoảng trang, nhập các khoảng cách nhau bằng dấu phẩy; khoảng ngoài phạm vi sẽ bị bỏ qua một cách âm thầm."
     },
     {
       "@type": "HowToStep",
       "position": 4,
-      "name": "Download",
-      "text": "Get your processed PDF."
+      "name": "Tải kết quả",
+      "text": "Một tệp duy nhất tải trực tiếp về máy. Nhiều tệp được gói thành ZIP có đuôi -tach.zip; mở ZIP để xem từng phần đã đặt tên theo số trang."
     }
   ]
 }
@@ -118,26 +118,58 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Are my PDFs uploaded?",
+      "name": "Tệp PDF có được tải lên máy chủ không?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. All processing happens in your browser using pdf-lib."
+        "text": "Không. Việc đọc và tách trang diễn ra hoàn toàn trong trình duyệt bằng pdf-lib, tệp không rời khỏi thiết bị."
       }
     },
     {
       "@type": "Question",
-      "name": "What is the maximum file size?",
+      "name": "Tôi nhập khoảng 50-80 nhưng kết quả thiếu phần đó?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "We recommend under 100MB. Very large files may slow down your browser."
+        "text": "Có thể tệp gốc không đủ 80 trang nên khoảng đó bị bỏ qua. Hãy kiểm tra số trang hiển thị sau khi tải lên và đối chiếu lại danh sách khoảng đã nhập."
       }
     },
     {
       "@type": "Question",
-      "name": "Are PDFs with passwords supported?",
+      "name": "Tách xong có thay đổi nội dung từng trang không?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Password-protected PDFs are not currently supported."
+        "text": "Không. Mỗi phần giữ nguyên nội dung và hướng trang như bản gốc, chỉ là chia lại thành nhiều tệp thôi."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Có thể đặt tên riêng cho từng tệp kết quả không?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hiện tại tên tệp tự sinh theo số trang, ví dụ hoá-don-1-5.pdf. Nếu cần tên khác, hãy đổi tên sau khi tải về."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Nhiều tệp kết quả tải về thế nào?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Một phần thì tải trực tiếp, nhiều phần sẽ được gói thành tệp ZIP có đuôi -tach.zip để tải một lần duy nhất."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Tách tài liệu scan nhiều trang có được không?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Được, tuy nhiên bản scan dung lượng lớn có thể xử lý chậm trên máy yếu vì toàn bộ nội dung nằm trong bộ nhớ trình duyệt."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Có giới hạn số tệp kết quả không?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Không có giới hạn cứng, nhưng tệp càng nhiều phần thì ZIP càng lâu đóng gói. Với vài trăm trang, nên chia nhỏ theo từng đợt thay vì tách toàn bộ một lần."
       }
     }
   ]
@@ -204,21 +236,21 @@
     <div class="container">
       <nav class="breadcrumb"><a href="/">Trang chủ</a><span>/</span><a href="/vi/">Công cụ</a><span>/</span><span>✂️ PDF Splitter</span></nav>
       <div class="tool-page-header">
-        <h1>✂️ PDF Splitter</h1>
-        <p>Split PDF into multiple files by page ranges or every N pages — free.</p>
+        <h1>✂️ Tách PDF</h1>
+        <p>Chia một tệp PDF thành nhiều tệp nhỏ theo khoảng trang hay theo số trang cố định, xử lý ngay trong trình duyệt và tải về dạng ZIP.</p>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Xem công cụ hoạt động</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">📄</span></div>
-              <div class="before-after-item-caption before">1 PDF file</div>
+              <div class="before-after-item-caption before">Một tệp PDF dài</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">✂️</span></div>
-              <div class="before-after-item-caption after">Multiple PDFs</div>
+              <div class="before-after-item-caption after">Nhiều tệp nhỏ theo ý muốn</div>
             </div>
           </div>
         </div>
@@ -234,34 +266,33 @@
           <h2>✂️ Split Options</h2>
           <div class="pdf-info" id="pdfInfo"></div>
           <div class="control-row">
-            <label>Split Mode</label>
+            <label>Chế độ tách</label>
             <select id="splitMode">
-              <option value="every">Every N pages</option>
-              <option value="ranges">Specific page ranges</option>
-              <option value="single">Extract every page</option>
+              <option value="every">Cứ mỗi N trang</option>
+              <option value="ranges">Khoảng trang cụ thể</option>
+              <option value="single">Mỗi trang một tệp</option>
             </select>
           </div>
           <div class="control-row" id="everyRow">
-            <label>Every N Pages</label>
+            <label>Số trang mỗi phần</label>
             <input type="number" id="everyN" value="1" min="1" style="width:80px;">
           </div>
           <div class="control-row hidden" id="rangesRow">
-            <label>Page Ranges</label>
-            <input type="text" id="rangesInput" placeholder="e.g. 1-3, 5, 7-10" style="flex:1;">
+            <label>Khoảng trang</label>
+            <input type="text" id="rangesInput" placeholder="ví dụ 1-3, 5, 7-10" style="flex:1;">
           </div>
           <div class="btn-row">
-            <button class="btn btn-primary" id="splitBtn">✂️ Split PDF</button>
-            <button class="btn btn-secondary" id="resetBtn">Reset</button>
+            <button class="btn btn-primary" id="splitBtn">✂️ Tách PDF</button>
+            <button class="btn btn-secondary" id="resetBtn">Đặt lại</button>
           </div>
         </div>
 
         <div class="status-text hidden" id="statusSection"></div>
 
       </div>
-<section class="how-to-section"><h2>How to Use</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Upload PDF</h4><p>Select one or more PDF files.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Configure</h4><p>Set your options.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Process</h4><p>Click the action button.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Get your processed PDF.</p></div></div></section>
-<h2>Detailed User Guide</h2><div class="guide-block"><h3>Upload PDF</h3><p>Select one or more PDF files.</p></div><div class="guide-block"><h3>Configure</h3><p>Set your options.</p></div><div class="guide-block"><h3>Process</h3><p>Click the action button.</p></div><div class="guide-block"><h3>Download</h3><p>Get your processed PDF.</p></div>
-<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">Are my PDFs uploaded?</button><div class="faq-answer">No. All processing happens in your browser using pdf-lib.</div></div><div class="faq-item"><button class="faq-question">What is the maximum file size?</button><div class="faq-answer">We recommend under 100MB. Very large files may slow down your browser.</div></div><div class="faq-item"><button class="faq-question">Are PDFs with passwords supported?</button><div class="faq-answer">Password-protected PDFs are not currently supported.</div></div></section>
-<section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/pdf-to-image" class="related-tool-card"><span class="tool-icon">📄</span><div class="tool-info"><strong>PDF to Image</strong><span class="tool-desc">Convert PDF pages to images</span></div><span class="tool-arrow">→</span></a><a href="/tools/image-to-pdf" class="related-tool-card"><span class="tool-icon">📄</span><div class="tool-info"><strong>Image to PDF</strong><span class="tool-desc">Combine images into PDF</span></div><span class="tool-arrow">→</span></a></div></section>
+<section class="how-to-section"><h2>Cách sử dụng</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Chọn tệp PDF cần tách</h4><p>Kéo thả hoặc bấm để duyệt. Thông tin số trang và dung lượng hiển thị ngay dưới khung tải lên để bạn định trước cách chia.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Chọn chế độ tách</h4><p>Cứ mỗi N trang dùng khi muốn chia đều, ví dụ mỗi phần 5 trang. Khoảng trang cụ thể dùng khi cần lấy đúng vài đoạn, ví dụ 1-3, 5, 7-10. Mỗi trang một tệp dùng khi cần tách hết thành từng trang riêng.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Nhập tham số và bấm Tách</h4><p>Với chế độ khoảng trang, nhập các khoảng cách nhau bằng dấu phẩy; khoảng ngoài phạm vi sẽ bị bỏ qua một cách âm thầm.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Tải kết quả</h4><p>Một tệp duy nhất tải trực tiếp về máy. Nhiều tệp được gói thành ZIP có đuôi -tach.zip; mở ZIP để xem từng phần đã đặt tên theo số trang.</p></div></div></section>
+<h2>Hướng dẫn chi tiết</h2><div class="guide-block"><h3>Ba chế độ tách dùng khi nào</h3><p>Cứ mỗi N trang phù hợp khi chia tài liệu thành các phần bằng nhau, ví dụ giáo trình 60 trang chia thành 12 phần 5 trang để gửi theo tuần. Khoảng trang cụ thể phù hợp khi chỉ cần vài đoạn nhất định, ví dụ lấy chương 3 và chương 7 từ giáo trình, hoặc gộp trang 1-2 làm một tệp và trang 3-10 làm tệp khác. Mỗi trang một tệp phù hợp khi người nhận chỉ cần một trang đơn lẻ, như từng trang của bảng kê khai.</p></div><div class="guide-block"><h3>Đặt tên tệp kết quả nghĩa là gì</h3><p>Mỗi phần được đặt tên theo số trang gốc, ví dụ hoá-don-1-5.pdf nghĩa là tệp đó chứa trang 1 đến 5 của bản gốc. Cách đặt tên này giúp người nhận không cần mở từng tệp để biết mình đang xem phần nào, rất hữu ích khi bạn gửi nhiều phần qua Zalo hoặc email cho nhiều người khác nhau.</p></div><div class="guide-block"><h3>Khoảng ngoài phạm vi bị bỏ qua — kiểm tra kỹ trước khi tách</h3><p>Nếu bạn nhập khoảng 50-80 nhưng tệp chỉ có 60 trang, phần đó sẽ bị bỏ qua mà không hiện cảnh báo. Kết quả ra ít tệp hơn dự kiến thường là do lỗi này, chứ không phải công cụ bị lỗi. Hãy nhìn số trang hiển thị sau khi tải lên, rồi đối chiếu với danh sách khoảng đã nhập.</p></div><div class="guide-block"><h3>Người bán hàng online và hồ sơ nhân sự</h3><p>Người bán trên Shopee hoặc Lazada thường cần tách hóa đơn nhập hàng theo từng đợt để đối chiếu với từng đợt thanh toán của sàn. Nhân sự văn phòng thường tách hồ sơ xin việc thành từng phần: CV một tệp, bằng cấp một tệp, giấy tờ tùy trang một tệp, để gửi cho bộ phận phù hợp mà không lộ toàn bộ hồ sơ.</p></div><div class="guide-block"><h3>Giới hạn cần biết</h3><p>Tách không thay đổi nội dung từng trang, không xoay hướng trang, cũng không nén lại. Nếu tệp gốc dung lượng lớn, tổng dung lượng các phần sau khi tách sẽ gần bằng bản gốc. Điện thoại đời thấp có thể chậm với tài liệu vài trăm trang vì toàn bộ phải xử lý trong bộ nhớ trình duyệt.</p></div><div class="guide-block"><h3>Quyền riêng tư</h3><p>Tệp được đọc và xử lý ngay trong trình duyệt bằng pdf-lib, không hề được tải lên máy chủ. Hồ sơ lương, hợp đồng hay giấy tờ cá nhân vẫn nằm nguyên trên thiết bị của bạn.</p></div><div class="guide-block"><h3>Ví dụ thực tế: giáo trình và tài liệu học tập</h3><p>Sinh viên thường nhận giáo trình dạng PDF vài trăm trang từ trường, nhưng mỗi tuần chỉ học một chương. Thay vì kéo theo cả quyển trên điện thoại, hãy tách thành từng phần theo chương và lưu riêng; khi thuyết trình nhóm, chỉ cần mở đúng phần của mình. Với tài liệu ôn thi, tách theo đề tài giúp việc tìm lại bài giảng cần xem lại nhanh hơn nhiều so với cuộn trong một tệp dài.</p></div><div class="guide-block"><h3>Ví dụ thực tế: bộ chứng từ gửi đối tác</h3><p>Khi gửi hồ sơ pháp lý cho đối tác qua Zalo hoặc email, gửi kèm một tệp ZIP chứa các phần đã đặt tên theo số trang giúp đối tác biết ngay cần đọc phần nào trước. Chế độ khoảng trang cụ thể đặc biệt hữu ích khi bạn chỉ được phép chia sẻ một phần hồ sơ, ví dụ mục về thanh toán mà không bao gồm mục phí hoặc thông tin cá nhân ở các trang khác.</p></div><section class="faq-section"><h2>Câu hỏi thường gặp</h2><div class="faq-item"><button class="faq-question">Tệp PDF có được tải lên máy chủ không?</button><div class="faq-answer">Không. Việc đọc và tách trang diễn ra hoàn toàn trong trình duyệt bằng pdf-lib, tệp không rời khỏi thiết bị.</div></div><div class="faq-item"><button class="faq-question">Tôi nhập khoảng 50-80 nhưng kết quả thiếu phần đó?</button><div class="faq-answer">Có thể tệp gốc không đủ 80 trang nên khoảng đó bị bỏ qua. Hãy kiểm tra số trang hiển thị sau khi tải lên và đối chiếu lại danh sách khoảng đã nhập.</div></div><div class="faq-item"><button class="faq-question">Tách xong có thay đổi nội dung từng trang không?</button><div class="faq-answer">Không. Mỗi phần giữ nguyên nội dung và hướng trang như bản gốc, chỉ là chia lại thành nhiều tệp thôi.</div></div><div class="faq-item"><button class="faq-question">Có thể đặt tên riêng cho từng tệp kết quả không?</button><div class="faq-answer">Hiện tại tên tệp tự sinh theo số trang, ví dụ hoá-don-1-5.pdf. Nếu cần tên khác, hãy đổi tên sau khi tải về.</div></div><div class="faq-item"><button class="faq-question">Nhiều tệp kết quả tải về thế nào?</button><div class="faq-answer">Một phần thì tải trực tiếp, nhiều phần sẽ được gói thành tệp ZIP có đuôi -tach.zip để tải một lần duy nhất.</div></div><div class="faq-item"><button class="faq-question">Tách tài liệu scan nhiều trang có được không?</button><div class="faq-answer">Được, tuy nhiên bản scan dung lượng lớn có thể xử lý chậm trên máy yếu vì toàn bộ nội dung nằm trong bộ nhớ trình duyệt.</div></div><div class="faq-item"><button class="faq-question">Có giới hạn số tệp kết quả không?</button><div class="faq-answer">Không có giới hạn cứng, nhưng tệp càng nhiều phần thì ZIP càng lâu đóng gói. Với vài trăm trang, nên chia nhỏ theo từng đợt thay vì tách toàn bộ một lần.</div></div></section>
+<section class="related-tools"><h2>Công cụ liên quan</h2><div class="related-tools-grid"><a href="/vi/tools/pdf-merge" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>Gộp PDF</strong><span class="tool-desc">Kết hợp nhiều tệp PDF thành một</span></div><span class="tool-arrow">→</span></a><a href="/vi/tools/pdf-extract-pages" class="related-tool-card"><span class="tool-icon">📑</span><div class="tool-info"><strong>Trích xuất trang</strong><span class="tool-desc">Lấy riêng nhóm trang cần thiết</span></div><span class="tool-arrow">→</span></a><a href="/vi/tools/pdf-delete-pages" class="related-tool-card"><span class="tool-icon">🗑️</span><div class="tool-info"><strong>Xóa trang PDF</strong><span class="tool-desc">Loại bỏ trang thừa khỏi PDF</span></div><span class="tool-arrow">→</span></a><a href="/vi/tools/image-to-pdf" class="related-tool-card"><span class="tool-icon">🖼️</span><div class="tool-info"><strong>Ảnh sang PDF</strong><span class="tool-desc">Gộp nhiều ảnh thành một tệp PDF</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
@@ -292,37 +323,37 @@
   splitMode.addEventListener('change', () => { everyRow.classList.toggle('hidden', splitMode.value !== 'every'); rangesRow.classList.toggle('hidden', splitMode.value !== 'ranges'); });
 
   function handleFile(file) {
-    if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) { alert('Please upload a PDF file.'); return; }
+    if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) { alert('Hãy chọn một tệp PDF.'); return; }
     fileName = file.name.replace('.pdf', '');
     var ba = document.getElementById('beforeAfterPreview'); if (ba) ba.classList.add('hidden');
     statusSection.classList.remove('hidden');
-    statusSection.textContent = 'Loading...';
+    statusSection.textContent = 'Đang tải...';
     const reader = new FileReader();
     reader.onload = async (e) => {
       try {
         fileBytes = e.target.result;
         if (!window.PDFLib) {
-          statusSection.textContent = 'Loading pdf-lib...';
+          statusSection.textContent = 'Đang tải pdf-lib...';
           await loadScript('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js');
         }
-        statusSection.textContent = 'Parsing PDF...';
+        statusSection.textContent = 'Đang đọc tệp PDF...';
         const { PDFDocument } = window.PDFLib;
         const pdf = await PDFDocument.load(fileBytes);
         numPages = pdf.getPageCount();
-        pdfInfo.innerHTML = `<strong>File:</strong> ${file.name} &nbsp;|&nbsp; <strong>Pages:</strong> ${numPages} &nbsp;|&nbsp; <strong>Size:</strong> ${(file.size/1024).toFixed(1)} KB`;
+        pdfInfo.innerHTML = `<strong>Tệp:</strong> ${file.name} &nbsp;|&nbsp; <strong>Số trang:</strong> ${numPages} &nbsp;|&nbsp; <strong>Dung lượng:</strong> ${(file.size/1024).toFixed(1)} KB`;
         controlsSection.classList.remove('hidden');
         statusSection.classList.add('hidden');
       } catch(err) {
         statusSection.textContent = '✗ Error: ' + err.message;
       }
     };
-    reader.onerror = () => { statusSection.textContent = '✗ Error reading file.'; };
+    reader.onerror = () => { statusSection.textContent = '✗ Không đọc được tệp.'; };
     reader.readAsArrayBuffer(file);
   }
 
   splitBtn.addEventListener('click', async () => {
     statusSection.classList.remove('hidden');
-    statusSection.textContent = 'Splitting...';
+    statusSection.textContent = 'Đang tách...';
     splitBtn.disabled = true;
     try {
       if (!window.PDFLib) { await loadScript('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js'); }
@@ -368,15 +399,15 @@
       if (parts.length > 1) {
         const zip = new window.JSZip();
         for (let i = 0; i < parts.length; i++) {
-          statusSection.textContent = `Packaging ${i+1}/${parts.length}...`;
+          statusSection.textContent = `Đang đóng gói ${i+1}/${parts.length}...`;
           bytes = await parts[i].pdf.save();
           zip.file(`${fileName}-${parts[i].name}.pdf`, bytes);
         }
-        statusSection.textContent = 'Creating ZIP...';
+        statusSection.textContent = 'Đang tạo tệp ZIP...';
         const zipBlob = await zip.generateAsync({ type: 'blob' });
-        downloadBlob(zipBlob, `${fileName}-split.zip`, 'application/zip');
+        downloadBlob(zipBlob, `${fileName}-tach.zip`, 'application/zip');
       }
-      statusSection.textContent = `✓ Split into ${parts.length} file(s)! Download started.`;
+      statusSection.textContent = `✓ Đã tách thành ${parts.length} tệp! Bắt đầu tải về.`;
     } catch(e) { statusSection.textContent = '✗ Error: ' + e.message; }
     splitBtn.disabled = false;
   });

@@ -32,10 +32,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json">
 {
-  
-  "inLanguage": "vi","@context": "https://schema.org",
+  "inLanguage": "vi",
+  "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "PDF Rotator",
+  "name": "🔄 Xoay PDF",
   "url": "https://smartimgkit.com/vi/tools/pdf-rotate",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
@@ -51,31 +51,31 @@
 {
   "@context": "https://schema.org",
   "@type": "HowTo",
-  "name": "How to Use",
+  "name": "Cách sử dụng",
   "step": [
     {
       "@type": "HowToStep",
       "position": 1,
-      "name": "Upload PDF",
-      "text": "Select a PDF file."
+      "name": "Chọn tệp PDF",
+      "text": "Kéo thả hoặc bấm để duyệt. Số trang hiển thị ngay để bạn biết phạm vi cần xoay."
     },
     {
       "@type": "HowToStep",
       "position": 2,
-      "name": "Configure",
-      "text": "Set options."
+      "name": "Chọn góc xoay",
+      "text": "90° cho trang nằm ngang cần dựng đứng, 180° cho trang bị lộn ngược, 270° tương đương xoay 90° ngược chiều kim đồng hồ."
     },
     {
       "@type": "HowToStep",
       "position": 3,
-      "name": "Process",
-      "text": "Click the action button."
+      "name": "Nhập khoảng trang (nếu cần)",
+      "text": "Bỏ trống để xoay toàn bộ. Nhập 1-3, 5 để chỉ xoay trang 1 đến 3 và trang 5."
     },
     {
       "@type": "HowToStep",
       "position": 4,
-      "name": "Download",
-      "text": "Get the result."
+      "name": "Bấm Xoay PDF và tải về",
+      "text": "Tệp có đuôi -xoay.pdf tải về ngay. Mở kiểm tra hướng đọc trước khi gửi đi."
     }
   ]
 }
@@ -118,26 +118,58 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Is my PDF uploaded?",
+      "name": "Tệp PDF của tôi có được tải lên máy chủ không?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Everything runs in your browser."
+        "text": "Không. Việc xoay trang diễn ra hoàn toàn trong trình duyệt bằng pdf-lib, tệp không rời khỏi thiết bị."
       }
     },
     {
       "@type": "Question",
-      "name": "Max file size?",
+      "name": "Trang đã xoay 90° có thể đưa về 0° không?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Under 100MB recommended."
+        "text": "Không bằng công cụ này. Các lựa chọn chỉ có 90°, 180° và 270° và đó là góc tuyệt đối, không cộng dồn. Hãy dùng tệp gốc chưa xoay nếu cần về hướng ban đầu."
       }
     },
     {
       "@type": "Question",
-      "name": "Password protected PDFs?",
+      "name": "Có thể chỉ xoay một vài trang trong tài liệu không?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Not supported."
+        "text": "Được. Nhập khoảng trang vào ô Khoảng trang, ví dụ 1-3, 5; bỏ trống nếu muốn xoay toàn bộ."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Dung lượng tệp sau khi xoay có thay đổi không?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Gần như không đổi, vì chỉ thuộc tính hướng của trang được ghi lại, chữ và ảnh giữ nguyên."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "PDF có mật khẩu dùng được không?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hiện chưa hỗ trợ. Hãy mở khóa tệp trước khi xoay."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Tệp kết quả tên gì?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Tên gốc kèm đuôi -xoay.pdf, ví dụ bao-cao.pdf sẽ thành bao-cao-xoay.pdf."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Xoay nhầm có quay lại được không?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Chỉ cần bấm Đặt lại, tải lại tệp gốc rồi xoay lại với góc đúng. Không cần lo làm hỏng tệp gốc vì bản gốc của bạn vẫn nguyên trên máy."
       }
     }
   ]
@@ -203,21 +235,21 @@
     <div class="container">
       <nav class="breadcrumb"><a href="/">Trang chủ</a><span>/</span><a href="/vi/">Công cụ</a><span>/</span><span>🔄 PDF Rotator</span></nav>
       <div class="tool-page-header">
-        <h1>🔄 PDF Rotator</h1>
-        <p>Rotate PDF pages by 90°, 180°, or 270° — free, in your browser.</p>
+        <h1>🔄 Xoay PDF</h1>
+        <p>Xoay trang PDF bị lệch hướng về đúng chiều đọc, chọn 90°, 180° hay 270° và áp dụng cho toàn bộ hoặc một nhóm trang cụ thể.</p>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Xem công cụ hoạt động</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">↩️</span></div>
-              <div class="before-after-item-caption before">PDF (wrong)</div>
+              <div class="before-after-item-caption before">Trang PDF bị ngang</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🔄</span></div>
-              <div class="before-after-item-caption after">PDF (rotated)</div>
+              <div class="before-after-item-caption after">Trang đã xoay đúng hướng</div>
             </div>
           </div>
         </div>
@@ -232,29 +264,28 @@
           <h2>⚙️ Options</h2>
           <div class="pdf-info" id="pdfInfo"></div>
           <div class="control-row">
-            <label>Rotate By</label>
+            <label>Xoay góc nào</label>
             <select id="rotDeg">
-              <option value="90">90° Clockwise</option>
+              <option value="90">90° theo chiều kim đồng hồ</option>
               <option value="180">180°</option>
-              <option value="270">270° Clockwise</option>
+              <option value="270">270° theo chiều kim đồng hồ</option>
             </select>
           </div>
           <div class="control-row">
-            <label>Page Range</label>
-            <input type="text" id="rotPages" placeholder="e.g. 1-3, 5 (blank = all)" style="flex:1;">
+            <label>Khoảng trang</label>
+            <input type="text" id="rotPages" placeholder="ví dụ 1-3, 5 (bỏ trống = tất cả)" style="flex:1;">
           </div>
           <div class="btn-row">
-            <button class="btn btn-primary" id="processBtn">🔄 Rotate PDF</button>
-            <button class="btn btn-secondary" id="resetBtn">Reset</button>
+            <button class="btn btn-primary" id="processBtn">🔄 Xoay PDF</button>
+            <button class="btn btn-secondary" id="resetBtn">Đặt lại</button>
           </div>
         </div>
         <div class="status-text hidden" id="statusSection"></div>
 
       </div>
-<section class="how-to-section"><h2>How to Use</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Upload PDF</h4><p>Select a PDF file.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Configure</h4><p>Set options.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Process</h4><p>Click the action button.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Get the result.</p></div></div></section>
-<h2>Detailed User Guide</h2><div class="guide-block"><h3>Upload PDF</h3><p>Select a PDF file.</p></div><div class="guide-block"><h3>Configure</h3><p>Set options.</p></div><div class="guide-block"><h3>Process</h3><p>Click the action button.</p></div><div class="guide-block"><h3>Download</h3><p>Get the result.</p></div>
-<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">Is my PDF uploaded?</button><div class="faq-answer">No. Everything runs in your browser.</div></div><div class="faq-item"><button class="faq-question">Max file size?</button><div class="faq-answer">Under 100MB recommended.</div></div><div class="faq-item"><button class="faq-question">Password protected PDFs?</button><div class="faq-answer">Not supported.</div></div></section>
-<section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/pdf-to-image" class="related-tool-card"><span class="tool-icon">📄</span><div class="tool-info"><strong>PDF to Image</strong><span class="tool-desc">Convert PDF to images</span></div><span class="tool-arrow">→</span></a><a href="/tools/pdf-merge" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>PDF Merge</strong><span class="tool-desc">Combine PDFs</span></div><span class="tool-arrow">→</span></a></div></section>
+<section class="how-to-section"><h2>Cách sử dụng</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Chọn tệp PDF</h4><p>Kéo thả hoặc bấm để duyệt. Số trang hiển thị ngay để bạn biết phạm vi cần xoay.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Chọn góc xoay</h4><p>90° cho trang nằm ngang cần dựng đứng, 180° cho trang bị lộn ngược, 270° tương đương xoay 90° ngược chiều kim đồng hồ.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Nhập khoảng trang (nếu cần)</h4><p>Bỏ trống để xoay toàn bộ. Nhập 1-3, 5 để chỉ xoay trang 1 đến 3 và trang 5.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Bấm Xoay PDF và tải về</h4><p>Tệp có đuôi -xoay.pdf tải về ngay. Mở kiểm tra hướng đọc trước khi gửi đi.</p></div></div></section>
+<h2>Hướng dẫn chi tiết</h2><div class="guide-block"><h3>Xoay ở đây là góc tuyệt đối, không phải góc cộng dồn</h3><p>Giá trị đặt vào trang là góc cuối cùng, không cộng với góc cũ. Ví dụ trang đang xoay 90° mà bạn chọn 90° nữa thì kết quả vẫn là 90° chứ không phải 180°. Vì các lựa chọn chỉ có 90°, 180° và 270°, một trang đã xoay 90° không thể đưa về 0° bằng công cụ này; để làm điều đó, hãy xoay tệp gốc chưa xoay hoặc dùng một tệp khác.</p></div><div class="guide-block"><h3>Chọn 180° khi nào, 90° khi nào</h3><p>Tài liệu scan hai mặt thường lẫn lộn: mặt chẵn quay đúng, mặt lẻ lộn ngược, trường hợp này chọn 180° cho nhóm trang bị lộn. Bảng biểu ngang in trên giấy khổ dọc thường cần 90° để đọc thoải mái trên màn hình. Trước khi áp dụng cho cả tài liệu, hãy thử với một khoảng nhỏ rồi mở kiểm tra.</p></div><div class="guide-block"><h3>Giới hạn khoảng trang giúp xử lý nhanh hơn</h3><p>Trên tài liệu vài trăm trang, nếu chỉ vài trang bị lệch, nhập đúng khoảng đó sẽ nhanh hơn nhiều so với xoay toàn bộ rồi phải tải tệp lớn về. Hãy nhìn số trang hiển thị sau khi tải lên để nhập khoảng chính xác.</p></div><div class="guide-block"><h3>Tình huống thực tế</h3><p>Hồ sơ mời thầu thường gồm nhiều tài liệu quét từ các nguồn khác nhau nên hướng trang lộn xộn; chỉ cần tách phần lệch hướng ra, xoay rồi gộp lại. Người bán trên Shopee hay Lazada chụp hóa đơn theo chiều dọc nhưng máy scan xuất ra ngang, chỉ cần xoay 90° là khách hàng đọc được ngay.</p></div><div class="guide-block"><h3>Không nén, không đổi nội dung</h3><p>Xoay chỉ thay đổi thuộc tính hướng của trang, chữ và ảnh vẫn giữ nguyên chất lượng, dung lượng gần như không đổi. Công cụ không mở được PDF có mật khẩu, cũng không sửa được nội dung văn bản bên trong.</p></div><div class="guide-block"><h3>Quyền riêng tư</h3><p>Toàn bộ xử lý chạy trong trình duyệt bằng pdf-lib, tệp không rời khỏi thiết bị.</p></div><div class="guide-block"><h3>Ví dụ thực tế: hồ sơ mời thầu và hồ sơ pháp lý</h3><p>Hồ sơ mời thầu thường ghép từ nhiều nguồn: bản thảo ký scan, bảng báo cáo xuất từ Excel, phụ lục hợp đồng ở định dạng khác nhau. Mỗi nguồn cho ra hướng trang khác nhau, người nhận mở lên phải liên tục xoay cổ. Trước khi gửi, chỉ cần tách những phần lệch hướng ra, xoay về đúng chiều rồi gộp lại, bộ hồ sơ trông chuyên nghiệp hơn hẳn.</p></div><div class="guide-block"><h3>Ví dụ thực tế: tài liệu in ấn và lưu trữ số</h3><p>Văn phòng muốn chuẩn hóa kho tài liệu số thường đặt quy ước mọi trang phải dựng đứng theo khổ dọc trước khi lưu trữ. Với tài liệu cũ hàng trăm trang chứa nhiều bảng biểu ngang, việc xoay 90° giúp khi xem lại trên màn hình hoặc máy đọc sách không phải xoay thiết bị. Kiểm tra bằng chế độ xem thumbnail trước khi áp dụng hàng loạt để tránh xoay nhầm những trang vốn đã đúng hướng.</p></div><div class="guide-block"><h3>Chú ý với tài liệu scan hai mặt</h3><p>Tài liệu scan mặt trái – phải thường lẫn lộn hướng: mặt chẵn đúng chiều, mặt lẻ lộn ngược 180°. Với trường hợp này, hãy xoay 180° toàn bộ tài liệu trước, kiểm tra kết quả; nếu một nửa vẫn lệch, dùng khoảng trang để chỉ xoay các trang lẻ hoặc chẵn là đúng. Cách làm hai bước này nhanh hơn nhiều so với quét lại từ đầu, đặc biệt với tài liệu dài không còn bản giấy.</p></div><div class="guide-block"><h3>Ảnh hưởng tới máy đọc PDF và máy in</h3><p>Trang đã xoay đúng sẽ hiển thị đúng hướng trên mọi trình đọc, từ Adobe Reader, trình duyệt Chrome cho tới ứng dụng đọc PDF trên điện thoại. Khi in, máy in cũng nhận đúng hướng nên không còn tình trạng in ra giấy ngang trong khi nội dung dựng đứng. Đây là khác biệt so với việc xoay "tạm thời" bằng chế độ xem của trình đọc — cách đó chỉ đổi trên màn hình của bạn, còn tệp gốc vẫn lệch khi người khác mở.</p></div><section class="faq-section"><h2>Câu hỏi thường gặp</h2><div class="faq-item"><button class="faq-question">Tệp PDF của tôi có được tải lên máy chủ không?</button><div class="faq-answer">Không. Việc xoay trang diễn ra hoàn toàn trong trình duyệt bằng pdf-lib, tệp không rời khỏi thiết bị.</div></div><div class="faq-item"><button class="faq-question">Trang đã xoay 90° có thể đưa về 0° không?</button><div class="faq-answer">Không bằng công cụ này. Các lựa chọn chỉ có 90°, 180° và 270° và đó là góc tuyệt đối, không cộng dồn. Hãy dùng tệp gốc chưa xoay nếu cần về hướng ban đầu.</div></div><div class="faq-item"><button class="faq-question">Có thể chỉ xoay một vài trang trong tài liệu không?</button><div class="faq-answer">Được. Nhập khoảng trang vào ô Khoảng trang, ví dụ 1-3, 5; bỏ trống nếu muốn xoay toàn bộ.</div></div><div class="faq-item"><button class="faq-question">Dung lượng tệp sau khi xoay có thay đổi không?</button><div class="faq-answer">Gần như không đổi, vì chỉ thuộc tính hướng của trang được ghi lại, chữ và ảnh giữ nguyên.</div></div><div class="faq-item"><button class="faq-question">PDF có mật khẩu dùng được không?</button><div class="faq-answer">Hiện chưa hỗ trợ. Hãy mở khóa tệp trước khi xoay.</div></div><div class="faq-item"><button class="faq-question">Tệp kết quả tên gì?</button><div class="faq-answer">Tên gốc kèm đuôi -xoay.pdf, ví dụ bao-cao.pdf sẽ thành bao-cao-xoay.pdf.</div></div><div class="faq-item"><button class="faq-question">Xoay nhầm có quay lại được không?</button><div class="faq-answer">Chỉ cần bấm Đặt lại, tải lại tệp gốc rồi xoay lại với góc đúng. Không cần lo làm hỏng tệp gốc vì bản gốc của bạn vẫn nguyên trên máy.</div></div></section>
+<section class="related-tools"><h2>Công cụ liên quan</h2><div class="related-tools-grid"><a href="/vi/tools/pdf-split" class="related-tool-card"><span class="tool-icon">✂️</span><div class="tool-info"><strong>Tách PDF</strong><span class="tool-desc">Chia PDF theo trang hoặc khoảng trang</span></div><span class="tool-arrow">→</span></a><a href="/vi/tools/pdf-merge" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>Gộp PDF</strong><span class="tool-desc">Kết hợp nhiều tệp PDF thành một</span></div><span class="tool-arrow">→</span></a><a href="/vi/tools/pdf-extract-pages" class="related-tool-card"><span class="tool-icon">📑</span><div class="tool-info"><strong>Trích xuất trang</strong><span class="tool-desc">Lấy riêng nhóm trang cần thiết</span></div><span class="tool-arrow">→</span></a><a href="/vi/tools/pdf-to-image" class="related-tool-card"><span class="tool-icon">📄</span><div class="tool-info"><strong>PDF sang Ảnh</strong><span class="tool-desc">Chuyển từng trang PDF thành ảnh</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
@@ -278,7 +309,7 @@
   dropzone.addEventListener('drop', e => { e.preventDefault(); dropzone.classList.remove('dragover'); if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
   fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
   function handleFile(file) {
-    if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) { alert('Please upload a PDF.'); return; }
+    if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) { alert('Hãy chọn một tệp PDF.'); return; }
     fileName = file.name.replace('.pdf', '');
     var ba = document.getElementById('beforeAfterPreview'); if (ba) ba.classList.add('hidden');
     statusSection.classList.remove('hidden');
@@ -288,26 +319,26 @@
       try {
         fileBytes = e.target.result;
         if (!window.PDFLib) {
-          statusSection.textContent = 'Loading pdf-lib...';
+          statusSection.textContent = 'Đang tải pdf-lib...';
           await loadScript('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js');
         }
-        statusSection.textContent = 'Parsing PDF...';
+        statusSection.textContent = 'Đang đọc tệp PDF...';
         const { PDFDocument } = window.PDFLib;
         const pdf = await PDFDocument.load(fileBytes);
         numPages = pdf.getPageCount();
-        pdfInfo.innerHTML = `<strong>File:</strong> ${file.name} &nbsp;|&nbsp; <strong>Pages:</strong> ${numPages}`;
+        pdfInfo.innerHTML = `<strong>Tệp:</strong> ${file.name} &nbsp;|&nbsp; <strong>Số trang:</strong> ${numPages}`;
         controlsSection.classList.remove('hidden');
         statusSection.classList.add('hidden');
       } catch(err) {
         statusSection.textContent = '✗ Error: ' + err.message;
       }
     };
-    r.onerror = () => { statusSection.textContent = '✗ Error reading file.'; };
+    r.onerror = () => { statusSection.textContent = '✗ Không đọc được tệp.'; };
     r.readAsArrayBuffer(file);
   }
   processBtn.addEventListener('click', async () => {
     statusSection.classList.remove('hidden');
-    statusSection.textContent = 'Processing...';
+    statusSection.textContent = 'Đang xử lý...';
     processBtn.disabled = true;
     try {
       if (!window.PDFLib) { await loadScript('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js'); }
@@ -329,8 +360,8 @@
       }
       targetPages.forEach(i => { pages[i].setRotation(degrees(deg)); });
       const bytes = await src.save();
-      window.__downloadBlob__(bytes, `${fileName}-rotated.pdf`);
-      statusSection.textContent = `✓ Rotated ${targetPages.length} page(s) by ${deg}°.`;
+      window.__downloadBlob__(bytes, `${fileName}-xoay.pdf`);
+      statusSection.textContent = `✓ Đã xoay ${targetPages.length} trang theo góc ${deg}°.`;
     } catch(e) { statusSection.textContent = '✗ Error: ' + e.message; }
     processBtn.disabled = false;
   });
