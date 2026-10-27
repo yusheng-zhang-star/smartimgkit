@@ -329,6 +329,18 @@
           <li><span class="f-k">Max upscale</span><span class="f-v">4x</span></li>
           <li><span class="f-k">Upload</span><span class="f-v">Never — local</span></li>
         </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>The two upscale factors compared</h2>
+          <table>
+            <thead><tr><th>Factor</th><th>Result for a 500 × 500 photo</th><th>Model behaviour</th><th>Practical limits</th></tr></thead>
+            <tbody>
+              <tr><td>2×</td><td>1000 × 1000 px</td><td>The ESRGAN-slim network redraws edges rather than interpolating them</td><td>Fast enough for a handful of photos; each run still loads the model on first use</td></tr>
+              <tr><td>4×</td><td>2000 × 2000 px</td><td>Same network, applied twice as far — texture is invented, not recovered</td><td>Memory use climbs, and on low-RAM phones the tab may be closed by the browser</td></tr>
+              <tr><td>Both factors</td><td>Output is always PNG</td><td>Runs on your own machine through WebAssembly — no image is uploaded</td><td>The engine and model come from a CDN, so the first run needs a working connection</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Upload Area -->

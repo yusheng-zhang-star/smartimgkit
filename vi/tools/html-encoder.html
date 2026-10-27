@@ -119,6 +119,21 @@
           <li><span class="f-k">Dùng khi nào</span><span class="f-v">Hiển thị code trong bài viết, chèn nội dung vào CMS, phòng ngừa XSS</span></li>
           <li><span class="f-k">Chiều ngược</span><span class="f-v">Dán chuỗi entity vào để trả về văn bản gốc có dấu</span></li>
         </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Những ký tự thực sự bị đổi, và những gì được giữ nguyên</h2>
+          <table>
+            <thead><tr><th>Ký tự đầu vào</th><th>Sau khi mã hoá</th><th>Ghi chú</th></tr></thead>
+            <tbody>
+              <tr><td>& (dấu và)</td><td>&amp;</td><td>Bắt buộc, nếu không trình duyệt hiểu nhầm là thực thể</td></tr>
+              <tr><td>< và ></td><td>&lt; và &gt;</td><td>Đây là cặp ký tự hay làm vỡ giao diện nhất</td></tr>
+              <tr><td>" (nháy kép)</td><td>&quot;</td><td>Chỉ cần khi nằm trong thuộc tính HTML</td></tr>
+              <tr><td>' (nháy đơn)</td><td>&#39;</td><td>Giữ an toàn cho chuỗi trong JavaScript</td></tr>
+              <tr><td>Chữ có dấu tiếng Việt</td><td>Giữ nguyên hoàn toàn</td><td>Không bị chuyển thành &amp;#... — đây là điểm khác biệt so với nhiều tool khác</td></tr>
+              <tr><td>Emoji và ký tự Unicode khác</td><td>Giữ nguyên</td><td>Trình duyệt xử lý như văn bản bình thường</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->

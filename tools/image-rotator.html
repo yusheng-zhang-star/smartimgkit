@@ -286,6 +286,20 @@
           <li><span class="f-k">Output</span><span class="f-v">PNG · JPG · WebP</span></li>
           <li><span class="f-k">Upload</span><span class="f-v">Never — local</span></li>
         </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>How the two rotation modes actually behave</h2>
+          <table>
+            <thead><tr><th>Behaviour</th><th>90° / 180° snap</th><th>Free angle (1°–360°)</th></tr></thead>
+            <tbody>
+              <tr><td>Canvas size</td><td>Width and height swap on 90° turns, stay identical on 180°</td><td>Grows to the rotated bounding box, up to 1.41× the original area</td></tr>
+              <tr><td>Pixel quality</td><td>Every pixel maps to an exact grid cell — nothing is resampled</td><td>Edges are resampled, so fine text and 1px lines soften slightly</td></tr>
+              <tr><td>Transparent corners</td><td>None — the image fills its own rectangle</td><td>Corners outside the source become transparent in PNG</td></tr>
+              <tr><td>Typical use</td><td>Fixing sideways phone photos, flipping a scan</td><td>Straightening a crooked scan or a tilted horizon</td></tr>
+              <tr><td>Best export</td><td>PNG for diagrams, JPG for photos</td><td>PNG keeps the transparent corners; JPG fills them with white</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Upload Area -->

@@ -217,6 +217,20 @@
           <li><span class="f-k">Output</span><span class="f-v">PNG</span></li>
           <li><span class="f-k">Upload</span><span class="f-v">Never — local</span></li>
         </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>What you can and cannot cleanly erase</h2>
+          <table>
+            <thead><tr><th>Object on the photo</th><th>Result after inpainting</th><th>What makes it hard</th></tr></thead>
+            <tbody>
+              <tr><td>A logo on a flat wall</td><td>Near-perfect — the wall texture is reconstructed</td><td>Almost nothing; uniform backgrounds are the easy case</td></tr>
+              <tr><td>A stranger in the background</td><td>Convincing if they are small and away from the subject</td><td>Large figures leave a smear where the body was</td></tr>
+              <tr><td>A wire across the sky</td><td>Very good — a gradient sky rebuilds cleanly</td><td>Wires crossing a detailed building edge will smudge both</td></tr>
+              <tr><td>Text over a patterned fabric</td><td>Visible blotch unless the brush covers the whole word</td><td>Repeating patterns need a mask wide enough to give the algorithm a full tile</td></tr>
+              <tr><td>A shadow or a reflection</td><td>Usually needs manual retouching afterwards</td><td>Inpainting has no notion of lighting direction</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="selling-points">
         <div class="sp-item"><span class="sp-icon">🧠</span>LaMa AI inpainting</div>
