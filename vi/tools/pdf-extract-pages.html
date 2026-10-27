@@ -341,7 +341,7 @@
       if (!extStr) { alert('Hãy nhập số trang cần lấy.'); return; }
       const newPdf = await PDFDocument.create();
       const indices = [];
-      extStr.split(',').forEach(r => {
+      extStr.split(/[,\u060C\uFF0C\u3001;\u061B]/).forEach(r => {
         r = r.trim();
         if (r.includes('-')) {
           const [s, e] = r.split('-').map(x => parseInt(x));
