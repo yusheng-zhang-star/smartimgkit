@@ -32,10 +32,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json">
 {
-  
-  "inLanguage": "fr","@context": "https://schema.org",
+  "inLanguage": "fr",
+  "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Image to PDF",
+  "name": "Convertir plusieurs images en PDF",
   "url": "https://smartimgkit.com/fr/tools/image-to-pdf",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
@@ -107,26 +107,42 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "What image formats are supported?",
+      "name": "Quels formats d'images sont acceptés ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "JPG, PNG, WebP, BMP, and GIF (first frame)."
+        "text": "Les formats JPG, PNG, WebP, BMP et GIF (première image) sont pris en charge. Pour un usage administratif, le JPG est le plus universel ; le PNG convient aux captures d'écran avec texte, car il n'applique aucune compression avec perte."
       }
     },
     {
       "@type": "Question",
-      "name": "Will image quality be reduced?",
+      "name": "La qualité des images est-elle conservée ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Images are embedded at original resolution."
+        "text": "Oui. Les images sont intégrées dans le PDF à leur résolution d'origine, sans recompression agressive. Le fichier obtenu est net à l'écran comme à l'impression, même pour des justificatifs contenant de petits caractères."
       }
     },
     {
       "@type": "Question",
-      "name": "Are my images uploaded to a server?",
+      "name": "Mes images sont-elles envoyées vers un serveur ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. PDF generation happens locally."
+        "text": "Non. La génération du PDF se déroule entièrement dans votre navigateur, grâce à une bibliothèque exécutée localement. Aucune image ne quitte votre appareil, ce qui respecte strictement les principes du RGPD et les recommandations de la CNIL."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je assembler un CV et une lettre de motivation en un seul PDF ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Tout à fait. Importez d'abord la page de CV, puis la lettre, réordonnez si besoin, choisissez le format A4 portrait, et exportez. La plupart des recruteurs et des plateformes de candidature préfèrent recevoir un seul PDF plutôt que deux pièces jointes séparées."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Comment envoyer ce PDF à Impots.gouv.fr ou à l'Assurance Maladie ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Une fois le PDF généré, connectez-vous à votre espace sur le portail administratif, utilisez la fonction de dépôt de pièce jointe, puis sélectionnez le fichier images.pdf téléchargé. Vérifiez qu'il ne dépasse pas la limite de taille, généralement dix mégaoctets par document."
       }
     }
   ]
@@ -164,119 +180,154 @@
 
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>Image to PDF</span></nav>
+      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>Image vers PDF</span></nav>
       <div class="tool-page-header">
-        <h1>Image to PDF</h1>
-        <p></p>
+        <h1>Convertir plusieurs images en PDF</h1>
+        <p>Assemblez vos photos et documents scannés en un seul fichier PDF, dans l'ordre de votre choix, directement dans votre navigateur. Aucune image n'est envoyée vers un serveur : le traitement reste 100% local, dans le respect du RGPD.</p>
       </div>
       <div class="tool-workspace">
 <div class="upload-area" id="uploadArea">
     <input type="file" id="fileInput" accept="image/*" multiple hidden>
     <div class="upload-icon">📄</div>
-    <h3>Déposer images here</h3>
-    <p>ou cliquez pour parcourir (multiple fichiers)</p>
-    <p class="upload-hint">Supports JPG, PNG, WebP — up to 50 images</p>
+    <h3>Déposez vos images ici</h3>
+    <p>ou cliquez pour parcourir (plusieurs fichiers)</p>
+    <p class="upload-hint">Accepte JPG, PNG, WebP — jusqu'à 50 images</p>
   </div>
 
   <div id="workspace" style="display:none">
     <div class="controls">
-      <label>Page Taille</label>
+      <label>Taille de page</label>
       <select id="pageSize">
         <option value="a4">A4</option>
         <option value="letter">Letter</option>
-        <option value="fit" selected>Fit to Image</option>
+        <option value="fit" selected>Adaptée à l'image</option>
       </select>
-      <label style="margin-left:1rem">Margin (px)</label>
+      <label style="margin-left:1rem">Marge (px)</label>
       <input type="number" id="margin" value="20" min="0" max="100" style="width:70px">
       <label style="margin-left:1rem">Orientation</label>
       <select id="orientation">
         <option value="auto" selected>Auto</option>
         <option value="portrait">Portrait</option>
-        <option value="landscape">Landscape</option>
+        <option value="landscape">Paysage</option>
       </select>
     </div>
 
-    <p style="font-size:0.85rem;color:#6b7280;text-align:center">Drag items to reorder. First image = page 1.</p>
+    <p style="font-size:0.85rem;color:#6b7280;text-align:center">Faites glisser les éléments pour réordonner. La première image correspond à la page 1.</p>
     <div class="preview-list" id="previewList"></div>
 
     <div class="progress-bar" id="progBar" style="display:none"><div class="progress-fill" id="progFill" style="width:0%"></div></div>
     <div class="status" id="statusText"></div>
 
     <div class="controls">
-      <button class="btn btn-primary" id="convertBtn">Convertir to PDF</button>
-      <button class="btn btn-secondary" id="addMoreBtn">Ajouter Plus Images</button>
-      <button class="btn btn-secondary" id="clearBtn">Effacer All</button>
+      <button class="btn btn-primary" id="convertBtn">Convertir en PDF</button>
+      <button class="btn btn-secondary" id="addMoreBtn">Ajouter des images</button>
+      <button class="btn btn-secondary" id="clearBtn">Tout effacer</button>
     </div>
   </div>
       </div>
 <section class="how-to-section">
-  <h2>How to Use</h2>
+  <h2>Comment convertir des images en PDF</h2>
   <div class="how-to-steps">
-    <div class="how-to-step"><div class="step-number">1</div><h4>Upload Images</h4><p>Drag and drop multiple images in any order.</p></div>
-    <div class="how-to-step"><div class="step-number">2</div><h4>Reorder</h4><p>Drag items in the list to change the page order.</p></div>
-    <div class="how-to-step"><div class="step-number">3</div><h4>Configure</h4><p>Choose page size, margin, and orientation.</p></div>
-    <div class="how-to-step"><div class="step-number">4</div><h4>Convert & Download</h4><p>Click "Convert to PDF" and download.</p></div>
+    <div class="how-to-step"><div class="step-number">1</div><h4>Importez des images</h4><p>Glissez-déposez plusieurs images dans l'ordre de votre choix.</p></div>
+    <div class="how-to-step"><div class="step-number">2</div><h4>Réordonnez les pages</h4><p>Faites glisser les éléments de la liste pour changer l'ordre des pages.</p></div>
+    <div class="how-to-step"><div class="step-number">3</div><h4>Configurez la mise en page</h4><p>Choisissez la taille, la marge et l'orientation des pages.</p></div>
+    <div class="how-to-step"><div class="step-number">4</div><h4>Convertissez et téléchargez</h4><p>Cliquez sur « Convertir en PDF » et enregistrez le fichier obtenu.</p></div>
   </div>
 </section>
 
-<h2>Detailed User Guide</h2>
+<h2>Guide d'utilisation détaillé</h2>
 
       <div class="guide-block">
-        <h3>Step 1: Upload Images</h3>
-        <p>Drag and drop multiple image files.</p>
+        <h3>Étape 1 : importer les images</h3>
+        <p>Glissez-déposez plusieurs fichiers JPG, PNG ou WebP d'un seul coup, ou cliquez pour les choisir dans votre explorateur. La limite est fixée à 50 images par document PDF, ce qui couvre la grande majorité des besoins de numérisation.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Step 2: Reorder Pages</h3>
-        <p>Drag any item to change order. The list updates instantly.</p>
+        <h3>Étape 2 : ordonner les pages</h3>
+        <p>La liste affiche chaque vignette avec son numéro. Faites-la glisser vers le haut ou le bas pour obtenir l'ordre exact de lecture. C'est important pour un CV, un contrat ou un dossier administratif, où l'ordre des pages doit être logique.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Step 3: Configure Page Settings</h3>
-        <p>Choose page size, orientation, and margins.</p>
+        <h3>Étape 3 : régler la mise en page</h3>
+        <p>Le format A4 convient aux documents administratifs français. Le format « Adaptée à l'image » laisse chaque page épouser les proportions de la photo. La marge en pixels évite que le contenu ne touche les bords, pratique pour l'impression.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Step 4: Convert and Download</h3>
-        <p>Click "Convert to PDF" then download.</p>
+        <h3>Étape 4 : générer le PDF</h3>
+        <p>Cliquez sur « Convertir en PDF ». La barre de progression indique l'avancée. À la fin, le fichier se télécharge automatiquement sous le nom images.pdf. Vous pouvez alors l'ouvrir pour vérifier l'ordre et le rendu.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Common Use Cases</h3>
-        <ul><li>Photo album</li><li>Document archive</li><li>Portfolio</li></ul>
+        <h3>Cas d'usage courants</h3>
+        <ul><li>Numériser des factures et attestations à envoyer par mail</li><li>Assembler les pages d'un CV et d'une lettre de motivation</li><li>Regrouper les photos d'un bien immobilier à vendre</li><li>Archiver les pages d'un contrat signé</li></ul>
       </div>
+
+<section class="localization-section">
+  <h2>Assembler vos documents administratifs français en un seul PDF</h2>
+  <p>En France, la plupart des démarches en ligne — impôts, allocations familiales, Assurance Maladie, Pôle Emploi, demandes de logement social — exigent de transmettre plusieurs justificatifs sous la forme d'un unique fichier PDF. On dispose souvent de photos prises au smartphone : un justificatif de domicile, une carte d'identité recto-verso, un relevé de compte, une attestation employeur. Plutôt que d'installer un logiciel payant ou de passer par un service en ligne qui conserverait vos documents, cet outil assemble ces clichés en un PDF propre, page par page.</p>
+  <p>L'avantage du format A4, dans ce contexte, est de reproduire la mise en page d'un courrier classique. Chaque justificatif tient sur une page, avec une marge confortable qui évite que les bords ne soient rognés à l'impression. On prend soin de glisser la pièce d'identité en première position, puis le justificatif de domicile, puis le reste : l'agent qui instruit le dossier retrouve immédiatement ses repères. C'est un détail qui paraît anodin, mais qui accélère le traitement de votre demande, et évite les allers-retours administratifs.</p>
+  <p>Pensez aussi à la taille des fichiers. La plupart des portails administratifs plafonnent l'envoi à dix mégaoctets par document. Si votre PDF dépasse, compresser d'abord les images avec notre outil dédié, puis les rassembler. On évite ainsi le message d'erreur « fichier trop volumineux » au moment de valider l'envoi, et l'on ne perd pas un formulaire rempli en trois quarts d'heure.</p>
+  <p>Pour les démissions, les ruptures conventionnelles et les licenciements, le même processus s'applique. On numérise le contrat signé, les avenants, les certificats de travail, et l'on envoie le lot en un seul PDF cohérent. Les ressources humaines apprécient : elles n'ont pas à recoller cinq pièces jointes disparates. C'est aussi une manière de garder, chez soi, une copie numérique lisible de documents qui seront réclamés des années plus tard, lors d'une prochaine recherche d'emploi ou d'un nouveau dossier de prêt immobilier.</p>
+  <p>Les professions libérales — infirmiers, kinésithérapeutes, avocats, artisans — utilisent ce genre d'assemblage au quotidien. Une ordonnance signée, un ordre de mission, un devis accepté : on prend la photo, on la glisse dans la liste, on exporte le PDF. Le rendez-vous ou la consultation se soldent par un document clair, archivable et imprimable, sans passer par un scanner de bureau encombrant. Le traitement local garantit que des données de santé ou des échanges confidentiels ne transitent par aucun serveur tiers, ce qui n'est pas un détail dans le contexte de la loi Informatique et Libertés.</p>
+  <p>Pensez également aux démarches auprès du conseil départemental, de la caisse de retraite ou de l'assurance chômage. Chacun de ces organismes dispose de son propre portail, avec ses propres limites de taille et ses propres formats acceptés. Le PDF généré par nos soins s'affiche partout, sans qu'il soit besoin de convertir à nouveau. On prend l'habitude, une fois pour toutes, de préparer chaque dossier sous la forme d'un classeur numérique cohérent : pièce d'identité en première page, justificatif de domicile en deuxième, puis les attestations demandées. Cette routine fait gagner un temps précieux lors de chaque nouvelle démarche.</p>
+  <p>Pour les étudiants, c'est aussi la méthode la plus simple pour rendre un devoir, un dossier ou un rapport de stage. L'université accepte quasi systématiquement le PDF, mais rarement une suite d'images brutes. On assemble la couverture, le sommaire, les pages du devoir et la bibliographie dans l'ordre, puis on dépose le fichier unique sur la plateforme de l'établissement. C'est plus professionnel, et l'on évite le retour du correcteur qui n'a pas su ouvrir une image hébergée sur un nuage personnel.</p>
+</section>
+
+<section class="localization-section">
+  <h2>Pourquoi traiter vos images localement, sans envoi vers un serveur</h2>
+  <p>La CNIL insiste régulièrement sur les risques du téléversement de documents d'identité ou de justificatifs sur des services en ligne mal sécurisés. Chaque transfert vers un serveur tiers crée une copie, une journalisation, une surface d'attaque supplémentaire. Avec ce convertisseur, le PDF est généré dans la mémoire de votre propre navigateur, à partir des fichiers qui sont déjà sur votre disque. Rien ne part sur la Toile, rien n'est conservé, aucune publicité ciblée ne se branche sur le contenu de vos documents.</p>
+  <p>Ce choix technique change tout pour les personnes manipulant des données sensibles. Un relevé de situation caf, un avis d'imposition, un contrat de location : ces documents contiennent votre nom, votre adresse, vos revenus, parfois votre numéro de sécurité sociale. Les confier à un outil gratuit douteux, dont la politique de confidentialité est introuvable, revient à les exposer à un usage commercial ou à une fuite. En traitant localement, vous gardez la maîtrise complète du fichier, du moment où vous le sélectionnez jusqu'au moment où vous l'enregistrez sur votre ordinateur.</p>
+  <p>L'indépendance vis-à-vis du réseau est un autre atout. Dans les transports, en zone rurale, ou sur une connexion mobile limitée, téléverser une cinquantaine de photos haute définition peut prendre des minutes, voire échouer. Ici, tout se déroule sur votre machine. Même sans réseau, l'outil fonctionne : la page est chargée, les boutons répondent instantanément, et l'export se fait en quelques secondes. C'est précieux pour les usages nomades, où l'on prépare un dossier administratif dans le RER ou en attendant un rendez-vous.</p>
+  <p>Enfin, ce fonctionnement respecte votre droit à la déréférencement et à l'oubli numérique. Puisqu'aucun serveur ne voit vos images, aucune demande de suppression ne sera à formuler ultérieurement. Pas de compte à créer, pas de mail à confirmer, pas de durée de conservation à négocier. On utilise l'outil comme un utilitaire de bureau, qu'on ouvre quand on en a besoin et qu'on referme aussitôt. C'est l'esprit des outils respectueux, que la CNIL recommande pour les opérations impliquant des données personnelles.</p>
+  <p>Pour les petites structures et les associations, ce mode local évite toute déclaration préalable. Une association qui rassemble les fiches d'inscription de ses adhérents n'a pas à s'interroger sur l'hébergement des copies. Une mairie qui numérise des autorisations urbaines ne crée pas de fichier intermédiaire chez un tiers. Le PDF sort directement sur le disque, prêt à être archivé sur le serveur interne de l'organisation. C'est une simplicité précieuse, quand on sait le temps passé à mettre en conformité des outils SaaS pour des usages ponctuels.</p>
+  <p>À cela s'ajoute une exigence de plus en plus fréquente dans le monde professionnel : la traçabilité. Lorsqu'un justificatif est réclamé a posteriori, il faut pouvoir le retrouver rapidement. Si vous avez utilisé un service en ligne qui a égaré vos documents, ou qui les a effacés au bout de quelques semaines, vous êtes dans une situation délicate. En générant vos PDF localement, vous en restez propriétaire à 100 %. Vous les classez vous-même, dans votre arborescence, sur votre disque, et vous les retrouvez cinq ans plus tard sans dépendre de qui que ce soit.</p>
+  <p>Enfin, la confidentialité vaut aussi pour les enfants et les documents familiaux. Un bulletin de note, un certificat de vaccination, une ordonnance pédiatrique : on ne souhaite pas que ces clichés circulent sur la Toile. Le traitement local est la seule méthode qui garantit, techniquement, que rien ne fuit. C'est un réflexe à adopter dès lors que l'on manipule des documents qui contiennent des noms, des adresses, des dates de naissance ou des numéros d'identification. La prudence est la mère des sûretés, dit l'adage, et elle coûte ici quelques secondes à peine.</p>
+</section>
+
+<section class="localization-section">
+  <h2>Photos de famille, biens immobiliers et catalogues : quand fusionner des images en PDF devient utile</h2>
+  <p>Au-delà de l'administratif, l'outil rend service dans de nombreuses situations du quotidien. La première, ce sont les ventes entre particuliers sur Leboncoin, Le Bon Coin immobilier ou Se Loger. Un bien à louer ou à vendre se présente avec une dizaine de photos : façade, salon, cuisine, chambres, salle de bain, extérieur. Plutôt que de tout envoyer en pièces jointes éparses, on assemble ces photos en un PDF de présentation que l'on joint au mail de l'agence ou à la visite organisée. L'agent immobilier feuillette le document comme un dossier, et n'a pas à télécharger une à une les images depuis votre téléphone.</p>
+  <p>Les Vendeurs de Cdiscount, de Amazon Marketplace et de la marketplace de La Redoute utilisent un enchaînement voisin. Après la prise de vue produit, ils assemblent les différentes faces d'un même article en un PDF, qu'ils fournissent au service client en cas de litige de description. Le document fait foi : on y voit l'état réel du bien, l'étiquette d'origine, la signature du bordereau d'expédition. C'est plus solide qu'une seule photo, et cela se conserve dans le dossier de la commande pendant toute la durée de rétractation.</p>
+  <p>Pour les familles, le PDF est aussi un format d'album pratique. On numérise les pages d'un album papier, on les assemble dans l'ordre, et l'on obtient un petit livre numérique que l'on envoie aux grands-parents par mail ou que l'on partage sur une clé USB. Contrairement à un diaporama en ligne, le fichier se garde des années, s'ouvre sur n'importe quel ordinateur, et ne dépend pas d'un compte tiers. C'est une manière simple de transmettre des souvenirs, notamment aux aînés peu à l'aise avec les services cloud.</p>
+  <p>Les photographes amateurs, enfin, apprécient de pouvoir grouper leurs clichés en un PDF avant un envoi à un laboratoire de développement. On sélectionne les plus beaux tirages d'une série, on les ordonne, on exporte. Le labo reçoit un document unique, numéroté, dans lequel chaque image occupe une page A4. C'est plus clair qu'un dossier compressé, et cela évite les oublis de fichiers. Pour un portfolio destiné à une école d'art ou à une exposition locale, la même logique s'applique : on construit un document cohérent, prêt à être imprimé, sans passer par un logiciel de mise en page complet.</p>
+  <p>Enfin, pensez aux factures et tickets de caisse. On les photographie au fur et à mesure des achats, on les regroupe mensuellement en un PDF, et l'on obtient une trace lisible, bien ordonnée, prête pour la comptabilité ou la demande de remboursement d'entreprise. Fini les photos éparpillées dans la galerie du téléphone, difficiles à retrouver six mois plus tard. Le PDF mensuel devient un classeur numérique simple, que l'on archive dans le dossier approprié, et auquel on peut renvoyer en un instant.</p>
+  <p>Les enseignants et les formateurs utilisent aussi cet assemblage pour préparer leurs polycopiés. On prend en photo les pages d'un manuel épuisé, on les assemble dans l'ordre, on exporte le PDF, et l'on distribue le document aux élèves en impression A4 recto. C'est bien plus propre qu'un tas de photos individuelles, et l'on peut même ajouter une page de garde. Le traitement local évite que des pages sous droit ne transitent par un service tiers, ce qui est un point attentieux vis-à-vis des éditeurs et de la législation sur la reproduction d'extraits.</p>
+  <p>Enfin, pour les célébrations — mariage, baptême, anniversaire, remise de diplôme — le PDF devient un petit livre numérique souvenir. On sélectionne les plus belles photos de l'événement, on les ordonne chronologiquement, et l'on obtient un document que l'on peut graver sur un CD ou déposer sur une clé USB à offrir. C'est une attention qui se démarque des liens de galerie en ligne, souvent oubliés au bout de quelques mois. Le PDF, lui, s'ouvrira toujours, quel que soit l'ordinateur ou la tablette utilisé.</p>
+</section>
 
 <section class="faq-section">
-  <h2>Frequently Asked Questions</h2>
-  <div class="faq-item"><button class="faq-question">What image formats are supported?</button><div class="faq-answer">JPG, PNG, WebP, BMP, and GIF (first frame).</div></div>
-  <div class="faq-item"><button class="faq-question">Will image quality be reduced?</button><div class="faq-answer">No. Images are embedded at original resolution.</div></div>
-  <div class="faq-item"><button class="faq-question">Are my images uploaded to a server?</button><div class="faq-answer">No. PDF generation happens locally.</div></div>
+  <h2>Questions fréquentes</h2>
+  <div class="faq-item"><button class="faq-question">Quels formats d'images sont acceptés ?</button><div class="faq-answer">Les formats JPG, PNG, WebP, BMP et GIF (première image) sont pris en charge. Pour un usage administratif, le JPG est le plus universel ; le PNG convient aux captures d'écran avec texte, car il n'applique aucune compression avec perte.</div></div>
+  <div class="faq-item"><button class="faq-question">La qualité des images est-elle conservée ?</button><div class="faq-answer">Oui. Les images sont intégrées dans le PDF à leur résolution d'origine, sans recompression agressive. Le fichier obtenu est net à l'écran comme à l'impression, même pour des justificatifs contenant de petits caractères.</div></div>
+  <div class="faq-item"><button class="faq-question">Mes images sont-elles envoyées vers un serveur ?</button><div class="faq-answer">Non. La génération du PDF se déroule entièrement dans votre navigateur, grâce à une bibliothèque exécutée localement. Aucune image ne quitte votre appareil, ce qui respecte strictement les principes du RGPD et les recommandations de la CNIL.</div></div>
+  <div class="faq-item"><button class="faq-question">Puis-je assembler un CV et une lettre de motivation en un seul PDF ?</button><div class="faq-answer">Tout à fait. Importez d'abord la page de CV, puis la lettre, réordonnez si besoin, choisissez le format A4 portrait, et exportez. La plupart des recruteurs et des plateformes de candidature préfèrent recevoir un seul PDF plutôt que deux pièces jointes séparées.</div></div>
+  <div class="faq-item"><button class="faq-question">Comment envoyer ce PDF à Impots.gouv.fr ou à l'Assurance Maladie ?</button><div class="faq-answer">Une fois le PDF généré, connectez-vous à votre espace sur le portail administratif, utilisez la fonction de dépôt de pièce jointe, puis sélectionnez le fichier images.pdf téléchargé. Vérifiez qu'il ne dépasse pas la limite de taille, généralement dix mégaoctets par document.</div></div>
 </section>
 
 <section class="related-tools">
-  <h2>You Might Also Like</h2>
+  <h2>Vous aimerez aussi</h2>
   <div class="related-tools-grid">
     <a href="/fr/tools/pdf-to-image" class="related-tool-card">
       <span class="tool-icon">📑</span>
       <div class="tool-info">
-        <strong>PDF to Image</strong>
-        <span class="tool-desc">Extract pages as images</span>
+        <strong>PDF vers Image</strong>
+        <span class="tool-desc">Extraire les pages d'un PDF en images</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
     <a href="/fr/tools/image-merger" class="related-tool-card">
       <span class="tool-icon">🧩</span>
       <div class="tool-info">
-        <strong>Image Merger</strong>
-        <span class="tool-desc">Combine into one image</span>
+        <strong>Fusionner des images</strong>
+        <span class="tool-desc">Assembler plusieurs images en une seule</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
     <a href="/fr/tools/compressor" class="related-tool-card">
       <span class="tool-icon">🗜️</span>
       <div class="tool-info">
-        <strong>Image Compressor</strong>
-        <span class="tool-desc">Compress before PDF</span>
+        <strong>Compresseur d'images</strong>
+        <span class="tool-desc">Réduire le poids avant l'export PDF</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
@@ -341,7 +392,7 @@ function renderList() {
     div.innerHTML = `<span style="width:2rem;color:#9ca3af">${i+1}</span>
       <canvas id="prevCvs${i}"></canvas>
       <span>${item.name}</span>
-      <button title="Remove">✕</button>`;
+      <button title="Retirer">✕</button>`;
     // draw thumbnail
     const cv = div.querySelector('canvas');
     const scale = 60 / item.height;
@@ -369,7 +420,7 @@ convertBtn.addEventListener('click', async () => {
   if (!images.length) return;
   convertBtn.disabled = true;
   progBar.style.display = 'block';
-  statusText.textContent = 'Generating PDF...';
+  statusText.textContent = 'Génération du PDF...';
 
   const { jsPDF } = window.jspdf;
   const isA4 = $('pageSize').value === 'a4';
@@ -379,7 +430,7 @@ convertBtn.addEventListener('click', async () => {
   let pdf;
   for (let i = 0; i < images.length; i++) {
     progFill.style.width = ((i / images.length) * 100) + '%';
-    statusText.textContent = `Processing image ${i+1}/${images.length}...`;
+    statusText.textContent = `Traitement de l'image ${i+1}/${images.length}...`;
 
     await new Promise(resolve => {
       img = new Image();
@@ -404,7 +455,7 @@ convertBtn.addEventListener('click', async () => {
   }
 
   progFill.style.width = '100%';
-  statusText.textContent = 'Done! Downloading...';
+  statusText.textContent = 'Terminé ! Téléchargement...';
   pdf.save('images.pdf');
   setTimeout(() => { progBar.style.display = 'none'; progFill.style.width = '0%'; statusText.textContent = ''; convertBtn.disabled = false; }, 2000);
 });

@@ -4,20 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="index, follow">
-  <title>Encodeur et décodeur d'URL — échapper les caractères réservés</title>
-  <meta name="description" content="Encodez ou décodez une URL et ses paramètres : espaces, accents, caractères réservés. Comprenez la différence entre encoder une URL complète et un composant.">
+  <title>Encodeur et décodeur d'URL — UTF-8, accents et caractères réservés</title>
+  <meta name="description" content="Encodez ou décodez une URL et ses paramètres : accents, espaces et caractères réservés. Gratuit, sans inscription, traité dans votre navigateur.">
   <meta name="keywords" content="encoder url, décoder url, urlencode, url decoder, échapper caractères url, encoder uri">
   <link rel="canonical" href="https://smartimgkit.com/fr/tools/url-encoder">
   <meta name="theme-color" content="#6366f1">
-  <meta property="og:title" content="Encodeur et décodeur d'URL — échapper les caractères réservés">
-  <meta property="og:description" content="Encodez ou décodez une URL et ses paramètres : espaces, accents, caractères réservés. Comprenez la différence entre encoder une URL complète et un composant.">
+  <meta property="og:title" content="Encodeur et décodeur d'URL — UTF-8, accents et caractères réservés">
+  <meta property="og:description" content="Encodez ou décodez une URL et ses paramètres : accents, espaces et caractères réservés. Gratuit, sans inscription, traité dans votre navigateur.">
   <meta property="og:url" content="https://smartimgkit.com/fr/tools/url-encoder">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SmartImgKit">
   <meta property="og:image" content="https://smartimgkit.com/screenshots/url-encoder.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Encodeur et décodeur d'URL — échapper les caractères réservés">
-  <meta name="twitter:description" content="Encodez ou décodez une URL et ses paramètres : espaces, accents, caractères réservés. Comprenez la différence entre encoder une URL complète et un composant.">
+  <meta name="twitter:title" content="Encodeur et décodeur d'URL — UTF-8, accents et caractères réservés">
+  <meta name="twitter:description" content="Encodez ou décodez une URL et ses paramètres : accents, espaces et caractères réservés. Gratuit, sans inscription, traité dans votre navigateur.">
   <meta name="twitter:image" content="https://smartimgkit.com/screenshots/url-encoder.png">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="alternate" hreflang="ar" href="https://smartimgkit.com/ar/tools/url-encoder">
@@ -98,10 +98,10 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Quelle différence entre encoder un composant et une URL complète ?",
+      "name": "Quelle différence entre échapper un composant et une adresse complète ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Encoder un composant échappe aussi / ? & = # : @, ce qui convient à une valeur de paramètre. Encoder une URL complète les laisse intacts pour ne pas détruire la structure de l'adresse. Se tromper de mode casse le lien."
+        "text": "Échapper un composant masque aussi / ? & = # : @, ce qui convient à une valeur de paramètre. Échapper une adresse complète les laisse intacts pour ne pas détruire la structure du renvoi. Se tromper de mode casse le lien, et la page visée devient inaccessible."
       }
     },
     {
@@ -109,7 +109,7 @@
       "name": "Pourquoi mes accents deviennent-ils %C3%A9 ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Parce que l'encodage se fait en UTF-8 : é occupe deux octets, chacun échappé séparément. C'est la forme correcte et universellement comprise par les serveurs."
+        "text": "Parce que l'encodage se fait en UTF-8 : le é occupe deux octets, chacun échappé séparément. C'est la forme correcte, universellement comprise par les serveurs français comme par les serveurs étrangers. Ne tentez pas de la corriger manuellement."
       }
     },
     {
@@ -117,7 +117,7 @@
       "name": "Faut-il utiliser %20 ou + pour un espace ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Dans un chemin d'URL, %20 est la seule forme correcte. Dans une chaîne de requête, + est toléré par convention. En cas de doute, %20 fonctionne dans les deux cas."
+        "text": "Dans un chemin d'adresse, %20 est la seule forme correcte. Dans une chaîne de requête transmise par un formulaire, le signe plus est toléré par ancienne convention. En cas de doute, %20 fonctionne dans les deux situations et évite les mauvaises surprises."
       }
     },
     {
@@ -125,7 +125,7 @@
       "name": "Que faire si j'obtiens %25C3%25A9 au lieu de %C3%A9 ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Votre chaîne a été encodée deux fois. Décodez-la une fois avant de la réencoder, ou corrigez l'endroit du code qui applique l'encodage en double."
+        "text": "Votre chaîne a été échappée deux fois. Décodez-la une première passe avant de la réencoder, ou corrigez l'endroit de votre processus qui applique l'échappement en double. Ce symptôme arrive souvent lorsqu'un système enchaîne plusieurs traitements automatiques."
       }
     },
     {
@@ -133,15 +133,23 @@
       "name": "Le décodage peut-il échouer ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Oui, sur une séquence invalide, par exemple un % suivi de caractères qui ne sont pas hexadécimaux. C'est le signe que l'URL a été tronquée ou construite à la main."
+        "text": "Oui, sur une séquence non valide, par exemple un signe pourcentage suivi de caractères qui ne sont pas hexadécimaux. C'est généralement le signe qu'une adresse a été tronquée ou construite à la main, et qu'il faut en vérifier la source."
       }
     },
     {
       "@type": "Question",
-      "name": "Mes données sont-elles envoyées sur un serveur ?",
+      "name": "Puis-je échapper un lien d'annonce Vinted qui contient des espaces et des accents ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Non. L'encodage et le décodage utilisent les fonctions natives du navigateur, sans requête réseau. Une URL contenant un jeton ou un identifiant client peut être collée sans risque."
+        "text": "Tout à fait : collez l'adresse de votre fiche, appliquez l'échappement sur chaque valeur de paramètre, puis ouvrez le lien obtenu dans un onglet pour vérifier. Les vendeurs Vinted et Cdiscount évitent ainsi les renvois cassés auprès de leurs acheteurs, en quelques secondes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je coller un lien contenant un jeton d'accès à mon espace client, sans risque ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui. L'encodage et le décodage utilisent les fonctions natives du navigateur, sans aucune requête réseau. L'adresse, même chargée d'un identifiant personnel, ne quitte jamais votre appareil, ce qui respecte pleinement les attentes du RGPD en matière de confidentialité."
       }
     }
   ]
@@ -152,10 +160,10 @@
 <header class="site-header">
     <div class="container header-inner">
       <a href="/fr/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
-      <nav class="main-nav"><a href="/">Accueil</a><a href="/fr/tools/">Outils</a><a href="/fr/blog/">Blog</a><a href="/about">À propos</a><a href="/contact">Contact</a></nav>
+      <nav class="main-nav"><a href="/">Accueil</a><a href="/fr/tools/">Outils</a><a href="/fr/blog/">Articles</a><a href="/about">À propos</a><a href="/contact">Contactez-nous</a></nav>
       <div class="header-actions">
         <div class="lang-switcher" style="position:relative;">
-          <button class="lang-btn" aria-label="Switch language">🇫🇷 FR</button>
+          <button class="lang-btn" aria-label="Changer de langue">🇫🇷 FR</button>
           <div class="lang-dropdown" style="position:absolute;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
             <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
             <a href="/" hreflang="en" lang="en">🇬🇧 English</a>
@@ -173,7 +181,7 @@
 <div class="ad-zone ad-header ad-loader-slot" data-ad-type="header" data-current-mobile="0"></div>
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>🔗 URL Encoder / Decoder</span></nav>
+      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>🔗 Encodeur d'URL</span></nav>
 
       <div class="tool-page-header">
         <h1>🔗 Encoder une URL</h1>
@@ -221,7 +229,7 @@
             <div class="btn-row">
               <button class="btn btn-primary" id="encodeBtn">🔗 Encoder</button>
               <button class="btn btn-primary" id="decodeBtn">🔓 Décoder</button>
-              <button class="btn btn-secondary" id="encodeCompBtn">🔗 Encoder Component</button>
+              <button class="btn btn-secondary" id="encodeCompBtn">🔗 Encoder un composant</button>
               <button class="btn btn-secondary" id="clearBtn">Effacer</button>
             </div>
           </div>
@@ -260,13 +268,16 @@
 <p>Pour construire une URL en JavaScript, encodeURIComponent s'impose pour chaque valeur de paramètre, et l'API URLSearchParams gère l'ensemble sans risque d'oubli. L'encodage manuel à la main est une source d'erreur garantie dès qu'il y a plus de deux paramètres.</p>
 </section>
 
+<section class="localization-section"><h2>Vendeurs Vinted, Cdiscount et Amazon France : des liens d'annonces sans coupure</h2><p>Qui publie sur Vinted, Cdiscount ou Amazon France sait combien un lien peut se dégrader en chemin : un titre d'article accentué, un espace oublié, une esperluette qui sépare un paramètre en deux, et le renvoi mène vers une page d'erreur au lieu de l'annonce. Or les acheteurs français partagent énormément : un vendeur transmet le lien de son article dans un message, un client relaie une fiche dans un groupe, un commerçant intègre le renvoi dans sa signature électronique ou sur ses réseaux sociaux. À chaque fois, la moindre imperfection casse le parcours et fait perdre une vente.</p><p>Cet outil vous permet de coller une adresse, de l'échapper correctement et d'obtenir immédiatement une version que tous les navigateurs interprètent sans ambiguïté. Le traitement se déroule dans votre propre navigateur : aucune adresse, aucun identifiant, aucune donnée client ne transite par un serveur tiers. Vous pouvez donc échapper des liens internes de votre boutique, des adresses de suivi ou des renvois vers vos propres fiches produit sans la moindre hésitation.</p><h3>Cinq réflexes à adopter en tant que vendeur</h3><ul><li>Échappez les titres accentués. Un nom comme « Vélo électrique pliable » devient un renvoi exploitable partout : les é, è, à et é sont transformés en leur séquence UTF-8 correcte, comprise de tous les serveurs européens.</li><li>Vérifiez les espaces d'un titre copié depuis un tableur. Les tableurs glissent parfois un espace en tête ou en fin d'adresse : un coup d'œil au résultat et un espace devenu %20 règle le problème.</li><li>Encodez chaque valeur de paramètre séparément. Quand vous construissez un lien avec un terme de recherche ou un identifiant, échappez la valeur, jamais l'adresse entière, sous peine de transformer vos barres obliques en %2F.</li><li>Décodez un lien reçu avant de le partager. Un renvoi reçu en interne contient souvent %C3%A9 partout : décodez-le pour vérifier qu'il pointe bien vers le bon article, puis renvoyez la version lisible à votre client.</li><li>Contrôlez le lien final dans un onglet neuf. Après encodage, collez l'adresse dans la barre de votre navigateur et ouvrez-la : si la bonne fiche s'affiche, le lien est sain.</li></ul><h3>Le cas typique : l'annonce qui « ne s'ouvre pas »</h3><p>Un vendeur bordelais diffuse le lien de sa dernière veste dans un groupe d'acheteurs. Plusieurs personnes répondent que le renvoi affiche une page introuvable. Il reprend l'adresse, s'aperçoit que le titre de l'article comportait un espace et un accent jamais échappés, applique l'encodage d'un composant sur le titre, reconstitue son lien et le renvoie. Dès lors, tout le monde ouvre la fiche normalement. Trois minutes de manipulation lui évitaient une heure de messages de clients déçus.</p><p>Ce réflexe sert aussi aux comparaisons de prix et aux campagnes de relance : lorsque vous intégrez un paramètre de suivi à une adresse, assurez-vous que sa valeur ne contient ni esperluette ni dièse sans échappement. Une esperluette non échappée coupe le paramètre en deux côté serveur, et votre suivi se retrouve tronqué. En encodant chaque composant, vous conservez l'ensemble de vos informations, y compris lors d'un envoi vers Amazon France, Cdiscount ou Vinted.</p><p>Enfin, pensez aux renvois que vous collez dans vos messages clients : une adresse courte et saine inspire confiance, tandis qu'une suite incompréhensible de %20 et de %C3%A9 fait douter. Décodez l'adresse avant de l'envoyer dans un courriel, conservez-la ensuite telle quelle dans vos brouillons, et reprenez ce circuit chaque fois que vous modifiez une fiche. Les vendeurs les plus suivis sur ces plateformes doivent beaucoup à ce genre de détail sans gloire, mais qui évite les litiges et les messages répétitifs.</p><p>Pensez aussi aux comptes professionnels : une boutique gérée par plusieurs personnes, où l'on se transmet des renvois en interne. Chaque membre gagne à connaître la différence entre échapper une adresse et échapper une valeur, car un paramètre mal échappé dans un lien partagé perturbera toute l'équipe. Former les nouveaux arrivants sur ce point précis, en montrant l'outil en direct, prend dix minutes et évite des semaines de questions techniques répétées.</p></section><section class="localization-section"><h2>RGPD et confidentialité : échappez vos liens sans jamais les exposer</h2><p>Le RGPD impose aux entreprises comme aux particuliers de maîtriser leurs données personnelles, et cela vaut aussi pour les adresses. Une adresse web contient parfois plus qu'une simple page : un jeton de connexion, un identifiant de dossier, un numéro de client, un paramètre de suivi interne, un lien de réinitialisation de mot de passe. Coller un tel lien dans un outil en ligne suppose donc de faire confiance au service qui le reçoit, et toutes les plateformes ne méritent pas cette confiance.</p><p>Avec cet outil, l'encodage et le décodage utilisent les fonctions natives de votre navigateur, sans aucune requête sortante. L'adresse que vous collez ne quitte jamais votre appareil : elle n'est ni envoyée, ni journalisée, ni conservée. Vous pouvez donc traiter un lien d'accès à votre espace client, un renvoi vers un document partagé contenant des données de facturation, ou une adresse administrative transmise par votre caf, votre caisse de retraite ou votre impôt particulier, sans craindre la moindre interception.</p><h3>Trois situations sensibles où la localité compte</h3><ul><li>Les liens de déconnexion et de désabonnement. Ces adresses portent un jeton personnel : ne les faites jamais passer par un service en ligne tiers. Le traitement local permet de les relire, de les corriger ou de les transformer sans exposition.</li><li>Les adresses des démarches en ligne. Impots.gouv, ameli.fr, votre compteur d'énergie ou votre banque transmettent parfois des liens préremplis ; échappez-les localement avant de les recopier dans un autre document.</li><li>Les renvois internes d'entreprise. Un service RH ou un cabinet comptable qui partage un lien vers un dossier nominatif gagne à traiter l'adresse sur place plutôt que de l'expédier vers un convertisseur en ligne.</li></ul><h3>Un exemple : le lien de facture qui restait illisible</h3><p>Une comptable lyonnaise reçoit un lien de téléchargement vers une facture d'hôpital, truffé de séquences %C3%A9 et %25. Elle ne peut ni le relire ni le transmettre au service payeur. Colle l'adresse dans l'outil, lance le décodage : le lien redevient lisible, elle vérifie qu'il pointe vers le bon dossier, puis réencode la partie nécessaire avant de le joindre à son propre message. Aucune donnée nominative n'a transité, et le RGPD est respecté sur l'ensemble de la chaîne.</p><p>Ce réflexe vaut aussi pour les particuliers : un avis d'imposition consulté en ligne, une attestation d'assurance reçue par courriel, un lien de covoiturage réservé à plusieurs voyageurs. Dès qu'une adresse comporte des informations qui vous concernent, le traitement local doit être la règle. Vérifiez d'ailleurs à deux reprises que l'outil que vous ouvrez n'a pas à transmettre votre contenu : le nôtre fonctionne entièrement hors ligne dès la première lecture de la page.</p><p>En cas de doute sur la provenance d'un lien, décodez-le avant de cliquer : une adresse tronquée, un double échappement ou un paramètre inattendu apparaissent immédiatement, et vous évitez de poursuivre sur une page qui ne correspond pas à celle annoncée. Cette petite vérification, gratuite et sans inscription, complète utilement les réflexes de sécurité que l'on attend en France, en Belgique, en Suisse et au Québec, où la protection des données personnelles est au premier rang des préoccupations.</p><p>Le même raisonnement vaut lorsque vous devez transmettre un lien à un service administratif : impôts, caf, assurance maladie, retraite, tous font circuler des adresses préremplies que l'on recopie parfois d'un courriel vers un formulaire. Plutôt que de faire passer l'adresse par un convertisseur en ligne qui la conserverait peut-être dans ses journaux, traitez-la sur place, en local, et recopiez ensuite la version obtenue. Cette vigilance discrète correspond exactement à l'esprit du RGPD : minimiser les transferts, connaître chaque intermédiaire, et ne confier ses données qu'à des outils dont on maîtrise le fonctionnement. Sur un poste partagé au bureau, pensez enfin à fermer l'onglet après usage, même si aucune donnée n'a été transmise.</p></section><section class="localization-section"><h2>Développeurs et bureaux : construisez des adresses robustes au quotidien</h2><p>Dans un contexte professionnel, les adresses web ne sont pas de simples renvois : elles transportent des paramètres, des identifiants, des requêtes de recherche et des noms de documents. Dès qu'une donnée utilisateur y entre — un terme saisi, un nom de fichier accentué, une adresse courriel en paramètre —, un échappement correct devient obligatoire, sous peine de voir le lien se briser. Les développeurs disposent déjà de leurs bibliothèques, mais les autres membres d'une équipe, chargés de communication, du service administratif ou du support, n'ont pas toujours ce confort à portée de main.</p><p>Cet outil comble précisément ce vide : collez un texte, choisissez entre échapper une adresse complète ou un composant, et obtenez immédiatement la séquence utilisable. L'absence totale d'envoi réseau fait qu'il s'emploie aussi bien sur un ordinateur professionnel que sur un poste administratif, même lorsque la politique de sécurité restreint l'installation de logiciels supplémentaires.</p><h3>Quatre usages fréquents en entreprise</h3><ul><li>Noms de documents accentués. Un devis baptisé « Devis rénovation salle de bain.pdf » colle dans un lien de partage doit perdre ses espaces et ses accents ; l'encodage d'un composant règle le problème en une seconde.</li><li>Liens de recherche internes. Un intranet, un moteur documentaire ou un annuaire accepte une requête en paramètre : échappez chaque valeur pour que les espaces et les esperluettes ne coupent pas la requête.</li><li>Vérification d'une adresse construite à la main. Lorsqu'un formulaire renvoie un lien bizarre, décodez-le pas à pas pour comprendre ce qu'il contient avant de le transmettre.</li><li>Préparation d'un lien dans un courriel. Une signature, une invitation, une confirmation de rendez-vous : échappez les valeurs, testez le lien, puis insérez-le.</li></ul><h3>Le cas du fichier partagé dont le nom cassait tout</h3><p>Dans une petite agence lyonnaise, une responsable transmettait par courriel un renvoi vers un tableau partagé intitulé « Suivi chantier — Lot 2.ics ». Ses collègues cliquaient sur un lien tronqué, le dièse coupant l'adresse au moment de l'ouverture. Elle a encodé le composant du nom, obtenu la séquence correcte, vérifié l'ouverture dans un onglet, puis renvoyé l'adresse : tout s'est mis à fonctionner. Une minute de manipulation, et une incompréhension qui durait depuis des semaines disparaissait.</p><p>Au-delà de ces cas ponctuels, l'outil aide à comprendre deux pièges classiques. Le premier, c'est le double échappement : une valeur déjà échappée, puis de nouveau échappée par un processus automatique, donne des séquences en cascade comme %25C3%25A9. Le second, c'est le mauvais choix de mode : échapper une adresse entière comme un composant détruit sa structure, et échapper une simple valeur comme une adresse laisse passer des caractères qui la coupent. Savoir reconnaître l'un et l'autre évite des heures de diagnostic dans des applications internes.</p><p>Pour les équipes qui n'ont pas d'ingénieur sous la main au moment de préparer un envoi, ce réflexe devient rapidement un automatisme : on colle, on échappe, on ouvre dans un onglet, on partage. C'est la même logique qu'en cuisine professionnelle : on goûte avant de servir. Les organismes publics, les cabinets, les associations et les commerces de proximité y trouvent un outil sobre, gratuit et respectueux des données, qui ne remplace pas les bibliothèques de développement mais dépanneront toujours une urgence.</p><p>Enfin, pensez à la documentation que vous rédigez : un exemple d'adresse mal échappé dans un mode d'emploi est un appel aux erreurs de la part de vos lecteurs. Prenez une seconde pour vérifier chaque renvoi, décodez ceux que l'on vous rapporte, et maintenez une cohérence entre les différentes versions de vos documents. La rigueur sur ces détails discrets finit par faire la qualité perçue de tout un service.</p><p>À l'usage, cela devient un réflexe quotidien pour les personnes qui manipulent des adresses au bureau : un paramètre suspect, un titre de document à partager, une recherche interne à transmettre, et l'on ouvre l'outil sans même y penser. Aucune installation, aucune inscription, aucun envoi : tout reste sur la machine, ce qui convient parfaitement aux environnements administratifs et réglementés, où la prudence sur les données partagées est une exigence permanente.</p></section>
+
 <section class="faq-section"><h2>Questions fréquentes</h2>
-        <div class="faq-item"><button class="faq-question">Quelle différence entre encoder un composant et une URL complète ?</button><div class="faq-answer">Encoder un composant échappe aussi / ? &amp; = # : @, ce qui convient à une valeur de paramètre. Encoder une URL complète les laisse intacts pour ne pas détruire la structure de l'adresse. Se tromper de mode casse le lien.</div></div>
-        <div class="faq-item"><button class="faq-question">Pourquoi mes accents deviennent-ils %C3%A9 ?</button><div class="faq-answer">Parce que l'encodage se fait en UTF-8 : é occupe deux octets, chacun échappé séparément. C'est la forme correcte et universellement comprise par les serveurs.</div></div>
-        <div class="faq-item"><button class="faq-question">Faut-il utiliser %20 ou + pour un espace ?</button><div class="faq-answer">Dans un chemin d'URL, %20 est la seule forme correcte. Dans une chaîne de requête, + est toléré par convention. En cas de doute, %20 fonctionne dans les deux cas.</div></div>
-        <div class="faq-item"><button class="faq-question">Que faire si j'obtiens %25C3%25A9 au lieu de %C3%A9 ?</button><div class="faq-answer">Votre chaîne a été encodée deux fois. Décodez-la une fois avant de la réencoder, ou corrigez l'endroit du code qui applique l'encodage en double.</div></div>
-        <div class="faq-item"><button class="faq-question">Le décodage peut-il échouer ?</button><div class="faq-answer">Oui, sur une séquence invalide, par exemple un % suivi de caractères qui ne sont pas hexadécimaux. C'est le signe que l'URL a été tronquée ou construite à la main.</div></div>
-        <div class="faq-item"><button class="faq-question">Mes données sont-elles envoyées sur un serveur ?</button><div class="faq-answer">Non. L'encodage et le décodage utilisent les fonctions natives du navigateur, sans requête réseau. Une URL contenant un jeton ou un identifiant client peut être collée sans risque.</div></div>
+        <div class="faq-item"><button class="faq-question">Quelle différence entre échapper un composant et une adresse complète ?</button><div class="faq-answer">Échapper un composant masque aussi / ? &amp; = # : @, ce qui convient à une valeur de paramètre. Échapper une adresse complète les laisse intacts pour ne pas détruire la structure du renvoi. Se tromper de mode casse le lien, et la page visée devient inaccessible.</div></div>
+        <div class="faq-item"><button class="faq-question">Pourquoi mes accents deviennent-ils %C3%A9 ?</button><div class="faq-answer">Parce que l'encodage se fait en UTF-8 : le é occupe deux octets, chacun échappé séparément. C'est la forme correcte, universellement comprise par les serveurs français comme par les serveurs étrangers. Ne tentez pas de la corriger manuellement.</div></div>
+        <div class="faq-item"><button class="faq-question">Faut-il utiliser %20 ou + pour un espace ?</button><div class="faq-answer">Dans un chemin d'adresse, %20 est la seule forme correcte. Dans une chaîne de requête transmise par un formulaire, le signe plus est toléré par ancienne convention. En cas de doute, %20 fonctionne dans les deux situations et évite les mauvaises surprises.</div></div>
+        <div class="faq-item"><button class="faq-question">Que faire si j'obtiens %25C3%25A9 au lieu de %C3%A9 ?</button><div class="faq-answer">Votre chaîne a été échappée deux fois. Décodez-la une première passe avant de la réencoder, ou corrigez l'endroit de votre processus qui applique l'échappement en double. Ce symptôme arrive souvent lorsqu'un système enchaîne plusieurs traitements automatiques.</div></div>
+        <div class="faq-item"><button class="faq-question">Le décodage peut-il échouer ?</button><div class="faq-answer">Oui, sur une séquence non valide, par exemple un signe pourcentage suivi de caractères qui ne sont pas hexadécimaux. C'est généralement le signe qu'une adresse a été tronquée ou construite à la main, et qu'il faut en vérifier la source.</div></div>
+        <div class="faq-item"><button class="faq-question">Puis-je échapper un lien d'annonce Vinted qui contient des espaces et des accents ?</button><div class="faq-answer">Tout à fait : collez l'adresse de votre fiche, appliquez l'échappement sur chaque valeur de paramètre, puis ouvrez le lien obtenu dans un onglet pour vérifier. Les vendeurs Vinted et Cdiscount évitent ainsi les renvois cassés auprès de leurs acheteurs, en quelques secondes.</div></div>
+        <div class="faq-item"><button class="faq-question">Puis-je coller un lien contenant un jeton d'accès à mon espace client, sans risque ?</button><div class="faq-answer">Oui. L'encodage et le décodage utilisent les fonctions natives du navigateur, sans aucune requête réseau. L'adresse, même chargée d'un identifiant personnel, ne quitte jamais votre appareil, ce qui respecte pleinement les attentes du RGPD en matière de confidentialité.</div></div>
       </section>
 
 <section class="related-tools"><h2>À découvrir aussi</h2>
@@ -277,16 +288,16 @@
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
 </main>
   <div class="ad-zone ad-footer ad-loader-slot" data-ad-type="footer"></div>
-<footer class="site-footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Outils d'image gratuits avec IA qui respectent votre vie privée.</p></div><div class="footer-links"><h4>Outils</h4><a href="/fr/tools/background-remover">Supprimer l'arrière-plan</a><a href="/fr/tools/compressor">Compresseur</a><a href="/fr/tools/converter">Convertisseur</a><a href="/fr/tools/resizer">Redimensionneur</a><a href="/fr/tools/cropper">Recadrage</a><a href="/fr/tools/watermark">Filigrane</a></div><div class="footer-links"><h4>Plus d'outils</h4><a href="/fr/tools/image-upscaler">Agrandisseur</a><a href="/fr/tools/gif-editor">Éditeur GIF</a><a href="/fr/tools/pdf-to-image">PDF vers Image</a><a href="/fr/tools/heic-converter">Convertisseur HEIC</a><a href="/fr/tools/meme-generator">Générateur de Mèmes</a><a href="/fr/tools/face-blur">Flouter les Visages</a></div><div class="footer-links"><h4>Site</h4><a href="/about">À propos</a><a href="/contact">Contact</a><a href="/privacy">Confidentialité</a><a href="/terms">Conditions</a></div></div><div class="footer-bottom"><p>© 2026 SmartImgKit. Traitement 100% local — vos fichiers ne quittent jamais votre appareil.</p></div></div></footer>
+<footer class="site-footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Outils d'image gratuits avec IA qui respectent votre vie privée.</p></div><div class="footer-links"><h4>Outils</h4><a href="/fr/tools/background-remover">Supprimer l'arrière-plan</a><a href="/fr/tools/compressor">Compresseur</a><a href="/fr/tools/converter">Convertisseur</a><a href="/fr/tools/resizer">Redimensionneur</a><a href="/fr/tools/cropper">Recadrage</a><a href="/fr/tools/watermark">Filigrane</a></div><div class="footer-links"><h4>Plus d'outils</h4><a href="/fr/tools/image-upscaler">Agrandisseur</a><a href="/fr/tools/gif-editor">Éditeur GIF</a><a href="/fr/tools/pdf-to-image">PDF vers Image</a><a href="/fr/tools/heic-converter">Convertisseur HEIC</a><a href="/fr/tools/meme-generator">Générateur de Mèmes</a><a href="/fr/tools/face-blur">Flouter les Visages</a></div><div class="footer-links"><h4>Site</h4><a href="/about">À propos</a><a href="/contact">Contactez-nous</a><a href="/privacy">Confidentialité</a><a href="/terms">Conditions</a></div></div><div class="footer-bottom"><p>© 2026 SmartImgKit. Traitement 100% local — vos fichiers ne quittent jamais votre appareil.</p></div></div></footer>
   <script src="/js/main.js?v=8"></script>
 
   <script>
 (function() {
   const input = document.getElementById('inputText');
   const output = document.getElementById('outputText');
-  document.getElementById('encodeBtn').onclick = () => { try { output.value = encodeURI(input.value); } catch(e) { output.value = 'Error: ' + e.message; } };
-  document.getElementById('decodeBtn').onclick = () => { try { output.value = decodeURI(input.value); } catch(e) { output.value = 'Error: Invalid encoding'; } };
-  document.getElementById('encodeCompBtn').onclick = () => { try { output.value = encodeURIComponent(input.value); } catch(e) { output.value = 'Error: ' + e.message; } };
+  document.getElementById('encodeBtn').onclick = () => { try { output.value = encodeURI(input.value); } catch(e) { output.value = 'Erreur : ' + e.message; } };
+  document.getElementById('decodeBtn').onclick = () => { try { output.value = decodeURI(input.value); } catch(e) { output.value = 'Erreur : encodage non valide'; } };
+  document.getElementById('encodeCompBtn').onclick = () => { try { output.value = encodeURIComponent(input.value); } catch(e) { output.value = 'Erreur : ' + e.message; } };
   document.getElementById('copyBtn').onclick = () => { navigator.clipboard.writeText(output.value); };
   document.getElementById('clearBtn').onclick = () => { input.value = ''; output.value = ''; };
   document.getElementById('swapBtn').onclick = () => { const t = input.value; input.value = output.value; output.value = t; };

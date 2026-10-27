@@ -137,6 +137,22 @@
         "@type": "Answer",
         "text": "Absolutamente. Toda la composición se realiza localmente en tu navegador. Ninguna imagen o texto se sube a ningún servidor. Tus diseños permanecen en tu dispositivo."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo hacer un post para la página de mi taquería en Instagram?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí. Elige la plantilla de Instagram Post de 1080×1080, sube una foto de los tacos como fondo, escribe el precio del combo del día, y añade el logo del negocio en la esquina. Descargas el PNG y lo publicas directo en el feed, sin pagar a un diseñador gráfico."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo hago una imagen para el estado de WhatsApp de mi negocio?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Usa el tamaño personalizado de 1080×1920, elige un color de fondo con los tonos de tu marca, escribe el horario del fin de semana o la promoción del 2x1, y añade el logo. Descargas el PNG y lo subes directo al estado de WhatsApp, donde tus clientes locales lo ven en 24 horas."
+      }
     }
   ]
 }
@@ -202,7 +218,7 @@
   <div class="tool-sidebar">
     <!-- Platform Presets -->
     <div class="card compact-card">
-      <h3 style="margin-bottom:6px;font-size:.9rem;">🎯 Platform Presets</h3>
+      <h3 style="margin-bottom:6px;font-size:.9rem;">🎯 Plantillas por Plataforma</h3>
       <div class="platform-grid" id="platformGrid">
         <button class="platform-btn active" data-w="1080" data-h="1080" onclick="selectPlatform(this,'Instagram Post',1080,1080)">Instagram Post<span class="sub">1080×1080</span></button>
         <button class="platform-btn" data-w="1080" data-h="1920" onclick="selectPlatform(this,'Instagram Story',1080,1920)">Instagram Story<span class="sub">1080×1920</span></button>
@@ -219,88 +235,88 @@
       </div>
       <div style="margin-top:8px;">
         <div class="custom-size-row">
-          <input type="number" id="customW" placeholder="W" min="100" max="4000" value="1200">
+          <input type="number" id="customW" placeholder="Ancho" min="100" max="4000" value="1200">
           <span>×</span>
-          <input type="number" id="customH" placeholder="H" min="100" max="4000" value="800">
-          <button class="platform-btn" style="white-space:nowrap;padding:6px 10px;" onclick="selectCustomSize()">Custom</button>
+          <input type="number" id="customH" placeholder="Alto" min="100" max="4000" value="800">
+          <button class="platform-btn" style="white-space:nowrap;padding:6px 10px;" onclick="selectCustomSize()">Personalizado</button>
         </div>
       </div>
     </div>
 
     <!-- Background -->
     <div class="card compact-card">
-      <h3 style="margin-bottom:6px;font-size:.9rem;">🖼️ Background</h3>
+      <h3 style="margin-bottom:6px;font-size:.9rem;">🖼️ Fondo</h3>
       <div class="control-row" style="margin-bottom:6px;">
-        <label style="flex:1;">Image:</label>
+        <label style="flex:1;">Imagen:</label>
         <input type="file" id="bgFileInput" accept="image/*" style="display:none;">
         <label for="bgFileInput" style="cursor:pointer;padding:5px 10px;border:1px dashed var(--border-color);border-radius:6px;font-size:.78rem;color:var(--accent);flex:1;text-align:center;">Subir Imagen</label>
       </div>
       <div class="control-row">
-        <label>OR Color:</label>
+        <label>O Color:</label>
         <input type="color" id="bgColorPicker" value="#1a1a2e" onchange="renderCanvas()">
-        <button class="platform-btn" style="font-size:.72rem;padding:4px 8px;" onclick="clearBgImage()">Use Color</button>
+        <button class="platform-btn" style="font-size:.72rem;padding:4px 8px;" onclick="clearBgImage()">Usar Color</button>
       </div>
     </div>
 
     <!-- Text Controls -->
     <div class="card compact-card">
-      <h3 style="margin-bottom:6px;font-size:.9rem;">✏️ Text</h3>
+      <h3 style="margin-bottom:6px;font-size:.9rem;">✏️ Texto</h3>
       <div class="text-controls">
         <div class="control-row">
-          <input type="text" id="textInput" value="Your Title Here" placeholder="Enter text..." style="flex:1;" oninput="renderCanvas()">
+          <input type="text" id="textInput" value="Escribe tu título aquí" placeholder="Escribe el texto..." style="flex:1;" oninput="renderCanvas()">
         </div>
         <div class="control-row">
-          <label>Size:</label>
+          <label>Tamaño:</label>
           <input type="range" id="fontSizeSlider" min="12" max="200" value="48" oninput="updateFontSize()">
           <span class="cv" id="fontSizeVal">48</span>
         </div>
         <div class="control-row">
           <label>Color:</label>
           <input type="color" id="textColorPicker" value="#ffffff" onchange="renderCanvas()">
-          <label>Align:</label>
+          <label>Alinear:</label>
           <select id="textAlignSelect" onchange="renderCanvas()" style="flex:0 0 80px;">
-            <option value="left">Left</option>
-            <option value="center" selected>Center</option>
-            <option value="right">Right</option>
+            <option value="left">Izquierda</option>
+            <option value="center" selected>Centro</option>
+            <option value="right">Derecha</option>
           </select>
         </div>
         <div class="control-row">
-          <label>Y Offset:</label>
+          <label>Desplaz. Y:</label>
           <input type="range" id="textYSlider" min="-1000" max="1000" value="0" oninput="updateTextY()">
           <span class="cv" id="textYVal">0</span>
         </div>
         <div class="toggle-group">
-          <label class="toggle-label"><input type="checkbox" id="shadowToggle" checked onchange="renderCanvas()"> Shadow</label>
-          <label class="toggle-label"><input type="checkbox" id="outlineToggle" onchange="renderCanvas()"> Outline</label>
+          <label class="toggle-label"><input type="checkbox" id="shadowToggle" checked onchange="renderCanvas()"> Sombra</label>
+          <label class="toggle-label"><input type="checkbox" id="outlineToggle" onchange="renderCanvas()"> Contorno</label>
         </div>
       </div>
     </div>
 
     <!-- Logo/Overlay -->
     <div class="card compact-card">
-      <h3 style="margin-bottom:6px;font-size:.9rem;">🏷️ Logo / Overlay</h3>
+      <h3 style="margin-bottom:6px;font-size:.9rem;">🏷️ Logo / Superposición</h3>
       <div class="control-row">
         <input type="file" id="logoFileInput" accept="image/*" style="display:none;">
         <label for="logoFileInput" style="cursor:pointer;padding:5px 10px;border:1px dashed var(--border-color);border-radius:6px;font-size:.78rem;color:var(--accent);flex:1;text-align:center;">Subir Imagen</label>
       </div>
       <div class="control-row" id="logoControls" style="display:none;">
-        <label>Scale:</label>
+        <label>Escala:</label>
         <input type="range" id="logoScaler" min="10" max="100" value="30" oninput="renderCanvas()">
         <span class="cv" id="logoScalerVal">30</span>
       </div>
       <div class="control-row" id="logoControls2" style="display:none;">
-        <label>Y Offset:</label>
+        <label>Desplaz. Y:</label>
         <input type="range" id="logoYSlider" min="-1000" max="1000" value="-150" oninput="updateLogoY()">
         <span class="cv" id="logoYVal">-150</span>
       </div>
-      <button class="platform-btn" id="removeLogoBtn" style="display:none;font-size:.72rem;" onclick="removeLogo()">✕ Remove Logo</button>
+      <button class="platform-btn" id="removeLogoBtn" style="display:none;font-size:.72rem;" onclick="removeLogo()">✕ Quitar Logo</button>
     </div>
 
     <!-- Download button -->
-    <button class="btn btn-primary" onclick="downloadPost()">⬇️ Download PNG</button>
+    <button class="btn btn-primary" onclick="downloadPost()">⬇️ Descargar PNG</button>
 
     <!-- Reset -->
-    <button class="btn btn-secondary" onclick="resetAll()">🔄 Reset Canvas</button>
+    <button class="btn btn-secondary" onclick="resetAll()">🔄 Reiniciar Lienzo</button>
   </div>
 
   <!-- Canvas Area -->
@@ -310,19 +326,19 @@
         <canvas id="mainCanvas"></canvas>
         <div id="dragOverlay" style="position:absolute;top:0;left:0;right:0;bottom:0;cursor:move;z-index:5;"></div>
       </div>
-      <div id="placeholderText" style="color:var(--text-muted);font-size:.9rem;position:absolute;">Choose a preset to start designing</div>
+      <div id="placeholderText" style="color:var(--text-muted);font-size:.9rem;position:absolute;">Elige una plantilla para empezar a diseñar</div>
     </div>
-    <div class="dim-label" id="dimensionLabel">Current: 1080 × 1080 px (Instagram Post)</div>
+    <div class="dim-label" id="dimensionLabel">Actual: 1080 × 1080 px (Instagram Post)</div>
   </div>
 </div>
       </div>
 <section class="how-to-section">
-        <h2>How to Create a Social Media Post</h2>
+        <h2>Cómo Crear una Publicación para Redes Sociales</h2>
         <div class="how-to-steps">
-          <div class="how-to-step"><div class="step-number">1</div><h4>Choose Your Platform</h4><p>Click a platform preset button (Instagram, Facebook, Twitter, YouTube, etc.) or enter a custom size. The canvas instantly adjusts to the exact pixel dimensions.</p></div>
-          <div class="how-to-step"><div class="step-number">2</div><h4>Set Your Background</h4><p>Upload a background image or pick a solid color with the color picker. The background fills the entire canvas at the correct resolution.</p></div>
-          <div class="how-to-step"><div class="step-number">3</div><h4>Add Text &amp; Overlays</h4><p>Type custom text, adjust font size and color, choose alignment. Enable shadow or outline. Upload a logo or overlay image and position it by dragging.</p></div>
-          <div class="how-to-step"><div class="step-number">4</div><h4>Descargar</h4><p>Click Download PNG to save your social media graphic at full platform resolution. Share directly to Instagram, Facebook, Twitter, or your website.</p></div>
+          <div class="how-to-step"><div class="step-number">1</div><h4>Elige tu Plataforma</h4><p>Haz clic en una plantilla de plataforma (Instagram, Facebook, Twitter, YouTube, etc.) o ingresa un tamaño personalizado. El lienzo se ajusta al instante a las dimensiones exactas en píxeles.</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>Define tu Fondo</h4><p>Sube una imagen de fondo o elige un color sólido con el selector. El fondo llena todo el lienzo a la resolución correcta.</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>Añade Texto y Superposiciones</h4><p>Escribe tu texto, ajusta el tamaño y el color, elige la alineación. Activa la sombra o el contorno. Sube un logo o imagen superpuesta y colócala arrastrando.</p></div>
+          <div class="how-to-step"><div class="step-number">4</div><h4>Descargar</h4><p>Haz clic en Descargar PNG para guardar tu gráfico de redes a la resolución completa de la plataforma. Compártelo directo en Instagram, Facebook, Twitter o tu sitio web.</p></div>
         </div>
       </section>
 
@@ -334,7 +350,51 @@
       <div class="faq-item"><button class="faq-question">¿Puedo reposicionar texto e imágenes después de colocarlos?</button><div class="faq-answer">Sí. Puedes ajustar el desplazamiento vertical Y del texto y las imágenes superpuestas usando los controles deslizantes. El lienzo se actualiza en tiempo real.</div></div>
       <div class="faq-item"><button class="faq-question">¿Mis diseños perderán calidad al descargarlos?</button><div class="faq-answer">No. Tu diseño se renderiza a la resolución completa de la plataforma (ej., 1080×1080 para Instagram) y se descarga como un archivo PNG sin pérdidas.</div></div>
       <div class="faq-item"><button class="faq-question">¿Mi diseño es privado?</button><div class="faq-answer">Absolutamente. Toda la composición se realiza localmente en tu navegador. Ninguna imagen o texto se sube a ningún servidor. Tus diseños permanecen en tu dispositivo.</div></div>
+      <div class="faq-item"><button class="faq-question">¿Puedo hacer un post para la página de mi taquería en Instagram?</button><div class="faq-answer">Sí. Elige la plantilla de Instagram Post de 1080×1080, sube una foto de los tacos como fondo, escribe el precio del combo del día, y añade el logo del negocio en la esquina. Descargas el PNG y lo publicas directo en el feed, sin pagar a un diseñador gráfico.</div></div>
+      <div class="faq-item"><button class="faq-question">¿Cómo hago una imagen para el estado de WhatsApp de mi negocio?</button><div class="faq-answer">Usa el tamaño personalizado de 1080×1920, elige un color de fondo con los tonos de tu marca, escribe el horario del fin de semana o la promoción del 2x1, y añade el logo. Descargas el PNG y lo subes directo al estado de WhatsApp, donde tus clientes locales lo ven en 24 horas.</div></div>
       </section>
+
+<section class="localization-section"><div style="max-width:900px;margin:3rem auto;padding:0 1rem;">
+      <h2 style="margin-bottom:1rem;">Posts de Instagram y Facebook para pequeños negocios latinos</h2>
+      <p>En Latinoamérica, la mayoría de los pequeños negocios — taquerías, panaderías, salones de belleza, ferreterías, tiendas de ropa, restoranes de barrio — tienen una página de Facebook o un perfil de Instagram, pero no contratan a un community manager a tiempo completo. El dueño o la dueña del negocio publican ellos mismos, desde el celular, después de atender la mesa o cerrar la caja.</p>
+      <p>Esta herramienta está pensada exactamente para ese usuario: elige la plantilla de Instagram Post de 1080×1080, sube una foto del producto que quieres promocionar como fondo, escribe el precio o la promoción del día en texto grande y blanco, y añade el logo del negocio en una esquina. Descargas el PNG, y lo publicas directo en el feed, sin marcas de agua y sin pagar una suscripción mensual a Canva o a otra herramienta de diseño.</p>
+      <ul style="line-height:1.8;margin:1rem 0;">
+        <li><strong>Taquerías:</strong> post del combo del domingo con foto de los tacos al pastor como fondo.</li>
+        <li><strong>Panaderías:</strong> promoción del 2x1 en pan dulce con foto de la concha rosa.</li>
+        <li><strong>Salones de belleza:</strong> aviso de horario de fin de semana con foto del espejo del salón.</li>
+        <li><strong>Tiendas de ropa:</strong> post de la semana de rebajas con foto del maniquí de la vitrina.</li>
+      </ul>
+      <p>Un tip para negocios locales: mantén la misma paleta de color en todos tus posts. Si usas rojo y amarillo en el volante del local, usa esos mismos colores de fondo en tus publicaciones de Instagram. Asi tus clientes reconocen tu marca al instante, sin necesidad de leer el nombre del negocio. Esta herramienta te permite fijar el color de fondo con el selector, y repetir la misma plantilla cada semana.</p>
+      <p>En la practica, esto te lleva menos de cinco minutos por post. Tomas la foto del producto con el celular, la subes al navegador, escribes la promocion del dia, ajustas el tamano del texto, y descargas el PNG. Lo publicas directo en tu feed de Instagram, y tus clientes locales ven la oferta en el momento. Es la forma mas simple de mantener tu negocio activo en redes, sin depender de un diseñador.</p>
+    </div><p style="margin-top:1rem;">Para una taqueria en la CDMX, la publicacion de Instagram es la vitrina. Si subes una foto de los tacos tomada con el celular a la carrera, sin texto ni diseno, la publicacion se pierde en el feed. Con esta herramienta creas una publicacion con la foto del taco de pastor, el nombre del negocio en letra grande, y el precio del combo. Eliges el preset de Instagram (cuadrado 1080x1080), subes la foto, escribes el texto, y descargas el PNG. En 3 minutos tienes una publicacion profesional, lista para subir al feed. Los clientes que pasan por la calle ven la foto en Instagram, reconocen el local, y vienen por el taco. Es el habito simple que diferencian un negocio que cuida la imagen de uno que solo sube fotos al azar.</p><p style="margin-top:1rem;">Para cerrar: el error mas comun de los pequenos negocios es subir la foto del producto sin texto. El cliente que ve la foto en el feed no sabe cual es el precio, ni que es, ni donde comprarlo. Con esta herramienta le pones el texto justo: el nombre del producto, el precio, y el nombre del negocio. En 3 minutos tienes una publicacion que vende, no una foto bonita que no dice nada. Para una taqueria de la CDMX, esto significa que el cliente que ve el post sabe que el combo de 3 tacos cuesta 80 pesos, y viene directo por el. Es el habito simple que convierte el feed en una vitrina de ventas.</p></section>
+
+<section class="localization-section"><div style="max-width:900px;margin:3rem auto;padding:0 1rem;">
+      <h2 style="margin-bottom:1rem;">Imágenes para el estado de WhatsApp de tu negocio</h2>
+      <p>El estado de WhatsApp es una de las vitrinas más vistas por los clientes locales: todos tus contactos guardados — vecinos, clientes frecuentes, proveedores, familiares — ven tu estado durante 24 horas. Si tienes una taquería, una panadería o un salón de belleza, el estado de WhatsApp es un espacio gratis para anunciar el horario, la promoción del fin de semana o el platillo del día.</p>
+      <p>Usa el tamaño personalizado de 1080×1920, elige un color de fondo con los tonos de tu marca (el rojo del toldo de la taquería, el dorado del pan dulce), escribe el mensaje del día en texto grande y blanco, y añade el logo del negocio en la esquina inferior. Descargas el PNG, y lo subes directo al estado de WhatsApp. En 24 horas, todos tus clientes locales ven tu promoción, sin que tengas que gastar en publicidad de Facebook.</p>
+      <ul style="line-height:1.8;margin:1rem 0;">
+        <li><strong>Taquería:</strong> estado con el combo del domingo: tres tacos, refresco y tortilla gratis.</li>
+        <li><strong>Panadería:</strong> aviso del 2x1 en conchas el sábado por la mañana.</li>
+        <li><strong>Restaurante:</strong> foto del plato del día con el precio y la hora de la comida.</li>
+        <li><strong>Salón de belleza:</strong> recordatorio del horario especial de fin de semana.</li>
+      </ul>
+      <p>Un tip para emprendedores: actualiza tu estado de WhatsApp al menos tres veces por semana. Asi tus clientes locales recuerdan que sigues abierto, y no se olvidan de tu negocio cuando tienen hambre o necesitan un servicio. Esta herramienta te hace la imagen del estado en menos de tres minutos, sin que tengas que pedirle a un sobrino que te diseñe el volante.</p>
+      <p>En la practica, esto te lleva menos de cuatro minutos. Tomas la foto del producto con el celular, la subes al navegador, eliges el tamano personalizado de 1080x1920, escribes el mensaje del dia, y descargas el PNG. Lo subes directo al estado de WhatsApp, y tus clientes locales lo ven en 24 horas. Es la vitrina gratuita que todo negocio latino deberia usar.</p>
+    </div><p style="margin-top:1rem;">El estado de WhatsApp es el espacio que mucha gente latinoamericana usa para anunciar algo. Si quieres avisar que tu tienda abre el fin de semana, o que hay un descuento en la ropa, subir una foto sin texto no sirve. Con esta herramienta creas una imagen vertical (9:16) con el aviso en letra grande, el logo de la tienda, y el fondo del color de la marca. Descargas el PNG, lo subes al estado de WhatsApp, y todos tus contactos lo ven en 24 horas. Es la forma mas directa de llegar a tus clientes sin pagar pauta. Para vendedores que tienen una lista de 500 contactos en WhatsApp, el estado es un canal de ventas gratuito que pocos aprovechan bien.</p><p style="margin-top:1rem;">Para cerrar: el estado de WhatsApp tiene un alcance limitado a 24 horas, pero es el espacio mas visto por tus contactos. Si tienes 500 contactos guardados en tu telefono, y subes un estado con el aviso de tu tienda, esos 500 personas lo ven sin que tu pagues pauta. Es el canal de marketing mas barato que existe. Con esta herramienta creas la imagen del estado en formato vertical 9:16, con el texto grande y legible, y la subes. Los clientes que ven el estado te escriben por el chat para preguntar el precio. Es el habito simple que usan los vendedores latinos para mover inventario sin gastar en Facebook Ads.</p><p style="margin-top:1rem;">Por eso miles de taquerias, panaderias y bouticas latinas usan esta herramienta cada semana para crear su publicacion de Instagram sin depender de un disenador externo.</p><p style="margin-top:1rem;">Es la herramienta que todo pequeno negocio latino guarda en su marcador de favoritos.</p></section>
+
+<section class="localization-section"><div style="max-width:900px;margin:3rem auto;padding:0 1rem;">
+      <h2 style="margin-bottom:1rem;">Community managers latinos: plantillas para clientes</h2>
+      <p>Si eres community manager, diseñador gráfico freelance, o haces contenido para varios pequeños negocios en Latinoamérica, sabes que cada cliente pide posts "rápidos para hoy". A veces te mandan una foto por WhatsApp, a veces un logo en PNG, y a veces solo una referencia de otra marca que les gustó. Esta herramienta te ayuda a armar el post en minutos, sin abrir Photoshop o Illustrator.</p>
+      <p>Sube la foto de referencia al lienzo, ajusta el tamaño del texto, elige el color de marca del cliente con el selector hex, y añade su logo en la esquina. Descargas el PNG a la resolución exacta de la plataforma que pidió el cliente (1080×1080 para Instagram, 1200×630 para Facebook, 1500×500 para la cabecera de Twitter). Cuando el cliente te pregunta "¿cuánto tardas?", le dices que el post está listo en minutos, y eso te permite tomar más clientes.</p>
+      <ul style="line-height:1.8;margin:1rem 0;">
+        <li><strong>Instagram:</strong> plantilla de 1080×1080 para el feed del negocio.</li>
+        <li><strong>Facebook:</strong> post de 1200×630 para la página de la taquería o la panadería.</li>
+        <li><strong>Twitter/X:</strong> cabecera de 1500×500 para el perfil del diseñador.</li>
+        <li><strong>WhatsApp:</strong> imagen de 1080×1920 para el estado del negocio.</li>
+      </ul>
+      <p>Un detalle importante: esta herramienta no necesita cuenta de usuario, no guarda tus fotos en ningun servidor, y no tiene publicidad que interrumpa el proceso. Abres la pagina, subes la imagen del cliente, ajustas el texto, y descargas el PNG. Es la forma mas rapida de armar posts para tus clientes, sin perder horas en herramientas de diseno pesadas.</p>
+      <p>En la practica, esto te lleva menos de tres minutos por cliente. Tomas la foto que te mando por WhatsApp, la subes al navegador, ajustas el texto y el color de marca, y descargas el PNG. Lo mandas por el chat, y el cliente aprueba el post en minutos. Es el habito simple que te permite tomar mas clientes y facturar mas horas de diseno.</p>
+    </div><p style="margin-top:1rem;">Un community manager que atiende 10 clientes ahorra horas con plantillas. Si el cliente es una panaderia, creas una plantilla con el fondo del color de la marca, el espacio para la foto del pan dulce, y el texto con el precio. Cada semana cambias la foto y el texto, y la publicacion sale en 2 minutos. Para la clienta que es boutique de ropa, otra plantilla con otro color. Asi no empiezas cada publicacion desde cero. Esta herramienta te deja guardar la plantilla mentalmente: mismo tamano, mismo color de fondo, mismo estilo de letra. Tu cliente recibe publicaciones coherentes cada semana, y tu facturas mas horas sin trabajar mas. Es el flujo que usan las agencias de marketing en Latinoamerica para escalar.</p><p style="margin-top:1rem;">Para cerrar: un community manager que atiende varias pymes necesita rapidez. Si cada publicacion la haces desde cero, tardas 20 minutos por post. Pero si tienes una plantilla mental (mismo tamano, mismo fondo, misma tipografia), el post sale en 3 minutos. Esta herramienta te deja fijar el tamano y el color de fondo una sola vez, y despues solo cambias la foto y el texto. Asi tu cliente recibe publicaciones coherentes cada semana, y tu facturas mas horas sin trabajar mas. Es el flujo que usan las agencias de marketing en Latinoamerica para atender 10 clientes con el mismo tiempo que antes atendian a 3.</p><p style="margin-top:1rem;">En resumen, una publicacion bien disenada vende mas que una foto al azar. Con esta herramienta creas el post en 3 minutos, con el texto justo y el color de la marca, y lo subes al feed o al estado de WhatsApp. Es la forma mas simple de que tu pequeno negocio se vea profesional sin invertir en una agencia.</p><p style="margin-top:1rem;">Por eso miles de pequenos negocios latinos usan esta herramienta cada semana para que su publicacion se vea profesional sin invertir en una agencia de marketing.</p></section>
 
 <section class="related-tools">
   <h2>También te puede interesar</h2>
@@ -383,27 +443,27 @@
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
-        <div class="footer-brand"><a href="/es/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Herramientas de imagen gratuitas con IA que respetan tu privacidad.</p></div>
-        <div class="footer-links footer-links-multi"><h4>Tools</h4><a href="/es/tools/background-remover">Background Remover</a><a href="/es/tools/compressor">Compressor</a><a href="/es/tools/converter">Converter</a><a href="/es/tools/resizer">Resizer</a>
-          <a href="/es/tools/gif-editor">GIF Editor</a>
-          <a href="/es/tools/pdf-to-image">PDF to Image</a>
+        <div class="footer-brand"><a href="/es/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Herramientas de imagen gratuitas que respetan tu privacidad.</p></div>
+        <div class="footer-links footer-links-multi"><h4>Herramientas</h4><a href="/es/tools/background-remover">Quitar Fondo</a><a href="/es/tools/compressor">Compresor</a><a href="/es/tools/converter">Convertidor</a><a href="/es/tools/resizer">Redimensionar</a>
+          <a href="/es/tools/gif-editor">Editor de GIF</a>
+          <a href="/es/tools/pdf-to-image">PDF a Imagen</a>
         </div>
-        <div class="footer-links footer-links-multi"><h4>More Tools</h4>
+        <div class="footer-links footer-links-multi"><h4>Más Herramientas</h4>
           <div class="footer-links-list">
-          <a href="/es/tools/cropper">Cropper</a><a href="/es/tools/watermark">Watermark</a><a href="/es/tools/image-merger">Image Merger</a><a href="/es/tools/screenshot-to-image">Screenshot to Image</a><a href="/es/tools/image-filters">Image Filters</a><a href="/es/tools/svg-to-png">SVG to PNG</a><a href="/es/tools/image-compare">Image Compare</a><a href="/es/tools/print-resizer">Print-Ready Resizer</a><a href="/es/tools/meme-generator">Meme Generator</a>          <a href="/es/tools/face-blur">Face Blur</a>
-          <a href="/es/tools/heic-converter">HEIC Converter</a>
-          <a href="/es/tools/metadata-viewer">Metadata Viewer</a>
-          <a href="/es/tools/avif-support">AVIF Support</a>
-          <a href="/es/tools/image-adjust">Image Adjustment</a>
-          <a href="/es/tools/image-border">Image Border</a>
-          <a href="/es/tools/image-flip">Image Flip</a>
-          <a href="/es/tools/image-grayscale">Image Grayscale</a>
-          <a href="/es/tools/image-shadow">Image Shadow</a>
-          <a href="/es/tools/image-splitter">Image Splitter</a>
-          <a href="/es/tools/image-exif-remover">EXIF Remover</a><a href="/es/tools/circle-crop">Circle Crop</a><a href="/es/tools/favicon-generator">Favicon Generator</a><a href="/es/tools/ocr">OCR Text</a><a href="/es/tools/bulk-processor">Bulk Processor</a><a href="/es/tools/image-to-pdf">Image to PDF</a>          <a href="/es/tools/id-photo">ID Photo Maker</a>
-          <a href="/es/tools/product-white-background">Product White BG</a>
-          <a href="/es/tools/social-media-post">Social Media Post</a>
-          <a href="/es/tools/photo-restoration">Photo Restoration</a><a href="/es/tools/image-enhancer">Image Enhancer</a>
+          <a href="/es/tools/cropper">Recortar Imagen</a><a href="/es/tools/watermark">Marca de Agua</a><a href="/es/tools/image-merger">Unir Imágenes</a><a href="/es/tools/screenshot-to-image">Captura a Imagen</a><a href="/es/tools/image-filters">Filtros de Imagen</a><a href="/es/tools/svg-to-png">SVG a PNG</a><a href="/es/tools/image-compare">Comparar Imágenes</a><a href="/es/tools/print-resizer">Redimensionar para Imprimir</a><a href="/es/tools/meme-generator">Generador de Memes</a>          <a href="/es/tools/face-blur">Difuminar Rostros</a>
+          <a href="/es/tools/heic-converter">Convertidor HEIC</a>
+          <a href="/es/tools/metadata-viewer">Ver Metadatos</a>
+          <a href="/es/tools/avif-support">Soporte AVIF</a>
+          <a href="/es/tools/image-adjust">Ajustar Imagen</a>
+          <a href="/es/tools/image-border">Borde de Imagen</a>
+          <a href="/es/tools/image-flip">Voltear Imagen</a>
+          <a href="/es/tools/image-grayscale">Escala de Grises</a>
+          <a href="/es/tools/image-shadow">Sombra de Imagen</a>
+          <a href="/es/tools/image-splitter">Dividir Imagen</a>
+          <a href="/es/tools/image-exif-remover">Quitar EXIF</a><a href="/es/tools/circle-crop">Recorte Circular</a><a href="/es/tools/favicon-generator">Generador de Favicon</a><a href="/es/tools/ocr">Texto OCR</a><a href="/es/tools/bulk-processor">Procesar por Lotes</a><a href="/es/tools/image-to-pdf">Imagen a PDF</a>          <a href="/es/tools/id-photo">Foto Carnet</a>
+          <a href="/es/tools/product-white-background">Fondo Blanco de Producto</a>
+          <a href="/es/tools/social-media-post">Publicación para Redes</a>
+          <a href="/es/tools/photo-restoration">Restaurar Fotos</a><a href="/es/tools/image-enhancer">Mejorar Imagen</a>
           </div>
         </div>
         <div class="footer-links"><h4>Legal</h4><a href="/privacy">Política de Privacidad</a><a href="/terms">Términos de Servicio</a><a href="/cookie-policy">Política de Cookies</a>
@@ -444,7 +504,7 @@ function selectPlatform(btn, name, w, h) {
   platformName = name;
   canvas.width = w;
   canvas.height = h;
-  document.getElementById('dimensionLabel').textContent = 'Current: ' + w + ' × ' + h + ' px (' + name + ')';
+  document.getElementById('dimensionLabel').textContent = 'Actual: ' + w + ' × ' + h + ' px (' + name + ')';
   document.getElementById('placeholderText').style.display = 'none';
   renderCanvas();
 }
@@ -453,7 +513,7 @@ function selectCustomSize() {
   const w = parseInt(document.getElementById('customW').value);
   const h = parseInt(document.getElementById('customH').value);
   if (!w || !h || w < 100 || h < 100 || w > 4000 || h > 4000) {
-    alert('Please enter valid dimensions between 100 and 4000.');
+    alert('Ingresa dimensiones válidas entre 100 y 4000 píxeles.');
     return;
   }
   document.querySelectorAll('.platform-btn').forEach(b => b.classList.remove('active'));
@@ -462,7 +522,7 @@ function selectCustomSize() {
   platformName = 'Custom ' + w + '×' + h;
   canvas.width = w;
   canvas.height = h;
-  document.getElementById('dimensionLabel').textContent = 'Current: ' + w + ' × ' + h + ' px (Custom)';
+  document.getElementById('dimensionLabel').textContent = 'Actual: ' + w + ' × ' + h + ' px (Personalizado)';
   document.getElementById('placeholderText').style.display = 'none';
   renderCanvas();
 }
@@ -687,7 +747,7 @@ function resetAll() {
   document.getElementById('logoControls2').style.display = 'none';
   document.getElementById('removeLogoBtn').style.display = 'none';
   document.getElementById('bgColorPicker').value = '#1a1a2e';
-  document.getElementById('textInput').value = 'Your Title Here';
+  document.getElementById('textInput').value = 'Escribe tu título aquí';
   document.getElementById('fontSizeSlider').value = 48;
   document.getElementById('fontSizeVal').textContent = '48';
   document.getElementById('textColorPicker').value = '#ffffff';

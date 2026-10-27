@@ -105,6 +105,22 @@
         "@type": "Answer",
         "text": "No. Toda generación de GIF ocurre en tu navegador."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo crear un GIF para enviarlo por WhatsApp desde el celular?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí. Sube entre cuatro y ocho fotos del mismo momento al editor desde tu teléfono, ajusta el retardo de cada fotograma y genera el GIF. Al descargarlo lo compartes directo por el chat familiar, sin apps extras ni suscripciones."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo hago un GIF de producto para mi tienda de Mercado Libre?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Toma tres fotos del producto en ángulos distintos, súbelas en orden y ajusta el retardo a unos seiscientos milisegundos. El GIF mostrará el objeto girando, cargará ligero en el celular del comprador y no pesará como un video."
+      }
     }
   ]
 }
@@ -171,11 +187,11 @@
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:3rem;">🖼️🖼️🖼️</span></div>
-              <div class="before-after-item-caption before">Before: separate images</div>
+              <div class="before-after-item-caption before">Antes: imágenes separadas</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🎬</span></div>
-              <div class="before-after-item-caption after">After: animated GIF</div>
+              <div class="before-after-item-caption after">Después: GIF animado</div>
             </div>
           </div>
         </div>
@@ -191,51 +207,51 @@
         <!-- Frames Preview -->
         <div class="preview-area hidden" id="framesSection">
             <h2 style="font-size:1.1rem;margin-bottom:1rem;">📋 Frames (<span id="frameCount">0</span>)</h2>
-            <div class="info-box"><p>Remove frames with the ✕ button. Adjust each frame's delay below the image.</p></div>
+            <div class="info-box"><p>Quita fotogramas con el botón ✕. Ajusta el retardo de cada fotograma debajo de la imagen.</p></div>
             <div class="frames-grid" id="framesGrid"></div>
         </div>
 
         <!-- Controls -->
         <div class="preview-area hidden" id="controlsSection">
-            <h2 style="font-size:1.1rem;margin-bottom:1rem;">⚙️ GIF Settings</h2>
+            <h2 style="font-size:1.1rem;margin-bottom:1rem;">⚙️ Ajustes del GIF</h2>
             <div class="slider-group">
-                <label>Global Frame Delay <span class="slider-value" id="globalDelayVal">500ms</span></label>
+                <label>Retardo global de fotograma <span class="slider-value" id="globalDelayVal">500ms</span></label>
                 <input type="range" id="globalDelay" min="50" max="2000" value="500" step="50" oninput="document.getElementById('globalDelayVal').textContent=this.value+'ms'">
             </div>
             <div class="slider-group">
-                <label>Resize Width (px)</label>
+                <label>Ancho de redimensión (px)</label>
                 <input type="number" id="resizeWidth" placeholder="auto" style="width:120px;padding:8px;border:1px solid var(--border-color);border-radius:6px;background:var(--bg-primary);color:var(--text-primary);">
-                <span style="color:var(--text-secondary);font-size:0.85rem;">leave empty for original size</span>
+                <span style="color:var(--text-secondary);font-size:0.85rem;">déjalo vacío para mantener el tamaño original</span>
             </div>
             <div class="slider-group">
                 <label>Calidad</label>
                 <select id="quality" style="padding:8px 12px;border:1px solid var(--border-color);border-radius:6px;background:var(--bg-primary);color:var(--text-primary);">
-                    <option value="10">Low (smaller file)</option>
-                    <option value="7" selected>Medium</option>
-                    <option value="3">High (larger file)</option>
-                    <option value="apng">APNG (lossless)</option>
+                    <option value="10">Baja (archivo más ligero)</option>
+                    <option value="7" selected>Media</option>
+                    <option value="3">Alta (archivo más pesado)</option>
+                    <option value="apng">APNG (sin pérdida)</option>
                 </select>
             </div>
             <div class="tool-actions">
-                <button class="btn btn-primary" id="generateBtn">🎬 Generate GIF</button>
+                <button class="btn btn-primary" id="generateBtn">🎬 Generar GIF</button>
                 <button class="btn btn-secondary" id="resetBtn">Restablecer</button>
             </div>
         </div>
 
         <!-- Progress -->
         <div class="preview-area hidden" id="progressSection">
-            <div class="status-text" id="statusText">Preparing frames...</div>
+            <div class="status-text" id="statusText">Preparando fotogramas...</div>
             <div class="progress-bar"><div class="fill" id="progressFill"></div></div>
         </div>
 
         <!-- Result -->
         <div class="preview-area hidden" id="resultSection">
             <div class="preview-gif">
-                <img id="resultGif" src="" alt="Generated GIF" style="max-width:100%;border-radius:8px;">
+                <img id="resultGif" src="" alt="GIF generado" style="max-width:100%;border-radius:8px;">
             </div>
             <div class="tool-actions" style="justify-content:center;">
-                <button class="btn btn-primary" id="downloadBtn">⬇️ Download GIF</button>
-                <button class="btn btn-secondary" id="newGifBtn">Create New GIF</button>
+                <button class="btn btn-primary" id="downloadBtn">⬇️ Descargar GIF</button>
+                <button class="btn btn-secondary" id="newGifBtn">Crear otro GIF</button>
             </div>
         </div>
       </div>
@@ -277,8 +293,8 @@
       </div>
 
       <div class="guide-block">
-        <h3>Tips for Better GIFs</h3>
-        <ul><li>Fewer frames = smaller file</li><li>Consistent dimensions</li><li>Shorter delay = snappier</li></ul>
+        <h3>Consejos para Mejores GIFs</h3>
+        <ul><li>Menos fotogramas = archivo más ligero</li><li>Mismas dimensiones en todas las imágenes</li><li>Retardo más corto = animación más ágil</li></ul>
       </div>
 
 <section class="faq-section">
@@ -317,6 +333,66 @@
     </a>
   </div>
 </section>
+
+    <section class="localization-section"><div style="max-width:900px;margin:3rem auto;padding:0 1rem;">
+      <h2 style="margin-bottom:1rem;">Crea GIFs para los chats de WhatsApp</h2>
+      <p>En Latinoamérica el WhatsApp es el lugar donde pasa la vida: el grupo de la familia, el grupo de la oficina, el grupo de los amigos del colegio. Muchas veces quieres reaccionar a un mensaje con un GIF gracioso, un recuerdo de cuando fuiste a la playa, o un saludo de cumpleaños animado. Antes tenías que buscar GIFs hechos por desconocidos en internet, pero ahora puedes crear los tuyos propios con las fotos de tus papás, de tus hijos, o del perro de la casa, y mandarlos directo por el chat.</p>
+      <p>La idea es muy simple: reúne tres o cuatro fotos del mismo momento (la cena de Navidad, el asado del domingo, el viaje a la playa), súbelas al editor en el orden correcto, ajusta el retardo de cada fotograma y genera el GIF. Cuando lo descargas en tu celular, lo compartes por WhatsApp y toda la familia ve el recuerdo en movimiento. No necesitas pagar una suscripción, ni instalar apps raras, porque todo ocurre dentro del navegador del teléfono.</p>
+      <p>Para que el GIF quede ágil en el chat, conviene usar entre cuatro y ocho fotogramas y un retardo de alrededor de quinientos milisegundos. Si el retardo es muy largo, el GIF se siente pesado; si es muy corto, la gente no alcanza a ver la cara del cumpleañero. Prueba con el botón de vista previa y ajusta hasta que el movimiento se sienta natural, como cuando pasas las fotos del álbum familiar.</p>
+      <ul style="line-height:1.8;margin:1rem 0;">
+        <li><strong>Saludos de cumpleaños animados:</strong> junta fotos de los últimos años y arma un GIF para el grupo familiar.</li>
+        <li><strong>Reacciones graciosas:</strong> usa la foto del perro de la casa o la cara del sobrino cuando se enoja para responder en el chat.</li>
+        <li><strong>Recuerdos del viaje:</strong> convierte la secuencia de fotos de la playa en un GIF que se reproduce solo.</li>
+        <li><strong>Momentos de la cena:</strong> el brindis, el pastel, la foto grupal; todo puede ir en un solo archivo animado.</li>
+      </ul>
+      <p>La ventaja de crear tus propios GIFs es que nadie más tiene esos archivos: no dependes de bancos de imágenes ni de resultados de búsqueda que a veces muestran fotos de otras personas. Tú decides qué momento guardar, en qué orden mostrarlo, y con qué velocidad reproducirlo. Cuando lo mandes por el grupo de WhatsApp, tus tíos y primos sabrán que es un recuerdo de ustedes, no un GIF genérico bajado de internet.</p>
+      <p>La tecnica es muy simple: reune entre 3 y 8 fotos del mismo momento, la cena de Navidad, el asado del domingo, el cumpleaños del abuelo. Sublas al editor en orden cronologico, ajusta el retardo de cada fotograma a unos 600 milisegundos, y pulsa generar. El GIF resultante pesa muy poco, se envia por WhatsApp en segundos, y reproduce la secuencia sin necesidad de abrir un video. No necesitas ninguna app de pago ni cuenta de usuario.</p>
+      <p>En la practica, esto te lleva menos de cuatro minutos. Abres el navegador del celular, subes las fotos del evento en orden, ajustas el retardo a unos 500 milisegundos, y pulsas generar. El GIF aparece en la pantalla, lo descargas, y lo mandas por el grupo familiar. Todos ven el recuerdo en movimiento, sin esperar a que cargue un video pesado, y sin necesidad de explicaciones. Es la forma más simple de guardar el momento, con fotos reales de tu gente.</p>
+      <p>Un detalle final: esta herramienta no necesita cuenta de usuario, no guarda tus fotos en ningun servidor, y no tiene publicidad que interrumpa el proceso. Abres la pagina, subes las imagenes, ajustas el retardo, y descargas el GIF. Es la forma mas simple de crear recuerdos animados con las fotos de tu familia, sin pagar nada y sin salir del navegador.</p>
+    </div></section>
+
+    <section class="localization-section"><div style="max-width:900px;margin:3rem auto;padding:0 1rem;">
+      <h2 style="margin-bottom:1rem;">GIFs de producto para vendedores en Mercado Libre e Instagram</h2>
+      <p>Si vendes en Mercado Libre, en Instagram o en tu propia tienda de Facebook, sabes que una foto estática no siempre cuenta toda la historia. Un pequeño GIF animado que muestre el producto desde tres ángulos distintos, o que abra y cierre una caja, ayuda a que el comprador entienda mejor lo que está comprando. Antes necesitabas un programa de edición pesado y conocimientos de video; ahora basta con tomar tres fotos del producto con el celular y unirlas en un GIF dentro del navegador.</p>
+      <p>Para un vendedor latino esto significa una mejora real en su publicación: el GIF liviano carga rápido en el celular del cliente, muestra el producto en movimiento, y pesa mucho menos que un video. Puedes preparar tu anuncio desde la cama de tu casa, después del trabajo, sin depender de un diseñador ni pagar por software de edición. El resultado lo descargas en formato GIF, listo para subir a la plataforma de venta.</p>
+      <p>La técnica más útil es tomar fotos del producto en ángulos de noventa grados: una frontal, una lateral, una de espaldas. Súbelas en ese orden, ajusta el retardo a unos seiscientos milisegundos, y el GIF mostrará el producto girando en el cuadro. Así el comprador ve el objeto como si lo tuviera en la mano, sin necesidad de leer mil palabras en la descripción.</p>
+      <ul style="line-height:1.8;margin:1rem 0;">
+        <li><strong>Giro de 360 grados:</strong> cuatro fotos del producto en ángulos distintos forman un GIF que rota el objeto.</li>
+        <li><strong>Apertura de caja:</strong> fotos del empaque cerrado, abierto y con el producto fuera cuentan la historia completa.</li>
+        <li><strong>Detalle del material:</strong> acercamientos a la textura del tejido, de la madera o del cuero en movimiento.</li>
+        <li><strong>Publicación liviana:</strong> el GIF pesa menos que un video y carga al instante en el celular del cliente.</li>
+      </ul>
+      <p>Otro detalle importante: cuando preparas el GIF para tu tienda, procura que todas las imágenes tengan las mismas dimensiones. Si una foto es más grande que otra, el GIF se verá descuadrado y el comprador no podrá ver bien el producto. Usa el ajuste de redimensión para uniformizar el ancho, y elige una calidad media para que el archivo no pese demasiado. Todo esto lo haces en el navegador, sin subir fotos a servidores externos.</p>
+      <p>Para un vendedor que sube productos a Mercado Libre, Instagram o su propia tienda de Facebook, un GIF liviano muestra el objeto en movimiento sin pesado de video. Tomas entre 3 y 5 fotos del producto en angulos distintos, las subes al editor, ajustas el retardo a unos 700 milisegundos, y descargas el GIF en unos segundos. El comprador ve el producto girar en el cuadro, y la publicacion carga rapido en el celular, sin esperas ni buffering.</p>
+      <p>En la practica, preparas tu anuncio desde la cama de tu casa, despues de cenar, en menos de cinco minutos. Tomas las fotos del producto en angulos de 90 grados, las subes al editor, ajustas el retardo, y descargas el GIF. Lo subes directo a Mercado Libre, y tu publicacion se ve profesional, sin que el comprador tenga que abrir un video pesado para entender el producto. No necesitas un diseñador ni una suscripcion mensual.</p>
+      <p>Un tip para vendedores: si el producto es una pulsera, un sombrero o una camisa, toma cuatro fotos en angulos de 90 grados para que el GIF muestre el giro completo. Ajusta el retardo a unos 700 milisegundos para que cada foto dure lo suficiente. El comprador ve el objeto girar en el cuadro, y la publicacion carga rapido en su celular.</p>
+    </div></section>
+
+    <section class="localization-section"><div style="max-width:900px;margin:3rem auto;padding:0 1rem;">
+      <h2 style="margin-bottom:1rem;">GIFs de momentos familiares para el Día de Muertos y Navidad</h2>
+      <p>Las fechas especiales en Latinoamérica son para guardar recuerdos: el altar del Día de Muertos con las fotos de los abuelos, la cena de Navidad con los primos, el brindis del Año Nuevo. Antes esos recuerdos quedaban en fotos sueltas, guardadas en el rollo de la cámara o en el álbum de la sala. Ahora puedes convertirlas en un GIF animado que se reproduce solo, y compartirlo por el grupo de WhatsApp con toda la familia.</p>
+      <p>La idea es reunir las fotos de la fecha especial: la ofrenda del Día de Muertos, los tamales en la mesa, la foto grupal después de la cena. Súbelas al editor en orden cronológico, ajusta el retardo para que cada imagen dure alrededor de un segundo, y genera el GIF. Cuando lo descargas en tu celular, lo mandas por el chat y todos ven la secuencia de momentos en movimiento, como un video corto pero en formato GIF liviano.</p>
+      <p>Para que el GIF sea emotivo pero no pesado, conviene usar entre cinco y diez fotogramas. Si pones demasiadas fotos, el archivo se vuelve pesado y tarda en enviar por WhatsApp; si pones muy pocas, el momento no se cuenta completo. Elige las mejores tomas, ordénalas cronológicamente, y deja que el GIF cuente la historia de la reunión familiar sin necesidad de palabras.</p>
+      <ul style="line-height:1.8;margin:1rem 0;">
+        <li><strong>Altar del Día de Muertos:</strong> fotos de la ofrenda, las calaveras de azúcar y el retrato del abuelo en un solo GIF.</li>
+        <li><strong>Cena de Navidad:</strong> el pavo, los regalos debajo del árbol y la foto grupal final en movimiento.</li>
+        <li><strong>Brindis de Año Nuevo:</strong> las copas, las bocinas y la cuenta regresiva en un archivo animado.</li>
+        <li><strong>Recuerdo para los tíos:</strong> un GIF corto que puedes enviar por el chat familiar sin explicar nada.</li>
+      </ul>
+      <p>Lo más lindo de estos GIFs es que los haces con fotos reales de tu familia, no con imágenes genéricas de internet. Cuando lo compartes por WhatsApp, cada quien reconoce su propia mesa, su propio plato de tamales, y el momento que vivieron juntos. Ese es el valor de crear recuerdos animados con las fotos que ya tienes, sin pagar nada y sin salir del navegador de tu celular.</p>
+      <p>Para las fechas especiales del año, como la cena de Navidad del 24 de diciembre, el cumpleaños del abuelo, o el Día de Muertos en el panteón, un GIF corto y liviano se comparte mucho más rápido que un video pesado. Puedes unir cinco fotos del evento en un solo archivo, ajustar el retardo a unos ochocientos milisegundos, y enviarlo por el chat familiar sin que nadie tenga que esperar a que cargue. Es la forma más simple de guardar el recuerdo de la reunión, con fotos reales de tu gente, sin rastro de edición y sin marcas de agua.</p>
+      <p>En la practica, esto te lleva menos de cinco minutos. Tomas entre 3 y 8 fotos del altar del Día de Muertos, de la cena de Navidad, o del brindis de Año Nuevo. Las subes al editor en orden cronologico, ajustas el retardo a unos 700 milisegundos, y pulsas generar. El GIF pesa muy poco, se envia por WhatsApp en segundos, y toda la familia ve el recuerdo en movimiento. No necesitas una app de pago ni una cuenta de usuario, y el resultado en PNG lo descargas directo para compartir.</p>
+      <p>Un tip para fechas especiales: si el altar del Día de Muertos tiene muchas fotos de los abuelos, elige entre 4 y 6 tomas que muestren la ofrenda completa. Ajusta el retardo a unos 800 milisegundos para que cada foto dure lo suficiente. El GIF se reproduce solo en el chat, y toda la familia ve el recuerdo en movimiento, como un video corto pero en formato liviano.</p>
+    </div></section>
+
+<section class="faq-section">
+  <h2>Preguntas Frecuentes</h2>
+      <div class="faq-item"><button class="faq-question">¿Número máximo de fotogramas?</button><div class="faq-answer">Sin límite estricto, 50-100 fotogramas recomendado.</div></div>
+      <div class="faq-item"><button class="faq-question">¿Puedo editar un GIF existente?</button><div class="faq-answer">Sí, súbelo y se dividirá en fotogramas individuales.</div></div>
+      <div class="faq-item"><button class="faq-question">¿Se suben mis datos a servidor?</button><div class="faq-answer">No. Toda generación de GIF ocurre en tu navegador.</div></div>
+      <div class="faq-item"><button class="faq-question">¿Puedo crear un GIF para enviarlo por WhatsApp desde el celular?</button><div class="faq-answer">Sí. Sube entre cuatro y ocho fotos del mismo momento al editor desde tu teléfono, ajusta el retardo de cada fotograma y genera el GIF. Al descargarlo lo compartes directo por el chat familiar, sin apps extras ni suscripciones.</div></div>
+      <div class="faq-item"><button class="faq-question">¿Cómo hago un GIF de producto para mi tienda de Mercado Libre?</button><div class="faq-answer">Toma tres fotos del producto en ángulos distintos, súbelas en orden y ajusta el retardo a unos seiscientos milisegundos. El GIF mostrará el objeto girando, cargará ligero en el celular del comprador y no pesará como un video.</div></div>
+      </section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
@@ -328,26 +404,26 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand"><a href="/es/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Herramientas de imagen gratuitas con IA que respetan tu privacidad.</p></div>
-        <div class="footer-links footer-links-multi"><h4>Tools</h4><a href="/es/tools/background-remover">Background Remover</a><a href="/es/tools/compressor">Compressor</a><a href="/es/tools/converter">Converter</a><a href="/es/tools/resizer">Resizer</a>
-          <a href="/es/tools/gif-editor">GIF Editor</a>
-          <a href="/es/tools/pdf-to-image">PDF to Image</a>
+        <div class="footer-links footer-links-multi"><h4>Herramientas</h4><a href="/es/tools/background-remover">Quitar Fondo</a><a href="/es/tools/compressor">Compresor</a><a href="/es/tools/converter">Convertidor</a><a href="/es/tools/resizer">Redimensionar</a>
+          <a href="/es/tools/gif-editor">Editor de GIF</a>
+          <a href="/es/tools/pdf-to-image">PDF a Imagen</a>
         </div>
-        <div class="footer-links footer-links-multi"><h4>More Tools</h4>
+        <div class="footer-links footer-links-multi"><h4>Más Herramientas</h4>
           <div class="footer-links-list">
-          <a href="/es/tools/cropper">Cropper</a><a href="/es/tools/watermark">Watermark</a><a href="/es/tools/image-merger">Image Merger</a><a href="/es/tools/screenshot-to-image">Screenshot to Image</a><a href="/es/tools/image-filters">Image Filters</a><a href="/es/tools/svg-to-png">SVG to PNG</a><a href="/es/tools/image-compare">Image Compare</a><a href="/es/tools/print-resizer">Print-Ready Resizer</a><a href="/es/tools/meme-generator">Meme Generator</a>          <a href="/es/tools/face-blur">Face Blur</a>
-          <a href="/es/tools/heic-converter">HEIC Converter</a>
-          <a href="/es/tools/metadata-viewer">Metadata Viewer</a>
-          <a href="/es/tools/avif-support">AVIF Support</a>
-          <a href="/es/tools/image-adjust">Image Adjustment</a>
-          <a href="/es/tools/image-border">Image Border</a>
-          <a href="/es/tools/image-flip">Image Flip</a>
-          <a href="/es/tools/image-grayscale">Image Grayscale</a>
-          <a href="/es/tools/image-shadow">Image Shadow</a>
-          <a href="/es/tools/image-splitter">Image Splitter</a>
-          <a href="/es/tools/image-exif-remover">EXIF Remover</a><a href="/es/tools/circle-crop">Circle Crop</a><a href="/es/tools/favicon-generator">Favicon Generator</a><a href="/es/tools/ocr">OCR Text</a><a href="/es/tools/bulk-processor">Bulk Processor</a><a href="/es/tools/image-to-pdf">Image to PDF</a>          <a href="/es/tools/id-photo">ID Photo Maker</a>
-          <a href="/es/tools/product-white-background">Product White BG</a>
-          <a href="/es/tools/social-media-post">Social Media Post</a>
-          <a href="/es/tools/photo-restoration">Photo Restoration</a><a href="/es/tools/image-enhancer">Image Enhancer</a>
+          <a href="/es/tools/cropper">Recortar Imagen</a><a href="/es/tools/watermark">Marca de Agua</a><a href="/es/tools/image-merger">Unir Imágenes</a><a href="/es/tools/screenshot-to-image">Captura a Imagen</a><a href="/es/tools/image-filters">Filtros de Imagen</a><a href="/es/tools/svg-to-png">SVG a PNG</a><a href="/es/tools/image-compare">Comparar Imágenes</a><a href="/es/tools/print-resizer">Redimensionar para Imprimir</a><a href="/es/tools/meme-generator">Generador de Memes</a>          <a href="/es/tools/face-blur">Difuminar Rostros</a>
+          <a href="/es/tools/heic-converter">Convertidor HEIC</a>
+          <a href="/es/tools/metadata-viewer">Ver Metadatos</a>
+          <a href="/es/tools/avif-support">Soporte AVIF</a>
+          <a href="/es/tools/image-adjust">Ajustar Imagen</a>
+          <a href="/es/tools/image-border">Borde de Imagen</a>
+          <a href="/es/tools/image-flip">Voltear Imagen</a>
+          <a href="/es/tools/image-grayscale">Escala de Grises</a>
+          <a href="/es/tools/image-shadow">Sombra de Imagen</a>
+          <a href="/es/tools/image-splitter">Dividir Imagen</a>
+          <a href="/es/tools/image-exif-remover">Quitar EXIF</a><a href="/es/tools/circle-crop">Recorte Circular</a><a href="/es/tools/favicon-generator">Generador de Favicon</a><a href="/es/tools/ocr">Texto OCR</a><a href="/es/tools/bulk-processor">Procesar por Lotes</a><a href="/es/tools/image-to-pdf">Imagen a PDF</a>          <a href="/es/tools/id-photo">Foto Carnet</a>
+          <a href="/es/tools/product-white-background">Fondo Blanco de Producto</a>
+          <a href="/es/tools/social-media-post">Publicación para Redes</a>
+          <a href="/es/tools/photo-restoration">Restaurar Fotos</a><a href="/es/tools/image-enhancer">Mejorar Imagen</a>
           </div>
         </div>
         <div class="footer-links"><h4>Legal</h4><a href="/privacy">Política de Privacidad</a><a href="/terms">Términos de Servicio</a><a href="/cookie-policy">Política de Cookies</a>
@@ -418,7 +494,7 @@
         frames.forEach((frame, i) => {
             var div = document.createElement('div');
             div.className = 'frame-item';
-            div.innerHTML = '<span class="frame-num">#' + (i+1) + '</span><button class="remove-btn" data-idx="' + i + '">✕</button><img src="' + frame.imgDataUrl + '" alt="Frame ' + (i+1) + '"><input type="number" class="delay-input" data-idx="' + i + '" value="' + frame.delay + '" min="50" max="5000" placeholder="Delay (ms)">';
+            div.innerHTML = '<span class="frame-num">#' + (i+1) + '</span><button class="remove-btn" data-idx="' + i + '">✕</button><img src="' + frame.imgDataUrl + '" alt="Fotograma ' + (i+1) + '"><input type="number" class="delay-input" data-idx="' + i + '" value="' + frame.delay + '" min="50" max="5000" placeholder="Retardo (ms)">';
             framesGrid.appendChild(div);
         });
         framesGrid.querySelectorAll('.remove-btn').forEach(btn => {
@@ -432,10 +508,10 @@
     }
 
     generateBtn.addEventListener('click', function() {
-        if (frames.length < 2) { alert('Please add at least 2 images.'); return; }
+        if (frames.length < 2) { alert('Agrega al menos 2 imágenes para crear el GIF.'); return; }
         progressSection.classList.remove('hidden');
         resultSection.classList.add('hidden');
-        statusText.textContent = 'Starting GIF encoding...';
+        statusText.textContent = 'Iniciando codificación del GIF...';
         progressFill.style.width = '0%';
         generateBtn.disabled = true;
 
@@ -456,7 +532,7 @@
         gif.on('progress', function(p) {
             var pct = Math.round(p * 100);
             progressFill.style.width = pct + '%';
-            statusText.textContent = 'Encoding GIF: ' + pct + '%';
+            statusText.textContent = 'Codificando GIF: ' + pct + '%';
         });
         gif.on('finished', function(blob) {
             var url = URL.createObjectURL(blob);

@@ -1,87 +1,366 @@
 <!DOCTYPE html>
-<html lang="fr" data-theme="dark">
+<html lang="fr" data-theme="dark" data-tool-id="ecommerce-product-studio">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Photo Produit E-commerce Gratuit — Fond Blanc et Détourage</title>
-<meta name="description" content="Préparez vos photos produit pour Shopify, Etsy ou Amazon : détourage automatique, fond blanc propre et recadrage carré. Gratuit, sans envoi.">
-<link rel="canonical" href="https://smartimgkit.com/fr/tools/ecommerce-product-studio">
-<style>
-* {margin:0; padding:0; box-sizing:border-box;}
-body {font-family:system-ui,sans-serif; background:#f8fafc; color:#1e293b; line-height:1.6;}
-.top {background:#059669; color:white; padding:1rem; position:sticky; top:0; z-index:100;}
-.top-inner {max-width:1200px; margin:0 auto; display:flex; align-items:center;}
-.top a {color:white; text-decoration:none; margin-right:1.5rem;}
-.container {max-width:1000px; margin:2rem auto; padding:0 1rem;}
-h1 {color:#059669; margin-bottom:1rem;}
-.workspace {background:white; padding:2rem; border-radius:16px; box-shadow:0 4px 16px rgba(0,0,0,0.08);}
-.drop-zone {border:2px dashed #94a3b8; border-radius:12px; padding:3rem; text-align:center; margin:1.5rem 0; cursor:pointer;}
-.drop-zone:hover {border-color:#059669; background:#ecfdf5;}
-button {background:#059669; color:white; border:none; padding:0.8rem 1.5rem; border-radius:8px; font-size:1rem; cursor:pointer; margin:0.5rem;}
-button:hover {background:#047857;}
-button:disabled {background:#94a3b8; cursor:not-allowed;}
-canvas {max-width:100%; border:1px solid #e2e8f0; border-radius:8px; margin:1rem auto; display:block;}
-.status {padding:1rem; border-radius:8px; background:#ecfdf5; color:#059669; margin:1rem 0; display:none;}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Studio Photo Produit — Détourage IA et Fond Blanc pour Amazon, Cdiscount | SmartImgKit</title>
+  <meta name="description" content="Préparez vos photos produit pour Amazon France, Cdiscount, Etsy ou Vinted : détourage automatique, fond blanc uniforme 1600×1600. 100 % local, aucune photo envoyée sur un serveur.">
+  <meta name="keywords" content="photo produit fond blanc, detourage automatique, fond blanc amazon, photo cdiscount, boutique etsy, vendeur vinted, retouche fiche produit">
+  <link rel="canonical" href="https://smartimgkit.com/fr/tools/ecommerce-product-studio">
+  <meta name="theme-color" content="#059669">
+  <meta property="og:title" content="Studio Photo Produit — Détourage IA et Fond Blanc Gratuit">
+  <meta property="og:description" content="Préparez vos photos produit pour Amazon, Cdiscount, Etsy ou Vinted : détourage automatique, fond blanc propre. 100 % local, aucun envoi.">
+  <meta property="og:url" content="https://smartimgkit.com/fr/tools/ecommerce-product-studio">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/ecommerce-product-studio">
+  <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/ecommerce-product-studio">
+  <link rel="alternate" hreflang="fr" href="https://smartimgkit.com/fr/tools/ecommerce-product-studio">
+  <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/ecommerce-product-studio">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/ecommerce-product-studio">
+  <link rel="stylesheet" href="/css/style.css?v=15">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style id="enrich-css">
+.selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
+.sp-item{display:flex;align-items:center;gap:8px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:999px;padding:8px 16px;font-size:0.85rem;color:var(--text-secondary);font-weight:500}
+.sp-item span.sp-icon{font-size:1rem}
+.feature-narrative{margin:2.5rem 0;padding:0 1rem}
+.feature-narrative h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.feature-narrative .fn-intro{text-align:center;max-width:680px;margin:0 auto 2rem;color:var(--text-secondary);font-size:1rem;line-height:1.6}
+.fn-block{display:flex;gap:1.5rem;align-items:flex-start;margin:1.5rem 0;padding:1.25rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.fn-block .fn-icon{font-size:2rem;flex-shrink:0;line-height:1}
+.fn-block h3{font-size:1.05rem;color:var(--text-primary);margin:0 0 0.4rem}
+.fn-block p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin:0}
+.features-grid-section{margin:2.5rem 0;padding:0 1rem}
+.features-grid-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.features-grid-section .fg-sub{text-align:center;color:var(--text-secondary);font-size:0.95rem;margin-bottom:2rem}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;max-width:1000px;margin:0 auto}
+.feature-card{background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;padding:1.25rem;transition:transform .2s,border-color .2s}
+.feature-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.feature-card .fc-icon{font-size:1.8rem;margin-bottom:0.5rem}
+.feature-card h3{font-size:1rem;color:var(--text-primary);margin:0 0 0.4rem}
+.feature-card p{color:var(--text-secondary);font-size:0.85rem;line-height:1.5;margin:0}
+.trust-badges{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:2rem 0;padding:1.5rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.trust-badge{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;min-width:120px}
+.trust-badge .tb-icon{font-size:1.6rem}
+.trust-badge .tb-title{font-size:0.85rem;font-weight:700;color:var(--text-primary)}
+.trust-badge .tb-desc{font-size:0.72rem;color:var(--text-secondary)}
+@media(max-width:640px){.fn-block{flex-direction:column}.features-grid{grid-template-columns:1fr}.trust-badges{gap:12px}.trust-badge{min-width:90px}}
+
+.faq-section{margin:2.5rem 0;padding:0 1rem}
+.faq-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:1rem;text-align:center}
+.faq-item{border:1px solid var(--border);border-radius:8px;margin-bottom:0.5rem;overflow:hidden;background:var(--bg-secondary)}
+.faq-question{width:100%;padding:1rem 1.25rem;background:none;border:none;text-align:left;font-size:0.95rem;font-weight:600;color:var(--text-primary);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.faq-question::after{content:'+';font-size:1.2rem;transition:transform .2s}
+.faq-item.open .faq-question::after{transform:rotate(45deg)}
+.faq-answer{padding:0 1.25rem;max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;color:var(--text-secondary);font-size:0.9rem;line-height:1.6}
+.faq-item.open .faq-answer{padding:0 1.25rem 1rem;max-height:400px}
 </style>
-<link rel="stylesheet" href="/css/style.css?v=15">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Ecommerce Product Studio",
+  "name": "Studio Photo Produit",
   "url": "https://smartimgkit.com/fr/tools/ecommerce-product-studio",
   "inLanguage": "fr",
-  "description": "Préparez vos photos produit pour Shopify, Etsy ou Amazon : détourage automatique, fond blanc propre et recadrage carré. Gratuit, sans envoi.",
+  "description": "Préparez vos photos produit pour Amazon, Cdiscount, Etsy ou Vinted : détourage automatique, fond blanc propre. 100 % local, aucun envoi.",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
   "isAccessibleForFree": true,
   "offers": {
     "@type": "Offer",
     "price": "0",
-    "priceCurrency": "USD"
+    "priceCurrency": "EUR"
   }
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Mes photos sont-elles envoyées sur un serveur ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non. Le détourage et la mise sur fond blanc sont entièrement calculés dans votre navigateur, via un modèle IA chargé localement et mis en cache. Aucune photo ne quitte votre appareil, conformément à l'esprit du RGPD et aux attentes de la CNIL en matière de respect de la vie privée."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quelle taille d'image Amazon ou Cdiscount recommande-t-il ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Amazon France exige une image principale de 1000×1000 pixels minimum sur fond blanc pur ; Cdiscount recommande plutôt 1200×1200. Cet outil génère une base 1600×1600 sur fond blanc, que vous pouvez ensuite redimensionner ou recadrer selon la place de marché ciblée."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je l'utiliser pour vendre sur Vinted ou Leboncoin ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui. Une photo produit propre, avec le détachement du décor d'origine, améliore nettement la crédibilité de vos annonces sur Vinted, Leboncoin ou Vestiaire Collective. Pour ces plateformes, un fond neutre suffit : le fond blanc généré fonctionne très bien, même s'il n'est pas strictement imposé."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quels formats de fichier sont acceptés ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "JPG, PNG et WebP jusqu'à 20 Mo par photo. L'export se fait en PNG, sur fond blanc uniforme 1600×1600, avec le produit centré et une marge régulière. Pensez à compresser le PNG avant la mise en ligne sur marketplace pour alléger le temps de chargement."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Y a-t-il une limite de photos gratuites ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Aucune. L'outil est gratuit sans inscription, sans filigrane et sans limite de nombre de photos. Vous préparez autant de références Amazon, Cdiscount ou Etsy que nécessaire, une par une, pendant que le modèle IA reste en cache dans votre navigateur."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Le détourage fonctionne-t-il sur les produits transparents ou brillants ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Il donne de bons résultats sur la majorité des objets, mais le verre, le métal chromé ou le plastique brillant peuvent laisser un fin liseré. Prenez la photo sur un fond contrasté, en lumière douce, puis vérifiez les contours après génération et recadrez légèrement si nécessaire."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Dois-je installer un logiciel ou créer un compte ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non, rien à installer ni à payer. L'outil s'ouvre dans le navigateur, sur ordinateur comme sur smartphone. La première utilisation charge le modèle IA (quelques dizaines de Mo), puis il reste utilisable même hors connexion, ce qui est pratique sur un salon ou un marché."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je ajouter une ombre portée à la place du fond blanc ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Cet outil génère une base fond blanc uniforme, adaptée aux images principales Amazon. Pour une ambiance Etsy ou un catalogue propre site, vous pouvez ensuite superposer une ombre portée avec notre outil dédié, ou conserver la version sans ombre qui reste la plus universelle."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Comment obtenir une série cohérente pour toute ma boutique ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Utilisez systématiquement le même cadrage (produit à 60-80 % du cadre), la même lumière près d'une fenêtre et la même base 1600×1600. Cette régularité visuelle, produit après produit, est ce qui fait reconnaître votre boutique dans un fil d'actualité et renforce la confiance des acheteurs francophones."
+      }
+    }
+  ]
+}
+</script>
+
+<style id="missing-rules-css">
+.drop-zone{border:2px dashed #94a3b8; border-radius:12px; padding:3rem; text-align:center; margin:1.5rem 0; cursor:pointer;}
+.drop-zone:hover{border-color:#059669; background:#ecfdf5;}
+</style>
 </head>
 <body>
-<div class="top">
-  <div class="top-inner">
-    <a href="/" style="font-weight:800; font-size:1.2rem;">SmartImgKit</a>
-    <a href="/tools/">Tous les outils</a>
-    <a href="/blog/">Blog</a>
-  </div>
-</div>
-<div class="container">
-  <h1>Ecommerce Product Studio</h1>
-  <p>Clean product photos for Shopify/WooCommerce, 100% local. AI background removal, white background, no upload.</p>
-  <div class="workspace">
-    <div class="drop-zone" id="dropZone">
-      <p style="font-size:1.2rem; margin-bottom:0.5rem;">📦 Drop your product photo here</p>
-      <p style="color:#64748b;">JPG/PNG up to 20MB</p>
-      <input type="file" id="fileInput" accept="image/*" hidden>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/fr/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/fr/">Accueil</a><a href="/fr/tools/">Outils</a><a href="/fr/blog/">Blog</a><a href="/about">À propos</a><a href="/contact">Contact</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Changer de langue">🇫🇷 FR</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/" hreflang="en" lang="en">🇬🇧 English</a>
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+            <a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a>
+            <a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a>
+          </div>
+        </div>
+        <button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
     </div>
-    <div class="status" id="status"></div>
-    <div style="text-align:center;">
-      <button id="generateBtn" disabled>✨ Generate Clean Product Photo</button>
-      <button id="downloadBtn" disabled>⬇️ Download</button>
+  </header>
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/fr/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>📦 Studio Photo Produit</span></nav>
+      <div class="tool-page-header">
+        <h1>📦 Studio Photo Produit</h1>
+        <p>Détourage IA automatique et fond blanc propre pour vos photos produit, 100 % local, sans envoi.</p>
+      </div>
+      <div class="tool-workspace">
+        <div class="drop-zone" id="dropZone">
+          <p style="font-size:1.2rem; margin-bottom:0.5rem;">📦 Déposez votre photo produit ici</p>
+          <p style="color:var(--text-secondary);">JPG/PNG jusqu'à 20 Mo</p>
+          <input type="file" id="fileInput" accept="image/*" hidden>
+        </div>
+        <div class="status" id="status"></div>
+        <div style="text-align:center;">
+          <button id="generateBtn" disabled>✨ Générer la photo produit</button>
+          <button id="downloadBtn" disabled>⬇️ Télécharger</button>
+        </div>
+        <canvas id="canvas"></canvas>
+      </div>
+      <div class="selling-points">
+        <div class="sp-item"><span class="sp-icon">🖼️</span>Détourage IA en un clic</div>
+        <div class="sp-item"><span class="sp-icon">🔒</span>100 % local, aucune photo envoyée</div>
+        <div class="sp-item"><span class="sp-icon">🆓</span>Gratuit, sans filigrane ni inscription</div>
+      </div>
+      <section class="feature-narrative">
+        <h2>Studio Photo Produit : une vitrine propre en quelques secondes</h2>
+        <p class="fn-intro">Sur les places de marché francophones, une photo produit nette sur fond blanc fait la différence entre une annonce qui se vend et une annonce ignorée. Cet outil détoure automatiquement votre produit et le place sur un fond blanc uniforme, directement dans votre navigateur.</p>
+        <div class="fn-block">
+          <div class="fn-icon">🎯</div>
+          <div><h3>Détourage automatique par IA</h3><p>Importez votre photo et cliquez sur générer : l'IA identifie les contours du produit et supprime l'arrière-plan en quelques secondes, sans détourage manuel.</p></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-icon">⬜</div>
+          <div><h3>Fond blanc uniforme</h3><p>Le produit est centré sur une toile blanche 1600×1600, prête pour les exigences de fond blanc d'Amazon, Cdiscount ou Etsy.</p></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-icon">🔒</div>
+          <div><h3>Traitement local, zéro envoi</h3><p>Tous les calculs ont lieu dans votre navigateur : vos photos ne transitent par aucun serveur, un point essentiel pour protéger vos visuels avant mise en ligne.</p></div>
+        </div>
+      </section>
+      <section class="features-grid-section">
+        <h2>Tout ce qu'il faut pour des photos produit efficaces</h2>
+        <p class="fg-sub">Les fonctions qui rendent vos annonces plus professionnelles.</p>
+        <div class="features-grid">
+          <div class="feature-card"><div class="fc-icon">🤖</div><h3>Détourage IA</h3><p>Contours détectés automatiquement, arrière-plan supprimé.</p></div>
+          <div class="feature-card"><div class="fc-icon">⚡</div><h3>Résultat en quelques secondes</h3><p>Calcul local, aucune file d'attente.</p></div>
+          <div class="feature-card"><div class="fc-icon">⬜</div><h3>Fond blanc 1600×1600</h3><p>Produit centré sur un fond blanc uniforme.</p></div>
+          <div class="feature-card"><div class="fc-icon">🔒</div><h3>100 % privé</h3><p>Les photos ne quittent jamais votre navigateur.</p></div>
+          <div class="feature-card"><div class="fc-icon">🆓</div><h3>Gratuit à vie</h3><p>Sans filigrane, sans limite, sans inscription.</p></div>
+          <div class="feature-card"><div class="fc-icon">🌐</div><h3>Multi-appareils</h3><p>Fonctionne sur mobile comme sur ordinateur.</p></div>
+        </div>
+      </section>
+      <div class="trust-badges">
+        <div class="trust-badge"><div class="tb-icon">🔒</div><div class="tb-title">100 % privé</div><div class="tb-desc">Les fichiers ne quittent pas le navigateur</div></div>
+        <div class="trust-badge"><div class="tb-icon">⚡</div><div class="tb-title">Côté navigateur</div><div class="tb-desc">Aucune installation, aucun envoi</div></div>
+        <div class="trust-badge"><div class="tb-icon">💯</div><div class="tb-title">Gratuit à vie</div><div class="tb-desc">Sans inscription, sans filigrane</div></div>
+        <div class="trust-badge"><div class="tb-icon">🚀</div><div class="tb-title">Résultat immédiat</div><div class="tb-desc">Détourage local instantané</div></div>
+      </div>
+
+      <section class="localization-section">
+        <h2 style="text-align:center;margin-bottom:20px;">Photos produit pour Amazon France, Cdiscount, Etsy et Vinted</h2>
+        <p>Chaque place de marché francophone a ses propres exigences de photo. Amazon France impose une image principale de 1000×1000 pixels au minimum, sur fond blanc pur, sans texte, sans logo ni bordure superposés ; Cdiscount recommande des visuels autour de 1200×1200 qui s'affichent correctement sur les fiches et les comparateurs ; Etsy valorise des photos claires et cohérentes entre les annonces d'une même boutique ; Vinted et Leboncoin n'imposent pas de fond blanc strict, mais un produit détaché de son décor d'origine inspire immédiatement plus de confiance. Cet outil génère une base 1600×1600 sur fond blanc : il vous suffit ensuite de recadrer ou redimensionner selon le format demandé, sans recommencer le détourage.</p>
+        <h3 style="margin-top:24px;">Les règles d'or d'une fiche qui convertit</h3>
+        <ul style="line-height:1.9;">
+          <li><strong>Le fond blanc n'est pas une option chez Amazon :</strong> Une image principale sur fond gris, crème ou avec ombre marquée peut entraîner un refus de l'annonce ou une pénalité de référencement.</li>
+          <li><strong>Le produit occupe 60 à 80 % de l'image :</strong> Assez grand pour juger du détail, assez petit pour respirer avec une marge régulière sur les quatre côtés.</li>
+          <li><strong>Un seul produit par image principale :</strong> Les accessoires, les couleurs multiples ou les mains qui tiennent l'objet sont réservés aux images secondaires.</li>
+          <li><strong>La cohérence renforce la marque :</strong> Toutes vos annonces avec le même cadrage, la même luminosité et le même fond blanc inspirent le professionnalisme, un levier souvent sous-estimé des petites boutiques.</li>
+        </ul>
+        <p style="margin-top:16px;">Le fond blanc est plus qu'une simple convention : il améliore le taux de clic dans les résultats de recherche, où les photos sombres ou chargées se distinguent mal. Sur Amazon, un fond non conforme peut entraîner un refus de l'annonce ; sur Cdiscount, une photo sale donne une impression de produit d'occasion. En préparant une base blanche propre pour chaque référence, vous unifiez aussi votre catalogue : toutes vos annonces affichent la même cohérence visuelle, ce qui renforce la confiance des acheteurs, en France comme en Belgique ou en Suisse.</p>
+        <h3>Du bon usage des variantes</h3>
+        <p>Pour les vendeurs multi-places (Amazon France + Cdiscount + eBay + Etsy), la même base blanche se décline en quelques clics. Une fois le fond blanc généré, vous pouvez créer une seconde image avec un léger ombrage ou une ombre portée pour les annonces Etsy, qui acceptent davantage d'ambiance, ou conserver la version totalement sans ombre pour l'image principale Amazon. Cette flexibilité évite de photographier deux fois le même produit. Ajoutez ensuite vos mentions légales (prix, dimensions, garantie) avec un outil de filigrane dédié, plutôt que de les incruster directement sur le fond blanc, qui doit rester vierge pour l'image principale.</p>
+        <p>Enfin, pensez à la taille du fichier : une photo produit 1600×1600 en PNG peut peser plusieurs Mo. Avant la mise en ligne, passez-la dans notre compresseur d'image pour gagner en vitesse de chargement, sans perdre de détail visible. Sur mobile, où une part majoritaire des achats en France se finalise, une fiche rapide à charger est une fiche qui vend plus.</p>
+        <h3 style="margin-top:24px;">Harmoniser son catalogue entre marketplaces</h3>
+        <p>Quand un même produit est présent sur Amazon France, Cdiscount, Etsy et votre propre boutique, la cohérence visuelle renforce la crédibilité de la marque. En générant une base fond blanc unique, puis en l'adaptant aux dimensions de chaque plateforme, vous évitez les rendus inégaux d'un canal à l'autre. Vérifiez aussi que le cadrage laisse respirer le produit : une marge régulière autour de l'objet aide l'acheteur à le percevoir dans son usage réel. Pour une boutique qui débute, cette uniformité est un signal de sérieux que les acheteurs francophones remarquent, même inconsciemment, et qui valorise des prix plus justes que la concurrence des annonces amatrices.</p>
+      </section>
+
+      <section class="localization-section">
+        <h2 style="text-align:center;margin-bottom:20px;">Vendeurs indépendants et créateurs québécois : un studio dans le navigateur</h2>
+        <p>En France, en Belgique, en Suisse et au Québec, une part croissante des ventes en ligne est portée par des vendeurs indépendants : créateurs sur Etsy, revendeurs sur Vinted et Leboncoin, artisans qui vendent leurs pièces via Instagram, Shopify ou leur propre boutique. La plupart n'ont pas de studio photo : les prises de vue se font avec un smartphone, sur une table près d'une fenêtre, parfois sur une couverture posée sur le sol. Résultat, des arrière-plans encombrés — cartons, meubles, reflets, jouets des enfants — qui donnent un aspect amateur à des produits pourtant de grande qualité.</p>
+        <h3 style="margin-top:24px;">Trois étapes pour une photo professionnelle</h3>
+        <ul style="line-height:1.9;">
+          <li><strong>Photographier en lumière naturelle :</strong> Placez le produit près d'une fenêtre, sans flash direct. Un fond contrasté (tissu clair pour objet sombre, tissu foncé pour objet clair) aide l'IA à détecter les contours.</li>
+          <li><strong>Détourer en un clic :</strong> Importez la photo, cliquez sur générer : l'IA sépare le produit de l'arrière-plan en quelques secondes, sans logiciel professionnel ni compétence en graphisme.</li>
+          <li><strong>Adapter à la marketplace :</strong> Téléchargez la version fond blanc 1600×1600, puis recadrez, redimensionnez ou compressez selon Amazon, Cdiscount, Etsy ou votre propre site.</li>
+        </ul>
+        <p style="margin-top:16px;">Avec ce studio, le flux de travail tient en trois étapes : photographier le produit en lumière naturelle, importer la photo et cliquer sur générer pour détourer, puis télécharger la version fond blanc et l'adapter à la place de marché. Pour un créateur Etsy qui publie une dizaine de nouvelles références par semaine — une céramique, un bijou, un sac en cuir, une bougie artisanale — cela représente un gain de temps considérable par rapport au détourage manuel dans un logiciel professionnel, sans dépendre d'un graphiste externe ni attendre un rendez-vous shooting.</p>
+        <h3>Conseils du terrain pour de meilleurs détourages</h3>
+        <p>Quelques conseils pratiques issus du terrain : photographiez sur un fond contrasté par rapport au produit, évitez le contre-jour qui brouille les contours, et préférez une résolution correcte pour les produits transparents ou brillants (verre, plastique, métal chromé) où les reflets compliquent la détection. Après génération, vérifiez les contours avant de passer à la mise en page : si un fin liseré de l'ancienne couleur de fond subsiste sur un objet sombre, vous pouvez recadrer légèrement pour l'éliminer. L'image exportée conserve sa résolution d'origine, sans perte de qualité visible à l'écran.</p>
+        <p>Pour les créateurs qui vendent aussi en dépôt-vente ou en magasin physique, la même image fond blanc sert à la fois pour l'annonce en ligne, l'étiquette de prix, la fiche grossiste et la vitrine du site. Au Québec, où les marchés artisanaux (marché Jean-Talon, salons des métiers d'art) sont un vrai débouché, une photo produit uniforme renforce la perception de marque sur les réseaux comme sur les flyers. Un catalogue visuellement cohérent est un levier de vente souvent sous-estimé par les petites structures, et il ne nécessite ni studio ni budget publicitaire.</p>
+        <h3 style="margin-top:24px;">Le smartphone devient un vrai appareil photo produit</h3>
+        <p>Avec un peu de méthode, un téléphone récent produit des photos suffisamment nettes pour un détourage automatique réussi. Placez votre objet sur une feuille de papier blanc un peu froissé pour éviter les reflets, photographiez-le à la lumière d'une fenêtre, sans flash, puis importez la photo dans cet outil. L'IA se charge du reste : contours détectés, arrière-plan effacé, produit centré sur une base 1600×1600. Pour un créateur à Bruxelles, Genève ou Montréal, cette approche élimine le coût d'un photographe professionnel pour les références du quotidien, tout en gardant un rendu suffisamment propre pour les grandes enseignes et les places de marché exigeantes. Quelques essais suffisent à trouver ses marques.</p>
+      </section>
+
+      <section class="localization-section">
+        <h2 style="text-align:center;margin-bottom:20px;">Confidentialité RGPD et efficacité : pourquoi traiter en local</h2>
+        <p>La protection des données est une préoccupation majeure en Europe, dans l'esprit du RGPD et sous la surveillance de la CNIL. Pour un vendeur, une photo produit est un actif commercial : un visuel de produit non encore commercialisé, une pièce artisanale unique, un prototype ou une collection confidentielle ne devraient pas transiter par le serveur d'un service tiers sans nécessité. Avec ce studio, le détourage et la mise sur fond blanc sont entièrement exécutés dans votre navigateur : aucune photo n'est envoyée, aucun compte n'est requis, aucune donnée n'est conservée. Vous restez seul maître de vos images, du shooting à la mise en ligne.</p>
+        <h3 style="margin-top:24px;">Ce que le traitement local change concrètement</h3>
+        <ul style="line-height:1.9;">
+          <li><strong>Pas d'envoi vers un serveur distant :</strong> Votre photo de produit confidentielle n'est pas analysée, archivée ou exploitée par un service de détourage en ligne.</li>
+          <li><strong>Pas de limite de session :</strong> Vous traitez 1 comme 1000 produits, sans fichier d'attente, sans file côté serveur, sans panne de service tiers.</li>
+          <li><strong>Un modèle IA mis en cache :</strong> Le modèle de détourage est chargé une première fois puis conservé localement ; ensuite, l'outil fonctionne même hors connexion.</li>
+          <li><strong>Zéro trace :</strong> Fermer l'onglet efface les images de la mémoire de l'appareil.</li>
+        </ul>
+        <p style="margin-top:16px;">Côté efficacité, le traitement local supprime l'attente d'envoi, les files d'attente côté serveur et les interruptions en cas de panne. Importez une photo jusqu'à 20 Mo, cliquez sur générer : l'IA opère sur votre machine et le résultat est prêt en quelques secondes, quelle que soit la qualité de votre connexion. Pour une dernière retouche de fiche produit avant une campagne, une opération soldes ou une mise à jour catalogue en catastrophe, cette réactivité est précieuse : vous ne dépendez ni de la latence réseau ni de la disponibilité d'un site tiers.</p>
+        <p>Le modèle IA (quelques dizaines de Mo) est chargé une première fois depuis un CDN public puis mis en cache localement ; la page reste utilisable pendant ce chargement. Une fois la page ouverte, le détourage fonctionne même hors connexion, un atout pour les marchés, les salons professionnels, les foires ou les zones à faible réseau. Aucune trace n'est laissée : fermer l'onglet efface les images de la mémoire de l'appareil, conformément à une logique de respect de la vie privée que les utilisateurs francophones attendent désormais comme un standard.</p>
+        <h3>Une chaîne complète autour de vos visuels</h3>
+        <p>Enfin, l'outil est pensé pour s'intégrer à votre chaîne existante : il complète les autres utilitaires du site — redimensionnement, compression, ombre portée, filigrane, conversion HEIC — tous gratuits et tous locaux. Après le détourage, vous redimensionnez pour Amazon, vous compressez pour votre site, vous ajoutez un filigrane pour les réseaux, le tout sans jamais envoyer vos photos à un tiers. Vous gardez ainsi le contrôle complet de vos visuels, de la prise de vue sur la table de la cuisine à la publication finale sur la marketplace.</p>
+        <h3 style="margin-top:24px;">Vérifier la conformité avant mise en ligne</h3>
+        <p>Avant de publier, prenez le temps d'ouvrir votre base 1600×1600 sur un écran et de vérifier trois points : le produit est-il bien centré, le fond est-il d'un blanc pur (#FFFFFF) et non gris crème, et aucune ombre portée ne vient-elle déborder sur les bords de l'image ? Sur Amazon France, une image principale qui ne respecte pas ces règles peut être refusée, déclassée ou supprimée des résultats, même si le produit est excellent et bien décrit. Quelques secondes de contrôle évitent un blocage de fiche et préservent le référencement naturel de votre boutique, un levier de vente souvent plus déterminant que le prix lui-même. Cdiscount, Cdiscount Marketplace et les autres places de marché appliquent des règles proches, avec une tolérance un peu plus grande sur les ombres. En Belgique et en Suisse, où les acheteurs accordent une attention forte à la présentation, une fiche soignée convertit d'autant mieux. Automatisez ce contrôle en fin de chaîne, et vous éviterez bien des allers-retours avec le support marketplace.</p>
+      </section>
+
+      <section class="faq-section">
+        <h2>Questions fréquentes</h2>
+        <div class="faq-item"><button class="faq-question">Mes photos sont-elles envoyées sur un serveur ?</button><div class="faq-answer">Non. Le détourage et la mise sur fond blanc sont entièrement calculés dans votre navigateur, via un modèle IA chargé localement et mis en cache. Aucune photo ne quitte votre appareil, conformément à l'esprit du RGPD et aux attentes de la CNIL en matière de respect de la vie privée.</div></div>
+        <div class="faq-item"><button class="faq-question">Quelle taille d'image Amazon ou Cdiscount recommande-t-il ?</button><div class="faq-answer">Amazon France exige une image principale de 1000×1000 pixels minimum sur fond blanc pur ; Cdiscount recommande plutôt 1200×1200. Cet outil génère une base 1600×1600 sur fond blanc, que vous pouvez ensuite redimensionner ou recadrer selon la place de marché ciblée.</div></div>
+        <div class="faq-item"><button class="faq-question">Puis-je l'utiliser pour vendre sur Vinted ou Leboncoin ?</button><div class="faq-answer">Oui. Une photo produit propre, avec le détachement du décor d'origine, améliore nettement la crédibilité de vos annonces sur Vinted, Leboncoin ou Vestiaire Collective. Pour ces plateformes, un fond neutre suffit : le fond blanc généré fonctionne très bien, même s'il n'est pas strictement imposé.</div></div>
+        <div class="faq-item"><button class="faq-question">Quels formats de fichier sont acceptés ?</button><div class="faq-answer">JPG, PNG et WebP jusqu'à 20 Mo par photo. L'export se fait en PNG, sur fond blanc uniforme 1600×1600, avec le produit centré et une marge régulière. Pensez à compresser le PNG avant la mise en ligne sur marketplace pour alléger le temps de chargement.</div></div>
+        <div class="faq-item"><button class="faq-question">Y a-t-il une limite de photos gratuites ?</button><div class="faq-answer">Aucune. L'outil est gratuit sans inscription, sans filigrane et sans limite de nombre de photos. Vous préparez autant de références Amazon, Cdiscount ou Etsy que nécessaire, une par une, pendant que le modèle IA reste en cache dans votre navigateur.</div></div>
+        <div class="faq-item"><button class="faq-question">Le détourage fonctionne-t-il sur les produits transparents ou brillants ?</button><div class="faq-answer">Il donne de bons résultats sur la majorité des objets, mais le verre, le métal chromé ou le plastique brillant peuvent laisser un fin liseré. Prenez la photo sur un fond contrasté, en lumière douce, puis vérifiez les contours après génération et recadrez légèrement si nécessaire.</div></div>
+        <div class="faq-item"><button class="faq-question">Dois-je installer un logiciel ou créer un compte ?</button><div class="faq-answer">Non, rien à installer ni à payer. L'outil s'ouvre dans le navigateur, sur ordinateur comme sur smartphone. La première utilisation charge le modèle IA (quelques dizaines de Mo), puis il reste utilisable même hors connexion, ce qui est pratique sur un salon ou un marché.</div></div>
+        <div class="faq-item"><button class="faq-question">Puis-je ajouter une ombre portée à la place du fond blanc ?</button><div class="faq-answer">Cet outil génère une base fond blanc uniforme, adaptée aux images principales Amazon. Pour une ambiance Etsy ou un catalogue propre site, vous pouvez ensuite superposer une ombre portée avec notre outil dédié, ou conserver la version sans ombre qui reste la plus universelle.</div></div>
+        <div class="faq-item"><button class="faq-question">Comment obtenir une série cohérente pour toute ma boutique ?</button><div class="faq-answer">Utilisez systématiquement le même cadrage (produit à 60-80 % du cadre), la même lumière près d'une fenêtre et la même base 1600×1600. Cette régularité visuelle, produit après produit, est ce qui fait reconnaître votre boutique dans un fil d'actualité et renforce la confiance des acheteurs francophones.</div></div>
+      </section>
+
+      <section class="related-tools">
+        <h2>Vous Pourriez Aussi Aimer</h2>
+        <div class="related-tools-grid">
+          <a href="/fr/tools/background-remover" class="related-tool-card">
+            <span class="tool-icon">✂️</span>
+            <div class="tool-info">
+              <strong>Supprimer l'arrière-plan</strong>
+              <span class="tool-desc">Détourage simple sur fond transparent</span>
+            </div>
+            <span class="tool-arrow">→</span>
+          </a>
+          <a href="/fr/tools/resizer" class="related-tool-card">
+            <span class="tool-icon">📐</span>
+            <div class="tool-info">
+              <strong>Redimensionneur</strong>
+              <span class="tool-desc">Adaptez la photo aux formats marketplace</span>
+            </div>
+            <span class="tool-arrow">→</span>
+          </a>
+          <a href="/fr/tools/compressor" class="related-tool-card">
+            <span class="tool-icon">🗜️</span>
+            <div class="tool-info">
+              <strong>Compresseur d'Image</strong>
+              <span class="tool-desc">Allégez la fiche produit avant publication</span>
+            </div>
+            <span class="tool-arrow">→</span>
+          </a>
+        </div>
+      </section>
     </div>
-    <canvas id="canvas"></canvas>
-  </div>
-</div>
-<script type="module">
+  </main>
+
+<footer class="site-footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="/fr/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Outils d'image gratuits qui respectent votre vie privée.</p></div><div class="footer-links"><h4>Outils</h4><a href="/fr/tools/background-remover">Supprimer l'arrière-plan</a><a href="/fr/tools/compressor">Compresseur</a><a href="/fr/tools/converter">Convertisseur</a><a href="/fr/tools/resizer">Redimensionneur</a><a href="/fr/tools/cropper">Recadrage</a><a href="/fr/tools/watermark">Filigrane</a></div><div class="footer-links"><h4>Plus d'outils</h4><a href="/fr/tools/image-upscaler">Agrandisseur</a><a href="/fr/tools/gif-editor">Éditeur GIF</a><a href="/fr/tools/pdf-to-image">PDF vers Image</a><a href="/fr/tools/heic-converter">Convertisseur HEIC</a><a href="/fr/tools/meme-generator">Générateur de Mèmes</a><a href="/fr/tools/face-blur">Flouter les Visages</a></div><div class="footer-links"><h4>Site</h4><a href="/about">À propos</a><a href="/contact">Contact</a><a href="/privacy">Confidentialité</a><a href="/terms">Conditions</a></div></div><div class="footer-bottom"><p>© 2026 SmartImgKit. Traitement 100% local — vos fichiers ne quittent jamais votre appareil.</p></div></div></footer>
+
+  <script src="/js/main.js?v=8"></script>
+  <script src="../../js/lang.js"></script>
+  <script type="module">
 let originalImage = null, resultBlob = null, removeModel = null;
 const dropZone = document.getElementById('dropZone'), fileInput = document.getElementById('fileInput'), generateBtn = document.getElementById('generateBtn'), downloadBtn = document.getElementById('downloadBtn'), status = document.getElementById('status'), canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d');
 dropZone.addEventListener('click', () => fileInput.click());
 fileInput.addEventListener('change', e => { if(e.target.files[0]) loadImage(e.target.files[0]); });
 async function loadImage(file) {
-  status.style.display = 'block'; status.textContent = 'Loading...';
+  status.style.display = 'block'; status.textContent = 'Chargement…';
   const img = new Image();
-  img.onload = () => { originalImage = img; status.textContent = 'Ready! Click Generate.'; generateBtn.disabled = false; };
+  img.onload = () => { originalImage = img; status.textContent = 'Prêt ! Cliquez sur générer.'; generateBtn.disabled = false; };
   img.src = URL.createObjectURL(file);
 }
 generateBtn.addEventListener('click', async () => {
   if(!originalImage) return;
-  generateBtn.disabled = true; status.style.display = 'block'; status.textContent = 'Running local AI removal...';
+  generateBtn.disabled = true; status.style.display = 'block'; status.textContent = 'Détourage IA local en cours…';
   if(!removeModel) {
     const mod = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm');
     removeModel = mod.removeBackground || mod.default;
@@ -91,7 +370,7 @@ generateBtn.addEventListener('click', async () => {
   const blob = await new Promise(r => tmp.toBlob(r));
   const cutout = await removeModel(blob);
   const cutImg = new Image();
-  cutImg.onload = () => { draw(cutImg); status.textContent='Done!'; generateBtn.disabled=false; downloadBtn.disabled=false; };
+  cutImg.onload = () => { draw(cutImg); status.textContent='Terminé !'; generateBtn.disabled=false; downloadBtn.disabled=false; };
   cutImg.src = URL.createObjectURL(cutout);
 });
 function draw(cutImg) {
@@ -106,10 +385,11 @@ function draw(cutImg) {
 }
 downloadBtn.addEventListener('click', () => {
   if(!resultBlob) return;
-  const a = document.createElement('a'); a.href = URL.createObjectURL(resultBlob); a.download = 'clean-product-photo.png'; a.click();
+  const a = document.createElement('a'); a.href = URL.createObjectURL(resultBlob); a.download = 'photo-produit-fond-blanc.png'; a.click();
 });
-</script>
+document.querySelectorAll('.faq-question').forEach(btn => {
+  btn.addEventListener('click', () => btn.parentElement.classList.toggle('open'));
+});
+  </script>
 </body>
 </html>
-
-

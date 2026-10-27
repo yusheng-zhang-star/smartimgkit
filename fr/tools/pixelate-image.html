@@ -11,7 +11,7 @@
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Image Pixelate Tool",
+  "name": "Pixeliser une image en ligne — masquer visages, plaques et textes",
   "url": "https://smartimgkit.com/fr/tools/pixelate-image",
   "inLanguage": "fr",
   "description": "Peignez sur un visage, une plaque ou un texte pour le pixelliser avant publication. Tout se passe en local, rien n'est envoyé sur un serveur.",
@@ -25,6 +25,54 @@
   }
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Est-ce que mon image est envoyée sur un serveur ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non. Toute la pixelisation est réalisée localement dans votre navigateur web. Vos photos ne quittent jamais votre appareil, ce qui respecte pleinement le RGPD et les recommandations de la CNIL sur la vie privée."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je pixeliser plusieurs zones différentes sur la même photo ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui. Vous pouvez peindre autant de zones que nécessaire : une plaque, un visage, une adresse sur une enveloppe. Chaque passage du pinceau s'ajoute, et le bouton Annuler permet de revenir en arrière sur vos dix dernières modifications."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quelle différence entre pixellisation et simple flou ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La pixellisation divise l'image en gros carreaux de couleur irréversibles, alors que le flou gaussien laisse parfois deviner un visage. Pour masquer une plaque ou un texte de façon certaine, la pixellisation est plus sûre et plus nette à l'écran."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je masquer ma plaque d'immatriculation avant une annonce Leboncoin ou Vinted ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Tout à fait. C'est l'usage le plus fréquent : vendez-vous une voiture, un vélo ou un deux-roues, peignez sur la plaque pour qu'aucun tiers ne puisse l'identifier, puis publiez la photo corrigée. Aucune donnée circulera en ligne."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Faut-il créer un compte ou installer un logiciel ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non. L'outil fonctionne directement dans la page, sans inscription, sans abonnement et sans téléchargement. Il suffit de choisir une image, de passer le pinceau et d'enregistrer le résultat sur votre appareil."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -32,25 +80,61 @@
 <nav><a href="/fr/tools/">Tous les outils</a><a href="/fr/blog/">Blog</a></nav>
 </header>
 <main class="container">
-<h1>Image Pixelate Tool</h1>
-<p class="lead">Paint over any area of your image to apply pixelation blur, perfect for hiding faces, license plates, or sensitive text. All processing happens 100% locally in your browser — no files are uploaded.</p>
+<h1>Pixeliser une image en ligne — masquer visages, plaques et textes</h1>
+<p class="lead">Passez le pinceau sur un visage, une plaque d'immatriculation, une adresse ou un texte sensible avant de publier. Aucune image n'est envoyée vers un serveur : tout se déroule localement dans votre navigateur, sur votre ordinateur ou votre téléphone.</p>
 <div class="upload-area" id="dropZone">
-<p>Drop your image here or click to upload</p>
+<p>Déposez votre image ici ou cliquez pour choisir un fichier</p>
 <input type="file" id="fileInput" accept="image/*" hidden>
 </div>
 <div class="controls" style="margin:1rem 0;">
-<label>Brush Size: <span id="brushSizeVal">30</span>px <input type="range" id="brushSize" min="10" max="100" value="30"></label>
-<label>Pixel Level: <span id="pixelSizeVal">10</span>px <input type="range" id="pixelSize" min="2" max="30" value="10"></label>
-<button id="undoBtn">Undo</button>
-<button id="downloadBtn" class="primary">Download Pixelated Image</button>
+<label>Taille du pinceau : <span id="brushSizeVal">30</span> px <input type="range" id="brushSize" min="10" max="100" value="30"></label>
+<label>Niveau de pixelisation : <span id="pixelSizeVal">10</span> px <input type="range" id="pixelSize" min="2" max="30" value="10"></label>
+<button id="undoBtn">Annuler</button>
+<button id="downloadBtn" class="primary">Télécharger l'image pixelisée</button>
 </div>
 <div class="canvas-container" style="text-align:center;">
 <canvas id="canvas" style="max-width:100%;border:1px solid #333;display:none;"></canvas>
 </div>
-<section class="faq">
-<h2>Frequently Asked Questions</h2>
-<details><summary>Is my image uploaded to a server?</summary><p>No. All pixelation is done locally in your browser, your images never leave your device.</p></details>
-<details><summary>Can I pixelate multiple areas?</summary><p>Yes, you can paint over as many areas as you want, and use the undo button to revert changes.</p></details>
+<section class="faq-section">
+<h2>Questions fréquentes</h2>
+<div class="faq-item"><button class="faq-question">Est-ce que mon image est envoyée sur un serveur ?</button><div class="faq-answer">Non. Toute la pixelisation est réalisée localement dans votre navigateur web. Vos photos ne quittent jamais votre appareil, ce qui respecte pleinement le RGPD et les recommandations de la CNIL sur la vie privée.</div></div>
+<div class="faq-item"><button class="faq-question">Puis-je pixeliser plusieurs zones différentes sur la même photo ?</button><div class="faq-answer">Oui. Vous pouvez peindre autant de zones que nécessaire : une plaque, un visage, une adresse sur une enveloppe. Chaque passage du pinceau s'ajoute, et le bouton Annuler permet de revenir en arrière sur vos dix dernières modifications.</div></div>
+<div class="faq-item"><button class="faq-question">Quelle différence entre pixellisation et simple flou ?</button><div class="faq-answer">La pixellisation divise l'image en gros carreaux de couleur irréversibles, alors que le flou gaussien laisse parfois deviner un visage. Pour masquer une plaque ou un texte de façon certaine, la pixellisation est plus sûre et plus nette à l'écran.</div></div>
+<div class="faq-item"><button class="faq-question">Puis-je masquer ma plaque d'immatriculation avant une annonce Leboncoin ou Vinted ?</button><div class="faq-answer">Tout à fait. C'est l'usage le plus fréquent : vendez-vous une voiture, un vélo ou un deux-roues, peignez sur la plaque pour qu'aucun tiers ne puisse l'identifier, puis publiez la photo corrigée. Aucune donnée circulera en ligne.</div></div>
+<div class="faq-item"><button class="faq-question">Faut-il créer un compte ou installer un logiciel ?</button><div class="faq-answer">Non. L'outil fonctionne directement dans la page, sans inscription, sans abonnement et sans téléchargement. Il suffit de choisir une image, de passer le pinceau et d'enregistrer le résultat sur votre appareil.</div></div>
+</section>
+
+<section class="localization-section">
+<h2>Pixeliser une photo avant une annonce Vinted, Leboncoin ou Cdiscount</h2>
+<p>Entre particuliers, la photo de l'objet est ce qui vend. Mais cadrer un vélo, une poussette ou une voiture depuis le porche de son domicile expose bien plus que le produit : on y distingue souvent le numéro de la porte, la plaque d'immatriculation, le visage d'un voisin qui passe, ou même une lettre de boîte aux lettres encore lisible. Sur Vinted, Leboncoin ou Cdiscount, des années après la vente, ces images restent indexées et peuvent remonter dans une recherche d'images. Quelques secondes de pinceau suffisent à effacer ces indices avant de mettre en ligne.</p>
+<p>Pour une annonce de véhicule, la plaque est l'élément numéro un à masquer. Passez le pinceau sur toute sa surface, augmentez le niveau de pixelisation à quinze ou vingt pixels, et vérifiez en zoomant qu'aucun caractère ne reste déchiffrable. Faites de même pour l'autocollant d'assurance sur le pare-brise, qui porte votre nom, et pour le numéro de rue visible en arrière-plan. Sur une photo d'intérieur, pensez aux tableaux accrochés au mur, aux photos d'enfants posées sur la cheminée et aux écrans d'ordinateur allumés : un simple passage du pinceau préserve la vie privée de toute la famille.</p>
+<p>Les vendeurs professionnels qui utilisent Amazon France ou leur propre boutique en ligne ont un réflexe légèrement différent : ils masquent ce qui trahit le lieu de stockage (une étiquette d'entrepôt, un bon de livraison glissé dans le carton) mais surtout ne laissent jamais apparaître le nom d'un client sur un colis déjà expédié. L'outil fonctionne aussi bien sur un ordinateur de bureau que sur un téléphone mobile : ouvrez la page dans Safari ou Chrome, importez la photo depuis votre galerie, peignez, puis enregistrez directement dans l'appareil photo. Rien n'est transféré, vous pouvez retoucher autant d'annonces que vous le souhaitez sans limite de fichiers.</p>
+<p>Concrètement, réglez la taille du pinceau un peu plus grande que la zone à masquer : un pinceau trop petit oblige à repasser dix fois, alors qu'un pinceau adapté couvre la plaque d'un seul trait. Si vous débordez légèrement sur l'objet, ce n'est pas grave : le résultat reste parfaitement crédible pour un acheteur, qui ne voit de toute façon que le produit. En revanche, évitez de pixelliser une zone trop large sur le produit lui-même, car l'acheteur pourrait croire que vous cachez un défaut. Un compromis sain consiste à cadrer la photo au plus près de l'objet, puis à masquer uniquement les éléments parasites en périphérie.</p>
+<p>Sur Leboncoin, certaines annonces de maisons ou d'appartements montrent l'intérieur du logement, et il n'est pas rare d'apercevoir un courrier sur la table basse, une facture dans un bac à courrier, ou une étiquette avec votre nom sur un tableau électrique. Autant de détails qu'un pinceau efface en quelques secondes. Pensez aussi aux reflets dans la vitre d'un meuble, où l'on peut deviner une autre pièce ou un visage : un petit passage pixelisé règle le problème sans abîmer l'objet vendu.</p>
+<p>Pour les annonces de vêtements sur Vinted, la règle est un peu différente : on ne masque généralement pas le produit, mais on fait attention aux photos qui traînent en arrière-plan. Un sac posé sur une chaise, un ticket de caisse oublié, une affichette avec un nom de rue : le pinceau passe dessus, et la photo devient plus neutre. L'acheteur se concentre alors sur le vêtement, pas sur votre intérieur. C'est le genre de détail qui rend une annonce plus professionnelle, même lorsque l'on vend à titre occasionnel.</p>
+<p>Enfin, pensez aux étiquettes de vos affaires. Sur une photo de sac à dos, de valise ou d'ordinateur portable, on distingue souvent une étiquette marquée à votre nom, ou une adresse écrite au feutre. Un passage rapide du pinceau dessus préserve votre vie privée, sans abîmer l'objet vendu. C'est un geste simple qui prend une seconde, et qui évite que votre nom ne se retrouve indexé dans une annonce en ligne.</p>
+</section>
+
+<section class="localization-section">
+<h2>Vos images ne quittent jamais votre appareil : le choix du RGPD et de la CNIL</h2>
+<p>En France comme en Belgique, en Suisse et au Québec, la question de la vie privée sur les photos est devenue centrale. Le Règlement général sur la protection des données, et les recommandations publiées par la CNIL, rappellent qu'une photo de visage est une donnée personnelle au même titre qu'un nom ou qu'une adresse. Dès lors, la transmettre à un site d'édition en ligne, même réputé, c'est lui confier cette donnée : certains services la stockent, d'autres l'exploitent pour l'entraînement de leurs modèles, et beaucoup imposent de créer un compte pour retoucher une seule image.</p>
+<p>Ici, le traitement est 100 % local. L'image que vous importez est lue par la machine de votre visiteur, pixelisée directement dans la mémoire du navigateur, puis enregistrée sur le disque de cet appareil. Aucun octet ne transite par un serveur distant. Concrètement, cela signifie que vous pouvez retoucher une photo de votre carte d'identité, un relevé bancaire que vous auriez photographié, ou une image médicale, sans jamais craindre une fuite. C'est aussi particulièrement adapté aux journalistes, aux avocats et aux agents de la fonction publique qui manipulent des documents internes et ne peuvent pas les confier à un outil tiers.</p>
+<p>Cette approche présente un autre avantage, souvent sous-estimé : la rapidité. Inutile d'attendre un téléversement de vingt secondes, une barre de progression sur le réseau, puis un nouveau téléchargement. Sur une connexion mobile moyenne, une photo prise en 4K par un smartphone récent pèse plusieurs dizaines de mégaoctets ; la manipuler localement la traite en une fraction de seconde, quel que soit votre débit. C'est aussi pourquoi l'outil fonctionne dans le métro, dans une zone blanche ou à l'étranger sans activer le data roaming : une fois la page chargée, plus besoin de réseau.</p>
+<p>Pour les professionnels, ce fonctionnement local facilite la mise en conformité. Vous n'avez pas à signer de sous-traitance de données, à renseigner de clause RGPD avec un service en ligne, ni à vérifier où sont stockées vos images. Le fichier reste sous votre contrôle exclusif du début à la fin. C'est un point de détail qui change tout lorsque l'on traite des photos de clients, de patients, d'élèves ou d'usagers : la règle d'or du droit à l'image, c'est de ne diffuser que ce que l'on a le droit de diffuser, et de ne confier à personne ce que l'on veut garder pour soi.</p>
+<p>La CNIL insiste régulièrement sur la nécessité de limiter la diffusion des images à ce qui est strictement utile. Pixelliser un document avant de l'envoyer à un assureur, à une administration ou à un acheteur, c'est appliquer le principe de minimisation des données. Inutile de montrer tout votre relevé de compte lorsqu'un seul montant est demandé : un pinceau sur les autres lignes, et vous ne transmettez que l'information utile. C'est exactement la logique attendue par les contrôleurs.</p>
+<p>Enfin, le traitement local protège aussi contre les fuites accidentelles. Un service en ligne qui plante, un lien partagé par erreur, un compte piraté : autant de risques qui disparaissent lorsque rien ne monte sur Internet. Votre image ne vit que sur votre machine, du moment où vous l'importez jusqu'au moment où vous l'enregistrez. Pour les personnes qui manipulent des photos sensibles au quotidien, cette tranquillité n'a pas de prix.</p>
+<p>Côté usage quotidien, ce générateur local évite de transmettre une simple photo de carte d'identité à un service tiers. Pour remplir un formulaire, pour envoyer un justificatif, on a souvent besoin de masquer une partie du document. Le pinceau permet de ne révéler que la ligne utile, en masquant les autres, sans confier le document complet à une plateforme. C'est exactement le comportement attendu par la CNIL, qui rappelle de ne transmettre que les données strictement nécessaires.</p>
+</section>
+
+<section class="localization-section">
+<h2>Pixeliser les photos de famille et les tirages argentiques numérisés</h2>
+<p>La culture de la photo argentique reste très vivante dans les foyers francophones. Beaucoup de familles ont ressorti ces dernières années les boîtes de diapositives, les négatifs et les tirages des années mille neuf cent quatre-vingt, pour les numériser avec un scanner ou un smartphone. Le problème, c'est que ces vieux clichés portent des traces aujourd'hui sensibles : l'adresse manuscrite au dos d'un tirage, le nom inscrit sur une photo de classe, la plaque d'une voiture de collection garée devant la maison, ou le numéro d'une vieille plaque de cuivre sur la porte d'entrée.</p>
+<p>Avant de partager ces images sur un site de généalogie comme Geneanet, sur un blog de souvenirs ou dans un album familial en ligne, il est prudent de passer le pinceau sur ces indices. Vous pouvez pixelliser l'adresse au dos d'une photo avant de la numériser, ou directement sur le tirage posé sur la table de la salle à manger. Le niveau de pixelisation reste léger, autour de huit à douze pixels, pour que l'esthétique du vieux cliché ne soit pas cassée : on reconnaît toujours la photo, mais l'information sensible devient illisible. C'est la même logique que sur les archives publiées par les services d'état civil, qui masquent systématiquement les données nominatives.</p>
+<p>Pour les photos d'enfants, l'usage est encore plus simple. Un cliché de l'anniversaire d'un petit dernier, d'une kermesse d'école ou d'un match de football du dimanche comporte souvent d'autres enfants que vos propres enfants, dont les parents n'ont pas donné leur accord pour une diffusion en ligne. Plutôt que de recadrer agressivement au centre, une petite zone de pixelisation sur les visages des autres enfants préserve la composition de la photo tout en respectant le droit à l'image de chacun. Beaucoup de grands-parents, qui souhaitent envoyer des photos à toute la famille sur WhatsApp ou par courrier électronique, utilisent ce geste avant chaque envoi : c'est rapide, discret, et cela évite bien des malentendus.</p>
+<p>Enfin, pensez aux captures d'écran. Une conversation, une adresse email, un numéro de téléphone ou une référence de commande apparaisse en filigrane sur presque toute capture. Plutôt que de les recadrer, ce qui tronquerait l'image, un coup de pinceau dessus suffit. L'outil est pensé pour ce geste simple : réglez une fois la taille du pinceau, peignez d'un trait, et téléchargez. Aucune inscription, aucune limite, aucun historique conservé : la photo retouchée appartient uniquement à celui qui l'a retouchée.</p>
+<p>Les amateurs de diapositives connaissent ce problème : bien souvent, le nom du village ou la date sont écrits au feutre blanc sur le carton de la diapositive. Lorsque l'on numérise la pile, ces inscriptions apparaissent en haut du cadre. Avant de partager la photo sur un groupe de passionnés ou un blog, un petit passage du pinceau sur le carton préserve la vue principale tout en effaçant la mention. Le niveau de pixelisation reste doux, pour ne pas abîmer l'esthétique du cliché filmique que l'on admire tant.</p>
+<p>Enfin, offrir des photos de famille nettoyées à ses parents âgés est une attention très appréciée. On numérise l'album, on masque les noms et les adresses qui ne regardent personne, puis on grave un DVD ou l'on remplit une clé USB. Les grands-parents découvrent des souvenirs qu'ils avaient oubliés, sans que des informations personnelles ne circulent sur la Toile. C'est un geste simple, gratuit, et qui se fait un dimanche soir, confortablement installé à la maison.</p>
+<p>Pour les photos de mariage récentes, où l'on souhaite partager sur les réseaux sans exposer les invités, la pixelisation sélective est aussi une bonne habitude. On masque les visages des personnes qui n'ont pas souhaité apparaître en ligne, tout en gardant les mariés au centre. C'est une manière respectueuse de diffuser l'ambiance du jour J, sans contrevenir au droit à l'image de chacun.</p>
 </section>
 </main>
 <script>

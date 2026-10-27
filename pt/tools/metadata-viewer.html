@@ -113,10 +113,10 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Formatos de metadados compatíveis?",
+      "name": "Quais formatos de metadados são compatíveis?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "EXIF, GPS, IPTC, XMP e notas de câmera."
+        "text": "A ferramenta lê metadados EXIF, GPS, IPTC, XMP e as notas internas da câmera. Basta enviar uma foto JPG, PNG, WebP, HEIC ou TIFF para visualizar o conteúdo."
       }
     },
     {
@@ -124,15 +124,39 @@
       "name": "É realmente grátis?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Sim, completamente grátis. Sem cadastro."
+        "text": "Sim, completamente grátis, sem cadastro e sem limite de uso. A ferramenta funciona direto no navegador, e você pode conferir os metadados de quantas fotos quiser."
       }
     },
     {
       "@type": "Question",
-      "name": "Imagem enviada a servidor?",
+      "name": "Minha imagem é enviada para algum servidor?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Não. Extração acontece no navegador."
+        "text": "Não. Toda a extração de metadados acontece no seu próprio navegador, no celular ou no computador. A foto não sai do seu aparelho e não é armazenada em lugar nenhum."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Por que devo verificar o GPS antes de publicar no Mercado Livre?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Porque a foto do produto pode trazer as coordenadas de onde ela foi tirada, que muitas vezes é a sua casa. Conferir o GPS antes de publicar evita que o endereço da sua residência fique exposto no anúncio."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "A LGPD exige que eu apague os metadados antes de compartilhar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A LGPD não obriga apagar, mas exige que o cidadão saiba para onde vão seus dados. Conferir e remover os metadados de GPS antes de publicar é um cuidado que protege você e cumpre o espírito da lei."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Como remover os metadados de uma foto?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depois de visualizar os metadados, use o botão de remoção para baixar uma cópia limpa da imagem. A nova versão sai sem os dados EXIF, GPS e IPTC, pronta para compartilhar com segurança."
       }
     }
   ]
@@ -198,8 +222,8 @@
       <input type="file" id="fileInput" accept="image/*,.heic,.heif,.tiff,.tif" style="display:none;">
           <label for="fileInput" class="dropzone" id="dropzone" style="margin-bottom:20px">
         <div class="upload-icon">📁</div>
-        <div class="upload-text">Click or drag image here to view metadata</div>
-        <div class="upload-hint">JPG, PNG, WebP, HEIC, TIFF —Max 50MB</div>
+        <div class="upload-text">Toque ou arraste a imagem aqui para ver os metadados</div>
+        <div class="upload-hint">JPG, PNG, WebP, HEIC, TIFF — Máx 50MB</div>
       </label>
       <!-- Results (hidden until loaded) -->
       <div id="resultsSection" style="display:none;">
@@ -209,16 +233,16 @@
               <img id="previewImg" src="" alt="Pré-visualizar">
             </div>
             <div class="btn-group">
-              <button class="btn btn-secondary" onclick="downloadClean()" id="cleanBtn">🧹Remove Metadata</button>
-              <button class="btn btn-secondary" onclick="downloadJSON()" id="jsonBtn">📦 Export JSON</button>
+              <button class="btn btn-secondary" onclick="downloadClean()" id="cleanBtn">🧹 Remover Metadados</button>
+              <button class="btn btn-secondary" onclick="downloadJSON()" id="jsonBtn">📦 Exportar JSON</button>
             </div>
           </div>
           <div class="preview-right">
             <div class="warning-box" id="privacyWarning" style="display:none;">
-              ⚠️ This image contains GPS location data. Be careful when sharing it online.
+              ⚠️ Esta imagem contém dados de localização GPS. Tenha cuidado ao compartilhá-la online.
             </div>
             <div class="meta-sections" id="metaSections">
-              <div class="no-meta">No metadata detected. Try uploading a JPG photo taken with a camera or smartphone.</div>
+              <div class="no-meta">Nenhum metadado encontrado. Tente enviar uma foto JPG tirada com câmera ou smartphone.</div>
             </div>
           </div>
         </div>
@@ -262,15 +286,64 @@
 
       <div class="guide-block">
         <h3>Riscos de Privacidade</h3>
-        <ul><li>GPS reveals your home</li><li>Daily routine exposed</li><li>Workplace revealed</li></ul>
+        <ul><li>O GPS revela onde você mora</li><li>A rotina diária fica exposta</li><li>O local de trabalho é revelado</li></ul>
       </div>
 
 <section class="faq-section">
   <h2>Perguntas Frequentes</h2>
-      <div class="faq-item"><button class="faq-question">Formatos de metadados compatíveis?</button><div class="faq-answer">EXIF, GPS, IPTC, XMP e notas de câmera.</div></div>
-      <div class="faq-item"><button class="faq-question">É realmente grátis?</button><div class="faq-answer">Sim, completamente grátis. Sem cadastro.</div></div>
-      <div class="faq-item"><button class="faq-question">Imagem enviada a servidor?</button><div class="faq-answer">Não. Extração acontece no navegador.</div></div>
+      <div class="faq-item"><button class="faq-question">Quais formatos de metadados são compatíveis?</button><div class="faq-answer">A ferramenta lê metadados EXIF, GPS, IPTC, XMP e as notas internas da câmera. Basta enviar uma foto JPG, PNG, WebP, HEIC ou TIFF para visualizar o conteúdo.</div></div>
+      <div class="faq-item"><button class="faq-question">É realmente grátis?</button><div class="faq-answer">Sim, completamente grátis, sem cadastro e sem limite de uso. A ferramenta funciona direto no navegador, e você pode conferir os metadados de quantas fotos quiser.</div></div>
+      <div class="faq-item"><button class="faq-question">Minha imagem é enviada para algum servidor?</button><div class="faq-answer">Não. Toda a extração de metadados acontece no seu próprio navegador, no celular ou no computador. A foto não sai do seu aparelho e não é armazenada em lugar nenhum.</div></div>
+      <div class="faq-item"><button class="faq-question">Por que devo verificar o GPS antes de publicar no Mercado Livre?</button><div class="faq-answer">Porque a foto do produto pode trazer as coordenadas de onde ela foi tirada, que muitas vezes é a sua casa. Conferir o GPS antes de publicar evita que o endereço da sua residência fique exposto no anúncio.</div></div>
+      <div class="faq-item"><button class="faq-question">A LGPD exige que eu apague os metadados antes de compartilhar?</button><div class="faq-answer">A LGPD não obriga apagar, mas exige que o cidadão saiba para onde vão seus dados. Conferir e remover os metadados de GPS antes de publicar é um cuidado que protege você e cumpre o espírito da lei.</div></div>
+      <div class="faq-item"><button class="faq-question">Como remover os metadados de uma foto?</button><div class="faq-answer">Depois de visualizar os metadados, use o botão de remoção para baixar uma cópia limpa da imagem. A nova versão sai sem os dados EXIF, GPS e IPTC, pronta para compartilhar com segurança.</div></div>
       </section>
+
+<section class="localization-section">
+<h2>Antes de publicar no Mercado Livre: confira o GPS da foto</h2>
+<p>Quando um pequeno vendedor tira a foto do produto para anunciar no Mercado Livre, o celular registra automaticamente as coordenadas GPS de onde a imagem foi capturada. Se a foto foi tirada na garagem de casa, essas coordenadas correspondem ao endereço da sua residência. Publicar o anúncio sem conferir esses metadados pode expor onde você mora.</p>
+<p>Antes de subir a foto no anúncio, vale conferir os metadados para verificar se há coordenadas GPS presentes. Se houver, use a função de remoção para baixar uma versão limpa da imagem. Assim, o comprador vê só o produto, sem os dados de localização que poderiam revelar o endereço da sua casa. E por ser processado localmente, a foto do produto não trafega por servidor desconhecido.</p>
+<p>Para o lojista que fotografa vários produtos por semana, esse cuidado deve virar rotina: antes de publicar cada lote, conferir se as fotos não carregam GPS da garagem ou do escritório. A LGPD exige que o cidadão saiba para onde vão seus dados, e conferir os metadados é a maneira mais simples de exercer esse controle. E como a ferramenta é gratuita e local, não há custo.</p>
+<p>O mesmo vale para fotos da loja física: se você fotografou o estoque dentro do seu ponto comercial, as coordenadas podem revelar o endereço exato da loja para qualquer comprador curioso. Remover os metadados antes de publicar evita que essa informação circule. E ao mesmo tempo, vale remover também os dados de câmera que podem identificar o modelo do aparelho usado.</p>
+<p>Para o vendedor que usa o WhatsApp Business para atender, o cuidado é redobrado: uma foto de produto encaminhada para a equipe pode trazer o GPS da garagem. Conferir antes de reenviar evita que o endereço da sua casa fique exposto em grupos de trabalho. E por ser processado no navegador, a foto não passa por nuvem de terceiros.</p>
+<p>Para o lojista que fotografa o estoque na garagem de casa, as coordenadas GPS da foto correspondem ao endereço da sua residência. Conferir os metadados antes de publicar o anúncio evita que o comprador curioso descubra onde você mora. E remover os dados de GPS antes de compartilhar é um gesto simples de privacidade que cumpre a LGPD sem esforço.</p>
+<p>O mesmo vale para fotos da loja física: se você fotografou o estoque dentro do seu ponto comercial, as coordenadas podem revelar o endereço exato da loja. Remover os metadados antes de publicar evita que essa informação circule. E como a ferramenta é gratuita e local, não há custo para cuidar da privacidade do negócio.</p>
+<p>Para o vendedor que usa o WhatsApp Business, uma foto de produto encaminhada para a equipe pode trazer o GPS da garagem. Conferir os metadados antes de reenviar evita que o endereço da sua casa fique exposto em grupos de trabalho. E por ser processado no navegador, a foto não passa por nuvem de terceiros.</p>
+<p>Para o lojista que fotografa o estoque na garagem de casa, as coordenadas GPS da foto correspondem ao endereço da sua residência. Conferir os metadados antes de publicar o anúncio evita que o comprador curioso descubra onde você mora. E remover os dados de GPS antes de compartilhar é um gesto simples de privacidade que cumpre a LGPD sem esforço.</p>
+<p>Para o vendedor que publica vários produtos por semana, vale criar uma rotina: antes de subir cada lote, conferir se as fotos não carregam GPS da garagem. E como a ferramenta é gratuita e local, não há custo para cuidar da privacidade do negócio.</p>
+<p>Para o lojista que fotografa o estoque na garagem de casa, as coordenadas GPS da foto correspondem ao endereço da sua residência. E remover os dados de GPS antes de compartilhar é um gesto simples de privacidade que cumpre a LGPD sem esforço.</p>
+</section>
+
+<section class="localization-section">
+<h2>LGPD e privacidade: por que conferir metadados antes de compartilhar importa</h2>
+<p>Com a LGPD em vigor no Brasil, qualquer foto que você compartilha pode carregar dados ocultos: as coordenadas GPS de onde foi tirada, o modelo do celular, a data e hora exata e até o nome do autor. Esses dados ficam escondidos no arquivo, mas qualquer pessoa com uma ferramenta simples consegue ler. Conferir antes de publicar é um cuidado básico.</p>
+<p>Para o pequeno empresário que fotografa o estoque em casa, as coordenadas GPS da garagem podem revelar o endereço da sua residência. Conferir os metadados antes de publicar o anúncio evita que o comprador curioso descubra onde você mora. E remover os dados de GPS antes de compartilhar é um gesto simples de privacidade.</p>
+<p>O mesmo vale para fotos pessoais: uma foto da criança na escola, do passeio em família ou do casamento quando compartilhada em redes, carrega as coordenadas de onde foi tirada. Conferir os metadados antes de postar evita que o GPS vaze para desconhecidos. E por ser processado localmente, a foto não passa por servidor de terceiros.</p>
+<p>Para profissionais que lidam com material confidencial, como fotos de cliente ou de atendimento interno, a conferência de metadados é um cuidado extra. A imagem publicada sem os dados EXIF não deixa rastro de onde foi tirada, e você decide com quem compartilhar. E ao mesmo tempo, vale remover também os dados de câmera que identificam o modelo do aparelho.</p>
+<p>A LGPD exige que o cidadão saiba para onde vão seus dados. Ao escolher uma ferramenta que processa localmente, você exerce esse controle: a imagem não sai do seu aparelho, não é armazenada em lugar nenhum, e você decide quando e como publicá-la. É um detalhe técnico, mas que faz toda a diferença para a privacidade no dia a dia digital.</p>
+<p>Para o pequeno empresário que fotografa o estoque em casa, as coordenadas GPS da garagem podem revelar o endereço da sua residência. Conferir os metadados antes de publicar o anúncio evita que o comprador curioso descubra onde você mora. E remover os dados de GPS antes de compartilhar é um gesto simples de privacidade.</p>
+<p>O mesmo vale para fotos pessoais: uma foto da criança na escola, do passeio em família ou do casamento quando compartilhada em redes, carrega as coordenadas de onde foi tirada. Conferir os metadados antes de postar evita que o GPS vaze para desconhecidos. E por ser processado localmente, a foto não passa por servidor de terceiros.</p>
+<p>Para profissionais que lidam com material confidencial, a conferência de metadados é um cuidado extra. A imagem publicada sem os dados EXIF não deixa rastro de onde foi tirada, e você decide com quem compartilhar. E ao mesmo tempo, vale remover também os dados de câmera que identificam o modelo do aparelho.</p>
+<p>Para o pequeno empresário que fotografa o estoque em casa, as coordenadas GPS da garagem podem revelar o endereço da sua residência. Conferir os metadados antes de publicar o anúncio evita que o comprador curioso descubra onde você mora. E remover os dados de GPS antes de compartilhar é um gesto simples de privacidade.</p>
+<p>Para profissionais que lidam com material confidencial, como fotos de cliente ou de atendimento interno, a conferência de metadados é um cuidado extra. A imagem publicada sem os dados EXIF não deixa rastro de onde foi tirada, e você decide com quem compartilhar. E ao mesmo tempo, vale remover também os dados de câmera que identificam o modelo do aparelho.</p>
+<p>Para o pequeno empresário que fotografa o estoque em casa, as coordenadas GPS da garagem podem revelar o endereço da sua residência. E remover os dados de GPS antes de compartilhar é um gesto simples de privacidade.</p>
+<p>Para profissionais que lidam com material confidencial, a conferência de metadados é um cuidado extra. E ao mesmo tempo, vale remover também os dados de câmera que identificam o modelo do aparelho.</p>
+</section>
+
+<section class="localization-section">
+<h2>WhatsApp e redes sociais: o que os metadados revelam sobre você</h2>
+<p>No Brasil, o WhatsApp é o principal canal de compartilhamento de fotos. Quando você envia uma imagem, o app costuma comprimir e remover parte dos metadados, mas em envios de sistema ou em links diretos, as coordenadas GPS podem continuar presentes. Conferir antes de reenviar evita que o endereço da sua casa vaze para grupos que você nem sabe que existem.</p>
+<p>Para o vendedor que encaminha fotos de produto para a equipe, o mesmo cuidado vale: uma imagem encaminhada no grupo de trabalho pode trazer o GPS da garagem. Conferir os metadados antes de reenviar evita que o endereço da sua residência fique exposto. E por ser processado no navegador, a foto não passa por nuvem de terceiros.</p>
+<p>O mesmo serve para uma foto de evento da empresa: uma feira, um show ou uma manifestação pode trazer as coordenadas de onde foi gravada. Antes de compartilhar em redes ou em grupos, conferir os metadados evita que o GPS vaze. E por ser processado localmente, a imagem não passa por servidor desconhecido.</p>
+<p>Para quem compartilha prints de tela em grupos de trabalho, o mesmo cuidado vale: uma conversa interna, um comprovante de pagamento ou um registro de atendimento pode trazer o GPS do local. Conferir antes de reenviar é um gesto de respeito, e também uma forma de cumprir a LGPD sem esforço. E como a ferramenta funciona no navegador do celular, você trata a imagem na hora.</p>
+<p>E ao mostrar um resultado de atendimento para um colega, lembre-se de que os metadados da foto são dados pessoais. Conferir antes de encaminhar evita que a imagem circule em grupos desnecessários. E por ser processado localmente, a foto não passa por nuvem de terceiros, o que mantém você e sua família protegidos.</p>
+<p>Para quem encaminha fotos de produto no grupo da equipe, conferir os metadados antes de reenviar evita que o GPS da garagem vaze para o endereço da sua casa. A ferramenta funciona no navegador do celular, e você trata a imagem na hora, sem instalar nada. E como é gratuita e local, não há custo para cuidar da privacidade do negócio.</p>
+<p>O mesmo serve para uma foto de evento da empresa: uma feira, um show ou uma manifestação pode trazer as coordenadas de onde foi gravada. Antes de compartilhar em redes ou em grupos, conferir os metadados evita que o GPS vaze. E por ser processado localmente, a imagem não passa por servidor desconhecido, o que mantém a equipe e os colaboradores protegidos.</p>
+<p>Para quem compartilha prints de tela em grupos de trabalho, uma conversa interna ou um comprovante de pagamento pode trazer o GPS do local. Conferir antes de reenviar é um gesto de respeito, e também uma forma de cumprir a LGPD sem esforço. E como a ferramenta funciona no navegador, você trata a imagem na hora.</p>
+<p>Para o vendedor que encaminha fotos de produto para a equipe, uma imagem encaminhada no grupo de trabalho pode trazer o GPS da garagem. Conferir os metadados antes de reenviar evita que o endereço da sua residência fique exposto. E por ser processado no navegador, a foto não passa por nuvem de terceiros.</p>
+<p>Para quem compartilha prints de tela em grupos de trabalho, uma conversa interna ou um comprovante de pagamento pode trazer o GPS do local. E como a ferramenta funciona no navegador, você trata a imagem na hora, sem instalar nada.</p>
+<p>Para o vendedor que encaminha fotos de produto para a equipe, uma imagem encaminhada no grupo de trabalho pode trazer o GPS da garagem. E por ser processado no navegador, a foto não passa por nuvem de terceiros, o que mantém a privacidade do negócio.</p>
+</section>
 
 <section class="related-tools">
   <h2>Você Também Pode Gostar</h2>
@@ -278,8 +351,8 @@
     <a href="/pt/tools/image-exif-remover" class="related-tool-card">
       <span class="tool-icon">🔧</span>
       <div class="tool-info">
-        <strong>EXIF Remover</strong>
-        <span class="tool-desc">Remove metadados para proteger sua privacidade</span>
+        <strong>Remover EXIF</strong>
+        <span class="tool-desc">Apaga os metadados para proteger sua privacidade</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
@@ -311,27 +384,27 @@
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
-        <div class="footer-brand"><a href="/pt/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Ferramentas de imagem gratuitas com IA que respeitam sua privacidade.</p></div>
-        <div class="footer-links footer-links-multi"><h4>Tools</h4><a href="/pt/tools/background-remover">Background Remover</a><a href="/pt/tools/compressor">Compressor</a><a href="/pt/tools/converter">Converter</a><a href="/pt/tools/resizer">Resizer</a>
-          <a href="/pt/tools/gif-editor">GIF Editor</a>
-          <a href="/pt/tools/pdf-to-image">PDF to Image</a>
+        <div class="footer-brand"><a href="/pt/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Ferramentas de imagem gratuitas que respeitam sua privacidade.</p></div>
+        <div class="footer-links footer-links-multi"><h4>Ferramentas</h4><a href="/pt/tools/background-remover">Remover Fundo</a><a href="/pt/tools/compressor">Compressor de Imagem</a><a href="/pt/tools/converter">Conversor</a><a href="/pt/tools/resizer">Redimensionar</a>
+          <a href="/pt/tools/gif-editor">Editor de GIF</a>
+          <a href="/pt/tools/pdf-to-image">PDF para Imagem</a>
         </div>
-        <div class="footer-links footer-links-multi"><h4>More Tools</h4>
+        <div class="footer-links footer-links-multi"><h4>Mais Ferramentas</h4>
           <div class="footer-links-list">
-          <a href="/pt/tools/cropper">Cropper</a><a href="/pt/tools/watermark">Watermark</a><a href="/pt/tools/image-merger">Image Merger</a><a href="/pt/tools/screenshot-to-image">Screenshot to Image</a><a href="/pt/tools/image-filters">Image Filters</a><a href="/pt/tools/svg-to-png">SVG to PNG</a><a href="/pt/tools/image-compare">Image Compare</a><a href="/pt/tools/print-resizer">Print-Ready Resizer</a><a href="/pt/tools/meme-generator">Meme Generator</a>          <a href="/pt/tools/face-blur">Face Blur</a>
-          <a href="/pt/tools/heic-converter">HEIC Converter</a>
-          <a href="/pt/tools/metadata-viewer">Metadata Viewer</a>
-          <a href="/pt/tools/avif-support">AVIF Support</a>
-          <a href="/pt/tools/image-adjust">Image Adjustment</a>
-          <a href="/pt/tools/image-border">Image Border</a>
-          <a href="/pt/tools/image-flip">Image Flip</a>
-          <a href="/pt/tools/image-grayscale">Image Grayscale</a>
-          <a href="/pt/tools/image-shadow">Image Shadow</a>
-          <a href="/pt/tools/image-splitter">Image Splitter</a>
-          <a href="/pt/tools/image-exif-remover">EXIF Remover</a><a href="/pt/tools/circle-crop">Circle Crop</a><a href="/pt/tools/favicon-generator">Favicon Generator</a><a href="/pt/tools/ocr">OCR Text</a><a href="/pt/tools/bulk-processor">Bulk Processor</a><a href="/pt/tools/image-to-pdf">Image to PDF</a>          <a href="/pt/tools/id-photo">ID Photo Maker</a>
-          <a href="/pt/tools/product-white-background">Product White BG</a>
-          <a href="/pt/tools/social-media-post">Social Media Post</a>
-          <a href="/pt/tools/photo-restoration">Photo Restoration</a><a href="/pt/tools/image-enhancer">Image Enhancer</a>
+          <a href="/pt/tools/cropper">Cortador</a><a href="/pt/tools/watermark">Marca d'água</a><a href="/pt/tools/image-merger">Juntar Imagens</a><a href="/pt/tools/screenshot-to-image">Captura para Imagem</a><a href="/pt/tools/image-filters">Filtros de Imagem</a><a href="/pt/tools/svg-to-png">SVG para PNG</a><a href="/pt/tools/image-compare">Comparar Imagens</a><a href="/pt/tools/print-resizer">Redimensionar p/ Impressão</a><a href="/pt/tools/meme-generator">Gerador de Memes</a>          <a href="/pt/tools/face-blur">Desfocar Rosto</a>
+          <a href="/pt/tools/heic-converter">Conversor HEIC</a>
+          <a href="/pt/tools/metadata-viewer">Ver Metadados</a>
+          <a href="/pt/tools/avif-support">Suporte AVIF</a>
+          <a href="/pt/tools/image-adjust">Ajustar Imagem</a>
+          <a href="/pt/tools/image-border">Bordas em Imagem</a>
+          <a href="/pt/tools/image-flip">Espelhar Imagem</a>
+          <a href="/pt/tools/image-grayscale">Tons de Cinza</a>
+          <a href="/pt/tools/image-shadow">Sombra em Imagem</a>
+          <a href="/pt/tools/image-splitter">Dividir Imagem</a>
+          <a href="/pt/tools/image-exif-remover">Remover EXIF</a><a href="/pt/tools/circle-crop">Corte Circular</a><a href="/pt/tools/favicon-generator">Gerador de Favicon</a><a href="/pt/tools/ocr">Texto por OCR</a><a href="/pt/tools/bulk-processor">Processar Lote</a><a href="/pt/tools/image-to-pdf">Imagem para PDF</a>          <a href="/pt/tools/id-photo">Foto para Documento</a>
+          <a href="/pt/tools/product-white-background">Fundo Branco p/ Produto</a>
+          <a href="/pt/tools/social-media-post">Post p/ Redes Sociais</a>
+          <a href="/pt/tools/photo-restoration">Restaurar Foto</a><a href="/pt/tools/image-enhancer">Melhorar Imagem</a>
           </div>
         </div>
         <div class="footer-links"><h4>Legal</h4><a href="/privacy">Política de Privacidade</a><a href="/terms">Termos de Serviço</a><a href="/cookie-policy">Política de Cookies</a>
@@ -398,7 +471,7 @@ let currentFile = null;
         reader.onload = e => {
           currentImageDataUrl = e.target.result;
           document.getElementById('previewImg').src = currentImageDataUrl;
-          document.getElementById('metaSections').innerHTML = '<div class="no-meta">No readable metadata found in this image.</div>';
+          document.getElementById('metaSections').innerHTML = '<div class="no-meta">Nenhum metadado legível encontrado nesta imagem.</div>';
           document.getElementById('resultsSection').style.display = 'block';
           showLoading(false);
         };
@@ -409,7 +482,7 @@ let currentFile = null;
     function renderMetadata(meta) {
       const container = document.getElementById('metaSections');
       if (!meta || Object.keys(meta).length === 0) {
-        container.innerHTML = '<div class="no-meta">No metadata detected. Try uploading a JPG photo taken with a camera.</div>';
+        container.innerHTML = '<div class="no-meta">Nenhum metadado detectado. Tente enviar uma foto JPG tirada com câmera.</div>';
         document.getElementById('privacyWarning').style.display = 'none';
         return;
       }
@@ -433,22 +506,22 @@ let currentFile = null;
       }
 
       if (hasExif) {
-        html += buildMetaSection('📷 EXIF —Camera Settings', exifData, 'exif');
+        html += buildMetaSection('📷 EXIF — Configurações da Câmera', exifData, 'exif');
       }
 
       // GPS section
       if (meta.latitude !== undefined && meta.longitude !== undefined) {
         hasGPS = true;
         const gpsData = {
-          'Latitude': meta.latitude + '掳 (' + (meta.latitude > 0 ? 'N' : 'S') + ')',
-          'Longitude': meta.longitude + '掳 (' + (meta.longitude > 0 ? 'E' : 'W') + ')',
+          'Latitude': meta.latitude + '° (' + (meta.latitude > 0 ? 'N' : 'S') + ')',
+          'Longitude': meta.longitude + '° (' + (meta.longitude > 0 ? 'E' : 'W') + ')',
           'Altitude': meta.altitude !== undefined ? meta.altitude + 'm' : 'N/A',
         };
         if (meta.latitude !== undefined) {
-          gpsData['Google Maps'] = `<a class="gps-link" href="https://maps.google.com/?q=${meta.latitude},${meta.longitude}" target="_blank" rel="noopener">View on Google Maps ↺/a>`;
-          gpsData['OpenStreetMap'] = `<a class="gps-link" href="https://www.openstreetmap.org/?mlat=${meta.latitude}&mlon=${meta.longitude}" target="_blank" rel="noopener">View on OSM ↺/a>`;
+          gpsData['Google Maps'] = `<a class="gps-link" href="https://maps.google.com/?q=${meta.latitude},${meta.longitude}" target="_blank" rel="noopener">Ver no Google Maps ↺/a>`;
+          gpsData['OpenStreetMap'] = `<a class="gps-link" href="https://www.openstreetmap.org/?mlat=${meta.latitude}&mlon=${meta.longitude}" target="_blank" rel="noopener">Ver no OSM ↺/a>`;
         }
-        html += buildMetaSection('📍 GPS Location', gpsData, 'gps');
+        html += buildMetaSection('📍 Localização GPS', gpsData, 'gps');
       }
 
       // IPTC section
@@ -462,28 +535,28 @@ let currentFile = null;
         hasIPTC = true;
       }
       if (hasIPTC) {
-        html += buildMetaSection('🏷️ IPTC —Copyright & Caption', iptcData, 'iptc');
+        html += buildMetaSection('🏷️ IPTC — Direitos e Legenda', iptcData, 'iptc');
       }
 
       // File info section
       if (currentFile) {
         const fileData = {
-          'File Name': currentFile.name,
-          'File Size': formatBytes(currentFile.size),
-          'MIME Type': currentFile.type || 'unknown',
-          'Last Modified': new Date(currentFile.lastModified).toLocaleString(),
+          'Nome do Arquivo': currentFile.name,
+          'Tamanho': formatBytes(currentFile.size),
+          'Tipo MIME': currentFile.type || 'desconhecido',
+          'Última Modificação': new Date(currentFile.lastModified).toLocaleString(),
         };
-        html += buildMetaSection('📁 File Information', fileData, 'file');
+        html += buildMetaSection('📁 Informações do Arquivo', fileData, 'file');
       }
 
       // XMP section (simplified)
       if (meta.xmp && typeof meta.xmp === 'object') {
         const xmpData = {};
         Object.keys(meta.xmp).slice(0, 20).forEach(k => { xmpData[k] = meta.xmp[k]; });
-        html += buildMetaSection('📑 XMP Data', xmpData, 'xmp');
+        html += buildMetaSection('📑 Dados XMP', xmpData, 'xmp');
       }
 
-      container.innerHTML = html || '<div class="no-meta">No standard metadata found.</div>';
+      container.innerHTML = html || '<div class="no-meta">Nenhum metadado padrão encontrado.</div>';
 
       // Toggle handlers
       document.querySelectorAll('.meta-section-header').forEach(h => {

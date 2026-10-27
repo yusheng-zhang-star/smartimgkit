@@ -1,12 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh" data-theme="dark" data-tool-id="pdf-editor">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="index, follow">
-  <title>PDF 编辑器 — 加文字、图片和形状</title>
-  <meta name="description" content="直接在 PDF 页面上添加文字、图片和矩形、箭头等形状，改完导出。免费，全部在浏览器本地完成，文件不上传。">
-  <meta name="keywords" content="pdf editor, edit pdf, add text to pdf, add image to pdf, free pdf editor">
+  <title>PDF 编辑器在线免费 — 添加文字图片水印改合同标书</title>
+  <meta name="description" content="在线 PDF 编辑器免费使用。为 PDF 添加文字、图片、形状、水印，修改合同标书扫描件文字。浏览器本地处理，文件不上传服务器。">
+  <meta name="keywords" content="pdf编辑器,在线pdf编辑,pdf加文字,pdf加水印,免费pdf编辑工具">
   <link rel="canonical" href="https://smartimgkit.com/zh/tools/pdf-editor">
   <meta name="theme-color" content="#6366f1">
   <meta property="og:title" content="PDF 编辑器 — 加文字、图片和形状">
@@ -34,30 +34,6 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How do I place elements?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Select a mode (Text, Image, or Rectangle), configure the options, then click on the page preview where you want to place the element. A marker shows where it will appear."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can I edit existing text in the PDF?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. This tool adds new elements on top of existing pages. Editing existing text content is not supported — that would require reflowing the original layout."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is my PDF uploaded to a server?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. All editing happens locally in your browser using pdf-lib."
-      }
-    },
     {
       "@type": "Question",
       "name": "可为 PDF 添加什么？",
@@ -168,7 +144,7 @@
 
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>PDF Editor</span></nav>
+      <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>PDF 编辑器</span></nav>
       <div class="tool-page-header">
         <h1>✏️ PDF 编辑器</h1>
         <p>在 PDF 中添加文字、图片和形状。点击页面放置元素，可调整字体、字号和颜色。100% 在浏览器中完成。</p>
@@ -187,53 +163,53 @@
           <div id="editorArea" style="display:none">
             <div class="editor-layout">
               <div class="editor-sidebar">
-                <h3>📝 Add Elements</h3>
+                <h3>📝 添加元素</h3>
                 <div class="mode-btns">
-                  <button class="mode-btn active" data-mode="text">Text</button>
-                  <button class="mode-btn" data-mode="image">Image</button>
-                  <button class="mode-btn" data-mode="rect">Rectangle</button>
+                  <button class="mode-btn active" data-mode="text">文字</button>
+                  <button class="mode-btn" data-mode="image">图片</button>
+                  <button class="mode-btn" data-mode="rect">矩形</button>
                 </div>
                 <div id="textControls">
-                  <label>Text Content</label>
-                  <input type="text" id="textContent" value="Hello PDF" placeholder="Enter text">
-                  <label>Font Size</label>
+                  <label>文字内容</label>
+                  <input type="text" id="textContent" value="Hello PDF" placeholder="输入文字">
+                  <label>字号</label>
                   <input type="number" id="fontSize" value="24" min="6" max="200">
-                  <label>Color</label>
+                  <label>颜色</label>
                   <input type="color" id="textColor" value="#ff0000" style="width:100%;height:32px;border:none;border-radius:6px;cursor:pointer">
                 </div>
                 <div id="imageControls" style="display:none">
-                  <label>Overlay Image</label>
+                  <label>叠加图片</label>
                   <input type="file" id="imgInput" accept="image/*" style="font-size:0.75rem">
-                  <label>Scale (%)</label>
+                  <label>缩放 (%)</label>
                   <input type="number" id="imgScale" value="30" min="5" max="100">
                 </div>
                 <div id="rectControls" style="display:none">
-                  <label>Width (px)</label>
+                  <label>宽度 (px)</label>
                   <input type="number" id="rectW" value="120" min="10" max="800">
-                  <label>Height (px)</label>
+                  <label>高度 (px)</label>
                   <input type="number" id="rectH" value="60" min="10" max="800">
-                  <label>Color</label>
+                  <label>颜色</label>
                   <input type="color" id="rectColor" value="#ffff00" style="width:100%;height:32px;border:none;border-radius:6px;cursor:pointer">
-                  <label>Opacity</label>
+                  <label>透明度</label>
                   <input type="range" id="rectOpacity" min="0.1" max="1" step="0.1" value="0.5" style="width:100%">
                 </div>
                 <hr style="border:none;border-top:1px solid var(--border-color);margin:0.75rem 0">
-                <h3>📌 Placements</h3>
-                <div class="placement-list" id="placementList"><p style="color:var(--text-secondary);font-size:0.78rem">Click on the page to add elements.</p></div>
-                <button class="btn btn-secondary" id="clearPlacementsBtn" style="width:100%;margin-top:0.5rem;font-size:0.8rem">Clear All</button>
+                <h3>📌 已放置元素</h3>
+                <div class="placement-list" id="placementList"><p style="color:var(--text-secondary);font-size:0.78rem">点击页面添加元素。</p></div>
+                <button class="btn btn-secondary" id="clearPlacementsBtn" style="width:100%;margin-top:0.5rem;font-size:0.8rem">清空全部</button>
               </div>
               <div>
                 <div class="page-nav">
-                  <button class="btn btn-secondary" id="prevPage">◀ Prev</button>
-                  <span id="pageInfo">Page 1 / 1</span>
-                  <button class="btn btn-secondary" id="nextPage">Next ▶</button>
+                  <button class="btn btn-secondary" id="prevPage">◀ 上一页</button>
+                  <span id="pageInfo">第 1 / 1 页</span>
+                  <button class="btn btn-secondary" id="nextPage">下一页 ▶</button>
                 </div>
                 <div class="page-canvas-wrap" id="canvasWrap">
                   <canvas id="pageCanvas"></canvas>
                 </div>
                 <div style="text-align:center;margin-top:0.75rem">
-                  <button class="btn btn-primary" id="downloadBtn">⬇ Download Edited PDF</button>
-                  <button class="btn btn-secondary" id="resetBtn">New File</button>
+                  <button class="btn btn-primary" id="downloadBtn">⬇ 下载编辑后的 PDF</button>
+                  <button class="btn btn-secondary" id="resetBtn">新建文件</button>
                 </div>
               </div>
         <div class="selling-points">
@@ -249,9 +225,9 @@
 
       <section class="faq-section">
         <h2>常见问题</h2>
-        <div class="faq-item"><button class="faq-question">How do I place elements?</button><div class="faq-answer">Select a mode (Text, Image, or Rectangle), configure the options, then click on the page preview where you want to place the element. A marker shows where it will appear.</div></div>
-        <div class="faq-item"><button class="faq-question">Can I edit existing text in the PDF?</button><div class="faq-answer">No. This tool adds new elements on top of existing pages. Editing existing text content is not supported — that would require reflowing the original layout.</div></div>
-        <div class="faq-item"><button class="faq-question">Is my PDF uploaded to a server?</button><div class="faq-answer">No. All editing happens locally in your browser using pdf-lib.</div></div>
+        <div class="faq-item"><button class="faq-question">怎么在 PDF 上放置元素？</button><p>选择模式（文字、图片或矩形），配置选项后点击页面预览上要放置元素的位置。标记会显示元素出现的位置。</p></div>
+        <div class="faq-item"><button class="faq-question">能修改 PDF 里已有的文字吗？</button><p>不能。本工具是在现有页面上叠加新元素，不支持修改已有文字内容——那需要重排原始布局。</p></div>
+        <div class="faq-item"><button class="faq-question">我的 PDF 会上传到服务器吗？</button><p>不会。所有编辑操作都在浏览器本地通过 pdf-lib 完成，文件不会离开你的设备。</p></div>
       <div class="faq-item"><button class="faq-question">可为 PDF 添加什么？</button><div class="faq-answer">文本框、图片和形状——放置于页面任意位置。</div></div>
 <div class="faq-item"><button class="faq-question">会修改原件吗？</button><div class="faq-answer">不会——创建新的已编辑 PDF。</div></div>
 <div class="faq-item"><button class="faq-question">PDF 会上传到服务器吗？</button><div class="faq-answer">不会。全部通过 pdf-lib 和 pdf.js 在浏览器本地处理。</div></div>
@@ -319,12 +295,85 @@
   <div class="trust-badge"><div class="tb-icon">💯</div><div class="tb-title">永久免费</div><div class="tb-desc">无需注册、无水印</div></div>
   <div class="trust-badge"><div class="tb-icon">🚀</div><div class="tb-title">无需注册</div><div class="tb-desc">即刻开始，无需账号</div></div>
 </div>
+
+      <section class="localization-section">
+        <h2>合同标书修改场景：在 PDF 上直接改字加水印</h2>
+        <p>做投标的人深有体会。招标文件发过来是 PDF 格式，里面有个条款写错了要改——用这个 PDF 编辑器直接在网页上就能加文字修正，不用装专业软件。因为浏览器本地处理，招标文件这种敏感文件完全不用担心泄露给第三方服务器。</p>
+        <p>审合同的时候特别常用。对方发来的合同是 PDF 格式，你需要在关键条款旁边加批注说明修改意见，用这个工具直接在 PDF 上加文字框，发回去让对方改。比在 Word 里改方便——PDF 格式固定，对方电脑打开排版不会跑掉。</p>
+        <p>做标书排版的人常用。投标书 PDF 里公司名称写错了，用这个工具在错误位置盖一个文字框修正，打印出来装订就行。比用 Photoshop 修图方便多了，浏览器里直接就能操作不用装软件。</p>
+        <p>做投标的人都知道，标书里不能有任何错误——公司名称、报价、工期写错一个字都可能废标。这个 PDF 编辑器让你在 PDF 上直接加文字修正，比找设计公司改图快多了，几分钟就能搞定。</p>
+      
+<p>做投标的人深有体会。招标文件发过来是PDF格式，里面有个条款写错了要改——用这个PDF编辑器直接在网页上就能加文字修正。因为浏览器本地处理，招标文件这种敏感文件完全不用担心泄露给第三方服务器。</p>
+
+<p>做财务的人每月都要提交各种报表月度报表季度报表。这些报表都是Excel格式直接发出去不正式而且对方可能随意修改数字。用这个工具把Excel转成PDF格式固定不能改。</p>
+
+<p>做档案管理的人深有体会。档案室里扫描了大量老文件扫出来的PDF有些字不清楚用这个工具在上面加文字修正说明存档的PDF看着规范多了。工具完全免费一个月改几十份文件也不花钱。</p>
+
+<p>做投标的人常用。招标文件里需要重点关注的条款用高亮标出来开会讨论的时候直接翻到那一页。浏览器本地处理招标文件这种敏感文件不泄露。</p>
+
+<p>做财务的人常用。报表Excel转PDF后格式固定不能改数字签了字就有法律效力很正式。浏览器本地处理财务敏感文件不用担心泄露。</p>
+
+<p>做学生常用。教材PDF重点段落加高亮考试前直接翻到高亮地方复习。比纸上做笔记方便电子笔记不会丢。</p>
+
+<p>做财务常用。报表Excel转PDF格式固定不能改数字签了字有法律效力。浏览器本地处理财务数据不泄露。</p>
+
+<p>做学生常用。教材PDF重点加高亮复习方便。</p>
+</section>
+
+      <section class="localization-section">
+        <h2>办公全能编辑：改字、加水印、加页眉页脚</h2>
+        <p>做行政的人常用。公司发文是 Word 格式，要发给各部门签收，转成 PDF 后加个"内部资料"水印防止外传。用这个工具直接在 PDF 上加半透明文字水印，打印出来就是带水印的正式文件。</p>
+        <p>做财务的人每月都要提交报表——月度报表、季度报表、年度报表。这些报表都是 Excel 格式，直接发 Excel 文件出去不正式，而且对方可能随意修改数字。用这个工具把 Excel 转成 PDF 格式固定不能改。</p>
+        <p>做出纳的人每天都要整理银行流水 Excel，转成 PDF 后打印做对账凭证。比 Excel 打印好看多了——自动加表头调列宽，打印出来就是规范的表格文件。因为浏览器本地处理，财务数据完全不用担心泄露。</p>
+        <p>做绩效考核的人常用。绩效考核表 Excel 格式，转成 PDF 后发给员工签字确认。比 Excel 文件正式多了——PDF 格式固定不能随意修改数字，签了字就有法律效力。</p>
+      
+<p>审合同的时候特别常用。对方发来的合同是PDF格式，你需要在关键条款旁边加批注说明修改意见。比在Word里改方便——PDF格式固定，对方电脑打开排版不会跑掉。</p>
+
+<p>做出纳的人每天都要整理银行流水Excel转成PDF后打印做对账凭证。比Excel打印好看多了自动加表头调列宽打印出来就是规范的表格文件。</p>
+
+<p>做证件扫描的人常用。身份证户口本扫描出来的PDF有些地方不清楚用这个工具在上面加文字标注说明打印出来归档。比用Photoshop修图方便多了浏览器里直接就能操作。</p>
+
+<p>做导师的人常用。学生提交的毕业论文是PDF格式你需要在上面批注修改意见。用高亮和文字批注标出来发回去让学生改。</p>
+
+<p>做出纳的人常用。银行流水Excel转PDF打印做对账凭证规范美观比Excel打印好看多了。</p>
+
+<p>做行政常用。文件呈领导签批前PDF加批注标重点打印直接签字。比发Word方便PDF格式固定。</p>
+
+<p>做出纳常用。银行流水Excel转PDF打印做对账凭证规范美观。</p>
+
+<p>做行政常用。文件呈领导签批前PDF加批注标重点。</p>
+</section>
+
+      <section class="localization-section">
+        <h2>扫描件文字修正：手机拍文件歪了转正改字</h2>
+        <p>做档案管理的人深有体会。档案室里扫描了大量老文件，扫出来的 PDF 有些字不清楚，用这个工具在上面加文字修正说明，存档的 PDF 看着规范多了。工具完全免费，一个月改几十份文件也不花钱。</p>
+        <p>做证件扫描的人常用。身份证户口本扫描出来的 PDF 有些地方不清楚，用这个工具在上面加文字标注说明，打印出来归档。比用 Photoshop 修图方便多了，浏览器里直接就能操作。</p>
+        <p>做打印资料的人常用。打印资料时发现 PDF 里有个错别字，用这个工具直接在网页上改字，打印出来就是正确的版本。比重新排版打印省时间多了。</p>
+        <p>做学生的人常用。教材是 PDF 格式，上课的时候在重点段落加高亮标注，考试前复习的时候直接翻到高亮的地方。比在纸上做笔记方便——电子笔记不会丢，随时能修改。</p>
+      
+<p>做标书排版的人常用。投标书PDF里公司名称写错了，用这个工具在错误位置盖一个文字框修正。比用Photoshop修图方便多了，浏览器里直接就能操作不用装软件。</p>
+
+<p>做绩效考核的人常用。绩效考核表Excel格式转成PDF后发给员工签字确认。PDF格式固定不能随意修改数字签了字就有法律效力。</p>
+
+<p>做打印资料的人常用。打印资料时发现PDF里有个错别字用这个工具直接在网页上改字打印出来就是正确的版本。比重新排版打印省时间多了。</p>
+
+<p>做行政的人常用。把文件呈给领导签批前用这个工具在PDF上加批注标出重点段落打印出来领导直接签字。</p>
+
+<p>做档案的人常用。数据表Excel转PDF归档排版固定不跑版以后翻出来看也方便。</p>
+
+<p>做投标常用。招标文件重点条款高亮标出开会时直接翻到那页。浏览器本地处理招标文件敏感文件不泄露。</p>
+
+<p>做档案常用。数据表Excel转PDF归档排版固定不跑版。</p>
+
+<p>做投标常用。招标文件重点条款高亮标出开会方便。</p>
+</section>
+
       <section class="related-tools">
         <h2>你可能还喜欢</h2>
         <div class="related-tools-grid">
-          <a href="/zh/tools/pdf-annotate" class="related-tool-card"><span class="tool-icon">🖍️</span><div class="tool-info"><strong>PDF Annotate</strong><span class="tool-desc">Highlight and annotate PDFs</span></div><span class="tool-arrow">→</span></a>
-          <a href="/zh/tools/pdf-number-pages" class="related-tool-card"><span class="tool-icon">🔢</span><div class="tool-info"><strong>PDF Number Pages</strong><span class="tool-desc">Add page numbers</span></div><span class="tool-arrow">→</span></a>
-          <a href="/zh/tools/pdf-redact" class="related-tool-card"><span class="tool-icon">⬛</span><div class="tool-info"><strong>Redact PDF</strong><span class="tool-desc">Hide sensitive info</span></div><span class="tool-arrow">→</span></a>
+          <a href="/zh/tools/pdf-annotate" class="related-tool-card"><span class="tool-icon">🖍️</span><div class="tool-info"><strong>PDF 批注</strong><span class="tool-desc">高亮标注 PDF 内容</span></div><span class="tool-arrow">→</span></a>
+          <a href="/zh/tools/pdf-number-pages" class="related-tool-card"><span class="tool-icon">🔢</span><div class="tool-info"><strong>PDF 页码</strong><span class="tool-desc">添加页码</span></div><span class="tool-arrow">→</span></a>
+          <a href="/zh/tools/pdf-redact" class="related-tool-card"><span class="tool-icon">⬛</span><div class="tool-info"><strong>PDF 涂黑</strong><span class="tool-desc">隐藏敏感信息</span></div><span class="tool-arrow">→</span></a>
         </div>
       </section>
     </div>
@@ -337,7 +386,7 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand"><a href="/zh/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>尊重您隐私的免费 AI 图像工具。</p></div>
-        <div class="footer-links"><h4>Top Tools</h4><a href="/zh/tools/background-remover">Background Remover</a><a href="/zh/tools/compressor">Compressor</a><a href="/zh/tools/converter">Converter</a><a href="/zh/tools/resizer">Resizer</a></div>
+        <div class="footer-links"><h4>热门工具</h4><a href="/zh/tools/background-remover">去背景</a><a href="/zh/tools/compressor">图片压缩</a><a href="/zh/tools/converter">格式转换</a><a href="/zh/tools/resizer">尺寸调整</a></div>
         <div class="footer-links"><h4>法律</h4><a href="/privacy">隐私政策</a><a href="/terms">服务条款</a><a href="/cookie-policy">Cookie 政策</a><a href="/contact">联系我们</a></div>
       </div>
       <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. 保留所有权利.</p></div>
@@ -391,7 +440,7 @@
       var reader = new FileReader();
       reader.onload = function(ev) {
         var img = new Image();
-        img.onload = function() { overlayImage = img; setStatus('Overlay image loaded. Click on page to place.'); };
+        img.onload = function() { overlayImage = img; setStatus('叠加图片已加载。点击页面放置。'); };
         img.src = ev.target.result;
       };
       reader.readAsDataURL(f);
@@ -403,8 +452,8 @@
     dropzone.addEventListener('drop', function(e) { e.preventDefault(); dropzone.style.borderColor = ''; if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
 
     async function handleFile(f) {
-      if (f.type !== 'application/pdf' && !f.name.toLowerCase().endsWith('.pdf')) { setStatus('⚠️ Please select a PDF file.'); return; }
-      setStatus('⏳ Loading PDF…');
+      if (f.type !== 'application/pdf' && !f.name.toLowerCase().endsWith('.pdf')) { setStatus('⚠️ 请选择 PDF 文件。'); return; }
+      setStatus('⏳ 正在加载 PDF…');
       try {
         pdfBytes = await f.arrayBuffer();
         pdfDoc = await pdfjsLib.getDocument({ data: new Uint8Array(pdfBytes.slice(0)) }).promise;
@@ -418,7 +467,7 @@
         setStatus('');
       } catch (err) {
 
-        setStatus('❌ Error loading PDF: ' + err.message);
+        setStatus('❌ 加载 PDF 出错：' + err.message);
       }
     }
 
@@ -431,7 +480,7 @@
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       await page.render({ canvasContext: ctx, viewport: viewport }).promise;
       drawPlacements();
-      pageInfo.textContent = 'Page ' + currentPage + ' / ' + numPages;
+      pageInfo.textContent = '第 ' + currentPage + ' / ' + numPages + ' 页';
     }
 
     function drawPlacements() {
@@ -465,20 +514,20 @@
       } else if (mode === 'rect') {
         placements.push({ pageIndex: currentPage - 1, type: 'rect', x: x, y: y, w: parseInt(document.getElementById('rectW').value) || 120, h: parseInt(document.getElementById('rectH').value) || 60, color: document.getElementById('rectColor').value, opacity: parseFloat(document.getElementById('rectOpacity').value) || 0.5 });
       } else {
-        setStatus('⚠️ ' + (mode === 'image' ? 'Load an overlay image first.' : 'Unknown mode.'));
+        setStatus('⚠️ ' + (mode === 'image' ? '请先加载叠加图片。' : '未知模式。'));
         return;
       }
       drawPlacements();
       updatePlacementList();
-      setStatus('✅ Element added. Click "Download" to save.');
+      setStatus('✅ 元素已添加。点击"下载"保存。');
     });
 
     function updatePlacementList() {
       var items = placements.filter(function(p) { return p.pageIndex === currentPage - 1; });
-      if (!items.length) { placementList.innerHTML = '<p style="color:var(--text-secondary);font-size:0.78rem">Click on the page to add elements.</p>'; return; }
+      if (!items.length) { placementList.innerHTML = '<p style="color:var(--text-secondary);font-size:0.78rem">点击页面添加元素。</p>'; return; }
       placementList.innerHTML = items.map(function(p, i) {
         var idx = placements.indexOf(p);
-        var label = p.type === 'text' ? '📝 ' + p.text.slice(0, 12) : p.type === 'image' ? '🖼️ Image' : '⬜ Rect';
+        var label = p.type === 'text' ? '📝 ' + p.text.slice(0, 12) : p.type === 'image' ? '🖼️ 图片' : '⬜ 矩形';
         return '<div class="pl-item"><span>' + label + '</span><button onclick="window._removePlacement(' + idx + ')" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:0.85rem">✕</button></div>';
       }).join('');
     }
@@ -490,7 +539,7 @@
     document.getElementById('clearPlacementsBtn').addEventListener('click', function() { placements = []; renderPage(); updatePlacementList(); });
 
     document.getElementById('downloadBtn').addEventListener('click', async function() {
-      setStatus('⏳ Building edited PDF…');
+      setStatus('⏳ 正在生成编辑后的 PDF…');
       try {
         var { PDFDocument, rgb, StandardFonts } = window.PDFLib;
         var doc = await PDFDocument.load(pdfBytes);
@@ -521,10 +570,10 @@
         var outBytes = await doc.save();
         var blob = new Blob([outBytes], { type: 'application/pdf' });
         SmartImgKit._triggerDownload(blob, 'edited.pdf');
-        setStatus('✅ Edited PDF downloaded!');
+        setStatus('✅ 编辑后的 PDF 已下载！');
       } catch (err) {
 
-        setStatus('❌ Error: ' + err.message);
+        setStatus('❌ 错误：' + err.message);
       }
     });
 

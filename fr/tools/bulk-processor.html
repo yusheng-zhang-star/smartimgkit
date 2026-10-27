@@ -32,10 +32,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json">
 {
-  
-  "inLanguage": "fr","@context": "https://schema.org",
+  "inLanguage": "fr",
+  "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Bulk Image Processor",
+  "name": "Traitement d'images en lot",
   "url": "https://smartimgkit.com/fr/tools/bulk-processor",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
@@ -105,26 +105,42 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How many images can I process at once?",
+      "name": "Combien d'images puis-je traiter en une fois ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No hard limit. The tool can handle batches of 50-200 images on a typical laptop."
+        "text": "Il n'y a pas de limite stricte. Sur un ordinateur portable classique, l'outil gère sans difficulté des lots de cinquante à deux cents images, selon la taille des fichiers et la mémoire disponible."
       }
     },
     {
       "@type": "Question",
-      "name": "Is there a file size limit per image?",
+      "name": "Mes images sont-elles envoyées vers un serveur ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No hard limit, but images over 50MB may cause performance issues."
+        "text": "Non. Tout le traitement se déroule localement dans votre navigateur. Aucune photo n'est téléversée, ce qui respecte le RGPD et les recommandations de la CNIL en matière de confidentialité."
       }
     },
     {
       "@type": "Question",
-      "name": "Are my images uploaded to a server?",
+      "name": "Puis-je préparer des photos pour Vinted ou Leboncoin en lot ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. All processing happens locally in your browser."
+        "text": "Absolument. Importez les clichés de vos annonces, réglez une largeur d'environ 1200 pixels, demandez un JPG à 80%, et téléchargez le ZIP. Chaque photo est prête à être mise en ligne en quelques secondes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Comment ajouter un filigrane discret sur toutes mes photos ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Dans les options de traitement, saisissez le texte du filigrane, réglez la taille et l'opacité (30% convient bien). Chaque image du lot reçoit automatiquement la même marque, en bas à gauche, sans retouche manuelle."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je traiter les photos de mon association sans les envoyer à un tiers ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui. L'ensemble du traitement se déroule dans votre navigateur, sans téléversement. C'est particulièrement adapté pour les photos d'événements, qui mettent en présence des adhérents dont il faut respecter la vie privée."
       }
     }
   ]
@@ -162,39 +178,39 @@
 
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>Bulk Image Processor</span></nav>
+      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>Traitement d'images en lot</span></nav>
       <div class="tool-page-header">
-        <h1>Bulk Image Processor</h1>
-        <p></p>
+        <h1>Traitement d'images en lot</h1>
+        <p>Redimensionnez, compressez, convertissez et filigranez des dizaines de photos en une seule fois, directement dans votre navigateur. 100% local, sans envoi vers un serveur.</p>
       </div>
       <div class="tool-workspace">
 <div class="upload-area" id="uploadArea">
     <input type="file" id="fileInput" accept="image/*" multiple hidden>
     <div class="upload-icon">🖼️</div>
-    <h3>Déposer images here</h3>
-    <p>ou cliquez pour parcourir (multiple fichiers supported)</p>
-    <p class="upload-hint">Supports JPG, PNG, WebP, BMP — up to 50 fichiers</p>
+    <h3>Déposez vos images ici</h3>
+    <p>ou cliquez pour parcourir (plusieurs fichiers acceptés)</p>
+    <p class="upload-hint">Accepte JPG, PNG, WebP, BMP — jusqu'à 50 fichiers</p>
   </div>
 
   <div id="workspace" style="display:none">
     <div class="file-list" id="fileList"></div>
 
     <details style="margin:1rem 0">
-      <summary style="cursor:pointer;font-weight:600;font-size:0.95rem">Traitement en cours Options</summary>
+      <summary style="cursor:pointer;font-weight:600;font-size:0.95rem">Options de traitement</summary>
       <div style="margin-top:1rem">
         <div class="controls">
-          <label>Resize to (px)</label>
-          <input type="number" id="resizeW" placeholder="width" style="width:80px">
+          <label>Redimensionner à (px)</label>
+          <input type="number" id="resizeW" placeholder="largeur" style="width:80px">
           <span>×</span>
-          <input type="number" id="resizeH" placeholder="height" style="width:80px">
+          <input type="number" id="resizeH" placeholder="hauteur" style="width:80px">
           <label style="margin-left:0.5rem">
-            <input type="checkbox" id="keepRatio" checked> Keep ratio
+            <input type="checkbox" id="keepRatio" checked> Conserver le ratio
           </label>
         </div>
         <div class="controls">
           <label>Format de sortie</label>
           <select id="outFmt">
-            <option value="same">Same as input</option>
+            <option value="same">Identique à l'entrée</option>
             <option value="image/jpeg">JPG</option>
             <option value="image/png">PNG</option>
             <option value="image/webp">WebP</option>
@@ -204,8 +220,8 @@
           <span id="qLabel">85%</span>
         </div>
         <div class="controls">
-          <label>Watermark Texte</label>
-          <input type="text" id="wmText" placeholder="optional" style="padding:6px 10px;border:1px solid #ccc;border-radius:6px;font-size:0.9rem;width:160px">
+          <label>Texte du filigrane</label>
+          <input type="text" id="wmText" placeholder="optionnel" style="padding:6px 10px;border:1px solid #ccc;border-radius:6px;font-size:0.9rem;width:160px">
           <label style="margin-left:0.5rem">Taille</label>
           <input type="number" id="wmSize" value="24" style="width:60px">
           <label style="margin-left:0.5rem">Opacité</label>
@@ -219,80 +235,119 @@
     <div class="status" id="statusText"></div>
 
     <div class="controls">
-      <button class="btn btn-primary" id="processBtn">Process All</button>
-      <button class="btn btn-secondary" id="downloadBtn" disabled>Télécharger ZIP</button>
-      <button class="btn btn-secondary" id="clearBtn">Effacer All</button>
+      <button class="btn btn-primary" id="processBtn">Traiter tout</button>
+      <button class="btn btn-secondary" id="downloadBtn" disabled>Télécharger le ZIP</button>
+      <button class="btn btn-secondary" id="clearBtn">Tout effacer</button>
     </div>
   </div>
       </div>
 <section class="how-to-section">
-  <h2>How to Use</h2>
+  <h2>Comment traiter plusieurs images en une fois</h2>
   <div class="how-to-steps">
-    <div class="how-to-step"><div class="step-number">1</div><h4>Drop Images</h4><p>Drag and drop or select multiple image files.</p></div>
-    <div class="how-to-step"><div class="step-number">2</div><h4>Configure</h4><p>Expand "Processing Options" to set resize, format, quality, and watermark.</p></div>
-    <div class="how-to-step"><div class="step-number">3</div><h4>Process All</h4><p>Click "Process All" and watch progress.</p></div>
-    <div class="how-to-step"><div class="step-number">4</div><h4>Download ZIP</h4><p>When done, download all processed images as a ZIP.</p></div>
+    <div class="how-to-step"><div class="step-number">1</div><h4>Importez vos images</h4><p>Glissez-déposez ou sélectionnez plusieurs fichiers d'un seul coup.</p></div>
+    <div class="how-to-step"><div class="step-number">2</div><h4>Configurez</h4><p>Déployez les options pour régler redimensionnement, format, qualité et filigrane.</p></div>
+    <div class="how-to-step"><div class="step-number">3</div><h4>Lancez le traitement</h4><p>Cliquez sur « Traiter tout » et suivez la progression.</p></div>
+    <div class="how-to-step"><div class="step-number">4</div><h4>Téléchargez le ZIP</h4><p>Une fois le traitement terminé, récupérez un ZIP contenant toutes les images.</p></div>
   </div>
 </section>
 
-<h2>Detailed User Guide</h2>
+<h2>Guide d'utilisation détaillé</h2>
 
       <div class="guide-block">
-        <h3>Step 1: Upload Multiple Images</h3>
-        <p>Drag and drop a folder of images or select many files at once.</p>
+        <h3>Étape 1 : importer plusieurs images</h3>
+        <p>Glissez-déposez un dossier d'images ou sélectionnez beaucoup de fichiers en même temps.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Step 2: Configure Processing Options</h3>
-        <p>Click "Processing Options" to expand settings. You can choose resize mode, output format, quality, and watermark text.</p>
+        <h3>Étape 2 : configurer les options</h3>
+        <p>Cliquez sur « Options de traitement » pour déplier les réglages. Vous pouvez choisir le mode de redimensionnement, le format de sortie, la qualité et le texte du filigrane.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Step 3: Process All</h3>
-        <p>Click "Process All". A progress bar shows which file is being processed.</p>
+        <h3>Étape 3 : lancer le traitement</h3>
+        <p>Cliquez sur « Traiter tout ». Une barre de progression indique quel fichier est en cours de traitement.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Step 4: Download ZIP</h3>
-        <p>When processing finishes, click "Download ZIP" to get all processed images in one archive.</p>
+        <h3>Étape 4 : télécharger le ZIP</h3>
+        <p>À la fin du traitement, cliquez sur « Télécharger le ZIP » pour récupérer toutes les images transformées en une seule archive.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Best Use Cases</h3>
-        <ul><li>Photo batch compression</li><li>Product image standardization</li><li>Website asset prep</li></ul>
+        <h3>Cas d'usage recommandés</h3>
+        <ul><li>Compression de lots de photos</li><li>Uniformisation des photos produit</li><li>Préparation d'assets pour un site</li></ul>
       </div>
+
+<section class="localization-section">
+  <h2>Vendre sur Vinted ou Cdiscount : traitez vos photos produit en lot</h2>
+  <p>Quand on se lance sur Vinted, Leboncoin ou Cdiscount, on se rend vite compte d'une chose : on ne vend pas un produit sans photos propres. Or, photographier un vêtement, un livre ou un appareil d'occasion, c'est bien. Mais les photos sortent du téléphone en haute définition, parfois en 12 méga pixels, et pèsent plusieurs méga-octets chacune. Envoyer des images aussi lourdes à la plateforme, c'est s'exposer à un téléversement lent, voire à un refus.</p>
+  <p>Le traitement en lot change la donne. On importe d'un seul coup les dix photos de l'annonce, on règle une taille cible (disons 1200 pixels de large), on demande un format JPG à 80%, et l'on obtient en quelques secondes un ZIP prêt à être téléversé. Chaque photo est réduite à une taille cohérente, le poids est divisé par dix, et l'annonce se met en ligne bien plus vite. C'est un gain de temps considérable quand on tient une boutique de dix, vingt, cinquante références.</p>
+  <p>Pour les petits e-commerçants qui débutent, la standardisation visuelle compte autant que le produit lui-même. Des photos de même taille, même cadrage, même éclairage, donnent une impression de sérieux qui se paie à la caisse. Le traitement en lot permet d'appliquer les mêmes réglages à toutes les images, en une seule passe. On n'a plus à ajuster chaque photo une par une, comme on le ferait sur un logiciel de retouche installé sur sa machine.</p>
+  <p>Sur Amazon France, les exigences sont encore plus strictes. Les photos produit doivent faire au moins 1600 pixels sur le côté le plus long, être nettes, et respecter un cadre blanc. Notre outil permet de préparer ce jeu d'images en quelques clics : on importe les clichés bruts, on règle la taille, on exporte, et l'on obtient un pack prêt à être versé dans le catalogue. C'est la même logique qui prévaut sur Cdiscount, Rakuten ou la marketplace de la Fnac.</p>
+  <p>Enfin, pour les vendeurs qui testent plusieurs plateformes, le traitement en lot évite de refaire le travail. On génère un pack de 1200 pixels pour Vinted, un pack de 2000 pixels pour Amazon, et l'on réutilise les mêmes photos sources. Chaque plateforme obtient ses dimensions, sans qu'on ait à reconfigurer l'outil à chaque fois. C'est une façon de travailler plus intelligemment, sans multiplier les allers-retours.</p>
+  <p>Pour les vendeurs de livres d'occasion, de disques ou de jeux vidéo, le gain de temps est encore plus net. On sait qu'une bonne fiche produit, c'est cinq à huit photos nettes, bien éclairées, montrant chaque angle. À raison de vingt références par semaine, cela fait déjà une centaine de photos à préparer. Le traitement en lot divise ce travail par dix, et l'on passe plus de temps à rédiger ses annonces qu'à retoucher ses clichés.</p>
+  <p>Sur Leboncoin, les photos sont le premier élément que l'on juge. Une annonce avec une image floue, trop lourde, mal cadrée, passe inaperçue. En préparant un lot cohérent, on donne aussitôt une image plus pro de son activité. C'est un détail qui change la vitesse à laquelle les objets partent, et le prix auquel on les cède.</p>
+  <p>Pour les petits créateurs qui vendent sur Etsy ou sur leur propre boutique en ligne, le traitement en lot est aussi une étape de professionnalisation. On uniformise le cadrage, l'éclairage, la taille des visuels, et l'on obtient une boutique qui respire. C'est un détail qui se paie à la caisse, et qui se prépare désormais en quelques minutes, sans passer par un logiciel lourd ni par un abonnement coûteux. Au bout du compte, c'est le visiteur qui juge, et il pardonne rarement les photos bâclées, en ligne comme ailleurs. On a tout à gagner à soigner ce premier contact visuel, dès la première annonce mise en ligne, sans tarder, en toute confiance.</p>
+</section>
+
+<section class="localization-section">
+  <h2>RGPD et CNIL : traitez vos photos sensibles sans les envoyer</h2>
+  <p>Quand on manipule des photos de clients, de chantiers, de documents ou de personnes, on ne souhaite généralement pas les envoyer à un service tiers. Or beaucoup d'outils de traitement en ligne passent par un serveur central : on téléverse ses images, on attend qu'elles reviennent, et l'on oublie que des copies ont transité par un ordinateur inconnu. Pour les professionnels soucieux de la conformité, cette manière de faire pose un vrai problème.</p>
+  <p>Notre processeur de lot fonctionne entièrement dans votre navigateur. Les photos restent sur votre machine, le redimensionnement et la compression sont calculés sur votre processeur, et le ZIP final est assemblé localement. Aucune image ne quitte votre appareil, aucune donnée n'est journalisée, et vous n'avez même pas besoin de créer un compte. C'est la même philosophie que l'on retrouve sur l'ensemble de nos outils.</p>
+  <p>Pour les professionnels du droit, les architectes, les bureaux d'étude, cette approche n'est pas un détail. On manipule des plans confidentiels, des photos de chantier, des clichés qui ne doivent pas fuiter. Passer par un service en ligne qui, lui, monnaye le stockage ou la bande passante, c'est prendre un risque inutile. Le traitement local élimine ce risque dès le départ, en garantissant que les fichiers ne circulent jamais.</p>
+  <p>Pour les particuliers, l'outil est aussi plus rapide. On n'attend pas que le téléversement se fasse, on n'espère pas que la bande passante tienne. Tout se déroule en quelques secondes, sur votre propre machine, même avec une connexion modeste. C'est précieux quand on prépare un dossier le soir, après le dîner, sans avoir envie de patienter derrière une barre de progression distante.</p>
+  <p>Enfin, le traitement local évite les mauvaises surprises des services SaaS. Pas de filigrane ajouté sur le ZIP, pas de limite de taille qui vous force à payer un abonnement, pas de compte à créer pour débloquer telle option. On obtient l'intégralité du pack, dans le navigateur, et l'on en fait ce que l'on veut. C'est la même liberté que l'on apprécie sur le reste de la suite.</p>
+  <p>Cette confidentialité compte aussi pour les personnes qui travaillent sur des photos de famille. On ne souhaite pas que les clichés de ses grands-parents, de ses enfants ou de ses vacances passent par un serveur tiers. Le traitement local garantit que chaque image reste entre vos mains, du premier import jusqu'au ZIP final. C'est une condition de la confiance, que l'on apprécie à chaque utilisation.</p>
+  <p>Pour les associations, enfin, le traitement en lot local est un vrai confort. On numérise des centaines de photos d'un événement, on les redimensionne, on les prépare pour le site de l'association. Aucune de ces images ne part sur un service tiers, ce qui respecte la vie privée des participants. C'est un réflexe que les associations éclairées adoptent désormais.</p>
+  <p>Cette approche locale est aussi une forme de sobriété numérique. On évite de multiplier les allers-retours vers un centre de données distant, on n'émet pas de paquets inutiles, et l'on utilise la puissance de son propre ordinateur. C'est une façon de travailler plus écologique, sans compromettre la rapidité ni la qualité du résultat, dès la première utilisation, en toute transparence. C'est un choix que l'on assume pleinement, pour le long terme, en conscience, sans concession aucune, en toute indépendance totale, en France, aujourd'hui, et pour demain.</p>
+</section>
+
+<section class="localization-section">
+  <h2>Les photographes et les retoucheurs : préparer un jeu d'images pour le web</h2>
+  <p>Pour les photographes, la sortie brute de l'appareil est rarement prête à être publiée. Les fichiers sont lourds, souvent au format RAW ou JPG haute définition, et pèsent plusieurs méga-octets chacun. Avant de mettre en ligne une galerie, un portfolio ou un diaporama, il faut passer par une étape de compression et de redimensionnement. Le traitement en lot automatise ce travail, qui autrement prendrait des heures.</p>
+  <p>On importe les photos retouchées, on règle une largeur cible de 1600 pixels, on demande un format WebP à 80%, et l'on obtient un pack cohérent. Chaque image est optimisée pour le web, sans perdre en qualité perçue. Le temps de chargement de la galerie s'en trouve considérablement amélioré, et le référencement naturel y gagne. C'est une étape que tout photographe sérieux connaît, mais que l'on peut désormais accomplir en quelques clics.</p>
+  <p>Pour les artistes et les illustrateurs, le traitement en lot permet aussi de préparer les vignettes du portfolio. On reprend chaque œuvre, on la redimensionne en 800 pixels de large, on y ajoute un filigrane discret, et l'on obtient une galerie prête. C'est un moyen simple de protéger son travail, tout en offrant aux visiteurs une navigation fluide. Le filigrane est réglable en opacité, pour rester discret sans être invisible.</p>
+  <p>Pour les professionnels du marketing, enfin, le traitement en lot est un gain de temps précieux. On prépare les visuels pour les réseaux sociaux, pour le blog, pour les fiches produit, en appliquant les mêmes règles. On réduit le poids, on uniformise les dimensions, on convertit au format moderne. C'est un travail que l'on pouvait faire avec un logiciel lourd, mais qui se fait désormais dans le navigateur, sans installation.</p>
+  <p>Enfin, pour les collectionneurs et les passionnés de photo argentique numérisée, l'outil permet de préparer un ensemble cohérent. On scanne une pellicule, on obtient une vingtaine de fichiers bruts, et l'on les passe en lot pour les rendre consultables sur un album en ligne. C'est une façon simple de partager ses archives familiales, sans que le site ne soit ralenti par des images trop lourdes.</p>
+  <p>Pour les photographes de mariage, le traitement en lot est une étape incontournable. On livre plusieurs centaines de photos retouchées, et l'on doit fournir à la fois les fichiers haute définition pour l'album, et les versions optimisées pour la galerie en ligne. Le traitement en lot permet de générer ces deux versions en quelques minutes, sans passer par un logiciel de retouche installé sur sa machine.</p>
+  <p>Pour les blogueurs, enfin, l'outil est un gain de temps précieux. On publie un article avec dix images, on les importe en lot, on les redimensionne à 1200 pixels de large, et l'on obtient un pack prêt à être versé dans le CMS. Le blog se charge plus vite, le référencement s'en trouve amélioré, et l'on n'a plus à retoucher chaque image une par une.</p>
+  <p>Pour les professionnels du tourisme, les offices de tourisme et les petits hôtels, le traitement en lot permet de préparer une galerie cohérente. On photographie les chambres, le jardin, la salle de restaurant, on passe le tout en lot, et l'on obtient un site qui charge vite. C'est un détail qui compte, quand un visiteur décide de réserver en quelques clics, depuis son téléphone, sans attendre. Chaque seconde gagnée compte, en matière de conversion, sur la durée, sans exception aucune, au quotidien, en France, en Belgique et en Suisse, désormais, pour longtemps.</p>
+</section>
 
 <section class="faq-section">
-  <h2>Frequently Asked Questions</h2>
-  <div class="faq-item"><button class="faq-question">How many images can I process at once?</button><div class="faq-answer">No hard limit. The tool can handle batches of 50-200 images on a typical laptop.</div></div>
-  <div class="faq-item"><button class="faq-question">Is there a file size limit per image?</button><div class="faq-answer">No hard limit, but images over 50MB may cause performance issues.</div></div>
-  <div class="faq-item"><button class="faq-question">Are my images uploaded to a server?</button><div class="faq-answer">No. All processing happens locally in your browser.</div></div>
+  <h2>Questions fréquentes</h2>
+  <div class="faq-item"><button class="faq-question">Combien d'images puis-je traiter en une fois ?</button><div class="faq-answer">Il n'y a pas de limite stricte. Sur un ordinateur portable classique, l'outil gère sans difficulté des lots de cinquante à deux cents images, selon la taille des fichiers et la mémoire disponible.</div></div>
+  <div class="faq-item"><button class="faq-answer">Y a-t-il une taille limite par image ?</button><div class="faq-answer">Il n'y a pas de limite stricte, mais les images de plus de cinquante mégaoctets peuvent ralentir le traitement. Pour ces fichiers très lourds, il est préférable de les traiter par petits groupes.</div></div>
+  <div class="faq-item"><button class="faq-question">Mes images sont-elles envoyées vers un serveur ?</button><div class="faq-answer">Non. Tout le traitement se déroule localement dans votre navigateur. Aucune photo n'est téléversée, ce qui respecte le RGPD et les recommandations de la CNIL en matière de confidentialité.</div></div>
+  <div class="faq-item"><button class="faq-question">Puis-je préparer des photos pour Vinted ou Leboncoin en lot ?</button><div class="faq-answer">Absolument. Importez les clichés de vos annonces, réglez une largeur d'environ 1200 pixels, demandez un JPG à 80%, et téléchargez le ZIP. Chaque photo est prête à être mise en ligne en quelques secondes.</div></div>
+  <div class="faq-item"><button class="faq-question">Comment ajouter un filigrane discret sur toutes mes photos ?</button><div class="faq-answer">Dans les options de traitement, saisissez le texte du filigrane, réglez la taille et l'opacité (30% convient bien). Chaque image du lot reçoit automatiquement la même marque, en bas à gauche, sans retouche manuelle.</div></div>
+  <div class="faq-item"><button class="faq-question">Puis-je traiter les photos de mon association sans les envoyer à un tiers ?</button><div class="faq-answer">Oui. L'ensemble du traitement se déroule dans votre navigateur, sans téléversement. C'est particulièrement adapté pour les photos d'événements, qui mettent en présence des adhérents dont il faut respecter la vie privée.</div></div>
 </section>
 
 <section class="related-tools">
-  <h2>You Might Also Like</h2>
+  <h2>Vous aimerez aussi</h2>
   <div class="related-tools-grid">
     <a href="/fr/tools/compressor" class="related-tool-card">
       <span class="tool-icon">🗜️</span>
       <div class="tool-info">
-        <strong>Image Compressor</strong>
-        <span class="tool-desc">Compress single images with fine control</span>
+        <strong>Compresseur d'images</strong>
+        <span class="tool-desc">Compresser une seule image avec précision</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
     <a href="/fr/tools/converter" class="related-tool-card">
       <span class="tool-icon">🔄</span>
       <div class="tool-info">
-        <strong>Image Converter</strong>
-        <span class="tool-desc">Convert between formats</span>
+        <strong>Convertisseur d'images</strong>
+        <span class="tool-desc">Convertir entre différents formats</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
     <a href="/fr/tools/watermark" class="related-tool-card">
       <span class="tool-icon">🔏</span>
       <div class="tool-info">
-        <strong>Watermark</strong>
-        <span class="tool-desc">Add watermark to a single image</span>
+        <strong>Filigrane</strong>
+        <span class="tool-desc">Ajouter un filigrane sur une seule image</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
@@ -364,14 +419,14 @@ async function processAll() {
   const tH = parseInt($('resizeH').value) || 0;
 
   for (let i = 0; i < files.length; i++) {
-    statusText.textContent = `Processing ${i + 1}/${files.length}: ${files[i].name}`;
+    statusText.textContent = `Traitement ${i + 1}/${files.length} : ${files[i].name}`;
     progFill.style.width = ((i / files.length) * 100) + '%';
     const blob = await processOne(files[i], tW, tH, fmt, q, wmText, wmSize, wmAlpha);
     results.push({ name: files[i].name, blob });
   }
 
   progFill.style.width = '100%';
-  statusText.textContent = `Done! ${results.length} images processed.`;
+  statusText.textContent = `Terminé ! ${results.length} images traitées.`;
   processBtn.disabled = false;
   downloadBtn.disabled = false;
 }

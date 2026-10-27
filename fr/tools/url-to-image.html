@@ -1,58 +1,339 @@
 ﻿<!DOCTYPE html>
-<html lang="fr" data-theme="dark">
+<html lang="fr" data-theme="dark" data-tool-id="url-to-image">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>URL en image — capture d'écran d'un site web</title>
-<meta name="description" content="Saisissez une adresse web et récupérez une capture d'écran pleine page en PNG ou JPG, sans installer d'extension. Gratuit et sans inscription.">
-<link rel="canonical" href="https://smartimgkit.com/fr/tools/url-to-image">
-<link rel="stylesheet" href="/css/style.css?v=15">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>URL en image — capture d'écran d'un site web</title>
+  <meta name="description" content="Saisissez une adresse web et récupérez une capture d'écran pleine page en PNG ou JPG, sans installer d'extension. Gratuit, 100 % local, sans inscription.">
+  <meta name="keywords" content="capture d'écran site, url en image, screenshot page web, capture pleine page, snapshot site">
+  <link rel="canonical" href="https://smartimgkit.com/fr/tools/url-to-image">
+  <meta name="theme-color" content="#059669">
+  <meta property="og:title" content="URL en image — capture d'écran d'un site web">
+  <meta property="og:description" content="Saisissez une adresse web et récupérez une capture d'écran pleine page en PNG ou JPG, sans installer d'extension. Gratuit, sans inscription.">
+  <meta property="og:url" content="https://smartimgkit.com/fr/tools/url-to-image">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/url-to-image">
+  <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/url-to-image">
+  <link rel="alternate" hreflang="fr" href="https://smartimgkit.com/fr/tools/url-to-image">
+  <link rel="alternate" hreflang="pt" href="https://smartimgkit.com/pt/tools/url-to-image">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/url-to-image">
+  <link rel="stylesheet" href="/css/style.css?v=15">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+.selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
+.sp-item{display:flex;align-items:center;gap:8px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:999px;padding:8px 16px;font-size:0.85rem;color:var(--text-secondary);font-weight:500}
+.feature-narrative{margin:2.5rem 0;padding:0 1rem}
+.feature-narrative h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.feature-narrative .fn-intro{text-align:center;max-width:680px;margin:0 auto 2rem;color:var(--text-secondary);font-size:1rem;line-height:1.6}
+.fn-block{display:flex;gap:1.5rem;align-items:flex-start;margin:1.5rem 0;padding:1.25rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.fn-block .fn-icon{font-size:2rem;flex-shrink:0}
+.fn-block h3{font-size:1.05rem;color:var(--text-primary);margin:0 0 0.4rem}
+.fn-block p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin:0}
+.features-grid-section{margin:2.5rem 0;padding:0 1rem}
+.features-grid-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.features-grid-section .fg-sub{text-align:center;color:var(--text-secondary);font-size:0.95rem;margin-bottom:2rem}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;max-width:1000px;margin:0 auto}
+.feature-card{background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;padding:1.25rem;transition:transform .2s,border-color .2s}
+.feature-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.feature-card .fc-icon{font-size:1.8rem;margin-bottom:0.5rem}
+.feature-card h3{font-size:1rem;color:var(--text-primary);margin:0 0 0.4rem}
+.feature-card p{color:var(--text-secondary);font-size:0.85rem;line-height:1.5;margin:0}
+.trust-badges{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:2rem 0;padding:1.5rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.trust-badge{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;min-width:120px}
+.trust-badge .tb-icon{font-size:1.6rem}
+.trust-badge .tb-title{font-size:0.85rem;font-weight:700;color:var(--text-primary)}
+.trust-badge .tb-desc{font-size:0.72rem;color:var(--text-secondary)}
+.faq-section{margin:2.5rem 0;padding:0 1rem}
+.faq-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:1rem;text-align:center}
+.faq-item{border:1px solid var(--border);border-radius:8px;margin-bottom:0.5rem;overflow:hidden;background:var(--bg-secondary)}
+.faq-question{width:100%;padding:1rem 1.25rem;background:none;border:none;text-align:left;font-size:0.95rem;font-weight:600;color:var(--text-primary);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.faq-question::after{content:'+';font-size:1.2rem;transition:transform .2s}
+.faq-item.open .faq-question::after{transform:rotate(45deg)}
+.faq-answer{padding:0 1.25rem;max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;color:var(--text-secondary);font-size:0.9rem;line-height:1.6}
+.faq-item.open .faq-answer{padding:0 1.25rem 1rem;max-height:300px}
+@media(max-width:640px){.fn-block{flex-direction:column}.features-grid{grid-template-columns:1fr}.trust-badges{gap:12px}.trust-badge{min-width:90px}}
+.sp-item span.sp-icon{font-size:1rem}
+</style>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "URL to Image Converter",
+  "name": "URL en image",
   "url": "https://smartimgkit.com/fr/tools/url-to-image",
   "inLanguage": "fr",
-  "description": "Saisissez une adresse web et récupérez une capture d'écran pleine page en PNG ou JPG, sans installer d'extension. Gratuit et sans inscription.",
+  "description": "Saisissez une adresse web et récupérez une capture d'écran pleine page en PNG ou JPG, sans installer d'extension. Gratuit, sans inscription.",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
   "isAccessibleForFree": true,
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  }
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Puis-je capturer n'importe quel site web ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La plupart des sites publics peuvent être capturés. En revanche, les sites qui interdisent l'affichage dans une iframe (en-têtes X-Frame-Options), comme les services bancaires, les espaces d'administration ou les réseaux sociaux, ne s'afficheront pas dans l'aperçu. Utilisez alors la capture système classique."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "La capture est-elle pleine page ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "L'aperçu affiche la page dans une iframe d'environ 500 px de haut, et la capture retranscrit cette zone visible. Pour une capture pleine page au-delà de l'écran, utilisez un outil dédié : ici, l'outil est optimisé pour capturer une vue raisonnable, pas des kilomètres de défilement."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Mes données sont-elles stockées ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non. Toutes les captures sont traitées directement dans votre navigateur, via la bibliothèque html2canvas. Aucune URL saisie, aucun contenu de page n'est envoyé à nos serveurs, conforme à l'esprit du RGPD et aux attentes de confidentialité des utilisateurs francophones."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quels formats d'export sont proposés ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Deux formats : PNG (qualité maximale, textes nets, fond transparent possible) et JPG (plus léger, adapté au partage web et aux e-mails). Pour une preuve ou un archivage, préférez le PNG ; pour une insertion dans un article, le JPG suffit."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Faut-il installer une extension de navigateur ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non. L'outil fonctionne directement dans votre navigateur, sans extension ni installation. Saisissez l'URL, cliquez sur « Capturer la page », attendez le chargement, puis téléchargez votre image en un clic. Compatible Chrome, Firefox, Safari et Edge."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je capturer une page derrière une connexion ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non. L'iframe charge la page de façon anonyme, sans votre session. Les espaces privés (compte bancaire, boîte mail, réseau social) afficheront la page de connexion, pas votre contenu. Pour ces usages, utilisez la capture système classique avec votre session ouverte."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Est-ce légal de capturer une page web ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui, capturer une page publique pour usage personnel, archivage, documentation ou preuve dans un litige est une pratique courante et acceptée. En revanche, republier le contenu d'autrui sans autorisation peut engager votre responsabilité : la capture reste une trace, pas une licence de redistribution."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "La capture est-elle aussi nette qu'une capture système ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La qualité dépend du rendu html2canvas, qui retranscrit le DOM en image. Dans la plupart des cas, les textes et les visuels sont nets. Pour des rendus très complexes (CSS avancé, animations, polices exotiques), la capture système donnera de meilleurs résultats : gardez les deux outils sous la main."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "L'outil fonctionne-t-il sur smartphone ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui, il fonctionne dans le navigateur mobile (Safari iOS, Chrome Android). Saisissez l'URL, laissez la page se charger dans l'aperçu, puis téléchargez le PNG ou JPG. L'iframe est plus petite sur mobile, mais la logique reste identique."
+      }
+    }
+  ]
 }
 </script>
 </head>
 <body>
-<header class="site-header">
-<a href="/fr/" class="logo">SmartImgKit</a>
-<nav><a href="/fr/tools/">Tous les outils</a><a href="/fr/blog/">Blog</a></nav>
-</header>
-<main class="container">
-<h1>URL to Image Converter</h1>
-<p class="lead">Enter any webpage URL to capture a full-page screenshot and download it as a high-resolution PNG or JPG. Perfect for saving web content, creating previews, or archiving pages.</p>
-<div class="url-input-group" style="margin:2rem 0;">
-<input type="url" id="urlInput" placeholder="https://example.com" style="width:70%;padding:0.8rem;font-size:1rem;">
-<button id="captureBtn" class="primary">Capture Screenshot</button>
-</div>
-<div id="previewArea" style="margin:2rem 0;display:none;">
-<h3>Preview:</h3>
-<iframe id="previewFrame" style="width:100%;height:500px;border:1px solid #333;"></iframe>
-<div style="margin-top:1rem;">
-<button id="downloadPngBtn">Download PNG</button>
-<button id="downloadJpgBtn">Download JPG</button>
-</div>
-</div>
-<section class="faq">
-<h2>Frequently Asked Questions</h2>
-<details><summary>Can I capture any website?</summary><p>Most public websites can be captured. Some sites with strict CORS or login requirements may not load properly in the preview.</p></details>
-<details><summary>Is my data stored?</summary><p>No, all screenshots are processed directly in your browser, no data is sent to our servers.</p></details>
-</section>
-</main>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/fr/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/fr/">Accueil</a><a href="/fr/tools/">Outils</a><a href="/fr/blog/">Blog</a><a href="/about">À propos</a><a href="/contact">Contact</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Changer de langue">🇫🇷 FR</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/" hreflang="en" lang="en">🇬🇧 English</a>
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+            <a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a>
+            <a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a>
+          </div>
+        </div>
+        <button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/fr/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>🌐 URL en image</span></nav>
+      <div class="tool-page-header">
+        <h1>🌐 URL en image</h1>
+        <p>Saisissez une adresse web et récupérez une capture d'écran en PNG ou JPG, sans extension ni inscription.</p>
+      </div>
+      <div class="tool-workspace">
+        <div class="url-input-group" style="margin:2rem 0;display:flex;gap:8px;flex-wrap:wrap;">
+          <input type="url" id="urlInput" placeholder="https://exemple.com" style="width:70%;padding:0.8rem;font-size:1rem;background:var(--bg-primary);color:var(--text-primary);border:1px solid var(--border);border-radius:8px;flex:1;min-width:200px;">
+          <button id="captureBtn" class="btn btn-primary">Capturer la page</button>
+        </div>
+        <div id="previewArea" style="margin:2rem 0;display:none;">
+          <h3>Aperçu :</h3>
+          <iframe id="previewFrame" style="width:100%;height:500px;border:1px solid #333;"></iframe>
+          <div style="margin-top:1rem;display:flex;gap:8px;flex-wrap:wrap;">
+            <button id="downloadPngBtn" class="btn btn-primary">Télécharger PNG</button>
+            <button id="downloadJpgBtn" class="btn btn-secondary">Télécharger JPG</button>
+          </div>
+        </div>
+      </div>
+      <div class="selling-points">
+        <div class="sp-item"><span class="sp-icon">🌐</span>Capture sans extension</div>
+        <div class="sp-item"><span class="sp-icon">🔒</span>100 % local, aucun envoi</div>
+        <div class="sp-item"><span class="sp-icon">🆓</span>Gratuit, sans inscription</div>
+      </div>
+      <section class="feature-narrative">
+        <h2>Conservez n'importe quelle page en image</h2>
+        <p class="fn-intro">Une capture d'écran de site web sert à archiver une page, préparer un aperçu, documenter un contenu ou signaler un problème visuel. Cet outil affiche la page cible dans un aperçu intégré, puis la convertit en image PNG ou JPG, directement dans votre navigateur.</p>
+        <div class="fn-block"><div class="fn-icon">🌐</div><div><h3>Capture directe</h3><p>Saisissez l'adresse, l'aperçu se charge dans l'iframe, puis la page est convertie en image en un clic.</p></div></div>
+        <div class="fn-block"><div class="fn-icon">🖼️</div><div><h3>PNG ou JPG</h3><p>Deux formats au choix : PNG pour la qualité maximale, JPG pour un fichier plus léger, adapté au partage.</p></div></div>
+        <div class="fn-block"><div class="fn-icon">🔒</div><div><h3>100 % local</h3><p>La conversion se fait dans votre navigateur, aucune donnée n'est envoyée à un serveur.</p></div></div>
+      </section>
+      <section class="features-grid-section">
+        <h2>L'essentiel pour des captures rapides</h2>
+        <p class="fg-sub">Simple, rapide et privé.</p>
+        <div class="features-grid">
+          <div class="feature-card"><div class="fc-icon">🌐</div><h3>Sans extension</h3><p>Fonctionne dans le navigateur.</p></div>
+          <div class="feature-card"><div class="fc-icon">🖼️</div><h3>PNG ou JPG</h3><p>Qualité ou légèreté au choix.</p></div>
+          <div class="feature-card"><div class="fc-icon">🔒</div><h3>Confidentialité</h3><p>Aucun envoi, aucun compte.</p></div>
+          <div class="feature-card"><div class="fc-icon">🆓</div><h3>Gratuit à vie</h3><p>Sans inscription ni filigrane.</p></div>
+          <div class="feature-card"><div class="fc-icon">⚡</div><h3>Immédiat</h3><p>Aperçu et capture instantanés.</p></div>
+          <div class="feature-card"><div class="fc-icon">💾</div><h3>Téléchargement</h3><p>Image prête en un clic.</p></div>
+        </div>
+      </section>
+      <div class="trust-badges">
+        <div class="trust-badge"><div class="tb-icon">🔒</div><div class="tb-title">100 % privé</div><div class="tb-desc">Aucune donnée envoyée</div></div>
+        <div class="trust-badge"><div class="tb-icon">⚡</div><div class="tb-title">Résultat immédiat</div><div class="tb-desc">Capture en direct</div></div>
+        <div class="trust-badge"><div class="tb-icon">💯</div><div class="tb-title">Gratuit à vie</div><div class="tb-desc">Sans inscription ni filigrane</div></div>
+        <div class="trust-badge"><div class="tb-icon">🚀</div><div class="tb-title">Sans installation</div><div class="tb-desc">Ouvre dans le navigateur</div></div>
+      </div>
+      <section class="localization-section">
+        <h2 style="text-align:center;margin-bottom:20px;">Captures d'écran pour la veille, les dossiers et les litiges</h2>
+        <p>En France, en Belgique, en Suisse romande et au Québec, la capture d'écran de page web est devenue un réflexe professionnel. On l'utilise pour conserver une trace datée d'une page avant modification, documenter une démarche en ligne, préparer un dossier de preuves en cas de litige avec un prestataire, signaler un bug visuel à une équipe technique, ou encore archiver une offre promotionnelle avant qu'elle ne disparaisse. Une image horodatée reste un support simple, fiable et facile à partager.</p>
+        <p>Contrairement à une capture d'écran système (touche Impr. Ecran puis recadrage), cet outil affiche la page cible dans un aperçu intégré, puis la convertit en image PNG ou JPG en un clic. Pas besoin d'installer une extension de navigateur — souvent intrusive, limitée ou payante au-delà de quelques captures — l'outil fonctionne directement dans l'onglet, sans dépendance.</p>
+        <h3 style="margin-top:24px;">Usages courants du quotidien professionnel</h3>
+        <ul style="line-height:1.8;">
+          <li><strong>Litiges avec un prestataire :</strong> conserver une preuve horodatée d'une page de tarifs, d'une condition générale ou d'un engagement écrit.</li>
+          <li><strong>Veille concurrentielle :</strong> archiver les pages de prix, les offres promotionnelles, les nouveaux produits d'un site concurrent.</li>
+          <li><strong>Signalement de bug :</strong> envoyer à votre développeur une capture nette de l'erreur visuelle, plutôt qu'une description vague.</li>
+          <li><strong>Démarches administratives :</strong> garder une trace d'un formulaire en ligne, d'une attestation téléchargée ou d'un récapitulatif.</li>
+        </ul>
+        <p style="margin-top:16px;">Pour les journalistes, les assistants administratifs, les services communication et les juristes, cette traçabilité est essentielle. Plutôt que de multiplier les onglets ou de jongler avec les raccourcis système, on dépose l'URL, on attend le chargement, on télécharge la capture, on la nomme par date et par page. En quelques secondes, on constitue un dossier de preuves propre et classable.</p>
+        <p>Le traitement local est un avantage décisif pour les contenus sensibles. Une page intranet d'entreprise, une boutique en cours de développement, une communication interne non publiée, un espace personnel : toutes ces pages peuvent être capturées sans que l'URL ou le contenu ne transite par un service tiers. C'est un point particulièrement apprécié dans un contexte RGPD, où les utilisateurs français sont attentifs à ce que deviennent les données qu'ils manipulent.</p>
+        <p>Pour les consommateurs, l'outil rend service en cas de litige avec un site marchand : un produit annoncé « en promo » à un certain prix, une condition de retour affichée à un endroit, une mention légale précise. Conserver une capture datée évite les « mais si, c'était écrit comme ça ! » et accélère le traitement du litige, auprès du service client comme auprès de la DGCCRF ou d'un médiateur.</p>
+        <p>Enfin, la capture d'écran simple reste un complément, pas un substitut aux outils d'archivage plus robustes. Pour des preuves juridiques solides, on privilégiera un horodatage électronique ou un dépôt sur un service d'archivage en ligne. Mais pour un usage quotidien — conserver une trace, illustrer un propos, signaler un bug — la capture PNG directe suffit largement.</p>
+        <p>Dans le contexte français des litiges de consommation, la capture datée appuie un dossier adressé au service client, à la médiation ou à la DGCCRF. Un tarif affiché qui a changé entre deux visites, une condition de retour qui disparaît, une promotion qui se termine plus tôt qu'annoncé : autant de détails qu'une capture horodatée permet de prouver sans avoir à débattre de la mémoire de chacun. Pensez à noter la date et l'URL dans le nom du fichier pour ne pas vous y retrouver dans six mois.</p>
+      </section>
+      <section class="localization-section">
+        <h2 style="text-align:center;margin-bottom:20px;">Aperçus et documentation pour créateurs de sites</h2>
+        <p>Pour les webdesigners, les développeurs front-end, les intégristes et les agences web francophones, la capture d'écran de page sert à documenter un site, illustrer un portfolio, préparer une présentation client ou comparer visuellement deux versions d'une page avant/après. Avoir une image de référence permet de discuter concrètement d'un rendu, sans obliger l'interlocuteur à ouvrir le site à telle heure, avec tel navigateur et telle résolution.</p>
+        <p>Les aperçus de pages sont aussi utilisés dans les articles de blog, les guides et les documentations techniques : montrer une interface, un formulaire, un résultat d'outil avec une image rend le propos plus clair et plus crédible. Le format PNG convient à l'édition soignée (textes nets, contours précis) ; le JPG, plus léger, s'intègre mieux dans les pages web et les e-mails de newsletter, où le poids compte.</p>
+        <h3 style="margin-top:24px;">Scénarios typiques pour une équipe web</h3>
+        <ul style="line-height:1.8;">
+          <li><strong>Présentation client :</strong> compiler une série de captures du site en production, pour montrer l'avancement sans demander d'accès.</li>
+          <li><strong>Comparatif avant/après :</strong> capturer une page avant une refonte, puis la même page après, pour mesurer le chemin parcouru.</li>
+          <li><strong>Documentation :</strong> illustrer un article de blog technique par une capture de l'interface décrite.</li>
+          <li><strong>Portfolio :</strong> mettre en scène un projet réalisé, sans exposer l'URL publique du client.</li>
+        </ul>
+        <p style="margin-top:16px;">Pour les projets clients, une collection de captures datées constitue une traçabilité simple : vous pouvez montrer l'évolution d'un site au fil des semaines, justifier une livraison, préparer un comparatif pour un comité de pilotage. Nommez chaque image par date et par page (« 2026-10-26-accueil.png »), rangez-les dans un dossier partagé, et vous avez une archive visuelle immédiatement exploitable.</p>
+        <p>Dans les agences parisiennes, lyonnaises ou bordelaises, cette pratique est quasi quotidienne. On capture une maquette Figma publiée en ligne, un lien de démonstration Vercel, une page de documentation interne, pour l'insérer dans un compte rendu de réunion. Plutôt que de jongler avec un outil de capture système qui rogne mal, on dépose l'URL dans l'outil, et on obtient directement une image exploitable.</p>
+        <p>Le traitement local est ici un confort supplémentaire : vous pouvez capturer des pages d'environnement de préproduction (staging) qui ne sont pas accessibles publiquement, ou des pages derrière un VPN d'entreprise, sans vous soucier de savoir si un service en ligne tiers pourrait indexer votre capture. L'URL saisie reste dans votre navigateur, et l'image générée ne circule que si vous la partagez vous-même.</p>
+        <p>Enfin, pensez au cas des e-mails : un visuel PNG d'une page inséré dans un courriel explique souvent mieux qu'un long paragraphe. Un bug visuel, un message d'erreur, une interface à corriger : une capture v mille mots. Pour les échanges avec un client non technique, cette méthode est bien plus efficace qu'une description textuelle. Joignez la capture au mail, commentez en deux lignes ce qui cloche, et l'interlocuteur visualise immédiatement le problème sans avoir à deviner.</p>
+        <p>Pour les agences web qui gèrent plusieurs clients, un petit dossier de captures datées sert de journal de bord visuel. Chaque mise en ligne, chaque évolution de page, chaque campagne est documentée par une image horodatée. En réunion de comité de pilotage, on déroule les captures dans l'ordre et l'historique du projet se lit en quelques minutes. C'est un complément discret mais précieux aux comptes-rendus écrits, qui font souvent la différence en cas de désaccord sur ce qui avait été validé.</p>
+      </section>
+      <section class="localization-section">
+        <h2 style="text-align:center;margin-bottom:20px;">Bien utiliser l'outil de capture : limites et astuces</h2>
+        <p>Pour une capture réussie, saisissez l'adresse complète de la page (en commençant par https:// si possible) et attendez que la page se charge entièrement dans l'aperçu avant de cliquer sur le bouton de téléchargement. Les pages lentes, les sites avec beaucoup de scripts, les pages contenant des vidéos ou des animations peuvent allonger le chargement : laissez quelques secondes de plus si nécessaire.</p>
+        <p>L'outil repose sur un affichage dans une iframe, puis sur la bibliothèque html2canvas pour transformer le DOM en image. Cette approche a des limites connues, qu'il faut connaître pour ne pas être surpris.</p>
+        <h3 style="margin-top:24px;">Limites à connaître</h3>
+        <div style="overflow-x:auto;margin:1.2rem 0;">
+        <table style="width:100%;border-collapse:collapse;font-size:0.9rem;">
+          <thead>
+            <tr style="background:var(--bg-secondary);">
+              <th style="padding:10px;border:1px solid var(--border);text-align:left;">Cas de figure</th>
+              <th style="padding:10px;border:1px solid var(--border);text-align:left;">Comportement attendu</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="padding:10px;border:1px solid var(--border);">Page avec en-têtes X-Frame-Options</td><td style="padding:10px;border:1px solid var(--border);">Ne s'affiche pas dans l'aperçu (protection du site cible)</td></tr>
+            <tr><td style="padding:10px;border:1px solid var(--border);">Page nécessitant une connexion</td><td style="padding:10px;border:1px solid var(--border);">Affiche la page de connexion, pas le contenu privé</td></tr>
+            <tr><td style="padding:10px;border:1px solid var(--border);">Page très longue</td><td style="padding:10px;border:1px solid var(--border);">Capture la zone affichée dans l'aperçu (500 px de haut)</td></tr>
+            <tr><td style="padding:10px;border:1px solid var(--border);">Contenu CORS restreint</td><td style="padding:10px;border:1px solid var(--border);">Images ou polices peuvent manquer sur le rendu final</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p style="margin-top:12px;">Si une page ne s'affiche pas, c'est souvent que le site cible interdit l'affichage dans une iframe (en-têtes X-Frame-Options: DENY ou SAMEORIGIN). C'est une protection légitime du site, notamment pour les services bancaires, les espaces d'administration ou les réseaux sociaux. Dans ce cas, utilisez la capture système classique (Outils de capture sous Windows, Raccourci sous macOS) : l'outil ne peut rien y faire.</p>
+        <p>Pour les pages longues, l'outil capture la zone affichée dans l'aperçu (hauteur d'environ 500 px). Si vous avez besoin de toute la page, zoomez sur la portion qui vous intéresse, ou utilisez une capture système adaptée. L'outil est optimisé pour une vue raisonnable, pas pour une capture de plusieurs kilomètres de défilement.</p>
+        <p>Vérifiez toujours le résultat en ouvrant l'image téléchargée : contrôlez que la partie utile de la page est bien visible, que les textes sont lisibles, que le fond n'est pas cassé. Pour un usage dans un article de blog ou un support client, recadrez ensuite autour de la zone utile pour ne conserver que l'essentiel. Une capture nette et cadrée est toujours plus efficace qu'une image brute plein écran.</p>
+        <p>Enfin, choisissez le bon format d'export. Le PNG offre une qualité maximale, des textes nets et une éventuelle transparence, mais pèse plus lourd. Le JPG est plus léger, idéal pour insérer une capture dans un e-mail ou un article web. Pour une preuve ou un archivage, préférez le PNG ; pour une publication, le JPG suffit la plupart du temps.</p>
+        <p>Si vous capturez une page qui contient une carte interactive, une vidéo ou un carrousel d'images, sachez que ces éléments dynamiques peuvent apparaître vides dans la capture finale, car html2canvas retranscrit le DOM statique. Dans ce cas, privilégiez une capture système native qui gère mieux les éléments évolutifs. Pour les formulaires remplis, les menus déroulants déployés ou les fenêtres modales, la même limite s'applique : pensez à capturer ces états avec l'outil système plutôt qu'avec cet outil en ligne.</p>
+        <p>En résumé, cet outil est parfait pour une capture rapide d'une page publique, un aperçu à joindre à un compte rendu, une trace à conserver pour un litige. Pour les cas plus exigeants (page longue, contenu protégé, médias interactifs), gardez votre outil de capture système habituel sous la main. Les deux se complètent sans concurrence, et c'est bien ainsi que l'on gagne du temps au quotidien.</p>
+      </section>
+      <section class="faq-section">
+        <h2>Questions fréquentes</h2>
+        <div class="faq-item"><button class="faq-question">Puis-je capturer n'importe quel site web ?</button><div class="faq-answer">La plupart des sites publics peuvent être capturés. En revanche, les sites qui interdisent l'affichage dans une iframe (en-têtes X-Frame-Options), comme les services bancaires, les espaces d'administration ou les réseaux sociaux, ne s'afficheront pas dans l'aperçu. Utilisez alors la capture système classique.</div></div>
+        <div class="faq-item"><button class="faq-question">La capture est-elle pleine page ?</button><div class="faq-answer">L'aperçu affiche la page dans une iframe d'environ 500 px de haut, et la capture retranscrit cette zone visible. Pour une capture pleine page au-delà de l'écran, utilisez un outil dédié : ici, l'outil est optimisé pour capturer une vue raisonnable, pas des kilomètres de défilement.</div></div>
+        <div class="faq-item"><button class="faq-question">Mes données sont-elles stockées ?</button><div class="faq-answer">Non. Toutes les captures sont traitées directement dans votre navigateur, via la bibliothèque html2canvas. Aucune URL saisie, aucun contenu de page n'est envoyé à nos serveurs, conforme à l'esprit du RGPD et aux attentes de confidentialité des utilisateurs francophones.</div></div>
+        <div class="faq-item"><button class="faq-question">Quels formats d'export sont proposés ?</button><div class="faq-answer">Deux formats : PNG (qualité maximale, textes nets, fond transparent possible) et JPG (plus léger, adapté au partage web et aux e-mails). Pour une preuve ou un archivage, préférez le PNG ; pour une insertion dans un article, le JPG suffit.</div></div>
+        <div class="faq-item"><button class="faq-question">Faut-il installer une extension de navigateur ?</button><div class="faq-answer">Non. L'outil fonctionne directement dans votre navigateur, sans extension ni installation. Saisissez l'URL, cliquez sur « Capturer la page », attendez le chargement, puis téléchargez votre image en un clic. Compatible Chrome, Firefox, Safari et Edge.</div></div>
+        <div class="faq-item"><button class="faq-question">Puis-je capturer une page derrière une connexion ?</button><div class="faq-answer">Non. L'iframe charge la page de façon anonyme, sans votre session. Les espaces privés (compte bancaire, boîte mail, réseau social) afficheront la page de connexion, pas votre contenu. Pour ces usages, utilisez la capture système classique avec votre session ouverte.</div></div>
+        <div class="faq-item"><button class="faq-question">Est-ce légal de capturer une page web ?</button><div class="faq-answer">Oui, capturer une page publique pour usage personnel, archivage, documentation ou preuve dans un litige est une pratique courante et acceptée. En revanche, republier le contenu d'autrui sans autorisation peut engager votre responsabilité : la capture reste une trace, pas une licence de redistribution.</div></div>
+        <div class="faq-item"><button class="faq-question">La capture est-elle aussi nette qu'une capture système ?</button><div class="faq-answer">La qualité dépend du rendu html2canvas, qui retranscrit le DOM en image. Dans la plupart des cas, les textes et les visuels sont nets. Pour des rendus très complexes (CSS avancé, animations, polices exotiques), la capture système donnera de meilleurs résultats : gardez les deux outils sous la main.</div></div>
+        <div class="faq-item"><button class="faq-question">L'outil fonctionne-t-il sur smartphone ?</button><div class="faq-answer">Oui, il fonctionne dans le navigateur mobile (Safari iOS, Chrome Android). Saisissez l'URL, laissez la page se charger dans l'aperçu, puis téléchargez le PNG ou JPG. L'iframe est plus petite sur mobile, mais la logique reste identique.</div></div>
+      </section>
+      <section class="related-tools">
+        <h2>Vous Pourriez Aussi Aimer</h2>
+        <div class="related-tools-grid">
+          <a href="/fr/tools/image-to-pdf" class="related-tool-card">
+            <span class="tool-icon">📄</span>
+            <div class="tool-info">
+              <strong>Image vers PDF</strong>
+              <span class="tool-desc">Assemblez vos captures en un PDF archivable</span>
+            </div>
+            <span class="tool-arrow">→</span>
+          </a>
+          <a href="/fr/tools/image-compressor" class="related-tool-card">
+            <span class="tool-icon">🗜️</span>
+            <div class="tool-info">
+              <strong>Compresseur d'Image</strong>
+              <span class="tool-desc">Allégez vos captures avant de les envoyer</span>
+            </div>
+            <span class="tool-arrow">→</span>
+          </a>
+          <a href="/fr/tools/cropper" class="related-tool-card">
+            <span class="tool-icon">✂️</span>
+            <div class="tool-info">
+              <strong>Recadrage</strong>
+              <span class="tool-desc">Recadrez votre capture autour de la zone utile</span>
+            </div>
+            <span class="tool-arrow">→</span>
+          </a>
+        </div>
+      </section>
+    </div>
+  </main>
+<footer class="site-footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="/fr/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Outils d'image gratuits qui respectent votre vie privée.</p></div><div class="footer-links"><h4>Outils</h4><a href="/fr/tools/background-remover">Supprimer l'arrière-plan</a><a href="/fr/tools/compressor">Compresseur</a><a href="/fr/tools/converter">Convertisseur</a><a href="/fr/tools/resizer">Redimensionneur</a><a href="/fr/tools/cropper">Recadrage</a><a href="/fr/tools/watermark">Filigrane</a></div><div class="footer-links"><h4>Plus d'outils</h4><a href="/fr/tools/image-upscaler">Agrandisseur</a><a href="/fr/tools/gif-editor">Éditeur GIF</a><a href="/fr/tools/pdf-to-image">PDF vers Image</a><a href="/fr/tools/heic-converter">Convertisseur HEIC</a><a href="/fr/tools/meme-generator">Générateur de Mèmes</a><a href="/fr/tools/face-blur">Flouter les Visages</a></div><div class="footer-links"><h4>Site</h4><a href="/about">À propos</a><a href="/contact">Contact</a><a href="/privacy">Confidentialité</a><a href="/terms">Conditions</a></div></div><div class="footer-bottom"><p>© 2026 SmartImgKit. Traitement 100% local — vos fichiers ne quittent jamais votre appareil.</p></div></div></footer>
+  <script src="/js/main.js?v=8"></script>
+  <script src="../../js/lang.js"></script>
 <script>
 const urlInput = document.getElementById('urlInput');
 const captureBtn = document.getElementById('captureBtn');
@@ -63,24 +344,25 @@ let url = urlInput.value.trim();
 if(!url.startsWith('http')) url = 'https://' + url;
 previewFrame.src = url;
 previewArea.style.display = 'block';
-alert('Waiting for page to load fully, then you can download the screenshot.');
+alert('La page se charge. Patientez quelques secondes, puis téléchargez la capture.');
 };
 document.getElementById('downloadPngBtn').onclick = async () => {
 const canvas = await html2canvas(previewFrame.contentDocument.body);
 const link = document.createElement('a');
-link.download = 'webpage-screenshot.png';
+link.download = 'capture-page.png';
 link.href = canvas.toDataURL('image/png');
 link.click();
 };
 document.getElementById('downloadJpgBtn').onclick = async () => {
 const canvas = await html2canvas(previewFrame.contentDocument.body);
 const link = document.createElement('a');
-link.download = 'webpage-screenshot.jpg';
+link.download = 'capture-page.jpg';
 link.href = canvas.toDataURL('image/jpeg', 0.9);
 link.click();
 };
+document.querySelectorAll('.faq-question').forEach(btn => {
+  btn.addEventListener('click', () => { btn.parentElement.classList.toggle('open'); });
+});
 </script>
 </body>
 </html>
-
-

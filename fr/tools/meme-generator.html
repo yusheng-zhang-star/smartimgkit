@@ -1,20 +1,43 @@
 ﻿<!DOCTYPE html>
-<html lang="fr" data-theme="dark">
+<html lang="fr" data-theme="dark" data-tool-id="meme-generator">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Générateur de meme — sans inscription ni filigrane</title>
-<meta name="description" content="Ajoutez un texte en haut et en bas de vos images pour créer un meme en quelques secondes, avec police et contours réglables. Gratuit, sans filigrane.">
+<title>Générateur de Mèmes Gratuit — Texte sur Image, sans Filigrane | SmartImgKit</title>
+<meta name="description" content="Ajoutez un texte blanc gras en haut et en bas de vos images pour créer un mème en quelques secondes, avec taille de police réglable. Gratuit, sans filigrane, 100% dans le navigateur.">
 <link rel="canonical" href="https://smartimgkit.com/fr/tools/meme-generator">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="alternate" hreflang="ar" href="https://smartimgkit.com/ar/tools/meme-generator">
+<link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/meme-generator">
+<link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/meme-generator">
+<link rel="alternate" hreflang="fr" href="https://smartimgkit.com/fr/tools/meme-generator">
+<link rel="alternate" hreflang="id" href="https://smartimgkit.com/id/tools/meme-generator">
+<link rel="alternate" hreflang="pt" href="https://smartimgkit.com/pt/tools/meme-generator">
+<link rel="alternate" hreflang="vi" href="https://smartimgkit.com/vi/tools/meme-generator">
+<link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/meme-generator">
 <link rel="stylesheet" href="/css/style.css?v=15">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+.dropzone{display:block;cursor:pointer;text-align:center;padding:36px 20px;border:2px dashed var(--border-color);border-radius:12px;background:var(--bg-secondary);transition:border-color .2s}
+.dropzone.dragover{border-color:var(--accent)}
+.dropzone-icon{font-size:2.4rem;margin-bottom:8px}
+.meme-controls{display:flex;gap:1rem;flex-wrap:wrap;align-items:center;margin:1rem 0}
+.meme-controls input[type=text]{padding:.6rem;border:1px solid var(--border);border-radius:8px;background:var(--bg-primary);color:var(--text-primary);flex:1;min-width:180px}
+.meme-controls label{font-size:.85rem;color:var(--text-secondary)}
+.meme-canvas-wrap{text-align:center;margin-top:1rem}
+.meme-canvas-wrap canvas{max-width:100%;border-radius:8px}
+.hidden{display:none!important}
+</style>
+<meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Free Meme Generator",
+  "name": "Générateur de Mèmes",
   "url": "https://smartimgkit.com/fr/tools/meme-generator",
   "inLanguage": "fr",
-  "description": "Ajoutez un texte en haut et en bas de vos images pour créer un meme en quelques secondes, avec police et contours réglables. Gratuit, sans filigrane.",
+  "description": "Ajoutez un texte en haut et en bas de vos images pour créer un mème en quelques secondes, avec police et contours réglables. Gratuit, sans filigrane.",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
   "isAccessibleForFree": true,
@@ -25,34 +48,223 @@
   }
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Mon image est-elle envoyée sur un serveur ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non. Toute la création du mème s'exécute localement dans votre navigateur, sur un canevas. Votre image de fond n'est jamais téléversée, aucun fichier n'est stocké, et le mème exporté reste sur votre appareil tant que vous ne choisissez pas de l'envoyer."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je utiliser mes propres images comme arrière-plan ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui, vous importez l'image de votre choix : une photo personnelle, une capture d'écran ou une illustration. Vous ajoutez ensuite le texte du haut et du bas, puis téléchargez le résultat en PNG. Aucun modèle imposé, aucun filigrane ajouté."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quelle police est utilisée pour le texte du mème ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Le générateur utilise une police sans-serif grasse, affichée en majuscules avec un épais contour noir, la formule classique des mèmes. Ce choix garantit une lisibilité maximale, aussi bien sur un fond clair que sur une image sombre ou chargée."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je créer un mème à partir d'une photo personnelle ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui, mais demandez l'accord de la personne avant de la partager. Le traitement local vous permet de préparer le mème en privé, sans exposer la photo à un service en ligne. Gardez un ton gentil et bienveillant, même dans la blague."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Le mème obtenu porte-t-il un filigrane ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non. Le fichier PNG téléchargé est entièrement propre : aucun logo, aucune signature, aucune publicité ajoutée. Vous pouvez l'utiliser tel quel, le recadrer ou le retoucher à nouveau, sans limitation."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je ajuster la taille du texte ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui, un curseur règle la taille de la police de 10 à 80 points. Sur une grande photo, une valeur autour de 32 fonctionne bien ; sur un petit format, réduisez à 20-25 pour que le texte tienne sans déborder de l'image."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Le générateur est-il vraiment gratuit ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui, entièrement gratuit. Sans inscription, sans limite de nombre de créations, sans essai puis abonnement. Vous créez autant de mèmes que vous le souhaitez et vous les téléchargez en PNG, sans aucun coût."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <header class="site-header">
-<a href="/fr/" class="logo">SmartImgKit</a>
-<nav><a href="/fr/tools/">Tous les outils</a><a href="/fr/blog/">Blog</a></nav>
-</header>
-<main class="container">
-<h1>Free Meme Generator</h1>
-<p class="lead">Create classic memes by adding bold white text with black outline to the top and bottom of any image. All processing happens 100% locally in your browser, no upload, no watermark.</p>
-<div class="upload-area" id="dropZone">
-<p>Drop your meme background image here or click to upload</p>
-<input type="file" id="fileInput" accept="image/*" hidden>
+    <div class="container header-inner">
+      <a href="/fr/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/fr/">Accueil</a><a href="/fr/tools/">Outils</a><a href="/fr/blog/">Blog</a><a href="/about">À propos</a><a href="/contact">Contact</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Changer de langue">🇫🇷 FR</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/" hreflang="en" lang="en">🇬🇧 English</a>
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+            <a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a>
+            <a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a>
+          </div>
+        </div>
+<button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+<div class="ad-zone ad-header ad-loader-slot" data-ad-type="header" data-current-mobile="0"></div>
+
+<main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/fr/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>😂 Générateur de Mèmes</span></nav>
+      <div class="tool-page-header">
+        <h1>😂 Générateur de Mèmes — Texte sur Image</h1>
+        <p>Créez des mèmes classiques en ajoutant un texte blanc gras, avec contour noir, en haut et en bas de n'importe quelle image. Le traitement se fait 100% localement dans votre navigateur : aucun envoi, aucun filigrane.</p>
+      </div>
+
+      <div class="tool-workspace">
+<input type="file" id="fileInput" accept="image/*" style="display:none;">
+<label for="fileInput" class="dropzone" id="dropZone">
+<div class="dropzone-icon">🖼️</div>
+<h3>Déposez ici l'image de fond de votre mème</h3>
+<p>Ou cliquez pour parcourir vos fichiers. Formats JPG, PNG, WebP acceptés.</p>
+</label>
+<div class="meme-controls" style="margin-top:1.2rem;">
+<input type="text" id="topText" placeholder="Texte du haut" style="padding:.6rem;">
+<input type="text" id="bottomText" placeholder="Texte du bas" style="padding:.6rem;">
+<label>Taille de police : <input type="range" id="fontSize" min="10" max="80" value="32"></label>
+<button id="downloadBtn" class="btn btn-primary">⬇️ Télécharger le mème</button>
 </div>
-<div class="controls" style="margin:1rem 0;display:flex;gap:1rem;flex-wrap:wrap;">
-<input type="text" id="topText" placeholder="Top text" style="padding:0.5rem;">
-<input type="text" id="bottomText" placeholder="Bottom text" style="padding:0.5rem;">
-<label>Font Size: <input type="range" id="fontSize" min="10" max="80" value="32"></label>
-<button id="downloadBtn" class="primary">Download Meme</button>
+<div class="meme-canvas-wrap">
+<canvas id="canvas" style="max-width:100%;border-radius:8px;display:none;"></canvas>
 </div>
-<div class="canvas-container" style="text-align:center;">
-<canvas id="canvas" style="max-width:100%;border:1px solid #333;display:none;"></canvas>
 </div>
-<section class="faq">
-<h2>Frequently Asked Questions</h2>
-<details><summary>Is the meme generator free?</summary><p>Yes, completely free, no watermarks, no signup, no file size limits.</p></details>
-<details><summary>Can I use custom images?</summary><p>Yes, upload any image you want as the background, add your own text.</p></details>
+
+<section class="localization-section">
+  <h2 style="text-align:center;margin-bottom:20px;">Créer un mème en français : usages et bonne humeur</h2>
+  <p>Le mème, cette image accompagnée d'une légende courte et comique, est devenu un langage à part entière sur les réseaux sociaux francophones. Que l'on partage un mème dans un groupe WhatsApp entre amis, sur Discord entre passionnés ou sur une page Facebook d'association, l'objectif est toujours le même : faire passer une émotion en une fraction de seconde. Ce générateur permet d'ajouter cette légende iconique — texte blanc gras, contour noir — en haut et en bas de n'importe quelle image, sans installer de logiciel.</p>
+  <h3 style="margin-top:24px;">Où les francophones partagent-ils leurs mèmes ?</h3>
+  <ul style="line-height:1.8;">
+    <li><strong>Groupes WhatsApp :</strong> Famille, collègues, amis : on s'envoie des mèmes pour commenter l'actualité, la météo ou la journée de travail. Le format carré ou horizontal classique s'y prête parfaitement.</li>
+    <li><strong>Discord et communautés de passionnés :</strong> Jeux vidéo, séries, musique : les mèmes y sont une langue commune, et l'on recycle souvent des images connues avec des légendes inédites.</li>
+    <li><strong>Pages d'associations et de petites entreprises :</strong> De plus en plus d'associations et de commerces utilisent l'humour des mèmes pour rendre leurs publications plus proches de leur public.</li>
+    <li><strong>Boucles de messagerie :</strong> Les mèmes drôles circulent de groupe en groupe, et pouvoir en créer un à partir d'une photo personnelle ou d'une image du jour aisément est très apprécié.</li>
+  </ul>
+  <p style="margin-top:16px;">Comme le traitement est 100% local, vous pouvez préparer un mème à partir d'une photo privée ou d'une image encore non publiée, sans la confier à un site tiers.</p>
+  <p style="margin-top:12px;">Astuce : gardez le texte court. Les meilleurs mèmes francophones utilisent des phrases de cinq à dix mots, qui se lisent d'un coup d'œil sur un téléphone.</p>
+<h3>L'humour francophone en quelques cases</h3><p>En France, en Belgique, en Suisse et au Québec, le mème véhicule souvent un humour doux, parfois un peu absurde, qui joue sur le quotidien : les réunions le lundi matin, les pauses café, les galères de transport, les repas de famille. Contrairement aux mèmes anglophones qui circulent largement, les versions françaises fonctionnent mieux quand elles ancrent la blague dans un contexte local : une scène de métro parisien, une file en supermarché, un café de quartier. Le générateur s'adapte à ces images de fond, qu'elles soient personnelles ou issues de contenus partagés.</p><p>Pour les communautés en ligne, le mème est aussi un outch de cohésion. Un serveur Discord de joueurs, un groupe de parents d'élèves, une association de randonnée : partager un mème maison, créé à partir d'une photo du groupe, renforce le sentiment d'appartenance. Plutôt que de chercher un modèle tout fait en ligne, on prend une photo du dernier événement, on ajoute une légende culottée, et l'on partage en quelques minutes. Ce générateur rend cette création accessible à tous, sans compétence graphique.</p><p>Les petites structures et les indépendants s'en emparent aussi. Un restaurant peut illustrer une journée de grève de livraison par un mème humoristique, une librairie accompagne la sortie d'un livre par une image décalée, une mairie ou une association commente la météo estivale avec autodérision. Reste à toujours veiller à ce que l'humour ne blesse personne : un mème drôle, gentil et partagé dans le bon contexte fonctionne mieux qu'une blague acerbe.</p><p>Enfin, n'oubliez pas les droits : si vous utilisez une image célèbre comme arrière-plan, assurez-vous que l'usage entre dans le cadre de ce qui est acceptable. Pour un usage privé et amical, le mème maison reste le plus sûr : il n'appartient qu'à vous, et il risque peu de dérapage.</p></section>
+
+<section class="localization-section">
+  <h2 style="text-align:center;margin-bottom:20px;">Texte du haut, texte du bas : l'art du mème classique</h2>
+  <p>Le mème classique obéit à une formule reconnaissable entre mille : une image en fond, une phrase en haut, une phrase en bas, écrites en blanc gras avec un épais contour noir. Ce code visuel, popularisé par des générateurs historiques, est immédiatement compréhensible. Cet outil le reproduit fidèlement.</p>
+  <div style="overflow-x:auto;margin:1.2rem 0;">
+  <table style="width:100%;border-collapse:collapse;font-size:0.9rem;">
+    <thead>
+      <tr style="background:var(--bg-secondary);">
+        <th style="padding:10px;border:1px solid var(--border);text-align:left;">Élément</th>
+        <th style="padding:10px;border:1px solid var(--border);text-align:left;">Règle</th>
+        <th style="padding:10px;border:1px solid var(--border);text-align:left;">Pourquoi</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="padding:10px;border:1px solid var(--border);">Police</td><td style="padding:10px;border:1px solid var(--border);">Sans-serif gras, en majuscules</td><td style="padding:10px;border:1px solid var(--border);">Lisible sur n'importe quel fond</td></tr>
+      <tr><td style="padding:10px;border:1px solid var(--border);">Contour</td><td style="padding:10px;border:1px solid var(--border);">Trait noir épais autour des lettres</td><td style="padding:10px;border:1px solid var(--border);">Le texte reste lisible sur une image claire ou sombre</td></tr>
+      <tr><td style="padding:10px;border:1px solid var(--border);">Emplacement</td><td style="padding:10px;border:1px solid var(--border);">Haut et bas, centré</td><td style="padding:10px;border:1px solid var(--border);">Ne masque pas le sujet au centre</td></tr>
+      <tr><td style="padding:10px;border:1px solid var(--border);">Longueur</td><td style="padding:10px;border:1px solid var(--border);">Une courte phrase par zone</td><td style="padding:10px;border:1px solid var(--border);">La blague se lit d'un coup d'œil</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="margin-top:12px;">Le curseur de taille de police permet d'adapter le texte à la dimension de votre image. Sur une grande photo, 32 à 40 points suffisent ; sur un petit format de type vignette, réduisez à 20 ou 25 pour éviter que le texte ne déborde.</p>
+  <p style="margin-top:12px;">Le texte est automatiquement mis en majuscules et centré, pour coller à la grammaire visuelle du mème. Vous n'avez qu'à saisir la phrase, l'outil s'occupe du reste.</p>
+<h3>Quatre astuces pour un mème réussi</h3><p>Première astuce : choisissez une image qui raconte déjà quelque chose. Un visage qui exprime une énergie, une situation comique, une réaction reconnaissable : le texte n'a alors qu'à surenchérir. Une image neutre, où rien ne se passe, aura du mal à porter la blague. Deuxième astuce : jouez sur le contraste entre l'image et le texte. Un sujet sérieux doublé d'une légende absurde fonctionne mieux qu'un texte qui répète ce que montre déjà l'image.</p><p>Troisième astuce : soignez la longueur. Un texte trop long devient illisible sur téléphone et perd en efficacité. Les meilleurs mèmes tiennent en une poignée de mots, parfois en une simple punchline. Si votre phrase dépasse une ligne, raccourcissez-la ou réduisez la taille de police pour préserver la lisibilité. Quatrième astuce : testez avant de partager. Regardez l'aperçu sur un petit écran, comme le verra votre destinataire. C'est là qu'on remarque un texte trop gros, une légende qui masque un détail important ou une blague qui ne fonctionne pas hors contexte.</p><p>La taille de police s'ajuste en direct : chaque caractère saisi redessine l'aperçu instantanément, sans attendre. C'est l'avantage du traitement local dans le navigateur : pas de latence, pas d'attente entre la frappe et le rendu. Vous itérez donc rapidement sur la formule, essayant plusieurs formulations jusqu'à ce que la blague tombe juste. Une fois satisfait, un clic télécharge le mème en PNG, prêt à être partagé.</p><p>Enfin, gardez en tête que le meilleur mème est souvent le plus simple. Inutile d'empiler les effets ou de surcharger l'image : une phrase courte, une réaction nette, et le tour est joué. La formule classique a fait ses preuves : c'est à vous d'y mettre votre propre petit détail local, qui fera sourire vos proches ou votre communauté.</p>
+<p>La taille de police s'adapte automatiquement à la largeur du texte : plus la phrase est longue, plus elle occupe de place en haut et en bas. Si votre légende est trop longue et que le texte masque le sujet, raccourcissez-la plutôt que de réduire drastiquement la taille, au risque de la rendre illisible sur mobile. Pour un mème partagé dans un groupe WhatsApp, pensez au format carré : il s'affiche en entier sans recadrage désagréable. Pour une publication sur le fil d'une page Facebook, un format horizontal fonctionne mieux. Enfin, relisez votre légende à voix haute : une blague qui sonne mal à l'oral fonctionne rarement à l'écrit, et inversement. Un dernier coup d'œil sur l'aperçu avant le téléchargement évite les fautes d'orthographe, qui cassent immédiatement l'humour.</p></section>
+
+<section class="localization-section">
+  <h2 style="text-align:center;margin-bottom:20px;">Vie privée et mèmes : pourquoi traiter son image localement</h2>
+  <p>Beaucoup de générateurs de mèmes en ligne sont pratiques, mais ils fonctionnent souvent en envoyant votre image sur un serveur distant. Pour un mème anodin, le risque est limité, mais dès que l'on utilise une photo personnelle — un proche, un collègue, un instant de vie — la question de la confidentialité devient réelle. Cet outil prend le parti inverse : tout se déroule dans votre navigateur, sans aucun envoi.</p>
+  <h3 style="margin-top:24px;">Ce que change le traitement local</h3>
+  <ul style="line-height:1.8;">
+    <li><strong>Photos personnelles préservées :</strong> un portrait de famille ou une photo entre amis ne quitte jamais votre appareil, même le temps d'une seconde.</li>
+    <li><strong>Aucune conservation :</strong> rien n'est stocké sur un service tiers, aucun historique de création n'est tenu.</li>
+    <li><strong>Aucun filigrane :</strong> le mème exporté est propre, sans logo ajouté par un site externe.</li>
+    <li><strong>Aucune inscription :</strong> vous ouvrez la page, vous créez, vous téléchargez, sans jamais créer de compte.</li>
+  </ul>
+  <p style="margin-top:16px;">Cette approche répond à une attente forte des utilisateurs francophones, attentifs à ce que deviennent leurs images une fois passées sur le web. Un mème drôle ne doit pas devenir une donnée exploitée à votre insu.</p>
+  <p style="margin-top:12px;">Conseil : si vous utilisez une photo d'une personne, demandez son accord avant de la partager. L'humour n'excuse pas le manque de respect à l'égard de ceux que l'on met en scène.</p>
+<h3>Créer sans jamais exposer ses images</h3><p>Le cas d'usage typique est le groupe familial. On a une photo de mamie qui fait une tête comique, on veut en faire un mème gentil pour l'envoyer aux cousins. Envoyer cette photo vers un service en ligne externe, même réputé, c'est prendre le risque qu'elle atterrisse ailleurs que dans le groupe prévu. Le traitement local élimine ce risque : l'image est lue par votre propre navigateur, le texte est dessiné sur votre machine, et seul le fichier final que vous choisissez d'envoyer circule.</p><p>Pour les photos de travail ou de communauté, même logique. Une capture d'écran d'un échange interne, une photo de l'équipe lors d'un événement, un visuel avant publication : ces images n'ont rien à faire sur un serveur de génération de mèmes. Les transformer localement vous garde la main sur chaque document, du fichier source à l'export final. C'est d'autant plus appréciable que les outils en ligne gratuits financent souvent leur service en réutilisant ou en analysant les images que l'on leur confie.</p><p>L'absence de filigrane est également un point d'attention. De nombreux générateurs gratuits apposent leur logo sur l'image produite, ou réservent l'export propre à un abonnement payant. Ici, le PNG téléchargé est net, directement issu de votre travail, sans surcouche publicitaire ni signature. Vous pouvez le publier tel quel, le recadrer à votre guise, l'envoyer en pièce jointe, sans vous soucier d'un marquage indésirable.</p><p>Enfin, créer un mème reste un exercice léger : il doit rester rapide et amusant. L'outil local propose exactement cela, sans friction. Vous choisissez l'image, tapez les deux légendes, ajustez la taille, téléchargez. Pas de compte à confirmer, pas de publicité qui s'intercale, pas d'abonnement qui se termine. Pour un usage occasionnel comme pour des créations régulières, c'est la formule la plus simple et la plus respectueuse de vos données. Le mème téléchargé reste à vous, modifiable à volonté, sans aucune trace de l'outil sur l'image finale. Vous pouvez le réouvrir plus tard, en changer la légende ou la taille de police, et l'exporter à nouveau sans aucune limitation.</p></section>
+
+<section class="faq-section">
+  <h2>Questions Fréquentes</h2>
+  <div class="faq-item"><button class="faq-question">Mon image est-elle envoyée sur un serveur ?</button><div class="faq-answer">Non. Toute la création du mème s'exécute localement dans votre navigateur, sur un canevas. Votre image de fond n'est jamais téléversée, aucun fichier n'est stocké, et le mème exporté reste sur votre appareil tant que vous ne choisissez pas de l'envoyer.</div></div>
+  <div class="faq-item"><button class="faq-question">Puis-je utiliser mes propres images comme arrière-plan ?</button><div class="faq-answer">Oui, vous importez l'image de votre choix : une photo personnelle, une capture d'écran ou une illustration. Vous ajoutez ensuite le texte du haut et du bas, puis téléchargez le résultat en PNG. Aucun modèle imposé, aucun filigrane ajouté.</div></div>
+  <div class="faq-item"><button class="faq-question">Quelle police est utilisée pour le texte du mème ?</button><div class="faq-answer">Le générateur utilise une police sans-serif grasse, affichée en majuscules avec un épais contour noir, la formule classique des mèmes. Ce choix garantit une lisibilité maximale, aussi bien sur un fond clair que sur une image sombre ou chargée.</div></div>
+  <div class="faq-item"><button class="faq-question">Puis-je créer un mème à partir d'une photo personnelle ?</button><div class="faq-answer">Oui, mais demandez l'accord de la personne avant de la partager. Le traitement local vous permet de préparer le mème en privé, sans exposer la photo à un service en ligne. Gardez un ton gentil et bienveillant, même dans la blague.</div></div>
+  <div class="faq-item"><button class="faq-question">Le mème obtenu porte-t-il un filigrane ?</button><div class="faq-answer">Non. Le fichier PNG téléchargé est entièrement propre : aucun logo, aucune signature, aucune publicité ajoutée. Vous pouvez l'utiliser tel quel, le recadrer ou le retoucher à nouveau, sans limitation.</div></div>
+  <div class="faq-item"><button class="faq-question">Puis-je ajuster la taille du texte ?</button><div class="faq-answer">Oui, un curseur règle la taille de la police de 10 à 80 points. Sur une grande photo, une valeur autour de 32 fonctionne bien ; sur un petit format, réduisez à 20-25 pour que le texte tienne sans déborder de l'image.</div></div>
+  <div class="faq-item"><button class="faq-question">Le générateur est-il vraiment gratuit ?</button><div class="faq-answer">Oui, entièrement gratuit. Sans inscription, sans limite de nombre de créations, sans essai puis abonnement. Vous créez autant de mèmes que vous le souhaitez et vous les téléchargez en PNG, sans aucun coût.</div></div>
 </section>
+
+<section class="related-tools">
+  <h2>Vous Pourriez Aussi Aimer</h2>
+  <div class="related-tools-grid">
+    <a href="/fr/tools/gif-splitter" class="related-tool-card">
+      <span class="tool-icon">🎬</span>
+      <div class="tool-info">
+        <strong>Diviseur de GIF</strong>
+        <span class="tool-desc">Extrayez une image d'un GIF animé</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/fr/tools/photo-filters" class="related-tool-card">
+      <span class="tool-icon">🎨</span>
+      <div class="tool-info">
+        <strong>Filtres Photo</strong>
+        <span class="tool-desc">Appliquez un filtre à votre image</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+    <a href="/fr/tools/cropper" class="related-tool-card">
+      <span class="tool-icon">✂️</span>
+      <div class="tool-info">
+        <strong>Recadrage</strong>
+        <span class="tool-desc">Recadrez votre mème avant partage</span>
+      </div>
+      <span class="tool-arrow">→</span>
+    </a>
+  </div>
+</section>
+    </div>
+  <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
 </main>
+
+  <div class="ad-zone ad-footer ad-loader-slot" data-ad-type="footer"></div>
+
+<footer class="site-footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="/fr/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Outils d'image gratuits qui respectent votre vie privée.</p></div><div class="footer-links"><h4>Outils</h4><a href="/fr/tools/background-remover">Supprimer l'arrière-plan</a><a href="/fr/tools/compressor">Compresseur</a><a href="/fr/tools/converter">Convertisseur</a><a href="/fr/tools/resizer">Redimensionneur</a><a href="/fr/tools/cropper">Recadrage</a><a href="/fr/tools/watermark">Filigrane</a></div><div class="footer-links"><h4>Plus d'outils</h4><a href="/fr/tools/image-upscaler">Agrandisseur</a><a href="/fr/tools/gif-editor">Éditeur GIF</a><a href="/fr/tools/pdf-to-image">PDF vers Image</a><a href="/fr/tools/heic-converter">Convertisseur HEIC</a><a href="/fr/tools/meme-generator">Générateur de Mèmes</a><a href="/fr/tools/face-blur">Flouter les Visages</a></div><div class="footer-links"><h4>Site</h4><a href="/about">À propos</a><a href="/contact">Contact</a><a href="/privacy">Confidentialité</a><a href="/terms">Conditions</a></div></div><div class="footer-bottom"><p>© 2026 SmartImgKit. Traitement 100% local — vos fichiers ne quittent jamais votre appareil.</p></div></div></footer>
+
+<script src="/js/main.js?v=8"></script>
 <script>
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -85,8 +297,10 @@ link.download = 'meme.png';
 link.href = canvas.toDataURL('image/png');
 link.click();
 };
+document.querySelectorAll('.faq-question').forEach(btn => {
+  btn.addEventListener('click', () => { btn.parentElement.classList.toggle('open'); });
+});
 </script>
+<script src="/js/ad-loader.js?v=4"></script>
 </body>
 </html>
-
-

@@ -1,88 +1,356 @@
 ﻿<!DOCTYPE html>
-<html lang="es" data-theme="dark">
+<html lang="es" data-theme="dark" data-tool-id="png-to-svg">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PNG a SVG — vectoriza tus imágenes online gratis</title>
-  <meta name="description" content="Convierte imágenes PNG o JPG a formato vectorial SVG en tu navegador. Gratis, sin subir archivos y sin límites de uso.">
-  <meta name="keywords" content="png to svg, image vectorizer, bitmap to svg, logo vector converter, online svg converter">
+  <meta name="robots" content="index, follow">
+  <title>Convertir PNG a SVG Online Gratis — Vectorizar Imágenes</title>
+  <meta name="description" content="Vectoriza tu PNG o JPG a SVG gratis, directo en tu navegador. Ajusta umbral y colores, sin subir archivos, ideal para logos, íconos y estampados.">
+  <meta name="keywords" content="convertir png a svg, vectorizar imagen, png a svg online, vectorizar logo, imagen a svg gratis">
   <link rel="canonical" href="https://smartimgkit.com/es/tools/png-to-svg">
+  <link rel="alternate" hreflang="ar" href="https://smartimgkit.com/ar/tools/png-to-svg">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/png-to-svg">
+  <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/png-to-svg">
+  <link rel="alternate" hreflang="fr" href="https://smartimgkit.com/fr/tools/png-to-svg">
+  <link rel="alternate" hreflang="id" href="https://smartimgkit.com/id/tools/png-to-svg">
+  <link rel="alternate" hreflang="pt" href="https://smartimgkit.com/pt/tools/png-to-svg">
+  <link rel="alternate" hreflang="vi" href="https://smartimgkit.com/vi/tools/png-to-svg">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/png-to-svg">
   <link rel="stylesheet" href="/css/style.css?v=15">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style id="tool-css">
+.container{max-width:1000px;margin:2rem auto;padding:0 1rem}
+.upload{border:2px dashed var(--border);border-radius:16px;padding:3rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--surface)}
+.upload:hover{border-color:var(--primary)}
+.preview-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0}
+.preview-box{background:repeating-conic-gradient(#2a2a2a 0% 25%, #1a1a1a 0% 50%) 50% / 16px 16px;border-radius:12px;padding:1rem;text-align:center;min-height:300px;display:flex;align-items:center;justify-content:center}
+.preview-box img{max-width:100%;max-height:400px}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:1.5rem 0}
+.control{padding:16px;background:var(--surface);border-radius:10px;border:1px solid var(--border)}
+.control label{display:block;font-size:.85rem;font-weight:600;margin-bottom:8px;color:var(--text-secondary)}
+.control input[type=range]{width:100%}
+.btn{padding:12px 24px;border-radius:10px;border:none;font-size:15px;font-weight:600;cursor:pointer}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-group{display:flex;gap:12px;justify-content:center;margin:1rem 0}
+@media(max-width:600px){.preview-grid,.controls{grid-template-columns:1fr}}
+.how-to-section{margin:2.5rem 0;padding:0 1rem}
+.how-to-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:1.5rem;text-align:center}
+.how-to-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;max-width:1000px;margin:0 auto}
+.how-to-step{background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;padding:1.25rem}
+.how-to-step .step-number{width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;margin-bottom:0.6rem}
+.how-to-step h4{margin:0 0 0.4rem;color:var(--text-primary)}
+.how-to-step p{margin:0;color:var(--text-secondary);font-size:0.85rem;line-height:1.6}
+.faq-section{margin:2.5rem 0;padding:0 1rem}
+.faq-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:1rem;text-align:center}
+.faq-item{border:1px solid var(--border);border-radius:8px;margin-bottom:0.5rem;overflow:hidden;background:var(--bg-secondary)}
+.faq-question{width:100%;padding:1rem 1.25rem;background:none;border:none;text-align:left;font-size:0.95rem;font-weight:600;color:var(--text-primary);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.faq-question::after{content:'+';font-size:1.2rem;transition:transform .2s}
+.faq-item.open .faq-question::after{transform:rotate(45deg)}
+.faq-answer{padding:0 1.25rem;max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;color:var(--text-secondary);font-size:0.9rem;line-height:1.6}
+.faq-item.open .faq-answer{padding:0 1.25rem 1rem;max-height:500px}
+.localization-section{max-width:800px;margin:3rem auto;padding:0 20px;line-height:1.8}
+.localization-section h2{font-size:1.6rem;color:var(--text-primary);text-align:center;margin-bottom:1.2rem}
+.localization-section h3{margin-top:1.8rem;color:var(--text-primary)}
+.localization-section ul{line-height:1.8;color:var(--text-secondary)}
+.related-tools{margin:3rem 0;padding:0 1rem}
+.related-tools h2{font-size:1.6rem;color:var(--text-primary);text-align:center;margin-bottom:1.5rem}
+.related-tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;max-width:1000px;margin:0 auto}
+.related-tool-card{display:flex;gap:0.75rem;align-items:center;background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;padding:1rem;text-decoration:none;transition:border-color .2s,transform .2s}
+.related-tool-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.related-tool-card .tool-icon{font-size:1.5rem}
+.related-tool-card .tool-info{flex:1}
+.related-tool-card .tool-info strong{display:block;color:var(--text-primary);font-size:0.9rem}
+.related-tool-card .tool-info span{color:var(--text-secondary);font-size:0.78rem}
+.related-tool-card .tool-arrow{color:var(--accent)}
+  </style>
   <script type="application/ld+json">
 {
-  
-  "inLanguage": "es","@context": "https://schema.org",
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Es gratis convertir PNG a SVG?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, la conversión de PNG a SVG es 100% gratuita, sin registro, sin marcas de agua y sin límite de archivos. Puedes vectorizar tantos logotipos, íconos o dibujos como necesites cada día, y todo ocurre en tu propio navegador sin costos ocultos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo vectorizar el logo de mi negocio sin saber diseño?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Claro que sí. No necesitas saber usar Illustrator ni ningún programa de diseño: subes tu logotipo en PNG, ajustas el umbral con el deslizador y descargas el SVG en menos de un minuto. Es el mismo procedimiento que usan miles de emprendedores en México, Colombia y Argentina para dejar de pedir archivos a diseñadores."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿El SVG que genero sirve para estampar playeras en vinilo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Funciona muy bien para diseños de líneas simples, como calaveras, letras o figuras geométricas que se cortan en vinilo textil. Para calcomanías, stickers y estampados de serigrafía, sube el umbral hasta conseguir contornos limpios y descarga el SVG listo para tu plotter de corte."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué mi foto no queda bien convertida a SVG?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La vectorización funciona mejor con imágenes de pocas colores y bordes definidos, como logotipos, dibujos o sellos. Una foto real de una persona o un paisaje produce un SVG muy pesado porque intenta trazar cada sombra; por eso conviene usar la herramienta con arte lineal, no con fotografías."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Mis imágenes se suben a algún servidor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Tu PNG o JPG nunca sale de tu celular o computadora: la vectorización se calcula con JavaScript en tu navegador, sin subidas, sin cuentas y sin seguimiento. Puedes convertir logotipos de tu empresa o dibujos privados con total confidencialidad."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Para qué sirve un archivo SVG frente a un PNG?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Un PNG es una imagen de píxeles que se ve borrosa al agrandarla; un SVG es un dibujo matemático que se ve perfecto en cualquier tamaño, desde un ícono de 16 píxeles hasta un cartel de 2 metros. Por eso los sitios web, las tarjetas de presentación y las imprentas piden siempre el formato vectorial."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo usar el SVG en Canva, Facebook o mi página web?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí. El SVG descargado se puede subir directamente a Canva, insertarlo en tu página de Facebook profesional, usarlo como ícono en tu sitio web o enviarlo a una imprenta. Muchos vendedores de Mercado Libre lo emplean para colocar su logotipo sobre las fotos de sus productos sin que pierda nitidez."
+      }
+    }
+  ]
+}
+</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Convertir PNG a SVG",
   "url": "https://smartimgkit.com/es/tools/png-to-svg",
+  "inLanguage": "es",
+  "description": "Vectoriza tu PNG o JPG a SVG gratis, directo en tu navegador. Ajusta umbral y colores, sin subir archivos, ideal para logos, íconos y estampados.",
   "applicationCategory": "DesignApplication",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "description": "Convierte imágenes PNG o JPG a formato vectorial SVG en tu navegador. Gratis, sin subir archivos y sin límites de uso."
+  "operatingSystem": "Any",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
 }
 </script>
-  <style>
-    .container{max-width:1000px;margin:2rem auto;padding:0 1rem}
-    .upload{border:2px dashed var(--border);border-radius:16px;padding:3rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--surface)}
-    .upload:hover{border-color:var(--primary)}
-    .preview-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0}
-    .preview-box{background:repeating-conic-gradient(#2a2a2a 0% 25%, #1a1a1a 0% 50%) 50% / 16px 16px;border-radius:12px;padding:1rem;text-align:center;min-height:300px;display:flex;align-items:center;justify-content:center}
-    .preview-box img{max-width:100%;max-height:400px}
-    .controls{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:1.5rem 0}
-    .control{padding:16px;background:var(--surface);border-radius:10px;border:1px solid var(--border)}
-    .control label{display:block;font-size:.85rem;font-weight:600;margin-bottom:8px;color:var(--text-secondary)}
-    .control input[type=range]{width:100%}
-    .btn{padding:12px 24px;border-radius:10px;border:none;font-size:15px;font-weight:600;cursor:pointer}
-    .btn-primary{background:var(--primary);color:#fff}
-    .btn-group{display:flex;gap:12px;justify-content:center;margin:1rem 0}
-    @media(max-width:600px){.preview-grid,.controls{grid-template-columns:1fr}}
-  </style>
+<meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
 </head>
 <body>
-  <nav class="navbar">
-    <div class="container nav-inner">
-      <a href="/" class="logo">SmartImgKit</a>
-      <div class="nav-links">
-        <a href="/">Home</a>
-        <a href="/es/tools/">Tools</a>
-        <a href="/blog/">Blog</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/es/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/es/">Inicio</a><a href="/es/tools/">Herramientas</a><a href="/es/blog/">Blog</a><a href="/about">Acerca de</a><a href="/contact">Contacto</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Cambiar idioma">🇪🇸 ES</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/" hreflang="en" lang="en">🇬🇧 English</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+            <a href="/fr/" hreflang="fr" lang="fr">🇫🇷 Français</a>
+            <a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a>
+            <a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a>
+          </div>
+        </div>
+        <button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
       </div>
     </div>
-  </nav>
+  </header>
+<div class="ad-zone ad-header ad-loader-slot" data-ad-type="header" data-current-mobile="0"></div>
 
-  <main class="container">
-    <h1 style="text-align:center;margin-bottom:.5rem">Convertir PNG a SVG</h1>
-    <p style="text-align:center;color:var(--text-secondary);margin-bottom:2rem">Vectoriza imágenes a SVG. Perfecto para logos y arte lineal — gratis, sin subida.</p>
-
-    <div class="upload" id="dropZone">
-      <div style="font-size:3rem;margin-bottom:1rem">🖼️</div>
-      <p><strong>Upload image</strong> or drag & drop</p>
-      <p style="font-size:.85rem;color:var(--text-secondary)">PNG / JPG / GIF — las formas simples dan mejores resultados</p>
-      <input type="file" id="fileInput" accept="image/*" hidden>
-    </div>
-
-    <div class="preview-grid" id="previewGrid" style="display:none">
-      <div class="preview-box"><img id="origImg"></div>
-      <div class="preview-box"><img id="svgImg"></div>
-    </div>
-
-    <div class="controls" id="controls" style="display:none">
-      <div class="control">
-        <label>Threshold <span id="thrVal">128</span></label>
-        <input type="range" id="threshold" min="0" max="255" value="128">
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/es/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🔤 PNG a SVG</span></nav>
+      <div class="tool-page-header">
+        <h1>🔤 Convertir PNG a SVG</h1>
+        <p>Vectoriza tus imágenes a SVG gratis, ajustando umbral y colores, con procesamiento 100% local y sin necesidad de subir archivos.</p>
       </div>
-      <div class="control">
-        <label>Color Count <span id="colVal">2</span></label>
-        <input type="range" id="colors" min="2" max="16" value="2">
+
+      <div class="upload" id="dropZone">
+        <div style="font-size:3rem;margin-bottom:1rem">🖼️</div>
+        <p><strong>Sube una imagen</strong> o arrástrala aquí</p>
+        <p style="font-size:.85rem;color:var(--text-secondary)">PNG / JPG / GIF — las formas simples dan mejores resultados</p>
+        <input type="file" id="fileInput" accept="image/*" hidden>
       </div>
+
+      <div class="preview-grid" id="previewGrid" style="display:none">
+        <div class="preview-box"><img id="origImg"></div>
+        <div class="preview-box"><img id="svgImg"></div>
+      </div>
+
+      <div class="controls" id="controls" style="display:none">
+        <div class="control">
+          <label>Umbral <span id="thrVal">128</span></label>
+          <input type="range" id="threshold" min="0" max="255" value="128">
+        </div>
+        <div class="control">
+          <label>Número de colores <span id="colVal">2</span></label>
+          <input type="range" id="colors" min="2" max="16" value="2">
+        </div>
+      </div>
+
+      <div class="btn-group" id="btnGroup" style="display:none">
+        <button class="btn btn-primary" onclick="downloadSVG()">⬇️ Descargar SVG</button>
+        <button class="btn btn-secondary" onclick="reset()">🔄 Nueva imagen</button>
+      </div>
+
+      <section class="how-to-section">
+        <h2>Cómo Vectorizar una Imagen en 4 Pasos</h2>
+        <div class="how-to-steps">
+          <div class="how-to-step"><div class="step-number">1</div><h4>Sube tu Imagen</h4><p>Haz clic en el área de carga o arrastra un PNG, JPG o GIF con bordes claros: un logotipo, un ícono, un dibujo o un sello funcionan mejor que una foto.</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>Ajusta el Umbral</h4><p>Mueve el deslizador hasta que los contornos de la imagen se vean limpios en la vista previa. Un umbral alto deja solo las líneas más marcadas.</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>Revisa el Resultado</h4><p>Compara la imagen original con el resultado vectorial en pantalla. Si el diseño tiene varios tonos, sube el número de colores para conservar más matices.</p></div>
+          <div class="how-to-step"><div class="step-number">4</div><h4>Descarga el SVG</h4><p>Guarda tu archivo vectorial y úsalo en tarjetas, impresiones, Canva, tu sitio web o máquinas de corte de vinilo sin que se vea borroso.</p></div>
+        </div>
+      </section>
+
+      <section class="faq-section">
+        <h2>Preguntas Frecuentes</h2>
+        <div class="faq-item"><button class="faq-question">¿Es gratis convertir PNG a SVG?</button><div class="faq-answer">Sí, la conversión de PNG a SVG es 100% gratuita, sin registro, sin marcas de agua y sin límite de archivos. Puedes vectorizar tantos logotipos, íconos o dibujos como necesites cada día, y todo ocurre en tu propio navegador sin costos ocultos.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Puedo vectorizar el logo de mi negocio sin saber diseño?</button><div class="faq-answer">Claro que sí. No necesitas saber usar Illustrator ni ningún programa de diseño: subes tu logotipo en PNG, ajustas el umbral con el deslizador y descargas el SVG en menos de un minuto. Es el mismo procedimiento que usan miles de emprendedores en México, Colombia y Argentina para dejar de pedir archivos a diseñadores.</div></div>
+        <div class="faq-item"><button class="faq-question">¿El SVG que genero sirve para estampar playeras en vinilo?</button><div class="faq-answer">Funciona muy bien para diseños de líneas simples, como calaveras, letras o figuras geométricas que se cortan en vinilo textil. Para calcomanías, stickers y estampados de serigrafía, sube el umbral hasta conseguir contornos limpios y descarga el SVG listo para tu plotter de corte.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Por qué mi foto no queda bien convertida a SVG?</button><div class="faq-answer">La vectorización funciona mejor con imágenes de pocas colores y bordes definidos, como logotipos, dibujos o sellos. Una foto real de una persona o un paisaje produce un SVG muy pesado porque intenta trazar cada sombra; por eso conviene usar la herramienta con arte lineal, no con fotografías.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Mis imágenes se suben a algún servidor?</button><div class="faq-answer">No. Tu PNG o JPG nunca sale de tu celular o computadora: la vectorización se calcula con JavaScript en tu navegador, sin subidas, sin cuentas y sin seguimiento. Puedes convertir logotipos de tu empresa o dibujos privados con total confidencialidad.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Para qué sirve un archivo SVG frente a un PNG?</button><div class="faq-answer">Un PNG es una imagen de píxeles que se ve borrosa al agrandarla; un SVG es un dibujo matemático que se ve perfecto en cualquier tamaño, desde un ícono de 16 píxeles hasta un cartel de 2 metros. Por eso los sitios web, las tarjetas de presentación y las imprentas piden siempre el formato vectorial.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Puedo usar el SVG en Canva, Facebook o mi página web?</button><div class="faq-answer">Sí. El SVG descargado se puede subir directamente a Canva, insertarlo en tu página de Facebook profesional, usarlo como ícono en tu sitio web o enviarlo a una imprenta. Muchos vendedores de Mercado Libre lo emplean para colocar su logotipo sobre las fotos de sus productos sin que pierda nitidez.</div></div>
+      </section>
+
+<section class="localization-section">
+  <h2>Logotipos Listos para Estampar en Latinoamérica</h2>
+  <p>En toda la región existe una escena emprendedora que vive de los estampados: talleres de serigrafía en el barrio de La Merced en Ciudad de México, negocios de vinilo textil en el Once de Buenos Aires, tiendas de calcomanías en el Centro de Bogotá y plotters de corte en los mercados de Guadalajara y Monterrey. A esa gente le piden constantemente el mismo formato: un archivo vectorial, con contornos limpios, que la máquina pueda seguir sin dudar. El problema es que muchos pequeños clientes llegan con su logotipo guardado en PNG, sacado de un celular o descargado de un mensaje de WhatsApp, y ese archivo de píxeles se ve borroso cuando la máquina intenta agrandarlo para una playa o una taza. Antes, el taller tenía que redibujar el logo a mano y cobrar por horas de diseño; hoy ese cliente puede subir su PNG aquí, ajustar el umbral y entregarse al taller un SVG listo para cortar en menos de cinco minutos.</p>
+  <p>¿Por qué el umbral importa tanto en este oficio? Porque las máquinas de vinilo no interpretan tonos ni sombras: solo necesitan saber dónde empieza y dónde termina cada línea. Si la imagen tiene bordes grises o desvanecidos, el resultado sale con bordes peludos y el corte se rompe. Por eso el deslizador de umbral es la herramienta favorita de los estampadores: lo suben hasta obtener un contraste total entre el dibujo y el fondo, y entre más limpio quede, mejor trabaja la cuchilla. Los diseños que mejor funcionan son precisamente los favoritos de la cultura popular mexicana y caribeña: calaveras de Día de Muertos, letras de reggaetón, mascotas caricaturizadas, escudos de equipos de fútbol y dibujos de luchadores. Todos comparten la misma lógica: pocas manchas de color, bordes claros, fondo plano.</p>
+  <h3>Consejos del taller para vectorizar bien</h3>
+  <ul>
+    <li><strong>Limpia el fondo primero:</strong> Si tu PNG tiene el fondo blanco o a colores, procura que el dibujo sea lo único visible. Un fondo transparente o de color plano ayuda a que el umbral detecte mejor los contornos.</li>
+    <li><strong>Prueba varios umbrales:</strong> Sube y baja el deslizador comparando la vista previa. Un cambio de quince puntos puede convertir un corte peludo en un trazo perfecto para vinilo de 30 cm.</li>
+    <li><strong>Usa dos colores como máximo:</strong> Para estampados de una sola tinta, deja el número de colores en dos. Más colores encarecen la serigrafía y añaden capas que el corte no necesita.</li>
+    <li><strong>Amplía antes de subir:</strong> Si tu logo original mide solo 200 píxeles, pídele al diseñador que te lo entregue grande. Un SVG hecho sobre una imagen diminuta conserva esos píxeles en forma de bloques.</li>
+    <li><strong>Manda una muestra impresa:</strong> Antes de cortar cincuenta playeras, imprime el SVG en papel normal. Si en papel se ve bien, en vinilo quedará igual de nítido.</li>
+  </ul>
+  <p>Este flujo —cliente con PNG, vectorización en el navegador, entrega de SVG al taller— ahorra a ambas partes mucho tiempo. El emprendedor ya no depende de que un diseñador tenga libre una tarde para redibujar su arte, y el taller puede dedicar su cuchilla a producir en vez de a trazar. Incluso los que empiezan en casa, con una plotter de corte pequeña en su departamento, descubren que pueden tomar pedidos de calcomanías para motos, cascos, cuadernos y laptops sin saber dibujar: vectorian lo que el cliente les manda por WhatsApp y entregan en dos días. La barrera de entrada nunca había sido tan baja, y ese es justo el tipo de herramienta que la economía informal de Latinoamérica agradece: gratis, en español, sin registro y que funciona incluso con un celular viejo.</p>
+</section>
+
+<section class="localization-section">
+  <h2>Del Logo de la Panadería al Archivo Vectorial</h2>
+  <p>Hay un momento que viven casi todos los pequeños negocios de la región: la panadería, el taquería, la peluquería o el despacho de abogados que por fin decide darse una imagen seria. El dueño contrata o hace un logotipo, lo manda imprimir en tarjetas de presentación, lo publica en su página de Facebook y se olvida. Seis meses después quiere algo nuevo: un menú impreso, un lona para el local, un sello de goma, stickers para empaque o un anuncio en Marketplace. Y ahí descubre que solo tiene el logo en PNG, que se ve borroso en todo lo que sea más grande que una tarjeta. Antes no había más remedio que volver a pagar a un diseñador para que recreara el archivo; hoy ese pequeño empresario puede resolverlo él mismo desde su celular en la hora de la comida.</p>
+  <p>Los casos más típicos que recibimos son los de comercios familiares: una panadería de la CDMX que necesita su escudo en grande para el mantel del mostrador, una taquería de Medellín que quiere sus letras en calcomanías para los refrigeradores de los clientes, una boutique de Guayaquil que necesita su monograma para bolsas de papel, una academia de baile de Monterrey que quiere su logo en lonas para el salón. Todos comparten la misma situación: el arte existe, pero solo en formato de píxeles. La conversión a SVG les devuelve un archivo que una imprenta sí puede aceptar, porque el vectorial escala sin perder ni un ápice de nitidez desde el tamaño de un sello hasta el de una cartelera.</p>
+  <h3>Pasos que sigue un negocio desde su celda</h3>
+  <ul>
+    <li><strong>Abre la herramienta en el navegador del celular:</strong> No necesitas instalas nada ni una computadora de diseño. Desde el teléfono donde tienes el logo guardado en la galería o en un chat de WhatsApp, la página carga en segundos.</li>
+    <li><strong>Sube el PNG del logotipo:</strong> Si el archivo te llegó comprimido por redes sociales, pídele a quien te lo diseñó el original. Un PNG limpio de 1000 píxeles de ancho vectoriza mucho mejor que una captura de pantalla.</li>
+    <li><strong>Ajusta el umbral:</strong> La mayoría de los logos de negocio tienen un color oscuro sobre fondo claro. Con el umbral entre 120 y 180 se obtiene un trazo prolijo en la mayoría de los casos.</li>
+    <li><strong>Prueba el resultado ampliado:</strong> Abre el SVG descargado en el visor de tu celular y haz zoom. Si los bordes se ven perfectos a pantalla completa, la imprenta no tendrá quejas al imprimirlo a 40 centímetros.</li>
+    <li><strong>Guarda el archivo en la nube:</strong> Sube tu SVG a Google Drive o al chat del negocio. Así, cuando la imprenta o el taller lo pida, lo tienes a la mano y no vuelves a pasar por esto.</li>
+  </ul>
+  <p>El ahorro no es solo económico: es también de tiempo. Un diseñador freelance en ciudades como Ciudad de México o Bogotá cobra fácilmente entre 500 y 1500 pesos por recrear un logo en curvas vectoriales, y tarda de dos a cinco días. Con esta herramienta, el negocio resuelve lo mismo en cinco minutos y sin depender de horarios ajenos. Esos pesos se pueden invertir mejor en empaque, publicidad o materia prima. Muchos emprendedores nos cuentan que, una vez que dominan la herramienta, la usan para todo: convertir la estampa de la camiseta de su equipo en calcomanía, vectorizar el dibujo que hizo su hijo para el menú del día, o incluso el escudo del barrio para el aniversario de la colonia. El único límite es la imaginación, y como no cuesta nada, cualquiera se anima a probar.</p>
+</section>
+
+<section class="localization-section">
+  <h2>Íconos, Volantes y Clases: Usos que Nadie Espera</h2>
+  <p>Más allá de los logotipos comerciales, la conversión de imágenes a SVG la usa un público muy variado de habla hispana. Los creadores de contenido que mantienen un blog o un canal de YouTube necesitan íconos ligeros y nítidos para sus artículos; cada imagen de píxeles que pesa 500 kilobytes ralentiza la página, pero un SVG con solo dos colores pesa a veces menos de dos kilobytes. Los estudiantes de diseño gráfico y comunicación la emplean como práctica: vectorizan dibujos propios para su portafolio y comparan el resultado con el trabajo manual. Los maestros de primaria y secundaria la usan para material didáctico: convierten figuras de animales, mapas y números en gráficos que pueden agrandar hasta llenar el pizarrón digital sin que se pixel.</p>
+  <p>Otro grupo que la descubre por necesidad son los organizadores de fiestas y eventos en la región. Para una quinceañera, una boda o un bautizo se acostumbra diseñar un monograma con las iniciales de los protagonistas, y ese monograma aparece en las invitaciones digitales, las etiquetas de los recuerdos, el fondo de pantalla del evento y los stickers para los regalos. Si el monograma vive solo en PNG, se ve borroso en todos lados; al vectorizarlo, queda perfecto tanto en la miniatura de WhatsApp como en la lona de 2 metros del salón. Lo mismo pasa con los volantes de eventos universitarios, los flyers de ferias de emprendedores y las invitaciones a torneos de fútbol amateur: todo lo que necesite agrandarse sin perder calidad se beneficia del formato vectorial.</p>
+  <h3>Ideas para creadores y estudiantes</h3>
+  <ul>
+    <li><strong>Blogueros y youtubers:</strong> Vectoriza los botones y divisores de tus artículos. Un SVG pesa hasta 100 veces menos que un PNG equivalente y hace tu sitio más rápido, especialmente en conexiones móviles de Latinoamérica.</li>
+    <li><strong>Estudiantes de diseño:</strong> Usa la herramienta como punto de partida. Compara tu vectorización manual con la automática y nota dónde el algoritmo se equivoca en las curvas; es un ejercicio muy común en las carreras de diseño.</li>
+    <li><strong>Maestros:</strong> Convierte dibujos de libros, letras y figuras geométricas para proyectar en la pantalla del aula. Agrandar un PNG de baja resolución en el aula digital se ve granuloso; un SVG nunca.</li>
+    <li><strong>Organizadores de eventos:</strong> Prepara el monograma de tu evento en SVG una sola vez y úsalo en invitaciones, calcomanías y lonas. Todos los proveedores lo agradecerán porque ya no pedirás archivos distintos para cada tamaño.</li>
+    <li><strong>Vendedores en redes:</strong> Agrega tu logotipo vectorial sobre las fotos de producto. Al no ser un PNG, podrás superponerlo sin el recuadro blanco que arruina la estética de la publicación.</li>
+  </ul>
+  <p>Lo bonito de esta herramienta es que se aprende en dos minutos y se usa para toda la vida. No hay niveles avanzados que dominar: subir, ajustar umbral, descargar. Esa sencillez es la que la hace accesible a una abuela que necesita el logo de su iglesia en una lona, a un estudiante que arma su primer sitio web gratis, a un emprendedor que vende arepas por Instagram y no puede pagar un diseñador para cada detalle. Vivimos rodeados de imágenes de píxeles guardadas en celulares y chats, y casi todas podrían ser vectoriales con un poco de ajuste. La herramienta está aquí, es gratis, no pide registro y respeta tu privacidad al no subir nada: cualquier imagen simple que tengas a la mano se convierte en un archivo limpio y escalable en menos de lo que tarda una tortilla en calentarse.</p>
+</section>
+
+      <section class="related-tools">
+        <h2>También te puede interesar</h2>
+        <div class="related-tools-grid">
+          <a href="/es/tools/svg-to-png" class="related-tool-card">
+            <span class="tool-icon">🖼️</span>
+            <div class="tool-info">
+              <strong>SVG a PNG</strong>
+              <span class="tool-desc">Convierte vectores a imágenes de píxeles</span>
+            </div>
+            <span class="tool-arrow">→</span>
+          </a>
+          <a href="/es/tools/svg-compressor" class="related-tool-card">
+            <span class="tool-icon">📦</span>
+            <div class="tool-info">
+              <strong>Comprimir SVG</strong>
+              <span class="tool-desc">Reduce el peso de tus archivos vectoriales</span>
+            </div>
+            <span class="tool-arrow">→</span>
+          </a>
+          <a href="/es/tools/favicon-generator" class="related-tool-card">
+            <span class="tool-icon">⭐</span>
+            <div class="tool-info">
+              <strong>Generador de Favicon</strong>
+              <span class="tool-desc">Crea el ícono de tu sitio web</span>
+            </div>
+            <span class="tool-arrow">→</span>
+          </a>
+          <a href="/es/tools/converter" class="related-tool-card">
+            <span class="tool-icon">🔄</span>
+            <div class="tool-info">
+              <strong>Convertidor de Imágenes</strong>
+              <span class="tool-desc">Cambia entre JPG, PNG y WebP gratis</span>
+            </div>
+            <span class="tool-arrow">→</span>
+          </a>
+        </div>
+      </section>
     </div>
 
-    <div class="btn-group" id="btnGroup" style="display:none">
-      <button class="btn btn-primary" onclick="downloadSVG()">⬇️ Descargar SVG</button>
-      <button class="btn btn-secondary" onclick="reset()">🔄 New Image</button>
-    </div>
+<div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
   </main>
 
+    <div class="ad-zone ad-footer ad-loader-slot" data-ad-type="footer"></div>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><a href="/es/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Herramientas de imagen gratuitas que respetan tu privacidad.</p></div>
+        <div class="footer-links footer-links-multi"><h4>Herramientas</h4><a href="/es/tools/background-remover">Quitar Fondo</a><a href="/es/tools/compressor">Compresor</a><a href="/es/tools/converter">Convertidor</a><a href="/es/tools/resizer">Redimensionar</a>
+          <a href="/es/tools/gif-editor">Editor de GIF</a>
+          <a href="/es/tools/pdf-to-image">PDF a Imagen</a>
+        </div>
+        <div class="footer-links footer-links-multi"><h4>Más Herramientas</h4>
+          <div class="footer-links-list">
+          <a href="/es/tools/cropper">Recortar Imagen</a><a href="/es/tools/watermark">Marca de Agua</a><a href="/es/tools/image-merger">Unir Imágenes</a><a href="/es/tools/screenshot-to-image">Captura a Imagen</a><a href="/es/tools/image-filters">Filtros de Imagen</a><a href="/es/tools/svg-to-png">SVG a PNG</a><a href="/es/tools/image-compare">Comparar Imágenes</a><a href="/es/tools/print-resizer">Redimensionar para Imprimir</a><a href="/es/tools/meme-generator">Generador de Memes</a>          <a href="/es/tools/face-blur">Difuminar Rostros</a>
+          <a href="/es/tools/heic-converter">Convertidor HEIC</a>
+          <a href="/es/tools/metadata-viewer">Ver Metadatos</a>
+          <a href="/es/tools/avif-support">Soporte AVIF</a>
+          <a href="/es/tools/image-adjust">Ajustar Imagen</a>
+          <a href="/es/tools/image-border">Borde de Imagen</a>
+          <a href="/es/tools/image-flip">Voltear Imagen</a>
+          <a href="/es/tools/image-grayscale">Escala de Grises</a>
+          <a href="/es/tools/image-shadow">Sombra de Imagen</a>
+          <a href="/es/tools/image-splitter">Dividir Imagen</a>
+          <a href="/es/tools/image-exif-remover">Quitar EXIF</a><a href="/es/tools/circle-crop">Recorte Circular</a><a href="/es/tools/favicon-generator">Generador de Favicon</a><a href="/es/tools/ocr">Texto OCR</a><a href="/es/tools/bulk-processor">Procesar por Lotes</a><a href="/es/tools/image-to-pdf">Imagen a PDF</a>          <a href="/es/tools/id-photo">Foto Carnet</a>
+          <a href="/es/tools/product-white-background">Fondo Blanco de Producto</a>
+          <a href="/es/tools/social-media-post">Publicación para Redes</a>
+          <a href="/es/tools/photo-restoration">Restaurar Fotos</a><a href="/es/tools/image-enhancer">Mejorar Imagen</a>
+          </div>
+        </div>
+        <div class="footer-links"><h4>Legal</h4><a href="/privacy">Política de Privacidad</a><a href="/terms">Términos de Servicio</a><a href="/cookie-policy">Política de Cookies</a>
+        </div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. Todos los derechos reservados. | <a href="https://comprimefotos.com/" rel="nofollow sponsored" style="color: var(--accent); font-weight: 500;">Español: ComprimeFotos — Comprimir Imágenes Online</a></p></div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js?v=8"></script>
   <script>
   (function(){
     const dropZone = document.getElementById('dropZone');
@@ -126,13 +394,10 @@
         document.getElementById('thrVal').textContent = thr;
         document.getElementById('colVal').textContent = colors;
 
-        // Build SVG from color layers
         let paths = '';
         const w = canvas.width;
         const h = canvas.height;
 
-        // Quantize and trace contours (simplified: draw each color as rect blocks)
-        // For a real vectorizer we'd use Potrace, but this gives an SVG output
         for (let y = 0; y < h; y += 2) {
           for (let x = 0; x < w; x += 2) {
             const i = (y * w + x) * 4;
@@ -158,7 +423,7 @@
     window.downloadSVG = function() {
       if (!svgBlob) return;
       const a = document.createElement('a');
-      a.download = 'vectorized.svg';
+      a.download = 'vectorizado.svg';
       a.href = URL.createObjectURL(svgBlob);
       a.click();
     };
@@ -173,84 +438,8 @@
     };
   })();
   </script>
-<!-- Viral Share Button -->
-<button onclick="shareOurTool()" style="position:fixed;bottom:20px;right:20px;background:#0ea5e9;color:white;border:none;border-radius:50%;width:60px;height:60px;font-size:24px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.2);z-index:999;" title="Share this free tool">💛</button>
-<script>
-function shareOurTool() {
-  const pageName = document.title.split("—")[0].trim();
-  const url = window.location.href;
-  const text = `I just used this free 100% browser-based ${pageName} — no upload, no watermark, no signup! Try it: ${url}`;
-  if (navigator.share) { navigator.share({text: text}); }
-  else { navigator.clipboard.writeText(text); alert("✅ Share text copied! Post it online to help others!"); }
-}
-</script>
-<button onclick="shareOurTool(event)" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;">💛 Comparte esta herramienta gratis</button>
-<script>
-function shareOurTool(e) {
-  e.stopPropagation();
-  const toolName = document.title.split("—")[0].trim();
-  const url = window.location.href;
-  const text = `I just used this FREE ${toolName} in my browser — no upload, no watermark, no signup! Saved me $29.99 on Photoshop. Try it: ${url}`;
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
-  window.open(twitterUrl, '_blank', 'width=550,height=420');
-}
-</script>
-<button onclick="shareOurTool()" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;">💛 Comparte esta herramienta gratis</button>
-<script>
-function shareOurTool() {
-  const toolName = document.title.split("—")[0].trim();
-  const url = window.location.href;
-  const text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
-  window.open(twitterUrl, '_blank', 'width=550,height=420');
-}
-</script>
-<button onclick="shareOurTool()" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;" id="shareBtn">💛 Comparte esta herramienta gratis</button>
-<script>
-function shareOurTool() {
-  const lang = document.documentElement.lang || 'en';
-  const toolName = document.title.split("—")[0].trim();
-  const url = window.location.href;
-  let text, btnText;
-  if (lang.startsWith('zh')) {
-    btnText = '💛 分享免费工具';
-    text = `我刚在浏览器里用这个免费${toolName}，不用上传、无水印、不用注册！帮我省了Photoshop的钱，推荐你试试：${url}`;
-  } else if (lang.startsWith('es')) {
-    btnText = '💛 Compartir Herramienta Gratis';
-    text = `Acabo de usar este ${toolName} GRATIS directamente en mi navegador — sin subir archivos, sin marca de agua, sin registro! Me ahorró dinero de Photoshop. Pruébalo: ${url}`;
-  } else {
-    btnText = '💛 Comparte esta herramienta gratis';
-    text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
-  }
-  document.getElementById('shareBtn').innerText = btnText;
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
-  window.open(twitterUrl, '_blank', 'width=550,height=420');
-}
-</script>
-<button onclick="shareOurTool()" style="position:fixed;bottom:32px;right:20px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:50%;width:48px;height:48px;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(245,158,11,0.4);z-index:999;" id="shareBtn" title="Share this free tool">💛</button>
-<script>
-function shareOurTool() {
-  const lang = document.documentElement.lang || 'en';
-  const toolName = document.title.split("—")[0].trim();
-  const url = window.location.href;
-  let text;
-  if (lang.startsWith('zh')) {
-    text = `我刚在浏览器里用这个免费${toolName}，不用上传、无水印、不用注册！帮我省了Photoshop的钱，推荐你试试：${url}`;
-  } else if (lang.startsWith('es')) {
-    text = `Acabo de usar este ${toolName} GRATIS directamente en mi navegador — sin subir archivos, sin marca de agua, sin registro! Me ahorró dinero de Photoshop. Pruébalo: ${url}`;
-  } else {
-    text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
-  }
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
-  window.open(twitterUrl, '_blank', 'width=550,height=420');
-}
-</script>
+  <script src="/js/lang.js"></script>
+<script src="/js/ad-loader.js?v=4"></script>
+<script src="/js/result-modal.js?v=2"></script>
 </body>
 </html>
-
-
-
-
-
-
-

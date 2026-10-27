@@ -1,49 +1,324 @@
 ﻿<!DOCTYPE html>
-<html lang="fr" data-theme="dark">
+<html lang="fr" data-theme="dark" data-tool-id="pixel-art-converter">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Convertisseur pixel art — photo en 8 bits</title>
-<meta name="description" content="Passez n'importe quelle image en pixel art 8 bits en choisissant la résolution et la palette, puis exportez le PNG agrandi. Gratuit et sans envoi.">
-<link rel="canonical" href="https://smartimgkit.com/fr/tools/pixel-art-converter">
-<link rel="stylesheet" href="/css/style.css?v=15">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Convertisseur Pixel Art — Passez une Photo en 8 Bits, Gratuit</title>
+  <meta name="description" content="Transformez une photo en pixel art 8 bits en réglant la taille des pixels, directement dans votre navigateur. Gratuit, 100 % local, aucune image envoyée.">
+  <meta name="keywords" content="pixel art, convertisseur 8 bits, photo pixel art, retro pixel, pixeliser image">
+  <link rel="canonical" href="https://smartimgkit.com/fr/tools/pixel-art-converter">
+  <meta name="theme-color" content="#059669">
+  <meta property="og:title" content="Convertisseur pixel art — photo en 8 bits">
+  <meta property="og:description" content="Transformez une photo en pixel art 8 bits en réglant la taille des pixels. Gratuit, 100 % local, sans envoi.">
+  <meta property="og:url" content="https://smartimgkit.com/fr/tools/pixel-art-converter">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/pixel-art-converter">
+  <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/pixel-art-converter">
+  <link rel="alternate" hreflang="fr" href="https://smartimgkit.com/fr/tools/pixel-art-converter">
+  <link rel="alternate" hreflang="pt" href="https://smartimgkit.com/pt/tools/pixel-art-converter">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/pixel-art-converter">
+  <link rel="stylesheet" href="/css/style.css?v=15">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+.selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
+.sp-item{display:flex;align-items:center;gap:8px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:999px;padding:8px 16px;font-size:0.85rem;color:var(--text-secondary);font-weight:500}
+.feature-narrative{margin:2.5rem 0;padding:0 1rem}
+.feature-narrative h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.feature-narrative .fn-intro{text-align:center;max-width:680px;margin:0 auto 2rem;color:var(--text-secondary);font-size:1rem;line-height:1.6}
+.fn-block{display:flex;gap:1.5rem;align-items:flex-start;margin:1.5rem 0;padding:1.25rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.fn-block .fn-icon{font-size:2rem;flex-shrink:0}
+.fn-block h3{font-size:1.05rem;color:var(--text-primary);margin:0 0 0.4rem}
+.fn-block p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin:0}
+.features-grid-section{margin:2.5rem 0;padding:0 1rem}
+.features-grid-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.features-grid-section .fg-sub{text-align:center;color:var(--text-secondary);font-size:0.95rem;margin-bottom:2rem}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;max-width:1000px;margin:0 auto}
+.feature-card{background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;padding:1.25rem;transition:transform .2s,border-color .2s}
+.feature-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.feature-card .fc-icon{font-size:1.8rem;margin-bottom:0.5rem}
+.feature-card h3{font-size:1rem;color:var(--text-primary);margin:0 0 0.4rem}
+.feature-card p{color:var(--text-secondary);font-size:0.85rem;line-height:1.5;margin:0}
+.trust-badges{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:2rem 0;padding:1.5rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.trust-badge{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;min-width:120px}
+.trust-badge .tb-icon{font-size:1.6rem}
+.trust-badge .tb-title{font-size:0.85rem;font-weight:700;color:var(--text-primary)}
+.trust-badge .tb-desc{font-size:0.72rem;color:var(--text-secondary)}
+.faq-section{margin:2.5rem 0;padding:0 1rem}
+.faq-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:1rem;text-align:center}
+.faq-item{border:1px solid var(--border);border-radius:8px;margin-bottom:0.5rem;overflow:hidden;background:var(--bg-secondary)}
+.faq-question{width:100%;padding:1rem 1.25rem;background:none;border:none;text-align:left;font-size:0.95rem;font-weight:600;color:var(--text-primary);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.faq-question::after{content:'+';font-size:1.2rem;transition:transform .2s}
+.faq-item.open .faq-question::after{transform:rotate(45deg)}
+.faq-answer{padding:0 1.25rem;max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;color:var(--text-secondary);font-size:0.9rem;line-height:1.6}
+.faq-item.open .faq-answer{padding:0 1.25rem 1rem;max-height:300px}
+@media(max-width:640px){.fn-block{flex-direction:column}.features-grid{grid-template-columns:1fr}.trust-badges{gap:12px}.trust-badge{min-width:90px}}
+.sp-item span.sp-icon{font-size:1rem}
+</style>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Photo to Pixel Art Converter",
+  "name": "Convertisseur pixel art",
   "url": "https://smartimgkit.com/fr/tools/pixel-art-converter",
   "inLanguage": "fr",
-  "description": "Passez n'importe quelle image en pixel art 8 bits en choisissant la résolution et la palette, puis exportez le PNG agrandi. Gratuit et sans envoi.",
+  "description": "Transformez une photo en pixel art 8 bits en réglant la taille des pixels. Gratuit, 100 % local, sans envoi.",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
   "isAccessibleForFree": true,
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  }
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Comment fonctionne la conversion en pixel art ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "L'image est d'abord réduite à une petite résolution, chaque pixel représentant une zone entière, puis agrandie avec des blocs nets et lisses, ce qui crée l'effet 8 bits caractéristique. La taille des blocs se règle de 2 à 50 pixels."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quelle taille de pixel choisir ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Une taille de 8 à 12 pixels donne un rendu rétro reconnaissable sans perdre le sujet ; 4 à 6 conserve plus de détails ; 20 et plus produit un effet très grossier et stylisé, presque abstrait. Commencez à 10."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Mes images sont-elles envoyées sur un serveur ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non. La conversion est calculée dans votre navigateur, via l'API Canvas, et vos images ne quittent jamais votre appareil. Aucun compte n'est requis, ce qui respecte le RGPD pour des portraits ou des photos personnelles."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je convertir un portrait en pixel art ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui, les portraits donnent des résultats amusants et très graphiques. Choisissez une taille de pixel moyenne, autour de 8 à 10, pour garder les traits du visage et l'expression reconnaissables sur l'avatar final."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quel format d'export est proposé ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Le résultat est exporté en PNG, avec la même résolution que l'image d'origine, prêt pour les réseaux sociaux, un avatar ou l'impression. Votre photo d'origine reste intacte sur votre appareil."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je faire un avatar rétro pour Discord ou Twitch ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Tout à fait. Un portrait ou un personnage converti en pixel art carré, avec une taille de bloc de 8 à 10, fait un avatar original et reconnaissable sur Discord, Twitch ou les forums de jeux, loin des photos de profil classiques."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quelles photos donnent le meilleur rendu ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Les images aux couleurs vives et aux formes simples fonctionnent le mieux : paysages, portraits stylisés, objets rétro, mascottes. Les photos très détaillées et surchargées perdent en lisibilité une fois pixelisées."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Faut-il payer ou créer un compte ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non, le convertisseur est entièrement gratuit, sans inscription, sans filigrane et sans limite de nombre d'images. Vous transformez autant de photos que vous le souhaitez, directement en ligne."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Cela fonctionne-t-il sur un téléphone mobile ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui, l'outil s'utilise dans le navigateur de votre smartphone ou tablette, sous Android comme sur iOS. Le traitement reste local et l'aperçu s'adapte à la taille de l'écran, sans aucune application à installer."
+      }
+    }
+  ]
 }
 </script>
 </head>
 <body>
-<header class="site-header">
-<a href="/fr/" class="logo">SmartImgKit</a>
-<nav><a href="/fr/tools/">Tous les outils</a><a href="/fr/blog/">Blog</a></nav>
-</header>
-<main class="container">
-<h1>Photo to Pixel Art Converter</h1>
-<p class="lead">Turn any photo into retro 8-bit pixel art style, 100% local processing, no upload, no signup.</p>
-<div class="upload-area" id="dropZone">
-<p>Upload your photo to convert to pixel art</p>
-<input type="file" id="fileInput" accept="image/*" hidden>
-</div>
-<div class="controls" style="margin:1rem 0;">
-<label>Pixel Size: <input type="range" id="pixelSize" min="2" max="50" value="10"> <span id="sizeVal">10px</span></label>
-<button id="downloadBtn" class="primary">Download Pixel Art</button>
-</div>
-<canvas id="canvas" style="max-width:100%;border:1px solid #333;"></canvas>
-</main>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/fr/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/fr/">Accueil</a><a href="/fr/tools/">Outils</a><a href="/fr/blog/">Blog</a><a href="/about">À propos</a><a href="/contact">Contact</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Changer de langue">🇫🇷 FR</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/" hreflang="en" lang="en">🇬🇧 English</a>
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+            <a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a>
+            <a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a>
+          </div>
+        </div>
+        <button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/fr/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>👾 Convertisseur pixel art</span></nav>
+      <div class="tool-page-header">
+        <h1>👾 Convertisseur pixel art</h1>
+        <p>Transformez une photo en pixel art 8 bits rétro. Traitement 100 % local, aucune image envoyée.</p>
+      </div>
+      <div class="tool-workspace">
+        <div class="upload-area" id="dropZone">
+          <p>Déposez votre photo ici</p>
+          <input type="file" id="fileInput" accept="image/*" hidden>
+        </div>
+        <div class="controls" style="margin:1rem 0;">
+          <label>Taille des pixels : <input type="range" id="pixelSize" min="2" max="50" value="10"> <span id="sizeVal">10px</span></label>
+          <button id="downloadBtn" class="btn btn-primary">Télécharger le pixel art</button>
+        </div>
+        <canvas id="canvas" style="max-width:100%;border:1px solid #333;"></canvas>
+      </div>
+      <div class="selling-points">
+        <div class="sp-item"><span class="sp-icon">👾</span>Effet 8 bits instantané</div>
+        <div class="sp-item"><span class="sp-icon">🔒</span>100 % local, aucune image envoyée</div>
+        <div class="sp-item"><span class="sp-icon">🆓</span>Gratuit, sans inscription</div>
+      </div>
+      <section class="feature-narrative">
+        <h2>Donnez un style rétro à vos images</h2>
+        <p class="fn-intro">Le pixel art évoque les jeux vidéo des années 80, les premières consoles et les écrans 8 bits. Ce convertisseur pixelise n'importe quelle photo en blocs nets et colorés, pour un rendu rétro immédiatement reconnaissable.</p>
+        <div class="fn-block"><div class="fn-icon">👾</div><div><h3>Pixelisation 8 bits</h3><p>L'image est réduite puis agrandie en blocs nets : chaque zone devient un pixel de couleur, comme dans un jeu rétro.</p></div></div>
+        <div class="fn-block"><div class="fn-icon">🎚️</div><div><h3>Taille réglable</h3><p>De 2 à 50 pixels, contrôlez la finesse du rendu : petits blocs pour les détails, grands blocs pour un effet très stylisé.</p></div></div>
+        <div class="fn-block"><div class="fn-icon">🔒</div><div><h3>100 % local</h3><p>La conversion se fait dans votre navigateur, sans envoyer votre image sur un serveur.</p></div></div>
+      </section>
+      <section class="features-grid-section">
+        <h2>L'essentiel pour un pixel art réussi</h2>
+        <p class="fg-sub">Simple, rétro et privé.</p>
+        <div class="features-grid">
+          <div class="feature-card"><div class="fc-icon">👾</div><h3>Rendu 8 bits</h3><p>Blocs de pixels nets et colorés.</p></div>
+          <div class="feature-card"><div class="fc-icon">🎚️</div><h3>Taille réglable</h3><p>Du détail au style très grossier.</p></div>
+          <div class="feature-card"><div class="fc-icon">🔒</div><h3>Confidentialité</h3><p>Aucun envoi, aucun compte.</p></div>
+          <div class="feature-card"><div class="fc-icon">🆓</div><h3>Gratuit à vie</h3><p>Sans inscription ni filigrane.</p></div>
+          <div class="feature-card"><div class="fc-icon">🌐</div><h3>Multi-appareils</h3><p>Ordinateur et mobile.</p></div>
+          <div class="feature-card"><div class="fc-icon">💾</div><h3>Export PNG</h3><p>Téléchargement en un clic.</p></div>
+        </div>
+      </section>
+      <div class="trust-badges">
+        <div class="trust-badge"><div class="tb-icon">🔒</div><div class="tb-title">100 % privé</div><div class="tb-desc">Les fichiers ne quittent pas le navigateur</div></div>
+        <div class="trust-badge"><div class="tb-icon">⚡</div><div class="tb-title">Résultat immédiat</div><div class="tb-desc">Pixel art généré en direct</div></div>
+        <div class="trust-badge"><div class="tb-icon">💯</div><div class="tb-title">Gratuit à vie</div><div class="tb-desc">Sans inscription ni filigrane</div></div>
+        <div class="trust-badge"><div class="tb-icon">🚀</div><div class="tb-title">Sans installation</div><div class="tb-desc">Ouvre dans le navigateur</div></div>
+      </div>
+      <section class="localization-section">
+        <h2 style="text-align:center;margin-bottom:20px;">Le pixel art, un style rétro très prisé en France</h2>
+        <p>En France, en Belgique, en Suisse romande et au Québec, le pixel art est associé aux premières consoles, aux bornes d'arcade des cafés et des salles de jeux, et à toute une culture geek qui a grandi avec les jeux 8 bits. Mais il a largement dépassé ce cercle : on le retrouve dans la communication de marques, les visuels d'événements, les logos de podcasts, les pochettes de disque et les jeux indépendants. Transformer une photo en pixel art, c'est adopter un style graphique immédiatement reconnaissable, à la fois nostalgique et moderne, qui rappelle l'enfance des trentenaires d'ici.</p>
+        <h3 style="margin-top:24px;">Pour qui et pour quoi faire du pixel art</h3>
+        <ul style="line-height:1.8;">
+          <li><strong>Avatar original :</strong> Un portrait en pixel art pour Discord, Twitch, Twitter ou un forum de jeu se démarque des photos de profil classiques et ancre une identité rétro.</li>
+          <li><strong>Visuel de réseau social :</strong> Une photo de paysage ou de lieu transformée en 8 bits se remarque dans le fil Instagram ou Facebook, là où les clichés ordinaires se fondent.</li>
+          <li><strong>Invitation décalée :</strong> Une photo d'anniversaire ou de départ en voyage passée en pixel art habille une carte d'invitation sur le thème « jeux vidéo ».</li>
+          <li><strong>Cadeau geek :</strong> Un poster pixel art d'un personnage, d'un lieu ou d'un animal familier fait un cadeau original pour un joueur ou un créateur.</li>
+        </ul>
+        <p style="margin-top:16px;">Le rendu fonctionne particulièrement bien sur les petits écrans, où les blocs nets restent lisibles et colorés. Les avatars carrés, les vignettes de chaîne et les icônes d'application gagnent à cette esthétique, qui ne vieillit pas et ne dépend d'aucune mode du moment.</p>
+        <h3 style="margin-top:24px;">Une confidentialité totale, y compris pour vos portraits</h3>
+        <p>Parce que le traitement s'exécute entièrement dans votre navigateur, via l'API Canvas, aucune image n'est envoyée vers un serveur. Vos portraits de famille, vos photos de vacances ou vos captures d'écran de jeu restent sur votre machine, ce qui compte particulièrement pour des utilisateurs francophones attachés au RGPD et à la CNIL. Pas de compte, pas d'abonnement, pas de partage avec une plateforme tierce : vous pixelisez chez vous, et vous téléchargez votre PNG en un clic.</p>
+        <p>Conseil de départ : pour un effet « jeu vidéo » authentique, choisissez une image aux couleurs vives et aux formes simples. Les paysages, les portraits stylisés et les objets rétro (voitures, consoles, téléphones anciens) donnent les plus beaux résultats, car leurs grandes zones de couleur se traduisent naturellement en blocs de pixels.</p>
+        <p>La France compte une scène rétro très active : salons du jeu vidéo, bars à jeux, soirées arcade, associations de préservation du patrimoine vidéoludique. Dans ce contexte, un visuel pixel art évoque immédiatement l'ambiance des bornes et des consoles d'antan, et il est parfaitement compris par le public. Que ce soit pour afficher un événement, illustrer un article de blog dédié au retro-gaming ou habiller une chaîne de streaming, le style 8 bits fait partie du langage visuel partagé par toute une génération de joueurs.</p>
+        <p>Au Québec, comme en Belgique et en Suisse romande, la même nostalgie s'exprime : les joueurs qui ont découvert l'informatique familiale dans les années 1980 et 1990 reconnaissent aussitôt l'esthétique pixelisée. C'est un terrain émotionnel sûr, qui fonctionne quel que soit le sujet, du portrait de chat à la photo d'un week-end entre amis, et qui ne se démode jamais, année après année.</p>
+      </section>
+      <section class="localization-section">
+        <h2 style="text-align:center;margin-bottom:20px;">Pixel art pour les créateurs, les marques et les indépendants</h2>
+        <p>Pour les créateurs de contenu, le pixel art est un outil de différenciation : un avatar, une bannière ou un visuel en 8 bits attire l'œil et ancre une identité visuelle rétro. Les marques l'utilisent pour des campagnes nostalgiques, des éditions limitées ou des collaborations avec des artistes : le style évoque l'enfance, le jeu et la culture pop, un registre émotionnel qui fonctionne très bien auprès du public français comme québécois.</p>
+        <h3 style="margin-top:24px;">Des usages variés pour les projets en ligne</h3>
+        <ul style="line-height:1.8;">
+          <li><strong>Blog et site :</strong> Une image d'en-tête en pixel art donne à un carnet de voyage, un blog culinaire ou un site d'indépendant une touche artisanale et reconnaissable.</li>
+          <li><strong>Jeux indépendants :</strong> Les développeurs qui travaillent sur un petit jeu peuvent transformer une capture, un concept art ou une photo de référence en visuel d'ambiance pour leur documentation.</li>
+          <li><strong>Produits dérivés :</strong> Un portrait de chat ou de chien converti en pixel art se prête bien à un sticker, un t-shirt ou un magnet, pour un usage personnel ou de petite boutique en ligne.</li>
+          <li><strong>Événements :</strong> Une affiche de soirée rétro, de salon du jeu vidéo ou de meetup associatif gagne à un visuel 8 bits immédiatement identifiable.</li>
+        </ul>
+        <p style="margin-top:16px;">L'outil étant 100 % local, vous pouvez préparer une série de visuels pixel art sans envoyer vos images sur un service tiers : idéal pour les projets en cours de développement, les produits non annoncés ou les contenus confidentiels. Votre concept art reste chez vous, jusqu'au moment où vous choisissez de le publier.</p>
+        <h3 style="margin-top:24px;">Un outil gratuit pour tester sans s'engager</h3>
+        <p>Contrairement aux logiciels de pixel art professionnels, souvent chers et réservés aux dessinateurs, ce convertisseur en ligne ne demande aucune compétence : on dépose la photo, on bouge le curseur, on admire le résultat. Il est parfait pour tester l'esthétique 8 bits avant de se lancer dans un projet plus ambitieux, ou pour produire en quelques minutes un visuel de dernière minute pour un article, une fiche produit ou une publication.</p>
+        <p>Pour les petites boutiques Etsy ou les vendeurs Vinted qui cherchent une touche d'originalité sur leurs visuels, le pixel art permet de se démarquer sans budget design. Une bannière de boutique, un logo simple ou une vignette de produit traités en 8 bits donnent une identité cohérente et attachante, qui parle à la génération qui a grandi avec les jeux rétro.</p>
+        <p>Pour un usage personnel, le pixel art permet aussi de créer des fonds d'écran de téléphone ou de bureau originaux à partir de ses propres photos. Un coucher de soleil, un portrait d'animal de compagnie ou une photo de vacances, passé en blocs nets, fait un wallpaper nostalgique qui change des images génériques téléchargées sur Internet. Le PNG exporté est prêt à être appliqué sur n'importe quel appareil, téléphone comme ordinateur fixe.</p>
+        <p>Enfin, pour les professeurs et les ateliers de loisirs créatifs, le convertisseur est un support pédagogique simple : on montre aux élèves ce que signifie réduire une image en blocs de couleur, comme le faisaient les premiers écrans. L'outil fonctionne sur n'importe quel ordinateur du réseau, sans installation, et donne un résultat visuel immédiat qui parle aux jeunes comme aux moins jeunes, en quelques secondes seulement. C'est aussi une façon amusante d'aborder la résolution numérique et la palette limitée des machines d'autrefois, sans logiciel coûteux.</p>
+      </section>
+      <section class="localization-section">
+        <h2 style="text-align:center;margin-bottom:20px;">Bien choisir la taille de ses pixels</h2>
+        <p>Le curseur « taille des pixels » contrôle le niveau de pixelisation, de 2 à 50. Une petite taille (2 à 6) conserve les détails et donne un rendu proche d'une image normale à peine texturée ; une taille moyenne (8 à 12) produit le look rétro classique, reconnaissable mais encore lisible ; une grande taille (20 à 50) crée un effet très stylisé, presque abstrait, où seules les grandes formes et couleurs demeurent.</p>
+        <h3 style="margin-top:24px;">Quel réglage selon le sujet</h3>
+        <ul style="line-height:1.8;">
+          <li><strong>Portrait :</strong> Restez sur une taille de 8 à 10 pixels pour garder les traits du visage reconnaissables, faute de quoi on ne distingue plus qui est sur la photo.</li>
+          <li><strong>Paysage :</strong> Vous pouvez monter à 12 ou 15 pixels : les grandes zones de ciel, d'eau et de terre se prêtent bien aux blocs de couleur.</li>
+          <li><strong>Logo ou objet simple :</strong> Un objet isolé, aux contours nets, supporte des pixels très grands (20 et plus) pour un effet très graphique.</li>
+          <li><strong>Texte dans l'image :</strong> Si votre photo contient du texte, utilisez une petite taille (4 à 6) pour que les lettres restent déchiffrables.</li>
+        </ul>
+        <p style="margin-top:16px;">Le bon réglage dépend toujours de l'usage : pour un avatar de réseau social, un rendu moyen (autour de 10) est idéal ; pour une affiche ou une impression grand format, un rendu plus marqué fonctionne mieux à distance. Testez plusieurs tailles sur la même image avant de télécharger : l'aperçu se met à jour instantanément, sans nouveau dépôt de fichier.</p>
+        <p>Le PNG exporté conserve la résolution de l'image d'origine, avec des blocs nets et lisses. Il est prêt pour les réseaux sociaux, l'impression ou une intégration dans un projet. Votre photo d'origine reste intacte sur votre appareil, et vous pouvez revenir en arrière pour essayer une autre taille de pixels à tout moment, sans filigrane ni aucune limite de nombre d'essais, année après année.</p>
+        <p>Enfin, n'hésitez pas à combiner ce convertisseur avec nos autres outils : un recadrage au préalable centre le sujet, un passage en niveaux de gris renforce le côté « vieil écran », et un compresseur allège le fichier final avant publication. La chaîne de traitement reste locale d'un bout à l'autre, du dépôt de la photo au téléchargement du PNG.</p>
+        <p>Sur smartphone, la conversion reste rapide : l'algorithme réduit puis agrandit l'image dans la mémoire du navigateur, sans appel vers un serveur distant. Pour une photo de 12 mégapixels, le rendu apparaît en une ou deux secondes après avoir déplacé le curseur. Vous pouvez donc essayer une taille de bloc de 6, puis 10, puis 15, et comparer les trois versions directement sur l'écran du téléphone, en déplaçant le curseur doucement du pouce.</p>
+        <p>Si vous préparez une série d'avatars ou de visuels cohérente, notez la taille de bloc qui vous plaît : elle est conservée pendant la session, et vous pouvez la reproduire d'une image à l'autre. Une fois la série terminée, téléchargez chaque PNG et classez-les avec vos photos d'origine, dans le même dossier, pour retrouver facilement la correspondance entre la photo et son rendu pixel art.</p>
+        <p>Enfin, n'oubliez pas que le but est de s'amuser : le pixel art est un style décalé, pas un traitement technique sérieux. Osez des tailles de bloc importantes sur une photo de famille, un paysage de vacances ou un animal domestique : les résultats sont souvent surprenants, et toujours libres de droits puisque vos propres images ne quittent jamais votre appareil. Vous pouvez multiplier les essais sans limite, jusqu'à obtenir le rendu 8 bits qui vous ressemble vraiment.</p>
+      </section>
+      <section class="faq-section">
+        <h2>Questions fréquentes</h2>
+        <div class="faq-item"><button class="faq-question">Comment fonctionne la conversion en pixel art ?</button><div class="faq-answer">L'image est d'abord réduite à une petite résolution, chaque pixel représentant une zone entière, puis agrandie avec des blocs nets et lisses, ce qui crée l'effet 8 bits caractéristique. La taille des blocs se règle de 2 à 50 pixels.</div></div>
+        <div class="faq-item"><button class="faq-question">Quelle taille de pixel choisir ?</button><div class="faq-answer">Une taille de 8 à 12 pixels donne un rendu rétro reconnaissable sans perdre le sujet ; 4 à 6 conserve plus de détails ; 20 et plus produit un effet très grossier et stylisé, presque abstrait. Commencez à 10.</div></div>
+        <div class="faq-item"><button class="faq-question">Mes images sont-elles envoyées sur un serveur ?</button><div class="faq-answer">Non. La conversion est calculée dans votre navigateur, via l'API Canvas, et vos images ne quittent jamais votre appareil. Aucun compte n'est requis, ce qui respecte le RGPD pour des portraits ou des photos personnelles.</div></div>
+        <div class="faq-item"><button class="faq-question">Puis-je convertir un portrait en pixel art ?</button><div class="faq-answer">Oui, les portraits donnent des résultats amusants et très graphiques. Choisissez une taille de pixel moyenne, autour de 8 à 10, pour garder les traits du visage et l'expression reconnaissables sur l'avatar final.</div></div>
+        <div class="faq-item"><button class="faq-question">Quel format d'export est proposé ?</button><div class="faq-answer">Le résultat est exporté en PNG, avec la même résolution que l'image d'origine, prêt pour les réseaux sociaux, un avatar ou l'impression. Votre photo d'origine reste intacte sur votre appareil.</div></div>
+        <div class="faq-item"><button class="faq-question">Puis-je faire un avatar rétro pour Discord ou Twitch ?</button><div class="faq-answer">Tout à fait. Un portrait ou un personnage converti en pixel art carré, avec une taille de bloc de 8 à 10, fait un avatar original et reconnaissable sur Discord, Twitch ou les forums de jeux, loin des photos de profil classiques.</div></div>
+        <div class="faq-item"><button class="faq-question">Quelles photos donnent le meilleur rendu ?</button><div class="faq-answer">Les images aux couleurs vives et aux formes simples fonctionnent le mieux : paysages, portraits stylisés, objets rétro, mascottes. Les photos très détaillées et surchargées perdent en lisibilité une fois pixelisées.</div></div>
+        <div class="faq-item"><button class="faq-question">Faut-il payer ou créer un compte ?</button><div class="faq-answer">Non, le convertisseur est entièrement gratuit, sans inscription, sans filigrane et sans limite de nombre d'images. Vous transformez autant de photos que vous le souhaitez, directement en ligne.</div></div>
+        <div class="faq-item"><button class="faq-question">Cela fonctionne-t-il sur un téléphone mobile ?</button><div class="faq-answer">Oui, l'outil s'utilise dans le navigateur de votre smartphone ou tablette, sous Android comme sur iOS. Le traitement reste local et l'aperçu s'adapte à la taille de l'écran, sans aucune application à installer.</div></div>
+      </section>
+      <section class="related-tools">
+        <h2>Vous pourriez aussi aimer</h2>
+        <div class="related-tools-grid">
+          <a href="/fr/tools/pixelate-image" class="related-tool-card">
+            <span class="tool-icon">🟦</span>
+            <div class="tool-info">
+              <strong>Pixeliser une image</strong>
+              <span class="tool-desc">Floutez ou masquez une zone par des blocs</span>
+            </div>
+            <span class="tool-arrow">→</span>
+          </a>
+          <a href="/fr/tools/photo-to-sketch" class="related-tool-card">
+            <span class="tool-icon">✏️</span>
+            <div class="tool-info">
+              <strong>Photo en dessin</strong>
+              <span class="tool-desc">Transformez une photo en croquis au crayon</span>
+            </div>
+            <span class="tool-arrow">→</span>
+          </a>
+          <a href="/fr/tools/image-to-ascii" class="related-tool-card">
+            <span class="tool-icon">🔤</span>
+            <div class="tool-info">
+              <strong>Image vers ASCII</strong>
+              <span class="tool-desc">Passez une photo en caractères ASCII</span>
+            </div>
+            <span class="tool-arrow">→</span>
+          </a>
+        </div>
+      </section>
+    </div>
+  </main>
+<footer class="site-footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="/fr/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Outils d'image gratuits qui respectent votre vie privée.</p></div><div class="footer-links"><h4>Outils</h4><a href="/fr/tools/background-remover">Supprimer l'arrière-plan</a><a href="/fr/tools/compressor">Compresseur</a><a href="/fr/tools/converter">Convertisseur</a><a href="/fr/tools/resizer">Redimensionneur</a><a href="/fr/tools/cropper">Recadrage</a><a href="/fr/tools/watermark">Filigrane</a></div><div class="footer-links"><h4>Plus d'outils</h4><a href="/fr/tools/image-upscaler">Agrandisseur</a><a href="/fr/tools/gif-editor">Éditeur GIF</a><a href="/fr/tools/pdf-to-image">PDF vers Image</a><a href="/fr/tools/heic-converter">Convertisseur HEIC</a><a href="/fr/tools/meme-generator">Générateur de Mèmes</a><a href="/fr/tools/face-blur">Flouter les Visages</a></div><div class="footer-links"><h4>Site</h4><a href="/about">À propos</a><a href="/contact">Contact</a><a href="/privacy">Confidentialité</a><a href="/terms">Conditions</a></div></div><div class="footer-bottom"><p>© 2026 SmartImgKit. Traitement 100 % local — vos fichiers ne quittent jamais votre appareil.</p></div></div></footer>
+  <script src="/js/main.js?v=8"></script>
+  <script src="../../js/lang.js"></script>
 <script>
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -67,5 +342,3 @@ document.getElementById('downloadBtn').onclick = () => {const a=document.createE
 </script>
 </body>
 </html>
-
-

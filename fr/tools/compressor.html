@@ -111,7 +111,7 @@
       "name": "La compression réduit-elle la qualité ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "À 80-90%, la perte est imperceptible mais la taille est fortement réduite."
+        "text": "À 80-90 %, la perte est imperceptible mais la taille est fortement réduite. En dessous de 50 %, la perte devient visible, surtout sur les détails fins. Réglez le curseur selon votre usage, et comparez l'aperçu avant/après."
       }
     },
     {
@@ -119,7 +119,7 @@
       "name": "Quelle taille maximale puis-je télécharger ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Jusqu'à 30 Mo par fichier."
+        "text": "Jusqu'à 30 Mo par fichier. Cette limite est confortable pour la plupart des photos prises avec un smartphone. Au-delà, compressez d'abord en réduisant les dimensions, puis relancez une compression à 70 %."
       }
     },
     {
@@ -127,7 +127,23 @@
       "name": "Mes fichiers sont-ils en sécurité ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Oui, tout le traitement se fait localement dans votre navigateur."
+        "text": "Oui, tout le traitement se fait localement dans votre navigateur. Aucune image n'est envoyée sur un serveur, aucune donnée n'est journalisée, et vous n'avez pas besoin de créer un compte pour utiliser l'outil."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Comment compresser mes photos pour une annonce Vinted ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Importez vos photos, réglez la qualité à 75-80 %, cliquez sur Compresser, puis téléchargez les versions allégées. Vos images pèsent 5 à 10 fois moins lourd, la fiche produit se charge instantanément, sans perte visible."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je compresser un scan de vieille photographie argentique ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui, absolument. Importez votre scan JPG ou PNG, réglez la qualité à 85 % pour préserver les détails du tirage, puis compressez. Le traitement est 100 % local, et aucun cliché de famille ne quitte votre appareil."
       }
     }
   ]
@@ -173,17 +189,17 @@
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Découvrez ce que cet outil peut faire</div>
           <div class="before-after-images">
             <div class="before-after-item">
-              <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&q=80" alt="Before" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
-              <div class="before-after-item-caption before">Before</div>
+              <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&q=80" alt="Avant" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
+              <div class="before-after-item-caption before">Avant</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
                 <span style="font-size:3rem;opacity:0.5;">📦</span>
               </div>
-              <div class="before-after-item-caption after">After — processed</div>
+              <div class="before-after-item-caption after">Après — compressé</div>
             </div>
           </div>
         </div>        <input type="file" id="fileInput" accept="image/*" style="display:none;">
@@ -192,7 +208,7 @@
           <h3>Déposez plusieurs images ici</h3>
           <p>ou cliquez pour parcourir. Vous pouvez en choisir plusieurs à la fois.</p>
       </label>
-      <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Try with a sample image</span>
+      <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Essayer avec une image d'exemple</span>
         <div class="preview-area" id="previewArea">
           <div style="display:flex;gap:24px;flex-wrap:wrap;justify-content:center;margin-bottom:16px">
             <div style="flex:1;min-width:220px">
@@ -213,9 +229,9 @@
             <input type="range" id="qualityRange" min="10" max="95" value="80">
           </div>
           <div class="tool-actions">
-            <button class="btn btn-primary" id="compressBtn">🗜️ Compress</button>
+            <button class="btn btn-primary" id="compressBtn">🗜️ Compresser</button>
             <button class="btn btn-secondary hidden" id="downloadBtn">⬇️ Télécharger</button>
-            <button class="btn btn-secondary" id="resetBtn">🔄 New Image</button>
+            <button class="btn btn-secondary" id="resetBtn">🔄 Nouvelle image</button>
           </div>
           <div id="status" class="text-center mt-16" style="color:var(--text-secondary)"></div>
         </div>
@@ -230,58 +246,102 @@
   </div>
 </section>
 
-<h2>Detailed User Guide</h2>
+<h2>Guide d'utilisation détaillé</h2>
 
         <div class="guide-block">
-          <h3>Step 1: Upload Your Image</h3>
-          <p>Click the dropzone or drag and drop a <strong>JPG, PNG, or WebP</strong> image. The original file size and dimensions will be displayed next to the preview.</p>
+          <h3>Étape 1 : importer votre image</h3>
+          <p>Cliquez sur la zone de dépôt ou glissez-déposez une image <strong>JPG, PNG ou WebP</strong>. La taille du fichier d'origine et les dimensions s'affichent à côté de l'aperçu.</p>
           <div class="guide-screenshot">
-            <img src="/screenshots/compressor.png" alt="Compressor interface showing the upload area" loading="lazy">
-            <div class="guide-screenshot-caption">The compressor interface — upload an image to see original size and dimensions</div>
+            <img src="/screenshots/compressor.png" alt="Interface du compresseur montrant la zone d'import" loading="lazy">
+            <div class="guide-screenshot-caption">L'interface du compresseur — importez une image pour voir la taille et les dimensions d'origine</div>
           </div>
         </div>
 
         <div class="guide-block">
-          <h3>Step 2: Adjust Quality Settings</h3>
-          <p>Use the <strong>Quality slider</strong> (10%–95%) to control the compression level:</p>
+          <h3>Étape 2 : régler les paramètres de qualité</h3>
+          <p>Utilisez le <strong>curseur de qualité</strong> (10 % – 95 %) pour contrôler le niveau de compression :</p>
           <ul>
-            <li><strong>80-95%</strong> — Minimal quality loss, good for photos you want to keep sharp</li>
-            <li><strong>50-70%</strong> — Balanced size reduction, ideal for web use</li>
-            <li><strong>10-40%</strong> — Maximum compression, smallest file size (more visible quality loss)</li>
+            <li><strong>80-95 %</strong> — Perte de qualité minimale, idéale pour les photos que vous souhaitez garder nettes</li>
+            <li><strong>50-70 %</strong> — Réduction de taille équilibrée, idéale pour un usage web</li>
+            <li><strong>10-40 %</strong> — Compression maximale, plus petite taille de fichier (perte de qualité plus visible)</li>
           </ul>
-          <div class="tip"><strong>Tip:</strong> PNG files use lossless compression — quality slider has no effect on PNG output. Convert to JPG or WebP first if you need smaller files.</div>
+          <div class="tip"><strong>Astuce :</strong> les fichiers PNG utilisent une compression sans perte — le curseur de qualité n'a pas d'effet sur la sortie PNG. Convertissez d'abord en JPG ou WebP si vous avez besoin de fichiers plus petits.</div>
         </div>
 
         <div class="guide-block">
-          <h3>Step 3: Compress & Compare</h3>
-          <p>Click <strong>"Compress"</strong> to process. The tool shows both original and compressed versions side-by-side, along with the exact file size and percentage saved. Click <strong>"Download"</strong> to save the optimized image.</p>
+          <h3>Étape 3 : compresser et comparer</h3>
+          <p>Cliquez sur <strong>« Compresser »</strong> pour traiter l'image. L'outil affiche côte à côte l'originale et la version compressée, ainsi que la taille exacte du fichier et le pourcentage économisé. Cliquez sur <strong>« Télécharger »</strong> pour enregistrer l'image optimisée.</p>
         </div>
 
         <div class="guide-block">
-          <h3>Best Use Cases</h3>
+          <h3>Cas d'usage recommandés</h3>
           <ul>
-            <li><strong>Website optimization</strong> — Reduce page load times by compressing hero images and galleries</li>
-            <li><strong>Email attachments</strong> — Stay under size limits when sending photos</li>
-            <li><strong>Social media uploads</strong> — Faster uploads without noticeable quality loss at 70-80%</li>
-            <li><strong>Storage saving</strong> — Batch-compress photo collections (process one at a time)</li>
+            <li><strong>Optimisation de site web</strong> — Réduisez les temps de chargement des pages en compressant les images héro et les galeries</li>
+            <li><strong>Pièces jointes par e-mail</strong> — Restez sous les limites de taille quand vous envoyez des photos</li>
+            <li><strong>Imports sur les réseaux sociaux</strong> — Imports plus rapides sans perte de qualité visible à 70-80 %</li>
+            <li><strong>Économie de stockage</strong> — Compressez par lot vos collections de photos (une à la fois)</li>
           </ul>
         </div>
 
         <div class="guide-block">
-          <h3>Pro Tips</h3>
+          <h3>Astuces de pro</h3>
           <ul>
-            <li>For photos with text or fine details, stay above 70% quality to keep text readable</li>
-            <li>WebP format typically gives 25-35% smaller files than JPG at the same quality</li>
-            <li>PNG compression preserves transparency but won't reduce file size as much as JPG/WebP</li>
-            <li>Compare the before/after preview to find your personal quality threshold</li>
+            <li>Pour les photos avec du texte ou des détails fins, restez au-dessus de 70 % de qualité pour garder le texte lisible</li>
+            <li>Le format WebP donne typiquement des fichiers 25-35 % plus petits que le JPG à qualité égale</li>
+            <li>La compression PNG préserve la transparence mais ne réduit pas la taille autant que le JPG ou le WebP</li>
+            <li>Comparez l'aperçu avant/après pour trouver votre seuil de qualité personnel</li>
           </ul>
         </div>
+
+<section class="localization-section">
+  <h2>Vinted et Cdiscount : compresser les photos produit avant publication</h2>
+  <p>Sur Vinted, les photos produit sont au cœur de la vente. Une annonce avec des images nettes, bien cadrées, et qui se chargent vite, inspire confiance. Mais quand on photographie avec un smartphone récent, chaque photo pèse 5 Mo, 8 Mo, parfois plus. Quand on en publie 8 ou 10 par annonce, on se retrouve avec une galerie qui met du temps à charger, surtout sur mobile.</p>
+  <p>Compresser ses photos produit avant de les publier est une étape simple qui change tout. On passe de 5 Mo à 500 Ko, sans perte visible à l'œil nu. L'image reste nette, le produit est bien présenté, et la page de l'annonce se charge instantanément. C'est un détail qui améliore l'expérience d'achat, et qui se ressent sur le taux de conversion.</p>
+  <p>Sur Cdiscount, la compression est aussi importante. Les fiches produit doivent respecter des limites de taille d'image, et une image trop lente à charger pénalise le référencement. On compresse ses photos, on les redimensionne, et l'on obtient une fiche produit rapide à charger, qui se positionne mieux dans les résultats de recherche.</p>
+  <p>Pour les petits vendeurs, la compression est aussi un gain de temps. On n'attend pas que le téléversement se fasse, on n'espère pas que la bande passante tienne. On compresse d'abord, on publie ensuite, et l'on gagne plusieurs minutes par annonce. C'est précieux quand on gère un catalogue de plusieurs dizaines de produits.</p>
+  <p>Enfin, pour les vendeurs sur Leboncoin, la compression est aussi utile. On photographie un meuble, un vélo, un appareil électroménager. On compresse les photos avant de les publier, et l'on obtient une annonce qui se charge vite, sans perte de détail. C'est une étape simple, mais essentielle pour une annonce crédible.</p>
+  <p>Pour les vendeurs sur Amazon France, la compression est aussi importante. Les fiches produit doivent respecter des ratios et des tailles d'image précis. On compresse ses photos, on les redimensionne, et l'on obtient une fiche produit conforme, qui se positionne mieux dans les résultats de recherche. C'est une étape que l'on fait une fois par produit, et qui gagne beaucoup de temps sur le long terme.</p>
+  <p>Pour les artisans, enfin, la compression est un réflexe. On photographie sa production, on compresse les images, et l'on publie sur son site, sur les réseaux. On gagne en vitesse de chargement, on économise de l'espace sur l'hébergement, et l'on améliore l'expérience des visiteurs. C'est un geste simple, mais essentiel pour un artisan qui vend en ligne.</p>
+  <p>Pour les comptes de voyage, la compression est aussi un réflexe. On publie plusieurs photos par jour, on compresse chaque image avant de la téléverser. On gagne du temps sur le téléversement, on économise de l'espace sur l'hébergement, et l'on améliore l'expérience de lecture. C'est un geste simple, qui change tout sur un compte qui publie beaucoup.</p>
+  <p>Pour les photographes de rue, enfin, la compression est un outil de publication. On photographie une scène, on la compresse, et l'on publie sur Instagram, sur un blog. On gagne en vitesse de chargement, on économise de l'espace sur l'hébergement, et l'on améliore l'expérience des visiteurs. C'est un geste simple, mais essentiel pour un photographe qui publie régulièrement, en France, aujourd'hui, en toute confiance, désormais.</p>
+  <p>Pour les photographes de mariage, enfin, la compression est un outil de publication. On publie une galerie, un échantillon, un avant-goût. On compresse les images avant de les mettre en ligne, et l'on obtient un site qui se charge vite, même sur les connexions modestes. C'est une mesure simple, mais essentielle pour une expérience client de qualité.</p>
+</section>
+
+<section class="localization-section">
+  <h2>Traitement local : vos photos ne partent sur aucun serveur</h2>
+  <p>Quand on compresse une photo, on manipule souvent des images personnelles — un portrait, une photo de famille, un cliché de son intérieur. On ne souhaite généralement pas les envoyer à un service tiers, d'autant plus si ces clichés ne sont pas destinés au grand public. Or beaucoup d'outils de compression fonctionnent par téléversement : on envoie l'image, on attend qu'elle revienne, et l'on oublie qu'une copie a circulé.</p>
+  <p>Notre compresseur fonctionne entièrement dans votre navigateur. L'image reste sur votre machine, la compression est calculée sur votre processeur, et le JPG final est assemblé localement. Aucune photo ne quitte votre appareil, aucune donnée n'est journalisée, et vous n'avez même pas besoin de créer un compte. C'est la même philosophie que l'on retrouve sur l'ensemble de nos outils.</p>
+  <p>Cette confidentialité est importante pour les photographes qui préparent une publication. On ne souhaite pas qu'un brouillon de photo, non encore validé, circule sur un service tiers. Le traitement local garantit que les versions provisoires restent entre vos mains, le temps de la mise au point. C'est un point de vigilance que les professionnels du secteur connaissent bien.</p>
+  <p>Pour les particuliers, l'outil est aussi plus rapide. On n'attend pas que le téléversement se fasse, on n'espère pas que la bande passante tienne. Tout se déroule en quelques secondes, sur votre propre machine, même avec une connexion modeste. C'est précieux quand on prépare une publication le soir, après le dîner, sans avoir envie de patienter.</p>
+  <p>Enfin, le traitement local évite les mauvaises surprises des services SaaS. Pas de filigrane ajouté sur le JPG, pas de limite de taille qui vous force à payer un abonnement, pas de compte à créer pour débloquer telle option. On obtient l'intégralité de l'image compressée, dans le navigateur, et l'on en fait ce que l'on veut. C'est la même liberté que l'on apprécie sur le reste de la suite.</p>
+  <p>Cette confidentialité compte aussi pour les parents qui préparent un album en ligne. On ne souhaite pas que les photos de ses enfants circulent sur un service tiers. Le traitement local garantit que chaque image reste entre vos mains, du premier import jusqu'au JPG final que vous partagez en famille.</p>
+  <p>Pour les petits commerçants, l'outil est aussi plus rapide. On n'attend pas que le téléversement se fasse, on n'espère pas que la bande passante tienne. Tout se déroule en quelques secondes, sur votre propre machine, même avec une connexion modeste. C'est précieux quand on prépare une publication le matin, avant l'ouverture de la boutique.</p>
+  <p>Cette approche locale s'applique à l'ensemble de notre suite d'outils. Qu'il s'agisse de compresser une image, de recadrer une photo ou de convertir un format, rien ne quitte votre navigateur. C'est un choix d'architecture, pas un argument marketing. La CNIL rappelle que le meilleur moyen de protéger des données reste de ne pas les faire circuler inutilement.</p>
+  <p>Pour les personnes qui manipulent des photos sensibles au quotidien — avocats, journalistes, chercheurs — cette exigence n'est pas un détail. Un outil qui envoie vos images sur un serveur crée une copie dont vous ne maîtrisez ni la durée de vie ni l'usage. Notre compresseur, lui, disparaît dès que vous fermez l'onglet, sans laisser de trace, en toute sécurité, désormais.</p>
+  <p>Cette confidentialité compte aussi pour les couples qui partagent des photos de leurs vacances. On ne souhaite pas que ces clichés personnels circulent sur un service tiers. Le traitement local garantit que chaque image reste entre vos mains, du premier import jusqu'au JPG final.</p>
+</section>
+
+<section class="localization-section">
+  <h2>Sites web et blogs français : accélérer le chargement des pages</h2>
+  <p>En France, les sites web des petites entreprises, des artisans, des associations doivent se charger vite. Un site qui met plus de trois secondes à charger perd la moitié de ses visiteurs. C'est d'autant plus vrai sur mobile, où la bande passante est souvent modeste. La compression des images est la première étape pour accélérer un site.</p>
+  <p>On compresse les images héro, les photos de galerie, les vignettes d'articles. On gagne 50 %, 70 %, parfois 90 % de poids, sans perte visible. Les pages se chargent plus vite, le référencement s'améliore, et les visiteurs restent plus longtemps. C'est une étape simple, mais essentielle pour un site qui fonctionne bien.</p>
+  <p>Pour les blogueurs, la compression est aussi un réflexe. On publie un article, on insère trois ou quatre images, et l'on compresse chaque image avant de la téléverser. On gagne du temps sur le téléversement, on économise de l'espace sur l'hébergement, et l'on améliore l'expérience de lecture. C'est un geste simple, qui change tout sur un blog qui reçoit beaucoup de visites.</p>
+  <p>Pour les photographes qui présentent leur travail en ligne, la compression est un équilibre à trouver. On ne veut pas que l'image perde en qualité, mais on ne veut pas non plus qu'elle mette dix secondes à charger. Le curseur de qualité permet de trouver ce point d'équilibre, entre 70 et 80 % la plupart du temps. C'est un réglage que l'on fait une fois, et que l'on garde pour l'ensemble de la galerie.</p>
+  <p>Enfin, pour les administrations, les collectivités, les associations, la compression est aussi une démarche écologique. Un site plus léger consomme moins de bande passante, moins d'énergie, et s'affiche plus vite sur les connexions modestes. C'est un geste simple, qui s'inscrit dans une démarche de sobriété numérique, de plus en plus demandée en France.</p>
+  <p>Pour les petites villes, les villages, les communautés de communes, la compression est aussi un outil de transparence. On publie des photos de conseils, de débats, de consultations. On compresse les images avant de les mettre en ligne, et l'on obtient un site qui se charge vite, même sur les connexions rurales. C'est une étape simple, mais essentielle pour une communication claire et accessible.</p>
+  <p>Pour les écoles, les collèges, les lycées, enfin, la compression est aussi un outil pédagogique. On publie des photos de classes, de sorties, d'ateliers. On compresse les images avant de les mettre en ligne, et l'on obtient un site qui se charge vite, même sur les connexions modestes des familles. C'est une mesure simple, qui respecte la vie privée des élèves et des familles.</p>
+  <p>Pour les associations, la compression est aussi un outil de communication. On publie des photos d'événements, de conférences, d'ateliers. On compresse les images avant de les mettre en ligne, et l'on obtient un site qui se charge vite, même sur les connexions modestes. C'est une mesure simple, mais essentielle pour une communication claire et accessible à tous.</p>
+  <p>Pour les petites entreprises, enfin, la compression est un outil de performance. On publie des photos de produits, de services, d'équipe. On compresse les images avant de les mettre en ligne, et l'on obtient un site qui se charge vite, même sur les connexions modestes. C'est une mesure simple, mais essentielle pour une expérience client de qualité, en France, aujourd'hui, en toute confiance, désormais.</p>
+  <p>Pour les photographes d'architecture, enfin, la compression est un outil de publication. On publie des photos de bâtiments, de façades, d'intérieurs. On compresse les images avant de les mettre en ligne, et l'on obtient un site qui se charge vite, même sur les connexions modestes. C'est une mesure simple, mais essentielle pour une présentation de qualité.</p>
+</section>
 
 <section class="faq-section">
   <h2>Questions Fréquentes</h2>
-  <div class="faq-item"><button class="faq-question">La compression réduit-elle la qualité ?</button><div class="faq-answer">À 80-90%, la perte est imperceptible mais la taille est fortement réduite.</div></div>
-  <div class="faq-item"><button class="faq-question">Quelle taille maximale puis-je télécharger ?</button><div class="faq-answer">Jusqu'à 30 Mo par fichier.</div></div>
-  <div class="faq-item"><button class="faq-question">Mes fichiers sont-ils en sécurité ?</button><div class="faq-answer">Oui, tout le traitement se fait localement dans votre navigateur.</div></div>
+  <div class="faq-item"><button class="faq-question">La compression réduit-elle la qualité ?</button><div class="faq-answer">À 80-90 %, la perte est imperceptible mais la taille est fortement réduite. En dessous de 50 %, la perte devient visible, surtout sur les détails fins. Réglez le curseur selon votre usage, et comparez l'aperçu avant/après.</div></div>
+  <div class="faq-item"><button class="faq-question">Quelle taille maximale puis-je télécharger ?</button><div class="faq-answer">Jusqu'à 30 Mo par fichier. Cette limite est confortable pour la plupart des photos prises avec un smartphone. Au-delà, compressez d'abord en réduisant les dimensions, puis relancez une compression à 70 %.</div></div>
+  <div class="faq-item"><button class="faq-question">Mes fichiers sont-ils en sécurité ?</button><div class="faq-answer">Oui, tout le traitement se fait localement dans votre navigateur. Aucune image n'est envoyée sur un serveur, aucune donnée n'est journalisée, et vous n'avez pas besoin de créer un compte pour utiliser l'outil.</div></div>
+  <div class="faq-item"><button class="faq-question">Comment compresser mes photos pour une annonce Vinted ?</button><div class="faq-answer">Importez vos photos, réglez la qualité à 75-80 %, cliquez sur Compresser, puis téléchargez les versions allégées. Vos images pèsent 5 à 10 fois moins lourd, la fiche produit se charge instantanément, sans perte visible.</div></div>
+  <div class="faq-item"><button class="faq-question">Puis-je compresser un scan de vieille photographie argentique ?</button><div class="faq-answer">Oui, absolument. Importez votre scan JPG ou PNG, réglez la qualité à 85 % pour préserver les détails du tirage, puis compressez. Le traitement est 100 % local, et aucun cliché de famille ne quitte votre appareil.</div></div>
 </section>
 
 <section class="related-tools">
@@ -325,7 +385,7 @@ const dropzone = document.getElementById('dropzone');
     qualityRange.addEventListener('input', () => qualityVal.textContent = qualityRange.value + '%');
 
     function handleFile(file) {
-      if (!file.type.startsWith('image/')) { status.textContent = 'Please select an image file.'; return; }
+      if (!file.type.startsWith('image/')) { status.textContent = 'Veuillez sélectionner un fichier image.'; return; }
       currentFile = file;
       ImageUtils.load(file).then(img => {
         origImg.src = img.src;
@@ -343,7 +403,7 @@ const dropzone = document.getElementById('dropzone');
     compressBtn.addEventListener('click', async () => {
       if (!currentFile) return;
       compressBtn.disabled = true;
-      compressBtn.textContent = '🔄 Compressing...';
+      compressBtn.textContent = '🔄 Compression...';
       status.innerHTML = '<div class="spinner"></div>';
       try {
         const img = await ImageUtils.load(currentFile);
@@ -356,14 +416,14 @@ const dropzone = document.getElementById('dropzone');
         resultBlob = blob;
         const url = URL.createObjectURL(blob);
         compImg.src = url;
-        compSize.textContent = ImageUtils.formatBytes(blob.size) + ' — Saved ' + Math.round((1 - blob.size / currentFile.size) * 100) + '%';
+        compSize.textContent = ImageUtils.formatBytes(blob.size) + ' — Économisé ' + Math.round((1 - blob.size / currentFile.size) * 100) + '%';
         downloadBtn.classList.remove('hidden');
         status.textContent = '';
       } catch (err) {
-        status.textContent = 'Error: ' + err.message;
+        status.textContent = 'Erreur : ' + err.message;
       } finally {
         compressBtn.disabled = false;
-        compressBtn.textContent = '🗜️ Compress';
+        compressBtn.textContent = '🗜️ Compresser';
       }
     });
 

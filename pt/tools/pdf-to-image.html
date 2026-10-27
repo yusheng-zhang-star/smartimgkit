@@ -79,7 +79,7 @@
       "name": "Versões de PDF compatíveis?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "PDF 1.0 a PDF 2.0. Protegidos não suportados."
+        "text": "PDF 1.0 a PDF 2.0. Arquivos protegidos por senha não são suportados. A renderização acontece no navegador com pdf.js, sem enviar o arquivo para servidor."
       }
     },
     {
@@ -87,7 +87,7 @@
       "name": "Quantas páginas converter?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Até 200 páginas recomendado."
+        "text": "Até 200 páginas é o recomendado. Arquivos com mais páginas podem demorar mais, mas a ferramenta processa tudo localmente no seu navegador."
       }
     },
     {
@@ -95,7 +95,31 @@
       "name": "PDF enviado a servidor?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Não. Renderizado com pdf.js no navegador."
+        "text": "Não. Toda a renderização acontece no seu navegador com pdf.js. O arquivo não sai do seu aparelho e não é armazenado em lugar nenhum."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Como enviar um PDF de nota fiscal pelo WhatsApp?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Converta as páginas do PDF para JPG, baixe as imagens e envie no chat do WhatsApp. Assim o destinatário vê a nota fiscal sem precisar abrir um arquivo PDF no celular."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Posso converter um PDF de pedido do Mercado Livre para imagem?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim, muitos vendedores convertem o PDF do pedido para JPG e enviam a imagem pelo WhatsApp ao cliente. Basta enviar o PDF, escolher JPG e baixar as páginas convertidas."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Como arquivar comprovantes de pagamento PIX em imagem?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Converta o PDF do comprovante para PNG ou JPG, baixe a imagem e arquive na galeria do celular. Assim você tem o comprovante sempre à mão sem precisar abrir um arquivo PDF."
       }
     }
   ]
@@ -191,11 +215,11 @@
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">📄</span></div>
-              <div class="before-after-item-caption before">Before: PDF file</div>
+              <div class="before-after-item-caption before">Antes: arquivo PDF</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🖼️</span></div>
-              <div class="before-after-item-caption after">After: PNG/JPG images</div>
+              <div class="before-after-item-caption after">Depois: imagens PNG/JPG</div>
             </div>
           </div>
         </div>
@@ -211,49 +235,49 @@
 
         <!-- PDF Info + Controls -->
         <div class="controls hidden" id="controlsSection">
-            <h2 style="font-size:1.2rem;margin-bottom:1rem;padding-bottom:0.5rem;">⚙️ Conversion Settings</h2>
+            <h2 style="font-size:1.2rem;margin-bottom:1rem;padding-bottom:0.5rem;">⚙️ Configurações de Conversão</h2>
             <div class="pdf-info" id="pdfInfo"></div>
             <div class="control-row">
                 <label>Formato de Saída</label>
                 <select id="outputFormat">
-                    <option value="png">PNG (best quality)</option>
-                    <option value="jpeg">JPG (smaller file)</option>
-                    <option value="webp">WebP (modern)</option>
+                    <option value="png">PNG (melhor qualidade)</option>
+                    <option value="jpeg">JPG (arquivo menor)</option>
+                    <option value="webp">WebP (moderno)</option>
                 </select>
             </div>
             <div class="control-row">
-                <label>Scale Factor</label>
+                <label>Fator de Escala</label>
                 <select id="scaleFactor">
                     <option value="1">1x (original)</option>
                     <option value="1.5">1.5x</option>
-                    <option value="2" selected>2x (recommended)</option>
-                    <option value="3">3x (high resolution)</option>
+                    <option value="2" selected>2x (recomendado)</option>
+                    <option value="3">3x (alta resolução)</option>
                 </select>
             </div>
             <div class="control-row">
-                <label>Page Range</label>
-                <input type="number" id="pageFrom" placeholder="From" style="width:80px;" min="1">
-                <span>to</span>
-                <input type="number" id="pageTo" placeholder="To" style="width:80px;" min="1">
-                <span style="font-size:0.85rem;">(leave blank for all pages)</span>
+                <label>Intervalo de Páginas</label>
+                <input type="number" id="pageFrom" placeholder="De" style="width:80px;" min="1">
+                <span>até</span>
+                <input type="number" id="pageTo" placeholder="Até" style="width:80px;" min="1">
+                <span style="font-size:0.85rem;">(deixe vazio para todas as páginas)</span>
             </div>
             <div class="btn-row">
-                <button class="btn btn-primary" id="convertBtn">📄 Convert PDF</button>
+                <button class="btn btn-primary" id="convertBtn">📄 Converter PDF</button>
                 <button class="btn btn-secondary" id="resetBtn">Redefinir</button>
             </div>
           </div>
 
         <!-- Status -->
         <div class="hidden" id="statusSection">
-            <div class="status-text" id="statusText">Loading PDF...</div>
+            <div class="status-text" id="statusText">Carregando PDF...</div>
         </div>
 
         <!-- Results -->
         <div class="preview-section hidden" id="resultSection">
-            <h2>🖼️ Converted Pages (<span id="convertedCount">0</span>)</h2>
+            <h2>🖼️ Páginas Convertidas (<span id="convertedCount">0</span>)</h2>
             <div class="pages-grid" id="pagesGrid"></div>
             <div class="btn-row" style="justify-content:center;margin-top:1.5rem;">
-                <button class="btn btn-primary" id="downloadAllBtn">⬇️ Download All as ZIP</button>
+                <button class="btn btn-primary" id="downloadAllBtn">⬇️ Baixar Tudo em ZIP</button>
             </div>
         </div>
       </div>
@@ -301,15 +325,60 @@
 
       <div class="guide-block">
         <h3>Melhores Configurações por Caso de Uso</h3>
-        <ul><li>Social media — JPG, 150 DPI</li><li>Print — PNG, 300 DPI</li><li>OCR — PNG, 300 DPI</li></ul>
+        <ul><li>Redes sociais — JPG, 150 DPI</li><li>Impressão — PNG, 300 DPI</li><li>OCR — PNG, 300 DPI</li></ul>
       </div>
 
 <section class="faq-section">
   <h2>Perguntas Frequentes</h2>
-      <div class="faq-item"><button class="faq-question">Versões de PDF compatíveis?</button><div class="faq-answer">PDF 1.0 a PDF 2.0. Protegidos não suportados.</div></div>
-      <div class="faq-item"><button class="faq-question">Quantas páginas converter?</button><div class="faq-answer">Até 200 páginas recomendado.</div></div>
-      <div class="faq-item"><button class="faq-question">PDF enviado a servidor?</button><div class="faq-answer">Não. Renderizado com pdf.js no navegador.</div></div>
+      <div class="faq-item"><button class="faq-question">Versões de PDF compatíveis?</button><div class="faq-answer">PDF 1.0 a PDF 2.0. Arquivos protegidos por senha não são suportados. A renderização acontece no navegador com pdf.js, sem enviar o arquivo para servidor.</div></div>
+      <div class="faq-item"><button class="faq-question">Quantas páginas converter?</button><div class="faq-answer">Até 200 páginas é o recomendado. Arquivos com mais páginas podem demorar mais, mas a ferramenta processa tudo localmente no seu navegador.</div></div>
+      <div class="faq-item"><button class="faq-question">PDF enviado a servidor?</button><div class="faq-answer">Não. Toda a renderização acontece no seu navegador com pdf.js. O arquivo não sai do seu aparelho e não é armazenado em lugar nenhum.</div></div>
+      <div class="faq-item"><button class="faq-question">Como enviar um PDF de nota fiscal pelo WhatsApp?</button><div class="faq-answer">Converta as páginas do PDF para JPG, baixe as imagens e envie no chat do WhatsApp. Assim o destinatário vê a nota fiscal sem precisar abrir um arquivo PDF no celular.</div></div>
+      <div class="faq-item"><button class="faq-question">Posso converter um PDF de pedido do Mercado Livre para imagem?</button><div class="faq-answer">Sim, muitos vendedores convertem o PDF do pedido para JPG e enviam a imagem pelo WhatsApp ao cliente. Basta enviar o PDF, escolher JPG e baixar as páginas convertidas.</div></div>
+      <div class="faq-item"><button class="faq-question">Como arquivar comprovantes de pagamento PIX em imagem?</button><div class="faq-answer">Converta o PDF do comprovante para PNG ou JPG, baixe a imagem e arquive na galeria do celular. Assim você tem o comprovante sempre à mão sem precisar abrir um arquivo PDF.</div></div>
       </section>
+
+<section class="localization-section">
+<h2>Notas fiscais e comprovantes: converta PDF para enviar no WhatsApp</h2>
+<p>No Brasil, o WhatsApp é o principal canal de envio de documentos entre clientes e lojistas. Uma nota fiscal recebida por e-mail ou um comprovante de pagamento PIX quando convertido para imagem, fica mais fácil de visualizar no celular do destinatário. Com esta ferramenta, você envia o PDF, escolhe JPG e baixa as páginas convertidas.</p>
+<p>Para o pequeno vendedor que recebe pedidos do Mercado Livre por e-mail, converter o PDF do pedido para JPG e enviar a imagem pelo WhatsApp agiliza o atendimento. O cliente vê o pedido sem precisar abrir um arquivo PDF no celular. E por ser processado no navegador, o arquivo não passa por servidor desconhecido.</p>
+<p>O mesmo serve para comprovantes de pagamento PIX: uma vez convertido para PNG ou JPG, o comprovante fica na galeria do celular, sempre à mão para quando você precisar apresentá-lo. E por ser processado localmente, o PDF não passa por nuvem de terceiros.</p>
+<p>Para quem recebe notas fiscais por e-mail, converter para JPG antes de reenviar no grupo da empresa evita que o colega com celular mais antigo não consiga abrir o arquivo PDF. E por ser processado no navegador, o documento não passa por servidor desconhecido, o que mantém a privacidade dos dados fiscais.</p>
+<p>E ao converter um PDF de pedido para enviar no WhatsApp, lembre-se de escolher JPG com qualidade 90% para que o texto fique legível. E por ser gratuita e sem cadastro, a ferramenta facilita o envio de documentos no dia a dia.</p>
+<p>Para o prestador de serviço que emite nota fiscal avulsa para clientes pessoa física, converter o PDF da nota para JPG e enviar pelo WhatsApp agiliza o recebimento. Muitos clientes não têm leitor de PDF instalado no celular, e uma imagem JPG é visualizada diretamente na galeria. E por ser processado no navegador, a nota fiscal não passa por servidor desconhecido, o que mantém os dados fiscais protegidos.</p>
+<p>O mesmo vale para profissionais autônomos que recebem o comprovante de pagamento PIX por e-mail: converter o PDF do comprovante para PNG e salvar na galeria do celular facilita o controle financeiro. Quando precisar apresentar o comprovante para o contador, você mostra a imagem diretamente do celular, sem precisar abrir o e-mail e anexar o arquivo PDF. E por ser processado localmente, o documento não passa por nuvem de terceiros.</p>
+<p>Para o pequeno empresário que precisa enviar a nota fiscal do fornecedor para o contador pelo WhatsApp, converter o PDF da nota para JPG e enviar no chat é mais prático do que reenviar o e-mail com o anexo. O contador recebe a imagem e salva na pasta do cliente sem precisar abrir o PDF. E por ser processado no navegador, a nota fiscal não passa por servidor desconhecido, o que mantém os dados contábeis protegidos.</p>
+<p>O mesmo serve para quem recebe o boleto bancário por e-mail e quer pagar pelo PIX: converter o PDF do boleto para JPG e enviar para o atendimento do banco pelo WhatsApp agiliza a identificação do pagamento. E por ser gratuita e sem cadastro, a ferramenta facilita o envio de documentos no dia a dia.</p>
+<p>Para o usuário que está começando agora a empreender, converter PDFs para imagens antes de enviar pelo WhatsApp é um hábito simples que facilita a comunicação com clientes e fornecedores. Basta enviar o PDF, escolher JPG e baixar as páginas convertidas. E por ser processado no navegador, o documento não passa por servidor desconhecido.</p>
+</section>
+
+<section class="localization-section">
+<h2>Pedidos do Mercado Livre e Shopee: PDF viram imagem para o cliente</h2>
+<p>Para o pequeno vendedor brasileiro, o pedido do Mercado Livre chega por e-mail em formato PDF. Quando o cliente pede uma cópia do pedido, converter o PDF para JPG e enviar a imagem pelo WhatsApp é mais prático do que reenviar o arquivo PDF, que muitos celulares mais antigos não abrem.</p>
+<p>Antes de publicar o anúncio ou de enviar o pedido ao cliente, converta as páginas do PDF para JPG, baixe as imagens e envie no chat. Assim o cliente vê o pedido sem esforço. E por ser processado no navegador, o PDF do pedido não passa por servidor desconhecido, o que mantém os dados do comprador protegidos.</p>
+<p>Para quem vende pela Shopee Brasil, o mesmo cuidado vale: uma imagem JPG do pedido é mais fácil de visualizar no celular do que um arquivo PDF. E por ser processado localmente, o documento não passa por nuvem de terceiros, o que mantém a privacidade das informações de compra.</p>
+<p>O mesmo serve para lojistas que usam o WhatsApp Business para atender: uma imagem JPG do pedido ou da nota fiscal agiliza a resposta. E por ser processado no navegador, o PDF não passa por servidor desconhecido, o que mantém o negócio protegido.</p>
+<p>E ao converter um PDF de pedido para enviar ao cliente, lembre-se de escolher JPG com qualidade 90% para que o texto fique legível. E por ser gratuita e sem cadastro, a ferramenta facilita o envio de documentos no dia a dia.</p>
+<p>Para o vendedor que trabalha com a Shopee Brasil e precisa enviar o comprovante de envio ao cliente, converter o PDF da etiqueta de envio para JPG e enviar pelo WhatsApp é mais prático do que reenviar o e-mail com o anexo PDF. O cliente recebe a imagem da etiqueta e acompanha a entrega diretamente do celular. E por ser processado no navegador, o PDF não passa por servidor desconhecido, o que mantém os dados do comprador protegidos.</p>
+<p>O mesmo serve para lojistas da Enjoei que vendem peças usadas e precisam enviar o comprovante de depósito bancário ao cliente: uma imagem JPG do comprovante é mais fácil de visualizar no celular do que um arquivo PDF. E por ser processado localmente, o documento não passa por nuvem de terceiros, o que mantém a privacidade das informações financeiras.</p>
+<p>Para o vendedor que trabalha com a Shopee Brasil e precisa enviar a nota fiscal do produto ao cliente pelo WhatsApp, converter o PDF da nota para JPG e enviar no chat é mais prático do que reenviar o e-mail com o anexo. O cliente recebe a imagem e confere a nota diretamente do celular. E por ser processado no navegador, o PDF não passa por servidor desconhecido, o que mantém os dados do comprador protegidos.</p>
+<p>O mesmo serve para lojistas que vendem produtos pelo Mercado Livre e precisam enviar o comprovante de envio ao cliente: uma imagem JPG da etiqueta de envio é mais fácil de visualizar no celular do que um arquivo PDF. E por ser processado localmente, o documento não passa por nuvem de terceiros, o que mantém a identidade visual da sua loja protegida.</p>
+<p>Para quem está começando agora no Shopee Brasil, converter PDFs de pedidos para imagens antes de enviar ao cliente pelo WhatsApp é um hábito simples que melhora a experiência de compra. Basta enviar o PDF, escolher JPG e baixar as páginas convertidas. E por ser gratuita e sem cadastro, a ferramenta facilita o atendimento ao cliente.</p>
+</section>
+
+<section class="localization-section">
+<h2>LGPD e privacidade: seus documentos não saem do aparelho</h2>
+<p>Com a LGPD em vigor no Brasil, qualquer documento que você converte, como uma nota fiscal, um comprovante de pagamento ou um pedido de compra, carrega dados pessoais: o CPF do cliente, o endereço de entrega e o valor da compra. Conferir e remover metadados antes de publicar é um cuidado básico.</p>
+<p>Para o pequeno empresário que converte PDFs de pedidos para enviar ao cliente, as coordenadas GPS do celular que escaneou a nota podem estar presentes. Remover os metadados antes de enviar evita que o comprador curioso descubra onde você mora. E por ser processado localmente, o PDF não passa por servidor de terceiros.</p>
+<p>O mesmo vale para comprovantes de pagamento PIX: uma vez convertido para imagem, o documento carrega os dados da transação. Conferir e remover metadados antes de compartilhar evita que dados pessoais vazem. E por ser processado localmente, o arquivo não passa por nuvem de terceiros.</p>
+<p>Para profissionais que lidam com material confidencial, como notas fiscais ou pedidos de cliente, a conferência de metadados é um cuidado extra. O documento convertido sem os dados EXIF não deixa rastro de onde foi gerado, e você decide com quem compartilhar. E ao mesmo tempo, vale remover também os dados de câmera que identificam o modelo do aparelho.</p>
+<p>A LGPD exige que o cidadão saiba para onde vão seus dados. Ao escolher uma ferramenta que processa localmente, você exerce esse controle: o arquivo não sai do seu aparelho, não é armazenado em lugar nenhum, e você decide quando e como compartilhá-lo. É um detalhe técnico, mas que faz toda a diferença para a privacidade no dia a dia digital.</p>
+<p>Para o pequeno empresário que lida com notas fiscais de fornecedores, as coordenadas de GPS do celular que escaneou o documento podem estar presentes no PDF. Remover os metadados antes de compartilhar evita que dados sensíveis sobre a localização do seu escritório vazem para terceiros. E por ser processado localmente, o PDF não passa por servidor de terceiros, o que mantém a empresa protegida.</p>
+<p>O mesmo vale para pessoas físicas que recebem comprovantes de pagamento com CPF e dados bancários: converter o PDF para imagem e enviar pelo WhatsApp expõe esses dados a curiosos. Conferir e remover metadados antes de compartilhar é um cuidado básico, e por ser processado localmente, o arquivo não passa por nuvem de terceiros.</p>
+<p>Para o pequeno comerciante que recebe a nota fiscal do fornecedor por e-mail e precisa encaminhar para o contador pelo WhatsApp, as coordenadas de GPS do celular que escaneou o documento podem estar presentes. Remover os metadados antes de compartilhar evita que dados sensíveis sobre a localização do escritório vazem. E por ser processado localmente, o PDF não passa por servidor de terceiros.</p>
+<p>O mesmo serve para profissionais que lidam com contratos e documentos confidenciais: converter o PDF para imagem e enviar pelo WhatsApp pode vazar dados sensíveis se os metadados não forem removidos. Conferir e remover metadados antes de compartilhar é um cuidado essencial, e por ser processado localmente, o arquivo não passa por nuvem de terceiros.</p>
+<p>Para o usuário que se preocupa com privacidade, escolher uma ferramenta que processa localmente é a melhor opção. O documento não sai do seu aparelho, não é armazenado em lugar nenhum, e você decide quando e como compartilhá-lo. E por ser gratuita e sem cadastro, a ferramenta facilita o cuidado com a privacidade no dia a dia.</p>
+</section>
 
 <section class="related-tools">
   <h2>Você Também Pode Gostar</h2>
@@ -325,7 +394,7 @@
     <a href="/pt/tools/ocr" class="related-tool-card">
       <span class="tool-icon">🔧</span>
       <div class="tool-info">
-        <strong>OCR Image to Text</strong>
+        <strong>Texto por OCR</strong>
         <span class="tool-desc">Extrai texto de imagens com OCR</span>
       </div>
       <span class="tool-arrow">→</span>
@@ -350,27 +419,27 @@
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
-        <div class="footer-brand"><a href="/pt/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Ferramentas de imagem gratuitas com IA que respeitam sua privacidade.</p></div>
-        <div class="footer-links footer-links-multi"><h4>Tools</h4><a href="/pt/tools/background-remover">Background Remover</a><a href="/pt/tools/compressor">Compressor</a><a href="/pt/tools/converter">Converter</a><a href="/pt/tools/resizer">Resizer</a>
-          <a href="/pt/tools/gif-editor">GIF Editor</a>
-          <a href="/pt/tools/pdf-to-image">PDF to Image</a>
+        <div class="footer-brand"><a href="/pt/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Ferramentas de imagem gratuitas que respeitam sua privacidade.</p></div>
+        <div class="footer-links footer-links-multi"><h4>Ferramentas</h4><a href="/pt/tools/background-remover">Remover Fundo</a><a href="/pt/tools/compressor">Compressor de Imagem</a><a href="/pt/tools/converter">Conversor</a><a href="/pt/tools/resizer">Redimensionar</a>
+          <a href="/pt/tools/gif-editor">Editor de GIF</a>
+          <a href="/pt/tools/pdf-to-image">PDF para Imagem</a>
         </div>
-        <div class="footer-links footer-links-multi"><h4>More Tools</h4>
+        <div class="footer-links footer-links-multi"><h4>Mais Ferramentas</h4>
           <div class="footer-links-list">
-          <a href="/pt/tools/cropper">Cropper</a><a href="/pt/tools/watermark">Watermark</a><a href="/pt/tools/image-merger">Image Merger</a><a href="/pt/tools/screenshot-to-image">Screenshot to Image</a><a href="/pt/tools/image-filters">Image Filters</a><a href="/pt/tools/svg-to-png">SVG to PNG</a><a href="/pt/tools/image-compare">Image Compare</a><a href="/pt/tools/print-resizer">Print-Ready Resizer</a><a href="/pt/tools/meme-generator">Meme Generator</a>          <a href="/pt/tools/face-blur">Face Blur</a>
-          <a href="/pt/tools/heic-converter">HEIC Converter</a>
-          <a href="/pt/tools/metadata-viewer">Metadata Viewer</a>
-          <a href="/pt/tools/avif-support">AVIF Support</a>
-          <a href="/pt/tools/image-adjust">Image Adjustment</a>
-          <a href="/pt/tools/image-border">Image Border</a>
-          <a href="/pt/tools/image-flip">Image Flip</a>
-          <a href="/pt/tools/image-grayscale">Image Grayscale</a>
-          <a href="/pt/tools/image-shadow">Image Shadow</a>
-          <a href="/pt/tools/image-splitter">Image Splitter</a>
-          <a href="/pt/tools/image-exif-remover">EXIF Remover</a><a href="/pt/tools/circle-crop">Circle Crop</a><a href="/pt/tools/favicon-generator">Favicon Generator</a><a href="/pt/tools/ocr">OCR Text</a><a href="/pt/tools/bulk-processor">Bulk Processor</a><a href="/pt/tools/image-to-pdf">Image to PDF</a>          <a href="/pt/tools/id-photo">ID Photo Maker</a>
-          <a href="/pt/tools/product-white-background">Product White BG</a>
-          <a href="/pt/tools/social-media-post">Social Media Post</a>
-          <a href="/pt/tools/photo-restoration">Photo Restoration</a><a href="/pt/tools/image-enhancer">Image Enhancer</a>
+          <a href="/pt/tools/cropper">Cortador</a><a href="/pt/tools/watermark">Marca d'água</a><a href="/pt/tools/image-merger">Juntar Imagens</a><a href="/pt/tools/screenshot-to-image">Captura para Imagem</a><a href="/pt/tools/image-filters">Filtros de Imagem</a><a href="/pt/tools/svg-to-png">SVG para PNG</a><a href="/pt/tools/image-compare">Comparar Imagens</a><a href="/pt/tools/print-resizer">Redimensionar p/ Impressão</a><a href="/pt/tools/meme-generator">Gerador de Memes</a>          <a href="/pt/tools/face-blur">Desfocar Rosto</a>
+          <a href="/pt/tools/heic-converter">Conversor HEIC</a>
+          <a href="/pt/tools/metadata-viewer">Ver Metadados</a>
+          <a href="/pt/tools/avif-support">Suporte AVIF</a>
+          <a href="/pt/tools/image-adjust">Ajustar Imagem</a>
+          <a href="/pt/tools/image-border">Bordas em Imagem</a>
+          <a href="/pt/tools/image-flip">Espelhar Imagem</a>
+          <a href="/pt/tools/image-grayscale">Tons de Cinza</a>
+          <a href="/pt/tools/image-shadow">Sombra em Imagem</a>
+          <a href="/pt/tools/image-splitter">Dividir Imagem</a>
+          <a href="/pt/tools/image-exif-remover">Remover EXIF</a><a href="/pt/tools/circle-crop">Corte Circular</a><a href="/pt/tools/favicon-generator">Gerador de Favicon</a><a href="/pt/tools/ocr">Texto por OCR</a><a href="/pt/tools/bulk-processor">Processar Lote</a><a href="/pt/tools/image-to-pdf">Imagem para PDF</a>          <a href="/pt/tools/id-photo">Foto para Documento</a>
+          <a href="/pt/tools/product-white-background">Fundo Branco p/ Produto</a>
+          <a href="/pt/tools/social-media-post">Post p/ Redes Sociais</a>
+          <a href="/pt/tools/photo-restoration">Restaurar Foto</a><a href="/pt/tools/image-enhancer">Melhorar Imagem</a>
           </div>
         </div>
         <div class="footer-links"><h4>Legal</h4><a href="/privacy">Política de Privacidade</a><a href="/terms">Termos de Serviço</a><a href="/cookie-policy">Política de Cookies</a>
@@ -460,7 +529,7 @@
             reader.readAsArrayBuffer(file);
             
             // Show controls
-            pdfInfo.innerHTML = `<strong>File:</strong> ${file.name} &nbsp;|&nbsp; <strong>Size:</strong> ${(file.size/1024/1024).toFixed(2)} MB`;
+            pdfInfo.innerHTML = `<strong>Arquivo:</strong> ${file.name} &nbsp;|&nbsp; <strong>Tamanho:</strong> ${(file.size/1024/1024).toFixed(2)} MB`;
             pageFrom.placeholder = '1';
             pageTo.placeholder = '?';
             controlsSection.classList.remove('hidden');
@@ -477,7 +546,7 @@
                 const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
                 pdfDoc = await loadingTask.promise;
                 pageTo.placeholder = pdfDoc.numPages;
-                pdfInfo.innerHTML += ` &nbsp;|&nbsp; <strong>Pages:</strong> ${pdfDoc.numPages}`;
+                pdfInfo.innerHTML += ` &nbsp;|&nbsp; <strong>Páginas:</strong> ${pdfDoc.numPages}`;
                 statusSection.classList.add('hidden');
             } catch (err) {
                 alert('Failed to load PDF: ' + err.message);
@@ -497,7 +566,7 @@
             const to = pageTo.value ? parseInt(pageTo.value) : pdfDoc.numPages;
             
             if (from < 1 || to > pdfDoc.numPages || from > to) {
-                alert(`Please enter a valid page range (1-${pdfDoc.numPages}).`);
+                alert(`Por favor, insira um intervalo de páginas válido (1-${pdfDoc.numPages}).`);
                 return;
             }
             
@@ -545,12 +614,12 @@
                     
                     const numDiv = document.createElement('div');
                     numDiv.className = 'page-num';
-                    numDiv.textContent = `Page ${i}`;
+                    numDiv.textContent = `Página ${i}`;
                     item.appendChild(numDiv);
                     
                     const dlBtn = document.createElement('button');
                     dlBtn.className = 'dl-btn';
-                    dlBtn.textContent = 'Download';
+                    dlBtn.textContent = 'Baixar';
                     dlBtn.onclick = function() {
                         const a = document.createElement('a');
                         a.href = dataUrl;
@@ -576,7 +645,7 @@
         downloadAllBtn.addEventListener('click', async function() {
             if (convertedPages.length === 0) return;
             
-            statusText.textContent = 'Creating ZIP file...';
+            statusText.textContent = 'Criando arquivo ZIP...';
             statusSection.classList.remove('hidden');
             
             // Use dynamic import for JSZip (we'll load it from CDN)

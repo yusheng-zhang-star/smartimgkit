@@ -81,23 +81,47 @@
       "name": "Quais tamanhos estão no ZIP?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "16x16 a 512x512, apple-touch-icon e favicon.ico multi-tamanho."
+        "text": "O pacote traz os favicons de 16×16 até 512×512, o apple-touch-icon para a tela do iPhone e o favicon.ico multi-tamanho para os navegadores mais antigos. Você recebe tudo em um único ZIP."
       }
     },
     {
       "@type": "Question",
-      "name": "Minha imagem é enviada a servidor?",
+      "name": "Minha imagem é enviada para algum servidor?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Não. Toda geração acontece no navegador."
+        "text": "Não. Toda a geração acontece no seu próprio navegador, no celular ou no computador. A imagem que você envia não sai do seu aparelho e não é armazenada em lugar nenhum."
       }
     },
     {
       "@type": "Question",
-      "name": "Diferença com Gerador ICO?",
+      "name": "Qual a diferença para um gerador de ICO?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Este é para favicons web (tamanhos fixos + HTML). ICO para ícones desktop."
+        "text": "Este aqui é para favicons da web: gera os tamanhos fixos e o trecho HTML pronto para colar no <head>. O gerador de ICO serve para ícones de programa desktop, que têm outra estrutura de arquivo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Como um pequeno vendedor brasileiro cria o ícone da minha loja virtual?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Basta enviar o logotipo da loja em PNG quadrada, a ferramenta gera todos os tamanhos de favicon e o trecho HTML. Copie o trecho para o <head> do seu site e o ícone aparece na aba do navegador."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Posso usar o favicon que gerei em uma PWA da Shopee ou do Instagram?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim. O manifest.json incluído no ZIP é padrão de PWA, e os tamanhos 192×192 e 512×512 são aceitos por qualquer instalador de aplicativo web. Basta copiar os arquivos para o servidor do seu site."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Minha imagem precisa ser perfeita?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Não. Basta ser uma imagem quadrada com o seu logotipo ou símbolo centralizado. A ferramenta reduz para os tamanhos pequenos, e por isso um logo simples e com contraste funciona melhor do que uma foto cheia de detalhes."
       }
     }
   ]
@@ -162,29 +186,29 @@
 <div class="upload-area" id="uploadArea">
     <input type="file" id="fileInput" accept="image/*" hidden>
     <div class="upload-icon">🎨</div>
-    <h3>Drop your image here</h3>
+    <h3>Solte sua imagem aqui</h3>
     <p>ou clique para procurar</p>
-    <p class="upload-hint">Square images work best. Supports JPG, PNG, SVG, WebP.</p>
+    <p class="upload-hint">Imagens quadradas funcionam melhor. Aceita JPG, PNG, SVG, WebP.</p>
   </div>
 
   <div id="workspace" style="display:none">
     <div class="preview-wrap" id="previewWrap"></div>
 
     <div class="controls">
-      <button class="btn btn-primary" id="dlZipBtn">⬇ Download ZIP (all sizes)</button>
-      <button class="btn btn-secondary" id="newBtn">New Image</button>
+      <button class="btn btn-primary" id="dlZipBtn">⬇ Baixar ZIP (todos os tamanhos)</button>
+      <button class="btn btn-secondary" id="newBtn">Nova Imagem</button>
     </div>
 
     <div style="margin-top:2rem">
-      <h3>HTML Snippet</h3>
+      <h3>Trecho HTML</h3>
       <div class="code-block" id="htmlSnippet"></div>
-      <button class="btn btn-secondary" id="copyHtmlBtn" style="margin-top:0.5rem">Copy HTML</button>
+      <button class="btn btn-secondary" id="copyHtmlBtn" style="margin-top:0.5rem">Copiar HTML</button>
     </div>
 
     <div style="margin-top:1.5rem">
       <h3>manifest.json (PWA)</h3>
       <div class="code-block" id="manifestBlock"></div>
-      <button class="btn btn-secondary" id="copyManifestBtn" style="margin-top:0.5rem">Copy manifest.json</button>
+      <button class="btn btn-secondary" id="copyManifestBtn" style="margin-top:0.5rem">Copiar manifest.json</button>
     </div>
   </div>
       </div>
@@ -222,15 +246,57 @@
 
       <div class="guide-block">
         <h3>Por Que Tantos Tamanhos?</h3>
-        <ul><li>16×16, 32×32 — Browser tab and bookmark icons</li><li>180×180 — iOS home screen</li><li>192×192, 512×512 — Android home screen and PWA splash</li></ul>
+        <ul><li>16×16, 32×32 — ícone da aba do navegador e dos favoritos</li><li>180×180 — tela inicial do iOS</li><li>192×192, 512×512 — tela inicial do Android e splash de PWA</li></ul>
       </div>
 
 <section class="faq-section">
   <h2>Perguntas Frequentes</h2>
-      <div class="faq-item"><button class="faq-question">Quais tamanhos estão no ZIP?</button><div class="faq-answer">16x16 a 512x512, apple-touch-icon e favicon.ico multi-tamanho.</div></div>
-      <div class="faq-item"><button class="faq-question">Minha imagem é enviada a servidor?</button><div class="faq-answer">Não. Toda geração acontece no navegador.</div></div>
-      <div class="faq-item"><button class="faq-question">Diferença com Gerador ICO?</button><div class="faq-answer">Este é para favicons web (tamanhos fixos + HTML). ICO para ícones desktop.</div></div>
+      <div class="faq-item"><button class="faq-question">Quais tamanhos estão no ZIP?</button><div class="faq-answer">O pacote traz os favicons de 16×16 até 512×512, o apple-touch-icon para a tela do iPhone e o favicon.ico multi-tamanho para os navegadores mais antigos. Você recebe tudo em um único ZIP.</div></div>
+      <div class="faq-item"><button class="faq-question">Minha imagem é enviada para algum servidor?</button><div class="faq-answer">Não. Toda a geração acontece no seu próprio navegador, no celular ou no computador. A imagem que você envia não sai do seu aparelho e não é armazenada em lugar nenhum.</div></div>
+      <div class="faq-item"><button class="faq-question">Qual a diferença para um gerador de ICO?</button><div class="faq-answer">Este aqui é para favicons da web: gera os tamanhos fixos e o trecho HTML pronto para colar no &lt;head&gt;. O gerador de ICO serve para ícones de programa desktop, que têm outra estrutura de arquivo.</div></div>
+      <div class="faq-item"><button class="faq-question">Como um pequeno vendedor brasileiro cria o ícone da minha loja virtual?</button><div class="faq-answer">Basta enviar o logotipo da loja em PNG quadrada, a ferramenta gera todos os tamanhos de favicon e o trecho HTML. Copie o trecho para o &lt;head&gt; do seu site e o ícone aparece na aba do navegador.</div></div>
+      <div class="faq-item"><button class="faq-question">Posso usar o favicon que gerei em uma PWA da Shopee ou do Instagram?</button><div class="faq-answer">Sim. O manifest.json incluído no ZIP é padrão de PWA, e os tamanhos 192×192 e 512×512 são aceitos por qualquer instalador de aplicativo web. Basta copiar os arquivos para o servidor do seu site.</div></div>
+      <div class="faq-item"><button class="faq-question">Minha imagem precisa ser perfeita?</button><div class="faq-answer">Não. Basta ser uma imagem quadrada com o seu logotipo ou símbolo centralizado. A ferramenta reduz para os tamanhos pequenos, e por isso um logo simples e com contraste funciona melhor do que uma foto cheia de detalhes.</div></div>
       </section>
+
+<section class="localization-section">
+<h2>Pequenos vendedores e blogueiros: criando o ícone do seu site</h2>
+<p>No Brasil, milhares de pequenos vendedores e criadores de conteúdo estão montando sua loja virtual ou seu blog do zero, sem contratar um designer. Quando você publica um site próprio, o favicon é aquele pequeno ícone que aparece na aba do navegador, nos favoritos e na tela inicial do celular quando alguém adiciona o seu site. Ter um favicon próprio é um detalhe que passa mais profissionalismo, mesmo em uma loja pequena.</p>
+<p>Para o vendedor do Mercado Livre que resolveu criar uma loja própria fora da plataforma, o primeiro passo é registrar um domínio e subir um site simples. O favicon é parte dessa identidade visual: ele aparece na aba do navegador quando o cliente visita a loja, e ajuda a marca a ser lembrada depois. Ao gerar o favicon a partir do logotipo da loja, você padroniza a presença digital sem pagar nada a um designer.</p>
+<p>O blogueiro que escreve sobre culinária, viagem ou finanças pessoais também se beneficia: quando o leitor salva o blog nos favoritos, o favicon identifica o blog entre tantos outros abertos na aba. E quando o leitor adiciona o blog à tela inicial do celular, o favicon vira o ícone do aplicativo, o que aumenta a chance de ele voltar a acessar. É um detalhe pequeno, mas que reforça a identidade do conteúdo.</p>
+<p>Para quem está começando do zero, a dica é usar um logotipo simples e centralizado, com boa margem ao redor. Isso porque o favicon é reduzido para 16×16 pixels, e um logotipo cheio de detalhes vira uma mancha ilegível nesse tamanho. Um símbolo forte, com contraste e poucas cores, funciona melhor. E como a geração acontece no navegador, a imagem do seu logotipo não trafega por servidor desconhecido.</p>
+<p>Depois de gerar o ZIP, basta descompactar na raiz do site e colar o trecho HTML no &lt;head&gt; das suas páginas. Em poucos minutos, o ícone aparece na aba do navegador, no histórico e nos favoritos do visitante. Para uma loja pequena, esse detalhe passa a impressão de um negócio cuidado, mesmo sem orçamento de marketing. E como tudo é grátis e local, não há custo nem risco de privacidade.</p>
+<p>Para o vendedor da Shopee Brasil que resolveu criar uma loja própria, o favicon é o primeiro detalhe de identidade visual. Quando o cliente visita o site, o ícone na aba do navegador ajuda a marca a ser lembrada depois. E como a geração acontece no navegador, a imagem do logotipo não trafega por servidor desconhecido, o que mantém a marca protegida.</p>
+<p>O blogueiro que escreve sobre finanças pessoais também se beneficia: quando o leitor salva o blog nos favoritos, o favicon identifica o blog entre tantos outros abertos na aba. E quando o leitor adiciona o blog à tela inicial do celular, o ícone vira o símbolo do aplicativo, o que aumenta a chance de ele voltar a acessar. É um detalhe pequeno, mas que reforça a identidade do conteúdo.</p>
+<p>Para o pequeno vendedor que está montando a loja virtual do zero, o favicon é um detalhe que passa profissionalismo. Quando o cliente visita o site, o ícone na aba do navegador ajuda a marca a ser lembrada. E como a geração acontece no navegador, a imagem do logotipo não trafega por servidor desconhecido.</p>
+<p>Para o vendedor da Shopee Brasil que resolveu criar uma loja própria, o favicon é o primeiro detalhe de identidade visual. E como a geração acontece no navegador, a imagem do logotipo não trafega por servidor desconhecido, o que mantém a marca protegida.</p>
+</section>
+
+<section class="localization-section">
+<h2>PWA e ícone na tela do celular: por que isso importa para o seu site</h2>
+<p>Quando um visitante gosta do seu site, ele pode adicioná-lo à tela inicial do celular como se fosse um aplicativo. Para que esse ícone da tela inicial fique bonito, o navegador precisa encontrar os arquivos de tamanho 192×192 e 512×512, além do manifest.json que descreve o nome do aplicativo. Esta ferramenta gera tudo isso em um pacote só, pronto para subir no servidor.</p>
+<p>Para o pequeno empresário que quer que os clientes voltem ao seu site, ter um ícone na tela do celular é uma forma gratuita de manter a marca presente. Quando o cliente olha para a tela do smartphone e vê o ícone da sua loja, ele lembra de visitar. E como o PWA funciona offline em parte, o visitante pode acessar mesmo sem internet no momento. É uma maneira barata de fidelizar sem investir em um app nativo caro.</p>
+<p>O mesmo vale para o blogueiro que quer que os leitores voltem: quando o leitor adiciona o blog à tela inicial, o ícone do favicon identifica o blog entre os outros aplicativos do celular. E com o manifest.json configurado, o blog carrega em modo tela cheia, sem a barra do navegador, o que dá a sensação de um app. É um detalhe técnico, mas que muda a percepção de profissionalismo.</p>
+<p>Para quem está publicando o primeiro site, a dica é testar: depois de subir os arquivos do ZIP no servidor, acesse o site no celular e veja se o ícone aparece na aba e se a opção "adicionar à tela inicial" gera um atalho com o símbolo certo. Se algo não aparecer, verifique se os arquivos foram copiados para a raiz do site e se o trecho HTML foi colado no &lt;head&gt; de todas as páginas. A ferramenta já entrega o trecho pronto para copiar e colar.</p>
+<p>E por ser processado localmente, o logotipo ou imagem que você envia não passa por servidor de terceiros. Isso é importante para quem tem um logotipo registrado ou uma marca em desenvolvimento, que não quer ver a imagem replicada em nuvem desconhecida. Ao gerar o favicon no navegador, você mantém o controle da sua identidade visual do começo ao fim.</p>
+<p>Para o pequeno empresário que quer que os clientes voltem, ter um ícone na tela do celular é uma forma gratuita de manter a marca presente. Quando o cliente olha para a tela do smartphone e vê o símbolo da sua loja, ele lembra de visitar. E como o PWA funciona offline em parte, o visitante pode acessar mesmo sem internet no momento, o que aumenta a chance de retorno.</p>
+<p>O mesmo vale para o blogueiro que quer que os leitores voltem: quando o leitor adiciona o blog à tela inicial, o ícone do favicon identifica o blog entre os outros aplicativos do celular. E com o manifest.json configurado, o blog carrega em modo tela cheia, sem a barra do navegador, o que dá a sensação de um app nativo. É um detalhe técnico, mas que muda a percepção de profissionalismo.</p>
+<p>Para quem está publicando o primeiro site, testar se o ícone aparece na aba do navegador é um cuidado básico. E como a ferramenta entrega o trecho HTML pronto para copiar e colar, o processo é rápido e sem complicações. E por ser processado localmente, o logotipo não passa por servidor de terceiros.</p>
+<p>Para o pequeno empresário que quer que os clientes voltem, ter um ícone na tela do celular é uma forma gratuita de manter a marca presente. E como o PWA funciona offline em parte, o visitante pode acessar mesmo sem internet no momento, o que aumenta a chance de retorno.</p>
+</section>
+
+<section class="localization-section">
+<h2>LGPD e privacidade: sua imagem de logotipo não sai do aparelho</h2>
+<p>Com a LGPD em vigor, o cidadão brasileiro passou a se preocupar mais com o que acontece com os arquivos que sobe na internet. Quando você usa um gerador de favicon online que envia a imagem para um servidor terceiro, o logotipo da sua loja ou do seu blog passa a ficar hospedado em um lugar que você não controla. Esta ferramenta, ao contrário, gera tudo no próprio navegador do seu aparelho.</p>
+<p>Para o pequeno empresário que tem um logotipo em processo de registro ou uma marca ainda em desenvolvimento, esse cuidado é sensível: uma imagem enviada para um serviço de terceiros pode ser arquivada, analisada ou replicada sem seu consentimento. Ao gerar o favicon localmente, você evita que o símbolo da sua marca trafegue por nuvem desconhecida. E como o resultado sai em ZIP no seu próprio computador, você decide quando e com quem compartilhar.</p>
+<p>O mesmo vale para o blogueiro que usa uma foto pessoal como base para o favicon: ao gerar localmente, a foto não passa por servidor de edição desconhecido, e você sabe exatamente onde o arquivo está. E antes de publicar, vale ainda remover os metadados EXIF da imagem, que carregam o GPS de onde a foto foi tirada. Uma ferramenta dedicada faz isso em segundos, em outra página deste site.</p>
+<p>Para profissionais que lidam com material confidencial, como logotipos de cliente ou marcas em desenvolvimento, a geração local é um cuidado extra. O favicon que você gera não deixa rastro em servidor nenhum, e você decide qual versão do logotipo usar no ar. E ao copiar o trecho HTML para o seu site, você controla exatamente qual arquivo é carregado pelo visitante.</p>
+<p>A LGPD exige que o cidadão saiba para onde vão seus dados. Ao escolher uma ferramenta que processa localmente, você exerce esse controle: a imagem não sai do seu aparelho, não é armazenada em lugar nenhum, e você decide quando e como publicá-la. É um detalhe técnico, mas que faz toda a diferença para a privacidade da sua marca no dia a dia digital.</p>
+<p>Para o pequeno empresário que tem um logotipo em processo de registro, gerar o favicon localmente evita que o símbolo da sua marca trafegue por nuvem desconhecida. O resultado sai em ZIP no seu próprio computador, e você decide quando e com quem compartilhar. E como a ferramenta é gratuita e sem cadastro, não há custo para cuidar da identidade visual da loja.</p>
+<p>O mesmo vale para o blogueiro que usa uma foto pessoal como base para o favicon: ao gerar localmente, a foto não passa por servidor de edição desconhecido, e você sabe exatamente onde o arquivo está. E antes de publicar, vale remover os metadados EXIF da imagem, que carregam o GPS de onde a foto foi tirada, em uma ferramenta dedicada.</p>
+<p>Para profissionais que lidam com material confidencial, como logotipos de cliente ou marcas em desenvolvimento, a geração local é um cuidado extra. O favicon que você gera não deixa rastro em servidor nenhum, e você decide qual versão do logotipo usar no ar. E ao copiar o trecho HTML para o seu site, você controla exatamente qual arquivo é carregado pelo visitante.</p>
+<p>Para o pequeno empresário que tem um logotipo em processo de registro, gerar o favicon localmente evita que o símbolo da sua marca trafegue por nuvem desconhecida. E como a ferramenta é gratuita e sem cadastro, não há custo para cuidar da identidade visual da loja.</p>
+</section>
 
 <section class="related-tools">
   <h2>Você Também Pode Gostar</h2>
@@ -246,7 +312,7 @@
     <a href="/pt/tools/resizer" class="related-tool-card">
       <span class="tool-icon">🔧</span>
       <div class="tool-info">
-        <strong>Image Resizer</strong>
+        <strong>Redimensionar Imagem</strong>
         <span class="tool-desc">Altera as dimensões de qualquer imagem</span>
       </div>
       <span class="tool-arrow">→</span>
@@ -271,27 +337,27 @@
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
-        <div class="footer-brand"><a href="/pt/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Ferramentas de imagem gratuitas com IA que respeitam sua privacidade.</p></div>
-        <div class="footer-links footer-links-multi"><h4>Tools</h4><a href="/pt/tools/background-remover">Background Remover</a><a href="/pt/tools/compressor">Compressor</a><a href="/pt/tools/converter">Converter</a><a href="/pt/tools/resizer">Resizer</a>
-          <a href="/pt/tools/gif-editor">GIF Editor</a>
-          <a href="/pt/tools/pdf-to-image">PDF to Image</a>
+        <div class="footer-brand"><a href="/pt/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Ferramentas de imagem gratuitas que respeitam sua privacidade.</p></div>
+        <div class="footer-links footer-links-multi"><h4>Ferramentas</h4><a href="/pt/tools/background-remover">Remover Fundo</a><a href="/pt/tools/compressor">Compressor de Imagem</a><a href="/pt/tools/converter">Conversor</a><a href="/pt/tools/resizer">Redimensionar</a>
+          <a href="/pt/tools/gif-editor">Editor de GIF</a>
+          <a href="/pt/tools/pdf-to-image">PDF para Imagem</a>
         </div>
-        <div class="footer-links footer-links-multi"><h4>More Tools</h4>
+        <div class="footer-links footer-links-multi"><h4>Mais Ferramentas</h4>
           <div class="footer-links-list">
-          <a href="/pt/tools/cropper">Cropper</a><a href="/pt/tools/watermark">Watermark</a><a href="/pt/tools/image-merger">Image Merger</a><a href="/pt/tools/screenshot-to-image">Screenshot to Image</a><a href="/pt/tools/image-filters">Image Filters</a><a href="/pt/tools/svg-to-png">SVG to PNG</a><a href="/pt/tools/image-compare">Image Compare</a><a href="/pt/tools/print-resizer">Print-Ready Resizer</a><a href="/pt/tools/meme-generator">Meme Generator</a>          <a href="/pt/tools/face-blur">Face Blur</a>
-          <a href="/pt/tools/heic-converter">HEIC Converter</a>
-          <a href="/pt/tools/metadata-viewer">Metadata Viewer</a>
-          <a href="/pt/tools/avif-support">AVIF Support</a>
-          <a href="/pt/tools/image-adjust">Image Adjustment</a>
-          <a href="/pt/tools/image-border">Image Border</a>
-          <a href="/pt/tools/image-flip">Image Flip</a>
-          <a href="/pt/tools/image-grayscale">Image Grayscale</a>
-          <a href="/pt/tools/image-shadow">Image Shadow</a>
-          <a href="/pt/tools/image-splitter">Image Splitter</a>
-          <a href="/pt/tools/image-exif-remover">EXIF Remover</a><a href="/pt/tools/circle-crop">Circle Crop</a><a href="/pt/tools/favicon-generator">Favicon Generator</a><a href="/pt/tools/ocr">OCR Text</a><a href="/pt/tools/bulk-processor">Bulk Processor</a><a href="/pt/tools/image-to-pdf">Image to PDF</a>          <a href="/pt/tools/id-photo">ID Photo Maker</a>
-          <a href="/pt/tools/product-white-background">Product White BG</a>
-          <a href="/pt/tools/social-media-post">Social Media Post</a>
-          <a href="/pt/tools/photo-restoration">Photo Restoration</a><a href="/pt/tools/image-enhancer">Image Enhancer</a>
+          <a href="/pt/tools/cropper">Cortador</a><a href="/pt/tools/watermark">Marca d'água</a><a href="/pt/tools/image-merger">Juntar Imagens</a><a href="/pt/tools/screenshot-to-image">Captura para Imagem</a><a href="/pt/tools/image-filters">Filtros de Imagem</a><a href="/pt/tools/svg-to-png">SVG para PNG</a><a href="/pt/tools/image-compare">Comparar Imagens</a><a href="/pt/tools/print-resizer">Redimensionar p/ Impressão</a><a href="/pt/tools/meme-generator">Gerador de Memes</a>          <a href="/pt/tools/face-blur">Desfocar Rosto</a>
+          <a href="/pt/tools/heic-converter">Conversor HEIC</a>
+          <a href="/pt/tools/metadata-viewer">Ver Metadados</a>
+          <a href="/pt/tools/avif-support">Suporte AVIF</a>
+          <a href="/pt/tools/image-adjust">Ajustar Imagem</a>
+          <a href="/pt/tools/image-border">Bordas em Imagem</a>
+          <a href="/pt/tools/image-flip">Espelhar Imagem</a>
+          <a href="/pt/tools/image-grayscale">Tons de Cinza</a>
+          <a href="/pt/tools/image-shadow">Sombra em Imagem</a>
+          <a href="/pt/tools/image-splitter">Dividir Imagem</a>
+          <a href="/pt/tools/image-exif-remover">Remover EXIF</a><a href="/pt/tools/circle-crop">Corte Circular</a><a href="/pt/tools/favicon-generator">Gerador de Favicon</a><a href="/pt/tools/ocr">Texto por OCR</a><a href="/pt/tools/bulk-processor">Processar Lote</a><a href="/pt/tools/image-to-pdf">Imagem para PDF</a>          <a href="/pt/tools/id-photo">Foto para Documento</a>
+          <a href="/pt/tools/product-white-background">Fundo Branco p/ Produto</a>
+          <a href="/pt/tools/social-media-post">Post p/ Redes Sociais</a>
+          <a href="/pt/tools/photo-restoration">Restaurar Foto</a><a href="/pt/tools/image-enhancer">Melhorar Imagem</a>
           </div>
         </div>
         <div class="footer-links"><h4>Legal</h4><a href="/privacy">Política de Privacidade</a><a href="/terms">Termos de Serviço</a><a href="/cookie-policy">Política de Cookies</a>

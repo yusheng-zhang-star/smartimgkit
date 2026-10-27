@@ -1,51 +1,323 @@
 ﻿<!DOCTYPE html>
-<html lang="fr" data-theme="dark">
+<html lang="fr" data-theme="dark" data-tool-id="photo-collage-maker">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Créer un collage photo en ligne — sans inscription</title>
-<meta name="description" content="Réunissez plusieurs photos dans un collage en grille, avec espacement, coins arrondis et fond personnalisables. Gratuit, sans inscription ni envoi.">
-<link rel="canonical" href="https://smartimgkit.com/fr/tools/photo-collage-maker">
-<link rel="stylesheet" href="/css/style.css?v=15">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Créer un collage photo en ligne — Grille personnalisable</title>
+  <meta name="description" content="Réunissez 2 à 9 photos dans un collage en grille, avec espacement et couleur de fond réglables. Gratuit, sans inscription, 100 % local, aucune photo envoyée.">
+  <meta name="keywords" content="collage photo, grille photo, montage photo, collage en ligne, composition photo">
+  <link rel="canonical" href="https://smartimgkit.com/fr/tools/photo-collage-maker">
+  <meta name="theme-color" content="#059669">
+  <meta property="og:title" content="Créer un collage photo en ligne — Grille personnalisable">
+  <meta property="og:description" content="Réunissez 2 à 9 photos dans un collage en grille, avec espacement et fond réglables. Gratuit, 100 % local, sans envoi.">
+  <meta property="og:url" content="https://smartimgkit.com/fr/tools/photo-collage-maker">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/photo-collage-maker">
+  <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/photo-collage-maker">
+  <link rel="alternate" hreflang="fr" href="https://smartimgkit.com/fr/tools/photo-collage-maker">
+  <link rel="alternate" hreflang="pt" href="https://smartimgkit.com/pt/tools/photo-collage-maker">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/photo-collage-maker">
+  <link rel="stylesheet" href="/css/style.css?v=15">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+.selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
+.sp-item{display:flex;align-items:center;gap:8px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:999px;padding:8px 16px;font-size:0.85rem;color:var(--text-secondary);font-weight:500}
+.feature-narrative{margin:2.5rem 0;padding:0 1rem}
+.feature-narrative h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.feature-narrative .fn-intro{text-align:center;max-width:680px;margin:0 auto 2rem;color:var(--text-secondary);font-size:1rem;line-height:1.6}
+.fn-block{display:flex;gap:1.5rem;align-items:flex-start;margin:1.5rem 0;padding:1.25rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.fn-block .fn-icon{font-size:2rem;flex-shrink:0}
+.fn-block h3{font-size:1.05rem;color:var(--text-primary);margin:0 0 0.4rem}
+.fn-block p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin:0}
+.features-grid-section{margin:2.5rem 0;padding:0 1rem}
+.features-grid-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.features-grid-section .fg-sub{text-align:center;color:var(--text-secondary);font-size:0.95rem;margin-bottom:2rem}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;max-width:1000px;margin:0 auto}
+.feature-card{background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;padding:1.25rem;transition:transform .2s,border-color .2s}
+.feature-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.feature-card .fc-icon{font-size:1.8rem;margin-bottom:0.5rem}
+.feature-card h3{font-size:1rem;color:var(--text-primary);margin:0 0 0.4rem}
+.feature-card p{color:var(--text-secondary);font-size:0.85rem;line-height:1.5;margin:0}
+.trust-badges{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:2rem 0;padding:1.5rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.trust-badge{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;min-width:120px}
+.trust-badge .tb-icon{font-size:1.6rem}
+.trust-badge .tb-title{font-size:0.85rem;font-weight:700;color:var(--text-primary)}
+.trust-badge .tb-desc{font-size:0.72rem;color:var(--text-secondary)}
+.faq-section{margin:2.5rem 0;padding:0 1rem}
+.faq-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:1rem;text-align:center}
+.faq-item{border:1px solid var(--border);border-radius:8px;margin-bottom:0.5rem;overflow:hidden;background:var(--bg-secondary)}
+.faq-question{width:100%;padding:1rem 1.25rem;background:none;border:none;text-align:left;font-size:0.95rem;font-weight:600;color:var(--text-primary);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.faq-question::after{content:'+';font-size:1.2rem;transition:transform .2s}
+.faq-item.open .faq-question::after{transform:rotate(45deg)}
+.faq-answer{padding:0 1.25rem;max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;color:var(--text-secondary);font-size:0.9rem;line-height:1.6}
+.faq-item.open .faq-answer{padding:0 1.25rem 1rem;max-height:300px}
+@media(max-width:640px){.fn-block{flex-direction:column}.features-grid{grid-template-columns:1fr}.trust-badges{gap:12px}.trust-badge{min-width:90px}}
+.sp-item span.sp-icon{font-size:1rem}
+</style>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Free Photo Collage Maker",
+  "name": "Créateur de collage photo",
   "url": "https://smartimgkit.com/fr/tools/photo-collage-maker",
   "inLanguage": "fr",
-  "description": "Réunissez plusieurs photos dans un collage en grille, avec espacement, coins arrondis et fond personnalisables. Gratuit, sans inscription ni envoi.",
+  "description": "Réunissez 2 à 9 photos dans un collage en grille, avec espacement et fond réglables. Gratuit, sans envoi.",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
   "isAccessibleForFree": true,
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  }
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Combien de photos puis-je mettre dans un collage ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "De 2 à 9 photos selon la grille choisie : 2×2 pour 4 photos, 3 horizontales, 3 verticales ou 3×3 pour 9 photos. Importez simplement vos fichiers, les cellules se remplissent automatiquement dans l'ordre de sélection."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je changer l'espacement entre les photos ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui, un curseur permet de régler l'espacement de 0 à 50 pixels entre les photos du collage. Une valeur de 10 pixels offre un rendu équilibré ; montez jusqu'à 30 pour un style aéré, descendez à 0 pour une grille dense."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Mes photos sont-elles envoyées sur un serveur ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non. La composition du collage se fait entièrement dans votre navigateur, via l'API Canvas. Vos photos ne quittent jamais votre appareil : aucune image n'est téléversée, aucun compte n'est requis, ce qui respecte pleinement le RGPD pour des clichés de famille ou de vente."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quel format d'export est proposé ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Le collage est exporté en PNG, en 800×800 pixels. Ce format carré convient aux publications sur Instagram et Facebook, aux fiches produits Vinted ou Leboncoin, et à la plupart des usages web, sans perte de qualité visible."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je choisir la couleur de fond ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui, un sélecteur de couleur permet de choisir la couleur de fond du collage, visible dans les espacements et sur les bords. Le blanc par défaut s'accorde à toutes les photos ; un ton clair ou pastel crée une ambiance plus douce pour un usage familial."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je faire un collage pour une annonce Vinted ou Leboncoin ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Tout à fait. La grille 3×3 est idéale pour réunir, en une seule image, la vue principale d'un vêtement ou d'un objet, l'étiquette, un détail et un petit défaut d'usure. Cela accélère la décision de l'acheteur et évite les questions multiples sur l'état du produit."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "L'ordre des photos peut-il changer ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Les photos se rangent dans l'ordre où vous les importez, en remplissant les cellules de gauche à droite et de haut en bas. Pour changer la disposition, il suffit de sélectionner à nouveau vos fichiers dans l'ordre souhaité avant de générer le collage."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Faut-il payer ou créer un compte ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non, le créateur de collage est entièrement gratuit, sans inscription, sans filigrane et sans limite de nombre de collages. Vous assemblez autant de compositions que vous le souhaitez, directement en ligne, et vous téléchargez votre résultat en un clic."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Cela fonctionne-t-il sur un téléphone mobile ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui, l'outil s'utilise dans le navigateur de votre smartphone ou tablette, sous Android comme sur iOS. Le traitement reste local et l'aperçu s'adapte à la taille de l'écran : vous composez et téléchargez votre collage sans installer d'application."
+      }
+    }
+  ]
 }
 </script>
 </head>
 <body>
-<header class="site-header">
-<a href="/fr/" class="logo">SmartImgKit</a>
-<nav><a href="/fr/tools/">Tous les outils</a><a href="/fr/blog/">Blog</a></nav>
-</header>
-<main class="container">
-<h1>Free Photo Collage Maker</h1>
-<p class="lead">Combine 2-9 photos into a beautiful grid collage, all processing 100% local in your browser, no upload, no watermark.</p>
-<div class="upload-area" id="dropZone">
-<p>Upload multiple photos to make a collage</p>
-<input type="file" id="fileInput" accept="image/*" multiple hidden>
-</div>
-<div class="controls" style="margin:1rem 0;display:flex;gap:1rem;flex-wrap:wrap;">
-<label>Layout: <select id="layout"><option value="2x2">2x2 Grid</option><option value="3x1">3 Horizontal</option><option value="1x3">3 Vertical</option><option value="3x3">3x3 Grid</option></select></label>
-<label>Gap: <input type="range" id="gap" min="0" max="50" value="10"></label>
-<label>Background: <input type="color" id="bg" value="#ffffff"></label>
-<button id="downloadBtn" class="primary">Download Collage</button>
-</div>
-<canvas id="canvas" style="max-width:100%;border:1px solid #333;"></canvas>
-</main>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/fr/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/fr/">Accueil</a><a href="/fr/tools/">Outils</a><a href="/fr/blog/">Blog</a><a href="/about">À propos</a><a href="/contact">Contact</a></nav>
+      <div class="header-actions">
+        <div class="lang-switcher" style="position:relative;">
+          <button class="lang-btn" aria-label="Changer de langue">🇫🇷 FR</button>
+          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+            <a href="/" hreflang="en" lang="en">🇬🇧 English</a>
+            <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
+            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
+            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
+            <a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a>
+            <a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a>
+          </div>
+        </div>
+        <button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/fr/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>🖼️ Créateur de collage photo</span></nav>
+      <div class="tool-page-header">
+        <h1>🖼️ Créateur de collage photo</h1>
+        <p>Réunissez 2 à 9 photos dans une grille harmonieuse. Traitement 100 % local, aucune photo envoyée.</p>
+      </div>
+      <div class="tool-workspace">
+        <div class="upload-area" id="dropZone">
+          <p>Déposez plusieurs photos ici</p>
+          <input type="file" id="fileInput" accept="image/*" multiple hidden>
+        </div>
+        <div class="controls" style="margin:1rem 0;display:flex;gap:1rem;flex-wrap:wrap;align-items:center;">
+          <label>Disposition : <select id="layout" style="background:var(--bg-primary);color:var(--text-primary);border:1px solid var(--border);border-radius:8px;padding:4px 8px;"><option value="2x2">Grille 2×2</option><option value="3x1">3 horizontales</option><option value="1x3">3 verticales</option><option value="3x3">Grille 3×3</option></select></label>
+          <label>Espacement : <input type="range" id="gap" min="0" max="50" value="10"></label>
+          <label>Fond : <input type="color" id="bg" value="#ffffff"></label>
+          <button id="downloadBtn" class="btn btn-primary">Télécharger le collage</button>
+        </div>
+        <canvas id="canvas" style="max-width:100%;border:1px solid #333;"></canvas>
+      </div>
+      <div class="selling-points">
+        <div class="sp-item"><span class="sp-icon">🖼️</span>Grilles 2×2 à 3×3</div>
+        <div class="sp-item"><span class="sp-icon">🔒</span>100 % local, aucune photo envoyée</div>
+        <div class="sp-item"><span class="sp-icon">🆓</span>Gratuit, sans filigrane</div>
+      </div>
+      <section class="feature-narrative">
+        <h2>Composez vos souvenirs en quelques secondes</h2>
+        <p class="fn-intro">Un collage réunit plusieurs moments en une seule image : quatre photos de vacances, un avant/après, une série de portraits. Ce créateur assemble vos photos dans une grille propre, avec un espacement et un fond que vous contrôlez, le tout dans votre navigateur.</p>
+        <div class="fn-block"><div class="fn-icon">🖼️</div><div><h3>Grilles multiples</h3><p>2×2, 3 horizontales, 3 verticales ou 3×3 : choisissez la disposition adaptée à votre histoire.</p></div></div>
+        <div class="fn-block"><div class="fn-icon">🎚️</div><div><h3>Personnalisation fine</h3><p>Espacement entre les photos et couleur de fond réglables, pour un rendu propre et cohérent.</p></div></div>
+        <div class="fn-block"><div class="fn-icon">🔒</div><div><h3>100 % local</h3><p>Vos photos sont assemblées dans votre navigateur, sans envoi vers un serveur.</p></div></div>
+      </section>
+      <section class="features-grid-section">
+        <h2>L'essentiel pour un beau collage</h2>
+        <p class="fg-sub">Simple, flexible et privé.</p>
+        <div class="features-grid">
+          <div class="feature-card"><div class="fc-icon">🖼️</div><h3>4 dispositions</h3><p>Du duo à la grille 3×3.</p></div>
+          <div class="feature-card"><div class="fc-icon">🎚️</div><h3>Espacement réglable</h3><p>Contrôle fin de l'aération.</p></div>
+          <div class="feature-card"><div class="fc-icon">🎨</div><h3>Fond personnalisable</h3><p>Couleur de fond au choix.</p></div>
+          <div class="feature-card"><div class="fc-icon">🔒</div><h3>Confidentialité</h3><p>Aucun envoi, aucun compte.</p></div>
+          <div class="feature-card"><div class="fc-icon">🆓</div><h3>Gratuit à vie</h3><p>Sans inscription ni filigrane.</p></div>
+          <div class="feature-card"><div class="fc-icon">💾</div><h3>Export PNG</h3><p>Téléchargement en un clic.</p></div>
+        </div>
+      </section>
+      <div class="trust-badges">
+        <div class="trust-badge"><div class="tb-icon">🔒</div><div class="tb-title">100 % privé</div><div class="tb-desc">Les fichiers ne quittent pas le navigateur</div></div>
+        <div class="trust-badge"><div class="tb-icon">⚡</div><div class="tb-title">Résultat immédiat</div><div class="tb-desc">Collage généré en direct</div></div>
+        <div class="trust-badge"><div class="tb-icon">💯</div><div class="tb-title">Gratuit à vie</div><div class="tb-desc">Sans inscription ni filigrane</div></div>
+        <div class="trust-badge"><div class="tb-icon">🚀</div><div class="tb-title">Sans installation</div><div class="tb-desc">Ouvre dans le navigateur</div></div>
+      </div>
+      <section class="localization-section">
+        <h2 style="text-align:center;margin-bottom:20px;">Collages pour les réseaux sociaux et le partage en famille</h2>
+        <p>En France, en Belgique, en Suisse romande et au Québec, le collage photo accompagne naturellement les grands moments de la vie : un voyage en famille, un anniversaire, un week-end entre amis, l'arrivée d'un enfant, un Noël en Alsace ou une fin d'été en Bretagne. Plutôt que d'empiler quatre ou six clichés dans un album numérique, les utilisateurs francophones préfèrent souvent les réunir en une seule image composée, plus facile à transmettre et plus agréable à regarder. Sur Instagram, Facebook ou WhatsApp, un collage 2×2 ou 3×3 s'affiche entièrement dans le fil sans obliger à swiper, et il capte l'attention là où une photo isolée passerait plus vite inaperçue.</p>
+        <h3 style="margin-top:24px;">Quand un collage raconte mieux qu'une publication unique</h3>
+        <ul style="line-height:1.8;">
+          <li><strong>Recap de vacances :</strong> Quatre à neuf souvenirs d'une même journée (plage, repas, balade, coucher de soleil) réunis en grille forment un récit cohérent, bien plus parlant qu'une série de posts séparés.</li>
+          <li><strong>Avant/après :</strong> Le format 2×2 est idéal pour un aménagement, une rénovation, une recette ou une tenue : chaque paire de photos se lit d'un coup d'œil.</li>
+          <li><strong>Partage en famille :</strong> Un collage glissé dans un groupe WhatsApp ou un album partagé évite d'envoyer dix fichiers séparés et ménage la connexion des proches installés à l'étranger.</li>
+          <li><strong>Invitations et remerciements :</strong> Pour un anniversaire, un baptême ou un pot de départ, un petit collage de souvenirs illustre une carte ou un message plus personnel.</li>
+        </ul>
+        <p style="margin-top:16px;">La grille 3×3 est particulièrement prisée des créateurs de contenu pour les « recaps » de semaine ou les vignettes d'aperçu : neuf miniatures dans une seule image donnent un visuel dense et structuré qui fonctionne très bien dans le fil d'actualité. L'espacement réglable et la couleur de fond permettent d'aligner le rendu sur l'identité visuelle de votre compte : fond blanc pour la sobriété, ton pastel pour la douceur, fond sombre pour un style affirmé.</p>
+        <h3 style="margin-top:24px;">La confidentialité, un réflexe francophone</h3>
+        <p>Les utilisateurs francophones sont, par culture, très attentifs à la vie privée de leurs images, et le RGPD ainsi que la CNIL ont ancré ce réflexe : on ne téléverse pas n'importe quel cliché familial sur un service en ligne. Avec cet outil, l'assemblage du collage se fait entièrement dans votre navigateur, sur votre propre machine. Aucune photo n'est envoyée vers un serveur, aucun compte n'est requis, et vous pouvez fermer l'onglet sans laisser de trace. C'est un atout décisical lorsque l'on compose des images où figurent des enfants, des grands-parents ou des proches que l'on ne souhaite pas confier à une plateforme tierce.</p>
+        <p>Pensez à l'ordre de lecture : dans une grille, l'œil parcourt les cellules de gauche à droite puis de haut en bas. Placez donc votre photo la plus forte en haut à gauche, puis enchaînez logiquement (large plan, portrait, détail). Cette simple règle rend le collage plus fluide, sans effort supplémentaire. La grille 3 horizontales, quant à elle, dessine une frise panoramique très efficace pour un paysage ou une suite de portraits alignés.</p>
+        <p>Au Québec, où les hivers longs invitent à trier et imprimer les photos de l'année, les collages servent aussi de support aux albums de Noël, aux cartes de vœux et aux diaporamas projetés pendant les fêtes. Partout, le besoin est le même : transformer une succession de clichés en une image unique, chaleureuse et facile à transmettre, sans installer un logiciel de mise en page souvent trop lourd pour un usage du soir.</p>
+      </section>
+      <section class="localization-section">
+        <h2 style="text-align:center;margin-bottom:20px;">Collages pour vendre sur Vinted, Leboncoin et Cdiscount</h2>
+        <p>Pour les particuliers comme pour les petits vendeurs professionnels, la photo de produit conditionne souvent la vente. Sur Vinted, Leboncoin, Vestiaire Collective ou Cdiscount, un seul cliché ne suffit presque jamais à montrer un vêtement, un meuble ou un objet sous tous ses angles : l'acheteur veut voir l'avant, l'arrière, l'étiquette, un détail d'usure et l'objet en situation. Assembler ces cinq à neuf vues dans un seul collage 3×3 permet de tout montrer dans une image principale claire, et d'accroître la crédibilité de l'annonce sans multiplier les photos.</p>
+        <h3 style="margin-top:24px;">Construire une annonce qui inspire confiance</h3>
+        <ul style="line-height:1.8;">
+          <li><strong>Vue d'ensemble en grand :</strong> Placez la photo principale de l'article en première cellule, puis complétez par les détails (étiquette, couture, défauts). L'acheteur identifie l'objet en une fraction de seconde.</li>
+          <li><strong>Honnêtement sur l'état :</strong> Un collage qui montre aussi les petites usures rassure : il évite les retours et les messages de mécontentement après la vente.</li>
+          <li><strong>Cohérence visuelle :</strong> Photographiez tous vos articles dans la même lumière, sur le même fond, pour un catalogue de vente homogène et professionnel.</li>
+          <li><strong> gain de temps :</strong> Un seul collage tient lieu de diaporama : l'acheteur n'a pas à faire défiler dix images pour juger de l'article.</li>
+        </ul>
+        <p style="margin-top:16px;">Pour les vendeurs Amazon France et Cdiscount qui préparent des visuels de fiche, la même logique s'applique : une image composée réunit le produit, son emballage et une vue en situation, tout en respectant les attentes de propreté visuelle des places de marché. L'espacement réglable et le fond blanc par défaut donnent un rendu net, sans effet amateur, qui se fond bien dans un catalogue en ligne. Les petits créateurs qui vendent sur Etsy ou via une boutique Shopify apprécient aussi de pouvoir préparer, en quelques minutes, une grille de trois ou quatre vues produit sans payer d'abonnement mensuel à un logiciel de design.</p>
+        <p>Pensez à la lumière : une pièce éclairée naturellement, près d'une fenêtre mais sans soleil direct, évite les reflets durs et les ombres marquées qui déforment les couleurs. Un fond uni (drap clair, mur neutre) isole l'article et le rend plus désirable. Ces deux réflexes de photographie produit, associés à un collage bien composé, suffisent à donner à une annonce entre particuliers l'aspect d'une boutique professionnelle. En moyenne, une annonce illustrée d'un collage clair reçoit plus de visites et se vend plus vite qu'une annonce avec une unique photo floue prise à la va-vite.</p>
+        <h3 style="margin-top:24px;">Respecter le RGPD sur les photos de vente</h3>
+        <p>Lorsque l'on photographie des vêtements, du mobilier ou des objets personnels, il arrive que des visages, des pièces d'identité ou des éléments intimes apparaissent en arrière-plan. Parce que le traitement reste 100 % local, vos clichés bruts ne transitent par aucun serveur : vous composez le collage chez vous, en voyant exactement ce qui figurera sur l'image finale, et vous retirez ou recadrez vous-même ce qui ne doit pas être publié. Ce contrôle total est un point essentiel pour les vendeurs soucieux du RGPD et de la protection des données de leur foyer.</p>
+        <p>Conseil pratique : avant d'assembler, recadrez chaque vue au même format carré. L'outil adapte automatiquement chaque photo à sa cellule, mais des sources bien cadrées évitent les étirements disgracieux. Utilisez un espacement modéré (autour de 8 à 12 pixels) et un fond blanc ou très clair pour que l'œil se concentre sur les produits. Le collage exporté en PNG 800×800 est au bon format pour les miniatures de la plupart des plateformes de vente entre particuliers.</p>
+      </section>
+      <section class="localization-section">
+        <h2 style="text-align:center;margin-bottom:20px;">Conseils pour un collage réussi, du choix des photos à l'export</h2>
+        <p>Un bon collage repose sur la cohérence : des photos issues de la même série, avec des couleurs et une lumière proches, donnent un résultat bien plus harmonieux qu'un mélange hétéroclite. Commencez par trier vos clichés et ne gardez que ceux qui racontent une progression ou partagent une même ambiance. Pour un recap de voyage, variez les plans : un grand paysage, un portrait rapproché, un détail (café, carte, rue). Cette diversité rend l'image plus vivante qu'une suite de plans trop semblables.</p>
+        <h3 style="margin-top:24px;">Régler l'espacement et le fond comme un pro</h3>
+        <ul style="line-height:1.8;">
+          <li><strong>Espacement par défaut :</strong> La valeur de 10 pixels est un excellent point de départ. Augmentez vers 20 ou 30 pour un rendu aéré et « carte », réduisez vers 0 pour un collage dense type grille de contact.</li>
+          <li><strong>Couleur de fond :</strong> Le blanc convient à presque tous les usages et met les photos en valeur. Un fond sombre peut renforcer un style graphique ; un ton pastel adoucit l'ambiance d'un collage familial.</li>
+          <li><strong>Cohérence des formats :</strong> Des sources toutes en carré s'assemblent sans coupure. Sinon, prévoyez un petit recadrage en amont avec notre outil de recadrage.</li>
+        </ul>
+        <p style="margin-top:16px;">Pensez à l'usage final avant d'exporter : pour Instagram ou un post Facebook, un carré 800×800 est parfait ; pour un diaporama projeté en famille, vérifiez que vos photos sources sont assez grandes ; pour un email, préférez un PNG léger qui ne chargera pas trop longtemps. L'outil exporte systématiquement en PNG 800×800, un compromis adapté à la majorité des usages, et vous pouvez toujours le redimensionner ensuite.</p>
+        <p>Enfin, gardez en tête que moins d'images peut valoir mieux. Une grille 2×2 bien composée raconte souvent une histoire plus claire qu'une grille 3×3 surchargée. Si neuf photos vous semblent trop, passez à la disposition 3 horizontales ou 2×2 : l'important est que chaque cliché ait sa place et que l'ensemble respire. Testez plusieurs dispositions et réglages avant de télécharger, l'aperçu se met à jour instantanément, sans aucun renvoi vers un serveur.</p>
+        <h3 style="margin-top:24px;">Imprimer, partager ou archiver : adapter le collage au support</h3>
+        <p>Pour un usage papier (tirage, carte de vœux, livre photo), vérifiez que vos photos sources sont en haute définition : un agrandissement sur papier révèle vite le manque de netteté. Enregistrez le collage PNG puis faites-le développer dans un laboratoire en ligne, en pharmacie ou en grande surface, comme un tirage classique. Pour un diaporama projeté en famille lors d'une réunion ou d'un repas, prévoyez des clichés lumineux : les images un peu sombres perdent en lisibilité une fois projetées sur un mur ou un écran TV.</p>
+        <p>Pour le numérique, le collage 800×800 se compresse bien et se partage sans attendre. Sur WhatsApp, Messenger ou par email, il évite d'envoyer une archive lourde et préserve la connexion des proches à l'étranger. Pour archiver, conservez toujours les photos d'origine en plus du collage : le PNG final est parfait pour le partage, mais les fichiers bruts vous permettront, plus tard, de recomposer un autre collage avec d'autres choix et d'autres souvenirs, sans jamais perdre en qualité.</p>
+        <p>Avec ces repères, le créateur de collage devient un geste quotidien : quelques photos triées, une disposition, un espacement ajusté, et une image unique prête en quelques secondes, sans inscription, sans filigrane et sans jamais exposer vos images à un tiers. Il ne remplace pas un logiciel de création complet, mais il fait parfaitement le travail du soir, celui qu'on reporterait sans cet outil rapide et respectueux de la vie privée.</p>
+      </section>
+      <section class="faq-section">
+        <h2>Questions fréquentes</h2>
+        <div class="faq-item"><button class="faq-question">Combien de photos puis-je mettre dans un collage ?</button><div class="faq-answer">De 2 à 9 photos selon la grille choisie : 2×2 pour 4 photos, 3 horizontales, 3 verticales ou 3×3 pour 9 photos. Importez simplement vos fichiers, les cellules se remplissent automatiquement dans l'ordre de sélection.</div></div>
+        <div class="faq-item"><button class="faq-question">Puis-je changer l'espacement entre les photos ?</button><div class="faq-answer">Oui, un curseur permet de régler l'espacement de 0 à 50 pixels entre les photos du collage. Une valeur de 10 pixels offre un rendu équilibré ; montez jusqu'à 30 pour un style aéré, descendez à 0 pour une grille dense.</div></div>
+        <div class="faq-item"><button class="faq-question">Mes photos sont-elles envoyées sur un serveur ?</button><div class="faq-answer">Non. La composition du collage se fait entièrement dans votre navigateur, via l'API Canvas. Vos photos ne quittent jamais votre appareil : aucune image n'est téléversée, aucun compte n'est requis, ce qui respecte pleinement le RGPD pour des clichés de famille ou de vente.</div></div>
+        <div class="faq-item"><button class="faq-question">Quel format d'export est proposé ?</button><div class="faq-answer">Le collage est exporté en PNG, en 800×800 pixels. Ce format carré convient aux publications sur Instagram et Facebook, aux fiches produits Vinted ou Leboncoin, et à la plupart des usages web, sans perte de qualité visible.</div></div>
+        <div class="faq-item"><button class="faq-question">Puis-je choisir la couleur de fond ?</button><div class="faq-answer">Oui, un sélecteur de couleur permet de choisir la couleur de fond du collage, visible dans les espacements et sur les bords. Le blanc par défaut s'accorde à toutes les photos ; un ton clair ou pastel crée une ambiance plus douce pour un usage familial.</div></div>
+        <div class="faq-item"><button class="faq-question">Puis-je faire un collage pour une annonce Vinted ou Leboncoin ?</button><div class="faq-answer">Tout à fait. La grille 3×3 est idéale pour réunir, en une seule image, la vue principale d'un vêtement ou d'un objet, l'étiquette, un détail et un petit défaut d'usure. Cela accélère la décision de l'acheteur et évite les questions multiples sur l'état du produit.</div></div>
+        <div class="faq-item"><button class="faq-question">L'ordre des photos peut-il changer ?</button><div class="faq-answer">Les photos se rangent dans l'ordre où vous les importez, en remplissant les cellules de gauche à droite et de haut en bas. Pour changer la disposition, il suffit de sélectionner à nouveau vos fichiers dans l'ordre souhaité avant de générer le collage.</div></div>
+        <div class="faq-item"><button class="faq-question">Faut-il payer ou créer un compte ?</button><div class="faq-answer">Non, le créateur de collage est entièrement gratuit, sans inscription, sans filigrane et sans limite de nombre de collages. Vous assemblez autant de compositions que vous le souhaitez, directement en ligne, et vous téléchargez votre résultat en un clic.</div></div>
+        <div class="faq-item"><button class="faq-question">Cela fonctionne-t-il sur un téléphone mobile ?</button><div class="faq-answer">Oui, l'outil s'utilise dans le navigateur de votre smartphone ou tablette, sous Android comme sur iOS. Le traitement reste local et l'aperçu s'adapte à la taille de l'écran : vous composez et téléchargez votre collage sans installer d'application.</div></div>
+      </section>
+      <section class="related-tools">
+        <h2>Vous pourriez aussi aimer</h2>
+        <div class="related-tools-grid">
+          <a href="/fr/tools/photo-filters" class="related-tool-card">
+            <span class="tool-icon">🎨</span>
+            <div class="tool-info">
+              <strong>Filtres Photo</strong>
+              <span class="tool-desc">Appliquez des filtres à vos photos avant le collage</span>
+            </div>
+            <span class="tool-arrow">→</span>
+          </a>
+          <a href="/fr/tools/cropper" class="related-tool-card">
+            <span class="tool-icon">✂️</span>
+            <div class="tool-info">
+              <strong>Recadreur</strong>
+              <span class="tool-desc">Uniformisez le format de vos photos sources</span>
+            </div>
+            <span class="tool-arrow">→</span>
+          </a>
+          <a href="/fr/tools/image-merger" class="related-tool-card">
+            <span class="tool-icon">🧩</span>
+            <div class="tool-info">
+              <strong>Assembleur d'images</strong>
+              <span class="tool-desc">Combinez plusieurs images côte à côte</span>
+            </div>
+            <span class="tool-arrow">→</span>
+          </a>
+        </div>
+      </section>
+    </div>
+  </main>
+<footer class="site-footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="/fr/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Outils d'image gratuits qui respectent votre vie privée.</p></div><div class="footer-links"><h4>Outils</h4><a href="/fr/tools/background-remover">Supprimer l'arrière-plan</a><a href="/fr/tools/compressor">Compresseur</a><a href="/fr/tools/converter">Convertisseur</a><a href="/fr/tools/resizer">Redimensionneur</a><a href="/fr/tools/cropper">Recadrage</a><a href="/fr/tools/watermark">Filigrane</a></div><div class="footer-links"><h4>Plus d'outils</h4><a href="/fr/tools/image-upscaler">Agrandisseur</a><a href="/fr/tools/gif-editor">Éditeur GIF</a><a href="/fr/tools/pdf-to-image">PDF vers Image</a><a href="/fr/tools/heic-converter">Convertisseur HEIC</a><a href="/fr/tools/meme-generator">Générateur de Mèmes</a><a href="/fr/tools/face-blur">Flouter les Visages</a></div><div class="footer-links"><h4>Site</h4><a href="/about">À propos</a><a href="/contact">Contact</a><a href="/privacy">Confidentialité</a><a href="/terms">Conditions</a></div></div><div class="footer-bottom"><p>© 2026 SmartImgKit. Traitement 100 % local — vos fichiers ne quittent jamais votre appareil.</p></div></div></footer>
+  <script src="/js/main.js?v=8"></script>
+  <script src="../../js/lang.js"></script>
 <script>
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -86,5 +358,3 @@ const a = document.createElement('a'); a.download='collage.png'; a.href=canvas.t
 </script>
 </body>
 </html>
-
-

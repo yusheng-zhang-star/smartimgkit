@@ -1,25 +1,30 @@
 ﻿<!DOCTYPE html>
-<html lang="zh" data-theme="dark">
+<html lang="zh" data-theme="dark" data-tool-id="edge-refiner">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>边缘精修 — 修复抠图后的白边和发丝</title>
-  <meta name="description" content="AI 抠图后常见白边、锯齿边缘和断发丝，用边缘精修调整收缩量和羽化即可修复。免费，本地处理不上传。">
-  <meta name="keywords" content="edge refiner, fix cutout edges, remove white halo, hair edge retouch, transparent background edge fix">
+  <meta name="robots" content="index, follow">
+  <title>在线边缘精修工具：免费修复AI抠图白边、锯齿与断发丝，画笔微调不上传</title>
+  <meta name="description" content="AI自动抠图后人物边缘常留白边、锯齿和断发丝。这款免费在线边缘精修工具用橡皮擦和补画笔精细修图，可调画笔大小、硬度与缩放，全程在浏览器本地完成，照片不上传服务器，导出无水印PNG，适合电商商品图、证件照换底和微信头像精修。">
+  <meta name="keywords" content="edge refiner, fix cutout edges, remove white halo, hair edge retouch, transparent background edge fix, 抠图白边修复, 边缘精修">
   <link rel="canonical" href="https://smartimgkit.com/zh/tools/edge-refiner">
   <meta name="theme-color" content="#059669">
+  <meta property="og:title" content="在线边缘精修工具：免费修复AI抠图白边、锯齿与断发丝">
+  <meta property="og:description" content="AI自动抠图后人物边缘常留白边、锯齿和断发丝。橡皮擦加补画笔精细修图，全程浏览器本地处理，不上传，导出无水印PNG。">
+  <meta property="og:url" content="https://smartimgkit.com/zh/tools/edge-refiner">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/css/style.css?v=15">
-  <script type="application/ld+json">{
-  "inLanguage": "zh","@context":"https://schema.org","@type":"WebApplication","name":"边缘精修工具 — 修复抠图白边","url":"https://smartimgkit.com/zh/tools/edge-refiner","applicationCategory":"MultimediaApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"AI 抠图后常见白边、锯齿边缘和断发丝，用边缘精修调整收缩量和羽化即可修复。免费，本地处理不上传。"}</script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I fix white halos after background removal?","acceptedAnswer":{"@type":"Answer","text":"Use an edge refiner tool like SmartImgKit. 上传你的透明PNG图片, paint over the white halo edges with the eraser brush, and download the fixed image. All processing happens locally in your browser."}},{"@type":"Question","name":"Can I fix missing hair details after cutout?","acceptedAnswer":{"@type":"Answer","text":"Yes. Use the add brush to paint back missing hair strands or fine details that the background remover cut away. Adjust brush size for precision work."}},{"@type":"Question","name":"Is my image uploaded to a server?","acceptedAnswer":{"@type":"Answer","text":"No. All edge refinement runs locally in your browser using Canvas API. Your images never leave your device, ensuring full privacy."}},{"@type":"Question","name":"What file formats are supported?","acceptedAnswer":{"@type":"Answer","text":"PNG with transparency is recommended (the output of background removal tools). JPG files can also be loaded but you'll need to erase the background yourself first."}},{"@type":"Question","name":"Is this tool really free?","acceptedAnswer":{"@type":"Answer","text":"Yes, completely free. No signup, no watermark, no resolution limits. Process as many images as you need at no cost."}}]}</script>
-  <style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
     .editor-container{display:grid;grid-template-columns:1fr 240px;gap:1.5rem;margin-top:1rem}
     .canvas-wrapper{background:#1a1a1a;border:1px solid var(--border-color);border-radius:12px;overflow:hidden;position:relative;min-height:500px;display:flex;align-items:center;justify-content:center;background-image:linear-gradient(45deg,#2a2a25 25%,transparent 25%),linear-gradient(-45deg,#2a2a25 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#2a2a25 75%),linear-gradient(-45deg,transparent 75%,#2a2a25 75%);background-size:20px 20px;background-position:0 0,0 10px,10px -10px,10px 0}
     #canvas{max-width:100%;max-height:70vh;cursor:crosshair}
     .controls-panel{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:1.25rem}
     .control-group{margin-bottom:1.25rem}
-    .control-group label{display:block;font-size:.8rem;font-weight:600;margin-bottom:.5rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px}
+    .control-group label{display:block;font-size:.8rem;font-weight:600;margin-bottom:.5rem;color:var(--text-secondary)}
     .brush-size{width:100%}
     .tool-buttons{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:1rem}
     .tool-btn{padding:.6rem;border:1px solid var(--border-color);background:var(--bg-secondary);color:var(--text-primary);border-radius:8px;cursor:pointer;font-size:.85rem;transition:all .15s}
@@ -33,43 +38,143 @@
     .upload-prompt{text-align:center;color:var(--text-muted)}
     .upload-prompt .icon{font-size:4rem;margin-bottom:1rem}
     @media (max-width: 768px){.editor-container{grid-template-columns:1fr}}
-  </style>
+</style>
+
+<style id="enrich-css">
+.selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
+.sp-item{display:flex;align-items:center;gap:8px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:999px;padding:8px 16px;font-size:0.85rem;color:var(--text-secondary);font-weight:500}
+.sp-item span.sp-icon{font-size:1rem}
+.feature-narrative{margin:2.5rem 0;padding:0 1rem}
+.feature-narrative h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.feature-narrative .fn-intro{text-align:center;max-width:680px;margin:0 auto 2rem;color:var(--text-secondary);font-size:1rem;line-height:1.6}
+.fn-block{display:flex;gap:1.5rem;align-items:flex-start;margin:1.5rem 0;padding:1.25rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.fn-block .fn-icon{font-size:2rem;flex-shrink:0;line-height:1}
+.fn-block h3{font-size:1.05rem;color:var(--text-primary);margin:0 0 0.4rem}
+.fn-block p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin:0}
+.features-grid-section{margin:2.5rem 0;padding:0 1rem}
+.features-grid-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.features-grid-section .fg-sub{text-align:center;color:var(--text-secondary);font-size:0.95rem;margin-bottom:2rem}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;max-width:1000px;margin:0 auto}
+.feature-card{background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;padding:1.25rem;transition:transform .2s,border-color .2s}
+.feature-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.feature-card .fc-icon{font-size:1.8rem;margin-bottom:0.5rem}
+.feature-card h3{font-size:1rem;color:var(--text-primary);margin:0 0 0.4rem}
+.feature-card p{color:var(--text-secondary);font-size:0.85rem;line-height:1.5;margin:0}
+.trust-badges{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:2rem 0;padding:1.5rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.trust-badge{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;min-width:120px}
+.trust-badge .tb-icon{font-size:1.6rem}
+.trust-badge .tb-title{font-size:0.85rem;font-weight:700;color:var(--text-primary)}
+.trust-badge .tb-desc{font-size:0.72rem;color:var(--text-secondary)}
+@media(max-width:640px){.fn-block{flex-direction:column}.features-grid{grid-template-columns:1fr}.trust-badges{gap:12px}.trust-badge{min-width:90px}}
+
+.faq-section{margin:2.5rem 0;padding:0 1rem}
+.faq-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:1rem;text-align:center}
+.faq-item{border:1px solid var(--border);border-radius:8px;margin-bottom:0.5rem;overflow:hidden;background:var(--bg-secondary)}
+.faq-question{width:100%;padding:1rem 1.25rem;background:none;border:none;text-align:left;font-size:0.95rem;font-weight:600;color:var(--text-primary);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.faq-question::after{content:'+';font-size:1.2rem;transition:transform .2s}
+.faq-item.open .faq-question::after{transform:rotate(45deg)}
+.faq-answer{padding:0 1.25rem;max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;color:var(--text-secondary);font-size:0.9rem;line-height:1.6}
+.faq-item.open .faq-answer{padding:0 1.25rem 1rem;max-height:400px}
+</style>
+<meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "边缘精修工具",
+  "url": "https://smartimgkit.com/zh/tools/edge-refiner",
+  "inLanguage": "zh",
+  "description": "AI 抠图后常见白边、锯齿边缘和断发丝，用橡皮擦和补画笔精细修复，全程浏览器本地处理，导出无水印PNG。",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "AI抠图后边缘有白边怎么修？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "上传透明 PNG 后用橡皮擦沿白边轻轻涂抹即可去除。建议把画笔调到 10-20、放大到 150% 再精细修，几秒就能搞定一圈边缘。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "画笔太粗或太细怎么调整？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "右侧面板有画笔大小滑块，范围 1-100 像素。修发丝用 5-10，修大面积白边用 30-50，配合硬度滑块控制边缘羽化效果。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "修坏了能撤销吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "可以。点击撤销按钮逐步回退，最多保留 10 步历史；也可点重置按钮回到刚上传时的原图状态，重新开始精修。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "图片会被上传到服务器吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不会。所有精修运算都在你的浏览器内通过 Canvas 完成，图片从头到尾不离开设备。处理证件照、私人照片也没有隐私泄露风险。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "修好的 PNG 能直接用于淘宝主图或微信头像吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "可以。导出的是标准透明 PNG，可直接上传淘宝、拼多多做主图，或设为微信、抖音头像。建议导出后再压缩到 500KB 以内上传。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "支持哪些图片格式？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "推荐导入抠图工具导出的透明 PNG。JPG 也能打开，但 JPG 没有透明通道，需要你自己先把背景擦掉再精修边缘。"
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
-    <header class="site-header">
-    <div class="container header-inner">
-      <a href="/zh/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
-      <nav class="main-nav"><a href="/zh/">首页</a><a href="/zh/tools/">工具</a><a href="/zh/blog/">博客</a><a href="/about">关于我们</a><a href="/contact">联系我们</a></nav>
-      <div class="header-actions">
-        <div class="lang-switcher" style="position:relative;">
-          <button class="lang-btn" aria-label="Switch language">🇨🇳 中文</button>
-          <div class="lang-dropdown" style="display:none!important;position:absolute!important;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
-            <a href="/" hreflang="en" lang="en">🇬🇧 English</a>
-            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
-            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
-            <a href="/fr/" hreflang="fr" lang="fr">🇫🇷 Français</a>
-            <a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a>
-            <a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a>
-          </div>
-        </div>
-<button class="theme-toggle" id="themeToggle">🌙</button>
-        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
-      </div>
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a href="/zh/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+        <div class="nav-links"><a href="/zh/">首页</a><a href="/zh/#tools">工具</a></div>
+      </nav>
     </div>
   </header>
-
+<div class="ad-zone ad-header ad-loader-slot" data-ad-type="header" data-current-mobile="0"></div>
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>边缘精修</span></nav>
+      <nav class="breadcrumb" style="margin:1rem 0;"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>边缘精修</span></nav>
       <div class="tool-page-header">
-        <h1>✏️ 边缘精修工具 — 修复抠图白边</h1>
-        <p>修复抠图后的白边、粗糙边缘和缺失的发丝细节。涂抹问题区域，精修抠图边缘。</p>
+        <h1>✏️ 边缘精修工具 — 修复抠图白边与断发丝</h1>
+        <p>AI 抠图后常见的白边、锯齿和缺失发丝，用橡皮擦和补画笔一点点修好，全程本地处理。</p>
       </div>
 
       <div id="uploadPrompt" class="upload-prompt" style="margin:3rem 0">
         <div class="icon">✏️</div>
-        <h3>上传你的透明PNG图片</h3>
-        <p>Works best on images that have already had the background removed (PNG with transparency)</p>
+        <h3>上传你的透明 PNG 图片</h3>
+        <p>适用于已去除背景的透明图（抠图工具导出的 PNG 效果最佳）</p>
         <input type="file" id="fileInput" accept="image/png,image/jpeg" hidden>
         <button class="action-btn primary" onclick="document.getElementById('fileInput').click()">选择图片</button>
       </div>
@@ -81,45 +186,164 @@
           </div>
           <div class="controls-panel">
             <div class="control-group">
-              <label>Tool</label>
+              <label>工具</label>
               <div class="tool-buttons">
                 <button class="tool-btn active" id="eraserBtn" onclick="setTool('eraser')">🧽 橡皮擦</button>
                 <button class="tool-btn" id="addBtn" onclick="setTool('add')">🖌️ 补画笔</button>
               </div>
             </div>
             <div class="control-group">
-              <label>Brush Size: <span id="sizeVal">20</span>px</label>
+              <label>画笔大小：<span id="sizeVal">20</span> 像素</label>
               <input type="range" class="brush-size" id="brushSize" min="1" max="100" value="20">
             </div>
             <div class="control-group">
-              <label>Brush Hardness: <span id="hardnessVal">80</span>%</label>
+              <label>画笔硬度：<span id="hardnessVal">80</span>%</label>
               <input type="range" class="brush-size" id="brushHardness" min="0" max="100" value="80">
             </div>
             <div class="control-group">
-              <label>Zoom: <span id="zoomVal">100</span>%</label>
+              <label>缩放：<span id="zoomVal">100</span>%</label>
               <input type="range" class="brush-size" id="zoom" min="25" max="200" value="100">
             </div>
             <div class="action-buttons">
-              <button class="action-btn secondary" onclick="undo()">↩️ Undo</button>
-              <button class="action-btn secondary" onclick="resetImage()">🔄 Reset</button>
-              <button class="action-btn primary" onclick="download()">⬇️ Download PNG</button>
+              <button class="action-btn secondary" onclick="undo()">↩️ 撤销</button>
+              <button class="action-btn secondary" onclick="resetImage()">🔄 重置</button>
+              <button class="action-btn primary" onclick="download()">⬇️ 下载 PNG</button>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  <section class="faq-section">
-        <h2>常见问题</h2>
-        <div class="faq-item"><button class="faq-question" type="button">How do I fix white halos after background removal?</button><div class="faq-answer"><p>Use an edge refiner tool like SmartImgKit. 上传你的透明PNG图片, paint over the white halo edges with the eraser brush, and download the fixed image. All processing happens locally in your browser.</p></div></div>
-        <div class="faq-item"><button class="faq-question" type="button">Can I fix missing hair details after cutout?</button><div class="faq-answer"><p>Yes. Use the add brush to paint back missing hair strands or fine details that the background remover cut away. Adjust brush size for precision work.</p></div></div>
-        <div class="faq-item"><button class="faq-question" type="button">Is my image uploaded to a server?</button><div class="faq-answer"><p>No. All edge refinement runs locally in your browser using Canvas API. Your images never leave your device, ensuring full privacy.</p></div></div>
-        <div class="faq-item"><button class="faq-question" type="button">What file formats are supported?</button><div class="faq-answer"><p>PNG with transparency is recommended (the output of background removal tools). JPG files can also be loaded but you&#x27;ll need to erase the background yourself first.</p></div></div>
-        <div class="faq-item"><button class="faq-question" type="button">Is this tool really free?</button><div class="faq-answer"><p>Yes, completely free. No signup, no watermark, no resolution limits. Process as many images as you need at no cost.</p></div></div>
-      </section>
-</main>
 
+        <div class="selling-points">
+  <div class="sp-item"><span class="sp-icon">🧽</span>橡皮擦去除白边</div>
+  <div class="sp-item"><span class="sp-icon">🖌️</span>补画笔还原断发丝</div>
+  <div class="sp-item"><span class="sp-icon">🔒</span>100% 隐私 —— 图片不上传</div>
+</div>
+
+      <section class="feature-narrative">
+        <h2>边缘精修：给抠图结果做最后一步手工打磨</h2>
+        <p class="fn-intro">AI 抠图已经很强大，但人物发丝、毛绒玩具、玻璃杯这类复杂边缘总会留下白边或缺口。边缘精修工具让你在浏览器里用两支小画笔把这些细节修干净。</p>
+      <div class="fn-block">
+        <div class="fn-icon">🧽</div>
+        <div><h3>橡皮擦：顺着白边抹一圈</h3><p>把画笔调细、硬度调低，沿着半透明白边轻轻涂抹，锯齿和光晕立刻消失。适合修人物轮廓、商品外边缘。</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">🖌️</div>
+        <div><h3>补画笔：把抠丢的发丝画回来</h3><p>自动抠图常把碎发、胡须、毛衣针脚切掉。切到补画笔，按原图方向一笔笔补回缺失的细节，效果接近手工钢笔抠图。</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">🔍</div>
+        <div><h3>放大到 200% 修细节</h3><p>缩放滑块最大 200%，发丝和睫毛在放大状态下一目了然，修完再缩回 100% 检查整体效果。</p></div>
+      </div>
+      </section>
+
+      <section class="features-grid-section">
+        <h2>边缘精修所需的一切功能</h2>
+        <p class="fg-sub">轻量、免费、不上传，专门解决 AI 抠图的收尾问题。</p>
+        <div class="features-grid">
+        <div class="feature-card">
+          <div class="fc-icon">🧽</div>
+          <h3>橡皮擦 + 补画笔双工具</h3>
+          <p>去除多余白边与补回缺失细节，一支工具一个用途。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🎚️</div>
+          <h3>画笔大小与硬度可调</h3>
+          <p>1-100 像素范围，硬度控制边缘羽化，修粗修细都顺手。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🔍</div>
+          <h3>200% 放大预览</h3>
+          <p>发丝级细节在放大状态下精修，不错过一根碎发。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">↩️</div>
+          <h3>撤销与重置</h3>
+          <p>最多保留 10 步撤销记录，修错随时回退，也可一键重来。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🔒</div>
+          <h3>100% 本地处理</h3>
+          <p>所有运算在浏览器内完成，图片不离开设备。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🆓</div>
+          <h3>永久免费无水印</h3>
+          <p>无需注册、无次数限制，导出的 PNG 干净可用。</p>
+        </div>
+        </div>
+      </section>
+
+<div class="trust-badges">
+  <div class="trust-badge"><div class="tb-icon">🔒</div><div class="tb-title">100% 隐私</div><div class="tb-desc">图片不离开浏览器</div></div>
+  <div class="trust-badge"><div class="tb-icon">⚡</div><div class="tb-title">浏览器端</div><div class="tb-desc">无需安装、不上传</div></div>
+  <div class="trust-badge"><div class="tb-icon">💯</div><div class="tb-title">永久免费</div><div class="tb-desc">无注册、无水印</div></div>
+  <div class="trust-badge"><div class="tb-icon">📐</div><div class="tb-title">发丝级精修</div><div class="tb-desc">放大 200% 细节可调</div></div>
+</div>
+
+      <section class="localization-section">
+  <h2 style="text-align:center;margin-bottom:20px;">电商卖家必看：淘宝、拼多多商品抠图后的白边怎么修</h2>
+  <p>在国内电商行业，商品图几乎是决定点击率的第一要素。淘宝、拼多多、闲鱼的卖家几乎都用过自动抠图工具把商品换成纯白底或透明底，但导出的图放大看经常有一圈细细的白边——尤其是毛绒玩具、金属水壶、玻璃杯子、塑料瓶这些边缘反光强烈的商品，自动算法会把背景色残留成一圈光晕。这圈白边在小图缩略图上看不出来，可一旦买家点开主图放大，立刻显得廉价，转化率直接下降。边缘精修工具就是专门为这最后一步手工打磨设计的。</p>
+  <h3 style="margin-top:24px;">典型使用场景</h3>
+  <ul style="line-height:1.8;">
+    <li><strong>淘宝主图白底处理：</strong>平台要求主图背景干净，用橡皮擦沿商品外轮廓抹一圈，去掉抠图残留的半透明边，白底立刻均匀。</li>
+    <li><strong>拼多多商品轮播图：</strong>多件商品拼在一张图上时，每件边缘的白边会互相干扰，精修后整体干净整齐。</li>
+    <li><strong>闲鱼二手物品图：</strong>随手拍的杯子、衣服抠出来换白底，橡皮擦修掉环境反光，照片立刻像专业棚拍。</li>
+    <li><strong>微信表情包和贴纸：</strong>自制表情包边缘锯齿明显，用补画笔把圆角和尖角修顺，发出去更可爱。</li>
+  </ul>
+  <p style="margin-top:16px;">操作顺序建议：先把图片放大到 150% 左右，画笔调到 10-15 像素，硬度调到 60-70（边缘略有羽化更自然），沿商品外轮廓缓慢涂抹一圈；遇到毛绒材质边缘不要一次抹太狠，分两到三遍轻扫。修完缩回 100% 检查整体，如果某侧擦多了，切补画笔轻轻补回即可。整个过程通常一张商品图 2-3 分钟，比在 Photoshop 里用钢笔工具快得多，而且不用安装任何软件。</p>
+<h3>不同材质商品的修图手法差异</h3><p>金属和玻璃制品的白边最明显，因为这些材质本身会反射背景颜色。建议把画笔硬度降到 40 左右，让橡皮擦边缘带一点羽化，修出来的轮廓不会生硬。毛绒玩具和毛衣类商品不要用橡皮擦大面积抹——毛须本来就细碎，一擦就秃；正确做法是用补画笔把算法切掉的绒毛顺着方向补画回来，画笔大小控制在 5-8 像素，像在纸上画速写一样。服装类商品的领口、袖口是重灾区，放大到 200% 后可以看清每一条缝线，顺着缝线修 1 分钟就能干净。食品类图片（零食、水果）边缘通常有包装反光，建议先用橡皮擦整体过一遍，再用补画笔补高光轮廓，立体感会比自动抠图结果好不少。</p><p>批量处理时，建议每修完一张立即下载保存，文件名带上商品编号，避免浏览器标签页误关丢失进度。需要注意的是，工具一次只处理一张图，没有批量精修功能；但因为全程本地运算，处理速度比上传云端抠图快得多，一天修几十张商品图完全没有压力。电商卖家还可以把精修后的 PNG 直接用于详情页装修、直通车推广图和直播间背景贴片，透明底在任何底色上都能直接叠放。</p></section>
+
+<section class="localization-section">
+  <h2 style="text-align:center;margin-bottom:20px;">画笔参数怎么调？一张表看懂边缘精修</h2>
+  <p>第一次用画笔类工具的人经常对着三个滑块发愣：画笔大小、画笔硬度、缩放到底各管什么？这张表把每个参数的用途和推荐范围列清楚，照着调就能上手。</p>
+  <div style="overflow-x:auto;margin:1.2rem 0;">
+  <table style="width:100%;border-collapse:collapse;font-size:0.9rem;">
+    <thead>
+      <tr style="background:var(--bg-secondary);">
+        <th style="padding:10px;border:1px solid var(--border);text-align:left;">参数</th>
+        <th style="padding:10px;border:1px solid var(--border);text-align:left;">作用</th>
+        <th style="padding:10px;border:1px solid var(--border);text-align:left;">推荐范围</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="padding:10px;border:1px solid var(--border);">画笔大小</td><td style="padding:10px;border:1px solid var(--border);">每次涂抹的覆盖直径</td><td style="padding:10px;border:1px solid var(--border);">发丝 5-10，轮廓 15-30，大面积 40+</td></tr>
+      <tr><td style="padding:10px;border:1px solid var(--border);">画笔硬度</td><td style="padding:10px;border:1px solid var(--border);">涂抹边缘的羽化程度</td><td style="padding:10px;border:1px solid var(--border);">硬边 80-100，自然过渡 40-60</td></tr>
+      <tr><td style="padding:10px;border:1px solid var(--border);">缩放</td><td style="padding:10px;border:1px solid var(--border);">画布显示放大倍数</td><td style="padding:10px;border:1px solid var(--border);">修细节 150-200%，整体检查 100%</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="margin-top:12px;">一个实用技巧：修发丝和睫毛时把缩放拉到 200%、画笔缩到 5 像素、硬度 90，这样每一笔都精准落在目标像素上，不会误伤周围好的边缘。</p>
+<h3>橡皮擦和补画笔的分工</h3><p>橡皮擦的作用是"减掉"：凡是抠图多带出来的背景残留、白边、杂色，都用橡皮擦抹掉。它使用透明擦除模式，涂抹过的区域直接变成透明，露出下面的灰白棋盘格——看到棋盘格就说明那块已经被擦干净。补画笔的作用是"加回来"：凡是抠图切掉的发丝、胡须、毛衣纹理，切到补画笔顺着原图方向轻轻画，颜色会自动取周围像素。两支工具切换只需要点一下按钮，不用重新加载图片。</p><p>修一张人物肖像的建议流程是：第一步先整体观察，判断白边主要集中在哪一侧（通常逆光照片的头发边缘白边最重）；第二步放大到 150%，用橡皮擦 15 像素硬度 70 抹一圈外轮廓；第三步切补画笔，画笔 6 像素，把被切掉的碎发顺着生长方向补回来；第四步缩回 100% 看整体效果，发现哪里擦多了就补，补多了就擦，反复两三次即可。整个过程不需要美术基础，只要耐心顺着轮廓走，普通人练习三五张图就能熟练。</p><p>撤销按钮最多回退 10 步，所以每完成一个阶段（比如修完左半边头发）可以故意停一下，确认效果满意再继续；万一后面修坏了，连点撤销就能回到这个中间状态。重置按钮则会把整张图恢复成刚上传时的样子，适合思路完全乱掉时重新开始。下载的 PNG 默认保留原始分辨率，不会压缩画质，放大印刷也清晰。</p></section>
+
+<section class="localization-section">
+  <h2 style="text-align:center;margin-bottom:20px;">为什么选择浏览器端精修：隐私、效率与多设备</h2>
+  <h3 style="margin-top:24px;">照片安全</h3>
+  <p>市面上不少在线修图工具要求注册登录，图片先传到云端服务器再处理，存在被留存、被用于模型训练的风险。边缘精修工具完全不同：所有橡皮擦和补画笔运算都在你的浏览器里通过 Canvas 接口完成，图片从头到尾不经过任何服务器。处理证件照、私人照片、未发布的商品图时，这是非常重要的安全保证——尤其电商卖家的未上架商品图属于商业机密，上传到第三方平台有泄露给竞争对手的风险。</p>
+  <h3 style="margin-top:24px;">使用成本</h3>
+  <p>无需下载安装 Photoshop 这类重型软件，无需开通会员，没有"每天免费修 3 张"的限制，也没有导出水印。打开网页拖入图片即可开始精修，处理完成点一下按钮下载。对于修图店、电商运营、自媒体创作者这类高频用户，一年省下的软件订阅费相当可观。</p>
+  <h3 style="margin-top:24px;">适用设备</h3>
+  <p>桌面端 Windows、macOS、Linux 的 Chrome、Edge、Firefox 浏览器都能流畅运行；手机端 Safari、微信内置浏览器也支持触摸涂抹，外出拍了商品图可以直接在手机上修完再发布。</p>
+<h3>和桌面修图软件的对比</h3><p>Photoshop 的钢笔工具和快速选择边缘调整当然更强大，但学习成本高、软件体积几个 G，而且对电脑配置有要求。这款浏览器工具只保留精修白边和发丝这两个最常用的功能，打开就能用，零学习成本。对大多数电商卖家和普通用户来说，80% 的边缘问题两支画笔就解决了，剩下 20% 特别复杂的情况（比如半透明婚纱）再考虑专业软件。</p><p>隐私方面再强调一点：工具没有账号体系，关闭标签页后图片从内存中清除，不写硬盘、不留历史记录。在公司公用电脑、网吧设备上修图也不用担心照片被下一个使用的人恢复。企业用户（摄影工作室、电商设计团队）可以放心把它嵌入日常工作流，不存在图片数据汇聚到某家服务商的合规问题，也不需要向员工统一分发安装软件。</p><p>设备兼容性上实测：一部 2020 年后的中端手机处理 2000×2000 像素的商品图，涂抹和响应几乎无延迟；旧一些的设备建议把图片控制在 1500 像素以内再精修，画布太大时涂抹可能略有卡顿。处理完成后导出的 PNG 如果体积较大，可以搭配本站的图片压缩工具压到 500KB 以内，上传淘宝、拼多多时加载更快，也不会触发平台的大小限制。</p></section>
+
+<section class="faq-section">
+        <h2>常见问题</h2>
+<div class="faq-item"><button class="faq-question">AI抠图后边缘有白边怎么修？</button><div class="faq-answer"><p>上传透明 PNG 后用橡皮擦沿白边轻轻涂抹即可去除。建议把画笔调到 10-20、放大到 150% 再精细修，几秒就能搞定一圈边缘。</p></div></div>
+<div class="faq-item"><button class="faq-question">画笔太粗或太细怎么调整？</button><div class="faq-answer"><p>右侧面板有画笔大小滑块，范围 1-100 像素。修发丝用 5-10，修大面积白边用 30-50，配合硬度滑块控制边缘羽化效果。</p></div></div>
+<div class="faq-item"><button class="faq-question">修坏了能撤销吗？</button><div class="faq-answer"><p>可以。点击撤销按钮逐步回退，最多保留 10 步历史；也可点重置按钮回到刚上传时的原图状态，重新开始精修。</p></div></div>
+<div class="faq-item"><button class="faq-question">图片会被上传到服务器吗？</button><div class="faq-answer"><p>不会。所有精修运算都在你的浏览器内通过 Canvas 完成，图片从头到尾不离开设备。处理证件照、私人照片也没有隐私泄露风险。</p></div></div>
+<div class="faq-item"><button class="faq-question">修好的 PNG 能直接用于淘宝主图或微信头像吗？</button><div class="faq-answer"><p>可以。导出的是标准透明 PNG，可直接上传淘宝、拼多多做主图，或设为微信、抖音头像。建议导出后再压缩到 500KB 以内上传。</p></div></div>
+<div class="faq-item"><button class="faq-question">支持哪些图片格式？</button><div class="faq-answer"><p>推荐导入抠图工具导出的透明 PNG。JPG 也能打开，但 JPG 没有透明通道，需要你自己先把背景擦掉再精修边缘。</p></div></div>
+      </section>
+    <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
+  </main>
+    <div class="ad-zone ad-footer ad-loader-slot" data-ad-type="footer"></div>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. 保留所有权利.</p></div>
+    </div>
+  </footer>
   <script src="/js/main.js?v=8"></script>
-<script src="/js/ad-loader.js?v=4"></script>
+  <script src="../../js/lang.js"></script>
   <script>
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
@@ -210,11 +434,11 @@
     function paint(x, y) {
       const size = document.getElementById('brushSize').value;
       const hardness = document.getElementById('brushHardness').value / 100;
-      
+
       ctx.save();
       ctx.beginPath();
       ctx.arc(x, y, size, 0, Math.PI * 2);
-      
+
       if (currentTool === 'eraser') {
         ctx.globalCompositeOperation = 'destination-out';
         ctx.fillStyle = `rgba(0,0,0,${hardness})`;
@@ -222,7 +446,7 @@
         ctx.globalCompositeOperation = 'source-over';
         ctx.globalAlpha = hardness;
       }
-      
+
       ctx.fill();
       ctx.restore();
     }
@@ -258,11 +482,20 @@
       }, 'image/png');
     }
   </script>
+<script src="/js/ad-loader.js?v=4"></script>
+<script src="/js/result-modal.js?v=2"></script>
+
+<script>
+(function(){
+  const items = document.querySelectorAll('.faq-question');
+  items.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.parentElement;
+      item.classList.toggle('open');
+    });
+  });
+})();
+</script>
+
 </body>
 </html>
-
-
-
-
-
-

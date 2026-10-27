@@ -93,6 +93,22 @@
         "@type": "Answer",
         "text": "Unlike simple map viewers, our tool displays your actual photo thumbnails as map markers. Click any marker to see a larger preview with full details. It's like seeing your travel photos pinned exactly where they were taken!"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "What photo formats are supported?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "JPG, JPEG, PNG, HEIC, and WebP are all supported, and you can select multiple files at once. Formats that were never written by a camera, like screenshots, simply won't contain GPS data."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this a free photo map maker?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, completely free with unlimited uploads and no watermark. There's no account and no subscription — the map, poster, and GPX export are all included at no cost."
+      }
     }
   ]
 }
@@ -193,6 +209,31 @@
     .poster-actions .btn { min-width: 160px; }
     .poster-generating { text-align: center; padding: 40px; color: var(--text-secondary); }
     .poster-generating .spinner { width: 40px; height: 40px; border: 3px solid var(--border-color); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px; }
+
+    /* Enrich content styles (aligned with site-wide tool pages) */
+    .feature-narrative { max-width: 900px; margin: 3rem auto; padding: 0 1rem; }
+    .feature-narrative h2 { font-size: 1.6rem; color: var(--text-primary); margin-bottom: 0.5rem; text-align: center; }
+    .feature-narrative .fn-intro { text-align: center; max-width: 680px; margin: 0 auto 2rem; color: var(--text-secondary); font-size: 1rem; line-height: 1.6; }
+    .fn-block { display: flex; gap: 1.5rem; align-items: flex-start; margin: 1.5rem 0; padding: 1.25rem; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; }
+    .fn-block .fn-icon { font-size: 2rem; flex-shrink: 0; line-height: 1; }
+    .fn-block h3 { font-size: 1.05rem; color: var(--text-primary); margin: 0 0 0.4rem; }
+    .fn-block p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; margin: 0; }
+    .fn-block a { color: var(--accent); }
+    .features-grid-section { max-width: 1000px; margin: 3rem auto; padding: 0 1rem; }
+    .features-grid-section h2 { font-size: 1.6rem; color: var(--text-primary); margin-bottom: 0.5rem; text-align: center; }
+    .features-grid-section .fg-sub { text-align: center; color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 2rem; }
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; max-width: 1000px; margin: 0 auto; }
+    .feature-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; transition: transform .2s, border-color .2s; }
+    .feature-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+    .feature-card .fc-icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .feature-card h3 { font-size: 1rem; color: var(--text-primary); margin: 0 0 0.4rem; }
+    .feature-card p { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5; margin: 0; }
+    .compare-table-wrap { max-width: 900px; margin: 2rem auto; padding: 0 1rem; overflow-x: auto; }
+    .compare-table-wrap table { width: 100%; border-collapse: collapse; background: var(--bg-card); border-radius: 12px; overflow: hidden; font-size: 0.9rem; }
+    .compare-table-wrap th { padding: 12px; text-align: left; background: var(--accent); color: white; }
+    .compare-table-wrap td { padding: 12px; border-top: 1px solid var(--border-color); color: var(--text-secondary); }
+    .compare-table-wrap td:first-child { color: var(--text-primary); font-weight: 600; }
+    @media(max-width:640px){ .fn-block{flex-direction:column} .features-grid{grid-template-columns:1fr} }
   </style>
 </head>
 <body>
@@ -339,6 +380,105 @@
   </div>
 
 
+    <section class="feature-narrative">
+      <h2>How the Photo Location Map Actually Works</h2>
+      <p class="fn-intro">This tool turns the GPS coordinates hidden inside your photo files into pins on an interactive map — and it all happens on your device, without uploading anything.</p>
+      <div class="fn-block">
+        <div class="fn-icon">🧭</div>
+        <div><h3>GPS data lives in EXIF metadata</h3><p>Every time a smartphone or digital camera takes a photo, it can embed a small block of metadata called EXIF inside the image file. When location services are enabled, that block includes the latitude and longitude of the spot where you pressed the shutter. The photo location map reads this EXIF GPS block using piexif.js, extracts the coordinates, and drops a photo thumbnail marker on the map at that exact point.</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">🗺️</div>
+        <div><h3>Rendered locally with MapLibre and OpenStreetMap data</h3><p>The map itself is rendered by MapLibre GL, a fully client-side map engine, using free OpenFreeMap/OpenStreetMap tiles. Because the map tiles are loaded from public tile servers and your photos are processed in the browser, no image data ever crosses the network. Your travel photos, your home, and any sensitive locations stay on your device.</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">📊</div>
+        <div><h3>What the stats bar tells you</h3><p>After you drop a batch of photos, the stats bar counts how many files have GPS data, how many don't, and how many unique locations were detected. Photos without coordinates are still listed in the sidebar (dimmed), so you can tell at a glance which files need a location tag — useful when you're cleaning up a shoot before publishing a travel gallery.</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">📥</div>
+        <div><h3>GPX export for routes and GIS tools</h3><p>You can export every detected location as a GPX waypoint file, then open it in Google Earth, QGIS, Strava, or Organic Maps to overlay your photo trail on a satellite view. Each waypoint carries the filename and timestamp, so it doubles as a lightweight trip log without any additional software.</p></div>
+      </div>
+    </section>
+
+    <section class="features-grid-section">
+      <h2>What You Can Do With a Photo Location Map</h2>
+      <p class="fg-sub">Practical uses beyond just "seeing dots on a map".</p>
+      <div class="features-grid">
+        <div class="feature-card"><div class="fc-icon">✈️</div><h3>Relive a trip, photo by photo</h3><p>Drop an entire holiday folder on the map and watch the route take shape. Markers show your actual trail — the beach stop, the viewpoint, the hotel — without scrolling through thousands of files.</p></div>
+        <div class="feature-card"><div class="fc-icon">🖼️</div><h3>Make a photo map poster</h3><p>The built-in poster generator lays your marked-up map out with your thumbnails and styles it (Minimal White, Vintage Paper, Modern Dark), then exports it as a PNG you can print or share.</p></div>
+        <div class="feature-card"><div class="fc-icon">🔗</div><h3>Share just the locations, not the files</h3><p>The Share Map button builds a link that carries only the coordinates. Recipients see the same map view, but your actual photo files never leave your device — a clean way to tell someone "we were here" without sending originals.</p></div>
+        <div class="feature-card"><div class="fc-icon">📸</div><h3>Audit a shoot before publishing</h3><p>Creators and small businesses can check whether a batch of images was taken at the expected location, spot files with stripped metadata, and decide which photos still carry location data before posting them online.</p></div>
+        <div class="feature-card"><div class="fc-icon">🏔️</div><h3>Plan outdoor shoots by past spots</h3><p>Landscape photographers keep a map of previous shooting locations to quickly answer "where did I get that angle?" — and to avoid repeating the same spot twice on the same day.</p></div>
+        <div class="feature-card"><div class="fc-icon">🛡️</div><h3>Check your own privacy exposure</h3><p>Before sharing photos publicly, drop them here to see exactly which ones contain GPS data. Pair it with the <a href="/tools/image-exif-remover">EXIF remover</a> to strip location data from any file you plan to post.</p></div>
+      </div>
+    </section>
+
+    <section class="feature-narrative">
+      <h2>Why Some Photos Show No Location</h2>
+      <p class="fn-intro">It's normal for a batch of photos to come back with a mix of located and unlocated files. Here's what usually causes it.</p>
+      <div class="fn-block">
+        <div class="fn-icon">📵</div>
+        <div><h3>Location services were off on the camera</h3><p>If GPS recording is disabled on the phone or camera, no coordinates are written into the EXIF block. This is the single most common reason — check your camera's "save location" or "location tagging" setting before the next trip.</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">✂️</div>
+        <div><h3>Metadata was stripped during editing</h3><p>Exporting from many editors, or uploading through chat apps and some social platforms, strips EXIF automatically. Photos received over WhatsApp, Telegram, or after a "save as" in an editor often lose GPS entirely. If the original file exists on the camera, use that instead.</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">🖥️</div>
+        <div><h3>Screenshots and screen captures never have GPS</h3><p>A screenshot is not a camera exposure, so it contains no location data — no tool can extract a location that was never written. The dimmed entries in the photo list make these easy to identify.</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">💡</div>
+        <div><h3>Verify with a metadata viewer</h3><p>If you're not sure whether a file kept its EXIF at all, open it in the <a href="/tools/metadata-viewer">EXIF metadata viewer</a> first. It lists every GPS field, camera setting, and timestamp the file actually contains, so you can see exactly what this map tool had to work with.</p></div>
+      </div>
+    </section>
+
+    <section class="feature-narrative">
+      <h2>Tips That Make Photo Mapping Easier</h2>
+      <p class="fn-intro">A few habits turn a neat map into a genuinely useful one.</p>
+      <div class="fn-block">
+        <div class="fn-icon">✅</div>
+        <div><h3>Keep original files, not chat-forwarded copies</h3><p>Map from the files that came straight off the camera or phone. Copies that traveled through messenger apps usually lose their GPS block, and no amount of post-processing can restore it.</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">✅</div>
+        <div><h3>Process a whole folder, not one photo</h3><p>The tool accepts multiple files at once. Drop the full trip folder and let the map assemble itself — single-file checking misses the "trail" effect that makes a map compelling.</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">✅</div>
+        <div><h3>Use the sample data to learn the interface</h3><p>No photos handy? The "Try with sample data" button loads four cities plus one deliberately unlocated photo, so you can see how markers, the stats bar, and the dimmed no-GPS entries behave before using your own files.</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">✅</div>
+        <div><h3>Strip GPS before sharing anything publicly</h3><p>A map is a great planning tool, but those same coordinates are private information. Before publishing photos, run them through the <a href="/tools/batch-exif-remover">batch EXIF remover</a> so your home or office location never travels with the image.</p></div>
+      </div>
+    </section>
+
+    <section class="compare-table-wrap">
+      <h2 style="text-align:center;margin-bottom:1rem;">Photo Location Map vs. Common Alternatives</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>SmartImgKit Photo Map</th>
+            <th>Google Photos Map View</th>
+            <th>Desktop EXIF Tools</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Uploads photos to a server</td><td>No — fully local</td><td>Yes, stored in your account</td><td>No</td></tr>
+          <tr><td>Account or sign-up required</td><td>No</td><td>Google account required</td><td>Depends on the app</td></tr>
+          <tr><td>Shows photo thumbnails as markers</td><td>Yes</td><td>Yes</td><td>Usually icons only</td></tr>
+          <tr><td>Export GPX waypoints</td><td>Yes, built-in</td><td>No direct GPX</td><td>Often paid or plugin</td></tr>
+          <tr><td>Photo map poster generation</td><td>Yes, 3 styles</td><td>No</td><td>No</td></tr>
+          <tr><td>Free / watermark-free</td><td>Yes, unlimited</td><td>Free with storage limits</td><td>Mixed, many paid</td></tr>
+        </tbody>
+      </table>
+      <p style="color:var(--text-secondary);font-size:0.85rem;margin-top:1rem;">If your priority is privacy, no account, and keeping the whole workflow on your own machine, the local approach wins. If you already live inside an ecosystem and want automatic timeline maps, the cloud option may be more convenient — at the cost of handing over every image with its location.</p>
+    </section>
+
     <section class="amazon-store-section">
       <div class="container">
         <h2 style="font-size:1.3rem;font-weight:700;text-align:center;margin-bottom:6px;">Recommended Tools for Image Projects</h2>
@@ -389,6 +529,14 @@
     <div class="faq-item">
       <div class="faq-question">What makes this photo map different? <span>+</span></div>
       <div class="faq-answer">Unlike simple map viewers, our tool displays your actual photo thumbnails as map markers. Click any marker to see a larger preview with full details. It's like seeing your travel photos pinned exactly where they were taken!</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">What photo formats are supported? <span>+</span></div>
+      <div class="faq-answer">JPG, JPEG, PNG, HEIC, and WebP are all supported, and you can select multiple files at once. Formats that were never written by a camera, like screenshots, simply won't contain GPS data.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">Is this a free photo map maker? <span>+</span></div>
+      <div class="faq-answer">Yes, completely free with unlimited uploads and no watermark. There's no account and no subscription — the map, poster, and GPX export are all included at no cost.</div>
     </div>
   </section>
 

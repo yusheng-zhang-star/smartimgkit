@@ -33,27 +33,58 @@
     {
       "@type": "Question",
       "name": "¿Cómo añado un borde a una imagen PNG?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Sube tu PNG transparente, elige el color y el grosor del borde y descarga. Funciona totalmente en tu navegador." }
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sube tu PNG transparente, elige el color y el grosor del borde y descarga. Funciona totalmente en tu navegador."
+      }
     },
     {
       "@type": "Question",
       "name": "¿Puedo crear retratos estilo sticker?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Sí. Sube un retrato recortado, añade un borde blanco o de color grueso y obtendrás el efecto sticker tan popular." }
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí. Sube un retrato recortado, añade un borde blanco o de color grueso y obtendrás el efecto sticker tan popular."
+      }
     },
     {
       "@type": "Question",
-      "name": "Is this free?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Sí, 100% gratis: sin marca de agua, sin registro y con exportaciones ilimitadas." }
+      "name": "¿Es realmente gratis?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, 100% gratis: sin marca de agua, sin registro y con exportaciones ilimitadas."
+      }
     },
     {
       "@type": "Question",
       "name": "¿Mi imagen se sube a algún servidor?",
-      "acceptedAnswer": { "@type": "Answer", "text": "No. Todo el procesamiento ocurre en tu navegador con Canvas. Tus imágenes nunca salen de tu dispositivo." }
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Todo el procesamiento ocurre en tu navegador con Canvas. Tus imágenes nunca salen de tu dispositivo."
+      }
     },
     {
       "@type": "Question",
       "name": "¿Qué formato de imagen funciona mejor?",
-      "acceptedAnswer": { "@type": "Answer", "text": "El PNG transparente funciona mejor. El JPG también sirve, pero se enmarca la imagen completa." }
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El PNG transparente funciona mejor. El JPG también sirve, pero se enmarca la imagen completa."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo hago stickers de WhatsApp con fotos de mi familia?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sube el retrato recortado en formato PNG, elige el borde blanco clásico de unos veinte píxeles y activa la sombra suave. Descarga el resultado y guárdalo en tu carpeta de stickers del grupo familiar. Así los abuelos podrán mandar un saludo con la cara de los nietos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo usar los stickers en grupos de venta de Facebook?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí. Muchos vendedores convierten su logo recortado en un sticker con borde para usarlo en el empaque de sus envíos y en las publicaciones de su tienda. Recuerda pedir consentimiento si el sticker lleva el rostro de otra persona antes de compartirlo en un grupo grande."
+      }
     }
   ]
 }
@@ -90,8 +121,8 @@
     <div class="container nav-inner">
       <a href="/" class="logo">SmartImgKit</a>
       <div class="nav-links">
-        <a href="/">Home</a>
-        <a href="/es/tools/">Tools</a>
+        <a href="/">Inicio</a>
+        <a href="/es/tools/">Herramientas</a>
         <a href="/blog/">Blog</a>
       </div>
     </div>
@@ -103,7 +134,7 @@
 
     <div class="upload-zone" id="dropZone">
       <div style="font-size:3rem;margin-bottom:1rem">✨</div>
-      <p><strong>Upload your transparent PNG</strong> or drag & drop</p>
+      <p><strong>Sube tu PNG transparente</strong> o arrástralo hasta aquí</p>
       <p style="font-size:.85rem;color:var(--text-secondary)">Los retratos recortados dan mejores resultados</p>
       <input type="file" id="fileInput" accept="image/png,image/webp" hidden>
     </div>
@@ -114,20 +145,20 @@
 
     <div class="controls" id="controls" style="display:none">
       <div class="control">
-        <label>Preset Template</label>
+        <label>Plantilla</label>
         <select id="presetSelect" style="width:100%;padding:.5rem;border-radius:6px;background:var(--surface);color:var(--text);border:1px solid var(--border);">
-          <option value="classic">Classic White Sticker</option>
-          <option value="influencer">Influencer Gradient (Pink-Purple)</option>
-          <option value="cool">Cool Black Outline</option>
-          <option value="neon">Neon Yellow Outline</option>
+          <option value="classic">Sticker clásico blanco</option>
+          <option value="influencer">Degradado influencer (rosa-violeta)</option>
+          <option value="cool">Contorno negro clásico</option>
+          <option value="neon">Contorno neón amarillo</option>
         </select>
       </div>
       <div class="control">
-        <label>Border Thickness <span class="val" id="thickVal">20px</span></label>
+        <label>Grosor del borde <span class="val" id="thickVal">20px</span></label>
         <input type="range" id="thickSlider" min="2" max="80" value="20">
       </div>
       <div class="control">
-        <label>Border Color 1</label>
+        <label>Color del borde 1</label>
         <input type="color" id="colorPicker" value="#ffffff">
         <div class="color-presets">
           <div class="color-dot active" style="background:#ffffff" data-c="#ffffff"></div>
@@ -138,14 +169,14 @@
         </div>
       </div>
       <div class="control">
-        <label><input type="checkbox" id="optGradient"> Enable Gradient Border</label>
+        <label><input type="checkbox" id="optGradient"> Activar borde degradado</label>
         <div style="margin-top:.5rem;">
-          <label>Border Color 2 (for gradient)</label>
+          <label>Color del borde 2 (degradado)</label>
           <input type="color" id="colorPicker2" value="#ff00ff">
         </div>
       </div>
       <div class="control" style="grid-column: span 2;">
-        <label><input type="checkbox" id="optShadow" checked> Add drop shadow to sticker</label>
+        <label><input type="checkbox" id="optShadow" checked> Añadir sombra al sticker</label>
         <button id="btnExportConfig" style="margin-top:.5rem;padding:.5rem 1rem;border-radius:6px;background:var(--surface);color:var(--text);border:1px solid var(--border);cursor:pointer;font-size:.85rem;">
           ⚙️ Exportar configuración JSON
         </button>
@@ -154,16 +185,69 @@
 
     <div class="btn-group" id="btnGroup" style="display:none">
       <button class="btn btn-primary" onclick="downloadImage()">⬇️ Descargar PNG del sticker</button>
-      <button class="btn btn-secondary" onclick="resetAll()">🔄 New Image</button>
+      <button class="btn btn-secondary" onclick="resetAll()">🔄 Nueva imagen</button>
     </div>
 
+    <section class="localization-section">
+<h2>Crear stickers para WhatsApp con fotos de la familia</h2>
+<p>En Latinoamérica los stickers de WhatsApp son parte del lenguaje familiar. Un sticker del abuelo haciendo gestos, uno de la abuela guiñando un ojo, uno del perro de la casa, uno de los niños en la cena de Navidad: esos pequeños recortes con borde blanco se mandan tres o cuatro veces al día en el grupo familiar. Hacerlos normalmente requería apps extranjeras, cuentas complicadas y publicidad interminable. Con esta herramienta, la familia puede crear sus propios stickers directamente en el navegador.</p>
+<p>El proceso es simple: recorta la foto de la persona —si ya tienes un PNG transparente de un retrato, mejor—, súbelo a la herramienta, elige el grosor del borde, el color clásico blanco o el degradado influencer rosa-violeta, y descarga el sticker listo para guardar en tu carpeta de stickers de WhatsApp. Todo ocurre en tu dispositivo: las fotos de tu familia nunca se suben a ningún servidor.</p>
+<p>Los momentos del año en que las familias más piden stickers personalizados:</p>
+<ul>
+<li>Navidad y Año Nuevo: stickers de la cena, del árbol, del brindis, para saludar a los tíos que viven en otra ciudad sin mandar solo el mensaje de siempre.</li>
+<li>Día de Muertos: stickers con las fotos de los ausentes queridos, con las calaveras de azúcar y las flores de cempasúchil, para compartirlos en las familias que mantienen la tradición.</li>
+<li>Cumpleaños y XV años: stickers del festejado que el grupo reutiliza en todas las celebraciones del año.</li>
+<li>Regalos para abuelos: un sticker de los nietos que los abuelos pueden mandar en cada conversación es, en la práctica, un abrazo digital que ellos mismos envían.</li>
+</ul>
+<p>El tip práctico para que los stickers queden bien: usa fotos con buena iluminación y fondo limpio antes de recortar. Un borde grueso de veinte píxeles en blanco clásico imita el estilo de los stickers oficiales de WhatsApp, y activar la sombra les da ese toque pegajoso que se ve sobre cualquier fondo de chat.</p>
+<p>Y si la foto es de una mascota del hogar —el gato, el perro, el loro de la abuela— el sticker queda igual de bien. Las mascotas son de los personajes más usados en los grupos familiares, y un borde de color brillante hace que se distingan de inmediato en el medio del chat.</p>
+<p>Para los abuelos que viven lejos, un sticker con la foto de sus nietos es un regalo pequeño pero constante: ellos pueden usarlo en cada conversación del grupo familiar, y cada envío se siente como un abrazo diario. Hacerlo toma unos minutos, y el detalle queda guardado en la carpeta de stickers del teléfono por meses.</p>
+<p>Y si la familia celebra las fiestas patrias o las posadas decembrinas, un sticker del árbol, de la piñata o de la mesa de nacimiento sirve para saludar sin escribir el mensaje de siempre. La costumbre de crear stickers en casa, con fotos propias y bordes de colores, convierte un grupo de WhatsApp en un álbum vivo que la familia actualiza cada mes. No cuesta dinero, no requiere cuentas complicadas y se siente como un detalle hecho con las manos.</p>
+<p>El tip práctico para que el sticker quede como los oficiales de WhatsApp: usa un borde blanco de unos veinte píxeles y activa la sombra suave. Así el sticker se distingue del fondo del chat, y los abuelos lo reconocen de inmediato cuando lo reciben en cada conversación del grupo familiar.</p>
+</section>
+<section class="localization-section">
+<h2>Stickers para vendedores de Mercado Libre y empaques de venta</h2>
+<p>Los pequeños vendedores de Mercado Libre, de Facebook Marketplace y de los catálogos de barrio saben que el empaque es parte del producto. Una caja con una calcomanía de la tienda, una bolsa con el logo recortado, una nota escrita con el diseño de la marca: esos detalles hacen que el cliente recuerde dónde compró y vuelva. Esta herramienta sirve para convertir tu logo recortado en un sticker con borde blanco, listo para imprimir en hojas de calcomanías.</p>
+<p>Piensa en la vecina que hace velas artesanales y las vende por WhatsApp: cada vela que entrega va en una bolsa de papel, y una calcomanía redonda con su nombre le da el acabado profesional que venden las grandes marcas. Tú misma puedes preparar el archivo de esa calcomanía en minutos, sin pagar a un diseñador: sube el PNG de tu logo, elige el borde blanco clásico, ajusta el grosor y descarga el sticker.</p>
+<p>Los usos comerciales más comunes en la región:</p>
+<ul>
+<li>Calcomanías para empaque: stickers con el nombre de tu negocio para pegar en las cajas y bolsas que envías por Mercado Libre o por los paqueteros locales.</li>
+<li>Etiquetas de agradecimiento: un sticker con un mensaje breve para el cliente que abre el paquete, una costumbre que en las ventas por WhatsApp genera clientes repetidos.</li>
+<li>Stickers para las redes de tu negocio: un borde de color sobre tu retrato o tu logo hace que tus publicaciones en Instagram se vean cohesionadas y reconocibles al instante.</li>
+<li>Material para ferias y bazares: stickers que regalas en tu puesto para que los visitantes los peguen en su cuaderno o su termo, llevando tu marca por toda la ciudad.</li>
+</ul>
+<p>El consejo para que la impresión salga bien: cuando prepares el archivo para la imprenta de la esquina, agranda el borde un poco más de lo normal en pantalla. El ojo corrige en la vista digital, pero en la calcomanía impresa el borde fino desaparece entre el papel y el corte.</p>
+<p>Y si recién empiezas y aún no tienes logo propio, un retrato recortado con borde de color funciona como marca provisional en tus publicaciones. Mientras llega el diseño formal de tu negocio, el sticker te da presencia y te diferencia de los cientos de avisos genéricos que aparecen en los grupos de venta.</p>
+<p>Para la mamá que hace dulces típicos y los vende por WhatsApp, un sticker con el dibujo de su negocio sirve de sello en cada mensaje de confirmación del pedido. Los clientes lo reconocen de inmediato, y el toque visual hace que el pedido se sienta más cuidado que el de la competencia. Preparar ese sticker aquí, con borde blanco clásico y sombra suave, no le quita más de cinco minutos a su tarde de cocina.</p>
+<p>Y si asistes a ferias y bazares de la colonia, los stickers pequeños con tu nombre sirven como regalo para los visitantes del puesto: la gente los pega en su cuaderno, en la laptop o en el termo de la oficina, y tu marca viaja con ellos por toda la semana. Es una publicidad silenciosa que empieza con un archivo de cinco minutos, sin invertir en impresiones grandes.</p>
+<p>El consejo para que la impresión salga bien: cuando prepares el archivo para la imprenta de la esquina, agranda el borde un poco más de lo normal en pantalla. El ojo corrige en la vista digital, pero en la calcomanía impresa el borde fino desaparece entre el papel y el corte del troquel.</p>
+</section>
+<section class="localization-section">
+<h2>Stickers de comunidades: padres de familia, iglesias y clubes deportivos</h2>
+<p>Los grupos grandes de WhatsApp tienen su propio dialecto. El grupo de padres de la escuela, la comunidad de la colonia, la parroquia del barrio, el equipo de fútbol de los sábados: cada uno necesita stickers que representen su identidad y que cualquier miembro pueda reconocer de inmediato. Crear esos stickers con borde de color es una forma barata y cálida de darle personalidad al grupo, sin necesidad de contratar a nadie.</p>
+<p>Imagina al papá delegado del salón que organiza la kermés del colegio: sube una foto del profesor, le pone el borde verde de la escuela y crea un sticker que los demás papás usan en cada mensaje del grupo. El maestro se ríe, los niños lo ven en la pantalla del celular y la relación entre la escuela y las familias se humaniza un poco más. Ese pequeño detalle digital vale más que un flyer impreso.</p>
+<p>Los casos de uso en comunidades de toda la región:</p>
+<ul>
+<li>Grupos de padres de familia: stickers del profesor, de los directivos y del propio grupo, para darle tono amigable a los avisos de la escuela.</li>
+<li>Comunidades de la parroquia o el centro espiritual: stickers de los santos del mes, de los eventos de la semana y de los saludos dominicales que cualquier feligrés puede mandar.</li>
+<li>Equipos de fútbol amateur: stickers con la foto del capitán, de la porra y del domingo de partido, para los grupos de jugadores que se organizan por WhatsApp.</li>
+<li>Clubes de alumnos y exalumnos: stickers con el escudo de la escuela que los familiares reutilizan en los grupos de ventas y de ayuda mutua.</li>
+</ul>
+<p>La regla de cortesía que conviene recordar: antes de publicar un sticker con el rostro de alguien en un grupo grande, pide su consentimiento. Un sticker es una pequeña obra colectiva, y a algunas personas no les gusta ver su cara circulando sin previo aviso. Con esa precaución, los stickers unen más de lo que se imaginan.</p>
+<p>Y para los administradores de grupo: un sticker oficial de la comunidad se convierte en un recurso práctico cuando tienes que anunciar algo. En vez de escribir el aviso completo, mandas el sticker representativo y un mensaje corto. La gente lo reconoce, lo sonríe y el anuncio se difunde sin necesidad de repetirlo veinte veces en el chat.</p>
+<p>Para el padre delegado del salón que organiza la kermés de la escuela, el sticker del profesor se vuelve un símbolo no oficial del grupo: los papás lo usan en cada aviso de próxima reunión, y el maestro mismo termina guardándolo en su carpeta de stickers. Ese pequeño detalle refuerza el lazo entre la escuela y las familias sin necesidad de gastar en volantes impresos.</p>
+<p>Y si tu grupo es de un club deportivo amateur que se reúne los sábados, un sticker con la foto del capitán o de la porra anima los mensajes de organización del partido. Con el borde de tu equipo y el nombre del grupo, el sticker se reconoce al instante entre decenas de mensajes del chat. Es un recurso de identidad que se crea una vez y se reutiliza durante toda la temporada.</p>
+<p>La regla de cortesía que conviene recordar: antes de publicar un sticker con el rostro de alguien en un grupo grande, pide su consentimiento. Un sticker es una pequeña obra colectiva, y a algunas personas no les gusta ver su cara circulando sin previo aviso. Con esa precaución, los stickers unen más de lo que se imaginan.</p>
+</section>
     <section class="faq">
       <h2 style="margin-bottom:1rem">Preguntas frecuentes</h2>
       <div class="faq-item"><button class="faq-question">¿Cómo añado un borde a una imagen PNG?</button><div class="faq-answer"><p>Sube tu PNG transparente, elige el color y el grosor del borde y descarga. Funciona totalmente en tu navegador.</p></div></div>
       <div class="faq-item"><button class="faq-question">¿Puedo crear retratos estilo sticker?</button><div class="faq-answer"><p>Sí. Sube un retrato recortado, añade un borde blanco o de color grueso y obtendrás el efecto sticker tan popular.</p></div></div>
-      <div class="faq-item"><button class="faq-question">Is this free?</button><div class="faq-answer"><p>Sí, 100% gratis: sin marca de agua, sin registro y con exportaciones ilimitadas.</p></div></div>
+      <div class="faq-item"><button class="faq-question">¿Es realmente gratis?</button><div class="faq-answer"><p>Sí, 100% gratis: sin marca de agua, sin registro y con exportaciones ilimitadas.</p></div></div>
       <div class="faq-item"><button class="faq-question">¿Mi imagen se sube a algún servidor?</button><div class="faq-answer"><p>No. Todo el procesamiento ocurre en tu navegador con Canvas. Tus imágenes nunca salen de tu dispositivo.</p></div></div>
       <div class="faq-item"><button class="faq-question">¿Qué formato de imagen funciona mejor?</button><div class="faq-answer"><p>El PNG transparente funciona mejor. El JPG también sirve, pero se enmarca la imagen completa.</p></div></div>
+      <div class="faq-item"><button class="faq-question">¿Cómo hago stickers de WhatsApp con fotos de mi familia?</button><div class="faq-answer"><p>Sube el retrato recortado en formato PNG, elige el borde blanco clásico de unos veinte píxeles y activa la sombra suave. Descarga el resultado y guárdalo en tu carpeta de stickers del grupo familiar. Así los abuelos podrán mandar un saludo con la cara de los nietos.</p></div></div>
+      <div class="faq-item"><button class="faq-question">¿Puedo usar los stickers en grupos de venta de Facebook?</button><div class="faq-answer"><p>Sí. Muchos vendedores convierten su logo recortado en un sticker con borde para usarlo en el empaque de sus envíos y en las publicaciones de su tienda. Recuerda pedir consentimiento si el sticker lleva el rostro de otra persona antes de compartirlo en un grupo grande.</p></div></div>
     </section>
   </main>
 
@@ -329,9 +413,9 @@
 function shareOurTool() {
   const pageName = document.title.split("—")[0].trim();
   const url = window.location.href;
-  const text = `I just used this free 100% browser-based ${pageName} — no upload, no watermark, no signup! Try it: ${url}`;
+  const text = `Acabo de usar este ${pageName} GRATIS directamente en mi navegador — sin subir archivos, sin marca de agua, sin registro! Pruébalo: ${url}`;
   if (navigator.share) { navigator.share({text: text}); }
-  else { navigator.clipboard.writeText(text); alert("✅ Share text copied! Post it online to help others!"); }
+  else { navigator.clipboard.writeText(text); alert("✅ ¡Texto copiado! Compártelo en tus redes para ayudar a otras personas."); }
 }
 </script>
 <button onclick="shareOurTool(event)" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;">💛 Comparte esta herramienta gratis</button>
@@ -340,7 +424,7 @@ function shareOurTool(e) {
   e.stopPropagation();
   const toolName = document.title.split("—")[0].trim();
   const url = window.location.href;
-  const text = `I just used this FREE ${toolName} in my browser — no upload, no watermark, no signup! Saved me $29.99 on Photoshop. Try it: ${url}`;
+  const text = `Acabo de usar este ${toolName} GRATIS directamente en mi navegador — sin subir archivos, sin marca de agua, sin registro! Me ahorró el dinero de Photoshop. Pruébalo: ${url}`;
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
   window.open(twitterUrl, '_blank', 'width=550,height=420');
 }
@@ -350,7 +434,7 @@ function shareOurTool(e) {
 function shareOurTool() {
   const toolName = document.title.split("—")[0].trim();
   const url = window.location.href;
-  const text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
+  const text = `Acabo de usar este ${toolName} GRATIS directamente en mi navegador — sin subir archivos, sin marca de agua, sin registro! Me ahorró el dinero de Photoshop. Pruébalo: ${url}`;
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
   window.open(twitterUrl, '_blank', 'width=550,height=420');
 }

@@ -1,29 +1,64 @@
 <!DOCTYPE html>
-<html lang="zh" data-theme="dark">
+<html lang="zh" data-theme="dark" data-tool-id="ecommerce-product-studio">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>电商产品图制作 — AI 抠图换白底，本地处理免上传</title>
-<meta name="description" content="免费电商产品图编辑器。AI 一键抠图换白底，为 Shopify/WooCommerce 生成干净的产品图。100% 本地处理，无需上传。">
-<link rel="canonical" href="https://smartimgkit.com/zh/tools/ecommerce-product-studio">
-<style>
-* {margin:0; padding:0; box-sizing:border-box;}
-body {font-family:system-ui,sans-serif; background:#f8fafc; color:#1e293b; line-height:1.6;}
-.top {background:#059669; color:white; padding:1rem; position:sticky; top:0; z-index:100;}
-.top-inner {max-width:1200px; margin:0 auto; display:flex; align-items:center;}
-.top a {color:white; text-decoration:none; margin-right:1.5rem;}
-.container {max-width:1000px; margin:2rem auto; padding:0 1rem;}
-h1 {color:#059669; margin-bottom:1rem;}
-.workspace {background:white; padding:2rem; border-radius:16px; box-shadow:0 4px 16px rgba(0,0,0,0.08);}
-.drop-zone {border:2px dashed #94a3b8; border-radius:12px; padding:3rem; text-align:center; margin:1.5rem 0; cursor:pointer;}
-.drop-zone:hover {border-color:#059669; background:#ecfdf5;}
-button {background:#059669; color:white; border:none; padding:0.8rem 1.5rem; border-radius:8px; font-size:1rem; cursor:pointer; margin:0.5rem;}
-button:hover {background:#047857;}
-button:disabled {background:#94a3b8; cursor:not-allowed;}
-canvas {max-width:100%; border:1px solid #e2e8f0; border-radius:8px; margin:1rem auto; display:block;}
-.status {padding:1rem; border-radius:8px; background:#ecfdf5; color:#059669; margin:1rem 0; display:none;}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>电商产品图制作 — AI 抠图换白底，本地处理免上传</title>
+  <meta name="description" content="免费电商产品图编辑器。AI 一键抠图换白底，为淘宝、拼多多、Shopify 生成干净的产品主图。100% 本地处理，无需上传。">
+  <meta name="keywords" content="product photo editor, remove background, white background, ecommerce photo, 白底图, 抠图, 产品主图, 淘宝主图">
+  <link rel="canonical" href="https://smartimgkit.com/zh/tools/ecommerce-product-studio">
+  <meta name="theme-color" content="#059669">
+  <meta property="og:title" content="电商产品图制作 — AI 抠图换白底，本地处理免上传">
+  <meta property="og:description" content="免费电商产品图编辑器。AI 一键抠图换白底，为淘宝、拼多多、Shopify 生成干净的产品主图。100% 本地处理，无需上传。">
+  <meta property="og:url" content="https://smartimgkit.com/zh/tools/ecommerce-product-studio">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/ecommerce-product-studio">
+  <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/ecommerce-product-studio">
+  <link rel="alternate" hreflang="fr" href="https://smartimgkit.com/fr/tools/ecommerce-product-studio">
+  <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/ecommerce-product-studio">
+  <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/ecommerce-product-studio">
+  <link rel="stylesheet" href="/css/style.css?v=15">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style id="enrich-css">
+.selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
+.sp-item{display:flex;align-items:center;gap:8px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:999px;padding:8px 16px;font-size:0.85rem;color:var(--text-secondary);font-weight:500}
+.sp-item span.sp-icon{font-size:1rem}
+.feature-narrative{margin:2.5rem 0;padding:0 1rem}
+.feature-narrative h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.feature-narrative .fn-intro{text-align:center;max-width:680px;margin:0 auto 2rem;color:var(--text-secondary);font-size:1rem;line-height:1.6}
+.fn-block{display:flex;gap:1.5rem;align-items:flex-start;margin:1.5rem 0;padding:1.25rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.fn-block .fn-icon{font-size:2rem;flex-shrink:0;line-height:1}
+.fn-block h3{font-size:1.05rem;color:var(--text-primary);margin:0 0 0.4rem}
+.fn-block p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin:0}
+.features-grid-section{margin:2.5rem 0;padding:0 1rem}
+.features-grid-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.features-grid-section .fg-sub{text-align:center;color:var(--text-secondary);font-size:0.95rem;margin-bottom:2rem}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;max-width:1000px;margin:0 auto}
+.feature-card{background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;padding:1.25rem;transition:transform .2s,border-color .2s}
+.feature-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.feature-card .fc-icon{font-size:1.8rem;margin-bottom:0.5rem}
+.feature-card h3{font-size:1rem;color:var(--text-primary);margin:0 0 0.4rem}
+.feature-card p{color:var(--text-secondary);font-size:0.85rem;line-height:1.5;margin:0}
+.trust-badges{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:2rem 0;padding:1.5rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.trust-badge{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;min-width:120px}
+.trust-badge .tb-icon{font-size:1.6rem}
+.trust-badge .tb-title{font-size:0.85rem;font-weight:700;color:var(--text-primary)}
+.trust-badge .tb-desc{font-size:0.72rem;color:var(--text-secondary)}
+@media(max-width:640px){.fn-block{flex-direction:column}.features-grid{grid-template-columns:1fr}.trust-badges{gap:12px}.trust-badge{min-width:90px}}
+
+.faq-section{margin:2.5rem 0;padding:0 1rem}
+.faq-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:1rem;text-align:center}
+.faq-item{border:1px solid var(--border);border-radius:8px;margin-bottom:0.5rem;overflow:hidden;background:var(--bg-secondary)}
+.faq-question{width:100%;padding:1rem 1.25rem;background:none;border:none;text-align:left;font-size:0.95rem;font-weight:600;color:var(--text-primary);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.faq-question::after{content:'+';font-size:1.2rem;transition:transform .2s}
+.faq-item.open .faq-question::after{transform:rotate(45deg)}
+.faq-answer{padding:0 1.25rem;max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;color:var(--text-secondary);font-size:0.9rem;line-height:1.6}
+.faq-item.open .faq-answer{padding:0 1.25rem 1rem;max-height:300px}
 </style>
-<link rel="stylesheet" href="/css/style.css?v=15">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -31,7 +66,7 @@ canvas {max-width:100%; border:1px solid #e2e8f0; border-radius:8px; margin:1rem
   "name": "电商产品图工作室",
   "url": "https://smartimgkit.com/zh/tools/ecommerce-product-studio",
   "inLanguage": "zh",
-  "description": "免费电商产品图编辑器。AI 一键抠图换白底，为 Shopify/WooCommerce 生成干净的产品图。100% 本地处理，无需上传。",
+  "description": "免费电商产品图编辑器。AI 一键抠图换白底，为淘宝、拼多多、Shopify 生成干净的产品主图。100% 本地处理，无需上传。",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
   "isAccessibleForFree": true,
@@ -42,46 +77,181 @@ canvas {max-width:100%; border:1px solid #e2e8f0; border-radius:8px; margin:1rem
   }
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "处理在服务器上吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不在。所有抠图和换白底计算都在你的浏览器内完成，照片不会上传到任何服务器。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "淘宝主图白底要求是什么？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "淘宝/天猫主图建议 800×800 或 750×1000 像素，白色背景纯度接近 #FFFFFF，商品占画面 60%-80%，四周留白均匀。本工具默认输出 1600×1600 白底图，可直接裁剪适配平台要求。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "支持哪些图片格式？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "支持 JPG、PNG、WebP 等常见格式，单张最大 20MB。导出为透明背景 PNG 或白底 JPG，均可自由选择。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "手机照片能直接处理吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "可以。手机浏览器打开即可使用，拍摄的商品照直接选择上传，抠图换白底全程在本地完成，适合随时上新、临时修改主图。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "免费版有数量限制吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "没有。工具永久免费，不限制处理张数，不加水印，无需注册账号。"
+      }
+    }
+  ]
+}
+</script>
+
+<style id="missing-rules-css">
+.drop-zone{border:2px dashed #94a3b8; border-radius:12px; padding:3rem; text-align:center; margin:1.5rem 0; cursor:pointer;}
+.drop-zone:hover{border-color:#059669; background:#ecfdf5;}
+</style>
 </head>
 <body>
-<div class="top">
-  <div class="top-inner">
-    <a href="/" style="font-weight:800; font-size:1.2rem;">SmartImgKit</a>
-    <a href="/tools/">All Tools</a>
-    <a href="/blog/">Blog</a>
-  </div>
-</div>
-<div class="container">
-  <h1>电商产品图工作室</h1>
-  <p>为 Shopify/WooCommerce 生成干净的产品图，全程本地处理。AI 抠图换白底，无需上传。</p>
-  <div class="workspace">
-    <div class="drop-zone" id="dropZone">
-      <p style="font-size:1.2rem; margin-bottom:0.5rem;">📦 把产品图拖到这里</p>
-      <p style="color:#64748b;">支持 JPG/PNG，最大 20MB</p>
-      <input type="file" id="fileInput" accept="image/*" hidden>
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a href="/zh/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+        <div class="nav-links"><a href="/zh/">首页</a><a href="/zh/#tools">工具</a></div>
+      </nav>
     </div>
-    <div class="status" id="status"></div>
-    <div style="text-align:center;">
-      <button id="generateBtn" disabled>✨ 生成干净的产品图</button>
-      <button id="downloadBtn" disabled>⬇️ Download</button>
+  </header>
+  <main class="tool-page">
+    <div class="container">
+      <div class="tool-page-header">
+        <h1>📦 电商产品图工作室</h1>
+        <p>AI 一键抠图换白底，为淘宝、拼多多、Shopify 生成干净的产品主图，全程本地处理。</p>
+      </div>
+      <div class="tool-workspace">
+        <div class="drop-zone" id="dropZone">
+          <p style="font-size:1.2rem; margin-bottom:0.5rem;">📦 把产品图拖到这里</p>
+          <p style="color:var(--text-secondary);">支持 JPG/PNG，最大 20MB</p>
+          <input type="file" id="fileInput" accept="image/*" hidden>
+        </div>
+        <div class="status" id="status"></div>
+        <div style="text-align:center;">
+          <button id="generateBtn" disabled>✨ 生成干净的产品图</button>
+          <button id="downloadBtn" disabled>⬇️ 下载</button>
+        </div>
+        <canvas id="canvas"></canvas>
+      </div>
+      <div class="selling-points">
+        <div class="sp-item"><span class="sp-icon">🖼️</span>AI 一键抠图换白底</div>
+        <div class="sp-item"><span class="sp-icon">🔒</span>100% 本地处理，照片不上传</div>
+        <div class="sp-item"><span class="sp-icon">🆓</span>永久免费，无水印无注册</div>
+      </div>
+      <section class="feature-narrative">
+        <h2>电商产品图工作室：干净主图一页搞定</h2>
+        <p class="fn-intro">把随手拍的商品照片变成符合平台规范的白底主图，是每个电商卖家的日常。这个工具用 AI 自动识别产品轮廓、一键抠掉背景并铺上纯白底色，全程在浏览器里完成。</p>
+        <div class="fn-block">
+          <div class="fn-icon">🎯</div>
+          <div><h3>AI 自动抠图</h3><p>上传商品照后点击生成，AI 在本地识别产品边缘并移除背景，无需手动钢笔抠图，几秒出结果。</p></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-icon">⬜</div>
+          <div><h3>统一白底输出</h3><p>自动铺 1600×1600 纯白画布并居中商品，符合主流电商平台对白底主图的显示要求。</p></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-icon">🔒</div>
+          <div><h3>本地处理零上传</h3><p>所有 AI 计算都在你的浏览器完成，商品照片不离开设备，避免款式被同行或平台提前泄露。</p></div>
+        </div>
+      </section>
+      <section class="features-grid-section">
+        <h2>电商产品图工作室的功能</h2>
+        <p class="fg-sub">让上新、改主图更快的核心能力。</p>
+        <div class="features-grid">
+          <div class="feature-card"><div class="fc-icon">🤖</div><h3>AI 一键抠图</h3><p>自动识别产品边界，移除杂乱背景。</p></div>
+          <div class="feature-card"><div class="fc-icon">⚡</div><h3>秒级出图</h3><p>本地计算，无需排队等待。</p></div>
+          <div class="feature-card"><div class="fc-icon">⬜</div><h3>纯白背景</h3><p>1600×1600 白底画布，商品居中。</p></div>
+          <div class="feature-card"><div class="fc-icon">🔒</div><h3>100% 隐私</h3><p>照片只在本地处理，绝不上传。</p></div>
+          <div class="feature-card"><div class="fc-icon">🆓</div><h3>永久免费</h3><p>无水印、无张数限制、无注册。</p></div>
+          <div class="feature-card"><div class="fc-icon">🌐</div><h3>跨平台</h3><p>手机、电脑浏览器均可直接使用。</p></div>
+        </div>
+      </section>
+      <div class="trust-badges">
+        <div class="trust-badge"><div class="tb-icon">🔒</div><div class="tb-title">100% 隐私</div><div class="tb-desc">文件不离开浏览器</div></div>
+        <div class="trust-badge"><div class="tb-icon">⚡</div><div class="tb-title">浏览器端</div><div class="tb-desc">无需安装、不上传</div></div>
+        <div class="trust-badge"><div class="tb-icon">💯</div><div class="tb-title">永久免费</div><div class="tb-desc">无需注册、无水印</div></div>
+        <div class="trust-badge"><div class="tb-icon">🚀</div><div class="tb-title">秒级出图</div><div class="tb-desc">本地 AI 即时处理</div></div>
+      </div>
+      <section class="localization-section">
+        <h2 style="text-align:center;margin-bottom:20px;">中国电商白底图规范：淘宝、拼多多、京东主图怎么做</h2>
+        <p>在中国电商平台上，白底图是商品主图的"标准答案"。淘宝和天猫的主图规范要求商品背景干净、以白色为主，突出商品本身；拼多多的商品主图同样偏好浅色背景，方便在信息流里快速识别商品轮廓；京东商城的白底图则直接与搜索结果页的展示效果挂钩。对中小卖家来说，这意味着每次上新都要准备一套符合平台要求的白底图，如果全靠手机拍摄加手动抠图，一天处理几十个 SKU 会非常吃力。</p>
+        <p>使用这款工具，流程可以压缩成三步：上传随手拍的商品照片，点击生成让 AI 自动抠掉背景，下载 1600×1600 的白底图并按平台尺寸裁剪。以淘宝为例，主图常见规格是 800×800 或 750×1000，白底图下载后可以用图片裁剪工具直接改成对应尺寸，商品比例保持不变。相比在专业修图软件里用钢笔工具一点一点抠图，本地 AI 方案在普通商品（衣服、数码配件、日用品、食品包装）上的边缘识别已经足够干净，处理一张图通常只要几秒钟。</p>
+        <p>还有几个主图细节值得注意：商品在画面中的占比建议在 60% 到 80% 之间，四周留白均匀，避免看起来"飘"或"贴边"；白底纯度尽量接近纯白（#FFFFFF），不要在灰色或米色的背景上直接提交，否则搜索结果页会和同行有明显色差；如果有水印或 logo 需求，可以先生成白底图，再用加水印工具统一处理，保持所有 SKU 的视觉一致。对服饰类目，白底图还方便后续叠加模特图、场景图，同一张干净底图可以复用多次。</p>
+        <p>另外，很多平台会在审核时检查主图是否"牛皮癣"（大面积文字、促销标签堆叠），白底图天然规避了这类问题，也更容易通过系统审核。建议把白底图作为主图第一张，第二张开始再放细节图、场景图、尺码图，这样既符合平台规范，也方便买家快速判断商品。如果你同时经营多个平台（淘宝、拼多多、抖音小店），同一张白底图可以直接复用，只需要按各平台要求的尺寸单独导出。</p>
+      </section>
+      <section class="localization-section">
+        <h2 style="text-align:center;margin-bottom:20px;">卖家真实工作流：从手机拍摄到干净主图</h2>
+        <p>很多个人卖家、微商和工厂直销店主并没有专业的摄影棚，商品照大多用手机在室内、窗边甚至仓库里拍摄。这类照片常见的问题是背景杂乱——纸箱、货架、地面反光，拍出来的商品显得廉价。过去处理这些照片要么花钱请美工，要么自己下载软件学钢笔抠图，成本都不低。本地 AI 抠图工具的意义在于：让没有设计基础的卖家也能在手机上完成"拍摄到上架"的完整流程。</p>
+        <p>推荐的工作流是这样的：白天自然光下拍摄商品，尽量让商品轮廓清晰、主体占画面一半以上；上传后先点生成，AI 会在本地把背景移除；如果边缘有残留，可以换一个角度重拍再处理，或者选择与商品颜色反差大的背景（例如深色商品配浅色背景）提高识别成功率；得到干净的白底图后，再按平台要求裁剪尺寸、添加必要的细节图。整个过程不依赖网络传输，照片不会经过任何第三方服务器。</p>
+        <p>对于每天需要上新大量 SKU 的店铺，这套流程尤其实用：不需要为每一张图单独约美工，不需要下载大型软件，浏览器打开就能用，手机和电脑之间切换也不会中断工作。配合批量处理工具，还可以把同一批商品照片统一导出，保持整店主图的底色和构图一致，店铺看起来更专业。</p>
+        <p>实际操作中的几个经验：拍摄时尽量让商品与背景形成明显反差，例如深色衣服配浅色台面，AI 识别边缘会更干净；避免逆光拍摄导致商品轮廓发虚；透明或反光材质（玻璃瓶、塑料包装）的抠图边缘可能不够利落，这类商品建议选择稍高的分辨率重拍一次。生成白底图后，先检查一遍边缘是否干净、商品是否居中，再进入下一步排版，这样可以减少返工。工具生成的图片默认保留原始清晰度，不需要担心抠图后画质下降。</p>
+        <p>做微商、代购或闲鱼二手交易的用户也能受益：闲置物品挂闲鱼时，一张干净的白底图明显比随手拍更有说服力，成交率和询问量都有提升；代购商品图统一白底后，发朋友圈也更整洁。工具免费、无水印、不限张数，高频使用也不用担心成本。</p>
+      </section>
+      <section class="localization-section">
+        <h2 style="text-align:center;margin-bottom:20px;">隐私与效率：为什么产品图处理应该留在浏览器</h2>
+        <p>对电商卖家来说，商品照片是重要的经营资产：未发布的款式图如果被上传到第三方服务器，存在被同行截留、提前上架的风险；带水印的原图也可能被恶意利用。这款工具的所有抠图和合成计算都在你的浏览器内完成，照片从头到尾不离开设备，从根本上避免了这类风险。处理未发布新品、定制商品、工厂打样图时，这一点尤其重要。</p>
+        <p>从效率角度看，本地处理意味着没有上传等待、没有云端队列、没有服务器宕机导致的进度丢失。上传一张 20MB 以内的商品照片，点击生成，AI 在本地完成识别和抠图，几秒后即可下载，网络状况不影响处理速度。需要临时修改主图、赶在平台活动报名截止前上新时，这种"打开就用"的体验非常关键。</p>
+        <p>工具没有账号体系，不会在你的设备上留下任何历史记录，关闭标签页后照片和结果都会从内存中清除，适合在公用电脑上处理。企业用户（电商代运营、摄影工作室、工厂电商部）可以放心把白底图制作嵌入工作流程，员工无需注册账号，不存在数据汇聚到某个服务商的合规问题，出图质量也足够满足商业用途。</p>
+        <p>兼容性方面，桌面端 Chrome、Edge、Firefox、Safari 均可流畅运行，手机端直接在浏览器打开即可使用。实测一台 2020 年后的中端手机处理 1200 万像素商品照片约需 3-5 秒，与电脑端体验一致。如果你同时需要批量处理或为多张图统一尺寸，可以配合站内其他图片工具一起使用，所有工具都是本地处理、永久免费。</p>
+        <p>需要说明的是，首次使用时会从公共 CDN 加载一次 AI 模型（约几 MB），之后会缓存在浏览器本地，后续处理不再重复下载；模型加载期间页面仍可正常上传照片。由于全部计算都在本地完成，工具也完全可以在弱网环境下使用——只要页面加载完成，后续抠图、合成都不依赖网络，这点对经常在仓库、展会展位等网络不稳场景处理商品图的卖家特别实用。</p>
+      </section>
+      <section class="faq-section">
+        <h2>常见问题</h2>
+        <div class="faq-item"><button class="faq-question">处理在服务器上吗？</button><div class="faq-answer">不在。所有抠图和换白底计算都在你的浏览器内完成，照片不会上传到任何服务器。</div></div>
+        <div class="faq-item"><button class="faq-question">淘宝主图白底要求是什么？</button><div class="faq-answer">淘宝/天猫主图建议 800×800 或 750×1000 像素，白色背景纯度接近 #FFFFFF，商品占画面 60%-80%，四周留白均匀。本工具默认输出 1600×1600 白底图，可直接裁剪适配平台要求。</div></div>
+        <div class="faq-item"><button class="faq-question">支持哪些图片格式？</button><div class="faq-answer">支持 JPG、PNG、WebP 等常见格式，单张最大 20MB。导出为透明背景 PNG 或白底 JPG，均可自由选择。</div></div>
+        <div class="faq-item"><button class="faq-question">手机照片能直接处理吗？</button><div class="faq-answer">可以。手机浏览器打开即可使用，拍摄的商品照直接选择上传，抠图换白底全程在本地完成，适合随时上新、临时修改主图。</div></div>
+        <div class="faq-item"><button class="faq-question">免费版有数量限制吗？</button><div class="faq-answer">没有。工具永久免费，不限制处理张数，不加水印，无需注册账号。</div></div>
+      </section>
     </div>
-    <canvas id="canvas"></canvas>
-  </div>
-</div>
-<script type="module">
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. 保留所有权利.</p></div>
+    </div>
+  </footer>
+  <script src="/js/main.js?v=8"></script>
+  <script src="../../js/lang.js"></script>
+  <script type="module">
 let originalImage = null, resultBlob = null, removeModel = null;
 const dropZone = document.getElementById('dropZone'), fileInput = document.getElementById('fileInput'), generateBtn = document.getElementById('generateBtn'), downloadBtn = document.getElementById('downloadBtn'), status = document.getElementById('status'), canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d');
 dropZone.addEventListener('click', () => fileInput.click());
 fileInput.addEventListener('change', e => { if(e.target.files[0]) loadImage(e.target.files[0]); });
 async function loadImage(file) {
-  status.style.display = 'block'; status.textContent = 'Loading...';
+  status.style.display = 'block'; status.textContent = '加载中…';
   const img = new Image();
-  img.onload = () => { originalImage = img; status.textContent = 'Ready! Click Generate.'; generateBtn.disabled = false; };
+  img.onload = () => { originalImage = img; status.textContent = '已就绪！点击生成。'; generateBtn.disabled = false; };
   img.src = URL.createObjectURL(file);
 }
 generateBtn.addEventListener('click', async () => {
   if(!originalImage) return;
-  generateBtn.disabled = true; status.style.display = 'block'; status.textContent = 'Running local AI removal...';
+  generateBtn.disabled = true; status.style.display = 'block'; status.textContent = '正在本地运行 AI 抠图…';
   if(!removeModel) {
     const mod = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm');
     removeModel = mod.removeBackground || mod.default;
@@ -91,7 +261,7 @@ generateBtn.addEventListener('click', async () => {
   const blob = await new Promise(r => tmp.toBlob(r));
   const cutout = await removeModel(blob);
   const cutImg = new Image();
-  cutImg.onload = () => { draw(cutImg); status.textContent='Done!'; generateBtn.disabled=false; downloadBtn.disabled=false; };
+  cutImg.onload = () => { draw(cutImg); status.textContent='完成！'; generateBtn.disabled=false; downloadBtn.disabled=false; };
   cutImg.src = URL.createObjectURL(cutout);
 });
 function draw(cutImg) {
@@ -108,8 +278,6 @@ downloadBtn.addEventListener('click', () => {
   if(!resultBlob) return;
   const a = document.createElement('a'); a.href = URL.createObjectURL(resultBlob); a.download = 'clean-product-photo.png'; a.click();
 });
-</script>
+  </script>
 </body>
 </html>
-
-

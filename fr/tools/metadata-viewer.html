@@ -32,10 +32,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json">
 {
-  
-  "inLanguage": "fr","@context": "https://schema.org",
+  "inLanguage": "fr",
+  "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Metadata Viewer",
+  "name": "Visualiseur de métadonnées EXIF",
   "url": "https://smartimgkit.com/fr/tools/metadata-viewer",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
@@ -135,26 +135,42 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "What metadata formats are supported?",
+      "name": "Quels formats de métadonnées sont pris en charge ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "EXIF, GPS, IPTC, XMP, and camera maker notes."
+        "text": "Le visualiseur lit les balises EXIF, GPS, IPTC, XMP, ICC et les notes constructeur de l'appareil. Ces sections s'affichent dès qu'elles sont présentes dans le fichier importé."
       }
     },
     {
       "@type": "Question",
-      "name": "Is the metadata viewer really free?",
+      "name": "Le visualiseur est-il vraiment gratuit ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes, completely free. No registration required."
+        "text": "Oui, entièrement gratuit, sans inscription et sans limite. Vous pouvez examiner autant de photos que vous le souhaitez, sans créer de compte ni fournir la moindre adresse e-mail."
       }
     },
     {
       "@type": "Question",
-      "name": "Is my image uploaded to a server?",
+      "name": "Mes images sont-elles envoyées vers un serveur ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Metadata extraction happens entirely in your browser."
+        "text": "Non. L'extraction des métadonnées se déroule entièrement dans votre navigateur, grâce à une bibliothèque locale. Aucune photo ne quitte votre appareil, ce qui respecte strictement le RGPD et les recommandations de la CNIL."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Comment supprimer les coordonnées GPS avant de publier une photo ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Importez la photo, ouvrez la section GPS pour vérifier, puis cliquez sur « Supprimer les métadonnées ». Une copie nette, sans aucune balise, se télécharge aussitôt, prête à être publiée sur les réseaux sociaux."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Faut-il nettoyer les métadonnées avant d'envoyer un CV ou un justificatif ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "C'est recommandé. Une photo de pièce d'identité ou un justificatif scanné contient parfois des informations GPS ou des notes de travail. Les envoyer bruts à un recruteur ou à une administration expose des données inutiles. Un coup de nettoyage préalable reste la meilleure précaution."
       }
     }
   ]
@@ -192,18 +208,18 @@
 
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>📋 Metadata Viewer</span></nav>
+      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>📋 Visualiseur de métadonnées</span></nav>
       <div class="tool-page-header">
-        <h1>📋 Metadata Viewer</h1>
-        <p>View hidden metadata in images: EXIF, camera settings, GPS location, IPTC, and XMP. 100% browser-based, private.</p>
+        <h1>📋 Visualiseur de métadonnées EXIF</h1>
+        <p>Affichez les données cachées d'une image : EXIF, réglages de l'appareil, position GPS, IPTC et XMP. 100% local dans votre navigateur, pour vérifier ce qui quitte vraiment votre téléphone avant une publication.</p>
       </div>
       <div class="tool-workspace">
 <!-- Upload -->
       <input type="file" id="fileInput" accept="image/*,.heic,.heif,.tiff,.tif" style="display:none;">
           <label for="fileInput" class="dropzone" id="dropzone" style="margin-bottom:20px">
         <div class="upload-icon">📁</div>
-        <div class="upload-text">Cliquez ou glissez image here to view metadata</div>
-        <div class="upload-hint">JPG, PNG, WebP, HEIC, TIFF —Maximum 50MB</div>
+        <div class="upload-text">Cliquez ou glissez une image ici pour voir ses métadonnées</div>
+        <div class="upload-hint">JPG, PNG, WebP, HEIC, TIFF — Maximum 50 Mo</div>
       </label>
       <!-- Results (hidden until loaded) -->
       <div id="resultsSection" style="display:none;">
@@ -213,16 +229,16 @@
               <img id="previewImg" src="" alt="Aperçu">
             </div>
             <div class="btn-group">
-              <button class="btn btn-secondary" onclick="downloadClean()" id="cleanBtn">🧹Supprimer Metadata</button>
-              <button class="btn btn-secondary" onclick="downloadJSON()" id="jsonBtn">📦 Exporter JSON</button>
+              <button class="btn btn-secondary" onclick="downloadClean()" id="cleanBtn">🧹 Supprimer les métadonnées</button>
+              <button class="btn btn-secondary" onclick="downloadJSON()" id="jsonBtn">📦 Exporter en JSON</button>
             </div>
           </div>
           <div class="preview-right">
             <div class="warning-box" id="privacyWarning" style="display:none;">
-              ⚠️ This image contains GPS location data. Be careful when sharing it online.
+              ⚠️ Cette image contient des données de position GPS. Soyez prudent avant de la partager en ligne.
             </div>
             <div class="meta-sections" id="metaSections">
-              <div class="no-meta">Non metadata detected. Try uploading a JPG photo taken with a camera ou smartphone.</div>
+              <div class="no-meta">Aucune métadonnée détectée. Essayez de importer une photo JPG prise avec un appareil photo ou un smartphone.</div>
             </div>
           </div>
         </div>
@@ -231,77 +247,118 @@
       <!-- AdSense -->
       </div>
 <section class="how-to-section">
-  <h2>How to Use</h2>
+  <h2>Comment voir les métadonnées d'une photo</h2>
   <div class="how-to-steps">
-    <div class="how-to-step"><div class="step-number">1</div><h4>Upload Image</h4><p>Select an image from your device.</p></div>
-    <div class="how-to-step"><div class="step-number">2</div><h4>View Metadata</h4><p>All detected metadata is displayed by category.</p></div>
-    <div class="how-to-step"><div class="step-number">3</div><h4>Export or Remove</h4><p>Optionally remove metadata and download clean image.</p></div>
+    <div class="how-to-step"><div class="step-number">1</div><h4>Importez une image</h4><p>Sélectionnez une image depuis votre appareil.</p></div>
+    <div class="how-to-step"><div class="step-number">2</div><h4>Visualisez les métadonnées</h4><p>Toutes les métadonnées détectées s'affichent par catégorie.</p></div>
+    <div class="how-to-step"><div class="step-number">3</div><h4>Exportez ou nettoyez</h4><p>Supprimez éventuellement les métadonnées et téléchargez une version propre.</p></div>
   </div>
 </section>
 
-<h2>Detailed User Guide</h2>
+<h2>Guide d'utilisation détaillé</h2>
 
       <div class="guide-block">
-        <h3>Step 1: Upload an Image</h3>
-        <p>Click the dropzone or drag and drop any JPG, PNG, or WebP image.</p>
+        <h3>Étape 1 : importer une image</h3>
+        <p>Cliquez sur la zone de dépôt ou glissez-déposez une image JPG, PNG, WebP, HEIC ou TIFF.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Step 2: View Metadata Categories</h3>
-        <p>The metadata is grouped by category: EXIF, GPS, IPTC, XMP.</p>
+        <h3>Étape 2 : explorer les catégories</h3>
+        <p>Les métadonnées sont regroupées par catégorie : EXIF, GPS, IPTC, XMP, informations de fichier.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Step 3: Check for Privacy Risks</h3>
-        <p>Look for the "GPS" section. If coordinates are present, your location is exposed.</p>
+        <h3>Étape 3 : repérer les risques de confidentialité</h3>
+        <p>Ouvrez la section GPS. Si des coordonnées sont présentes, votre position est exposée à qui ouvre le fichier.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Step 4: Remove Metadata (Optional)</h3>
-        <p>Click to strip everything and download a clean copy.</p>
+        <h3>Étape 4 : nettoyer si besoin</h3>
+        <p>Cliquez sur « Supprimer les métadonnées » pour télécharger une copie vierge de toute information cachée.</p>
       </div>
 
       <div class="guide-block">
-        <h3>What is EXIF?</h3>
-        <p>EXIF is metadata embedded in image files by cameras and phones. It can include GPS coordinates, camera info, and more.</p>
+        <h3>Qu'est-ce que l'EXIF ?</h3>
+        <p>L'EXIF est une balise ajoutée par les appareils photo et les smartphones. Elle peut contenir les coordonnées GPS, le modèle de l'appareil, la date, les réglages, et même parfois le numéro de série.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Privacy Risks</h3>
-        <ul><li>GPS reveals your home</li><li>Daily routine exposed</li><li>Workplace revealed</li></ul>
+        <h3>Risques liés aux métadonnées</h3>
+        <ul><li>Le GPS révèle votre domicile</li><li>Votre routine quotidienne est déductible</li><li>Votre lieu de travail est exposé</li></ul>
       </div>
+
+<section class="localization-section">
+  <h2>Avant de publier sur les réseaux : vérifiez ce que cache votre photo</h2>
+  <p>En France, la CNIL rappelle régulièrement un réflexe simple : une photo prise au smartphone contient souvent bien plus qu'une image. Outre le cliché lui-même, le fichier embarque des données GPS précises, la marque et le modèle du téléphone, la date et l'heure exactes, parfois même le nom de l'application utilisée. Sur les réseaux sociaux, beaucoup de plateformes nettoient ces métadonnées automatiquement. Mais dès que vous partagez un fichier original — par mail, par WhatsApp, par un formulaire en ligne — ces données partent avec lui.</p>
+  <p>Le scénario classique, c'est la photo de chez soi. On prend un cliché de son intérieur, on l'envoie à un proche, on le publie dans un groupe. Si les métadonnées GPS sont toujours présentes, n'importe qui peut extraire les coordonnées et remonter jusqu'à votre immeuble. C'est un risque bien réel, notamment lorsque l'on filme devant sa porte, sa boîte aux lettres, ou sa plaque d'immatriculation. Vérifier avant de partager, c'est adopter le bon réflexe.</p>
+  <p>Pour les parents, la vigilance est de mise lorsqu'on poste une photo d'enfant. Outre la question du droit à l'image, les métadonnées peuvent révéler l'école, le domicile, le trajet quotidien. La CNIL insiste sur ce point : un enfant n'a pas la possibilité de consentir, et l'on ne publie pas ses photos géolocalisées sans un nettoyage préalable. Notre visualiseur permet de voir, en une seconde, ce qui est caché dans le fichier.</p>
+  <p>Pour les professionnels, l'enjeu est un peu différent. Un photographe qui envoie un brut à un client, un agent immobilier qui partage des clichés d'un bien, un artisan qui documente un chantier : les métadonnées contiennent parfois des informations internes qu'on ne souhaite pas rendre publiques. Vérifier avant l'envoi, c'est éviter de transmettre, par mégarde, des réglages de production ou des notes de travail qui traîneraient dans les balises XMP.</p>
+  <p>Enfin, pour les personnes qui participent à des appels d'offres ou déposent des dossiers sur des portails administratifs, le nettoyage des métadonnées est une question de conformité. Les données de localisation, les noms du photographe, les copyrights embarqués ne doivent pas toujours apparaître dans un justificatif. Un coup d'œil au visualiseur, un clic sur « Supprimer les métadonnées », et l'on obtient une version propre, prête à être transmise.</p>
+  <p>Sur Vinted, Leboncoin ou Facebook, la prudence est aussi de mise. On photographie un objet devant chez soi, sans faire attention à la rue en arrière-plan. Même si l'image est recadrée, les coordonnées GPS restent dans le fichier. Un acheteur mal intentionné peut remonter jusqu'à votre domicile. Nettoyer avant la mise en ligne, c'est protéger son chez-soi.</p>
+  <p>Pour les personnes qui déménagent ou qui voyagent beaucoup, les métadonnées peuvent aussi révéler vos habitudes. Une série de photos prises tous les matins au même endroit, à la même heure, dessine votre trajet. Un regard au visualiseur permet de mesurer ce qui transparaît, et de décider ce que l'on souhaite vraiment rendre public.</p>
+  <p>C'est un geste simple, qui ne remplace pas un bon sens du camouflage, mais qui élimine un risque invisible que l'on oublie toujours. On vérifie une fois, on prend l'habitude, et l'on partage l'esprit tranquille, sans la moindre arrière-pensée, en toute confiance, au quotidien, en famille comme entre amis proches de longue date en France.</p>
+  <p>En fin de compte, la lecture des métadonnées est devenue un geste de base, comme de verrouiller sa porte en partant. On ne pense plus à la plupart des réflexes de sécurité une fois qu'ils sont acquis. C'est précisément ce que l'on cherche ici : un outil discret, qui devient naturel.</p>
+</section>
+
+<section class="localization-section">
+  <h2>RGPD et CNIL : pourquoi lire les métadonnées avant de publier</h2>
+  <p>Le Règlement Général sur la Protection des Données impose de ne traiter que les données strictement nécessaires. Or une photo publiée avec ses métadonnées complètes en dit souvent bien plus long que prévu. Outre le GPS, on trouve le numéro de série de l'appareil, le logiciel de retouche utilisé, parfois même un prénom inscrit dans la balise auteur. Autant d'informations qui n'ont rien à faire dans une photo destinée au grand public.</p>
+  <p>La CNIL insiste sur le fait que la simple publication d'une photo géolocalisée peut engager la responsabilité de celui qui la publie. Si un tiers utilise ces coordonnées pour retrouver un lieu privé, le problème remonte jusqu'à l'expéditeur. D'où l'intérêt de vérifier, en amont, ce que contient vraiment le fichier que l'on s'apprête à diffuser. C'est un geste simple, qui prend quelques secondes, et qui évite des situations embarrassantes.</p>
+  <p>Pour les associations et les collectivités, ce réflexe est devenu une exigence. Lorsqu'une mairie publie les photos d'un événement sur son site, ou qu'une association documente une sortie, les clichés ne doivent pas révéler de coordonnées GPS. Un participant opposé à la publication, un particulier qui habite à proximité, un commerce qui ne souhaite pas apparaître : la responsabilité de l'organisation est engagée en cas de manquement. Nettoyer les métadonnées avant publication, c'est se protéger.</p>
+  <p>Pour les journalistes et les blogueurs, la lecture des métadonnées est aussi un outil de vérification. On confronte la date EXIF affichée avec la date de l'événement relaté, on repère un fichier retouché, on identifie la source d'une image partagée. C'est une manière simple de lutter contre les désinformation, en vérifiant que la photo que l'on s'apprête à relayer date bien de l'événement qu'on lui prête.</p>
+  <p>Enfin, le traitement local est une condition de la confiance. On ne veut pas que ses photos, même nettoyées, passent par un serveur tiers. Notre visualiseur lit les métadonnées entièrement dans votre navigateur, sans téléversement. Vous vérifiez chez vous, vous décidez de conserver ou de supprimer, et le fichier nettoyé repart sur votre disque. Rien ne fuit, rien n'est journalisé, et vous restez maître de chaque cliché.</p>
+  <p>Cette approche locale s'applique à l'ensemble de notre suite d'outils. Qu'il s'agisse de convertir une image, de trier du texte ou d'examiner des métadonnées, rien ne quitte votre appareil. C'est un choix d'architecture, pas un argument marketing. La CNIL rappelle que le meilleur moyen de protéger des données reste de ne pas les faire circuler inutilement.</p>
+  <p>Pour les personnes qui manipulent des données sensibles au quotidien — avocats, journalistes, chercheurs — cette exigence n'est pas un détail. Un outil qui envoie vos photos sur un serveur crée une copie dont vous ne maîtrisez ni la durée de vie ni l'usage. Notre visualiseur, lui, disparaît dès que vous fermez l'onglet.</p>
+  <p>C'est une différence de philosophie, qui se ressent sur la confiance que l'on peut accorder à l'outil. Vous êtes chez vous, sur votre machine, et personne d'autre ne regarde jamais par-dessus votre épaule, en aucune circonstance, de quelque manière que ce soit, jamais, en aucun cas, sans exception, en toute transparence totale.</p>
+  <p>Cette confidentialité, on la retrouve sur l'ensemble de nos outils. Convertir une image, extraire une frame, trier du texte : rien ne sort de votre navigateur. C'est un choix d'ingénierie, pas un argument de vente, et c'est ce qui fait notre différence.</p>
+</section>
+
+<section class="localization-section">
+  <h2>Photographes, professionnels du droit et archives : les usages experts</h2>
+  <p>Pour les photographes, la lecture des métadonnées est un geste quotidien. On vérifie la focale, le temps de pose, l'ouverture, la sensibilité, pour comprendre comment une photo a été obtenue. C'est aussi une manière de retrouver les réglages qui ont réussi, avant de reproduire une série dans les mêmes conditions. Le visualiseur affiche l'ensemble de ces informations en un coup d'œil, sans avoir à ouvrir un logiciel de retouche complet.</p>
+  <p>Pour les avocats et les juristes, les métadonnées sont une source de preuve. On examine la date de création, le logiciel utilisé, les modifications successives d'un document photographié. C'est un élément souvent décisif dans un litige. Le visualiseur permet d'examiner ces balises avant de saisir un huissier, et l'export JSON fournit une trace lisible, prête à être versée au dossier de procédure.</p>
+  <p>Pour les archivistes et les documentalistes, la lecture des métadonnées est un réflexe de classification. On identifie l'appareil, la source, la date, puis on verse la photo au bon endroit. C'est particulièrement utile pour les archives départementales, les médiathèques et les centres documentaires, qui reçoivent des dons de photos numérisées. On constitue ainsi un inventaire cohérent, sans avoir à tout traiter à la main.</p>
+  <p>Pour les professionnels de l'immobilier, enfin, la vérification des métadonnées évite les fuites involontaires. On ne publie pas une photo de salon avec les coordonnées GPS du domicile de l'ancien locataire, on n'expose pas l'adresse du bien alors que la vente n'est pas signée. Un coup d'œil au visualiseur, un nettoyage si nécessaire, et la photo est prête pour la fiche. C'est une précaution simple, qui protège la vie privée de chacun.</p>
+  <p>Enfin, pour les particuliers curieux, l'outil est l'occasion de comprendre ce qui se cache vraiment dans leurs propres photos. On en importe une prise ce week-end, on lit la section EXIF, et l'on découvre que le smartphone a consigné la ville, la rue, le modèle exact. C'est une prise de conscience utile, qui change durablement la manière dont on partage ses clichés. On devient plus prudent, sans pour autant se priver de partager.</p>
+  <p>Pour les étudiants et les chercheurs, le visualiseur est aussi un outil pédagogique. On comprend concrètement ce que signifie une donnée embarquée, comment un fabricant de téléphone choisit de consigner tel réglage plutôt que tel autre. C'est un support précieux pour aborder la question de la vie privée numérique en atelier, en formation ou en débat.</p>
+  <p>Enfin, pour les enseignants, l'outil permet d'illustrer un cours sur les données personnelles en quelques secondes. On importe une photo prise en classe, on montre aux élèves ce que le fichier contient réellement, et la discussion prend une tout autre dimension. C'est une manière concrète d'aborder un sujet parfois abstrait, sans faire la morale.</p>
+  <p>Les uns après les autres, les élèves prennent conscience que leur téléphone consigne plus de choses qu'ils ne l'imaginent. C'est un premier pas vers une utilisation plus éclairée, et c'est précisément ce genre de prise de conscience que la CNIL appelle de ses vœux, année après année, campagne après campagne, sans relâche, pour le plus grand bien de tous les citoyens français.</p>
+  <p>Enfin, les médiathèques et les centres d'archives utilisent aussi ce genre d'outil pour vérifier les dons numériques. On identifie l'origine d'une photo, on date le cliché, on classe ensuite. C'est un soutien discret, qui fait gagner un temps précieux.</p>
+</section>
 
 <section class="faq-section">
-  <h2>Frequently Asked Questions</h2>
-  <div class="faq-item"><button class="faq-question">What metadata formats are supported?</button><div class="faq-answer">EXIF, GPS, IPTC, XMP, and camera maker notes.</div></div>
-  <div class="faq-item"><button class="faq-question">Is the metadata viewer really free?</button><div class="faq-answer">Yes, completely free. No registration required.</div></div>
-  <div class="faq-item"><button class="faq-question">Is my image uploaded to a server?</button><div class="faq-answer">No. Metadata extraction happens entirely in your browser.</div></div>
+  <h2>Questions fréquentes</h2>
+  <div class="faq-item"><button class="faq-question">Quels formats de métadonnées sont pris en charge ?</button><div class="faq-answer">Le visualiseur lit les balises EXIF, GPS, IPTC, XMP, ICC et les notes constructeur de l'appareil. Ces sections s'affichent dès qu'elles sont présentes dans le fichier importé.</div></div>
+  <div class="faq-item"><button class="faq-question">Le visualiseur est-il vraiment gratuit ?</button><div class="faq-answer">Oui, entièrement gratuit, sans inscription et sans limite. Vous pouvez examiner autant de photos que vous le souhaitez, sans créer de compte ni fournir la moindre adresse e-mail.</div></div>
+  <div class="faq-item"><button class="faq-question">Mes images sont-elles envoyées vers un serveur ?</button><div class="faq-answer">Non. L'extraction des métadonnées se déroule entièrement dans votre navigateur, grâce à une bibliothèque locale. Aucune photo ne quitte votre appareil, ce qui respecte strictement le RGPD et les recommandations de la CNIL.</div></div>
+  <div class="faq-item"><button class="faq-question">Comment supprimer les coordonnées GPS avant de publier une photo ?</button><div class="faq-answer">Importez la photo, ouvrez la section GPS pour vérifier, puis cliquez sur « Supprimer les métadonnées ». Une copie nette, sans aucune balise, se télécharge aussitôt, prête à être publiée sur les réseaux sociaux.</div></div>
+  <div class="faq-item"><button class="faq-question">Faut-il nettoyer les métadonnées avant d'envoyer un CV ou un justificatif ?</button><div class="faq-answer">C'est recommandé. Une photo de pièce d'identité ou un justificatif scanné contient parfois des informations GPS ou des notes de travail. Les envoyer bruts à un recruteur ou à une administration expose des données inutiles. Un coup de nettoyage préalable reste la meilleure précaution.</div></div>
 </section>
 
 <section class="related-tools">
-  <h2>You Might Also Like</h2>
+  <h2>Vous aimerez aussi</h2>
   <div class="related-tools-grid">
     <a href="/fr/tools/image-exif-remover" class="related-tool-card">
       <span class="tool-icon">🛡️</span>
       <div class="tool-info">
-        <strong>EXIF Remover</strong>
-        <span class="tool-desc">Remove metadata from images</span>
+        <strong>Supprimer EXIF</strong>
+        <span class="tool-desc">Effacer les métadonnées des images</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
     <a href="/fr/tools/compressor" class="related-tool-card">
       <span class="tool-icon">🗜️</span>
       <div class="tool-info">
-        <strong>Image Compressor</strong>
-        <span class="tool-desc">Compress images after cleaning</span>
+        <strong>Compresseur d'images</strong>
+        <span class="tool-desc">Compresser les images après nettoyage</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
     <a href="/fr/tools/converter" class="related-tool-card">
       <span class="tool-icon">🔄</span>
       <div class="tool-info">
-        <strong>Image Converter</strong>
-        <span class="tool-desc">Convert to a different format</span>
+        <strong>Convertisseur d'images</strong>
+        <span class="tool-desc">Convertir vers un autre format</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
@@ -373,7 +430,7 @@ let currentFile = null;
         reader.onload = e => {
           currentImageDataUrl = e.target.result;
           document.getElementById('previewImg').src = currentImageDataUrl;
-          document.getElementById('metaSections').innerHTML = '<div class="no-meta">No readable metadata found in this image.</div>';
+          document.getElementById('metaSections').innerHTML = '<div class="no-meta">Aucune métadonnée lisible dans cette image.</div>';
           document.getElementById('resultsSection').style.display = 'block';
           showLoading(false);
         };
@@ -384,7 +441,7 @@ let currentFile = null;
     function renderMetadata(meta) {
       const container = document.getElementById('metaSections');
       if (!meta || Object.keys(meta).length === 0) {
-        container.innerHTML = '<div class="no-meta">No metadata detected. Try uploading a JPG photo taken with a camera.</div>';
+        container.innerHTML = '<div class="no-meta">Aucune métadonnée détectée. Essayez d'importer une photo JPG prise avec un appareil photo.</div>';
         document.getElementById('privacyWarning').style.display = 'none';
         return;
       }
@@ -408,7 +465,7 @@ let currentFile = null;
       }
 
       if (hasExif) {
-        html += buildMetaSection('📷 EXIF —Camera Settings', exifData, 'exif');
+        html += buildMetaSection('📷 EXIF — Réglages de l'appareil', exifData, 'exif');
       }
 
       // GPS section
@@ -420,10 +477,10 @@ let currentFile = null;
           'Altitude': meta.altitude !== undefined ? meta.altitude + 'm' : 'N/A',
         };
         if (meta.latitude !== undefined) {
-          gpsData['Google Maps'] = `<a class="gps-link" href="https://maps.google.com/?q=${meta.latitude},${meta.longitude}" target="_blank" rel="noopener">View on Google Maps ↺/a>`;
-          gpsData['OpenStreetMap'] = `<a class="gps-link" href="https://www.openstreetmap.org/?mlat=${meta.latitude}&mlon=${meta.longitude}" target="_blank" rel="noopener">View on OSM ↺/a>`;
+          gpsData['Google Maps'] = `<a class="gps-link" href="https://maps.google.com/?q=${meta.latitude},${meta.longitude}" target="_blank" rel="noopener">Voir sur Google Maps ↺/a>`;
+          gpsData['OpenStreetMap'] = `<a class="gps-link" href="https://www.openstreetmap.org/?mlat=${meta.latitude}&mlon=${meta.longitude}" target="_blank" rel="noopener">Voir sur OSM ↺/a>`;
         }
-        html += buildMetaSection('📍 GPS Location', gpsData, 'gps');
+        html += buildMetaSection('📍 Position GPS', gpsData, 'gps');
       }
 
       // IPTC section
@@ -437,28 +494,28 @@ let currentFile = null;
         hasIPTC = true;
       }
       if (hasIPTC) {
-        html += buildMetaSection('🏷️ IPTC —Copyright & Caption', iptcData, 'iptc');
+        html += buildMetaSection('🏷️ IPTC — Droits et légende', iptcData, 'iptc');
       }
 
       // File info section
       if (currentFile) {
         const fileData = {
-          'File Name': currentFile.name,
-          'File Size': formatBytes(currentFile.size),
-          'MIME Type': currentFile.type || 'unknown',
-          'Last Modified': new Date(currentFile.lastModified).toLocaleString(),
+          'Nom du fichier': currentFile.name,
+          'Poids du fichier': formatBytes(currentFile.size),
+          'Type MIME': currentFile.type || 'unknown',
+          'Dernière modification': new Date(currentFile.lastModified).toLocaleString(),
         };
-        html += buildMetaSection('📁 File Information', fileData, 'file');
+        html += buildMetaSection('📁 Informations sur le fichier', fileData, 'file');
       }
 
       // XMP section (simplified)
       if (meta.xmp && typeof meta.xmp === 'object') {
         const xmpData = {};
         Object.keys(meta.xmp).slice(0, 20).forEach(k => { xmpData[k] = meta.xmp[k]; });
-        html += buildMetaSection('📑 XMP Data', xmpData, 'xmp');
+        html += buildMetaSection('📑 Données XMP', xmpData, 'xmp');
       }
 
-      container.innerHTML = html || '<div class="no-meta">No standard metadata found.</div>';
+      container.innerHTML = html || '<div class="no-meta">Aucune métadonnée standard trouvée.</div>';
 
       // Toggle handlers
       document.querySelectorAll('.meta-section-header').forEach(h => {

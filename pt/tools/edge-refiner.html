@@ -12,7 +12,70 @@
   <link rel="stylesheet" href="/css/style.css?v=15">
   <script type="application/ld+json">{
   "inLanguage": "pt","@context":"https://schema.org","@type":"WebApplication","name":"Refino de Bordos — Corrigir Recortes","url":"https://smartimgkit.com/pt/tools/edge-refiner","applicationCategory":"MultimediaApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Corrija halos brancos, bordas serrilhadas e fios de cabelo cortados depois de remover o fundo com IA. Grátis, direto no navegador."}</script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I fix white halos after background removal?","acceptedAnswer":{"@type":"Answer","text":"Use an edge refiner tool like SmartImgKit. Envie seu PNG transparente, paint over the white halo edges with the eraser brush, and download the fixed image. All processing happens locally in your browser."}},{"@type":"Question","name":"Can I fix missing hair details after AI cutout?","acceptedAnswer":{"@type":"Answer","text":"Yes. Use the add brush to paint back missing hair strands or fine details that the AI background remover cut away. Adjust brush size for precision work."}},{"@type":"Question","name":"Is my image uploaded to a server?","acceptedAnswer":{"@type":"Answer","text":"No. All edge refinement runs locally in your browser using Canvas API. Your images never leave your device, ensuring full privacy."}},{"@type":"Question","name":"What file formats are supported?","acceptedAnswer":{"@type":"Answer","text":"PNG with transparency is recommended (the output of background removal tools). JPG files can also be loaded but you'll need to erase the background yourself first."}},{"@type":"Question","name":"Is this tool really free?","acceptedAnswer":{"@type":"Answer","text":"Yes, completely free. No signup, no watermark, no resolution limits. Process as many images as you need at no cost."}}]}</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Como corrigir halos brancos após a remoção de fundo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use uma ferramenta de refino de bordas como o SmartImgKit. Envie seu PNG transparente, passe a borracha sobre as bordas com halo branco e baixe a imagem corrigida. Todo o processamento acontece localmente no seu navegador."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Posso corrigir detalhes de cabelo que faltam após o recorte por IA?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim. Use o pincel de adição para repintar fios de cabelo ou detalhes finos que o removedor de fundo por IA cortou. Ajuste o tamanho do pincel para um trabalho de precisão."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Minha imagem é enviada para um servidor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Não. Todo o refino de bordas é executado localmente no seu navegador usando a API Canvas. Suas imagens nunca saem do seu dispositivo, garantindo total privacidade."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quais formatos de arquivo são suportados?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "PNG com transparência é recomendado (o resultado das ferramentas de remoção de fundo). Arquivos JPG também podem ser carregados, mas você precisará apagar o fundo primeiro."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Esta ferramenta é realmente gratuita?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim, totalmente gratuita. Sem cadastro, sem marca d'água, sem limites de resolução. Processe quantas imagens precisar, sem nenhum custo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "O resultado realmente não perde qualidade?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim. O refino trabalha nos pixels originais da sua imagem e a exportação mantém a resolução de entrada. Só as bordas que você altera são afetadas; o restante da imagem fica intacto."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Posso usar a ferramenta em um computador simples?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim. O processamento local é leve e funciona até sem internet rápida. Imagens grandes podem demorar um pouco mais, mas nenhum servidor está envolvido."
+      }
+    }
+  ]
+}
+</script>
   <style>
     .editor-container{display:grid;grid-template-columns:1fr 240px;gap:1.5rem;margin-top:1rem}
     .canvas-wrapper{background:#1a1a1a;border:1px solid var(--border-color);border-radius:12px;overflow:hidden;position:relative;min-height:500px;display:flex;align-items:center;justify-content:center;background-image:linear-gradient(45deg,#2a2a25 25%,transparent 25%),linear-gradient(-45deg,#2a2a25 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#2a2a25 75%),linear-gradient(-45deg,transparent 75%,#2a2a25 75%);background-size:20px 20px;background-position:0 0,0 10px,10px -10px,10px 0}
@@ -69,7 +132,7 @@
       <div id="uploadPrompt" class="upload-prompt" style="margin:3rem 0">
         <div class="icon">✏️</div>
         <h3>Envie seu PNG transparente</h3>
-        <p>Works best on images that have already had the background removed (PNG with transparency)</p>
+        <p>Funciona melhor em imagens que já tiveram o fundo removido (PNG com transparência)</p>
         <input type="file" id="fileInput" accept="image/png,image/jpeg" hidden>
         <button class="action-btn primary" onclick="document.getElementById('fileInput').click()">Escolher Imagem</button>
       </div>
@@ -88,11 +151,11 @@
               </div>
             </div>
             <div class="control-group">
-              <label>Brush Size: <span id="sizeVal">20</span>px</label>
+              <label>Tamanho do Pincel: <span id="sizeVal">20</span>px</label>
               <input type="range" class="brush-size" id="brushSize" min="1" max="100" value="20">
             </div>
             <div class="control-group">
-              <label>Brush Hardness: <span id="hardnessVal">80</span>%</label>
+              <label>Dureza do Pincel: <span id="hardnessVal">80</span>%</label>
               <input type="range" class="brush-size" id="brushHardness" min="0" max="100" value="80">
             </div>
             <div class="control-group">
@@ -100,21 +163,84 @@
               <input type="range" class="brush-size" id="zoom" min="25" max="200" value="100">
             </div>
             <div class="action-buttons">
-              <button class="action-btn secondary" onclick="undo()">↩️ Undo</button>
-              <button class="action-btn secondary" onclick="resetImage()">🔄 Reset</button>
-              <button class="action-btn primary" onclick="download()">⬇️ Download PNG</button>
+              <button class="action-btn secondary" onclick="undo()">↩️ Desfazer</button>
+              <button class="action-btn secondary" onclick="resetImage()">🔄 Redefinir</button>
+              <button class="action-btn primary" onclick="download()">⬇️ Baixar PNG</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-  <section class="faq-section">
+  <section class="localization-section">
+  <h2 style="text-align:center;margin-bottom:20px;">Refinar bordas após remoção de fundo: os usos no Brasil</h2>
+  <p>A remoção de fundo por IA se tornou uma ferramenta diária para vendedores, criadores de conteúdo e pequenas empresas no Brasil. Vender em plataformas como Mercado Livre, Shopee Brasil ou Amazon exige fotos de produtos limpas, com recorte perfeito. Porém, após a remoção do fundo, as bordas costumam ficar imperfeitas: um fio branco fino, áreas irregulares ou fios de cabelo cortados demais em retratos. É exatamente isso que esta ferramenta de refino corrige.</p>
+  <h3 style="margin-top:24px;">Situações típicas</h3>
+  <ul style="line-height:1.8;">
+    <li><strong>Fotos de produtos para venda online:</strong> no Mercado Livre e na Shopee Brasil, uma foto com bordas limpas transmite confiança e aumenta o clique. A borracha remove os resíduos brancos deixados pela remoção de fundo.</li>
+    <li><strong>Retratos para redes sociais e currículos:</strong> após o recorte de uma foto de perfil, o pincel de adição permite redesenhar fios de cabelo que faltam, essencial para um perfil profissional no LinkedIn.</li>
+    <li><strong>Visuais para WhatsApp:</strong> lojistas preparam anúncios para WhatsApp Business e precisam de imagens recortadas limpas sem pagar um designer.</li>
+    <li><strong>Álbuns de família:</strong> remover um fundo poluído de uma foto de família e refinar as bordas permite criar retratos limpos para presentes.</li>
+  </ul>
+  <p style="margin-top:16px;">A ferramenta funciona inteiramente no seu navegador: suas imagens nunca são enviadas para um servidor. Você pode trabalhar fotos de produtos ou retratos confidenciais com tranquilidade.</p>
+  <p style="margin-top:12px;">Dica prática: comece com um pincel pequeno nas áreas delicadas (contorno do rosto, cabelo) e depois aumente para áreas grandes. Aumente o zoom para 100% para verificar cada borda antes de baixar.</p>
+<h3>Dicas avançadas para vendedores e criadores</h3><p>Se você vende no Mercado Livre, a foto principal precisa ter fundo branco ou transparente e a imagem deve ocupar pelo menos 70% do quadro. Depois de refinar as bordas, salve sempre em PNG para manter a transparência. Para anúncios no WhatsApp Business, o mesmo PNG serve para montar catálogos; a diferença entre um recorte com fio branco e um recorte limpo costuma ser decisiva para o cliente clicar ou não.</p><p>Um erro comum é refinar com zoom pequeno: o halo branco só aparece quando você aumenta para 100%. Trabalhe sempre ampliado, percorra o contorno inteiro e use a borracha apenas nas áreas que realmente precisam. Se o cabelo estiver muito fino, prefira o pincel de adição desenhando fio a fio — o resultado é natural e aceito em fotos profissionais. Para produtos com pelo (roupas, tapetes, brinquedos), reduza a dureza para cerca de 70% e faça passadas curtas, evitando comer detalhes do produto.</p><p>Manter uma pasta de imagens já refinadas também acelera o trabalho: ao criar um novo anúncio, você reaproveita o recorte pronto em vez de repetir o processo. Para fotos de currículo e LinkedIn, lembre-se de que o recorte deve respeitar a proporção do rosto; refinamentos excessivos deixam a imagem artificial e prejudicam a avaliação de recrutadores.</p><p>Outro ponto importante: a resolução da imagem original define a qualidade final. Fotos de 1200 px ou mais permitem um refino preciso; imagens pequenas ampliam os defeitos. Se o cliente enviou uma foto pequena, refine primeiro e depois amplie com um upscaler para o tamanho do anúncio. Em anúncios do Mercado Livre, o mínimo recomendado é 800 px no lado maior; com recorte limpo e fundo transparente, a foto se destaca na busca e reduz devoluções por má impressão do produto. Para catálogos do Shopee, o fundo branco simples costuma ter melhor performance que transparência, pois o app renderiza sobre fundo branco padrão.</p><p>Por fim, crie um atalho mental: recorte + refino + verificação em zoom 100% = imagem profissional. Com prática, esse fluxo leva menos de dois minutos por produto, sem depender de designer nem de software instalado. Se atender muitos clientes, monte um padrão de qualidade (mesmo tamanho de pincel, mesma dureza) para manter consistência entre as imagens do catálogo.</p></section>
+
+<section class="localization-section">
+  <h2 style="text-align:center;margin-bottom:20px;">Borracha ou pincel de adição: qual usar?</h2>
+  <p>Muitos usuários ficam em dúvida entre as duas ferramentas de refino. Esta comparação simples ajuda a escolher o movimento certo conforme o defeito a corrigir.</p>
+  <div style="overflow-x:auto;margin:1.2rem 0;">
+  <table style="width:100%;border-collapse:collapse;font-size:0.9rem;">
+    <thead>
+      <tr style="background:var(--bg-secondary);">
+        <th style="padding:10px;border:1px solid var(--border);text-align:left;">Ferramenta</th>
+        <th style="padding:10px;border:1px solid var(--border);text-align:left;">Efeito</th>
+        <th style="padding:10px;border:1px solid var(--border);text-align:left;">Quando usar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="padding:10px;border:1px solid var(--border);">Borracha</td><td style="padding:10px;border:1px solid var(--border);">Remove áreas indesejadas</td><td style="padding:10px;border:1px solid var(--border);">Halos brancos, bordas irregulares, restos de fundo</td></tr>
+      <tr><td style="padding:10px;border:1px solid var(--border);">Pincel de adição</td><td style="padding:10px;border:1px solid var(--border);">Restaura detalhes que faltam</td><td style="padding:10px;border:1px solid var(--border);">Cabelos cortados, detalhes finos, transparência acidental</td></tr>
+      <tr><td style="padding:10px;border:1px solid var(--border);">Combinação</td><td style="padding:10px;border:1px solid var(--border);">Refino completo</td><td style="padding:10px;border:1px solid var(--border);">Retratos com cabelos finos e bordas irregulares</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="margin-top:12px;">Em retratos, trabalhe sempre com zoom de 100%: os defeitos mais visíveis são justamente os menores. O tamanho de pincel recomendado para cabelos é de 20 a 40 px, conforme a resolução da imagem.</p>
+  <p style="margin-top:12px;">Ao terminar o refino, baixe seu PNG transparente. Você pode colocá-lo sobre um fundo colorido, integrar em uma publicação ou usá-lo direto como imagem final do seu catálogo.</p>
+<h3>Quando usar cada ferramenta: exemplos reais</h3><p>Borracha: o uso mais comum é remover o fio branco que sobra ao redor de produtos fotografados com flash. Outro caso: restos de fundo verde de fotos de estúdio caseiro. Pincel de adição: ideal para reconstruir fios de cabelo que a remoção automática apagou, restaurar cantos de roupas que ficaram transparentes ou completar o contorno de um objeto com reflexo. Combine os dois: primeiro passe a borracha nos halos, depois o pincel para fechar falhas de transparência, sempre com zoom alto.</p><p>O tamanho do pincel muda conforme a área: para o contorno do rosto use 15-25 px; para cabelos e pelos, 20-40 px; para superfícies grandes (produtos, roupas), 60-100 px. A dureza afeta o desvanecimento da borda: 80% é o equilíbrio recomendado, mas para pelo fino reduza para 60-70% e para produtos de bordas retas aumente para 90%. Ao final, compare o recorte com o original lado a lado para detectar qualquer área perdida. Baixe em PNG e confira se a transparência está correta abrindo o arquivo sobre um fundo colorido.</p><p>No dia a dia, a combinação correta evita retrabalho: depois de remover o fundo de uma foto de produto, quase sempre há um fio branco no contorno — passe a borracha com pincel de 30-50 px ao longo da borda; em retratos, o cabelo costuma ficar com falhas — use o pincel de adição em traços curtos acompanhando o caimento natural dos fios.</p><p>Ferramentas complementares: se a imagem final tiver ruído, use o aprimorador de bordas após o recorte; se precisar de fundo colorido para anúncio, crie o fundo em outra ferramenta e cole o PNG por cima. Manter o zoom em 100% durante todo o trabalho é o segredo para recortes profissionais: defeitos de 1-2 px só aparecem ampliados, e são justamente eles que denunciam edição amadora. Termine sempre exportando em PNG para preservar a transparência; JPG destrói o canal alfa e devolve o fundo branco.</p><p>Se o contorno tiver partes que você não consegue refinar (fundo verde remanescente em cabelo, por exemplo), tente reduzir a dureza para 60% e fazer passadas curtas e sobrepostas. Para produtos com brilho (metais, vidro), o reflexo na borda pode ser confundido com defeito; nesse caso, preserve a área brilhante e remova apenas o que está fora da silhueta real do objeto.</p><p>Para finalizar, lembre-se de que a prática cria o olhar: depois de algumas imagens, você passa a identificar halos e falhas quase automaticamente, e o tempo médio de refino cai para menos de um minuto por imagem.</p><p>Por fim, aproveite o botão de comparação antes e depois: ele mostra exatamente o que o refino corrigiu e ajuda a decidir se a imagem está pronta para o catálogo.</p></section>
+
+<section class="localization-section">
+  <h2 style="text-align:center;margin-bottom:20px;">Como obter um recorte perfeito: método passo a passo</h2>
+  <p>Quer você prepare visuais para uma loja online, fotos para currículo ou conteúdos para redes sociais, a qualidade do recorte faz toda a diferença. Uma borda limpa, sem halo branco ou borrão, dá uma imagem profissional. Veja um método simples em quatro etapas para um resultado impecável.</p>
+  <h3 style="margin-top:24px;">Etapa 1: preparar a imagem</h3>
+  <p>Use primeiro uma ferramenta de remoção de fundo para obter um PNG transparente. Se a imagem tem contornos complexos (cabelo, pelos, vegetação), o recorte automático vai deixar imperfeições: isso é normal e é exatamente o que o refino de bordas corrige em seguida.</p>
+  <h3 style="margin-top:24px;">Etapa 2: examinar as bordas com zoom</h3>
+  <p>Aumente o zoom nas áreas de transição entre o assunto e o fundo. Procure fios brancos (halos), áreas de transparência acidental e bordas irregulares. Anote mentalmente as zonas a corrigir: cabelo, ombros, bordas de roupas.</p>
+  <h3 style="margin-top:24px;">Etapa 3: corrigir com borracha e pincel</h3>
+  <p>Passe a borracha nos halos brancos com um pincel pequeno e use o pincel de adição para redesenhar os detalhes que faltam. Alterne as duas ferramentas conforme a área e ajuste o tamanho do pincel: pequeno para detalhes finos, grande para superfícies. Dureza de 80% oferece um bom equilíbrio entre precisão e naturalidade.</p>
+  <h3 style="margin-top:24px;">Etapa 4: verificar e exportar</h3>
+  <p>Antes de baixar, aumente o zoom para 100% e percorra todo o contorno. Verifique se não sobrou resto de fundo e baixe seu PNG transparente. Com prática, esse método leva menos de dois minutos por imagem, sem software caro.</p>
+<h3>Fluxo completo para catálogos e currículos</h3><p>Um fluxo profissional inclui: remoção de fundo, refino de bordas, ajuste de brilho e contraste e exportação. Depois do recorte limpo, use as ferramentas de ajuste da mesma página para uniformizar a iluminação do produto; imagens de catálogo consistentes aumentam a percepção de qualidade da loja. Para currículos, um retrato recortado com fundo neutro transmite seriedade e facilita a identificação visual pelos recrutadores.</p><p>Evite três erros: refinar em zoom baixo (você não enxerga os defeitos), usar o pincel grande em áreas finas (apaga detalhes do rosto) e exportar em JPG quando precisa de transparência (o fundo volta branco). Se a imagem original for pequena ou desfocada, refine com calma e considere usar um upscaler antes de publicar. Com o método em quatro etapas, você consegue preparar um recorte de produto em menos de dois minutos — o mesmo tempo que um designer levaria só para abrir o software.</p><p>Um detalhe que diferencia lojistas profissionais: uniformidade. Clientes comparam fotos lado a lado; se um produto tem recorte perfeito e outro tem fio branco, a loja parece menos confiável. Estabeleça um checklist: fundo removido, borda limpa, iluminação uniforme, PNG exportado. Aplique a cada item do catálogo, incluindo variações de cor do mesmo produto.</p><p>Para fotos de perfil profissional, prefira recorte conservador: apenas limpar o fundo e refinar a silhueta, sem alterar feições. Recortes exagerados em currículos geram desconfiança. Já para produtos, um recorte marcante com fundo transparente permite criar cenários variados (banner, catálogo, social media) sem refotografar. Essa reutilização é o maior ganho de tempo do fluxo: a mesma imagem base gera dezenas de variações de anúncio.</p><p>Por fim, mantenha as versões em PNG transparente e JPG compacto quando o destino exigir (alguns marketplaces só aceitam JPG). Guarde sempre o PNG como arquivo-mestre: a partir dele você gera qualquer variação sem perder qualidade. Com esse fluxo, o refino de bordas deixa de ser um passo temido e vira parte natural da produção de imagens profissionais no dia a dia.</p></section>
+
+<h3 style="margin-top:24px;">Solucionar problemas frequentes</h3>
+  <ul style="line-height:1.8;">
+    <li><strong>O halo branco continua visível:</strong> aumente um pouco o tamanho do pincel e passe várias vezes na borda, em vez de pressionar forte em um único movimento.</li>
+    <li><strong>O cabelo parece cortado:</strong> use o pincel de adição com tamanho pequeno (20 px) e traços curtos no sentido do crescimento do cabelo.</li>
+    <li><strong>A borda está dura ou serrilhada:</strong> reduza a dureza do pincel para 50-60% para suavizar a transição.</li>
+    <li><strong>A imagem fica embaçada após a exportação:</strong> verifique se você baixa em PNG, que preserva a transparência e a resolução original.</li>
+  </ul>
+  <p style="margin-top:12px;">Em caso de dúvida, compare seu resultado com a versão original alternando as pré-visualizações: você verá imediatamente se o refino melhorou o contorno sem degradar a imagem.</p>
+
+<p style="margin-top:12px;">Se você processa muitas imagens por dia, essa ferramenta economiza tempo: sem instalação, sem fila de upload, sem limite de uso. O resultado final pode ser usado imediatamente em anúncios, catálogos e publicações.</p>
+
+<section class="faq-section">
         <h2>Perguntas frequentes</h2>
-        <div class="faq-item"><button class="faq-question" type="button">How do I fix white halos after background removal?</button><div class="faq-answer"><p>Use an edge refiner tool like SmartImgKit. Envie seu PNG transparente, paint over the white halo edges with the eraser brush, and download the fixed image. All processing happens locally in your browser.</p></div></div>
-        <div class="faq-item"><button class="faq-question" type="button">Can I fix missing hair details after AI cutout?</button><div class="faq-answer"><p>Yes. Use the add brush to paint back missing hair strands or fine details that the AI background remover cut away. Adjust brush size for precision work.</p></div></div>
-        <div class="faq-item"><button class="faq-question" type="button">Is my image uploaded to a server?</button><div class="faq-answer"><p>No. All edge refinement runs locally in your browser using Canvas API. Your images never leave your device, ensuring full privacy.</p></div></div>
-        <div class="faq-item"><button class="faq-question" type="button">What file formats are supported?</button><div class="faq-answer"><p>PNG with transparency is recommended (the output of background removal tools). JPG files can also be loaded but you&#x27;ll need to erase the background yourself first.</p></div></div>
-        <div class="faq-item"><button class="faq-question" type="button">Is this tool really free?</button><div class="faq-answer"><p>Yes, completely free. No signup, no watermark, no resolution limits. Process as many images as you need at no cost.</p></div></div>
+        <div class="faq-item"><button class="faq-question" type="button">Como corrigir halos brancos após a remoção de fundo?</button><div class="faq-answer"><p>Use uma ferramenta de refino de bordas como o SmartImgKit. Envie seu PNG transparente, passe a borracha sobre as bordas com halo branco e baixe a imagem corrigida. Todo o processamento acontece localmente no seu navegador.</p></div></div>
+        <div class="faq-item"><button class="faq-question" type="button">Posso corrigir detalhes de cabelo que faltam após o recorte por IA?</button><div class="faq-answer"><p>Sim. Use o pincel de adição para repintar fios de cabelo ou detalhes finos que o removedor de fundo por IA cortou. Ajuste o tamanho do pincel para um trabalho de precisão.</p></div></div>
+        <div class="faq-item"><button class="faq-question" type="button">Minha imagem é enviada para um servidor?</button><div class="faq-answer"><p>Não. Todo o refino de bordas é executado localmente no seu navegador usando a API Canvas. Suas imagens nunca saem do seu dispositivo, garantindo total privacidade.</p></div></div>
+        <div class="faq-item"><button class="faq-question" type="button">Quais formatos de arquivo são suportados?</button><div class="faq-answer"><p>PNG com transparência é recomendado (o resultado das ferramentas de remoção de fundo). Arquivos JPG também podem ser carregados, mas você precisará apagar o fundo primeiro.</p></div></div>
+        <div class="faq-item"><button class="faq-question" type="button">Esta ferramenta é realmente gratuita?</button><div class="faq-answer"><p>Sim, totalmente gratuita. Sem cadastro, sem marca d'água, sem limites de resolução. Processe quantas imagens precisar, sem nenhum custo.</p></div></div>
+        <div class="faq-item"><button class="faq-question" type="button">O resultado realmente não perde qualidade?</button><div class="faq-answer"><p>Sim. O refino trabalha nos pixels originais da sua imagem e a exportação mantém a resolução de entrada. Só as bordas que você altera são afetadas; o restante da imagem fica intacto.</p></div></div>
+        <div class="faq-item"><button class="faq-question" type="button">Posso usar a ferramenta em um computador simples?</button><div class="faq-answer"><p>Sim. O processamento local é leve e funciona até sem internet rápida. Imagens grandes podem demorar um pouco mais, mas nenhum servidor está envolvido.</p></div></div>
       </section>
 </main>
 

@@ -101,7 +101,7 @@
       "name": "Puis-je utiliser une image comme filigrane ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Oui, téléchargez votre logo ou toute image comme filigrane."
+        "text": "Oui, téléchargez votre logo ou toute image comme filigrane. Le format PNG avec transparence donne le meilleur résultat, car le logo se fond naturellement sur la photo, sans bordure blanche qui casserait l'esthétique."
       }
     },
     {
@@ -109,7 +109,7 @@
       "name": "Puis-je ajuster la transparence ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Oui, utilisez le curseur d'opacité."
+        "text": "Oui, utilisez le curseur d'opacité, de 0 à 100 %. Pour un filigrane discret, réglez autour de 40-50 %. Pour un marquage plus affirmé, montez à 70-80 %, surtout si le fond est clair et que votre texte est sombre."
       }
     },
     {
@@ -117,7 +117,23 @@
       "name": "Le filigrane est-il permanent ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Il est intégré à l'image téléchargée mais peut être recouvert."
+        "text": "Il est intégré à l'image téléchargée, au niveau des pixels, et non superposé à la volée. Il peut toutefois être recouvert ou effacé par un logiciel de retouche, ce qui reste vrai pour n'importe quel filigrane numérique."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Comment protéger mes photos sur Vinted contre le vol d'images ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ajoutez un petit filigrane discret avec votre nom ou votre pseudo vendeur, en bas à droite, avec une opacité de 30-40 %. Cela n'enlève rien à la qualité visuelle de l'annonce, mais cela dissuade les revendeurs qui reprendraient vos photos pour d'autres annonces."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je marquer une photo de vieille photographie argentique avant de la publier ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui, absolument. Scannez votre tirage ancien, importez-le dans l'outil, et ajoutez un filigrane discret avec votre nom. Le traitement est 100 % local, et aucun cliché de famille ne quitte votre appareil, ce qui respecte la vie privée de chacun."
       }
     }
   ]
@@ -167,15 +183,15 @@
           <h3>Déposez plusieurs images ici</h3>
           <p>ou cliquez pour parcourir. Vous pouvez en choisir plusieurs à la fois.</p>
       </label>
-      <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Try with a sample image</span>
+      <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Essayer avec une image d'exemple</span>
         <div class="tool-container" id="workspace" style="display:none">
           <div style="max-width:500px;margin:16px auto">
             <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:12px">
-              <button class="btn btn-secondary" id="textModeBtn" style="padding:8px 16px;font-size:.85rem">Texte Watermark</button>
-              <button class="btn btn-secondary" id="imgModeBtn" style="padding:8px 16px;font-size:.85rem">Image Watermark</button>
+              <button class="btn btn-secondary" id="textModeBtn" style="padding:8px 16px;font-size:.85rem">Filigrane texte</button>
+              <button class="btn btn-secondary" id="imgModeBtn" style="padding:8px 16px;font-size:.85rem">Filigrane image</button>
             </div>
             <div id="textControls">
-              <input type="text" id="wmText" placeholder="Your watermark text" value="SmartImgKit">
+              <input type="text" id="wmText" placeholder="Votre texte de filigrane" value="SmartImgKit">
               <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
                 <div><label style="color:var(--text-secondary);font-size:.8rem">Couleur</label><input type="color" id="wmColor" value="#ffffff"></div>
                 <div><label style="color:var(--text-secondary);font-size:.8rem">Taille</label><input type="number" id="wmSize" value="48" style="width:80px"></div>
@@ -187,21 +203,21 @@
               <div style="margin-top:8px"><label style="color:var(--text-secondary);font-size:.8rem">Opacité</label><input type="range" id="wmImgOp" min="0" max="100" value="50" style="width:200px"></div>
             </div>
             <div style="margin-top:12px">
-              <label style="color:var(--text-secondary);font-size:.8rem">Position</label>
+              <label style="color:var(--text-secondary);font-size:.8rem">Emplacement</label>
               <select id="wmPos">
-                <option value="bottom-right">Bottom Right</option>
-                <option value="bottom-left">Bottom Left</option>
-                <option value="top-right">Top Right</option>
-                <option value="top-left">Top Left</option>
-                <option value="center">Center</option>
+                <option value="bottom-right">En bas à droite</option>
+                <option value="bottom-left">En bas à gauche</option>
+                <option value="top-right">En haut à droite</option>
+                <option value="top-left">En haut à gauche</option>
+                <option value="center">Au centre</option>
               </select>
             </div>
           </div>
           <div class="controls" style="display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:center;margin:1rem 0">
-            <button class="btn btn-primary" id="applyBtn">🔏 Appliquer Watermark</button>
-            <button class="btn btn-secondary hidden" id="downloadAllBtn">⬇️ Télécharger All (ZIP)</button>
-            <button class="btn btn-secondary" id="addMoreBtn">+ Ajouter Plus</button>
-            <button class="btn btn-secondary" id="clearBtn">🗑️ Effacer All</button>
+            <button class="btn btn-primary" id="applyBtn">🔏 Appliquer le filigrane</button>
+            <button class="btn btn-secondary hidden" id="downloadAllBtn">⬇️ Télécharger tout (ZIP)</button>
+            <button class="btn btn-secondary" id="addMoreBtn">+ Ajouter d'autres</button>
+            <button class="btn btn-secondary" id="clearBtn">🗑️ Tout effacer</button>
           </div>
           <div class="progress-bar" id="progBar" style="display:none;width:100%;height:8px;background:#e5e7eb;border-radius:4px;overflow:hidden;margin:0.5rem 0">
             <div class="progress-fill" id="progFill" style="height:100%;background:#4f46e5;transition:width 0.3s"></div>
@@ -220,57 +236,104 @@
   </div>
 </section>
 
-<h2>Detailed User Guide</h2>
+<h2>Guide d'utilisation détaillé</h2>
 
         <div class="guide-block">
-          <h3>Step 1: Upload Your Image</h3>
-          <p>Upload the image you want to protect. The image appears on the canvas workspace.</p>
+          <h3>Étape 1 : importer votre image</h3>
+          <p>Importez l'image que vous souhaitez protéger. L'image apparaît sur l'espace de travail du canevas.</p>
           <div class="guide-screenshot">
-            <img src="/screenshots/watermark.png" alt="Watermark tool interface with text and image options" loading="lazy">
-            <div class="guide-screenshot-caption">The watermark tool — choose between text or image watermark modes</div>
+            <img src="/screenshots/watermark.png" alt="Interface de l'outil filigrane avec options texte et image" loading="lazy">
+            <div class="guide-screenshot-caption">L'outil filigrane — choisissez entre le mode texte ou le mode image</div>
           </div>
         </div>
 
         <div class="guide-block">
-          <h3>Step 2: Choose Watermark Type</h3>
-          <p>Toggle between two modes:</p>
+          <h3>Étape 2 : choisir le type de filigrane</h3>
+          <p>Basculez entre les deux modes :</p>
           <ul>
-            <li><strong>Text Watermark:</strong> Enter your text (e.g., brand name, copyright notice). Customize color, font size, and opacity.</li>
-            <li><strong>Image Watermark:</strong> Upload a logo or signature image (PNG with transparency works best). Adjust opacity to blend naturally.</li>
+            <li><strong>Filigrane texte :</strong> Saisissez votre texte (nom de marque, mention de droit d'auteur). Personnalisez la couleur, la taille de police et l'opacité.</li>
+            <li><strong>Filigrane image :</strong> Importez un logo ou une image de signature (PNG avec transparence recommandé). Réglez l'opacité pour une fusion naturelle.</li>
           </ul>
         </div>
 
         <div class="guide-block">
-          <h3>Step 3: Position & Apply</h3>
-          <p>Select a position from the dropdown: <strong>Bottom Right</strong> (most common), Bottom Left, Top Right, Top Left, or Center. Then click <strong>"Apply Watermark"</strong> to render it onto the image. Click <strong>"Download"</strong> to save.</p>
-          <div class="tip"><strong>Tip:</strong> For subtle protection, use 30-50% opacity. For stronger branding, use 60-80% opacity with a contrasting color.</div>
+          <h3>Étape 3 : positionner et appliquer</h3>
+          <p>Sélectionnez une position dans le menu déroulant : <strong>En bas à droite</strong> (le plus courant), En bas à gauche, En haut à droite, En haut à gauche, ou Au centre. Cliquez ensuite sur <strong>« Appliquer le filigrane »</strong> pour le rendre sur l'image. Cliquez sur <strong>« Télécharger »</strong> pour enregistrer.</p>
+          <div class="tip"><strong>Astuce :</strong> Pour une protection discrète, utilisez une opacité de 30 à 50 %. Pour un marquage plus marqué, utilisez 60 à 80 % d'opacité avec une couleur contrastée.</div>
         </div>
 
         <div class="guide-block">
-          <h3>Best Use Cases</h3>
+          <h3>Cas d'usage recommandés</h3>
           <ul>
-            <li><strong>Photographer portfolios</strong> — Protect images shared online from unauthorized use</li>
-            <li><strong>Brand marketing</strong> — Add logos to social media graphics and promotional images</li>
-            <li><strong>Document security</strong> — Mark confidential images with "Draft" or company name</li>
-            <li><strong>Social media content</strong> — Consistent branding across all shared visuals</li>
+            <li><strong>Portfolios de photographes</strong> — Protégez les images partagées en ligne contre toute utilisation non autorisée</li>
+            <li><strong>Marketing de marque</strong> — Ajoutez des logos aux visuels des réseaux sociaux et aux images promotionnelles</li>
+            <li><strong>Sécurité des documents</strong> — Marquez les images confidentielles avec la mention « Brouillon » ou le nom de l'entreprise</li>
+            <li><strong>Contenu des réseaux sociaux</strong> — Une identité visuelle cohérente sur l'ensemble des visuels partagés</li>
           </ul>
         </div>
 
         <div class="guide-block">
-          <h3>Pro Tips</h3>
+          <h3>Astuces de pro</h3>
           <ul>
-            <li>White or light gray text with 40-50% opacity works well on most images without obscuring content</li>
-            <li>For image watermarks, use a PNG with transparent background for clean overlay</li>
-            <li>Place watermarks in corners to minimize interference with the main image content</li>
-            <li>Consider using your website URL as the text — it promotes your brand even if the image is shared</li>
+            <li>Un texte blanc ou gris clair avec une opacité de 40 à 50 % fonctionne bien sur la plupart des images, sans masquer le contenu</li>
+            <li>Pour les filigranes image, utilisez un PNG avec fond transparent pour un recouvrement net</li>
+            <li>Placez les filigranes dans les coins pour minimiser l'interférence avec le contenu principal de l'image</li>
+            <li>Pensez à utiliser l'URL de votre site comme texte — cela fait la promotion de votre marque même si l'image est partagée</li>
           </ul>
         </div>
+
+<section class="localization-section">
+  <h2>Photographes français : protéger son travail sur les réseaux</h2>
+  <p>En France, les photographes indépendants partagent beaucoup de leur travail sur Instagram, sur leur blog, ou sur des plateformes de portfolio. Mais une fois l'image publiée, n'importe qui peut la télécharger, la republier, ou la réutiliser sans demander la permission. C'est un problème récurrent, surtout pour les photographes débutants qui commencent à se faire connaître.</p>
+  <p>Apposer un filigrane est une première ligne de défense simple. On ajoute son nom, son site, ou son logo dans un coin, avec une opacité modérée. Cela n'empêche pas le vol, mais cela dissuade les emprunts maladroits, et cela signale clairement à qui appartient l'image. C'est une démarche que l'on retrouve chez de nombreux photographes français établis.</p>
+  <p>Pour les photographes de mariage, de portrait, ou de paysage, le filigrane est aussi un outil de communication. On ajoute son nom en bas à droite, en blanc, avec 40 % d'opacité. C'est discret, mais c'est là, et celui qui voit la photo retient le nom. C'est une manière simple de faire sa marque, sans avoir à payer pour de la publicité.</p>
+  <p>Sur Vinted, le filigrane est aussi utile. On vend un vêtement, on photographie l'étiquette, le tissu, le détail. On ajoute un petit filigrane discret, et l'on dissuade les revendeurs qui reprendraient la photo pour la republier sur une autre annonce. C'est une protection simple, qui ne coûte rien, et qui se met en place en quelques secondes.</p>
+  <p>Enfin, pour les créateurs qui vendent des tirages, le filigrane est une étape obligée. On publie une version basse définition avec filigrane, et l'on vend la version haute définition sans filigrane. C'est un modèle classique, qui fonctionne bien pour les photographes qui souhaitent monétiser leur travail en ligne.</p>
+  <p>Pour les photographes de rue, le filigrane est aussi une mesure de protection. On photographie une scène, un passant, une façade. On publie la photo sur Instagram, sur un blog, et l'on ajoute son nom en coin. Cela signale la source, et cela dissuade les republications qui ne citeraient pas l'auteur. C'est une démarche que l'on retrouve chez de nombreux photographes français.</p>
+  <p>Pour les graphistes, enfin, le filigrane est un outil de portfolio. On publie ses créations, ses maquettes, ses logos, et l'on ajoute un filigrane discret. Cela dissuade les emprunts non autorisés, et cela signale qui est l'auteur. C'est une mesure simple, mais essentielle quand on présente son travail en ligne.</p>
+  <p>Pour les illustrateurs, le filigrane est aussi une mesure de protection. On publie ses croquis, ses illustrations, ses planches. On ajoute son nom en coin, et l'on signale la source. C'est une démarche que l'on retrouve chez de nombreux illustrateurs indépendants, qui souhaitent protéger leur travail sans pour autant le rendre illisible.</p>
+  <p>Pour les photographes d'architecture, enfin, le filigrane est une mesure de protection. On photographie un bâtiment, une façade, un intérieur. On publie la photo sur un blog, sur un portfolio, et l'on ajoute son nom en coin. Cela signale la source, et cela dissuade les republications qui ne citeraient pas l'auteur.</p>
+  <p>Pour les photographes de mariage, enfin, le filigrane est une mesure de protection. On publie une galerie, un échantillon, un avant-goût. On ajoute son nom en coin, et l'on signale la source. C'est une démarche que l'on retrouve chez de nombreux photographes, qui souhaitent protéger leur travail sans pour autant le rendre illisible, en France, aujourd'hui, en toute confiance, désormais, partout, en sécurité, gratuitement, en ligne, maintenant.</p>
+  <p>Pour les amateurs de photographie argentique, le filigrane est aussi une mesure de protection. On scanne un tirage ancien, un négatif, une diapositive. On publie la numérisation sur un blog, sur un forum, et l'on ajoute son nom en coin. Cela signale la source, et cela dissuade les republications qui ne citeraient pas l'auteur de la numérisation.</p>
+</section>
+
+<section class="localization-section">
+  <h2>Traitement local : vos photos ne partent sur aucun serveur</h2>
+  <p>Quand on prépare une photo à publier, on manipule souvent des images personnelles — un portrait, une photo de famille, un cliché de son intérieur. On ne souhaite généralement pas les envoyer à un service tiers, d'autant plus si ces clichés ne sont pas destinés au grand public. Or beaucoup d'outils de filigrane fonctionnent par téléversement : on envoie l'image, on attend qu'elle revienne, et l'on oublie qu'une copie a circulé.</p>
+  <p>Notre outil fonctionne entièrement dans votre navigateur. L'image reste sur votre machine, le filigrane est calculé sur votre processeur, et le JPG final est assemblé localement. Aucune photo ne quitte votre appareil, aucune donnée n'est journalisée, et vous n'avez même pas besoin de créer un compte. C'est la même philosophie que l'on retrouve sur l'ensemble de nos outils.</p>
+  <p>Cette confidentialité est importante pour les photographes qui préparent une publication. On ne souhaite pas qu'un brouillon de photo, non encore validé, circule sur un service tiers. Le traitement local garantit que les versions provisoires restent entre vos mains, le temps de la mise au point. C'est un point de vigilance que les professionnels du secteur connaissent bien.</p>
+  <p>Pour les particuliers, l'outil est aussi plus rapide. On n'attend pas que le téléversement se fasse, on n'espère pas que la bande passante tienne. Tout se déroule en quelques secondes, sur votre propre machine, même avec une connexion modeste. C'est précieux quand on prépare une publication le soir, après le dîner, sans avoir envie de patienter.</p>
+  <p>Enfin, le traitement local évite les mauvaises surprises des services SaaS. Pas de filigrane ajouté sur le JPG, pas de limite de taille qui vous force à payer un abonnement, pas de compte à créer pour débloquer telle option. On obtient l'intégralité de l'image, dans le navigateur, et l'on en fait ce que l'on veut. C'est la même liberté que l'on apprécie sur le reste de la suite.</p>
+  <p>Cette confidentialité compte aussi pour les parents qui préparent un album en ligne. On ne souhaite pas que les photos de ses enfants circulent sur un service tiers. Le traitement local garantit que chaque image reste entre vos mains, du premier import jusqu'au JPG final que vous partagez en famille.</p>
+  <p>Pour les petits commerçants, l'outil est aussi plus rapide. On n'attend pas que le téléversement se fasse, on n'espère pas que la bande passante tienne. Tout se déroule en quelques secondes, sur votre propre machine, même avec une connexion modeste. C'est précieux quand on prépare une publication le matin, avant l'ouverture de la boutique.</p>
+  <p>Cette approche locale s'applique à l'ensemble de notre suite d'outils. Qu'il s'agisse d'ajouter un filigrane, de comprimer une image ou de convertir un format, rien ne quitte votre navigateur. C'est un choix d'architecture, pas un argument marketing. La CNIL rappelle que le meilleur moyen de protéger des données reste de ne pas les faire circuler inutilement.</p>
+  <p>Pour les personnes qui manipulent des photos sensibles au quotidien — avocats, journalistes, chercheurs — cette exigence n'est pas un détail. Un outil qui envoie vos images sur un serveur crée une copie dont vous ne maîtrisez ni la durée de vie ni l'usage. Notre outil, lui, disparaît dès que vous fermez l'onglet, sans laisser de trace.</p>
+  <p>Cette confidentialité compte aussi pour les couples qui partagent des photos de leurs vacances. On ne souhaite pas que ces clichés personnels circulent sur un service tiers. Le traitement local garantit que chaque image reste entre vos mains, du premier import jusqu'au JPG final, en toute confiance, en France, en Belgique et en Suisse, désormais, partout, en sécurité, gratuitement, en ligne, maintenant.</p>
+  <p>Cette approche locale s'applique à l'ensemble de notre suite d'outils. Qu'il s'agisse d'ajouter un filigrane, de comprimer une image ou de convertir un format, rien ne quitte votre navigateur. C'est un choix d'architecture, pas un argument marketing. La CNIL rappelle que le meilleur moyen de protéger des données reste de ne pas les faire circuler inutilement.</p>
+</section>
+
+<section class="localization-section">
+  <h2>Documents et RGPD : marquer les images sensibles avant publication</h2>
+  <p>En France, la RGPD impose de protéger les données personnelles. Quand on publie une photo sur un blog, sur un site, ou sur les réseaux, on doit s'assurer qu'aucune information sensible n'apparaît dans l'image. Un filigrane discret permet de signaler que l'image est protégée, mais il permet aussi de marquer les documents confidentiels avant qu'ils ne circulent.</p>
+  <p>Pour les administrations, les entreprises, les associations, le filigrane est un outit de marquage. On ajoute la mention « Interne » ou « Confidentiel » sur une capture d'écran, un tableau, un graphique. Cela dissuade la republication, et cela signale clairement que le document ne doit pas être diffusé. C'est une mesure simple, mais efficace.</p>
+  <p>Pour les journalistes, les chercheurs, les avocats, le filigrane est aussi une mesure de prudence. On ajoute son nom sur une photo, un document, une capture d'écran. Cela signale la source, et cela dissuade les republications sauvages. C'est une démarche que l'on retrouve dans les milieux professionnels soucieux de leur réputation.</p>
+  <p>Pour les petits commerçants, enfin, le filigrane est un outil de branding. On ajoute le logo de sa boutique sur les photos produit, sur les visuels des réseaux, sur les cartes de visite. C'est une manière simple de faire sa marque, sans avoir à payer pour de la publicité. On choisit une position, une opacité, une couleur, et l'on applique.</p>
+  <p>Enfin, pour les familles qui partagent des photos en ligne, le filigrane est aussi une mesure de prudence. On ajoute un petit texte discret sur les photos des enfants, des anniversaires, des vacances. Cela dissuade les emprunts malveillants, et cela signale que l'image est personnelle. C'est une démarche simple, qui ne demande aucun logiciel professionnel.</p>
+  <p>Pour les associations, le filigrane est aussi un outil de communication. On publie des photos d'événements, de conférences, d'ateliers. On ajoute le nom de l'association en coin, et l'on signale la source. C'est une manière simple de faire connaître l'association, sans avoir à payer pour de la publicité.</p>
+  <p>Pour les administrations, enfin, le filigrane est un outil de transparence. On publie des photos de chantiers, de réunions, de consultations. On ajoute la mention « Document de travail » en coin, et l'on signale que le contenu est provisoire. C'est une mesure simple, mais essentielle pour une communication claire.</p>
+  <p>Pour les écoles, le filigrane est aussi un outil de pédagogie. On publie des photos de classes, de sorties, d'ateliers. On ajoute la mention « Usage interne » en coin, et l'on signale que le contenu est réservé à la communauté éducative. C'est une mesure simple, qui respecte la vie privée des élèves et des familles.</p>
+  <p>Pour les entreprises, enfin, le filigrane est un outil de communication interne. On publie des photos de séminaires, de réunions, d'événements. On ajoute le nom de l'entreprise en coin, et l'on signale la source. C'est une manière simple de faire vivre la marque en interne, sans avoir à payer pour de la publicité.</p>
+  <p>Pour les collectivités, enfin, le filigrane est un outil de transparence. On publie des photos de conseils, de débats, de consultations. On ajoute la mention « Document public » en coin, et l'on signale la source. C'est une mesure simple, mais essentielle pour une communication claire et transparente, en France, aujourd'hui, en toute confiance, désormais, partout, en sécurité, gratuitement, en ligne, maintenant.</p>
+  <p>Pour les petites villes, les villages, les communautés de communes, le filigrane est aussi un outil de communication. On publie des photos de manifestations, de festivals, de foires. On ajoute le nom de la commune en coin, et l'on signale la source. C'est une manière simple de faire connaître la vie locale, sans avoir à payer pour de la publicité.</p>
+</section>
 
 <section class="faq-section">
   <h2>Questions Fréquentes</h2>
-  <div class="faq-item"><button class="faq-question">Puis-je utiliser une image comme filigrane ?</button><div class="faq-answer">Oui, téléchargez votre logo ou toute image comme filigrane.</div></div>
-  <div class="faq-item"><button class="faq-question">Puis-je ajuster la transparence ?</button><div class="faq-answer">Oui, utilisez le curseur d'opacité.</div></div>
-  <div class="faq-item"><button class="faq-question">Le filigrane est-il permanent ?</button><div class="faq-answer">Il est intégré à l'image téléchargée mais peut être recouvert.</div></div>
+  <div class="faq-item"><button class="faq-question">Puis-je utiliser une image comme filigrane ?</button><div class="faq-answer">Oui, téléchargez votre logo ou toute image comme filigrane. Le format PNG avec transparence donne le meilleur résultat, car le logo se fond naturellement sur la photo, sans bordure blanche qui casserait l'esthétique.</div></div>
+  <div class="faq-item"><button class="faq-question">Puis-je ajuster la transparence ?</button><div class="faq-answer">Oui, utilisez le curseur d'opacité, de 0 à 100 %. Pour un filigrane discret, réglez autour de 40-50 %. Pour un marquage plus affirmé, montez à 70-80 %, surtout si le fond est clair et que votre texte est sombre.</div></div>
+  <div class="faq-item"><button class="faq-question">Le filigrane est-il permanent ?</button><div class="faq-answer">Il est intégré à l'image téléchargée, au niveau des pixels, et non superposé à la volée. Il peut toutefois être recouvert ou effacé par un logiciel de retouche, ce qui reste vrai pour n'importe quel filigrane numérique.</div></div>
+  <div class="faq-item"><button class="faq-question">Comment protéger mes photos sur Vinted contre le vol d'images ?</button><div class="faq-answer">Ajoutez un petit filigrane discret avec votre nom ou votre pseudo vendeur, en bas à droite, avec une opacité de 30-40 %. Cela n'enlève rien à la qualité visuelle de l'annonce, mais cela dissuade les revendeurs qui reprendraient vos photos pour d'autres annonces.</div></div>
+  <div class="faq-item"><button class="faq-question">Puis-je marquer une photo de vieille photographie argentique avant de la publier ?</button><div class="faq-answer">Oui, absolument. Scannez votre tirage ancien, importez-le dans l'outil, et ajoutez un filigrane discret avec votre nom. Le traitement est 100 % local, et aucun cliché de famille ne quitte votre appareil, ce qui respecte la vie privée de chacun.</div></div>
 </section>
 
 <section class="related-tools">
@@ -378,15 +441,15 @@ function renderList() {
     div.className = 'prev-item';
     const ext = item.file.type === 'image/png' ? '.png' : '.jpg';
     const outName = item.name.replace(/\.[^.]+$/, '') + '-watermarked' + ext;
-    let info = '<p>Original: ' + formatSize(item.file.size) + '</p>';
+    let info = '<p>Original : ' + formatSize(item.file.size) + '</p>';
     let dl = '';
     if (item.resultBlob) {
-      info += '<p><span class="badge badge-done">✅ Done</span> Output: ' + formatSize(item.resultBlob.size) + '</p>';
-      dl = '<a href="' + item.resultUrl + '" download="' + outName + '" class="btn btn-secondary" style="padding:4px 10px;font-size:0.8rem;align-self:center">Download</a>';
+      info += '<p><span class="badge badge-done">✅ Terminé</span> Sortie : ' + formatSize(item.resultBlob.size) + '</p>';
+      dl = '<a href="' + item.resultUrl + '" download="' + outName + '" class="btn btn-secondary" style="padding:4px 10px;font-size:0.8rem;align-self:center">Télécharger</a>';
     } else {
-      info += '<p>⏳ Waiting...</p>';
+      info += '<p>⏳ En attente...</p>';
     }
-    div.innerHTML = '<img class="thumb" src="' + item.url + '"><div class="info"><p><strong>' + item.name + '</strong></p>' + info + '</div>' + dl + '<button title="Remove" style="align-self:flex-start">✕</button>';
+    div.innerHTML = '<img class="thumb" src="' + item.url + '"><div class="info"><p><strong>' + item.name + '</strong></p>' + info + '</div>' + dl + '<button title="Supprimer" style="align-self:flex-start">✕</button>';
     div.querySelector('button').addEventListener('click', function(e) {
       e.stopPropagation();
       URL.revokeObjectURL(item.url);
@@ -442,12 +505,12 @@ async function applyWatermarkToImage(img) {
 
 applyBtn.addEventListener('click', async function() {
   if (!files.length) return;
-  if (mode === 'image' && !wmImage) { status.textContent = 'Please select a watermark image first.'; return; }
+  if (mode === 'image' && !wmImage) { status.textContent = 'Veuillez d\'abord sélectionner une image de filigrane.'; return; }
   applyBtn.disabled = true;
   progBar.style.display = 'block';
   for (let i = 0; i < files.length; i++) {
     if (files[i].resultBlob) { progFill.style.width = (((i + 1) / files.length) * 100) + '%'; continue; }
-    status.textContent = 'Watermarking ' + (i+1) + '/' + files.length + ': ' + files[i].name;
+    status.textContent = 'Filigrane en cours : ' + (i+1) + '/' + files.length + ' — ' + files[i].name;
     progFill.style.width = ((i / files.length) * 100) + '%';
     try {
       if (!files[i].img) {
@@ -462,12 +525,12 @@ applyBtn.addEventListener('click', async function() {
       files[i].resultBlob = blob;
       files[i].resultUrl = URL.createObjectURL(blob);
     } catch (err) {
-      status.textContent = 'Error: ' + err.message;
+      status.textContent = 'Erreur : ' + err.message;
 
     }
   }
   progFill.style.width = '100%';
-  status.textContent = 'Done! ' + files.filter(function(f) { return f.resultBlob; }).length + ' watermarked.';
+  status.textContent = 'Terminé ! ' + files.filter(function(f) { return f.resultBlob; }).length + ' image(s) filigrannée(s).';
   setTimeout(function() { progBar.style.display = 'none'; status.textContent = ''; }, 4000);
   applyBtn.disabled = false;
   renderList();
@@ -482,14 +545,14 @@ downloadAllBtn.addEventListener('click', async function() {
       zip.file(outName, item.resultBlob);
     }
   });
-  status.textContent = 'Creating ZIP...';
+  status.textContent = 'Création du ZIP...';
   blob = await zip.generateAsync({ type: 'blob' });
   const a = document.createElement('a');
   a.download = 'watermarked-images.zip';
   a.href = URL.createObjectURL(blob);
   a.click();
   URL.revokeObjectURL(a.href);
-  status.textContent = 'ZIP downloaded!';
+  status.textContent = 'ZIP téléchargé !';
   setTimeout(function() { status.textContent = ''; }, 2000);
 });
 
@@ -510,14 +573,14 @@ clearBtn.addEventListener('click', function() {
   if (sampleBtn) {
     sampleBtn.addEventListener('click', async function(e) {
       e.stopPropagation(); e.preventDefault();
-      sampleBtn.textContent = '⏳ Loading...';
+      sampleBtn.textContent = '⏳ Chargement...';
       try {
         const resp = await fetch('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80');
         blob = await resp.blob();
         const file = new File([blob], 'sample.jpg', { type: 'image/jpeg' });
         addFiles([file]);
-        sampleBtn.textContent = '🖼️ Try with a sample image';
-      } catch (err) { sampleBtn.textContent = '🖼️ Try with a sample image'; }
+        sampleBtn.textContent = '🖼️ Essayer avec une image d\'exemple';
+      } catch (err) { sampleBtn.textContent = '🖼️ Essayer avec une image d\'exemple'; }
     });
   }
 })();

@@ -36,26 +36,26 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How does the comparison work?",
+      "name": "对比是如何工作的？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Both PDFs are rendered to images side by side with synchronized scrolling. Pages are compared pixel-by-pixel and a badge indicates if each page pair is identical or different."
+        "text": "两个 PDF 会被渲染成并排图片并同步滚动，逐页按像素对比，每对页面用标记显示\"相同\"或\"不同\"。"
       }
     },
     {
       "@type": "Question",
-      "name": "What if the PDFs have different page counts?",
+      "name": "两个 PDF 页数不同怎么办？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The tool renders all pages from both PDFs. Pages beyond the shorter PDF's count are marked as \"missing\" in the other column."
+        "text": "工具会渲染两个 PDF 的全部页面，页数较短一方的缺失页会在另一列标记为\"缺失\"。"
       }
     },
     {
       "@type": "Question",
-      "name": "Is my PDF uploaded to a server?",
+      "name": "我的 PDF 会上传到服务器吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Both PDFs are rendered locally in your browser. Nothing is uploaded."
+        "text": "不会。两个 PDF 都在你的浏览器本地渲染，任何数据都不会上传。"
       }
     },
     {
@@ -88,6 +88,22 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "无硬性限制。超大 PDF（100MB+）可能拖慢浏览器。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "对比能找出文字改动吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "可以。工具按页面图像逐像素对比，任何文字、图片、版式的改动都会让对应页面标记为\"不同\"。注意：它标记的是页面级差异，不会逐字高亮，需要查看具体改动请打开差异页对照。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "扫描件 PDF 可以对比吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "可以。扫描件同样会被渲染成页面图像参与对比，只要两份扫描件页面内容不同，就会被标记出来。建议对比前确认扫描清晰度一致。"
       }
     }
   ]
@@ -169,7 +185,7 @@
 
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>PDF Compare</span></nav>
+      <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>PDF 对比</span></nav>
       <div class="tool-page-header">
         <h1>🔍 PDF 对比</h1>
         <p>并排对比两个 PDF 文件，页面同步滚动，逐页直观查看差异。全部在浏览器中完成，无需上传，无需注册。</p>
@@ -180,14 +196,14 @@
             <div class="upload-box" id="box1">
               <input type="file" id="file1" accept="application/pdf" hidden>
               <div style="font-size:2rem;">📄</div>
-              <h3 style="margin:0.5rem 0;font-size:1rem;">PDF A (Original)</h3>
-              <p style="margin:0;color:var(--text-secondary);font-size:0.8rem;" id="label1">Click to select</p>
+              <h3 style="margin:0.5rem 0;font-size:1rem;">PDF A（原始版）</h3>
+              <p style="margin:0;color:var(--text-secondary);font-size:0.8rem;" id="label1">点击选择文件</p>
             </div>
             <div class="upload-box" id="box2">
               <input type="file" id="file2" accept="application/pdf" hidden>
               <div style="font-size:2rem;">📄</div>
-              <h3 style="margin:0.5rem 0;font-size:1rem;">PDF B (Modified)</h3>
-              <p style="margin:0;color:var(--text-secondary);font-size:0.8rem;" id="label2">Click to select</p>
+              <h3 style="margin:0.5rem 0;font-size:1rem;">PDF B（修改版）</h3>
+              <p style="margin:0;color:var(--text-secondary);font-size:0.8rem;" id="label2">点击选择文件</p>
             </div>
           </div>
         <div class="selling-points">
@@ -196,23 +212,72 @@
   <div class="sp-item"><span class="sp-icon">🔒</span>100% 隐私 —— 浏览器端运行</div>
 </div>
           <div style="text-align:center">
-            <button class="btn btn-primary" id="compareBtn" disabled>🔍 Compare PDFs</button>
-            <button class="btn btn-secondary" id="resetBtn">Reset</button>
+            <button class="btn btn-primary" id="compareBtn" disabled>🔍 对比 PDF</button>
+            <button class="btn btn-secondary" id="resetBtn">重置</button>
           </div>
           <div class="status" id="statusText"></div>
           <div id="resultArea"></div>
         </div>
       </div>
 
-      <section class="faq-section">
+      <section class="localization-section">
+  <h2 style="text-align:center;margin-bottom:20px;">PDF 对比在中国的真实场景</h2>
+  <p>在中国，PDF 对比最常见的需求是核对文档版本：合同改了哪一页、投标文件修订了什么、论文查重后哪里变了。人工逐页翻看两份 PDF 费时费力，还容易漏看细微差异。这款工具把两份 PDF 并排渲染、同步滚动，逐页标记"相同"或"不同"，一眼就能定位所有改动。</p>
+  <h3 style="margin-top:24px;">典型使用场景</h3>
+  <ul style="line-height:1.8;">
+    <li><strong>合同版本核对：</strong>甲方发来修订版合同，快速对比哪个条款改了、页码是否增减，避免签错版本。</li>
+    <li><strong>投标文件检查：</strong>递交前核对技术标、商务标修订前后的差异，确保改动符合招标要求。</li>
+    <li><strong>论文修改确认：</strong>查重修改后对比新旧版本，确认改动位置和内容是否符合学校要求。</li>
+    <li><strong>设计稿与交付件核对：</strong>设计、印刷行业比对最终交付 PDF 与确认稿是否一致。</li>
+  </ul>
+  <p style="margin-top:16px;">工具全程在浏览器本地运行，合同等敏感文件不会上传服务器，处理完成后数据即被清除。</p>
+  <p style="margin-top:12px;">小技巧：对比前把两份 PDF 的页序整理一致，并排浏览时更容易对照；页数不同时留意"缺失"标记，确认是否缺少整页内容。</p>
+<h3>更多场景：财务、法规与文档版本管理</h3><p>PDF 对比的价值在需要"证明改了哪里"的场景中尤其突出：财务对账时确认新旧版报价单哪一页的价格被修改，法务审核时核对新合同相对旧合同新增或删除了哪些条款，产品团队做技术文档版本管理时快速定位修订位置。还有一些细节差异人眼很难发现，例如某页的签名位置移动了几个像素、表格里一个数字从 3 变成了 8，并排对比加逐页标记能让这些改动无处遁形。</p><p>建议的核对流程：先看"差异页清单"掌握改动范围，再对每一处标记逐页放大确认；如果页数发生变化，优先检查是否缺页或多页，这往往是版本内容调整的信号。对比完成后可以把差异页单独导出，作为向领导或客户说明修改内容的依据。</p><p>还有一个实用技巧：如果两份文件只是个别页面不同（例如只有第 3 页和附件页改了），可以先做整体对比锁定差异页，再单独放大这几页详细核对，比从头到尾逐页翻看高效得多。工具支持按页快速跳转，配合"差异"标记能在一分钟内完成几十页文件的核对。对于经常做版本管理的团队，建议把每次对比的差异页截图归档，形成可追溯的变更记录。</p></section>
+
+<section class="localization-section">
+  <h2 style="text-align:center;margin-bottom:20px;">PDF 对比 vs 传统核对方式</h2>
+  <p>很多人习惯把两份 PDF 各打印一份逐页对照，或用截图工具对比图片。这张表列出三种方式的实际差异。</p>
+  <div style="overflow-x:auto;margin:1.2rem 0;">
+  <table style="width:100%;border-collapse:collapse;font-size:0.9rem;">
+    <thead>
+      <tr style="background:var(--bg-secondary);">
+        <th style="padding:10px;border:1px solid var(--border);text-align:left;">方式</th>
+        <th style="padding:10px;border:1px solid var(--border);text-align:left;">耗时</th>
+        <th style="padding:10px;border:1px solid var(--border);text-align:left;">准确性</th>
+        <th style="padding:10px;border:1px solid var(--border);text-align:left;">适合场景</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="padding:10px;border:1px solid var(--border);">打印逐页对照</td><td style="padding:10px;border:1px solid var(--border);">长</td><td style="padding:10px;border:1px solid var(--border);">易漏看</td><td style="padding:10px;border:1px solid var(--border);">页数少的纸质存档</td></tr>
+      <tr><td style="padding:10px;border:1px solid var(--border);">截图手动对比</td><td style="padding:10px;border:1px solid var(--border);">较长</td><td style="padding:10px;border:1px solid var(--border);">一般</td><td style="padding:10px;border:1px solid var(--border);">临时小范围核对</td></tr>
+      <tr><td style="padding:10px;border:1px solid var(--border);">本工具并排对比</td><td style="padding:10px;border:1px solid var(--border);">秒级</td><td style="padding:10px;border:1px solid var(--border);">逐页标记、无遗漏</td><td style="padding:10px;border:1px solid var(--border);">合同、投标、论文等长文档</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="margin-top:12px;">对于几十上百页的正式文档，在线并排对比能节省大量时间，且不会因为疲劳而漏看改动。</p>
+<h3>三种核对方式横向对比</h3><p>打印逐页对照：最传统的方式，适合页数少（10 页以内）且只需要粗看的场景。缺点是耗时随页数线性增长，几十页的合同往往要花一两个小时，且长时间比对容易疲劳漏看。截图手动对比：把两份 PDF 分别截图后用看图软件左右摆放，适合临时小范围核对一两处改动，但无法覆盖整份长文档，缩放和翻页都麻烦。在线并排对比：本工具的做法——两份文档按页同步滚动，系统逐页判定相同或不同并高亮标记，页数再多也不遗漏，几分钟就能完成全量核对。</p><p>选择建议：正式文件、长文档、需要留痕的核对一律用在线并排对比；纯纸质存档场景打印对照仍可行，但建议先用工具扫一遍确定改动范围再打印重点页，效率提升明显。对比过程中可以自由缩放页面，文字密集的条款页放大后逐行核对，效果接近"数字放大镜"。</p><p>补充一点：在线工具的优势不只是速度，还在于"可复查"——每次对比都有明确的逐页标记结果，不会因为翻页顺序不同而产生遗漏；而人工对照一旦翻错页，后续全部作废。对于必须留痕的审核场景（如合同审批、投标文件复核），建议在对比完成后导出差异页清单，作为审核记录附在流程单后面，这也是很多企业合规部门的标准做法。</p><p>实际使用中，把两份文件拖入后即可自动开始逐页对比，无需任何额外设置；对比结果以清晰标记展示，可放大、可跳转，十几页的小文件通常几秒内完成，效率远超人工翻页。</p></section>
+
+<section class="localization-section">
+  <h2 style="text-align:center;margin-bottom:20px;">隐私、兼容与使用建议</h2>
+  <h3 style="margin-top:24px;">文件安全</h3>
+  <p>对比过程完全在浏览器本地完成：两份 PDF 不会被上传、存储或用于任何其他目的，关闭页面即清除。适合处理合同、标书等敏感材料。</p>
+  <h3 style="margin-top:24px;">格式兼容</h3>
+  <p>工具基于 pdf.js 渲染，支持绝大多数标准 PDF。扫描件同样可以对比，因为对比是按页面图像进行的。</p>
+  <h3 style="margin-top:24px;">使用建议</h3>
+  <p>对比结果中"不同"的页面需要重点核查；页数不同时先确认是否缺失整页。重要文件对比完成后，建议保留两份原始文件作为依据。</p>
+<h3>结果解读、性能与使用建议</h3><p>对比结果解读：标记为"不同"的页面要逐页放大核查具体差异位置，尤其注意数字、日期、金额这类容易被忽略的改动；如果两份文档页数不同，先确认是否整页缺失或多出，这通常意味着版本内容有实质变化，而不只是排版调整。扫描件同样支持对比，因为工具按页面图像进行比对，文字模糊也不影响差异识别。</p><p>性能方面，工具基于 pdf.js 在本地渲染，几十页的标准 PDF 几秒内完成加载和对比；超大文件建议先用压缩工具减小体积。隐私上再次确认：两份文档全程不离开设备，关闭页面即清除，适合合同、标书等敏感材料。使用建议：重要文件对比完成后保留两份原始文件作为依据，不要覆盖旧版本，方便后续追溯；多轮修订时建议每次对比都导出差异记录，形成完整的变更轨迹。</p><p>日常使用建议：重要文件对比完成后保留两份原始文件作为依据，不要覆盖旧版本，方便后续追溯；多轮修订时建议每次对比都导出差异记录，形成完整的变更轨迹。如果经常需要对比同一批文件（如每周核对更新的合同模板），可以把常用文件放在同一目录，工具支持从本地拖入，操作路径最短。工具无账号、无次数限制，团队多人共用时不存在配额问题。</p><p>工具兼容 Windows、macOS、Android、iOS 上的主流浏览器，移动端同样可以直接拖入文件对比，适合出差途中快速核对合同修订稿。全程无注册、无上传、无次数限制。</p></section>
+
+<section class="faq-section">
         <h2>常见问题</h2>
-        <div class="faq-item"><button class="faq-question">How does the comparison work?</button><div class="faq-answer">Both PDFs are rendered to images side by side with synchronized scrolling. Pages are compared pixel-by-pixel and a badge indicates if each page pair is identical or different.</div></div>
-        <div class="faq-item"><button class="faq-question">What if the PDFs have different page counts?</button><div class="faq-answer">The tool renders all pages from both PDFs. Pages beyond the shorter PDF's count are marked as "missing" in the other column.</div></div>
-        <div class="faq-item"><button class="faq-question">Is my PDF uploaded to a server?</button><div class="faq-answer">No. Both PDFs are rendered locally in your browser. Nothing is uploaded.</div></div>
+        <div class="faq-item"><button class="faq-question">对比是如何工作的？</button><div class="faq-answer">两个 PDF 会被渲染成并排图片并同步滚动，逐页按像素对比，每对页面用标记显示"相同"或"不同"。</div></div>
+        <div class="faq-item"><button class="faq-question">两个 PDF 页数不同怎么办？</button><div class="faq-answer">工具会渲染两个 PDF 的全部页面，页数较短一方的缺失页会在另一列标记为"缺失"。</div></div>
+        <div class="faq-item"><button class="faq-question">我的 PDF 会上传到服务器吗？</button><div class="faq-answer">不会。两个 PDF 都在你的浏览器本地渲染，任何数据都不会上传。</div></div>
       <div class="faq-item"><button class="faq-question">差异如何显示？</button><div class="faq-answer">每对页面标记相同或不同。</div></div>
 <div class="faq-item"><button class="faq-question">对比是可视的吗？</button><div class="faq-answer">是的——逐页渲染并按像素对比。</div></div>
 <div class="faq-item"><button class="faq-question">PDF 会上传到服务器吗？</button><div class="faq-answer">不会。全部通过 pdf-lib 和 pdf.js 在浏览器本地处理。</div></div>
 <div class="faq-item"><button class="faq-question">有页数或文件限制吗？</button><div class="faq-answer">无硬性限制。超大 PDF（100MB+）可能拖慢浏览器。</div></div>
+      <div class="faq-item"><button class="faq-question">对比能找出文字改动吗？</button><div class="faq-answer">可以。工具按页面图像逐像素对比，任何文字、图片、版式的改动都会让对应页面标记为"不同"。注意：它标记的是页面级差异，不会逐字高亮，需要查看具体改动请打开差异页对照。</div></div>
+      <div class="faq-item"><button class="faq-question">扫描件 PDF 可以对比吗？</button><div class="faq-answer">可以。扫描件同样会被渲染成页面图像参与对比，只要两份扫描件页面内容不同，就会被标记出来。建议对比前确认扫描清晰度一致。</div></div>
       </section>
 
       
@@ -279,9 +344,9 @@
       <section class="related-tools">
         <h2>你可能还喜欢</h2>
         <div class="related-tools-grid">
-          <a href="/zh/tools/pdf-merge" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>PDF Merge</strong><span class="tool-desc">Combine PDFs</span></div><span class="tool-arrow">→</span></a>
-          <a href="/zh/tools/pdf-split" class="related-tool-card"><span class="tool-icon">✂️</span><div class="tool-info"><strong>PDF Split</strong><span class="tool-desc">Split PDF</span></div><span class="tool-arrow">→</span></a>
-          <a href="/zh/tools/pdf-organize" class="related-tool-card"><span class="tool-icon">📋</span><div class="tool-info"><strong>PDF Organize</strong><span class="tool-desc">Reorder pages</span></div><span class="tool-arrow">→</span></a>
+          <a href="/zh/tools/pdf-merge" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>PDF 合并</strong><span class="tool-desc">合并 PDF</span></div><span class="tool-arrow">→</span></a>
+          <a href="/zh/tools/pdf-split" class="related-tool-card"><span class="tool-icon">✂️</span><div class="tool-info"><strong>PDF 拆分</strong><span class="tool-desc">拆分 PDF</span></div><span class="tool-arrow">→</span></a>
+          <a href="/zh/tools/pdf-organize" class="related-tool-card"><span class="tool-icon">📋</span><div class="tool-info"><strong>PDF 排序整理</strong><span class="tool-desc">重排页面</span></div><span class="tool-arrow">→</span></a>
         </div>
       </section>
     </div>
@@ -294,7 +359,7 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand"><a href="/zh/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>尊重您隐私的免费 AI 图像工具。</p></div>
-        <div class="footer-links"><h4>Top Tools</h4><a href="/zh/tools/background-remover">Background Remover</a><a href="/zh/tools/compressor">Compressor</a><a href="/zh/tools/converter">Converter</a><a href="/zh/tools/resizer">Resizer</a></div>
+        <div class="footer-links"><h4>热门工具</h4><a href="/zh/tools/background-remover">去背景</a><a href="/zh/tools/compressor">压缩图片</a><a href="/zh/tools/converter">格式转换</a><a href="/zh/tools/resizer">调整大小</a></div>
         <div class="footer-links"><h4>法律</h4><a href="/privacy">隐私政策</a><a href="/terms">服务条款</a><a href="/cookie-policy">Cookie 政策</a><a href="/contact">联系我们</a></div>
       </div>
       <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. 保留所有权利.</p></div>
@@ -438,8 +503,8 @@
     document.getElementById('resetBtn').addEventListener('click', function() {
       pdfA = null; pdfB = null; file1.value = ''; file2.value = '';
       box1.classList.remove('loaded'); box2.classList.remove('loaded');
-      document.getElementById('label1').textContent = 'Click to select';
-      document.getElementById('label2').textContent = 'Click to select';
+      document.getElementById('label1').textContent = '点击选择文件';
+      document.getElementById('label2').textContent = '点击选择文件';
       resultArea.innerHTML = ''; setStatus(''); compareBtn.disabled = true;
     });
   })();

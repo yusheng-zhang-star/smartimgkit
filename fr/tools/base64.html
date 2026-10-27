@@ -32,10 +32,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json">
 {
-  
-  "inLanguage": "fr","@context": "https://schema.org",
+  "inLanguage": "fr",
+  "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Base64 Encoder",
+  "name": "Encodeur Base64",
   "url": "https://smartimgkit.com/fr/tools/base64",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
@@ -86,34 +86,50 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "What is Base64 encoding?",
+      "name": "Qu'est-ce que l'encodage Base64 ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Base64 is a method to encode binary data (like images) as text. This lets you embed images directly in HTML/CSS without external files."
+        "text": "Base64 est une méthode pour encoder des données binaires (comme des images) sous forme de texte. Cela permet d'intégrer des images directement dans le HTML/CSS sans fichiers externes."
       }
     },
     {
       "@type": "Question",
-      "name": "Why would I use Base64 images?",
+      "name": "Pourquoi utiliser des images Base64 ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Base64 images reduce HTTP requests and can be useful for small icons, email signatures, or single-file HTML demos. However, they increase file size by ~33%."
+        "text": "Les images Base64 réduisent les requêtes HTTP et peuvent être utiles pour les petites icônes, les signatures d'email ou les démos HTML mono-fichier. Cependant, elles augmentent la taille du fichier d'environ 33 %."
       }
     },
     {
       "@type": "Question",
-      "name": "Is there a size limit?",
+      "name": "Y a-t-il une limite de taille ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Very large images (>5MB) will produce extremely long Base64 strings. This tool works best with images under 2MB."
+        "text": "Les très grandes images (>5 Mo) produiront des chaînes Base64 extrêmement longues. Cet outil fonctionne mieux avec des images de moins de 2 Mo."
       }
     },
     {
       "@type": "Question",
-      "name": "Can I decode any Base64 string?",
+      "name": "Puis-je décoder n'importe quelle chaîne Base64 ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The string must be a valid image Base64 (starting with data:image/...). Raw Base64 without the data URL prefix will be auto-detected if possible."
+        "text": "La chaîne doit être un Base64 d'image valide (commençant par data:image/...). Le Base64 brut sans le préfixe Data URL sera détecté automatiquement si possible."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Comment intégrer un logo dans ma signature email professionnelle ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Encodez votre logo en Base64, copiez la Data URL, et collez-la dans le code HTML de votre signature. L'image s'affichera correctement dans tous les clients de messagerie, sans dépendance externe."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Mes images sont-elles envoyées vers un serveur lors de l'encodage ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non. L'encodage se déroule entièrement dans votre navigateur, sur votre propre machine. Aucune image ne quitte votre appareil, et aucune donnée n'est journalisée. C'est un traitement 100 % local, conforme aux exigences de confidentialité du RGPD."
       }
     }
   ]
@@ -151,10 +167,10 @@
 
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>📋 Base64 Encoder</span></nav>
+      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>📋 Encodeur Base64</span></nav>
       <div class="tool-page-header">
-        <h1>📋 Base64 Encoder</h1>
-        <p>Convert images to Base64 data URLs for embedding in HTML, CSS, and JavaScript. Or decode Base64 back to an image.</p>
+        <h1>📋 Encodeur Base64</h1>
+        <p>Convertissez des images en Data URLs Base64 pour les intégrer directement dans votre HTML, CSS et JavaScript. Ou décodez une chaîne Base64 pour retrouver l'image.</p>
       </div>
       <div class="tool-workspace">
 <div style="text-align:center;margin-bottom:16px">
@@ -169,20 +185,20 @@
             <h3>Déposez une image ici</h3>
             <p>ou cliquez pour parcourir</p>
       </label>
-      <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Try with a sample image</span>
+      <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Essayer avec une image d'exemple</span>
           <div class="preview-area" id="previewArea">
             <div class="preview-container"><img id="previewImg" alt="Aperçu"></div>
             <p id="fileInfo" style="text-align:center;color:var(--text-secondary);font-size:.85rem;margin-top:8px"></p>
             <div class="tool-actions">
-              <button class="btn btn-primary" id="encodeBtn">📋 Encode to Base64</button>
-              <button class="btn btn-secondary" id="resetBtn">🔄 New Image</button>
+              <button class="btn btn-primary" id="encodeBtn">📋 Encoder en Base64</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 Nouvelle image</button>
             </div>
             <div id="encodeResult" class="hidden mt-24">
-              <label style="color:var(--text-secondary);font-size:.85rem">Base64 Data URL</label>
+              <label style="color:var(--text-secondary);font-size:.85rem">Data URL Base64</label>
               <textarea class="base64-output" id="b64Output" readonly></textarea>
               <div class="tool-actions mt-16">
                 <button class="btn btn-secondary" id="copyBtn">📋 Copier</button>
-                <button class="btn btn-secondary" id="downloadTxtBtn">⬇️ Télécharger as .txt</button>
+                <button class="btn btn-secondary" id="downloadTxtBtn">⬇️ Télécharger en .txt</button>
               </div>
             </div>
           </div>
@@ -190,14 +206,14 @@
 
         <div id="decodePanel" class="hidden">
           <div style="max-width:600px;margin:0 auto">
-            <label style="color:var(--text-secondary);font-size:.85rem">Coller Base64 string ou Data URL</label>
+            <label style="color:var(--text-secondary);font-size:.85rem">Coller une chaîne Base64 ou une Data URL</label>
             <textarea class="base64-output" id="b64Input" placeholder="data:image/png;base64,iVBORw0KGgo..."></textarea>
             <div class="tool-actions mt-16">
-              <button class="btn btn-primary" id="decodeBtn">🔄 Decode to Image</button>
-              <button class="btn btn-secondary hidden" id="dlImgBtn">⬇️ Télécharger Image</button>
+              <button class="btn btn-primary" id="decodeBtn">🔄 Décoder en image</button>
+              <button class="btn btn-secondary hidden" id="dlImgBtn">⬇️ Télécharger l'image</button>
             </div>
             <div id="decodeResult" class="preview-container hidden" style="margin-top:16px">
-              <img id="decodedImg" alt="Decoded">
+              <img id="decodedImg" alt="Décodée">
             </div>
           </div>
         </div>
@@ -205,98 +221,142 @@
         <div id="status" class="text-center mt-16" style="color:var(--text-secondary)"></div>
       </div>
 <section class="how-to-section">
-        <h2>How to Use</h2>
+        <h2>Comment Utiliser</h2>
         <div class="how-to-steps">
-          <div class="how-to-step"><div class="step-number">1</div><h4>Choose Direction</h4><p>Switch between Encode (image→text) or Decode (text→image).</p></div>
-          <div class="how-to-step"><div class="step-number">2</div><h4>Input</h4><p>Upload an image or paste a Base64 string.</p></div>
-          <div class="how-to-step"><div class="step-number">3</div><h4>Get Result</h4><p>Copy the output or download it directly.</p></div>
+          <div class="how-to-step"><div class="step-number">1</div><h4>Choisir la direction</h4><p>Basculez entre Encodage (image→texte) ou Décodage (texte→image).</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>Importer</h4><p>Importez une image ou collez une chaîne Base64.</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>Obtenir le résultat</h4><p>Copiez la sortie ou téléchargez-la directement.</p></div>
         </div>
       </section>
 
-<h2>Detailed User Guide</h2>
+<h2>Guide d'utilisation détaillé</h2>
 
         <div class="guide-block">
-          <h3>Mode 1: Image → Base64 (Encoding)</h3>
-          <p>Convert any image to a Base64 data URL for embedding directly in code.</p>
+          <h3>Mode 1 : Image → Base64 (Encodage)</h3>
+          <p>Convertissez n'importe quelle image en Data URL Base64 pour l'intégrer directement dans votre code.</p>
           <div class="guide-screenshot">
-            <img src="/screenshots/base64.png" alt="Base64 Encoder interface showing encode/decode tabs" loading="lazy">
-            <div class="guide-screenshot-caption">Switch between Encode and Decode modes using the tabs at the top</div>
+            <img src="/screenshots/base64.png" alt="Interface de l'encodeur Base64 montrant les onglets encodage et décodage" loading="lazy">
+            <div class="guide-screenshot-caption">Basculez entre les modes Encodage et Décodage à l'aide des onglets en haut</div>
           </div>
           <ul>
-            <li>Upload an image (JPG, PNG, WebP, GIF, BMP)</li>
-            <li>Click <strong>"Encode to Base64"</strong></li>
-            <li>The full data URL appears in the text area (format: <code>data:image/png;base64,...</code>)</li>
-            <li>Click <strong>"Copy"</strong> to copy to clipboard, or <strong>"Download as .txt"</strong> to save</li>
+            <li>Importez une image (JPG, PNG, WebP, GIF, BMP)</li>
+            <li>Cliquez sur <strong>« Encoder en Base64 »</strong></li>
+            <li>La Data URL complète apparaît dans la zone de texte (format : <code>data:image/png;base64,...</code>)</li>
+            <li>Cliquez sur <strong>« Copier »</strong> pour copier dans le presse-papiers, ou sur <strong>« Télécharger en .txt »</strong> pour enregistrer</li>
           </ul>
-          <div class="tip"><strong>When to use:</strong> Embed small icons directly in HTML/CSS to eliminate HTTP requests. Great for email signatures, single-file demos, and CSS background images.</div>
+          <div class="tip"><strong>Quand l'utiliser :</strong> Intégrez de petites icônes directement dans le HTML/CSS pour éliminer les requêtes HTTP. Idéal pour les signatures d'email, les démos mono-fichier et les images de fond CSS.</div>
         </div>
 
         <div class="guide-block">
-          <h3>Mode 2: Base64 → Image (Decoding)</h3>
-          <p>Convert a Base64 string back to a viewable and downloadable image.</p>
+          <h3>Mode 2 : Base64 → Image (Décodage)</h3>
+          <p>Convertissez une chaîne Base64 en une image consultable et téléchargeable.</p>
           <ul>
-            <li>Switch to the <strong>"Base64 → Image"</strong> tab</li>
-            <li>Paste a Base64 string or full data URL into the text area</li>
-            <li>Click <strong>"Decode to Image"</strong></li>
-            <li>The decoded image appears below — click <strong>"Download Image"</strong> to save</li>
+            <li>Basculez vers l'onglet <strong>« Base64 → Image »</strong></li>
+            <li>Collez une chaîne Base64 ou une Data URL complète dans la zone de texte</li>
+            <li>Cliquez sur <strong>« Décoder en image »</strong></li>
+            <li>L'image décodée apparaît ci-dessous — cliquez sur <strong>« Télécharger l'image »</strong> pour enregistrer</li>
           </ul>
-          <div class="tip"><strong>Note:</strong> If you paste a raw Base64 string without the <code>data:image/...</code> prefix, the tool will auto-detect and add the appropriate header.</div>
+          <div class="tip"><strong>Remarque :</strong> Si vous collez une chaîne Base64 brute sans le préfixe <code>data:image/...</code>, l'outil détecte automatiquement et ajoute l'en-tête approprié.</div>
         </div>
 
         <div class="guide-block">
-          <h3>Best Use Cases</h3>
+          <h3>Cas d'usage recommandés</h3>
           <ul>
-            <li><strong>Inline HTML images</strong> — Embed small icons and logos directly in HTML without external files</li>
-            <li><strong>CSS backgrounds</strong> — Use Base64 in <code>background-image: url()</code> for self-contained stylesheets</li>
-            <li><strong>Email signatures</strong> — Ensure images display correctly in email clients</li>
-            <li><strong>Single-file demos</strong> — Create standalone HTML files with embedded images</li>
-            <li><strong>API testing</strong> — Inspect and decode Base64 image data from API responses</li>
+            <li><strong>Images HTML en ligne</strong> — Intégrez de petites icônes et logos directement dans le HTML sans fichiers externes</li>
+            <li><strong>Fonds CSS</strong> — Utilisez Base64 dans <code>background-image: url()</code> pour des feuilles de style autonomes</li>
+            <li><strong>Signatures d'email</strong> — Assurez-vous que les images s'affichent correctement dans les clients de messagerie</li>
+            <li><strong>Démos mono-fichier</strong> — Créez des fichiers HTML autonomes avec des images intégrées</li>
+            <li><strong>Tests d'API</strong> — Inspectez et décodez les données d'image Base64 des réponses d'API</li>
           </ul>
         </div>
 
         <div class="guide-block">
-          <h3>Pro Tips</h3>
+          <h3>Astuces de pro</h3>
           <ul>
-            <li>Base64 increases file size by approximately 33% — only use it for small images (&lt;50KB ideally)</li>
-            <li>Data URLs work in all modern browsers and most email clients</li>
-            <li>For CSS, use <code>background-image: url('data:image/png;base64,...')</code></li>
-            <li>For HTML, use <code>&lt;img src="data:image/png;base64,..."&gt;</code></li>
-            <li>Very large images (&gt;2MB) will produce extremely long strings that may slow down page rendering</li>
+            <li>Base64 augmente la taille du fichier d'environ 33 % — ne l'utilisez que pour les petites images (&lt;50 Ko idéalement)</li>
+            <li>Les Data URLs fonctionnent dans tous les navigateurs modernes et la plupart des clients de messagerie</li>
+            <li>Pour le CSS, utilisez <code>background-image: url('data:image/png;base64,...')</code></li>
+            <li>Pour le HTML, utilisez <code>&lt;img src="data:image/png;base64,..."&gt;</code></li>
+            <li>Les très grandes images (&gt;2 Mo) produiront des chaînes extrêmement longues qui peuvent ralentir le rendu de la page</li>
           </ul>
         </div>
+
+<section class="localization-section">
+  <h2>Développeurs français : intégrer des images sans fichiers externes</h2>
+  <p>En France, les développeurs web ont besoin d'outils simples pour intégrer des images. On ne veut pas multiplier les fichiers, on veut un HTML autonome, qui se charge vite, sans dépendances. Pour les petites icônes, les logos, les badges, le Base64 est la solution historique.</p>
+  <p>Notre encodeur est un outil simple. On importe l'image, on clique sur Encoder, et l'on obtient la Data URL complète. On la copie dans son code, et l'image est intégrée directement, sans fichier externe. C'est un geste simple, mais très utile quand on prépare un prototype, une démo, une page de test.</p>
+  <p>Pour les développeurs indépendants, l'outil est aussi un outil de debug. On reçoit une réponse d'API qui contient une image en Base64, on la colle dans l'outil, et l'on voit l'image instantanément. On vérifie que l'API renvoie bien la bonne image, on débugue le format, et l'on gagne un temps précieux. C'est un outil simple, mais très pratique.</p>
+  <p>Pour les étudiants en informatique, l'outil est aussi un outil pédagogique. On apprend le Base64, on comprend comment les données binaires se transforment en texte, et l'on teste concrètement. On prend une petite image, on l'encode, on décode, et l'on voit le résultat. C'est un moyen simple de comprendre un concept abstrait, sans avoir à écrire un programme complet.</p>
+  <p>Enfin, pour les petites agences web, l'outil est aussi un outil de production. On prépare un site, on intègre les petites icônes en Base64, et l'on réduit le nombre de requêtes HTTP. On gagne en vitesse de chargement, et l'on améliore le référencement. C'est une mesure simple, mais qui compte pour les performances.</p>
+  <p>Pour les freelances, l'outil est aussi un outil de production. On prépare un site, on intègre les petites icônes en Base64, et l'on réduit le nombre de requêtes HTTP. On gagne en vitesse de chargement, et l'on améliore le référencement. C'est une mesure simple, mais qui compte pour les performances.</p>
+  <p>Pour les étudiants, l'outil est aussi un outil d'apprentissage. On apprend le Base64, on comprend comment les données binaires se transforment en texte, et l'on teste concrètement. On prend une petite image, on l'encode, on décode, et l'on voit le résultat. C'est un moyen simple de comprendre un concept abstrait.</p>
+  <p>Pour les enseignants, l'outil est aussi un outil pédagogique. On prépare un cours sur le Base64, on prend une petite image, on l'encode, et l'on projette le résultat en classe. Les élèves voient concrètement comment une image se transforme en texte, et l'on explique le concept à partir d'un exemple concret. C'est un outil simple, mais très pédagogique.</p>
+  <p>Pour les concepteurs, l'outil est aussi un outil d'intégration. On prépare une maquette, on veut intégrer une petite icône, on l'encode en Base64, et on l'insère directement. On n'a pas besoin d'uploader l'image sur un serveur, et la maquette reste autonome. C'est un moyen simple d'intégrer des éléments, sans dépendre d'un service externe.</p>
+  <p>Pour les graphistes, l'outil est aussi un outil d'intégration. On prépare une affiche, on veut intégrer une petite icône, on l'encode en Base64, et on l'insère directement. On n'a pas besoin d'uploader l'image sur un serveur, et l'affiche reste autonome. C'est un moyen simple d'intégrer des éléments, sans dépendre d'un service externe.</p>
+</section>
+
+<section class="localization-section">
+  <h2>Traitement local : vos données ne quittent jamais votre appareil</h2>
+  <p>Quand on encode une image en Base64, on manipule souvent des images qui ne sont pas destinées au grand public — un brouillon, une maquette en cours, une donnée interne. On ne souhaite généralement pas les envoyer à un service tiers, d'autant plus si ces clichés contiennent des informations sensibles. Or beaucoup d'outils d'encodage fonctionnent par téléversement : on envoie l'image, on attend qu'elle revienne, et l'on oublie qu'une copie a circulé.</p>
+  <p>Notre encodeur fonctionne entièrement dans votre navigateur. L'image reste sur votre machine, l'encodage est calculé sur votre processeur, et la chaîne Base64 finale est assemblée localement. Aucune image ne quitte votre appareil, aucune donnée n'est journalisée, et vous n'avez même pas besoin de créer un compte. C'est la même philosophie que l'on retrouve sur l'ensemble de nos outils.</p>
+  <p>Cette confidentialité est importante pour les développeurs qui préparent une proposition. On ne souhaite pas qu'un brouillon de maquette, non encore validé, circule sur un service tiers. Le traitement local garantit que les versions provisoires restent entre vos mains, le temps de la mise au point. C'est un point de vigilance que les professionnels du secteur connaissent bien.</p>
+  <p>Pour les particuliers, l'outil est aussi plus rapide. On n'attend pas que le téléversement se fasse, on n'espère pas que la bande passante tienne. Tout se déroule en quelques secondes, sur votre propre machine, même avec une connexion modeste. C'est précieux quand on travaille le soir, après le dîner, sans avoir envie de patienter.</p>
+  <p>Enfin, le traitement local évite les mauvaises surprises des services SaaS. Pas de limite de taille qui vous force à payer un abonnement, pas de compte à créer pour débloquer telle option. On obtient l'intégralité de la chaîne Base64, dans le navigateur, et l'on en fait ce que l'on veut. C'est la même liberté que l'on apprécie sur le reste de la suite.</p>
+  <p>Cette confidentialité compte aussi pour les journalistes qui manipulent des documents sensibles. On ne souhaite pas que des clichés non publiés, des sources anonymes, circulent sur un service tiers. Le traitement local garantit que ces documents restent entre vos mains, le temps de la vérification. C'est un point de vigilance que les journalistes connaissent bien.</p>
+  <p>Pour les avocats, l'outil est aussi un outil de travail. On manipule des photos de dossiers, des preuves, des documents confidentiels. On ne souhaite pas les envoyer à un service tiers. Le traitement local garantit que ces documents restent entre vos mains, et l'on respecte la confidentialité des échanges avec ses clients. C'est un point de vigilance essentiel.</p>
+  <p>Pour les chercheurs, l'outil est aussi un outil de travail. On manipule des photos de laboratoire, des données sensibles, des documents non publiés. On ne souhaite pas les envoyer à un service tiers. Le traitement local garantit que ces documents restent entre vos mains, le temps de la publication. C'est un point de vigilance que les chercheurs connaissent bien.</p>
+  <p>Pour les photographes, l'outil est aussi un outil de travail. On manipule des photos en cours de post-traitement, des maquettes non encore validées. On ne souhaite pas les envoyer à un service tiers. Le traitement local garantit que ces photos restent entre vos mains, le temps de la mise au point. C'est un point de vigilance que les photographes connaissent bien.</p>
+  <p>Pour les particuliers, l'outil est aussi plus rapide. On n'attend pas que le téléversement se fasse, on n'espère pas que la bande passante tienne. Tout se déroule en quelques secondes, sur votre propre machine, même avec une connexion modeste. C'est précieux quand on travaille le soir, après le dîner, sans avoir envie de patienter.</p>
+</section>
+
+<section class="localization-section">
+  <h2>Signatures d'email et démos mono-fichier : des usages concrets en France</h2>
+  <p>En France, les signatures d'email ont besoin d'images qui s'affichent correctement. On ne veut pas que le logo soit cassé, on ne veut pas que l'image soit bloquée par le client de messagerie. Le Base64 est une solution simple : on intègre le logo directement dans la signature, et l'image s'affiche partout, sans dépendance externe.</p>
+  <p>Notre encodeur est un outil simple. On importe le logo, on l'encode, et l'on obtient la Data URL. On la copie dans sa signature email, et le logo s'affiche correctement, même dans les clients de messagerie les plus restrictifs. C'est un geste simple, mais très utile pour les professionnels qui envoient beaucoup d'emails.</p>
+  <p>Pour les démos mono-fichier, l'outil est aussi un outil précieux. On prépare une démo, on veut envoyer un seul fichier HTML, sans dépendance. On intègre les images en Base64, et l'on obtient un fichier autonome, qui s'ouvre partout, sans connexion. C'est un moyen simple de partager un prototype, une maquette, un exemple, sans avoir à uploader sur un serveur.</p>
+  <p>Pour les développeurs qui préparent des présentations, l'outil est aussi un outil pratique. On prépare un slide, on veut une image intégrée, on l'encode en Base64, et l'on l'insère dans le slide. L'image ne se casse pas, elle ne se déplace pas, et la présentation reste cohérente, même quand on la déplace d'un ordinateur à un autre.</p>
+  <p>Enfin, pour les particuliers, l'outil est aussi un outil de partage. On veut envoyer une petite image dans un email, on l'encode en Base64, et l'on l'intègre directement dans le corps du message. L'image s'affiche sans pièce jointe, et le destinataire la voit directement. C'est un moyen simple de partager une image, sans avoir à la téléverser sur un service tiers.</p>
+  <p>Pour les blogueurs, l'outil est aussi un outil d'intégration. On veut insérer une petite icône dans un article, on l'encode en Base64, et on l'intègre directement dans le HTML. On n'a pas besoin d'uploader l'image sur un serveur, et l'article reste autonome. C'est un moyen simple d'ajouter une touche personnelle, sans dépendre d'un service externe.</p>
+  <p>Pour les développeurs, l'outil est aussi un outil de debug. On reçoit une réponse d'API qui contient une image en Base64, on la colle dans l'outil, et l'on voit l'image instantanément. On vérifie que l'API renvoie bien la bonne image, on débugue le format, et l'on gagne un temps précieux. C'est un outil simple, mais très pratique.</p>
+  <p>Pour les petites entreprises, l'outil est aussi un outil de communication. On prépare une signature email, on intègre le logo en Base64, et l'on s'assure qu'il s'affiche correctement. On gagne en professionnalisme, et l'on évite les mauvaises surprises des clients qui ne voient pas le logo. C'est un détail qui compte pour l'image de l'entreprise.</p>
+  <p>Pour les associations, l'outil est aussi un outil de communication. On prépare une newsletter, on intègre une petite image en Base64, et l'on s'assure qu'elle s'affiche correctement. On gagne en lisibilité, et l'on évite les mauvaises surprises des abonnés qui ne voient pas l'image. C'est un détail qui compte pour la communication associative.</p>
+  <p>Pour les blogueurs, l'outil est aussi un outil d'intégration. On veut insérer une petite icône dans un article, on l'encode en Base64, et on l'intègre directement dans le HTML. On n'a pas besoin d'uploader l'image sur un serveur, et l'article reste autonome. C'est un moyen simple d'ajouter une touche personnelle, sans dépendre d'un service externe.</p>
+</section>
 
 <section class="faq-section">
-        <h2>Frequently Asked Questions</h2>
-        <div class="faq-item"><button class="faq-question">What is Base64 encoding?</button><div class="faq-answer">Base64 is a method to encode binary data (like images) as text. This lets you embed images directly in HTML/CSS without external files.</div></div>
-      <div class="faq-item"><button class="faq-question">Why would I use Base64 images?</button><div class="faq-answer">Base64 images reduce HTTP requests and can be useful for small icons, email signatures, or single-file HTML demos. However, they increase file size by ~33%.</div></div>
-      <div class="faq-item"><button class="faq-question">Is there a size limit?</button><div class="faq-answer">Very large images (&gt;5MB) will produce extremely long Base64 strings. This tool works best with images under 2MB.</div></div>
-      <div class="faq-item"><button class="faq-question">Can I decode any Base64 string?</button><div class="faq-answer">The string must be a valid image Base64 (starting with data:image/...). Raw Base64 without the data URL prefix will be auto-detected if possible.</div></div>
-      </section>
+  <h2>Questions Fréquentes</h2>
+  <div class="faq-item"><button class="faq-question">Qu'est-ce que l'encodage Base64 ?</button><div class="faq-answer">Base64 est une méthode pour encoder des données binaires (comme des images) sous forme de texte. Cela permet d'intégrer des images directement dans le HTML/CSS sans fichiers externes.</div></div>
+  <div class="faq-item"><button class="faq-question">Pourquoi utiliser des images Base64 ?</button><div class="faq-answer">Les images Base64 réduisent les requêtes HTTP et peuvent être utiles pour les petites icônes, les signatures d'email ou les démos HTML mono-fichier. Cependant, elles augmentent la taille du fichier d'environ 33 %.</div></div>
+  <div class="faq-item"><button class="faq-question">Y a-t-il une limite de taille ?</button><div class="faq-answer">Les très grandes images (&gt;5 Mo) produiront des chaînes Base64 extrêmement longues. Cet outil fonctionne mieux avec des images de moins de 2 Mo.</div></div>
+  <div class="faq-item"><button class="faq-question">Puis-je décoder n'importe quelle chaîne Base64 ?</button><div class="faq-answer">La chaîne doit être un Base64 d'image valide (commençant par data:image/...). Le Base64 brut sans le préfixe Data URL sera détecté automatiquement si possible.</div></div>
+  <div class="faq-item"><button class="faq-question">Comment intégrer un logo dans ma signature email professionnelle ?</button><div class="faq-answer">Encodez votre logo en Base64, copiez la Data URL, et collez-la dans le code HTML de votre signature. L'image s'affichera correctement dans tous les clients de messagerie, sans dépendance externe.</div></div>
+  <div class="faq-item"><button class="faq-question">Mes images sont-elles envoyées vers un serveur lors de l'encodage ?</button><div class="faq-answer">Non. L'encodage se déroule entièrement dans votre navigateur, sur votre propre machine. Aucune image ne quitte votre appareil, et aucune donnée n'est journalisée. C'est un traitement 100 % local, conforme aux exigences de confidentialité du RGPD.</div></div>
+</section>
 
 <section class="related-tools">
-  <h2>You Might Also Like</h2>
+  <h2>Vous Pourriez Aussi Aimer</h2>
   <div class="related-tools-grid">
     <a href="/fr/tools/compressor" class="related-tool-card">
       <span class="tool-icon">🗜️</span>
       <div class="tool-info">
-        <strong>Image Compressor</strong>
-        <span class="tool-desc">Compress images before encoding to Base64</span>
+        <strong>Compresseur d'images</strong>
+        <span class="tool-desc">Compressez les images avant encodage en Base64</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
     <a href="/fr/tools/converter" class="related-tool-card">
       <span class="tool-icon">🔄</span>
       <div class="tool-info">
-        <strong>Image Converter</strong>
-        <span class="tool-desc">Convert formats then encode to Base64</span>
+        <strong>Convertisseur d'images</strong>
+        <span class="tool-desc">Convertissez le format puis encodez en Base64</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
     <a href="/fr/tools/metadata-viewer" class="related-tool-card">
       <span class="tool-icon">📋</span>
       <div class="tool-info">
-        <strong>Metadata Viewer</strong>
-        <span class="tool-desc">View EXIF data before encoding</span>
+        <strong>Visualiseur de métadonnées</strong>
+        <span class="tool-desc">Consultez les données EXIF avant encodage</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
@@ -343,7 +403,7 @@ const encodeTab = document.getElementById('encodeTab');
     setupDropzone({ dropzoneId: 'dropzone', inputId: 'fileInput', onFile: handleFile });
 
     function handleFile(file) {
-      if (!file.type.startsWith('image/')) { status.textContent = 'Please select an image file.'; return; }
+      if (!file.type.startsWith('image/')) { status.textContent = 'Veuillez sélectionner un fichier image.'; return; }
       currentFile = file;
       ImageUtils.load(file).then(img => {
         previewImg.src = img.src;
@@ -357,18 +417,18 @@ const encodeTab = document.getElementById('encodeTab');
 
     encodeBtn.addEventListener('click', () => {
       if (!currentFile) return;
-      encodeBtn.disabled = true; encodeBtn.textContent = '🔄 Encoding...';
+      encodeBtn.disabled = true; encodeBtn.textContent = '🔄 Encodage...';
       const reader = new FileReader();
       reader.onload = () => {
         b64Output.value = reader.result;
         encodeResult.classList.remove('hidden');
-        status.textContent = 'Encoded! String length: ' + reader.result.length.toLocaleString() + ' chars';
-        encodeBtn.disabled = false; encodeBtn.textContent = '📋 Encode to Base64';
+        status.textContent = 'Encodé ! Longueur de la chaîne : ' + reader.result.length.toLocaleString() + ' caractères';
+        encodeBtn.disabled = false; encodeBtn.textContent = '📋 Encoder en Base64';
       };
       reader.readAsDataURL(currentFile);
     });
 
-    copyBtn.addEventListener('click', () => { navigator.clipboard.writeText(b64Output.value); status.textContent = 'Copied to clipboard!'; });
+    copyBtn.addEventListener('click', () => { navigator.clipboard.writeText(b64Output.value); status.textContent = 'Copié dans le presse-papiers !'; });
     downloadTxtBtn.addEventListener('click', () => {
       const blob = new Blob([b64Output.value], {type:'text/plain'});
       ImageUtils.download(blob, currentFile.name.replace(/\.[^.]+$/, '.txt'));
@@ -385,18 +445,18 @@ const encodeTab = document.getElementById('encodeTab');
     decodeBtn.addEventListener('click', () => {
       const str = b64Input.value.trim();
       if (!str) return;
-      decodeBtn.disabled = true; decodeBtn.textContent = '🔄 Decoding...';
+      decodeBtn.disabled = true; decodeBtn.textContent = '🔄 Décodage...';
       try {
         let url = str;
         if (!url.startsWith('data:')) url = 'data:image/png;base64,' + url;
         decodedImg.src = url;
         decodeResult.classList.remove('hidden');
         dlImgBtn.classList.remove('hidden');
-        status.textContent = 'Decoded successfully!';
+        status.textContent = 'Décodé avec succès !';
       } catch (err) {
-        status.textContent = 'Error: Invalid Base64 string';
+        status.textContent = 'Erreur : chaîne Base64 invalide';
       } finally {
-        decodeBtn.disabled = false; decodeBtn.textContent = '🔄 Decode to Image';
+        decodeBtn.disabled = false; decodeBtn.textContent = '🔄 Décoder en image';
       }
     });
 

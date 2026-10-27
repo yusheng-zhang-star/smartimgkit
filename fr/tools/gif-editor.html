@@ -32,10 +32,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json">
 {
-  
-  "inLanguage": "fr","@context": "https://schema.org",
+  "inLanguage": "fr",
+  "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "GIF Editor",
+  "name": "Éditeur GIF",
   "url": "https://smartimgkit.com/fr/tools/gif-editor",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
@@ -102,26 +102,42 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "What's the maximum number of frames?",
+      "name": "Quel est le nombre maximal d'images ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No hard limit, but 50-100 frames is recommended for reasonable file sizes."
+        "text": "Il n'y a pas de limite stricte, mais il est recommandé de rester entre cinquante et cent images pour obtenir un fichier d'une taille raisonnable, facile à partager sur les réseaux sociaux."
       }
     },
     {
       "@type": "Question",
-      "name": "Can I edit an existing GIF?",
+      "name": "Puis-je modifier un GIF existant ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes — upload the GIF file and it will be split into individual frames for re-editing."
+        "text": "Oui. Importez directement le fichier GIF existant, et il sera découpé en images individuelles, prêtes à être réorganisées, réordonnées ou supprimées avant de régénérer une nouvelle animation."
       }
     },
     {
       "@type": "Question",
-      "name": "Is my data uploaded to a server?",
+      "name": "Mes images sont-elles envoyées vers un serveur ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. All GIF generation happens in your browser."
+        "text": "Non. L'ensemble de la génération du GIF se déroule dans votre navigateur. Aucune photo n'est téléversée, ce qui respecte le RGPD et les recommandations de la CNIL en matière de confidentialité."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Comment créer un GIF pour un anniversaire sur WhatsApp ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Importez quatre à six photos de la personne, réglez un délai de 500 ms, générez le GIF, puis envoyez-le sur le groupe familial. C'est une attention personnelle qui fait toujours plaisir, bien plus qu'un GIF tout fait."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quelle taille de fichier puis-je espérer pour un GIF léger ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Avec huit images de 600 pixels de large et un délai de 500 ms, on obtient généralement un GIF de un à trois mégaoctets. C'est assez léger pour être envoyé sur WhatsApp ou inséré dans un blog sans ralentir la page."
       }
     }
   ]
@@ -159,23 +175,23 @@
 
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>🎬 GIF Editor</span></nav>
+      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>🎬 Éditeur GIF</span></nav>
       <div class="tool-page-header">
-        <h1>🎬 GIF Editor</h1>
-        <p>Create animated GIFs from your images — free, online, no limits.</p>
+        <h1>🎬 Éditeur GIF</h1>
+        <p>Créez des GIFs animés à partir de vos images — gratuit, en ligne, sans inscription, et traité entièrement dans votre navigateur.</p>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Découvrez ce que cet outil peut faire</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:3rem;">🖼️🖼️🖼️</span></div>
-              <div class="before-after-item-caption before">Before: separate images</div>
+              <div class="before-after-item-caption before">Avant : images séparées</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🎬</span></div>
-              <div class="before-after-item-caption after">After: animated GIF</div>
+              <div class="before-after-item-caption after">Après : GIF animé</div>
             </div>
           </div>
         </div>
@@ -190,127 +206,171 @@
 
         <!-- Frames Preview -->
         <div class="preview-area hidden" id="framesSection">
-            <h2 style="font-size:1.1rem;margin-bottom:1rem;">📋 Frames (<span id="frameCount">0</span>)</h2>
-            <div class="info-box"><p>Supprimer frames with the ✕ button. Adjust each frame's delay below the image.</p></div>
+            <h2 style="font-size:1.1rem;margin-bottom:1rem;">📋 Images (<span id="frameCount">0</span>)</h2>
+            <div class="info-box"><p>Supprimez des images avec le bouton ✕. Réglez le délai de chaque image sous la vignette.</p></div>
             <div class="frames-grid" id="framesGrid"></div>
         </div>
 
         <!-- Controls -->
         <div class="preview-area hidden" id="controlsSection">
-            <h2 style="font-size:1.1rem;margin-bottom:1rem;">⚙️ GIF Paramètres</h2>
+            <h2 style="font-size:1.1rem;margin-bottom:1rem;">⚙️ Paramètres du GIF</h2>
             <div class="slider-group">
-                <label>Global Frame Delay <span class="slider-value" id="globalDelayVal">500ms</span></label>
+                <label>Délai global par image <span class="slider-value" id="globalDelayVal">500ms</span></label>
                 <input type="range" id="globalDelay" min="50" max="2000" value="500" step="50" oninput="document.getElementById('globalDelayVal').textContent=this.value+'ms'">
             </div>
             <div class="slider-group">
-                <label>Resize Largeur (px)</label>
+                <label>Redimensionner la largeur (px)</label>
                 <input type="number" id="resizeWidth" placeholder="auto" style="width:120px;padding:8px;border:1px solid var(--border-color);border-radius:6px;background:var(--bg-primary);color:var(--text-primary);">
-                <span style="color:var(--text-secondary);font-size:0.85rem;">leave empty for original size</span>
+                <span style="color:var(--text-secondary);font-size:0.85rem;">laisser vide pour la taille d'origine</span>
             </div>
             <div class="slider-group">
                 <label>Qualité</label>
                 <select id="quality" style="padding:8px 12px;border:1px solid var(--border-color);border-radius:6px;background:var(--bg-primary);color:var(--text-primary);">
-                    <option value="10">Low (smaller fichier)</option>
-                    <option value="7" selected>Medium</option>
-                    <option value="3">High (larger fichier)</option>
+                    <option value="10">Basse (fichier plus léger)</option>
+                    <option value="7" selected>Moyenne</option>
+                    <option value="3">Haute (fichier plus lourd)</option>
                 </select>
             </div>
             <div class="tool-actions">
-                <button class="btn btn-primary" id="generateBtn">🎬 Generate GIF</button>
+                <button class="btn btn-primary" id="generateBtn">🎬 Générer le GIF</button>
                 <button class="btn btn-secondary" id="resetBtn">Réinitialiser</button>
             </div>
         </div>
 
         <!-- Progress -->
         <div class="preview-area hidden" id="progressSection">
-            <div class="status-text" id="statusText">Preparing frames...</div>
+            <div class="status-text" id="statusText">Préparation des images...</div>
             <div class="progress-bar"><div class="fill" id="progressFill"></div></div>
         </div>
 
         <!-- Result -->
         <div class="preview-area hidden" id="resultSection">
             <div class="preview-gif">
-                <img id="resultGif" src="" alt="Generated GIF" style="max-width:100%;border-radius:8px;">
+                <img id="resultGif" src="" alt="GIF généré" style="max-width:100%;border-radius:8px;">
             </div>
             <div class="tool-actions" style="justify-content:center;">
-                <button class="btn btn-primary" id="downloadBtn">⬇️ Télécharger GIF</button>
-                <button class="btn btn-secondary" id="newGifBtn">Create New GIF</button>
+                <button class="btn btn-primary" id="downloadBtn">⬇️ Télécharger le GIF</button>
+                <button class="btn btn-secondary" id="newGifBtn">Créer un nouveau GIF</button>
             </div>
         </div>
       </div>
 <section class="how-to-section">
-  <h2>How to Use</h2>
+  <h2>Comment créer un GIF animé en ligne</h2>
   <div class="how-to-steps">
-    <div class="how-to-step"><div class="step-number">1</div><h4>Upload Images</h4><p>Select multiple images in the order you want them to appear.</p></div>
-    <div class="how-to-step"><div class="step-number">2</div><h4>Adjust Settings</h4><p>Set frame delay, resize, and quality.</p></div>
-    <div class="how-to-step"><div class="step-number">3</div><h4>Generate</h4><p>Click Generate GIF. All processing happens in your browser.</p></div>
-    <div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Preview and download your GIF.</p></div>
+    <div class="how-to-step"><div class="step-number">1</div><h4>Importez les images</h4><p>Sélectionnez plusieurs images dans l'ordre d'apparition souhaité.</p></div>
+    <div class="how-to-step"><div class="step-number">2</div><h4>Réglez les paramètres</h4><p>Délai entre les images, redimensionnement, qualité.</p></div>
+    <div class="how-to-step"><div class="step-number">3</div><h4>Générez</h4><p>Cliquez sur « Générer le GIF ». Tout le traitement se passe dans votre navigateur.</p></div>
+    <div class="how-to-step"><div class="step-number">4</div><h4>Téléchargez</h4><p>Prévisualisez et téléchargez votre GIF.</p></div>
   </div>
 </section>
 
-<h2>Detailed User Guide</h2>
+<h2>Guide d'utilisation détaillé</h2>
 
       <div class="guide-block">
-        <h3>Step 1: Upload Multiple Images</h3>
-        <p>Click the upload area and select multiple images at once.</p>
+        <h3>Étape 1 : importer plusieurs images</h3>
+        <p>Cliquez sur la zone de dépôt et sélectionnez plusieurs images d'un seul coup.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Step 2: Reorder Frames</h3>
-        <p>Drag any frame in the preview to reorder it.</p>
+        <h3>Étape 2 : réordonner les images</h3>
+        <p>Glissez-déposez chaque image dans l'aperçu pour la replacer dans le bon ordre.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Step 3: Adjust Settings</h3>
-        <p>Configure frame delay (50-2000ms), size, and quality.</p>
+        <h3>Étape 3 : régler les paramètres</h3>
+        <p>Configurez le délai entre chaque image (50 à 2000 ms), la taille et la qualité.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Step 4: Generate GIF</h3>
-        <p>Click "Generate GIF" to process.</p>
+        <h3>Étape 4 : générer le GIF</h3>
+        <p>Cliquez sur « Générer le GIF » pour lancer l'encodage.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Step 5: Preview & Download</h3>
-        <p>The generated GIF is shown in a player. Click "Download" to save.</p>
+        <h3>Étape 5 : prévisualiser et télécharger</h3>
+        <p>Le GIF généré s'affiche dans un lecteur. Cliquez sur « Télécharger » pour l'enregistrer.</p>
       </div>
 
       <div class="guide-block">
-        <h3>Tips for Better GIFs</h3>
-        <ul><li>Fewer frames = smaller file</li><li>Consistent dimensions</li><li>Shorter delay = snappier</li></ul>
+        <h3>Conseils pour de meilleurs GIFs</h3>
+        <ul><li>Moins d'images = fichier plus léger</li><li>Dimensions cohérentes</li><li>Délai plus court = plus dynamique</li></ul>
       </div>
+
+<section class="localization-section">
+  <h2>WhatsApp et les SMS : partager des GIFs animés en famille</h2>
+  <p>En France, le GIF animé reste un langage à part entière sur WhatsApp, iMessage et les réseaux sociaux. On l'utilise pour réagir à une nouvelle, pour souhaiter un anniversaire, ou pour animer un petit message sans avoir à filmer. Mais le plus souvent, on se contente de piocher dans les GIFs tout faits que l'on trouve sur le web. Pourquoi ne pas créer les siens, à partir de ses propres photos ?</p>
+  <p>C'est tout l'intérêt de cet outil. On importe quatre ou cinq photos de famille — un repas, une sortie, un anniversaire, les vacances — on règle un délai de 500 ms, et l'on obtient un petit GIF personnel. On l'envoie ensuite sur WhatsApp au groupe familial, et chacun reconnaît les lieux, les visages, l'ambiance. C'est une attention qui compte bien plus qu'un GIF emprunté à une banque d'images.</p>
+  <p>Pour les parents, l'outil est aussi une manière simple d'envoyer à leurs grands-parents un petit film animé des petits-enfants. On prend quatre clichés successifs, on les assemble en GIF, et l'on obtient une animation légère qui se charge instantanément, même sur une connexion modeste. Pas besoin d'envoyer une lourde vidéo, ni de passer par une application de montage compliquée.</p>
+  <p>Pour les couples qui s'écrivent au quotidien, le GIF personnel est une petite attention. On assemble une série de photos prises le matin, au réveil, et l'on envoie cette animation tendre à l'autre. C'est une façon de ponctuer la journée, sans lourdeur, et sans passer par les grandes plateformes de messagerie qui compressent à outrance.</p>
+  <p>Enfin, pour les amis qui organisent un anniversaire ou un EVJF, le GIF est un petit clin d'œil. On assemble quatre photos des préparatifs, on ajoute un délai court, et l'on obtient une animation que l'on envoie en amont à la bande. C'est une manière de créer l'événement avant l'heure, et de faire monter l'excitation.</p>
+  <p>Pour les couples qui fêtent un anniversaire de rencontre, le GIF est aussi une attention discrète. On reprend quatre photos prises au fil des années, on les assemble en une petite boucle, et l'on envoie cette animation à l'autre. C'est un geste doux, qui ne prend pas de place, mais qui dit plus long qu'un long message.</p>
+  <p>Pour les grands-parents, enfin, un GIF de quatre photos des petits-enfants est souvent plus efficace qu'une longue vidéo. L'animation se charge instantanément, elle se relance en boucle, et l'on la regarde avec plaisir, sans avoir à appuyer sur lecture. C'est un format pensé pour ceux qui ne maîtrisent pas toujours les applications de messagerie.</p>
+  <p>Pour les expatriés qui vivent loin de leur famille, le GIF est aussi un moyen simple de partager un quotidien. On assemble quatre photos de la semaine — un café, une rue, un parc, un dîner — et l'on envoie cette petite boucle au groupe familial. C'est plus léger qu'une vidéo, plus personnel qu'un texte, et cela maintient le lien entre les repas de famille.</p>
+  <p>Pour les amis qui s'écrivent au quotidien, enfin, le GIF est un petit clin d'œil. On assemble trois photos de son trajet matinal, on les envoie au groupe, et chacun sourit. C'est une façon de ponctuer la journée, sans peser sur la conversation, et sans passer par les grands groupes de diffusion. C'est une attention qui compte, au fil des jours, en famille comme entre amis proches.</p>
+  <p>Au bout du compte, le GIF personnel reste un des rares formats où l'on met vraiment du sien. On choisit les images, l'ordre, le rythme, et l'on obtient une petite animation qui vous ressemble. C'est cela qui fait toute la différence, comparé aux GIFs tout faits que l'on emprunte sur le web.</p>
+</section>
+
+<section class="localization-section">
+  <h2>Petits commerçants : animer ses fiches produit sur les réseaux sociaux</h2>
+  <p>Pour les petits commerçants, les artisans et les créateurs, le GIF est un format encore sous-exploité. Sur Instagram, sur Facebook, sur les stories, une petite animation de trois à cinq images attire davantage l'œil qu'une photo figée. On montre le produit sous plusieurs angles, on le fait tourner, on illustre une étape de fabrication, et l'on obtient un visuel qui capte l'attention en une seconde.</p>
+  <p>Sur Vinted, un petit GIF de trois photos permet de montrer un vêtement dans son ensemble, puis un détail, puis l'étiquette. C'est plus dynamique qu'une galerie statique, et l'acheteur a l'impression de mieux connaître l'article. On génère le GIF en quelques secondes, on le téléverse, et la fiche gagne en vie. C'est un détail qui change la perception.</p>
+  <p>Pour les boulangers, les pâtissiers, les artisans, le GIF est aussi une manière de montrer le geste. On assemble trois clichés d'un gâteau en cours de décoration, d'une tarte que l'on saupoudre, d'une pièce que l'on façonne. L'animation donne envie, elle raconte un métier, et elle se partage naturellement. C'est un contenu simple à produire, qui n'a rien à envier aux publicités professionnelles.</p>
+  <p>Pour les indépendants, enfin, le GIF est un format léger à insérer dans un mail ou dans un devis. On montre l'avant-après d'une prestation, on anime une série de photos d'un chantier, et l'on obtient un visuel qui illustre le propos sans peser sur la boîte mail. C'est une alternative plus agréable à une longue vidéo.</p>
+  <p>Enfin, pour les associations, le GIF est un support de communication discret. On assemble quatre clichés d'un événement, on obtient une petite animation, et l'on l'insère dans un article de blog ou dans une lettre d'information. C'est un moyen simple d'animer un contenu, sans recourir à une production vidéo coûteuse.</p>
+  <p>Pour les restaurants et les cafés, le GIF est une manière simple de montrer le plat du jour. On assemble trois photos : l'entrée, le plat, le dessert, et l'on obtient une petite boucle que l'on poste sur Instagram. C'est plus dynamique qu'une photo unique, et cela donne envie de pousser la porte.</p>
+  <p>Pour les libraires et les disquaires, enfin, le GIF est un format adapté aux réseaux. On montre la couverture d'un livre qui vient d'arriver, on tourne la page, on montre une dédicace, et l'on obtient une animation qui raconte le produit. C'est une manière douce d'annoncer les nouveautés, sans sursolliciter le regard.</p>
+  <p>Pour les photographes, le GIF est aussi une manière simple de montrer un avant-après. On assemble trois photos : la photo brute, la photo retouchée, la photo finale, et l'on obtient une boucle qui explique le travail. C'est plus parlant qu'une longue description, et cela se partage naturellement.</p>
+  <p>Pour les artisans d'art, enfin, le GIF est un support idéal pour montrer le geste. On assemble quatre clichés de la fabrication d'une céramique, d'une pièce de bijouterie, d'un meuble en cours. L'animation donne envie, elle raconte un métier, et elle se partage sans effort sur les réseaux. C'est un format qui met en valeur le savoir-faire, sans recourir à une production vidéo coûteuse.</p>
+  <p>Pour les petits créateurs qui démarrent, le GIF est aussi un moyen simple de publier régulièrement. On prépare trois petites animations par semaine, on les poste sur les stories, et l'on maintient une présence en ligne sans se ruiner en production. C'est une routine légère, qui ne demande que quelques minutes par jour.</p>
+</section>
+
+<section class="localization-section">
+  <h2>Traitement local : vos photos ne partent sur aucun serveur</h2>
+  <p>Un GIF personnel, c'est souvent des photos de famille, des clichés pris à la maison, des visages que l'on ne souhaite pas voir transiter par un service tiers. Or beaucoup d'outils de création de GIF fonctionnent par téléversement : on envoie ses images sur un serveur, on attend qu'elles reviennent, et l'on oublie que des copies ont été stockées quelque part. Pour un usage familial, cette manière de faire pose un vrai problème.</p>
+  <p>Notre éditeur de GIF fonctionne entièrement dans votre navigateur. Les images restent sur votre machine, l'encodage est calculé sur votre processeur, et le GIF final est assemblé localement. Aucune photo ne quitte votre appareil, aucune donnée n'est journalisée, et vous n'avez même pas besoin de créer un compte. C'est la même philosophie que l'on retrouve sur l'ensemble de nos outils.</p>
+  <p>Cette confidentialité est importante pour les parents. On assemble un GIF des vacances, un GIF des petits-enfants, un GIF d'un anniversaire : on ne souhaite pas que ces clichés personnels circulent sur un service tiers. Le traitement local garantit que chaque image reste entre vos mains, du premier import jusqu'au GIF final que vous partagez en famille.</p>
+  <p>Pour les petits commerçants, l'outil est aussi plus rapide. On n'attend pas que le téléversement se fasse, on n'espère pas que la bande passante tienne. Tout se déroule en quelques secondes, sur votre propre machine, même avec une connexion modeste. C'est précieux quand on prépare une publication le matin, avant l'ouverture de la boutique.</p>
+  <p>Enfin, le traitement local évite les mauvaises surprises des services SaaS. Pas de filigrane ajouté sur le GIF, pas de limite de durée qui vous force à payer un abonnement, pas de compte à créer pour débloquer telle option. On obtient le GIF, dans le navigateur, et l'on en fait ce que l'on veut. C'est la même liberté que l'on apprécie sur le reste de la suite.</p>
+  <p>Cette confidentialité compte aussi pour les créateurs qui préparent un contenu avant de le publier. On ne souhaite pas qu'un brouillon de GIF, non encore validé, circule sur un service tiers. Le traitement local garantit que les versions provisoires restent entre vos mains, le temps de la mise au point. C'est un point de vigilance que les professionnels connaissent bien.</p>
+  <p>Enfin, l'outil n'installe rien sur votre machine. On ne télécharge pas un exécutable, on n'accepte pas une installation baroques, on ne donne aucune autorisation intrusive. La page se comporte comme une page web normale, qui s'exécute, produit son GIF, et s'oublie. C'est une légèreté que l'on apprécie, surtout quand on est sur un ordinateur partagé.</p>
+  <p>Cette approche locale s'applique à l'ensemble de notre suite d'outils. Qu'il s'agisse de convertir une image, de trier du texte ou de générer un favicon, rien ne quitte votre navigateur. C'est un choix d'architecture, pas un argument marketing. La CNIL rappelle que le meilleur moyen de protéger des données reste de ne pas les faire circuler inutilement.</p>
+  <p>Pour les personnes qui manipulent des photos sensibles au quotidien — avocats, journalistes, chercheurs — cette exigence n'est pas un détail. Un outil qui envoie vos images sur un serveur crée une copie dont vous ne maîtrisez ni la durée de vie ni l'usage. Notre éditeur de GIF, lui, disparaît dès que vous fermez l'onglet, sans laisser de trace, en toute transparence.</p>
+  <p>Cette confidentialité compte aussi pour les couples qui partagent des photos intimes. On assemble un GIF tendre, on l'envoie à l'autre, et l'on ne souhaite pas que ces clichés circulent sur un service tiers. Le traitement local garantit que chaque image reste entre vos mains, du premier import jusqu'au GIF final.</p>
+</section>
 
 <section class="faq-section">
-  <h2>Frequently Asked Questions</h2>
-  <div class="faq-item"><button class="faq-question">What's the maximum number of frames?</button><div class="faq-answer">No hard limit, but 50-100 frames is recommended for reasonable file sizes.</div></div>
-  <div class="faq-item"><button class="faq-question">Can I edit an existing GIF?</button><div class="faq-answer">Yes — upload the GIF file and it will be split into individual frames for re-editing.</div></div>
-  <div class="faq-item"><button class="faq-question">Is my data uploaded to a server?</button><div class="faq-answer">No. All GIF generation happens in your browser.</div></div>
+  <h2>Questions fréquentes</h2>
+  <div class="faq-item"><button class="faq-question">Quel est le nombre maximal d'images ?</button><div class="faq-answer">Il n'y a pas de limite stricte, mais il est recommandé de rester entre cinquante et cent images pour obtenir un fichier d'une taille raisonnable, facile à partager sur les réseaux sociaux.</div></div>
+  <div class="faq-item"><button class="faq-question">Puis-je modifier un GIF existant ?</button><div class="faq-answer">Oui. Importez directement le fichier GIF existant, et il sera découpé en images individuelles, prêtes à être réorganisées, réordonnées ou supprimées avant de régénérer une nouvelle animation.</div></div>
+  <div class="faq-item"><button class="faq-question">Mes images sont-elles envoyées vers un serveur ?</button><div class="faq-answer">Non. L'ensemble de la génération du GIF se déroule dans votre navigateur. Aucune photo n'est téléversée, ce qui respecte le RGPD et les recommandations de la CNIL en matière de confidentialité.</div></div>
+  <div class="faq-item"><button class="faq-question">Comment créer un GIF pour un anniversaire sur WhatsApp ?</button><div class="faq-answer">Importez quatre à six photos de la personne, réglez un délai de 500 ms, générez le GIF, puis envoyez-le sur le groupe familial. C'est une attention personnelle qui fait toujours plaisir, bien plus qu'un GIF tout fait.</div></div>
+  <div class="faq-item"><button class="faq-question">Quelle taille de fichier puis-je espérer pour un GIF léger ?</button><div class="faq-answer">Avec huit images de 600 pixels de large et un délai de 500 ms, on obtient généralement un GIF de un à trois mégaoctets. C'est assez léger pour être envoyé sur WhatsApp ou inséré dans un blog sans ralentir la page.</div></div>
 </section>
 
 <section class="related-tools">
-  <h2>You Might Also Like</h2>
+  <h2>Vous aimerez aussi</h2>
   <div class="related-tools-grid">
     <a href="/fr/tools/image-to-pdf" class="related-tool-card">
       <span class="tool-icon">📄</span>
       <div class="tool-info">
-        <strong>Image to PDF</strong>
-        <span class="tool-desc">Combine images into a PDF instead</span>
+        <strong>Image vers PDF</strong>
+        <span class="tool-desc">Assembler des images en PDF</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
-    <a href="/fr/tools/image-compressor" class="related-tool-card">
+    <a href="/fr/tools/compressor" class="related-tool-card">
       <span class="tool-icon">🗜️</span>
       <div class="tool-info">
-        <strong>Image Compressor</strong>
-        <span class="tool-desc">Compress GIF frames</span>
+        <strong>Compresseur d'images</strong>
+        <span class="tool-desc">Compresser les images du GIF</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
     <a href="/fr/tools/screenshot-to-image" class="related-tool-card">
       <span class="tool-icon">📸</span>
       <div class="tool-info">
-        <strong>Screenshot to Image</strong>
-        <span class="tool-desc">Capture screenshots for GIFs</span>
+        <strong>Capture d'écran vers image</strong>
+        <span class="tool-desc">Capturer des écrans pour des GIFs</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
@@ -386,7 +446,7 @@
         frames.forEach((frame, i) => {
             var div = document.createElement('div');
             div.className = 'frame-item';
-            div.innerHTML = '<span class="frame-num">#' + (i+1) + '</span><button class="remove-btn" data-idx="' + i + '">✕</button><img src="' + frame.imgDataUrl + '" alt="Frame ' + (i+1) + '"><input type="number" class="delay-input" data-idx="' + i + '" value="' + frame.delay + '" min="50" max="5000" placeholder="Delay (ms)">';
+            div.innerHTML = '<span class="frame-num">#' + (i+1) + '</span><button class="remove-btn" data-idx="' + i + '">✕</button><img src="' + frame.imgDataUrl + '" alt="Image ' + (i+1) + '"><input type="number" class="delay-input" data-idx="' + i + '" value="' + frame.delay + '" min="50" max="5000" placeholder="Délai (ms)">';
             framesGrid.appendChild(div);
         });
         framesGrid.querySelectorAll('.remove-btn').forEach(btn => {
@@ -400,10 +460,10 @@
     }
 
     generateBtn.addEventListener('click', function() {
-        if (frames.length < 2) { alert('Please add at least 2 images.'); return; }
+        if (frames.length < 2) { alert('Veuillez ajouter au moins 2 images.'); return; }
         progressSection.classList.remove('hidden');
         resultSection.classList.add('hidden');
-        statusText.textContent = 'Starting GIF encoding...';
+        statusText.textContent = 'Démarrage de l\'encodage du GIF...';
         progressFill.style.width = '0%';
         generateBtn.disabled = true;
 
@@ -424,7 +484,7 @@
         gif.on('progress', function(p) {
             var pct = Math.round(p * 100);
             progressFill.style.width = pct + '%';
-            statusText.textContent = 'Encoding GIF: ' + pct + '%';
+            statusText.textContent = 'Encodage du GIF : ' + pct + '%';
         });
         gif.on('finished', function(blob) {
             var url = URL.createObjectURL(blob);

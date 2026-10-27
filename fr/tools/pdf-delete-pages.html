@@ -35,7 +35,7 @@
   
   "inLanguage": "fr","@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Delete PDF Pages",
+  "name": "Supprimer des pages PDF",
   "url": "https://smartimgkit.com/fr/tools/pdf-delete-pages",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
@@ -51,31 +51,31 @@
 {
   "@context": "https://schema.org",
   "@type": "HowTo",
-  "name": "How to Use",
+  "name": "Comment utiliser",
   "step": [
     {
       "@type": "HowToStep",
       "position": 1,
-      "name": "Upload PDF",
-      "text": "Select a PDF file."
+      "name": "Importer le PDF",
+      "text": "Sélectionnez un fichier PDF."
     },
     {
       "@type": "HowToStep",
       "position": 2,
-      "name": "Configure",
-      "text": "Set options."
+      "name": "Configurer",
+      "text": "Définissez les options."
     },
     {
       "@type": "HowToStep",
       "position": 3,
-      "name": "Process",
-      "text": "Click the action button."
+      "name": "Traiter",
+      "text": "Cliquez sur le bouton d'action."
     },
     {
       "@type": "HowToStep",
       "position": 4,
-      "name": "Download",
-      "text": "Get the result."
+      "name": "Télécharger",
+      "text": "Récupérez le résultat."
     }
   ]
 }
@@ -118,26 +118,42 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Is my PDF uploaded?",
+      "name": "Mon PDF est-il envoyé sur un serveur ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Everything runs in your browser."
+        "text": "Non. Tout se passe dans votre navigateur."
       }
     },
     {
       "@type": "Question",
-      "name": "Max file size?",
+      "name": "Taille de fichier maximale ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Under 100MB recommended."
+        "text": "Moins de 100 Mo recommandé."
       }
     },
     {
       "@type": "Question",
-      "name": "Password protected PDFs?",
+      "name": "PDF protégés par mot de passe ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Not supported."
+        "text": "Non pris en charge."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je supprimer plusieurs plages de pages en une fois ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui. Saisissez les numéros et les plages séparés par des virgules, par exemple 2,5-7,10. Toutes les pages indiquées seront retirées en une seule opération, sans limite de quantité."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Mes documents restent-ils confidentiels ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui. Le traitement s'effectue entièrement dans votre navigateur, vos fichiers ne quittent jamais votre appareil. Aucune copie n'est envoyée sur un serveur externe."
       }
     }
   ]
@@ -201,15 +217,15 @@
 <div class="ad-zone ad-header ad-loader-slot" data-ad-type="header" data-current-mobile="0"></div>
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>🗑️ Delete PDF Pages</span></nav>
+      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>🗑️ Supprimer des pages PDF</span></nav>
       <div class="tool-page-header">
-        <h1>🗑️ Delete PDF Pages</h1>
-        <p>Remove specific pages or ranges from a PDF — free, in your browser.</p>
+        <h1>🗑️ Supprimer des pages PDF</h1>
+        <p>Supprimez des pages précises ou des plages de pages d'un PDF — gratuit, directement dans votre navigateur.</p>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Découvrez ce que cet outil peut faire</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">📄</span></div>
@@ -232,22 +248,82 @@
           <h2>⚙️ Options</h2>
           <div class="pdf-info" id="pdfInfo"></div>
           <div class="control-row">
-            <label>Pages to Delete</label>
+            <label>Pages à supprimer</label>
             <input type="text" id="delPages" placeholder="e.g. 2, 5-7, 10" style="flex:1;">
           </div>
-          <p style="color:var(--text-secondary);font-size:0.85rem;">Enter page numbers and ranges separated by commas.</p>
+          <p style="color:var(--text-secondary);font-size:0.85rem;">Saisissez les numéros de pages et les plages séparés par des virgules.</p>
           <div class="btn-row">
-            <button class="btn btn-primary" id="processBtn">🗑️ Delete Pages</button>
-            <button class="btn btn-secondary" id="resetBtn">Reset</button>
+            <button class="btn btn-primary" id="processBtn">🗑️ Supprimer les pages</button>
+            <button class="btn btn-secondary" id="resetBtn">Réinitialiser</button>
           </div>
         </div>
         <div class="status-text hidden" id="statusSection"></div>
 
       </div>
-<section class="how-to-section"><h2>How to Use</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Upload PDF</h4><p>Select a PDF file.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Configure</h4><p>Set options.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Process</h4><p>Click the action button.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Download</h4><p>Get the result.</p></div></div></section>
-<h2>Detailed User Guide</h2><div class="guide-block"><h3>Upload PDF</h3><p>Select a PDF file.</p></div><div class="guide-block"><h3>Configure</h3><p>Set options.</p></div><div class="guide-block"><h3>Process</h3><p>Click the action button.</p></div><div class="guide-block"><h3>Download</h3><p>Get the result.</p></div>
-<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">Is my PDF uploaded?</button><div class="faq-answer">No. Everything runs in your browser.</div></div><div class="faq-item"><button class="faq-question">Max file size?</button><div class="faq-answer">Under 100MB recommended.</div></div><div class="faq-item"><button class="faq-question">Password protected PDFs?</button><div class="faq-answer">Not supported.</div></div></section>
-<section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/pdf-to-image" class="related-tool-card"><span class="tool-icon">📄</span><div class="tool-info"><strong>PDF to Image</strong><span class="tool-desc">Convert PDF to images</span></div><span class="tool-arrow">→</span></a><a href="/tools/pdf-merge" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>PDF Merge</strong><span class="tool-desc">Combine PDFs</span></div><span class="tool-arrow">→</span></a></div></section>
+<section class="how-to-section"><h2>Comment utiliser</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Importer le PDF</h4><p>Sélectionnez un fichier PDF.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Configurer</h4><p>Définissez les options.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Traiter</h4><p>Cliquez sur le bouton d'action.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Télécharger</h4><p>Récupérez le résultat.</p></div></div></section>
+<h2>Guide détaillé</h2><div class="guide-block"><h3>Importer le PDF</h3><p>Select a PDF file.</p></div><div class="guide-block"><h3>Configurer</h3><p>Set options.</p></div><div class="guide-block"><h3>Traiter</h3><p>Click the action button.</p></div><div class="guide-block"><h3>Télécharger</h3><p>Get the result.</p></div>
+<section class="localization-section">
+  <h2 style="text-align:center;margin-bottom:20px;">Pourquoi supprimer des pages d'un PDF en France, en Belgique et au Québec</h2>
+  <p>En France, en Belgique, en Suisse et au Québec, le PDF reste le format standard pour les documents administratifs : factures, contrats, relevés bancaires, dossiers de location, formulaires d'assurance. Très souvent, un document reçu contient des pages inutiles — une page blanche, un talon publicitaire, un relevé d'une autre période — qu'il faut retirer avant d'archiver le fichier ou de le renvoyer par email. Supprimer ces pages en ligne, sans installer Adobe ni aucun logiciel, est devenu un besoin courant.</p>
+  <h3 style="margin-top:24px;">Cas d'usage typiques</h3>
+  <ul style="line-height:1.8;">
+    <li><strong>Documents administratifs :</strong> Avant de transmettre un dossier de location ou une demande à un organisme, on retire les pages vides ou les doublons. Un dossier propre et léger facilite le traitement et évite les allers-retours.</li>
+    <li><strong>Factures et relevés :</strong> Beaucoup de personnes reçoivent des factures multipages dont seule une page les concerne. Supprimer les autres pages avant d'archiver ou de rembourser simplifie la gestion personnelle.</li>
+    <li><strong>Numérisation et scanner :</strong> Un document scanné contient souvent des pages blanches entre deux feuilles. Les retirer produit un fichier plus propre et plus rapide à envoyer.</li>
+    <li><strong>Confidentialité :</strong> Avant de partager un PDF, il est prudent de retirer les pages contenant des informations sensibles que le destinataire n'a pas besoin de voir.</li>
+  </ul>
+  <p style="margin-top:16px;">Tout se passe dans votre navigateur : vos documents ne sont jamais envoyés sur un serveur. C'est essentiel quand on manipule des données personnelles ou bancaires. Aucun compte, aucune inscription, aucune limite d'utilisation.</p>
+<h3>Bonnes pratiques pour nettoyer un PDF en toute sécurité</h3><p>Avant de supprimer une page, vérifiez toujours que le contenu a bien été sauvegardé : en cas de doute, conservez une copie du document original sous un autre nom. La suppression est définitive dans le fichier de travail, donc un dossier de sauvegarde évite toute perte irréversible. Pour les documents administratifs sensibles (relevés bancaires, pièces d'identité, dossiers médicaux), travaillez avec l'outil dans votre navigateur : aucune page n'est envoyée sur un serveur, tout le traitement reste local, ce qui est un gage de confidentialité essentiel dans la pratique française et belge des démarches en ligne.</p><p>Autre point pratique : après avoir supprimé les pages inutiles, pensez à vérifier la numérotation et la pagination du nouveau document. Si le PDF d'origine contenait des renvois internes (sommaire, index), les numéros de page peuvent ne plus correspondre ; il faudra alors régénérer le sommaire dans votre logiciel d'édition ou accepter l'écart pour un usage interne. Enfin, pour un envoi par email, un document allégé de quelques pages se transmet plus vite et dépasse rarement la limite de pièces jointes des messageries (souvent 10 Mo). Combinez la suppression avec le compresseur de PDF du site si le fichier reste volumineux.</p><p>Pensez également aux documents reçus par email qui contiennent des pages publicitaires ou des pages de garde : les supprimer avant archivage allège vos dossiers et facilite la recherche ultérieure. Pour les indépendants et les petites structures, un dossier numérique bien nettoyé fait gagner un temps précieux en fin de mois. Enfin, si vous travaillez régulièrement avec les mêmes types de documents (factures, dossiers clients), adoptez une routine : vérifier les pages inutiles avant chaque archivage prend moins d'une minute avec cet outil et évite l'accumulation de fichiers volumineux.</p><p>Pour les documents sensibles, cette approche locale est un vrai atout : aucun relevé, contrat ou pièce d'identité ne transite par un serveur tiers.</p><p>Adoptez ce réflexe simple : à chaque document reçu, un coup d'œil aux pages inutiles et une suppression en quelques secondes — vos dossiers restent légers, propres et faciles à retrouver.</p></section>
+
+<section class="localization-section">
+  <h2 style="text-align:center;margin-bottom:20px;">Supprimer des pages vs. extraire des pages : quelle différence ?</h2>
+  <p>Il est facile de confondre les deux opérations. Cette comparaison clarifie laquelle choisir selon le résultat voulu.</p>
+  <div style="overflow-x:auto;margin:1.2rem 0;">
+  <table style="width:100%;border-collapse:collapse;font-size:0.9rem;">
+    <thead>
+      <tr style="background:var(--bg-secondary);">
+        <th style="padding:10px;border:1px solid var(--border);text-align:left;">Opération</th>
+        <th style="padding:10px;border:1px solid var(--border);text-align:left;">Résultat</th>
+        <th style="padding:10px;border:1px solid var(--border);text-align:left;">Quand l'utiliser</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="padding:10px;border:1px solid var(--border);">Supprimer des pages</td><td style="padding:10px;border:1px solid var(--border);">Conserve le document, retire les pages choisies</td><td style="padding:10px;border:1px solid var(--border);">Retirer des pages vides ou inutiles du PDF original</td></tr>
+      <tr><td style="padding:10px;border:1px solid var(--border);">Extraire des pages</td><td style="padding:10px;border:1px solid var(--border);">Crée un nouveau fichier avec seulement les pages choisies</td><td style="padding:10px;border:1px solid var(--border);">Ne garder que certaines pages du document</td></tr>
+      <tr><td style="padding:10px;border:1px solid var(--border);">Réorganiser</td><td style="padding:10px;border:1px solid var(--border);">Change l'ordre des pages</td><td style="padding:10px;border:1px solid var(--border);">Remettre les pages dans le bon ordre avant envoi</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="margin-top:12px;">Si le document d'origine doit rester intact, utilisez l'extraction : le fichier original ne change pas et un nouveau fichier est créé. Si vous voulez nettoyer le fichier lui-même, utilisez la suppression.</p>
+<h3>Quand choisir la suppression, l'extraction ou la réorganisation</h3><p>Supprimer des pages modifie le document d'origine : le résultat est un fichier nettoyé, prêt à archiver ou à transmettre. Extraire crée un nouveau fichier indépendant avec les seules pages choisies, sans toucher à l'original — c'est la méthode recommandée quand vous devez prouver que le document source n'a pas été modifié. Réorganiser change l'ordre des pages sans en retirer : utile pour remettre un dossier dans le bon ordre avant l'envoi ou pour préparer une version imprimée.</p><p>Un exemple concret : vous recevez un contrat de 30 pages dont seules 5 vous concernent. Si vous voulez un dossier réduit pour votre gestion, extrayez les 5 pages ; si vous voulez nettoyer le fichier entier en supprimant une annexe obsolète, utilisez la suppression. Dans les deux cas, le traitement est instantané et local. Pour les documents officiels (actes, attestations), conservez toujours la version intégrale signée et n'utilisez la suppression que sur des copies de travail. Cette distinction évite les confusions qui peuvent coûter cher en contexte administratif.</p><p>Un autre point utile : l'extraction conserve l'ordre et le contenu des pages choisies sans toucher au fichier d'origine, ce qui est précieux pour les documents signés. La suppression, elle, simplifie un fichier dont vous êtes propriétaire : utile pour retirer un talon, une page blanche ou une annexe obsolète. La réorganisation complète le flux : après suppression ou extraction, remettez les pages dans le bon ordre. Le site propose également la fusion et la compression, ce qui permet de traiter un document de bout en bout sans changer d'outil. En résumé : extraction pour préserver l'original, suppression pour nettoyer le fichier, réorganisation pour l'ordre — et conservez toujours une copie de l'original pour les documents sensibles.</p><p>Une dernière remarque : vérifiez toujours le résultat après suppression, notamment que les pages conservées se suivent correctement et qu'aucune page utile n'a été retirée par erreur.</p><p>Ces distinctions deviennent vite naturelles : extraction pour préserver l'original, suppression pour nettoyer, réorganisation pour ordonner — les trois couvrent la quasi-totalité des besoins quotidiens sur un PDF.</p><p>En pratique, beaucoup d'utilisateurs combinent les opérations : extraction des pages utiles d'un dossier reçu, puis suppression des pages inutiles dans la version de travail — le tout en quelques clics, dans le navigateur.</p><p>Cette distinction, une fois assimilée, évite les manipulations inutiles et protège vos documents : vous choisissez la bonne opération en fonction du résultat attendu, sans risque de modifier l'original par mégarde.</p><p>En résumé, connaître ces trois opérations vous rend autonome sur la quasi-totalité des manipulations PDF courantes, sans logiciel payant ni compétence technique particulière.</p><p>Cette page vous accompagne dans le choix de la bonne opération : quelques secondes de lecture suffisent pour traiter vos PDF comme un professionnel.</p></section>
+
+<section class="localization-section">
+  <h2 style="text-align:center;margin-bottom:20px;">Supprimer des pages PDF : les cas fréquents en France</h2>
+  <p>En France, de nombreuses démarches administratives passent par des PDF : déclarations fiscales, dossiers de location, demandes de subvention, factures, contrats signés. Il arrive très souvent qu'un document contienne des pages inutiles ou confidentielles qu'il faut retirer avant l'envoi. Ce guide vous présente les situations les plus courantes et la bonne méthode pour les gérer sans installer de logiciel.</p>
+  <h3 style="margin-top:24px;">Les situations les plus courantes</h3>
+  <ul style="line-height:1.8;">
+    <li><strong>Dossier de location :</strong> Un propriétaire reçoit un dossier de 40 pages dont une page de relevé bancaire trop détaillée. Supprimer cette page avant l'envoi protège des données sensibles tout en gardant les documents demandés.</li>
+    <li><strong>Factures et bons de commande :</strong> Avant d'envoyer une facture à un client ou à un comptable, on supprime souvent les pages de conditions générales inutiles ou les doublons de page blanche générés par la numérisation.</li>
+    <li><strong>Documents numérisés :</strong> Un scan recto-verso produit fréquemment des pages blanches ou des pages répétées. L'outil permet de les retirer en quelques secondes sans recommencer la numérisation.</li>
+    <li><strong>Contrats et devis :</strong> Une entreprise prépare un contrat en plusieurs versions et doit retirer des pages de négociation avant l'envoi final. La suppression locale garantit que le document n'est jamais copié sur un serveur.</li>
+  </ul>
+  <h3 style="margin-top:24px;">Comment procéder efficacement</h3>
+  <p>Commencez par importer votre PDF, puis utilisez l'aperçu des pages pour identifier celles à supprimer. Sélectionnez les pages par numéro ou par aperçu visuel, vérifiez votre sélection une dernière fois, puis lancez le traitement. Le résultat se télécharge immédiatement : vos fichiers ne sont jamais envoyés sur un serveur, ce qui est particulièrement important pour les documents sensibles comme les relevés bancaires ou les pièces d'identité.</p>
+  <p style="margin-top:12px;">Astuce : pour un dossier de location, vérifiez que la première page (souvent la plus regardée) est bien la page de synthèse. Supprimez aussi les pages blanches finales qui alourdissent inutilement le fichier envoyé par email.</p>
+<h3>Allez plus loin : fusion, compression et réorganisation</h3><p>Après avoir supprimé les pages inutiles, le même site vous permet de fusionner plusieurs PDF en un seul, de réorganiser l'ordre des pages et de compresser le fichier final. C'est un flux complet qui évite de jongler entre plusieurs logiciels : suppression des pages vides, fusion des pièces d'un dossier de location, compression avant envoi par email — tout se fait dans le navigateur, sans installation ni inscription. Pour les professionnels (agents immobiliers, comptables, secrétariats), cette chaîne d'outils remplace avantageusement une suite bureautique complète pour la majorité des opérations courantes.</p><p>Conseil de productivité : nommez systématiquement vos fichiers selon un modèle (ex. "Dossier_location_Nom_2026.pdf") et rangez-les par projet. Un PDF propre et bien nommé se retrouve en quelques secondes, même des mois plus tard. Enfin, vérifiez que les pages conservées sont dans le bon ordre avant l'export : une page déplacée par erreur peut invalider un dossier administratif.</p><p>Pour les agents immobiliers, le nettoyage des dossiers de location est une routine quotidienne : retirer les pages superflues d'un dossier scanné avant transmission au propriétaire évite les questions et les allers-retours. Pour les comptables, supprimer les pages de conditions générales inutiles avant envoi d'une facture réduit le poids de l'email et clarifie le message. Les administrations et les mairies reçoivent quotidiennement des documents scannés avec des pages blanches ; les supprimer accélère le traitement des dossiers. L'outil est accessible sans installation ni inscription, ce qui le rend utilisable sur un poste de travail sans droits d'administration.</p></section>
+
+<h3 style="margin-top:24px;">Ce qu'il faut vérifier avant de supprimer des pages</h3>
+  <p>Avant de lancer la suppression, vérifiez systématiquement la numérotation des pages : certains documents affichent une couverture séparée et la page 1 du contenu réel commence au numéro 2. Contrôlez aussi l'aperçu visuel pour éviter de supprimer une page importante par erreur. Si votre PDF provient d'une numérisation, les pages blanches sont fréquentes en début et fin de document : supprimez-les pour alléger le fichier final. Enfin, conservez toujours une copie du fichier d'origine tant que le nouveau document n'a pas été vérifié.</p>
+  <p style="margin-top:12px;">Le traitement étant réalisé dans votre navigateur, vous pouvez l'utiliser en toute confiance avec des documents confidentiels : relevés bancaires, contrats, dossiers médicaux. Aucune donnée ne quitte votre ordinateur.</p>
+
+<h3 style="margin-top:24px;">Questions fréquentes sur les outils PDF en ligne</h3>
+  <p>Beaucoup d'utilisateurs se demandent si ces outils en ligne sont sûrs pour des documents sensibles. La réponse est simple : cette page traite votre PDF entièrement dans votre navigateur, grâce aux technologies web modernes. Vos fichiers ne sont jamais téléchargés vers un serveur, ce qui évite les risques de fuite ou d'utilisation frauduleuse. C'est une différence majeure avec les sites qui exigent un envoi du document avant traitement.</p>
+  <p style="margin-top:12px;">Pensez aussi à la sécurité de votre boîte mail : un PDF allégé, sans pages inutiles, se transmet plus facilement et réduit les risques de blocage par les serveurs de messagerie. Après le traitement, supprimez l'ancienne version si elle contient des informations sensibles.</p>
+
+<section class="faq-section"><h2>Questions fréquentes</h2><div class="faq-item"><button class="faq-question">Mon PDF est-il envoyé sur un serveur ?</button><div class="faq-answer">Non. Tout se passe dans votre navigateur.</div></div><div class="faq-item"><button class="faq-question">Taille de fichier maximale ?</button><div class="faq-answer">Moins de 100 Mo recommandé.</div></div><div class="faq-item"><button class="faq-question">PDF protégés par mot de passe ?</button><div class="faq-answer">Non pris en charge.</div></div>
+      <div class="faq-item"><button class="faq-question">Puis-je supprimer plusieurs plages de pages en une fois ?</button><div class="faq-answer">Oui. Saisissez les numéros et les plages séparés par des virgules, par exemple 2,5-7,10. Toutes les pages indiquées seront retirées en une seule opération, sans limite de quantité.</div></div>
+      <div class="faq-item"><button class="faq-question">Mes documents restent-ils confidentiels ?</button><div class="faq-answer">Oui. Le traitement s'effectue entièrement dans votre navigateur, vos fichiers ne quittent jamais votre appareil. Aucune copie n'est envoyée sur un serveur externe.</div></div></section>
+<section class="related-tools"><h2>Vous aimerez aussi</h2><div class="related-tools-grid"><a href="/tools/pdf-to-image" class="related-tool-card"><span class="tool-icon">📄</span><div class="tool-info"><strong>PDF to Image</strong><span class="tool-desc">Convert PDF to images</span></div><span class="tool-arrow">→</span></a><a href="/fr/tools/pdf-merge" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>Fusionner PDF</strong><span class="tool-desc">Fusionner des PDF</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
@@ -271,7 +347,7 @@
   dropzone.addEventListener('drop', e => { e.preventDefault(); dropzone.classList.remove('dragover'); if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
   fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
   function handleFile(file) {
-    if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) { alert('Please upload a PDF.'); return; }
+    if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) { alert('Veuillez téléverser un PDF.'); return; }
     fileName = file.name.replace('.pdf', '');
     var ba = document.getElementById('beforeAfterPreview'); if (ba) ba.classList.add('hidden');
     statusSection.classList.remove('hidden');

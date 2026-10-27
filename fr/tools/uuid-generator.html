@@ -32,10 +32,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json">
 {
-  
-  "inLanguage": "fr","@context": "https://schema.org",
+  "inLanguage": "fr",
+  "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "UUID Generator",
+  "name": "Générateur d'UUID v1, v4 et v7 en ligne",
   "url": "https://smartimgkit.com/fr/tools/uuid-generator",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
@@ -118,26 +118,42 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Which UUID version should I use?",
+      "name": "Quelle version d'UUID dois-je utiliser ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "v4 (random) is most common. v7 (time-ordered) is great for databases as they sort chronologically. v1 includes MAC address."
+        "text": "La v4 aléatoire convient à la majorité des usages. La v7, ordonnée par le temps, est idéale comme clé primaire en base de données car les enregistrements se trient chronologiquement. La v1 inclut un horodatage et une adresse matérielle."
       }
     },
     {
       "@type": "Question",
-      "name": "Are these truly random?",
+      "name": "Ces UUID sont-ils vraiment aléatoires ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "v4 uses crypto.getRandomValues() (CSPRNG). v7 uses CSPRNG + timestamp. Both are cryptographically secure."
+        "text": "Oui. La v4 repose sur l'API cryptographique du navigateur crypto.getRandomValues, un générateur pseudo-aléatoire sécurisé. La v7 combine ce même générateur avec un horodatage. Les deux sont considérés comme sûrs pour des usages professionnels."
       }
     },
     {
       "@type": "Question",
-      "name": "What is the maximum count?",
+      "name": "Quelle est la quantité maximale par génération ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "10,000 per generation. You can click Generate multiple times for more."
+        "text": "Vous pouvez générer jusqu'à 10 000 identifiants en une seule action. Si vous en avez besoin de davantage, relancez simplement la génération plusieurs fois de suite."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je utiliser ces UUID pour des données personnelles RGPD ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui. L'outil génère les identifiables localement, sans aucun envoi vers un serveur. Vous conservez la maîtrise totale de vos lots, ce qui facilite la mise en conformité avec le RGPD et les recommandations de la CNIL."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quelle différence entre UUID v4 et UUID v7 ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La v4 est intégralement aléatoire, tandis que la v7 préfixe l'identifiant par un horodatage milliseconde. La v7 est préférable pour les clés primaires en base, car les insertions se font en ordre croissant, réduisant la fragmentation de l'index."
       }
     }
   ]
@@ -173,23 +189,23 @@
 <div class="ad-zone ad-header ad-loader-slot" data-ad-type="header" data-current-mobile="0"></div>
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>🆔 UUID Generator</span></nav>
+      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>🆔 Générateur d'UUID</span></nav>
       <div class="tool-page-header">
-        <h1>🆔 UUID Generator</h1>
-        <p>Generate UUID v1, v4, and v7 in bulk — free, in your browser.</p>
+        <h1>🆔 Générateur d'UUID v1, v4 et v7 en ligne</h1>
+        <p>Générez des identifiants uniques en lot, directement dans votre navigateur. Gratuit, sans compte, sans envoi.</p>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Découvrez ce que cet outil permet de faire</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">❌</span></div>
-              <div class="before-after-item-caption before">Nothing</div>
+              <div class="before-after-item-caption before">Aucun identifiant</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🆔</span></div>
-              <div class="before-after-item-caption after">Unique UUIDs</div>
+              <div class="before-after-item-caption after">UUID uniques générés</div>
             </div>
           </div>
         </div>
@@ -199,38 +215,72 @@
             <div class="control-row">
               <label>Version</label>
               <select id="uuidVersion">
-                <option value="v4">UUID v4 (Random)</option>
-                <option value="v7">UUID v7 (Time-ordered)</option>
-                <option value="v1">UUID v1 (Timestamp)</option>
+                <option value="v4">UUID v4 (aléatoire)</option>
+                <option value="v7">UUID v7 (ordonné par le temps)</option>
+                <option value="v1">UUID v1 (horodatage)</option>
               </select>
             </div>
             <div class="control-row">
-              <label>Count</label>
+              <label>Quantité</label>
               <input type="number" id="uuidCount" value="10" min="1" max="10000" style="width:100px;">
             </div>
             <div class="control-row">
               <label>Format</label>
-              <label style="min-width:auto;"><input type="checkbox" id="fmtHyphen" checked> Hyphens (xxxxxxxx-xxxx-...)</label>
-              <label style="min-width:auto;"><input type="checkbox" id="fmtUpper"> Uppercase</label>
-              <label style="min-width:auto;"><input type="checkbox" id="fmtBraces"> Braces {...}</label>
+              <label style="min-width:auto;"><input type="checkbox" id="fmtHyphen" checked> Tirets (xxxxxxxx-xxxx-...)</label>
+              <label style="min-width:auto;"><input type="checkbox" id="fmtUpper"> Majuscules</label>
+              <label style="min-width:auto;"><input type="checkbox" id="fmtBraces"> Accolades {'{}'}</label>
             </div>
             <div class="btn-row">
-              <button class="btn btn-primary" id="generateBtn">🆔 Generate UUIDs</button>
-              <button class="btn btn-secondary" id="copyAllBtn">📋 Copy All</button>
-              <button class="btn btn-secondary" id="clearBtn">Clear</button>
+              <button class="btn btn-primary" id="generateBtn">🆔 Générer les UUID</button>
+              <button class="btn btn-secondary" id="copyAllBtn">📋 Tout copier</button>
+              <button class="btn btn-secondary" id="clearBtn">Effacer</button>
             </div>
         </div>
 
         <div class="result-section">
-            <h2>📤 Generated UUIDs (<span id="uuidTotal">0</span>)</h2>
-            <textarea id="uuidOutput" readonly placeholder="Click Generate to create UUIDs..."></textarea>
+            <h2>📤 UUID générés (<span id="uuidTotal">0</span>)</h2>
+            <textarea id="uuidOutput" readonly placeholder="Cliquez sur Générer pour créer des UUID..."></textarea>
         </div>
 
       </div>
-<section class="how-to-section"><h2>How to Use</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Choose Version</h4><p>Select UUID v4 (random), v7 (time-ordered), or v1 (timestamp).</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Set Count</h4><p>Enter how many UUIDs to generate (1-10000).</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Choose Format</h4><p>Select hyphens, uppercase, braces as needed.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Generate</h4><p>Click Generate and copy the results.</p></div></div></section>
-<h2>Detailed User Guide</h2><div class="guide-block"><h3>Choose Version</h3><p>Select UUID v4 (random), v7 (time-ordered), or v1 (timestamp).</p></div><div class="guide-block"><h3>Set Count</h3><p>Enter how many UUIDs to generate (1-10000).</p></div><div class="guide-block"><h3>Choose Format</h3><p>Select hyphens, uppercase, braces as needed.</p></div><div class="guide-block"><h3>Generate</h3><p>Click Generate and copy the results.</p></div>
-<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">Which UUID version should I use?</button><div class="faq-answer">v4 (random) is most common. v7 (time-ordered) is great for databases as they sort chronologically. v1 includes MAC address.</div></div><div class="faq-item"><button class="faq-question">Are these truly random?</button><div class="faq-answer">v4 uses crypto.getRandomValues() (CSPRNG). v7 uses CSPRNG + timestamp. Both are cryptographically secure.</div></div><div class="faq-item"><button class="faq-question">What is the maximum count?</button><div class="faq-answer">10,000 per generation. You can click Generate multiple times for more.</div></div></section>
-<section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/password-generator" class="related-tool-card"><span class="tool-icon">🔐</span><div class="tool-info"><strong>Password Generator</strong><span class="tool-desc">Create secure passwords</span></div><span class="tool-arrow">→</span></a><a href="/tools/word-counter" class="related-tool-card"><span class="tool-icon">📝</span><div class="tool-info"><strong>Word Counter</strong><span class="tool-desc">Count words and characters</span></div><span class="tool-arrow">→</span></a><a href="/tools/base64" class="related-tool-card"><span class="tool-icon">🔐</span><div class="tool-info"><strong>Base64 Converter</strong><span class="tool-desc">Encode/decode Base64</span></div><span class="tool-arrow">→</span></a></div></section>
+<section class="how-to-section"><h2>Comment générer des UUID</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Choisir la version</h4><p>Sélectionnez l'UUID v4 aléatoire, v7 ordonné par le temps, ou v1 à horodatage.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Fixer la quantité</h4><p>Indiquez le nombre d'identifiants à générer, de 1 à 10 000.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Choisir le format</h4><p>Activez tirets, majuscules ou accolades selon vos besoins.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Générer</h4><p>Cliquez sur Générer, puis copiez le résultat.</p></div></div></section>
+<h2>Guide détaillé pas à pas</h2><div class="guide-block"><h3>Choisir la version</h3><p>La version v4 est la plus répandue : elle est purement aléatoire. La version v7, plus récente, préfixe chaque identifiant par un horodatage, ce qui aide au tri dans les bases de données. La version v1 combine horodatage et adresse matérielle.</p></div><div class="guide-block"><h3>Fixer la quantité</h3><p>Vous pouvez générer jusqu'à 10 000 identifiants en une seule action. Relancez plusieurs fois si vous en avez besoin de davantage.</p></div><div class="guide-block"><h3>Choisir le format</h3><p>Les tirets sont le format standard, mais vous pouvez les retirer. Les accolades sont utiles pour certains langages ou anciennes bases.</p></div><div class="guide-block"><h3>Générer et copier</h3><p>Le résultat s'affiche dans la zone de texte. Utilisez le bouton Tout copier pour le coller dans votre code ou votre base de données.</p></div>
+
+<section class="localization-section">
+<h2>UUID pour les développeurs français : bases de données, identifiants et RGPD</h2>
+<p>Dans l'écosystème du développement web francophone, les UUID sont partout : identifiants de lignes dans PostgreSQL, clés primaires distribuées, identifiants de session, références de commandes dans une boutique en ligne, identifiants de documents dans un système de réservation. Un développeur parisien, lyonnais ou travaillant en télétravail pour une entreprise de la Silicon Valley en génère plusieurs centaines par jour. Avoir un générateur fiable, ouvert dans un onglet du navigateur, fait gagner un temps considérable.</p>
+<p>La question de la version se pose très concrètement. Pour une application web classique, la v4 aléatoire suffit : elle ne révèle aucune information sur l'ordre de création ni sur la machine d'origine. En revanche, lorsque l'on conçoit une base PostgreSQL ou un cluster distribué, la v7 est souvent préférée, car les identifiants sont naturellement triables par date d'insertion. Cela améliore les performances d'indexation et évite les réécritures coûteuses des pages de données. Beaucoup d'équipes françaises, notamment dans les startups, migrent progressivement leurs schémas vers la v7, à raison.</p>
+<p>Côté conformité, le choix d'un générateur local a son importance. Un UUID peut servir d'identifiant technique, mais il peut aussi pointer vers une donnée personnelle : un compte client, une réservation, un dossier médical. En France, la CNIL veille à ce que les identifiants techniques ne se transforment pas en traqueurs. Générer ses UUID dans le navigateur, sans passage par une API tierce, évite toute fuite de métadonnées : on n'envoie pas à un service inconnu le volume, le rythme ni le contexte de génération. C'est un détail qui compte lors d'un audit RGPD.</p>
+<p>Pour les développeurs qui travaillent en équipe, le générateur local a aussi un avantage pratique : il fonctionne sur un réseau sensible, derrière un pare-feu d'entreprise, ou en déconnecté sur un train. Pas de limite de débit, pas de clé API à demander, pas de compte à créer. On génère un lot, on copie, et l'on continue. C'est le genre d'outil simple qui reste ouvert dans un coin de l'écran pendant toute la journée de travail.</p>
+<p>Dans le quotidien d'un développeur front-end ou full-stack, les cas d'usage s'enchaînent. Un test unitaire a besoin d'identifiants factices ; un jeu de données de démonstration doit comporter plusieurs centaines de lignes ; un webhook reçoit un identifiant qu'il faut reproduire à l'identifiant. Plutôt que d'écrire un script Node à chaque fois, on génère les identifiants à la volée, on les colle dans un fichier CSV ou dans une requête SQL, et l'on passe à la suite. Le fait que l'outil fonctionne dans l'onglet, sans dépendre d'un environnement, le rend idéal pour ces tâches courtes.</p>
+<p>Les étudiants et les autodidactes qui suivent une formation en ligne, sur OpenClassrooms, sur Udemy ou dans un bootcamp, apprécient aussi cette simplicité. Plutôt que de configurer un environnement de développement complet pour produire une poignée d'UUID, ils utilisent la page directement dans leur navigateur. C'est rapide, gratuit, et cela évite de perdre du temps sur un détail d'outillage au lieu de se concentrer sur la logique du programme.</p>
+<p>Pour les professeurs et les formateurs, l'outil sert aussi à préparer des jeux d'exemple. Un cours sur les bases de données relationnelles peut utiliser une série d'identifiants générés en local, sans dépendre d'un serveur externe. Les élèves reproduisent ensuite la même logique chez eux, et les identifiants de chacun restent distincts. C'est un détail pédagogique qui facilite la correction, car chaque classe travaille sur des lots cohérents.</p>
+</section>
+
+<section class="localization-section">
+<h2>Pourquoi générer ses UUID localement plutôt qu'avec un service en ligne</h2>
+<p>Beaucoup de développeurs connaissent les générateurs d'UUID en ligne, accessibles depuis n'importe quel navigateur. Or, pour un professionnel, leur usage soulève deux questions pratiques. La première est la confidentialité : générer un lot de mille identifiants pour un projet non encore annoncé, c'est déjà révéler qu'un projet existe et à quel rythme. La seconde est la disponibilité : un service tiers peut être hors ligne, bloqué par le pare-feu d'une entreprise, ou soumis à une limite de requêtes qui tombe en plein milieu d'une tâche.</p>
+<p>Un générateur local élimine ces deux problèmes d'un coup. Le code qui produit l'UUID s'exécute dans l'onglet, utilise le générateur de nombres aléatoires sécurisé du navigateur, et ne parle à aucun serveur. Vous pouvez générer des identifiants pour une application traitant des données de santé, des dossiers du secteur public ou des documents juridiques, sans craindre une fuite. C'est aussi un argument à faire valoir lors d'une revue de code : rien ne transite, rien n'est journalisé hors de votre machine.</p>
+<p>La génération locale utilise l'API web standard crypto.getRandomValues, qui repose sur le générateur pseudo-aléatoire cryptographique du système d'exploitation. C'est exactement le même niveau d'aléa que celui employé par les bibliothèques Node.js ou Java. La v4 est donc réellement imprévisible, et la probabilité de collision reste statistiquement negligible, même sur plusieurs millions d'identifiants. On peut l'utiliser pour des jetons de session, des liens de réinitialisation de mot de passe ou des identifiants de partage.</p>
+<p>Enfin, l'outil fonctionne entièrement hors ligne une fois la page chargée. Sur un vol intérieur Air France, dans une zone blanche, ou lors d'une démo client où le réseau est coupé, le générateur continue de répondre. C'est ce genre de détail qui fait qu'un petit utilitaire reste préféré à une API distante : il ne dépose jamais, il ne demande jamais de compte, et il ne réclame jamais d'ouvrir la moindre session.</p>
+<p>La question de l'aléa est souvent soulevée par les ingénieurs sécurité. Générer des identifiants dans le navigateur, est-ce vraiment aussi sûr qu'un générateur serveur ? La réponse tient en un point : le navigateur utilise le même générateur pseudo-aléatoire que le système d'exploitation, accessible via l'API standard. Aucune bibliothèque JavaScript maison ne tente de réinventer la roue. Le résultat est donc de qualité cryptographique, adapté à des jetons de session ou à des identifiants de ressource.</p>
+<p>Pour les équipes qui traitent des données de santé, du secteur bancaire ou de la recherche, ce choix local est un argument d'audit. On ne transmet aucun identifiant à un tiers, on ne crée aucune dépendance, on ne journalise rien. Lorsqu'un organisme certificateur demande la liste des services externes utilisés par l'application, ce générateur n'apparaît tout simplement pas : il s'exécute côté client, chez l'utilisateur final.</p>
+<p>Enfin, l'absence de compte est un point qui compte pour beaucoup. Inutile de fournir une adresse email, de confirmer un lien, de retenir un mot de passe. On ouvre la page, on génère, on copie. Ce choix délibéré de simplicité correspond à l'esprit des outils en ligne respectueux, qui font le strict nécessaire sans demander davantage. C'est aussi pour cette raison que l'outil est recommandé par plusieurs communautés de développeurs françaises.</p>
+</section>
+
+<section class="localization-section">
+<h2>UUID v7 : la nouvelle norme pour le tri temporel en base de données</h2>
+<p>La version 7 de l'UUID est une innovation relativement récente, normalisée en 2024. Elle reprend la longueur et le format d'un UUID classique, mais réorganise les premiers bits pour y placer un horodatage milliseconde. Concrètement, deux UUID v7 générés à des instants différents sont dans l'ordre lexicographique naturel. Cela change la vie des administrateurs de bases de données, qui ne voient plus leurs index primaires se fragmenter au fil des insertions.</p>
+<p>Pour une application française qui gère des millions d'enregistrements, l'impact se sent. Dans PostgreSQL, MySQL ou un système distribué, un UUID v4 aléatoire dispersait les nouvelles lignes un peu partout sur le disque, forçant le moteur à retoucher constamment ses pages. Avec la v7, les nouveaux enregistrements s'empilent à la fin de l'index, ce qui accélère les écritures et réduit la fragmentation. Beaucoup d'applications, notamment dans la fintech et la logistique, ont adopté ce nouveau format sans changer la longueur ni le type de colonne.</p>
+<p>La v7 reste cependant conçue pour être sûre. Après l'horodatage, elle fait appel à un générateur cryptographique pour les bits aléatoires, de sorte que deux identifiants générés dans la même milliseconde ne se heurtent pas. On ne retrouve pas la faiblesse de l'ancienne v1, qui incorporait l'adresse matérielle de la machine et pouvait servir à remonter jusqu'à un développeur précis. Pour les équipes soucieuses du RGPD, c'est un argument de plus : aucun identifiant ne révèle l'origine de la machine qui l'a produit.</p>
+<p>En pratique, choisir entre v4 et v7 est un arbitrage simple. Si vous avez besoin d'un identifiant opaque et non devinable, pour un token d'invitation ou un identifiant de partage public, restez sur la v4. Si vous indexez des lignes par date et souhaitez des tris efficaces, optez pour la v7. L'outil permet de passer de l'une à l'autre en un menu déroulant, sans changer votre code d'insertion. C'est le genre de détail technique qui séduit les ingénieurs soucieux de la qualité à long terme de leurs schémas de données.</p>
+<p>Concrètement, dans une base PostgreSQL, un index primaire en v7 se comporte comme un index sur un horodatage croissant : les nouvelles lignes s'ajoutent à la fin, les pages ne se fragmentent pas, et les sauvegardes sont plus efficaces. C'est un gain que l'on ressent surtout à grande échelle, sur des tables de plusieurs millions de lignes. Pour un petit projet, la différence reste invisible, mais anticiper ce choix évite une migration coûteuse quelques années plus tard.</p>
+<p>Enfin, la v7 ne change rien à la compatibilité. Elle garde la même longueur, le même format à tirets, la même gestion des versions par le quatrième groupe hexadécimal. Les anciennes bibliothèques continuent de la lire, les outils d'analyse l'acceptent comme un UUID classique. C'est pour cette raison que son adoption progresse si vite dans les équipes techniques françaises : on migre sans casser quoi que ce soit, et l'on récolte les bénéfices au fil des insertions.</p>
+<p>Pour résumer, ce générateur en ligne couvre les trois versions les plus utiles au quotidien. La v4 pour les identifiants opaques, la v7 pour les clés primaires ordonnées, la v1 pour les cas hérités. On choisit en un menu, on règle la quantité et le format, et l'on copie le lot. Aucune installation, aucune dépendance, aucune donnée qui parte : c'est l'outil que l'on garde dans ses favoris, pour les petites tâches répétées du quotidien.</p>
+</section>
+
+<section class="faq-section"><h2>Questions fréquentes</h2><div class="faq-item"><button class="faq-question">Quelle version d'UUID dois-je utiliser ?</button><div class="faq-answer">La v4 aléatoire convient à la majorité des usages. La v7, ordonnée par le temps, est idéale comme clé primaire en base de données car les enregistrements se trient chronologiquement. La v1 inclut un horodatage et une adresse matérielle.</div></div><div class="faq-item"><button class="faq-question">Ces UUID sont-ils vraiment aléatoires ?</button><div class="faq-answer">Oui. La v4 repose sur l'API cryptographique du navigateur crypto.getRandomValues, un générateur pseudo-aléatoire sécurisé. La v7 combine ce même générateur avec un horodatage. Les deux sont considérés comme sûrs pour des usages professionnels.</div></div><div class="faq-item"><button class="faq-question">Quelle est la quantité maximale par génération ?</button><div class="faq-answer">Vous pouvez générer jusqu'à 10 000 identifiants en une seule action. Si vous en avez besoin de davantage, relancez simplement la génération plusieurs fois de suite.</div></div><div class="faq-item"><button class="faq-question">Puis-je utiliser ces UUID pour des données personnelles RGPD ?</button><div class="faq-answer">Oui. L'outil génère les identifiables localement, sans aucun envoi vers un serveur. Vous conservez la maîtrise totale de vos lots, ce qui facilite la mise en conformité avec le RGPD et les recommandations de la CNIL.</div></div><div class="faq-item"><button class="faq-question">Quelle différence entre UUID v4 et UUID v7 ?</button><div class="faq-answer">La v4 est intégralement aléatoire, tandis que la v7 préfixe l'identifiant par un horodatage milliseconde. La v7 est préférable pour les clés primaires en base, car les insertions se font en ordre croissant, réduisant la fragmentation de l'index.</div></div></section>
+<section class="related-tools"><h2>Vous aimerez aussi</h2><div class="related-tools-grid"><a href="/tools/password-generator" class="related-tool-card"><span class="tool-icon">🔐</span><div class="tool-info"><strong>Générateur de mots de passe</strong><span class="tool-desc">Créer des mots de passe sécurisés</span></div><span class="tool-arrow">→</span></a><a href="/tools/word-counter" class="related-tool-card"><span class="tool-icon">📝</span><div class="tool-info"><strong>Compteur de mots</strong><span class="tool-desc">Compter mots et caractères</span></div><span class="tool-arrow">→</span></a><a href="/tools/base64" class="related-tool-card"><span class="tool-icon">🔐</span><div class="tool-info"><strong>Convertisseur Base64</strong><span class="tool-desc">Encoder et décoder en Base64</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>

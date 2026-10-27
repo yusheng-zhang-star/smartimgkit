@@ -32,10 +32,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json">
 {
-  
-  "inLanguage": "fr","@context": "https://schema.org",
+  "inLanguage": "fr",
+  "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Color Palette",
+  "name": "Extracteur de palette",
   "url": "https://smartimgkit.com/fr/tools/color-palette",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
@@ -90,26 +90,42 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How accurate is the color extraction?",
+      "name": "Quelle est la précision de l'extraction des couleurs ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "We use a quantization algorithm to find the most visually dominant colors. Results are great for inspiration and design systems."
+        "text": "Nous utilisons un algorithme de quantification pour trouver les couleurs visuellement dominantes. Le résultat est parfait pour l'inspiration et les systèmes de design, mais ne remplace pas un réglage manuel pour un usage professionnel exigeant."
       }
     },
     {
       "@type": "Question",
-      "name": "What color formats are shown?",
+      "name": "Quels formats de couleur sont affichés ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Each color displays its HEX code. The CSS output section provides ready-to-use CSS custom properties."
+        "text": "Chaque couleur affiche son code HEX. La section de sortie CSS fournit des propriétés personnalisées CSS prêtes à l'emploi, que vous pouvez copier directement dans votre feuille de style."
       }
     },
     {
       "@type": "Question",
-      "name": "Can I copy a color with one click?",
+      "name": "Puis-je copier une couleur en un clic ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. Click any color swatch to copy its HEX code to your clipboard."
+        "text": "Oui. Cliquez sur n'importe quel nuancier pour copier instantanément son code HEX dans votre presse-papiers. Une confirmation s'affiche pour vous indiquer que la copie a bien fonctionné."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Comment créer une palette de marque pour ma boulangerie à Paris ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Importez une photo de vos pains et viennoiseries, extrayez 5 à 6 couleurs, et utilisez la teinte dominante comme couleur principale. Les tons chauds dorés et bruns fonctionnent très bien pour un commerce alimentaire artisanal français."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je extraire les couleurs d'une vieille photographie argentique scannée ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui, absolument. Importez votre scan JPG ou PNG, extrayez les couleurs, et obtenez une palette qui reflète l'esthétique du tirage. Le traitement est 100 % local, et aucun cliché de famille ne quitte votre appareil."
       }
     }
   ]
@@ -147,25 +163,25 @@
 
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>🎨 Color Palette</span></nav>
+      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>🎨 Extracteur de palette</span></nav>
       <div class="tool-page-header">
-        <h1>🎨 Color Palette</h1>
-        <p>Extract dominant colors from any image and get CSS-ready color codes. Perfect for designers and developers.</p>
+        <h1>🎨 Extracteur de palette</h1>
+        <p>Extrayez les couleurs dominantes de n'importe quelle image et obtenez des codes couleur prêts pour le CSS. Idéal pour les designers et les développeurs.</p>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Découvrez ce que cet outil peut faire</div>
           <div class="before-after-images">
             <div class="before-after-item">
-              <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400&q=80" alt="Before" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
-              <div class="before-after-item-caption before">Before</div>
+              <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400&q=80" alt="Avant" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
+              <div class="before-after-item-caption before">Avant</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
                 <span style="font-size:3rem;opacity:0.5;">🎨</span>
               </div>
-              <div class="before-after-item-caption after">After — processed</div>
+              <div class="before-after-item-caption after">Après — palette extraite</div>
             </div>
           </div>
         </div>        <input type="file" id="fileInput" accept="image/*" style="display:none;">
@@ -174,118 +190,162 @@
           <h3>Déposez une image ici</h3>
           <p>ou cliquez pour parcourir</p>
       </label>
-      <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Try with a sample image</span>
+      <span class="sample-image-btn" role="button" tabindex="0" id="sampleBtn">🖼️ Essayer avec une image d'exemple</span>
         <div class="preview-area" id="previewArea">
           <div class="preview-container"><img id="previewImg" alt="Aperçu" style="max-height:300px"></div>
           <div style="text-align:center;margin:12px 0">
-            <label style="color:var(--text-secondary);font-size:.85rem">Number of colors: <span id="countVal">6</span></label>
+            <label style="color:var(--text-secondary);font-size:.85rem">Nombre de couleurs : <span id="countVal">6</span></label>
             <input type="range" id="countRange" min="3" max="12" value="6" style="max-width:200px;margin:0 auto;display:block">
           </div>
           <div class="tool-actions">
-            <button class="btn btn-primary" id="extractBtn">🎨 Extract Colors</button>
-            <button class="btn btn-secondary" id="resetBtn">🔄 New Image</button>
+            <button class="btn btn-primary" id="extractBtn">🎨 Extraire les couleurs</button>
+            <button class="btn btn-secondary" id="resetBtn">🔄 Nouvelle image</button>
           </div>
           <div id="status" class="text-center mt-16" style="color:var(--text-secondary)"></div>
           <div id="paletteResult" class="hidden">
-            <h3 style="margin-top:24px;font-size:1.1rem">Extracted Palette</h3>
+            <h3 style="margin-top:24px;font-size:1.1rem">Pallette extraite</h3>
             <div class="palette-grid" id="paletteGrid"></div>
-            <h3 style="margin-top:24px;font-size:1.1rem">CSS Variables</h3>
+            <h3 style="margin-top:24px;font-size:1.1rem">Variables CSS</h3>
             <div class="css-output" id="cssOutput"></div>
           </div>
         </div>
       </div>
 <section class="how-to-section">
-        <h2>How to Use</h2>
+        <h2>Comment Utiliser</h2>
         <div class="how-to-steps">
-          <div class="how-to-step"><div class="step-number">1</div><h4>Upload</h4><p>Select an image to analyze.</p></div>
-          <div class="how-to-step"><div class="step-number">2</div><h4>Adjust Count</h4><p>Choose how many dominant colors to extract (3–12).</p></div>
-          <div class="how-to-step"><div class="step-number">3</div><h4>Extract & Copy</h4><p>Click Extract Colors, then click any color to copy its hex code.</p></div>
+          <div class="how-to-step"><div class="step-number">1</div><h4>Importer</h4><p>Sélectionnez une image à analyser.</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>Régler le nombre</h4><p>Choisissez combien de couleurs dominantes extraire (3 à 12).</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>Extraire et copier</h4><p>Cliquez sur Extraire les couleurs, puis cliquez sur n'importe quelle couleur pour copier son code hexadécimal.</p></div>
         </div>
       </section>
 
-<h2>Detailed User Guide</h2>
+<h2>Guide d'utilisation détaillé</h2>
 
         <div class="guide-block">
-          <h3>Step 1: Upload Your Image</h3>
-          <p>Upload any <strong>JPG, PNG, or WebP</strong> image. This works great with photos, artwork, screenshots, or any image with interesting colors.</p>
+          <h3>Étape 1 : importer votre image</h3>
+          <p>Importez n'importe quelle image <strong>JPG, PNG ou WebP</strong>. Cela fonctionne très bien avec des photos, des illustrations, des captures d'écran, ou toute image avec des couleurs intéressantes.</p>
           <div class="guide-screenshot">
-            <img src="/screenshots/color-palette.png" alt="Color Palette tool showing extracted colors" loading="lazy">
-            <div class="guide-screenshot-caption">Upload an image and choose how many dominant colors to extract</div>
+            <img src="/screenshots/color-palette.png" alt="Outil palette de couleurs montrant les couleurs extraites" loading="lazy">
+            <div class="guide-screenshot-caption">Importez une image et choisissez combien de couleurs dominantes extraire</div>
           </div>
         </div>
 
         <div class="guide-block">
-          <h3>Step 2: Choose Color Count</h3>
-          <p>Use the slider to select how many colors to extract (3–12). More colors give a richer palette; fewer colors give a more focused, minimalist scheme.</p>
+          <h3>Étape 2 : choisir le nombre de couleurs</h3>
+          <p>Utilisez le curseur pour sélectionner combien de couleurs extraire (3 à 12). Plus de couleurs donnent une palette plus riche ; moins de couleurs donnent un schéma plus ciblé et minimaliste.</p>
           <ul>
-            <li><strong>3-4 colors</strong> — Ideal for simple branding and minimalist designs</li>
-            <li><strong>5-6 colors</strong> — Balanced palette for most web and UI projects</li>
-            <li><strong>8-12 colors</strong> — Comprehensive palette for complex designs and illustrations</li>
+            <li><strong>3-4 couleurs</strong> — Idéal pour un branding simple et des designs minimalistes</li>
+            <li><strong>5-6 couleurs</strong> — Palette équilibrée pour la plupart des projets web et d'interface</li>
+            <li><strong>8-12 couleurs</strong> — Palette complète pour les designs complexes et les illustrations</li>
           </ul>
         </div>
 
         <div class="guide-block">
-          <h3>Step 3: Extract & Use</h3>
-          <p>Click <strong>"Extract Colors"</strong> to analyze the image. The tool displays:</p>
+          <h3>Étape 3 : extraire et utiliser</h3>
+          <p>Cliquez sur <strong>« Extraire les couleurs »</strong> pour analyser l'image. L'outil affiche :</p>
           <ul>
-            <li>Color swatches with <strong>HEX</strong> and <strong>RGB</strong> values</li>
-            <li>Ready-to-use <strong>CSS variables</strong> that you can copy directly into your stylesheet</li>
+            <li>Des nuanciers avec les valeurs <strong>HEX</strong> et <strong>RGB</strong></li>
+            <li>Des <strong>variables CSS</strong> prêtes à l'emploi que vous pouvez copier directement dans votre feuille de style</li>
           </ul>
-          <p>Click any color swatch to copy its HEX code to your clipboard instantly.</p>
-          <div class="tip"><strong>Tip:</strong> The first color is usually the most dominant. Use it as your primary brand color, and the rest as accents and neutrals.</div>
+          <p>Cliquez sur n'importe quel nuancier pour copier instantanément son code HEX dans votre presse-papiers.</p>
+          <div class="tip"><strong>Astuce :</strong> La première couleur est généralement la plus dominante. Utilisez-la comme couleur de marque principale, et les autres comme accents et neutres.</div>
         </div>
 
         <div class="guide-block">
-          <h3>Best Use Cases</h3>
+          <h3>Cas d'usage recommandés</h3>
           <ul>
-            <li><strong>Brand color inspiration</strong> — Extract colors from a mood board or reference image</li>
-            <li><strong>Website theming</strong> — Match your site's palette to a key photograph or product image</li>
-            <li><strong>UI design</strong> — Generate accessible color schemes for apps and dashboards</li>
-            <li><strong>Art & illustration</strong> — Build harmonious color palettes from nature photos or artwork</li>
+            <li><strong>Inspiration de couleurs de marque</strong> — Extrayez les couleurs d'un moodboard ou d'une image de référence</li>
+            <li><strong>Thème de site web</strong> — Harmonisez la palette de votre site avec une photographie clé ou une image produit</li>
+            <li><strong>Design d'interface</strong> — Générez des schémas de couleurs accessibles pour les applications et les tableaux de bord</li>
+            <li><strong>Art et illustration</strong> — Construisez des palettes harmonieuses à partir de photos de nature ou d'œuvres d'art</li>
           </ul>
         </div>
 
         <div class="guide-block">
-          <h3>Pro Tips</h3>
+          <h3>Astuces de pro</h3>
           <ul>
-            <li>Images with strong, distinct colors produce the best palettes</li>
-            <li>Use the CSS output directly in your project's <code>:root</code> for consistent theming</li>
-            <li>Try extracting from multiple images and combining palettes for unique combinations</li>
-            <li>The algorithm finds visually dominant colors, not just statistically frequent ones</li>
+            <li>Les images avec des couleurs fortes et distinctes donnent les meilleures palettes</li>
+            <li>Utilisez la sortie CSS directement dans le <code>:root</code> de votre projet pour un thème cohérent</li>
+            <li>Essayez d'extraire depuis plusieurs images et de combiner les palettes pour des combinaisons uniques</li>
+            <li>L'algorithme trouve les couleurs visuellement dominantes, pas seulement les plus fréquentes statistiquement</li>
           </ul>
         </div>
+
+<section class="localization-section">
+  <h2>Designers français : construire une palette de marque cohérente</h2>
+  <p>En France, les petites marques, les indépendants, les artisans ont besoin d'une palette de couleurs cohérente. On ne veut pas choisir des couleurs au hasard, on veut que la palette reflète l'identité de la marque, son histoire, son univers. Mais construire une palette à la main demande du temps, et l'on n'est pas toujours sûr de ses choix.</p>
+  <p>Notre extracteur est un point de départ simple. On prend une photo qui représente l'univers de la marque — une photo de l'atelier, une photo de la production, une photo de l'équipe — on importe l'image, et l'on extrait les couleurs dominantes. On obtient une palette naturelle, qui s'harmonie d'elle-même, parce qu'elle vient de la réalité.</p>
+  <p>Pour les boulangers, les bouchers, les fromagers, la palette est aussi un outil de communication. On prend une photo de ses produits, on en extrait les couleurs, et l'on obtient une palette qui s'accorde avec son offre. On utilise ces couleurs pour la carte de visite, le site web, les réseaux sociaux, et l'on obtient une identité visuelle cohérente, sans avoir à payer un studio de design.</p>
+  <p>Pour les graphistes indépendants, l'outil est aussi un outil de brainstorming. On prend une photo de référence, un moodboard, une photo de voyage, et l'on en extrait les couleurs. On obtient une base de travail, que l'on affine ensuite selon le projet. C'est un point de départ rapide, qui fait gagner du temps sur les premiers échanges avec le client.</p>
+  <p>Enfin, pour les petites entreprises, l'outil est aussi un outil de refonte. On reprend l'identité visuelle, on prend une photo qui représente la nouvelle direction, et l'on en extrait les couleurs. On obtient une palette actualisée, qui s'harmonie avec la nouvelle image, et l'on met à jour le site, les réseaux, les supports de communication.</p>
+  <p>Pour les fleuristes, la palette est aussi un outil de communication. On prend une photo de ses compositions, on en extrait les couleurs, et l'on obtient une palette qui s'accorde avec son offre. On utilise ces couleurs pour la carte de visite, le site web, les réseaux sociaux, et l'on obtient une identité visuelle cohérente, sans avoir à payer un studio de design.</p>
+  <p>Pour les restaurants, enfin, la palette est un outil de communication. On prend une photo de ses plats, on en extrait les couleurs, et l'on obtient une palette qui s'accorde avec sa carte. On utilise ces couleurs pour la carte, le site web, les réseaux sociaux, et l'on obtient une identité visuelle cohérente, qui met en valeur la cuisine.</p>
+  <p>Pour les hôtels, la palette est aussi un outil de communication. On prend une photo de l'établissement, une photo d'une chambre, une photo du petit-déjeuner, et l'on en extrait les couleurs. On obtient une palette qui s'accorde avec l'univers de l'hôtel, et l'on utilise ces teintes pour le site web, la brochure, les réseaux sociaux. C'est un moyen simple de donner une identité visuelle cohérente, sans avoir à payer un studio de design.</p>
+  <p>Pour les gîtes, les chambres d'hôtes, les campings, enfin, la palette est aussi un outil de communication. On prend une photo du logement, une photo du paysage, une photo du petit-déjeuner, et l'on en extrait les couleurs. On obtient une palette qui s'accorde avec l'univers du lieu, et l'on utilise ces teintes pour le site web, la brochure, les réseaux sociaux, en toute confiance, désormais, aujourd'hui.</p>
+  <p>Pour les boutiques, enfin, la palette est aussi un outil de communication. On prend une photo de ses produits, on en extrait les couleurs, et l'on obtient une palette qui s'accorde avec son offre. On utilise ces couleurs pour la carte de visite, le site web, les réseaux sociaux, et l'on obtient une identité visuelle cohérente.</p>
+</section>
+
+<section class="localization-section">
+  <h2>Traitement local : vos images ne partent sur aucun serveur</h2>
+  <p>Quand on extrait une palette d'une image, on manipule souvent des images personnelles — un moodboard, une photo de travail, une maquette en cours. On ne souhaite généralement pas les envoyer à un service tiers, d'autant plus si ces clichés ne sont pas destinés au grand public. Or beaucoup d'outils d'analyse fonctionnent par téléversement : on envoie l'image, on attend qu'elle revienne, et l'on oublie qu'une copie a circulé.</p>
+  <p>Notre extracteur fonctionne entièrement dans votre navigateur. L'image reste sur votre machine, l'analyse des couleurs est calculée sur votre processeur, et la palette finale est assemblée localement. Aucune image ne quitte votre appareil, aucune donnée n'est journalisée, et vous n'avez même pas besoin de créer un compte. C'est la même philosophie que l'on retrouve sur l'ensemble de nos outils.</p>
+  <p>Cette confidentialité est importante pour les designers qui préparent une proposition. On ne souhaite pas qu'un brouillon de maquette, non encore validé, circule sur un service tiers. Le traitement local garantit que les versions provisoires restent entre vos mains, le temps de la mise au point. C'est un point de vigilance que les professionnels du secteur connaissent bien.</p>
+  <p>Pour les particuliers, l'outil est aussi plus rapide. On n'attend pas que le téléversement se fasse, on n'espère pas que la bande passante tienne. Tout se déroule en quelques secondes, sur votre propre machine, même avec une connexion modeste. C'est précieux quand on prépare une proposition le soir, après le dîner, sans avoir envie de patienter.</p>
+  <p>Enfin, le traitement local évite les mauvaises surprises des services SaaS. Pas de limite de taille qui vous force à payer un abonnement, pas de compte à créer pour débloquer telle option. On obtient l'intégralité de la palette, dans le navigateur, et l'on en fait ce que l'on veut. C'est la même liberté que l'on apprécie sur le reste de la suite.</p>
+  <p>Cette confidentialité compte aussi pour les graphistes qui préparent une proposition. On ne souhaite pas qu'un brouillon de maquette, non encore validé, circule sur un service tiers. Le traitement local garantit que les versions provisoires restent entre vos mains, le temps de la mise au point. C'est un point de vigilance que les professionnels du secteur connaissent bien.</p>
+  <p>Pour les particuliers, l'outil est aussi plus rapide. On n'attend pas que le téléversement se fasse, on n'espère pas que la bande passante tienne. Tout se déroule en quelques secondes, sur votre propre machine, même avec une connexion modeste. C'est précieux quand on prépare une proposition le soir, après le dîner, sans avoir envie de patienter.</p>
+  <p>Cette confidentialité compte aussi pour les étudiants qui préparent un portfolio. On ne souhaite pas que ses brouillons, ses essais, ses exercices circulent sur un service tiers. Le traitement local garantit que les versions provisoires restent entre vos mains, le temps de la mise au point. C'est un point de vigilance que les étudiants en design connaissent bien.</p>
+  <p>Pour les enseignants, l'outil est aussi un outil pédagogique. On prépare un cours sur la couleur, on prend une photo de référence, on en extrait les couleurs, et l'on projette le résultat en classe. Les élèves voient concrètement comment une photo se décompose en couleurs, et l'on explique la théorie des couleurs à partir d'un exemple concret. C'est un outil simple, mais très pédagogique, en France, aujourd'hui, désormais, aujourd'hui.</p>
+  <p>Pour les photographes, l'outil est aussi un outil de post-traitement. On prend une photo, on en extrait les couleurs, et l'on utilise ces teintes pour l'étalonnage. On obtient un rendu qui s'harmonie avec la scène, et l'on gagne en cohérence sur l'ensemble de la série. C'est une approche simple, mais très efficace.</p>
+</section>
+
+<section class="localization-section">
+  <h2>Sites web et blogs : harmoniser sa palette avec une photo clé</h2>
+  <p>En France, les blogs, les petits sites, les portfolios ont besoin d'une palette de couleurs cohérente. On ne veut pas que le site paraisse décousu, on veut que les couleurs s'harmonisent avec les photos que l'on publie. Mais choisir une palette à la demande demande du temps, et l'on n'est pas toujours sûr de ses choix.</p>
+  <p>Notre extracteur est un outil simple. On prend la photo clé du site — la bannière, la photo de la page d'accueil, la photo de l'article phare — on importe l'image, et l'on en extrait les couleurs. On obtient une palette qui s'harmonie avec la photo, et l'on utilise ces couleurs pour les boutons, les liens, les titres. C'est un moyen simple de rendre son site cohérent, sans avoir à faire appel à un designer.</p>
+  <p>Pour les blogueurs, l'outil est aussi un outil de styling. On publie un article, on choisit une photo, on en extrait les couleurs, et l'on utilise ces teintes pour les titres, les boutons, les citations. On obtient un article qui a sa propre identité visuelle, en harmonie avec la photo. C'est une manière simple de faire varier son contenu, sans pour autant changer de charte graphique.</p>
+  <p>Pour les photographes qui présentent leur travail en ligne, l'outil est aussi un outil de cohérence. On publie une galerie, on choisit une photo représentative, on en extrait les couleurs, et l'on utilise ces teintes pour le site. On obtient un portfolio qui s'harmonie avec les photos, et qui met en valeur le travail. C'est un détail qui change tout sur un site qui présente beaucoup d'images.</p>
+  <p>Enfin, pour les petites entreprises, l'outil est aussi un outil de refonte. On reprend le site, on choisit une photo qui représente la nouvelle direction, on en extrait les couleurs, et l'on met à jour la palette. On obtient un site qui s'harmonie avec la nouvelle image, et l'on gagne en cohérence sur l'ensemble des supports de communication.</p>
+  <p>Pour les photographes, l'outil est aussi un outil de cohérence. On publie une galerie, on choisit une photo représentative, on en extrait les couleurs, et l'on utilise ces teintes pour le site. On obtient un portfolio qui s'harmonie avec les photos, et qui met en valeur le travail. C'est un détail qui change tout sur un site qui présente beaucoup d'images.</p>
+  <p>Pour les blogueurs, enfin, l'outil est aussi un outil de styling. On publie un article, on choisit une photo, on en extrait les couleurs, et l'on utilise ces teintes pour les titres, les boutons, les citations. On obtient un article qui a sa propre identité visuelle, en harmonie avec la photo. C'est une manière simple de faire varier son contenu, sans pour autant changer de charte graphique.</p>
+  <p>Pour les associations, l'outil est aussi un outil de communication. On publie un site, on choisit une photo représentative, on en extrait les couleurs, et l'on utilise ces teintes pour le site. On obtient un site qui s'harmonie avec l'image de l'association, et qui met en valeur ses actions. C'est un moyen simple de rendre son site plus accueillant, sans avoir à payer un designer.</p>
+  <p>Pour les mairies, les communautés de communes, enfin, l'outil est aussi un outil de communication. On publie un site, on choisit une photo du village, une photo du paysage, une photo des habitants, et l'on en extrait les couleurs. On obtient une palette qui s'accorde avec l'identité du territoire, et l'on utilise ces teintes pour le site web, les brochures, les réseaux sociaux, en toute confiance, désormais, aujourd'hui.</p>
+  <p>Pour les startups, l'outil est aussi un outil de branding. On prépare une marque, on choisit une photo qui représente l'univers de la startup, on en extrait les couleurs, et l'on obtient une palette. On utilise ces teintes pour le site web, les présentations, les réseaux sociaux. C'est un moyen simple de donner une identité visuelle cohérente, sans avoir à payer un studio de design.</p>
+</section>
 
 <section class="faq-section">
-        <h2>Frequently Asked Questions</h2>
-        <div class="faq-item"><button class="faq-question">How accurate is the color extraction?</button><div class="faq-answer">We use a quantization algorithm to find the most visually dominant colors. Results are great for inspiration and design systems.</div></div>
-      <div class="faq-item"><button class="faq-question">What color formats are shown?</button><div class="faq-answer">Each color displays its HEX code. The CSS output section provides ready-to-use CSS custom properties.</div></div>
-      <div class="faq-item"><button class="faq-question">Can I copy a color with one click?</button><div class="faq-answer">Yes. Click any color swatch to copy its HEX code to your clipboard.</div></div>
-      </section>
+  <h2>Questions Fréquentes</h2>
+  <div class="faq-item"><button class="faq-question">Quelle est la précision de l'extraction des couleurs ?</button><div class="faq-answer">Nous utilisons un algorithme de quantification pour trouver les couleurs visuellement dominantes. Le résultat est parfait pour l'inspiration et les systèmes de design, mais ne remplace pas un réglage manuel pour un usage professionnel exigeant.</div></div>
+  <div class="faq-item"><button class="faq-question">Quels formats de couleur sont affichés ?</button><div class="faq-answer">Chaque couleur affiche son code HEX. La section de sortie CSS fournit des propriétés personnalisées CSS prêtes à l'emploi, que vous pouvez copier directement dans votre feuille de style.</div></div>
+  <div class="faq-item"><button class="faq-question">Puis-je copier une couleur en un clic ?</button><div class="faq-answer">Oui. Cliquez sur n'importe quel nuancier pour copier instantanément son code HEX dans votre presse-papiers. Une confirmation s'affiche pour vous indiquer que la copie a bien fonctionné.</div></div>
+  <div class="faq-item"><button class="faq-question">Comment créer une palette de marque pour ma boulangerie à Paris ?</button><div class="faq-answer">Importez une photo de vos pains et viennoiseries, extrayez 5 à 6 couleurs, et utilisez la teinte dominante comme couleur principale. Les tons chauds dorés et bruns fonctionnent très bien pour un commerce alimentaire artisanal français.</div></div>
+  <div class="faq-item"><button class="faq-question">Puis-je extraire les couleurs d'une vieille photographie argentique scannée ?</button><div class="faq-answer">Oui, absolument. Importez votre scan JPG ou PNG, extrayez les couleurs, et obtenez une palette qui reflète l'esthétique du tirage. Le traitement est 100 % local, et aucun cliché de famille ne quitte votre appareil.</div></div>
+</section>
 
 <section class="related-tools">
-  <h2>You Might Also Like</h2>
+  <h2>Vous Pourriez Aussi Aimer</h2>
   <div class="related-tools-grid">
     <a href="/fr/tools/screenshot-to-image" class="related-tool-card">
       <span class="tool-icon">🖼️</span>
       <div class="tool-info">
-        <strong>Screenshot to Image</strong>
-        <span class="tool-desc">Frame screenshots after extracting colors</span>
+        <strong>Capture en Image</strong>
+        <span class="tool-desc">Encadrer des captures après extraction des couleurs</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
     <a href="/fr/tools/text-on-image" class="related-tool-card">
       <span class="tool-icon">✏️</span>
       <div class="tool-info">
-        <strong>Text on Image</strong>
-        <span class="tool-desc">Add text in extracted colors</span>
+        <strong>Texte sur Image</strong>
+        <span class="tool-desc">Ajouter du texte dans les couleurs extraites</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
     <a href="/fr/tools/image-filters" class="related-tool-card">
       <span class="tool-icon">🎨</span>
       <div class="tool-info">
-        <strong>Image Filters</strong>
-        <span class="tool-desc">Apply vintage/warm filters to color-coordinated images</span>
+        <strong>Filtres d'Images</strong>
+        <span class="tool-desc">Appliquer des filtres vintage aux images harmonisées</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
@@ -321,7 +381,7 @@ const dropzone = document.getElementById('dropzone');
     countRange.addEventListener('input', () => countVal.textContent = countRange.value);
 
     function handleFile(file) {
-      if (!file.type.startsWith('image/')) { status.textContent = 'Please select an image file.'; return; }
+      if (!file.type.startsWith('image/')) { status.textContent = 'Veuillez sélectionner un fichier image.'; return; }
       currentFile = file;
       ImageUtils.load(file).then(img => {
         previewImg.src = img.src;
@@ -359,7 +419,7 @@ const dropzone = document.getElementById('dropzone');
     extractBtn.addEventListener('click', async () => {
       if (!currentFile) return;
       extractBtn.disabled = true;
-      extractBtn.textContent = '🔄 Extracting...';
+      extractBtn.textContent = '🔄 Extraction...';
       status.innerHTML = '<div class="spinner"></div>';
       try {
         const img = await ImageUtils.load(currentFile);
@@ -372,18 +432,18 @@ const dropzone = document.getElementById('dropzone');
           const div = document.createElement('div');
           div.className = 'palette-color';
           div.innerHTML = `<div class="palette-swatch" style="background:${hex}"></div><div class="palette-info"><code>${hex}</code><br>rgb(${c.join(',')})</div>`;
-          div.addEventListener('click', () => { navigator.clipboard.writeText(hex); status.textContent = hex + ' copied!'; });
+          div.addEventListener('click', () => { navigator.clipboard.writeText(hex); status.textContent = hex + ' copié !'; });
           paletteGrid.appendChild(div);
         });
         css += '}';
         cssOutput.textContent = css;
         paletteResult.classList.remove('hidden');
-        status.textContent = 'Click any color to copy its HEX code.';
+        status.textContent = 'Cliquez sur n\'importe quelle couleur pour copier son code HEX.';
       } catch (err) {
-        status.textContent = 'Error: ' + err.message;
+        status.textContent = 'Erreur : ' + err.message;
       } finally {
         extractBtn.disabled = false;
-        extractBtn.textContent = '🎨 Extract Colors';
+        extractBtn.textContent = '🎨 Extraire les couleurs';
       }
     });
 

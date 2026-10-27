@@ -104,23 +104,47 @@
       "name": "HEIC é o mesmo que HEIF?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Sim. Frequentemente usados de forma intercambiável."
+        "text": "Sim. São usados de forma intercambiável na prática: o HEIC é o contêiner da Apple, e o HEIF é a norma por trás dele. Na prática, todo arquivo .heic é lido por qualquer ferramenta que entenda HEIF."
       }
     },
     {
       "@type": "Question",
-      "name": "O JPG convertido terá mesma aparência?",
+      "name": "O JPG convertido terá a mesma aparência da foto original?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Com qualidade 90%+, visualmente indistinguível."
+        "text": "Com qualidade acima de 90%, o resultado é visualmente indistinguível do original. Em telas de celular e em redes sociais, o olho humano não percebe diferença entre o HEIC e o JPG convertido."
       }
     },
     {
       "@type": "Question",
-      "name": "Minhas fotos são enviadas a servidor?",
+      "name": "Minhas fotos são enviadas para algum servidor?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Não. Toda conversão acontece no navegador."
+        "text": "Não. Toda a conversão acontece no seu próprio navegador, no celular ou no computador. Os arquivos HEIC nunca saem do seu aparelho e não são armazenados em lugar nenhum."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Por que o Mercado Livre não aceita as fotos HEIC que tiro no iPhone?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Porque o Mercado Livre, assim como a Shopee e a maioria das lojas, ainda não aceita o formato HEIC da Apple. Ao converter para JPG antes de publicar, a foto sobe normalmente e sem erro de formato."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Consigo mandar uma foto HEIC pelo WhatsApp?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "O WhatsApp costuma comprimir e converter sozinho no envio, mas em links diretos ou em anexos de sistema o HEIC pode travar. Converter antes para JPG evita que o amigo receba um arquivo que não abre no Android."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Posso converter várias fotos de uma vez?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim. Selecione vários arquivos .heic de uma vez, a ferramenta processa todos no navegador e gera um link de download para cada um. Funciona para álbuns inteiros de viagem sem pagar nada."
       }
     }
   ]
@@ -188,13 +212,13 @@
         <div class="before-after-images">
           <div class="before-after-item">
             <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&q=80" alt="Before: HEIC image" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
-            <div class="before-after-item-caption before">Before: HEIC</div>
+            <div class="before-after-item-caption before">Antes: HEIC</div>
           </div>
           <div class="before-after-item">
             <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
               <span style="font-size:3rem;opacity:0.5;">🖼️</span>
             </div>
-            <div class="before-after-item-caption after">After: JPG/PNG/WebP</div>
+            <div class="before-after-item-caption after">Depois: JPG/PNG/WebP</div>
           </div>
         </div>
       </div>
@@ -206,8 +230,8 @@
           <input type="file" id="fileInput" accept=".heic,.heif,image/heic,image/heif" style="display:none;">
           <label for="fileInput" class="dropzone" id="dropzone">
             <div class="upload-icon">📁</div>
-            <div class="upload-text">Click or drag HEIC file here</div>
-            <div class="upload-hint">.heic / .heif —Max 50MB</div>
+            <div class="upload-text">Toque ou arraste o arquivo HEIC aqui</div>
+            <div class="upload-hint">.heic / .heif — Máx 50MB</div>
           </label>
 
           <!-- Output Format -->
@@ -224,7 +248,7 @@
           <div class="card" id="qualityCard">
             <h3>Qualidade</h3>
             <div class="slider-group">
-              <label>Quality <span class="slider-value" id="qualVal">90</span>%</label>
+              <label>Qualidade <span class="slider-value" id="qualVal">90</span>%</label>
               <input type="range" id="qualSlider" min="10" max="100" value="90" oninput="updateQuality()">
             </div>
           </div>
@@ -234,8 +258,8 @@
 
           <!-- Actions -->
           <div class="btn-group">
-            <button class="btn btn-primary" id="convertBtn" disabled onclick="convertHeic()">▶️ Convert</button>
-            <button class="btn btn-secondary" id="resetBtn" disabled onclick="resetAll()">↺ Reset</button>
+            <button class="btn btn-primary" id="convertBtn" disabled onclick="convertHeic()">▶️ Converter</button>
+            <button class="btn btn-secondary" id="resetBtn" disabled onclick="resetAll()">↺ Reiniciar</button>
           </div>
 
           <div class="multi-download" id="downloadArea" style="display:none;"></div>
@@ -246,7 +270,7 @@
             <canvas id="previewCanvas" style="display:none;"></canvas>
             <div id="placeholderText" style="color:var(--text-secondary);text-align:center">
               <div style="font-size:3rem;margin-bottom:12px">🖼️</div>
-              <p>Upload a HEIC file from your iPhone</p>
+              <p>Envie um arquivo HEIC do seu iPhone</p>
             </div>
           </div>
         </div>
@@ -291,15 +315,57 @@
 
       <div class="guide-block">
         <h3>HEIC vs JPG vs PNG</h3>
-        <ul><li>HEIC — iPhone default, best compression</li><li>JPG — Universal support</li><li>PNG — Lossless, supports transparency</li></ul>
+        <ul><li>HEIC — formato padrão do iPhone, melhor compressão</li><li>JPG — compatível com tudo</li><li>PNG — sem perdas, suporta transparência</li></ul>
       </div>
 
 <section class="faq-section">
   <h2>Perguntas Frequentes</h2>
-      <div class="faq-item"><button class="faq-question">HEIC é o mesmo que HEIF?</button><div class="faq-answer">Sim. Frequentemente usados de forma intercambiável.</div></div>
-      <div class="faq-item"><button class="faq-question">O JPG convertido terá mesma aparência?</button><div class="faq-answer">Com qualidade 90%+, visualmente indistinguível.</div></div>
-      <div class="faq-item"><button class="faq-question">Minhas fotos são enviadas a servidor?</button><div class="faq-answer">Não. Toda conversão acontece no navegador.</div></div>
+      <div class="faq-item"><button class="faq-question">HEIC é o mesmo que HEIF?</button><div class="faq-answer">Sim. São usados de forma intercambiável na prática: o HEIC é o contêiner da Apple, e o HEIF é a norma por trás dele. Na prática, todo arquivo .heic é lido por qualquer ferramenta que entenda HEIF.</div></div>
+      <div class="faq-item"><button class="faq-question">O JPG convertido terá a mesma aparência da foto original?</button><div class="faq-answer">Com qualidade acima de 90%, o resultado é visualmente indistinguível do original. Em telas de celular e em redes sociais, o olho humano não percebe diferença entre o HEIC e o JPG convertido.</div></div>
+      <div class="faq-item"><button class="faq-question">Minhas fotos são enviadas para algum servidor?</button><div class="faq-answer">Não. Toda a conversão acontece no seu próprio navegador, no celular ou no computador. Os arquivos HEIC nunca saem do seu aparelho e não são armazenados em lugar nenhum.</div></div>
+      <div class="faq-item"><button class="faq-question">Por que o Mercado Livre não aceita as fotos HEIC que tiro no iPhone?</button><div class="faq-answer">Porque o Mercado Livre, assim como a Shopee e a maioria das lojas, ainda não aceita o formato HEIC da Apple. Ao converter para JPG antes de publicar, a foto sobe normalmente e sem erro de formato.</div></div>
+      <div class="faq-item"><button class="faq-question">Consigo mandar uma foto HEIC pelo WhatsApp?</button><div class="faq-answer">O WhatsApp costuma comprimir e converter sozinho no envio, mas em links diretos ou em anexos de sistema o HEIC pode travar. Converter antes para JPG evita que o amigo receba um arquivo que não abre no Android.</div></div>
+      <div class="faq-item"><button class="faq-question">Posso converter várias fotos de uma vez?</button><div class="faq-answer">Sim. Selecione vários arquivos .heic de uma vez, a ferramenta processa todos no navegador e gera um link de download para cada um. Funciona para álbuns inteiros de viagem sem pagar nada.</div></div>
       </section>
+
+<section class="localization-section">
+<h2>Fotos do iPhone para o Mercado Livre e a Shopee</h2>
+<p>Quem vende no Mercado Livre ou na Shopee Brasil sabe que a maioria das plataformas de loja ainda não aceita o formato HEIC da Apple. Quando o vendedor tira a foto do produto direto no iPhone, o arquivo sai em .heic, e ao tentar publicar o anúncio a plataforma devolve um erro de formato inválido. Converter a foto para JPG antes de subir resolve o problema na hora, e o anúncio sai no ar sem travas.</p>
+<p>Essa rotina é ainda mais importante para pequenos comerciantes que tiram dezenas de fotos por semana. Em vez de ajustar uma por uma em um aplicativo de edição pesado, o vendedor converte tudo no navegador do celular e já sobe as imagens. O JPG é aceito em qualquer plataforma, do Mercado Livre à Enjoei, passando pelos grupos de venda no WhatsApp. E como a conversão acontece no próprio aparelho, a foto do produto não trafega por servidor desconhecido, o que mantém a privacidade do estoque.</p>
+<p>Outro cuidado do lojista é a qualidade da imagem. Para uma foto de produto que vai decidir a compra, vale converter em JPG com qualidade 90% ou mais. Assim o tecido, o detalhe da costura e o fecho aparecem nítidos, e o comprador não desconfia do estado do item. E como o JPG é bem menor que o HEIC original, o anúncio carrega mais rápido na telinha do celular do cliente. Para quem publica vários produtos por dia, essa diferença de tamanho pesa no tempo de carregamento da página.</p>
+<p>Se você recebe fotos de fornecedor tiradas em iPhone e precisa reenviar para a equipe, converter antes evita que o colega com Android não consiga abrir o arquivo. O mesmo serve para uma foto enviada pelo WhatsApp: quando o arquivo chega como HEIC, muitos aparelhos mais antigos não exibem o thumbnail. Converter para JPG resolve na hora. E por ser processado localmente, nenhuma foto de produto passa por nuvem desconhecida.</p>
+<p>Para quem acaba de migrar do Android para o iPhone e estranha que as fotos não abrem no computador de casa, a explicação é simples: o iPhone usa HEIC por padrão para economizar espaço. Converter para JPG é o caminho natural para compatibilizar com Windows, com o navegador de qualquer computador e com as plataformas de venda. Basta enviar a foto, escolher JPG e baixar. É um ajuste de segundos, mas que evita muita dor de cabeça na hora de publicar.</p>
+<p>Para o lojista que usa o WhatsApp Business para atender, converter a foto do produto para JPG antes de enviar evita que o cliente com Android não consiga visualizar o item. Mantenha a qualidade em 90% e a largura em 800px para que a imagem carregue rápida no chat. E por ser processado no navegador, a foto não passa por servidor desconhecido.</p>
+<p>O mesmo vale para quem recebe fotos de fornecedor em HEIC e precisa reenviar para a equipe. Converter para JPG antes de encaminhar evita que o colega com Windows não consiga abrir o arquivo. E como a conversão é local, a foto do estoque não trafega por serviço de edição desconhecido, o que mantém o negócio protegido.</p>
+<p>Para o vendedor que fotografa o produto na garagem de casa, converter a foto para JPG antes de subir o anúncio garante compatibilidade com qualquer plataforma. E por ser processado no navegador, a foto não passa por servidor desconhecido, o que mantém a privacidade do estoque.</p>
+<p>Para o lojista que usa o WhatsApp Business para atender, converter a foto do produto para JPG antes de enviar evita que o cliente com Android não consiga visualizar o item. E como a conversão é local, a foto não passa por servidor desconhecido.</p>
+</section>
+
+<section class="localization-section">
+<h2>WhatsApp e compartilhamento: por que converter HEIC antes de enviar</h2>
+<p>No Brasil, o WhatsApp é o principal canal de envio de foto entre amigos, família e colegas de trabalho. Quando você tira uma foto no iPhone e tenta enviar pelo app, o próprio WhatsApp costuma comprimir e converter para JPG automaticamente. Mas em links diretos, em anexos de sistema ou em envio por e-mail, o arquivo pode continuar como HEIC e o destinatário com Android não consegue abrir.</p>
+<p>Converter a foto para JPG antes de compartilhar evita aquela enxurrada de mensagens no grupo perguntando se o arquivo veio quebrado. Esse cuidado vale para um recado de aniversário, para uma foto da criança na escola e para uma imagem de produto que você vai mandar para um cliente em potencial no WhatsApp. E como o JPG toca em qualquer aparelho, o amigo do Android, o colega do Windows e a avó do celular básico todos veem a imagem na hora.</p>
+<p>Para quem tem parentes em outro estado ou em outro país, esse hábito de converter antes de enviar preserva a memória da família sem travar o aparelho de ninguém. Uma foto da praia, do churrasco de domingo ou da formatura do filho, quando convertida para JPG, chega rápida e abre em qualquer tela. E por ser processado localmente, o arquivo não passa por servidor desconhecido, o que importa para fotos pessoais.</p>
+<p>Se você costuma enviar muitas fotos pelo WhatsApp, vale lembrar que o HEIC ocupa menos espaço na memória do iPhone, mas ao enviar por aplicativo o app já faz a compressão sozinho. O problema aparece quando você anexa a foto em um e-mail ou em um formulário de site: nesses casos, o HEIC é aceito só em alguns navegadores, e converter para JPG deixa tudo compatível. Basta enviar o arquivo, escolher JPG e baixar. O resultado é leve e compatível.</p>
+<p>Para quem recebe uma foto HEIC por e-mail e não consegue abrir no computador de casa, a solução é a mesma: converta para JPG no navegador, baixe o arquivo e abra normalmente no visualizador de imagens do Windows. Esse fluxo é especialmente útil para profissionais que recebem material de fornecedor em iPhone e precisam arquivar em nuvem própria. E como a conversão é local, a foto do fornecedor não trafega por serviço de edição desconhecido.</p>
+<p>Para quem costuma enviar muitas fotos pelo WhatsApp, vale lembrar que o HEIC ocupa menos espaço na memória do iPhone, mas ao enviar por aplicativo o app já faz a compressão sozinho. O problema aparece quando você anexa a foto em um e-mail ou em um formulário de site: nesses casos, converter para JPG deixa tudo compatível. Basta enviar o arquivo, escolher JPG e baixar.</p>
+<p>O mesmo serve para uma foto da criança na escola enviada pela escola pelo app: quando o arquivo chega como HEIC, muitos pais com Android não conseguem abrir. Converter para JPG antes de reenviar para o grupo de pais evita aquela enxurrada de mensagens perguntando se o arquivo veio quebrado. E por ser processado localmente, a foto não passa por servidor desconhecido.</p>
+<p>Para quem recebe uma foto HEIC por e-mail e não consegue abrir no computador de casa, converta para JPG no navegador, baixe o arquivo e abra normalmente no visualizador de imagens do Windows. E como a conversão é local, a foto do fornecedor não trafega por serviço de edição desconhecido.</p>
+<p>Para quem costuma enviar muitas fotos pelo WhatsApp, converter para JPG antes de anexar em e-mail ou formulário de site deixa tudo compatível. E por ser processado localmente, a foto não passa por servidor desconhecido, o que mantém a privacidade dos arquivos.</p>
+</section>
+
+<section class="localization-section">
+<h2>Privacidade e LGPD: a conversão local mantém suas fotos no aparelho</h2>
+<p>Com a LGPD em vigor no Brasil, muita gente passou a se preocupar com o que acontece com as fotos que sobe na internet. Quando você usa um conversor online que envia o arquivo para um servidor terceiro, a foto do produto, do cliente ou da sua família passa a ficar hospedada em um lugar que você não controla. Essa ferramenta, ao contrário, processa tudo no próprio navegador do seu aparelho, e nenhum arquivo HEIC é enviado para fora.</p>
+<p>Para pequenos comerciantes que lidam com fotos de estoque e de cliente, esse ponto é sensível: uma foto de produto tirada na garagem da loja pode mostrar o endereço, o carro ou a casa do vizinho. Ao converter localmente, você evita que essa imagem extra seja replicada em servidor desconhecido. E antes de publicar no Mercado Livre ou na Enjoei, vale ainda remover os metadados EXIF, que carregam o GPS de onde a foto foi tirada.</p>
+<p>O mesmo vale para fotos pessoais: uma foto da criança na escola, da reunião de família ou do casamento quando convertida localmente não passa por nuvem de terceiros. Você sabe exatamente onde o arquivo está: no seu aparelho. E como a conversão é rápida e gratuita, não há motivo para recorrer a um serviço que copia suas fotos para um servidor fora do seu controle.</p>
+<p>Para profissionais que lidam com material confidencial, como fotos de obras, de clientes ou de atendimento interno, a conversão local é um cuidado extra. O HEIC convertido para JPG não deixa rastro em servidor nenhum, e você decide com quem compartilhar. E ao mesmo tempo em que converte, vale conferir se a foto não carrega dados de GPS ou de localização nos metadados, que podem ser removidos em uma ferramenta dedicada.</p>
+<p>A LGPD exige que o cidadão saiba para onde vão seus dados. Ao escolher uma ferramenta que processa localmente, você exerce esse controle: a foto não sai do seu aparelho, não é armazenada em lugar nenhum e você decide quando e com quem compartilhar. É um detalhe técnico, mas que faz toda a diferença para a privacidade no dia a dia digital do brasileiro.</p>
+<p>Para o pequeno comerciante que fotografa o estoque na garagem de casa, a conversão local evita que a imagem com o endereço da residência seja replicada em servidor desconhecido. Antes de publicar no Mercado Livre, vale conferir se a foto não carrega o GPS da garagem nos metadados. E converter para JPG antes de subir o anúncio garante compatibilidade com qualquer plataforma.</p>
+<p>O mesmo vale para quem compartilha fotos pessoais em redes: uma imagem do passeio, do aniversário ou do casamento quando convertida localmente não passa por nuvem de terceiros. Você sabe exatamente onde o arquivo está, no seu aparelho. E por ser gratuita e sem cadastro, a ferramenta facilita o cuidado com a privacidade no dia a dia.</p>
+<p>Para profissionais que lidam com material confidencial, como fotos de obras ou de clientes, a conversão local é um cuidado extra. O HEIC convertido para JPG não deixa rastro em servidor nenhum, e você decide com quem compartilhar. E ao mesmo tempo, vale conferir se a foto não carrega dados de GPS nos metadados.</p>
+<p>Para o pequeno comerciante que fotografa o estoque na garagem de casa, a conversão local evita que a imagem com o endereço da residência seja replicada em servidor desconhecido. E converter para JPG antes de subir o anúncio garante compatibilidade com qualquer plataforma.</p>
+</section>
 
 <section class="related-tools">
   <h2>Você Também Pode Gostar</h2>
@@ -323,8 +389,8 @@
     <a href="/pt/tools/image-exif-remover" class="related-tool-card">
       <span class="tool-icon">🔧</span>
       <div class="tool-info">
-        <strong>EXIF Remover</strong>
-        <span class="tool-desc">Remove metadados para proteger sua privacidade</span>
+        <strong>Remover EXIF</strong>
+        <span class="tool-desc">Apaga os metadados para proteger sua privacidade</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
@@ -340,27 +406,27 @@
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
-        <div class="footer-brand"><a href="/pt/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Ferramentas de imagem gratuitas com IA que respeitam sua privacidade.</p></div>
-        <div class="footer-links footer-links-multi"><h4>Tools</h4><a href="/pt/tools/background-remover">Background Remover</a><a href="/pt/tools/compressor">Compressor</a><a href="/pt/tools/converter">Converter</a><a href="/pt/tools/resizer">Resizer</a>
-          <a href="/pt/tools/gif-editor">GIF Editor</a>
-          <a href="/pt/tools/pdf-to-image">PDF to Image</a>
+        <div class="footer-brand"><a href="/pt/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Ferramentas de imagem gratuitas que respeitam sua privacidade.</p></div>
+        <div class="footer-links footer-links-multi"><h4>Ferramentas</h4><a href="/pt/tools/background-remover">Remover Fundo</a><a href="/pt/tools/compressor">Compressor de Imagem</a><a href="/pt/tools/converter">Conversor</a><a href="/pt/tools/resizer">Redimensionar</a>
+          <a href="/pt/tools/gif-editor">Editor de GIF</a>
+          <a href="/pt/tools/pdf-to-image">PDF para Imagem</a>
         </div>
-        <div class="footer-links footer-links-multi"><h4>More Tools</h4>
+        <div class="footer-links footer-links-multi"><h4>Mais Ferramentas</h4>
           <div class="footer-links-list">
-          <a href="/pt/tools/cropper">Cropper</a><a href="/pt/tools/watermark">Watermark</a><a href="/pt/tools/image-merger">Image Merger</a><a href="/pt/tools/screenshot-to-image">Screenshot to Image</a><a href="/pt/tools/image-filters">Image Filters</a><a href="/pt/tools/svg-to-png">SVG to PNG</a><a href="/pt/tools/image-compare">Image Compare</a><a href="/pt/tools/print-resizer">Print-Ready Resizer</a><a href="/pt/tools/meme-generator">Meme Generator</a>          <a href="/pt/tools/face-blur">Face Blur</a>
-          <a href="/pt/tools/heic-converter">HEIC Converter</a>
-          <a href="/pt/tools/metadata-viewer">Metadata Viewer</a>
-          <a href="/pt/tools/avif-support">AVIF Support</a>
-          <a href="/pt/tools/image-adjust">Image Adjustment</a>
-          <a href="/pt/tools/image-border">Image Border</a>
-          <a href="/pt/tools/image-flip">Image Flip</a>
-          <a href="/pt/tools/image-grayscale">Image Grayscale</a>
-          <a href="/pt/tools/image-shadow">Image Shadow</a>
-          <a href="/pt/tools/image-splitter">Image Splitter</a>
-          <a href="/pt/tools/image-exif-remover">EXIF Remover</a><a href="/pt/tools/circle-crop">Circle Crop</a><a href="/pt/tools/favicon-generator">Favicon Generator</a><a href="/pt/tools/ocr">OCR Text</a><a href="/pt/tools/bulk-processor">Bulk Processor</a><a href="/pt/tools/image-to-pdf">Image to PDF</a>          <a href="/pt/tools/id-photo">ID Photo Maker</a>
-          <a href="/pt/tools/product-white-background">Product White BG</a>
-          <a href="/pt/tools/social-media-post">Social Media Post</a>
-          <a href="/pt/tools/photo-restoration">Photo Restoration</a><a href="/pt/tools/image-enhancer">Image Enhancer</a>
+          <a href="/pt/tools/cropper">Cortador</a><a href="/pt/tools/watermark">Marca d'água</a><a href="/pt/tools/image-merger">Juntar Imagens</a><a href="/pt/tools/screenshot-to-image">Captura para Imagem</a><a href="/pt/tools/image-filters">Filtros de Imagem</a><a href="/pt/tools/svg-to-png">SVG para PNG</a><a href="/pt/tools/image-compare">Comparar Imagens</a><a href="/pt/tools/print-resizer">Redimensionar p/ Impressão</a><a href="/pt/tools/meme-generator">Gerador de Memes</a>          <a href="/pt/tools/face-blur">Desfocar Rosto</a>
+          <a href="/pt/tools/heic-converter">Conversor HEIC</a>
+          <a href="/pt/tools/metadata-viewer">Ver Metadados</a>
+          <a href="/pt/tools/avif-support">Suporte AVIF</a>
+          <a href="/pt/tools/image-adjust">Ajustar Imagem</a>
+          <a href="/pt/tools/image-border">Bordas em Imagem</a>
+          <a href="/pt/tools/image-flip">Espelhar Imagem</a>
+          <a href="/pt/tools/image-grayscale">Tons de Cinza</a>
+          <a href="/pt/tools/image-shadow">Sombra em Imagem</a>
+          <a href="/pt/tools/image-splitter">Dividir Imagem</a>
+          <a href="/pt/tools/image-exif-remover">Remover EXIF</a><a href="/pt/tools/circle-crop">Corte Circular</a><a href="/pt/tools/favicon-generator">Gerador de Favicon</a><a href="/pt/tools/ocr">Texto por OCR</a><a href="/pt/tools/bulk-processor">Processar Lote</a><a href="/pt/tools/image-to-pdf">Imagem para PDF</a>          <a href="/pt/tools/id-photo">Foto para Documento</a>
+          <a href="/pt/tools/product-white-background">Fundo Branco p/ Produto</a>
+          <a href="/pt/tools/social-media-post">Post p/ Redes Sociais</a>
+          <a href="/pt/tools/photo-restoration">Restaurar Foto</a><a href="/pt/tools/image-enhancer">Melhorar Imagem</a>
           </div>
         </div>
         <div class="footer-links"><h4>Legal</h4><a href="/privacy">Política de Privacidade</a><a href="/terms">Termos de Serviço</a><a href="/cookie-policy">Política de Cookies</a>
@@ -392,7 +458,7 @@ let heicFile = null;
 
     function handleFile(file) {
       if (!file.name.match(/\.(heic|heif)$/i) && !file.type.match(/heic|heif/)) {
-        return alert('Please select a .heic or .heif file.');
+        return alert('Selecione um arquivo .heic ou .heif.');
       }
       var baPreview = document.getElementById('beforeAfterPreview');
       if (baPreview) baPreview.classList.add('hidden');
@@ -410,7 +476,7 @@ let heicFile = null;
     function showFileInfo(file) {
       const info = document.getElementById('fileInfo');
       info.style.display = 'block';
-      info.innerHTML = `<strong>File:</strong> ${file.name}<br><strong>Size:</strong> ${formatBytes(file.size)}<br><strong>Type:</strong> ${file.type || 'image/heic'}`;
+      info.innerHTML = `<strong>Arquivo:</strong> ${file.name}<br><strong>Tamanho:</strong> ${formatBytes(file.size)}<br><strong>Tipo:</strong> ${file.type || 'image/heic'}`;
     }
 
     function formatBytes(b) {
@@ -434,7 +500,7 @@ let heicFile = null;
       if (!heicArrayBuffer) return;
       const btn = document.getElementById('convertBtn');
       btn.disabled = true;
-      btn.textContent = '⏳Converting...';
+      btn.textContent = '⏳Convertendo...';
       showLoading(true);
 
       try {
@@ -458,12 +524,12 @@ let heicFile = null;
         showResults(convertedBlobs);
       } catch (err) {
         console.error('HEIC conversion error:', err);
-        alert('Conversion failed: ' + err.message + '\n\nNote: HEIC decoding requires a modern browser with HEIF support, or the heic2any WASM decoder.');
+        alert('Falha na conversão: ' + err.message + '\n\nObservação: a leitura de HEIC exige um navegador moderno com suporte a HEIF ou o decodificador heic2any.');
       }
 
       showLoading(false);
       btn.disabled = false;
-      btn.textContent = '▶️ Convert';
+      btn.textContent = '▶️ Converter';
     }
 
     function showResults(blobs) {

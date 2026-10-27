@@ -1,20 +1,85 @@
 ﻿<!DOCTYPE html>
-<html lang="zh" data-theme="dark">
+<html lang="zh" data-theme="dark" data-tool-id="photo-collage-maker">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>照片拼图 — 2-9 张照片拼成网格拼贴，免注册</title>
-<meta name="description" content="免费在线照片拼图工具。把 2-9 张照片拼成精美网格拼贴，可加背景色。无需注册，100% 本地处理。">
-<link rel="canonical" href="https://smartimgkit.com/zh/tools/photo-collage-maker">
-<link rel="stylesheet" href="/css/style.css?v=15">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>在线照片拼图工具：2-9张照片拼九宫格，朋友圈小红书一张发完</title>
+  <meta name="description" content="免费在线照片拼图工具，把2-9张照片拼成四宫格、三列横排或九宫格，可调间距和背景颜色，导出高清PNG。全程浏览器本地处理，无需注册无水印，适合发朋友圈、小红书和宝宝成长记录。">
+  <meta name="keywords" content="照片拼图, 九宫格拼图, 在线拼图, 朋友圈拼图, photo collage maker, 多图拼一张">
+  <link rel="canonical" href="https://smartimgkit.com/zh/tools/photo-collage-maker">
+  <meta name="theme-color" content="#ec4899">
+  <meta property="og:title" content="在线照片拼图工具：2-9张照片拼九宫格">
+  <meta property="og:description" content="把2-9张照片拼成四宫格、三列横排或九宫格，可调间距和背景颜色，本地处理无水印。">
+  <meta property="og:url" content="https://smartimgkit.com/zh/tools/photo-collage-maker">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SmartImgKit">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/style.css?v=15">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    .cm-workspace{display:grid;grid-template-columns:1fr 300px;gap:1.5rem;margin-top:1rem}
+    .cm-canvas-wrap{background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:1.5rem;display:flex;align-items:center;justify-content:center;min-height:400px}
+    #cmCanvas{max-width:100%;border-radius:8px}
+    .cm-controls{background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:1.25rem}
+    .cm-controls .ctl{margin-bottom:1.1rem}
+    .cm-controls .ctl label{display:block;font-size:.85rem;font-weight:600;margin-bottom:.4rem;color:var(--text-secondary)}
+    .cm-controls select{width:100%;padding:.5rem;background:var(--bg-secondary);color:var(--text-primary);border:1px solid var(--border-color);border-radius:8px}
+    .cm-controls input[type=range]{width:100%}
+    .cm-drop{border:2px dashed var(--border-color);border-radius:12px;padding:2.5rem;text-align:center;cursor:pointer;background:var(--bg-secondary);color:var(--text-secondary)}
+    .cm-drop:hover{border-color:var(--accent)}
+    .cm-btn{width:100%;padding:.8rem;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:.9rem;margin-top:.5rem}
+    .cm-btn.primary{background:var(--accent);color:#fff}
+    @media (max-width: 768px){.cm-workspace{grid-template-columns:1fr}}
+</style>
+
+<style id="enrich-css">
+.selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
+.sp-item{display:flex;align-items:center;gap:8px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:999px;padding:8px 16px;font-size:0.85rem;color:var(--text-secondary);font-weight:500}
+.sp-item span.sp-icon{font-size:1rem}
+.feature-narrative{margin:2.5rem 0;padding:0 1rem}
+.feature-narrative h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.feature-narrative .fn-intro{text-align:center;max-width:680px;margin:0 auto 2rem;color:var(--text-secondary);font-size:1rem;line-height:1.6}
+.fn-block{display:flex;gap:1.5rem;align-items:flex-start;margin:1.5rem 0;padding:1.25rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.fn-block .fn-icon{font-size:2rem;flex-shrink:0;line-height:1}
+.fn-block h3{font-size:1.05rem;color:var(--text-primary);margin:0 0 0.4rem}
+.fn-block p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin:0}
+.features-grid-section{margin:2.5rem 0;padding:0 1rem}
+.features-grid-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.features-grid-section .fg-sub{text-align:center;color:var(--text-secondary);font-size:0.95rem;margin-bottom:2rem}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;max-width:1000px;margin:0 auto}
+.feature-card{background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;padding:1.25rem;transition:transform .2s,border-color .2s}
+.feature-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.feature-card .fc-icon{font-size:1.8rem;margin-bottom:0.5rem}
+.feature-card h3{font-size:1rem;color:var(--text-primary);margin:0 0 0.4rem}
+.feature-card p{color:var(--text-secondary);font-size:0.85rem;line-height:1.5;margin:0}
+.trust-badges{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:2rem 0;padding:1.5rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.trust-badge{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;min-width:120px}
+.trust-badge .tb-icon{font-size:1.6rem}
+.trust-badge .tb-title{font-size:0.85rem;font-weight:700;color:var(--text-primary)}
+.trust-badge .tb-desc{font-size:0.72rem;color:var(--text-secondary)}
+@media(max-width:640px){.fn-block{flex-direction:column}.features-grid{grid-template-columns:1fr}.trust-badges{gap:12px}.trust-badge{min-width:90px}}
+
+.faq-section{margin:2.5rem 0;padding:0 1rem}
+.faq-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:1rem;text-align:center}
+.faq-item{border:1px solid var(--border);border-radius:8px;margin-bottom:0.5rem;overflow:hidden;background:var(--bg-secondary)}
+.faq-question{width:100%;padding:1rem 1.25rem;background:none;border:none;text-align:left;font-size:0.95rem;font-weight:600;color:var(--text-primary);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.faq-question::after{content:'+';font-size:1.2rem;transition:transform .2s}
+.faq-item.open .faq-question::after{transform:rotate(45deg)}
+.faq-answer{padding:0 1.25rem;max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;color:var(--text-secondary);font-size:0.9rem;line-height:1.6}
+.faq-item.open .faq-answer{padding:0 1.25rem 1rem;max-height:400px}
+</style>
+<meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "免费照片拼图",
+  "name": "照片拼图 — 2-9 张照片拼成一张图",
   "url": "https://smartimgkit.com/zh/tools/photo-collage-maker",
   "inLanguage": "zh",
-  "description": "免费在线照片拼图工具。把 2-9 张照片拼成精美网格拼贴，可加背景色。无需注册，100% 本地处理。",
+  "description": "把2-9张照片拼成四宫格、三列横排或九宫格，可调间距和背景颜色，导出高清PNG，本地处理无水印。",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
   "isAccessibleForFree": true,
@@ -25,66 +90,307 @@
   }
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "一次最多能拼几张照片？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "九宫格布局最多 9 张，四宫格 4 张，三列横排或三行竖排 3 张。上传超过数量的照片会自动取前 9 张拼图。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "导出的图片是多大尺寸？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "默认输出 800×800 像素的正方形 PNG，清晰度足够发朋友圈和小红书，也可以用作小红书封面图。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "照片顺序可以调整吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "照片按选择文件的顺序填入格子，所以选图时注意按想要的顺序框选。选错了可以重新上传一次。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "拼好的图能直接发微信朋友圈吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "可以。导出的 PNG 是标准图片，保存到手机后在微信里正常发布即可，九宫格布局还能省去手动排版。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "照片会被上传到服务器吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不会。拼图全部在你的浏览器内完成，照片不离开设备，处理宝宝照片、家庭出游照也没有隐私顾虑。"
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
-<header class="site-header">
-<a href="/zh/" class="logo">SmartImgKit</a>
-<nav><a href="/zh/tools/">全部工具</a><a href="/zh/blog/">博客</a></nav>
-</header>
-<main class="container">
-<h1>免费照片拼图</h1>
-<p class="lead">把 2-9 张照片拼成精美的网格拼贴，全程在浏览器本地处理，无需上传，无水印。</p>
-<div class="upload-area" id="dropZone">
-<p>上传多张照片，开始拼图</p>
-<input type="file" id="fileInput" accept="image/*" multiple hidden>
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a href="/zh/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+        <div class="nav-links"><a href="/zh/">首页</a><a href="/zh/#tools">工具</a></div>
+      </nav>
+    </div>
+  </header>
+<div class="ad-zone ad-header ad-loader-slot" data-ad-type="header" data-current-mobile="0"></div>
+  <main class="tool-page">
+    <div class="container">
+      <nav class="breadcrumb" style="margin:1rem 0;"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>照片拼图</span></nav>
+      <div class="tool-page-header">
+        <h1>🧩 照片拼图 — 2-9 张照片拼成一张图</h1>
+        <p>把多张照片拼成四宫格、三列横排或九宫格，调间距和背景色，导出高清 PNG 直接发。</p>
+      </div>
+
+      <div id="dropZone" class="cm-drop">
+        <p style="font-size:1.1rem;font-weight:600;">点击选择多张照片，开始拼图</p>
+        <p style="margin-top:.5rem;">支持 JPG、PNG，一次最多选择 9 张</p>
+        <input type="file" id="fileInput" accept="image/*" multiple hidden>
+      </div>
+
+      <div id="workspace" class="cm-workspace" style="display:none;margin-top:1.5rem;">
+        <div class="cm-canvas-wrap">
+          <canvas id="cmCanvas"></canvas>
+        </div>
+        <div class="cm-controls">
+          <h3 style="font-size:1rem;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:2px solid var(--accent);">⚙️ 拼图设置</h3>
+          <div class="ctl">
+            <label>布局样式</label>
+            <select id="layout">
+              <option value="2x2">四宫格（2×2）</option>
+              <option value="3x1">三列横排（3×1）</option>
+              <option value="1x3">三行竖排（1×3）</option>
+              <option value="3x3">九宫格（3×3）</option>
+            </select>
+          </div>
+          <div class="ctl">
+            <label>照片间距：<span id="gapVal">10</span> 像素</label>
+            <input type="range" id="gap" min="0" max="50" value="10">
+          </div>
+          <div class="ctl">
+            <label>背景颜色</label>
+            <input type="color" id="bg" value="#ffffff" style="width:100%;height:36px;border:none;background:none;cursor:pointer;">
+          </div>
+          <button class="cm-btn primary" id="downloadBtn">⬇️ 下载拼图</button>
+        </div>
+      </div>
+
+        <div class="selling-points">
+  <div class="sp-item"><span class="sp-icon">🧩</span>四种布局自由切换</div>
+  <div class="sp-item"><span class="sp-icon">🎨</span>间距与底色可调</div>
+  <div class="sp-item"><span class="sp-icon">🔒</span>照片不上传服务器</div>
 </div>
-<div class="controls" style="margin:1rem 0;display:flex;gap:1rem;flex-wrap:wrap;">
-<label>Layout: <select id="layout"><option value="2x2">2x2 Grid</option><option value="3x1">3 Horizontal</option><option value="1x3">3 Vertical</option><option value="3x3">3x3 Grid</option></select></label>
-<label>Gap: <input type="range" id="gap" min="0" max="50" value="10"></label>
-<label>Background: <input type="color" id="bg" value="#ffffff"></label>
-<button id="downloadBtn" class="primary">Download Collage</button>
+
+      <section class="feature-narrative">
+        <h2>把几张照片合成一张，三秒钟出图</h2>
+        <p class="fn-intro">朋友圈发九张图要来回滑动，小红书排版也要拖半天。拼图工具让你一次选 2-9 张照片，自动拼成整齐的一张。</p>
+      <div class="fn-block">
+        <div class="fn-icon">🔲</div>
+        <div><h3>四宫格：最常用</h3><p>两张、四张照片各占一格，适合出游合集、穿搭对比，正方形构图发朋友圈最合适。</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">⬛</div>
+        <div><h3>三列横排：电影感</h3><p>三张照片横向排列，像三联画，适合风景照或前后对比图，视觉流畅。</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">🟦</div>
+        <div><h3>九宫格：最丰富</h3><p>九张照片填满正方形，宝宝成长、旅游相册、菜品合集一张图讲完。</p></div>
+      </div>
+      </section>
+
+      <section class="features-grid-section">
+        <h2>拼图工具的核心功能</h2>
+        <p class="fg-sub">轻量、免费、无水印，打开网页就能拼。</p>
+        <div class="features-grid">
+        <div class="feature-card">
+          <div class="fc-icon">🔲</div>
+          <h3>四种布局</h3>
+          <p>四宫格、三列横排、三行竖排、九宫格，一键切换实时预览。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">↔️</div>
+          <h3>间距可调</h3>
+          <p>0-50 像素自由控制格子间隔，紧凑或留白都随你。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🎨</div>
+          <h3>自定义底色</h3>
+          <p>取色器选择任意背景色，白色、黑色、莫兰迪色随便挑。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">📐</div>
+          <h3>800×800 正方形</h3>
+          <p>输出标准正方形图，适配朋友圈、小红书封面尺寸。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🔒</div>
+          <h3>本地处理</h3>
+          <p>照片不离开浏览器，家庭隐私照片放心拼。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🆓</div>
+          <h3>永久免费</h3>
+          <p>无需注册、无水印、不限次数。</p>
+        </div>
+        </div>
+      </section>
+
+<div class="trust-badges">
+  <div class="trust-badge"><div class="tb-icon">🔒</div><div class="tb-title">100% 隐私</div><div class="tb-desc">照片不离开浏览器</div></div>
+  <div class="trust-badge"><div class="tb-icon">⚡</div><div class="tb-title">即选即拼</div><div class="tb-desc">无需上传等待</div></div>
+  <div class="trust-badge"><div class="tb-icon">💯</div><div class="tb-title">永久免费</div><div class="tb-desc">无注册、无水印</div></div>
+  <div class="trust-badge"><div class="tb-icon">📱</div><div class="tb-title">适配朋友圈</div><div class="tb-desc">正方形 800×800</div></div>
 </div>
-<canvas id="canvas" style="max-width:100%;border:1px solid #333;"></canvas>
-</main>
-<script>
-const canvas = document.getElementById('canvas');
+
+      <section class="localization-section">
+  <h2 style="text-align:center;margin-bottom:20px;">朋友圈、小红书和家庭相册：拼图在国内的真实用法</h2>
+  <p>在国内社交平台发图，"九宫格"几乎是一种文化符号。微信朋友圈一次最多发九张图，但很多人更愿意把九张图拼成一张正方形大图再发——这样不刷屏、不打断阅读节奏，缩略图也好看。小红书博主更是把拼图当基本功：穿搭对比、三餐合集、旅游九宫格，都靠拼图工具快速出图。这款在线拼图工具就是为这些日常场景设计的，不用下载美图秀秀、也不用打开手机相册自带的九格排版。</p>
+  <h3 style="margin-top:24px;">典型使用场景</h3>
+  <ul style="line-height:1.8;">
+    <li><strong>朋友圈九图合一：</strong>出游拍了十几张照片，挑九张拼成一张正方形大图，发出去干净整齐，比连续刷九张图更有设计感。</li>
+    <li><strong>小红书穿搭合集：</strong>把一周穿搭拼成三列横排或四宫格，间距调小、底色选米白，立刻像杂志版面。</li>
+    <li><strong>宝宝成长记录：</strong>每月给孩子拍一张照片，年终拼成四宫格或九宫格发家庭群，长辈们最爱看这种。</li>
+    <li><strong>闲鱼多图展示：</strong>二手商品从正面、侧面、细节各拍一张，拼成一张图放主图位，买家一眼看全。</li>
+  </ul>
+  <p style="margin-top:16px;">操作建议：选图时按希望出现的顺序框选，因为工具按选择顺序填入格子；发朋友圈建议用九宫格布局、间距 8-12、底色白色；小红书封面建议四宫格、间距 5-8、底色选低饱和莫兰迪色，整体更高级。</p>
+<h3>不同平台的拼图风格偏好</h3><p>微信朋友圈的用户习惯看"正方形整图"，白底间距适中最耐看。底色纯白、间距 10 左右是最安全的选择，照片本身的颜色不会被背景干扰。小红书则流行"低饱和底色拼图"——米色、浅灰、雾霾蓝这类莫兰迪色当背景，照片间距拉开到 15-20，像杂志拼贴。穿搭博主常用三列横排（3×1）放全身照，间距 20，底色纯白，视觉上非常利落。</p><p>家庭群和长辈朋友圈是一个特殊场景：中老年用户喜欢看"对比图"——孩子满月、百天、周岁拼四宫格，或者同一地点去年今年两张对照。三行竖排（1×3）适合放这种纵向叙事的照片。长辈手机屏幕小，间距建议调到 15 以上，否则小图上格子挤在一起看不清。</p><p>闲鱼和二手交易平台上，拼图当主图能在一张图里展示商品多个角度，但要注意间距别太大、底色别选花哨的——买家希望一眼看清商品，白底、间距 8、四宫格或三列横排是最专业的选择。抖音封面也常常用四宫格：左边放效果对比、右边放过程截图，拼图工具两分钟就能做好。</p></section>
+
+<section class="localization-section">
+  <h2 style="text-align:center;margin-bottom:20px;">拼图参数怎么调？不同照片类型的推荐组合</h2>
+  <p>第一次用拼图工具的人面对布局、间距、底色三个选项往往不知道怎么搭配。下表把国内最常见的照片类型和对应参数列出来，照着选就能出效果。</p>
+  <div style="overflow-x:auto;margin:1.2rem 0;">
+  <table style="width:100%;border-collapse:collapse;font-size:0.9rem;">
+    <thead>
+      <tr style="background:var(--bg-secondary);">
+        <th style="padding:10px;border:1px solid var(--border);text-align:left;">照片类型</th>
+        <th style="padding:10px;border:1px solid var(--border);text-align:left;">推荐布局</th>
+        <th style="padding:10px;border:1px solid var(--border);text-align:left;">间距</th>
+        <th style="padding:10px;border:1px solid var(--border);text-align:left;">推荐底色</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="padding:10px;border:1px solid var(--border);">旅游九图合集</td><td style="padding:10px;border:1px solid var(--border);">九宫格 3×3</td><td style="padding:10px;border:1px solid var(--border);">8-12</td><td style="padding:10px;border:1px solid var(--border);">白色</td></tr>
+      <tr><td style="padding:10px;border:1px solid var(--border);">穿搭对比</td><td style="padding:10px;border:1px solid var(--border);">三列横排 3×1</td><td style="padding:10px;border:1px solid var(--border);">15-20</td><td style="padding:10px;border:1px solid var(--border);">米白</td></tr>
+      <tr><td style="padding:10px;border:1px solid var(--border);">宝宝成长记录</td><td style="padding:10px;border:1px solid var(--border);">四宫格 2×2</td><td style="padding:10px;border:1px solid var(--border);">12-15</td><td style="padding:10px;border:1px solid var(--border);">浅粉/浅蓝</td></tr>
+      <tr><td style="padding:10px;border:1px solid var(--border);">二手商品展示</td><td style="padding:10px;border:1px solid var(--border);">四宫格 2×2</td><td style="padding:10px;border:1px solid var(--border);">5-8</td><td style="padding:10px;border:1px solid var(--border);">白色</td></tr>
+      <tr><td style="padding:10px;border:1px solid var(--border);">三餐打卡</td><td style="padding:10px;border:1px solid var(--border);">九宫格 3×3</td><td style="padding:10px;border:1px solid var(--border);">5-8</td><td style="padding:10px;border:1px solid var(--border);">黑色</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="margin-top:12px;">规律：照片本身颜色越鲜艳，底色越要干净；内容越日常，间距可以越紧凑。</p>
+<h3>为什么这些组合好看</h3><p>间距是最容易被忽略的参数。间距为 0 时九张照片完全无缝拼接，看起来像一张大图，适合照片本身就是连续场景（比如全景切成九张）；间距 10 左右是"独立格子"观感，每张照片都有边界，适合主体不突出的合集照。间距超过 25 会显得稀疏、像散落在背景上的贴纸，适合故意营造拼贴感的小红书风格。</p><p>底色的选择逻辑是"不抢戏"。照片里有蓝天绿树时，白色或米白背景最安全；照片本身偏暖（饭菜、咖啡），深色背景能衬托食物的光泽；宝宝照片配浅粉浅蓝背景显得温馨，但成人照片配彩色背景容易显得幼稚。一个万能技巧：从照片里取一个低饱和色当背景，整体会非常协调。</p><p>顺序方面，工具按选图顺序填入格子，从左到右、从上到下。所以选图时第一张会落在左上格，最后一张落在右下格。重要的主图（比如穿搭全身照、商品正面图）建议放在左上或正中间。如果选完发现顺序不对，不用一张张删，直接重新框选一次即可，几秒钟的事。</p><p>还有几个容易被忽略的细节：九张照片拼在一张正方形图里时，每张格子大约只有 260 像素宽，所以照片本身不要太复杂，主体越简洁拼出来越好看。如果某张照片是竖拍的人像，工具会自动居中裁成方形，人脸尽量放在照片正中间，避免下巴被切掉。发小红书前建议先在手机上预览一遍缩略图效果，因为 feed 里看到的就是缩小版，间距 15 以上在缩略图上才看得出格子边界。</p></section>
+
+<section class="localization-section">
+  <h2 style="text-align:center;margin-bottom:20px;">隐私、效率与手机端拼图的实务建议</h2>
+  <h3 style="margin-top:24px;">照片安全</h3>
+  <p>手机相册自带的拼图功能和第三方修图 App 往往要求开启相册权限，照片会被 App 索引甚至上传到云端。这款在线拼图工具完全在浏览器内用 Canvas 合成，照片从读取到导出都在你自己的设备上。处理宝宝照片、家庭出游照、同事聚会照这类隐私素材时，不用担心里程碑式的私人影像被第三方收集。</p>
+  <h3 style="margin-top:24px;">和手机修图 App 的对比</h3>
+  <p>美图秀秀、醒图这类 App 功能当然更多（贴纸、文字、滤镜），但体积大、广告多、会员弹窗烦人。拼图工具只保留"多图拼一张"这一个核心需求，打开网页选图、调参、下载，1 分钟搞定。对大多数只是想发个朋友圈的人来说，这种"用完即走"的工具更顺手。</p>
+  <h3 style="margin-top:24px;">手机端使用</h3>
+  <p>在手机浏览器（Safari、Chrome、微信内置）打开网页，点击选择照片可以直接调起相册，拼好后长按图片保存或点下载按钮存到相册，再进微信发布，整个流程不超过两分钟。</p>
+<h3>拼图后发平台的注意事项</h3><p>微信朋友圈发拼图建议直接选"从相册选择"，不要经过微信"原图"压缩太多，否则导出的 800×800 图会被压得更模糊。小红书上传时建议勾选"高清发布"，间距小、底色白的拼图在小红书 feed 里缩略图也清晰。如果拼图里包含文字截图，导出前放大确认文字没有被格子裁断——因为工具是按格子等比裁切填充，不同比例的照片会被居中裁剪，重要内容尽量放在照片中心。</p><p>批量做拼图时（比如博主一天发好几条），建议把常用参数（布局、间距、底色）记在备忘录里，每次上传后照着调，能保持账号视觉风格统一。导出文件默认命名为 collage.png，建议下载后立刻按日期重命名，否则相册里一堆同名文件不好找。</p><p>最后提醒：拼图工具不支持照片旋转和裁剪，如果某张照片是倒置的，建议先在手机相册里旋转正再上传。照片横竖比例差异大时，格子里的照片会被裁成正方形，人脸尽量放在照片中央区域，避免被裁掉头部。处理完成后如果对效果不满意，重新选图即可，不会保留任何历史记录。</p><p>给自媒体博主的额外建议：如果账号已经有固定的视觉风格，建议把拼图的底色和间距固定下来，比如永远用米白底、间距 15，粉丝刷到你的笔记一眼就能认出。做教程类内容时，可以把步骤截图按顺序放进九宫格，一张图讲完整个流程，比九张单图更有条理。家长给孩子做成长档案也可以用这个工具：每季度挑一张照片拼成四宫格，一年下来四张图记录四个阶段，比翻相册更有仪式感。</p></section>
+
+<section class="faq-section">
+        <h2>常见问题</h2>
+<div class="faq-item"><button class="faq-question">一次最多能拼几张照片？</button><div class="faq-answer"><p>九宫格布局最多 9 张，四宫格 4 张，三列横排或三行竖排 3 张。上传超过数量的照片会自动取前 9 张拼图。</p></div></div>
+<div class="faq-item"><button class="faq-question">导出的图片是多大尺寸？</button><div class="faq-answer"><p>默认输出 800×800 像素的正方形 PNG，清晰度足够发朋友圈和小红书，也可以用作小红书封面图。</p></div></div>
+<div class="faq-item"><button class="faq-question">照片顺序可以调整吗？</button><div class="faq-answer"><p>照片按选择文件的顺序填入格子，所以选图时注意按想要的顺序框选。选错了可以重新上传一次。</p></div></div>
+<div class="faq-item"><button class="faq-question">拼好的图能直接发微信朋友圈吗？</button><div class="faq-answer"><p>可以。导出的 PNG 是标准图片，保存到手机后在微信里正常发布即可，九宫格布局还能省去手动排版。</p></div></div>
+<div class="faq-item"><button class="faq-question">照片会被上传到服务器吗？</button><div class="faq-answer"><p>不会。拼图全部在你的浏览器内完成，照片不离开设备，处理宝宝照片、家庭出游照也没有隐私顾虑。</p></div></div>
+      </section>
+    <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
+  </main>
+    <div class="ad-zone ad-footer ad-loader-slot" data-ad-type="footer"></div>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. 保留所有权利.</p></div>
+    </div>
+  </footer>
+  <script src="/js/main.js?v=8"></script>
+  <script src="../../js/lang.js"></script>
+  <script>
+const canvas = document.getElementById('cmCanvas');
 const ctx = canvas.getContext('2d');
 let images = [];
 const fileInput = document.getElementById('fileInput');
-document.getElementById('dropZone').onclick = () => fileInput.click();
+const dropZone = document.getElementById('dropZone');
+const workspace = document.getElementById('workspace');
+dropZone.onclick = () => fileInput.click();
 fileInput.onchange = (e) => {
-images = [];
-Array.from(e.target.files).forEach((f,i) => {
-const r = new FileReader();
-r.onload = (ev) => {const img = new Image(); img.onload = () => {images.push(img); if(images.length === e.target.files.length) draw();}; img.src = ev.target.result;};
-r.readAsDataURL(f);
-});
+  if (!e.target.files.length) return;
+  images = [];
+  Array.from(e.target.files).forEach((f) => {
+    const r = new FileReader();
+    r.onload = (ev) => {
+      const img = new Image();
+      img.onload = () => {
+        images.push(img);
+        if (images.length === e.target.files.length) {
+          workspace.style.display = 'grid';
+          dropZone.style.display = 'none';
+          draw();
+        }
+      };
+      img.src = ev.target.result;
+    };
+    r.readAsDataURL(f);
+  });
 };
 function draw() {
-const layout = document.getElementById('layout').value;
-const gap = parseInt(document.getElementById('gap').value);
-const bg = document.getElementById('bg').value;
-let cols, rows;
-if(layout === '2x2'){cols=2;rows=2;} else if(layout === '3x1'){cols=3;rows=1;} else if(layout === '1x3'){cols=1;rows=3;} else {cols=3;rows=3;}
-const w = 800, h = 800;
-canvas.width = w; canvas.height = h;
-ctx.fillStyle = bg; ctx.fillRect(0,0,w,h);
-const cellW = (w - gap*(cols+1))/cols;
-const cellH = (h - gap*(rows+1))/rows;
-images.slice(0, cols*rows).forEach((img,i) => {
-const x = gap + (i%cols)*(cellW+gap);
-const y = gap + Math.floor(i/cols)*(cellH+gap);
-ctx.drawImage(img, x, y, cellW, cellH);
-});
+  const layout = document.getElementById('layout').value;
+  const gap = parseInt(document.getElementById('gap').value);
+  const bg = document.getElementById('bg').value;
+  document.getElementById('gapVal').textContent = gap;
+  let cols, rows;
+  if(layout === '2x2'){cols=2;rows=2;} else if(layout === '3x1'){cols=3;rows=1;} else if(layout === '1x3'){cols=1;rows=3;} else {cols=3;rows=3;}
+  const w = 800, h = 800;
+  canvas.width = w; canvas.height = h;
+  ctx.fillStyle = bg; ctx.fillRect(0,0,w,h);
+  const cellW = (w - gap*(cols+1))/cols;
+  const cellH = (h - gap*(rows+1))/rows;
+  images.slice(0, cols*rows).forEach((img,i) => {
+    const x = gap + (i%cols)*(cellW+gap);
+    const y = gap + Math.floor(i/cols)*(cellH+gap);
+    // cover crop into cell
+    const iw = img.width, ih = img.height;
+    const scale = Math.max(cellW/iw, cellH/ih);
+    const dw = iw*scale, dh = ih*scale;
+    const dx = x + (cellW-dw)/2, dy = y + (cellH-dh)/2;
+    ctx.drawImage(img, dx, dy, dw, dh);
+  });
 }
 document.getElementById('layout').onchange = draw;
 document.getElementById('gap').oninput = draw;
 document.getElementById('bg').oninput = draw;
 document.getElementById('downloadBtn').onclick = () => {
-const a = document.createElement('a'); a.download='collage.png'; a.href=canvas.toDataURL('image/png'); a.click();
+  const a = document.createElement('a');
+  a.download='collage.png';
+  a.href=canvas.toDataURL('image/png');
+  a.click();
 };
+  </script>
+<script src="/js/ad-loader.js?v=4"></script>
+<script src="/js/result-modal.js?v=2"></script>
+<script>
+(function(){
+  const items = document.querySelectorAll('.faq-question');
+  items.forEach(btn => btn.addEventListener('click', () => btn.parentElement.classList.toggle('open')));
+})();
 </script>
 </body>
 </html>
-
-

@@ -32,10 +32,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json">
 {
-  
-  "inLanguage": "fr","@context": "https://schema.org",
+  "inLanguage": "fr",
+  "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Text Sorter",
+  "name": "↕ Trier des lignes de texte",
   "url": "https://smartimgkit.com/fr/tools/text-sorter",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
@@ -118,26 +118,42 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Does it preserve empty lines?",
+      "name": "Les lignes vides sont-elles conservées ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. Empty lines are included in the sort. Use Remove Duplicates if you want to clean them."
+        "text": "Oui. Les lignes vides sont incluses dans le tri, comme n'importe quelle autre ligne. Si vous souhaitez les supprimer, utilisez d'abord l'option de dédoublonnage, puis nettoyez manuellement les espaces superflus avant de retrier."
       }
     },
     {
       "@type": "Question",
-      "name": "Is numeric sort smart?",
+      "name": "Le tri numérique est-il précis ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "It parses each line as a float. If a line is not a number, parseFloat returns NaN and it sorts to the end."
+        "text": "Chaque ligne est interprétée comme un nombre. Si une ligne ne contient pas que des chiffres, elle est placée à la fin du tri numérique. Pour trier des chaînes mixtes comme des références produit, utilisez de préférence le tri alphabétique."
       }
     },
     {
       "@type": "Question",
-      "name": "Can I sort by a specific column?",
+      "name": "Puis-je trier une liste de noms français avec les accents ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Not yet. This tool sorts by entire line. For CSV/TSV column sorting, use a dedicated CSV tool."
+        "text": "Oui. Le tri utilise la comparaison locale du navigateur, qui classe correctement les lettres accentuées : « é » avec « e », « è » avec « e », « à » avec « a ». Les noms comme Lefèvre, Gérard ou Ménard se placent au bon endroit, sans être relégués en fin de liste."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Mes listes de données restent-elles privées ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Absolument. Tout le traitement s'effectue dans votre navigateur, sans aucun envoi vers un serveur. Aucune ligne n'est journalisée, aucun compte n'est requis. Vous pouvez trier des listes clients ou des données sensibles sans crainte au regard du RGPD."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Comment supprimer les doublons d'une liste d'e-mails ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Collez l'ensemble de vos lignes dans la zone de gauche, puis cliquez sur « Supprimer les doublons ». Le résultat affiche une ligne unique par valeur. Copiez ensuite la liste nettoyée dans votre logiciel de newsletter ou votre tableur."
       }
     }
   ]
@@ -173,61 +189,111 @@
 <div class="ad-zone ad-header ad-loader-slot" data-ad-type="header" data-current-mobile="0"></div>
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>↕️ Text Sorter</span></nav>
+      <nav class="breadcrumb"><a href="/">Accueil</a><span>/</span><a href="/fr/tools/">Outils</a><span>/</span><span>↕️ Trieur de texte</span></nav>
       <div class="tool-page-header">
-        <h1>↕️ Text Sorter</h1>
-        <p>Sort lines alphabetically, numerically, by length, remove duplicates — free, in your browser.</p>
+        <h1>↕️ Trier des lignes de texte</h1>
+        <p>Triez vos lignes par ordre alphabétique, numérique ou par longueur, supprimez les doublons et inversez l'ordre en un clic. Gratuit, sans inscription, et traitant votre texte entièrement dans le navigateur.</p>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ Regardez ce que cet outil réalise</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">📤</span></div>
-              <div class="before-after-item-caption before">Unsorted lines</div>
+              <div class="before-after-item-caption before">Lignes non triées</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">↕️</span></div>
-              <div class="before-after-item-caption after">Sorted lines</div>
+              <div class="before-after-item-caption after">Lignes triées</div>
             </div>
           </div>
         </div>
 
 <div class="two-col">
           <div class="controls">
-            <h2>📥 Input Lines</h2>
-            <textarea id="sortInput" placeholder="Enter lines to sort (one per line)..."></textarea>
+            <h2>📥 Lignes à trier</h2>
+            <textarea id="sortInput" placeholder="Saisissez les lignes à trier (une par ligne)..."></textarea>
           </div>
           <div class="controls">
-            <h2>📤 Sorted Lines</h2>
-            <textarea id="sortOutput" readonly placeholder="Choose a sort option below..."></textarea>
+            <h2>📤 Lignes triées</h2>
+            <textarea id="sortOutput" readonly placeholder="Choisissez une option de tri ci-dessous..."></textarea>
             <div class="btn-row">
-              <button class="btn btn-secondary" id="sortCopyBtn">📋 Copy</button>
-              <button class="btn btn-secondary" id="sortClearBtn">Clear</button>
+              <button class="btn btn-secondary" id="sortCopyBtn">📋 Copier</button>
+              <button class="btn btn-secondary" id="sortClearBtn">Effacer</button>
             </div>
           </div>
         </div>
         <div class="controls">
-          <h2>🔀 Sort Options</h2>
+          <h2>🔀 Options de tri</h2>
           <div class="btn-row">
-            <button class="btn btn-primary" data-sort="asc">A → Z (Ascending)</button>
-            <button class="btn btn-primary" data-sort="desc">Z → A (Descending)</button>
-            <button class="btn btn-primary" data-sort="numAsc">1 → 9 (Number Asc)</button>
-            <button class="btn btn-primary" data-sort="numDesc">9 → 1 (Number Desc)</button>
-            <button class="btn btn-primary" data-sort="lenAsc">Short → Long</button>
-            <button class="btn btn-primary" data-sort="lenDesc">Long → Short</button>
-            <button class="btn btn-primary" data-sort="reverse">↔ Reverse Order</button>
-            <button class="btn btn-primary" data-sort="random">🎲 Random Shuffle</button>
-            <button class="btn btn-primary" data-sort="unique">🧹 Remove Duplicates</button>
+            <button class="btn btn-primary" data-sort="asc">A → Z (croissant)</button>
+            <button class="btn btn-primary" data-sort="desc">Z → A (décroissant)</button>
+            <button class="btn btn-primary" data-sort="numAsc">1 → 9 (numérique croissant)</button>
+            <button class="btn btn-primary" data-sort="numDesc">9 → 1 (numérique décroissant)</button>
+            <button class="btn btn-primary" data-sort="lenAsc">Court → Long</button>
+            <button class="btn btn-primary" data-sort="lenDesc">Long → Court</button>
+            <button class="btn btn-primary" data-sort="reverse">↔ Inverser l'ordre</button>
+            <button class="btn btn-primary" data-sort="random">🎲 Ordre aléatoire</button>
+            <button class="btn btn-primary" data-sort="unique">🧹 Supprimer les doublons</button>
           </div>
         </div>
 
       </div>
-<section class="how-to-section"><h2>How to Use</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Enter Lines</h4><p>Paste your text (one item per line).</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Choose Sort</h4><p>Click any sort option.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>View Result</h4><p>Sorted lines appear on the right.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Copy</h4><p>Click Copy to copy the sorted result.</p></div></div></section>
-<h2>Detailed User Guide</h2><div class="guide-block"><h3>Enter Lines</h3><p>Paste your text (one item per line).</p></div><div class="guide-block"><h3>Choose Sort</h3><p>Click any sort option.</p></div><div class="guide-block"><h3>View Result</h3><p>Sorted lines appear on the right.</p></div><div class="guide-block"><h3>Copy</h3><p>Click Copy to copy the sorted result.</p></div>
-<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">Does it preserve empty lines?</button><div class="faq-answer">Yes. Empty lines are included in the sort. Use Remove Duplicates if you want to clean them.</div></div><div class="faq-item"><button class="faq-question">Is numeric sort smart?</button><div class="faq-answer">It parses each line as a float. If a line is not a number, parseFloat returns NaN and it sorts to the end.</div></div><div class="faq-item"><button class="faq-question">Can I sort by a specific column?</button><div class="faq-answer">Not yet. This tool sorts by entire line. For CSV/TSV column sorting, use a dedicated CSV tool.</div></div></section>
-<section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/case-converter" class="related-tool-card"><span class="tool-icon">🔠</span><div class="tool-info"><strong>Case Converter</strong><span class="tool-desc">Convert text case</span></div><span class="tool-arrow">→</span></a><a href="/tools/text-find-replace" class="related-tool-card"><span class="tool-icon">🔄</span><div class="tool-info"><strong>Find & Replace</strong><span class="tool-desc">Find and replace text</span></div><span class="tool-arrow">→</span></a><a href="/tools/word-counter" class="related-tool-card"><span class="tool-icon">📝</span><div class="tool-info"><strong>Word Counter</strong><span class="tool-desc">Count words</span></div><span class="tool-arrow">→</span></a></div></section>
+<section class="how-to-section"><h2>Comment trier vos lignes</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Saisissez les lignes</h4><p>Collez votre texte (un élément par ligne).</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Choisissez un tri</h4><p>Cliquez sur l'option de tri souhaitée.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Visualisez le résultat</h4><p>Les lignes triées apparaissent dans la colonne de droite.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Copiez</h4><p>Cliquez sur « Copier » pour récupérer le résultat trié.</p></div></div></section>
+<h2>Guide d'utilisation détaillé</h2>
+<div class="guide-block"><h3>Saisir les lignes</h3><p>Collez votre texte dans la colonne de gauche, un élément par ligne. Les lignes vides sont conservées, vous pouvez les supprimer avec l'option dédiée.</p></div>
+<div class="guide-block"><h3>Choisir le type de tri</h3><p>Neuf options sont disponibles : alphabétique croissant ou décroissant, numérique croissant ou décroissant, tri par longueur, inversion, ordre aléatoire, et suppression des doublons.</p></div>
+<div class="guide-block"><h3>Lire le résultat</h3><p>Le résultat s'affiche en temps réel dans la zone de droite, prêt à être copié. Aucun envoi vers un serveur : tout se passe dans votre navigateur.</p></div>
+<div class="guide-block"><h3>Copier et réutiliser</h3><p>Utilisez le bouton « Copier » pour mettre le résultat dans votre presse-papiers, puis collez-le dans votre document, votre tableur ou votre code.</p></div>
+
+<section class="localization-section">
+  <h2>Trier des listes, adresses et données clients en français</h2>
+  <p>En France, on manipule régulièrement des listes : adresses e-mail de newsletter, noms de participants à un événement, références de produits, codes postaux, listes de fournisseurs. Plutôt que de tout réordonner à la main dans Word ou Excel, cet outil colle le bloc de lignes et le trie en un clic. C'est particulièrement utile pour les associations, les petites entreprises, et les administrations de taille modeste, qui n'ont pas toujours de service informatique dédié.</p>
+  <p>Le tri alphabétique sur les noms de famille est l'usage le plus courant. On colle une liste d'adhérents, on trie A → Z, et l'on obtient un fichier prêt pour l'appel ou pour l'étiquetage des enveloppes. L'outil gère correctement les accents français, grâce à la comparaison locale du navigateur : les « é » se classent avec les « e », pas à la fin de la liste. C'est un détail qui change tout, quand on a affaire à des noms comme « Aubry », « Lefèvre », « Ménard » ou « Gérard ».</p>
+  <p>Pour les listes d'e-mails, la suppression des doublons rend de grands services. On exporte les contacts de plusieurs événements, on les colle les uns à la suite des autres, et l'on élimine les lignes en double avant d'envoyer une communication. On évite ainsi qu'un même adhérent ne reçoive trois fois le même mail, ce qui serait mal perçu. C'est aussi une manière de respecter la RGPD : on ne conserve que les contacts nécessaires, et l'on nettoie sa base avant chaque campagne.</p>
+  <p>Les commerçants et les e-commerçants utilisent le tri numérique pour les références produit. Une liste de codes-barres, de numéros de lot ou de quantités stockées se range du plus petit au plus grand, ce qui facilite l'inventaire. On colle les lignes issues d'un export CSV, on trie, on recopie dans le logiciel de gestion. Le traitement local garantit que les données commerciales ne partent pas vers un service tiers, ce qui est appréciable pour des fichiers contenant des prix ou des marges.</p>
+  <p>Enfin, les élèves et les étudiants se servent de l'outil pour réviser. On colle une liste de notions, on trie par longueur pour commencer par les termes courts, ou l'on tire au sort pour s'exercer sans biais. C'est une méthode simple, sans application à installer, qui fonctionne aussi bien sur un téléphone que sur un ordinateur. Les enseignants peuvent aussi préparer des listes de vocabulaire ordonné, distribuées ensuite aux élèves en format texte.</p>
+  <p>Les bibliothécaires et les archivistes utilisent le tri pour établir des inventaires. Une liste d'ouvrages, de numéros d'inventaire, de noms de donateurs : on la colle, on la trie, et l'on obtient un document de travail propre. C'est plus rapide qu'un tableur pour un usage ponctuel, et l'on n'a pas à formater les colonnes. Le résultat se copie en un clic, prêt à être collé dans le registre papier ou dans le système de gestion documentaire de l'établissement.</p>
+  <p>Pour les organisateurs d'événements, enfin, le tri sert à préparer les feuilles d'émargement. On colle les noms des participants, on trie alphabétiquement, et l'on imprime la liste ordonnée. Les participants se retrouvent plus vite, les hôtesses de l'accueil aussi. C'est un détail logistique qui change la qualité de l'accueil, notamment lors des salons professionnels, des colloques ou des assemblées générales associatives.</p>
+  <p>En région comme à Paris, ce genre d'utilitaire est prisé par les mairies et les services techniques. On lui confie des listes de habitants, de numéros de voirie, d'éléments d'inventaire. Le traitement local évite de transmettre ces données à un outil en ligne tiers, ce qui est un point de vigilance rappelé par la CNIL pour les collectivités territoriales.</p>
+  <p>Avec l'habitude, on ouvre cet outil pour toute petite liste en vrac, sans même réfléchir. C'est un réflexe sobre, qui fait gagner un temps précieux à chaque utilisation.</p>
+</section>
+
+<section class="localization-section">
+  <h2>Respect de la vie privée : votre texte ne quitte jamais votre appareil</h2>
+  <p>Beaucoup d'outils de tri en ligne envoient votre texte vers un serveur, le traitent, puis vous renvoient le résultat. Pour des listes anodines, ce n'est pas grave. Mais quand le texte contient des adresses clients, des noms de patients, des brouillons de courrier sensible, ou des extraits de code interne, ce transfert pose un vrai problème au regard du RGPD. Avec ce trieur, le texte reste dans l'onglet de votre navigateur. Aucun paquet ne part sur la Toile, aucun journal n'est conservé, aucune publicité ne se branche sur le contenu.</p>
+  <p>Ce fonctionnement local change la donne pour les professions réglementées. Un avocat qui trie des lignes de témoins, un médecin qui ordonne une liste de rendez-vous, un journaliste qui classe des citations : personne ne souhaite que ces contenus transitent par un tiers. L'outil fonctionne comme un petit utilitaire de bureau, que l'on ouvre et referme aussitôt. C'est la même logique que pour nos autres outils, dédiée aux images et aux documents : la confidentialité n'est pas une option marketing, c'est un choix technique.</p>
+  <p>L'absence de serveur se ressent aussi en terme de vitesse. Mille lignes, dix mille lignes, vingt mille lignes : l'opération s'exécute en une fraction de seconde, même sur une connexion très modeste. On n'attend pas la fin d'un téléversement, on ne subit pas un minuteur publicitaire. C'est précieux quand on est pressé, ou quand on travaille dans le train, à l'hôtel, ou dans un lieu où le réseau est capricieux. Une fois la page chargée, l'outil continue de fonctionner, même si vous coupez le Wi-Fi.</p>
+  <p>Enfin, ce mode local évite tout compte utilisateur et toute politique de confidentialité à accepter. Pas de cookie caché, pas de newsletter à refuser, pas de limite de caractère assortie d'un abonnement. On colle, on trie, on copie. C'est une philosophie du logiciel utile et discret, que la CNIL met en avant dans ses recommandations pour les outils du quotidien. On préfère un outil qui ne demande rien, plutôt qu'un service gratuit dont on devient soi-même le produit.</p>
+  <p>Cette approche présente un autre avantage, souvent négligé : la stabilité dans le temps. Un service en ligne gratuit peut fermer du jour au lendemain, modifier ses conditions, ou intégrer une fonctionnalité qui envoie vos données à un régie publicitaire. Ici, la page est statique, le code est embarqué, et elle continuera de fonctionner même si vous la mettez en favoris pour des années. C'est un logiciel qui ne vieillit pas, parce qu'il ne dépend d'aucune infrastructure externe.</p>
+  <p>Pour les personnes qui manipulent des brouillons de discours, des notes de rédaction ou des listes de mots de passe, la confidentialité n'est pas un luxe. On ne colle jamais ce genre de contenus dans un outil douteux. Avec ce trieur, le contenu reste dans l'onglet, et dès que vous fermez l'onglet, tout disparaît de la mémoire. Aucune traque, aucun profil, aucun traceur. C'est le niveau de confidentialité que l'on est en droit d'attendre d'un outil de productivité simple.</p>
+  <p>Enfin, l'outil fonctionne sans inscription, sans cookies publicitaires et sans pistage d'audience. Vous pouvez l'utiliser au travail, à la maison, sur un ordinateur partagé, sans laisser de trace. C'est une liberté d'usage que les outils SaaS n'offrent plus guère, et qui mérite d'être soulignée.</p>
+  <p>Cette exigence de confidentialité est au cœur de notre démarche : tous les outils de ce site fonctionnent sur le même principe, pour les images comme pour le texte.</p>
+</section>
+
+<section class="localization-section">
+  <h2>Cas d'usage pour les développeurs, rédacteurs et traducteurs francophones</h2>
+  <p>Les développeurs francophones utilisent ce genre d'utilitaire pour nettoyer des listes avant de les intégrer dans un tableau, un script ou un fichier de configuration. On exporte des identifiants depuis une base de données, on colle le résultat, on supprime les doublons, on trie. Plus besoin d'ouvrir un tableur complet pour une opération de quelques secondes. L'outil gère les lignes brutes, telles qu'elles viennent, sans demander de formatage particulier.</p>
+  <p>Les rédacteurs et les community managers apprécient le tri par longueur. On colle une liste d'accroches, de titres ou de propositions de nom, on classe du plus court au plus long, et l'on repère immédiatement les plus percutants. C'est un exercice utile pour les titres d'articles de blog, les sujets de newsletter, ou les accroches publicitaires pour les réseaux sociaux. L'ordre aléatoire sert aussi à tester plusieurs enchaînements sans biais de présentation.</p>
+  <p>Les traducteurs et les relecteurs utilisent le tri pour ordonner une liste de termes, d'extraits ou de références. On colle les entrées d'un glossaire, on trie alphabétiquement, et l'on obtient un document de travail propre. C'est plus rapide que de tout réécrire à la main, et l'on conserve l'intégralité des lignes d'origine. Le traitement local est un gage de discrétion pour des textes en cours de traduction, qui ne sont pas encore destinés à être publiés.</p>
+  <p>Les comptables et les assistants administratifs, enfin, s'en servent pour nettoyer des exports. Un relevé bancaire collé en texte, une liste d'écritures, un extrait de facturation : on trie par montant, on repère les valeurs aberrantes, on supprime les lignes en double avant de transmettre à l'expert-comptable. C'est un geste simple qui évite bien des erreurs de saisie, et qui respecte la confidentialité des données financières, qui ne doivent jamais transiter par un service tiers non certifié.</p>
+  <p>Enfin, pour les particuliers, l'outil rend service dans des situations très variées. On trie une liste de courses, une liste d'invités, une playlist de titres, des adresses de sites à visiter. On tire au sort un ordre de passage pour un repas entre amis, on inverse l'ordre d'une procédure rédigée à l'envers, on nettoie un bloc de copier-coller qui contient des lignes en double. C'est petit outil sans prétention, mais qui rend de menus services plusieurs fois par mois, et qu'on garde dans ses favoris.</p>
+  <p>Les développeurs frontend et backend apprécient aussi le tri pour préparer des tableaux de données de démonstration. On génère une liste de noms fictifs, on la trie, on la colle dans un composant. C'est plus rapide que d'écrire les tableaux à la main, et l'on obtient un ordre stable pour tester le rendu d'un tableau. Aucun envoi vers un service de génération de données, ce qui évite toute fuite de propriétés intellectuelles en cours de développement.</p>
+  <p>Enfin, les chefs de projet et les product owners utilisent le tri pour classer une liste de tickets. On colle les titres des cartes d'un backlog, on les trie par longueur pour repérer les formulations trop longues, ou on les tire au sort pour répartir la parole lors d'une rétrospective. C'est un outil d'animation simple, qui ne nécessite pas de licence, et qui fonctionne quel que soit l'ordinateur prêté en réunion. On copie le résultat, on le colle dans le compte-rendu, et l'animation est prête.</p>
+  <p>Pour les écrivains et les blogueurs, le tri par longueur est aussi une manière de briser une page blanche. On note dix idées en vrac, on les classe du mot le plus court au plus long, et l'on trouve souvent un angle inattendu. C'est un exercice d'échauffement, sans prétention, mais qui débloque bien des séances d'écriture.</p>
+  <p>Au final, ce petit utilitaire se révèle plus polyvalent qu'il n'y paraît. On le garde ouvert dans un onglet, et l'on y revient chaque fois qu'une liste a besoin d'être mise en ordre.</p>
+</section>
+
+<section class="faq-section"><h2>Questions fréquentes</h2>
+<div class="faq-item"><button class="faq-question">Les lignes vides sont-elles conservées ?</button><div class="faq-answer">Oui. Les lignes vides sont incluses dans le tri, comme n'importe quelle autre ligne. Si vous souhaitez les supprimer, utilisez d'abord l'option de dédoublonnage, puis nettoyez manuellement les espaces superflus avant de retrier.</div></div>
+<div class="faq-item"><button class="faq-question">Le tri numérique est-il précis ?</button><div class="faq-answer">Chaque ligne est interprétée comme un nombre. Si une ligne ne contient pas que des chiffres, elle est placée à la fin du tri numérique. Pour trier des chaînes mixtes comme des références produit, utilisez de préférence le tri alphabétique.</div></div>
+<div class="faq-item"><button class="faq-question">Puis-je trier une liste de noms français avec les accents ?</button><div class="faq-answer">Oui. Le tri utilise la comparaison locale du navigateur, qui classe correctement les lettres accentuées : « é » avec « e », « è » avec « e », « à » avec « a ». Les noms comme Lefèvre, Gérard ou Ménard se placent au bon endroit, sans être relégués en fin de liste.</div></div>
+<div class="faq-item"><button class="faq-question">Mes listes de données restent-elles privées ?</button><div class="faq-answer">Absolument. Tout le traitement s'effectue dans votre navigateur, sans aucun envoi vers un serveur. Aucune ligne n'est journalisée, aucun compte n'est requis. Vous pouvez trier des listes clients ou des données sensibles sans crainte au regard du RGPD.</div></div>
+<div class="faq-item"><button class="faq-question">Comment supprimer les doublons d'une liste d'e-mails ?</button><div class="faq-answer">Collez l'ensemble de vos lignes dans la zone de gauche, puis cliquez sur « Supprimer les doublons ». Le résultat affiche une ligne unique par valeur. Copiez ensuite la liste nettoyée dans votre logiciel de newsletter ou votre tableur.</div></div>
+</section>
+
+<section class="related-tools"><h2>Vous aimerez aussi</h2><div class="related-tools-grid"><a href="/fr/tools/case-converter" class="related-tool-card"><span class="tool-icon">🔠</span><div class="tool-info"><strong>Convertisseur de casse</strong><span class="tool-desc">Modifier la casse d'un texte</span></div><span class="tool-arrow">→</span></a><a href="/fr/tools/text-find-replace" class="related-tool-card"><span class="tool-icon">🔄</span><div class="tool-info"><strong>Rechercher et remplacer</strong><span class="tool-desc">Chercher et remplacer du texte</span></div><span class="tool-arrow">→</span></a><a href="/fr/tools/word-counter" class="related-tool-card"><span class="tool-icon">📝</span><div class="tool-info"><strong>Compteur de mots</strong><span class="tool-desc">Compter les mots d'un texte</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>

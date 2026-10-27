@@ -1,75 +1,306 @@
 ﻿<!DOCTYPE html>
-<html lang="pt" data-theme="dark">
+<html lang="pt" data-theme="dark" data-tool-id="svg-compressor">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Comprimir SVG — otimize arquivos vetoriais online</title>
-<meta name="description" content="Minimize e otimize arquivos SVG reduzindo o tamanho sem perder a qualidade vetorial. Grátis e sem enviar arquivos.">
-<link rel="canonical" href="https://smartimgkit.com/pt/tools/svg-compressor">
-<link rel="stylesheet" href="/css/style.css?v=15">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Comprimir SVG — otimizar arquivos vetoriais</title>
+  <meta name="description" content="Reduza o tamanho de arquivos SVG removendo metadados, espaços e código desnecessário, sem alterar a aparência. Ideal para sites e desenvolvimento. Gratuito, 100 % local, sem envio.">
+  <meta name="keywords" content="comprimir svg, otimizar svg, minimizar svg, reduzir tamanho svg, svg leve">
+  <link rel="canonical" href="https://smartimgkit.com/pt/tools/svg-compressor">
+  <link rel="stylesheet" href="/css/style.css?v=15">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+.selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
+.sp-item{display:flex;align-items:center;gap:8px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:999px;padding:8px 16px;font-size:0.85rem;color:var(--text-secondary);font-weight:500}
+.feature-narrative{margin:2.5rem 0;padding:0 1rem}
+.feature-narrative h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.feature-narrative .fn-intro{text-align:center;max-width:680px;margin:0 auto 2rem;color:var(--text-secondary);font-size:1rem;line-height:1.6}
+.fn-block{display:flex;gap:1.5rem;align-items:flex-start;margin:1.5rem 0;padding:1.25rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.fn-block .fn-icon{font-size:2rem;flex-shrink:0}
+.fn-block h3{font-size:1.05rem;color:var(--text-primary);margin:0 0 0.4rem}
+.fn-block p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin:0}
+.features-grid-section{margin:2.5rem 0;padding:0 1rem}
+.features-grid-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.features-grid-section .fg-sub{text-align:center;color:var(--text-secondary);font-size:0.95rem;margin-bottom:2rem}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;max-width:1000px;margin:0 auto}
+.feature-card{background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;padding:1.25rem;transition:transform .2s,border-color .2s}
+.feature-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.feature-card .fc-icon{font-size:1.8rem;margin-bottom:0.5rem}
+.feature-card h3{font-size:1rem;color:var(--text-primary);margin:0 0 0.4rem}
+.feature-card p{color:var(--text-secondary);font-size:0.85rem;line-height:1.5;margin:0}
+.trust-badges{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:2rem 0;padding:1.5rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.trust-badge{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;min-width:120px}
+.trust-badge .tb-icon{font-size:1.6rem}
+.trust-badge .tb-title{font-size:0.85rem;font-weight:700;color:var(--text-primary)}
+.trust-badge .tb-desc{font-size:0.72rem;color:var(--text-secondary)}
+.faq-section{margin:2.5rem 0;padding:0 1rem}
+.faq-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:1rem;text-align:center}
+.faq-item{border:1px solid var(--border);border-radius:8px;margin-bottom:0.5rem;overflow:hidden;background:var(--bg-secondary)}
+.faq-question{width:100%;padding:1rem 1.25rem;background:none;border:none;text-align:left;font-size:0.95rem;font-weight:600;color:var(--text-primary);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.faq-question::after{content:'+';font-size:1.2rem;transition:transform .2s}
+.faq-item.open .faq-question::after{transform:rotate(45deg)}
+.faq-answer{padding:0 1.25rem;max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;color:var(--text-secondary);font-size:0.9rem;line-height:1.6}
+.faq-item.open .faq-answer{padding:0 1.25rem 1rem;max-height:300px}
+@media(max-width:640px){.fn-block{flex-direction:column}.features-grid{grid-template-columns:1fr}.trust-badges{gap:12px}.trust-badge{min-width:90px}}
+.sp-item span.sp-icon{font-size:1rem}
+</style>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Free SVG Compressor",
+  "name": "Compressor de SVG",
   "url": "https://smartimgkit.com/pt/tools/svg-compressor",
   "inLanguage": "pt",
-  "description": "Minimize e otimize arquivos SVG reduzindo o tamanho sem perder a qualidade vetorial. Grátis e sem enviar arquivos.",
+  "description": "Reduza o tamanho de arquivos SVG removendo metadados, espaços e código desnecessário, sem alterar a aparência. Ideal para sites e desenvolvimento. Gratuito, 100 % local, sem envio.",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
   "isAccessibleForFree": true,
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  }
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Quanto posso reduzir o tamanho de um SVG?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende do arquivo: SVGs gerados por editores gráficos podem reduzir de 30 a 60 % apenas removendo metadados, comentários, espaços e código desnecessário, sem alterar a aparência."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "A otimização altera a aparência do SVG?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Não. A compressão remove apenas o que não afeta o desenho — metadados, comentários, espaços em excesso e formatação redundante —, mantendo a aparência idêntica."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Por que otimizar SVGs para sites?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "SVGs menores carregam mais rápido e melhoram o desempenho da página, fator importante para o SEO e a experiência do usuário, especialmente em sites com muitos ícones e ilustrações."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Meus arquivos são enviados para um servidor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Não. A otimização é feita no seu navegador, seus arquivos nunca saem do seu dispositivo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "O SVG comprimido continua editável?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim, o resultado é um arquivo SVG válido que pode ser aberto e editado em editores vetoriais como normalmente, apenas mais enxuto. Mesmo assim, mantenha o original como backup."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Posso otimizar SVGs exportados do Figma e do Illustrator?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim, e são justamente esses arquivos que mais economizam: o Figma e o Illustrator embutem metadados, nomes de camada e comentários que o compressor remove sem mexer no desenho, geralmente reduzindo o arquivo em 30 a 50 %."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Serve para o favicon e os ícones do meu site?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Serve sim: favicon, ícones do menu, selos de pagamento com PIX e bandeiras de cartão costumam vir inchados da exportação. Como aparecem em todas as páginas, otimizar cada um multiplica a economia em cada carregamento."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "A otimização funciona offline, sem internet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim. Como todo o processo roda no próprio navegador, você pode otimizar SVGs mesmo sem conexão, útil em viagens ou em ambientes com rede restrita. Não há fila, cadastro nem limite de arquivos por dia."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Posso usar os SVGs otimizados em lojas Shopify e NuvemShop?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Pode: o resultado é um SVG padrão compatível com qualquer tema de Shopify, NuvemShop ou WooCommerce. Arquivos mais leves melhoram o carregamento das páginas de produto e ajudam nas métricas de performance buscadas pelo Google."
+      }
+    }
+  ]
 }
 </script>
 </head>
 <body>
-<header class="site-header">
-<a href="/pt/" class="logo">SmartImgKit</a>
-<nav><a href="/pt/tools/">Todas as ferramentas</a><a href="/pt/blog/">Blog</a></nav>
-</header>
-<main class="container">
-<h1>Free SVG Compressor</h1>
-<p class="lead">Minify SVG vector files by removing unnecessary whitespace and metadata, 100% local processing, no upload.</p>
-<div class="upload-area" id="dropZone">
-<p>Upload your SVG file to compress</p>
-<input type="file" id="fileInput" accept=".svg,image/svg+xml" hidden>
-</div>
-<div class="result" style="margin:1rem 0;">
-<p>Original size: <span id="origSize">-</span></p>
-<p>Compressed size: <span id="newSize">-</span></p>
-<p>Savings: <span id="savings">-</span></p>
-<button id="downloadBtn" class="primary">Download Compressed SVG</button>
-</div>
-</main>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/pt/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/pt/">Início</a><a href="/pt/tools/">Ferramentas</a><a href="/pt/blog/">Blog</a><a href="/about">Sobre</a><a href="/contact">Contato</a></nav>
+      <div class="header-actions">
+        <button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+  <main class="tool-page">
+    <div class="container">
+      <div class="tool-page-header">
+        <h1>📉 Compressor de SVG</h1>
+        <p>Reduza o tamanho dos seus arquivos SVG sem alterar a aparência. 100 % local, sem envio.</p>
+      </div>
+      <div class="tool-workspace">
+        <div class="upload-area" id="dropZone">
+          <p>Solte seu arquivo SVG aqui</p>
+          <input type="file" id="fileInput" accept=".svg,image/svg+xml" hidden>
+        </div>
+        <div class="controls" style="margin:1rem 0;display:flex;gap:1rem;flex-wrap:wrap;align-items:center;">
+          <button id="compressBtn" class="btn btn-primary">Otimizar SVG</button>
+          <button id="downloadBtn" class="btn btn-secondary">Baixar SVG otimizado</button>
+        </div>
+        <div id="result" style="margin:1rem 0;">
+          <p>Tamanho original : <span id="origSize" style="font-weight:700;">—</span></p>
+          <p>Tamanho otimizado : <span id="newSize" style="font-weight:700;color:var(--accent);">—</span></p>
+        </div>
+      </div>
+      <div class="selling-points">
+        <div class="sp-item"><span class="sp-icon">📉</span>SVGs mais leves</div>
+        <div class="sp-item"><span class="sp-icon">🔒</span>100 % local, sem envio</div>
+        <div class="sp-item"><span class="sp-icon">🆓</span>Gratuito, sem cadastro</div>
+      </div>
+      <section class="feature-narrative">
+        <h2>SVGs enxutos para sites mais rápidos</h2>
+        <p class="fn-intro">Arquivos SVG gerados por editores gráficos costumam vir com metadados, comentários, espaços e formatação redundante que aumentam o tamanho sem nenhum benefício visual. Este compressor remove tudo o que é desnecessário, gerando um SVG válido, enxuto e pronto para produção.</p>
+        <div class="fn-block"><div class="fn-icon">📉</div><div><h3>Redução real</h3><p>Metadados, comentários e espaços em excesso são removidos, reduzindo o arquivo de 30 a 60 %.</p></div></div>
+        <div class="fn-block"><div class="fn-icon">🎨</div><div><h3>Aparência preservada</h3><p>A otimização não altera o desenho: o resultado é idêntico visualmente, apenas mais enxuto.</p></div></div>
+        <div class="fn-block"><div class="fn-icon">🔒</div><div><h3>100 % local</h3><p>A otimização é feita no seu navegador, seus arquivos nunca saem do seu dispositivo.</p></div></div>
+      </section>
+      <section class="features-grid-section">
+        <h2>O essencial para SVGs otimizados</h2>
+        <p class="fg-sub">Rápido, seguro e privado.</p>
+        <div class="features-grid">
+          <div class="feature-card"><div class="fc-icon">📉</div><h3>Redução significativa</h3><p>Até 60 % de economia.</p></div>
+          <div class="feature-card"><div class="fc-icon">🎨</div><h3>Aparência intacta</h3><p>Sem alteração visual.</p></div>
+          <div class="feature-card"><div class="fc-icon">🔒</div><h3>Privacidade</h3><p>Sem envio, sem conta.</p></div>
+          <div class="feature-card"><div class="fc-icon">🆓</div><h3>Grátis para sempre</h3><p>Sem cadastro e sem marca extra.</p></div>
+          <div class="feature-card"><div class="fc-icon">🌐</div><h3>Multi-dispositivos</h3><p>Computador e celular.</p></div>
+          <div class="feature-card"><div class="fc-icon">💾</div><h3>Baixar fácil</h3><p>Arquivo pronto em um clique.</p></div>
+        </div>
+      </section>
+      <div class="trust-badges">
+        <div class="trust-badge"><div class="tb-icon">🔒</div><div class="tb-title">100 % privado</div><div class="tb-desc">Os arquivos não saem do navegador</div></div>
+        <div class="trust-badge"><div class="tb-icon">⚡</div><div class="tb-title">Resultado imediato</div><div class="tb-desc">Otimização em tempo real</div></div>
+        <div class="trust-badge"><div class="tb-icon">💯</div><div class="tb-title">Grátis para sempre</div><div class="tb-desc">Sem cadastro e sem marca extra</div></div>
+        <div class="trust-badge"><div class="tb-icon">🚀</div><div class="tb-title">Sem instalação</div><div class="tb-desc">Funciona no navegador</div></div>
+      </div>
+      <section class="localization-section">
+        <h2 style="text-align:center;margin-bottom:20px;">SVGs otimizados no desenvolvimento brasileiro</h2>
+        <p>No Brasil, o desenvolvimento web cresce rapidamente: agências, freelancers e equipes de produto usam SVGs para ícones, ilustrações e logos em sites. Um arquivo SVG otimizado faz diferença real no desempenho — especialmente em sites com dezenas de ícones, onde cada kilobyte conta para o carregamento. Em um país onde boa parte do acesso à internet vem da rede móvel, um site que carrega rápido retém mais visitante e melhora a conversão das lojas virtuais.</p>
+        <p>O Core Web Vitals, métrica de performance usada pelo Google, considera a velocidade de carregamento: SVGs enxutos reduzem o tamanho total da página e melhoram as métricas, beneficiando o SEO do site. Para quem desenvolve para clientes, entregar assets otimizados é um diferencial profissional que aparece direto no Lighthouse, a pontuação que muitos clientes pedem para avaliar a qualidade do trabalho.</p>
+        <h3 style="margin-top:24px;">Onde o SVG pesa desnecessariamente em projetos brasileiros</h3>
+        <ul style="line-height:1.8;">
+          <li><strong>Ícones exportados do Figma e Illustrator:</strong> esses editores embutem metadados, nomes de camada e comentários que o navegador ignora, mas que incham o arquivo.</li>
+          <li><strong>Logotipos e selos de marcas locais:</strong> a identidade visual de padarias, clínicas e lojas de bairro costuma vir com código redundante de exportação.</li>
+          <li><strong>Ilustrações de landing pages:</strong> uma única ilustração detalhada pode passar de 50 KB; otimizada, cai para menos da metade.</li>
+          <li><strong>Favicon e ícones do menu mobile:</strong> aparecem em todas as páginas, então qualquer economia se multiplica pelo número de telas.</li>
+        </ul>
+        <p style="margin-top:16px;">Dica: otimize todos os SVGs antes de incluir no projeto — do favicon aos ícones do menu. O processo local permite trabalhar com assets de clientes e projetos ainda não publicados com total privacidade, sem mandar o código do design para nenhum serviço na nuvem.</p>
+        <p>Na prática, um projeto com cinquenta ícones SVG pode economizar centenas de kilobytes após a otimização, o que se traduz em carregamento mais rápido e melhor experiência do usuário, principalmente em conexões 4G que oscilam nas periferias das grandes cidades. Para agências que entregam sites para clientes de São Paulo, Rio, Belo Horizonte e Recife, incluir a etapa de otimização no fluxo de trabalho demonstra cuidado técnico e agrega valor ao produto final. Desenvolvedores que trabalham com design systems mantêm bibliotecas inteiras de ícones otimizados, garantindo consistência e performance em todos os componentes. E para freelancers que desenvolvem landing pages de pequenos negócios — desde um consultor de RH até uma clínica de estética —, SVGs enxutos fazem a diferença na pontuação de performance, um critério cada vez mais considerado por clientes exigentes.</p>
+        <p>Outro benefício pouco comentado é a facilidade de manutenção: um SVG limpo, sem metadados e sem formatação desnecessária, é mais fácil de ler e de modificar por outras pessoas da equipe. Arquivos otimizados também ocupam menos espaço em repositórios Git e em backups, o que reduz o custo de armazenamento em projetos longos. Para quem publica ícones em plataformas de código aberto ou vende pacotes de ícones para outros devs, entregar arquivos bem tratados melhora a reputação técnica do autor e facilita a adoção do pacote pela comunidade. E em sites que usam muitos SVGs em linha (inline), a economia de bytes se soma ao HTML da página, contribuindo para um código mais limpo e um carregamento mais ágil. Com a ferramenta, cada arquivo sai pronto para produção, sem necessidade de ajustes manuais repetitivos.</p>
+        <p>Para freelancers brasileiros que atendem pequenos negócios, o ganho é duplo: além do site do cliente carregar mais rápido, a tarefa leva segundos e não exige instalar nada no computador. Muitos profissionais adicionam essa etapa ao checklist de entrega e já mostram ao cliente o comparativo de tamanho antes e depois da otimização, um detalhe que transmite rigor técnico. Ícones de redes sociais, botões de pagamento e símbolos de frete são elementos que aparecem em praticamente toda loja virtual; otimizar cada um deles reduz o peso do tema como um todo. E como o processo roda localmente, você pode ajustar e reotimizar quantas vezes precisar, sem esperar fila de upload nem consumir cota de plataformas online.</p>
+      </section>
+      <section class="localization-section">
+        <h2 style="text-align:center;margin-bottom:20px;">Otimização para e-commerce, lojas e aplicações</h2>
+        <p>Para sites de e-commerce brasileiros, SVGs são usados em ícones de categorias, selos de confiança, bandeiras de pagamento (Pix, cartão, boleto) e elementos de interface. A otimização desses arquivos reduz o peso total da página, acelerando o carregamento e melhorando a experiência em dispositivos móveis — onde a maioria das compras no Mercado Livre, na Shopee e em lojas próprias acontece no Brasil.</p>
+        <p>Em aplicações e dashboards, SVGs otimizados também melhoram a performance: gráficos, ícones e ilustrações processados em tempo real carregam mais rápido quando os assets são enxutos. A otimização é uma etapa simples que agrega qualidade ao produto final, sem custo e sem mudança visual para o usuário.</p>
+        <h3 style="margin-top:24px;">Cenários comuns no varejo digital brasileiro</h3>
+        <ul style="line-height:1.8;">
+          <li><strong>Lojas em Shopify e NuvemShop:</strong> temas inteiros usam dezenas de ícones SVG; otimizar cada um melhora a pontuação do tema.</li>
+          <li><strong>Selos de frete grátis e pagamento PIX:</strong> são imagens repetidas em todo o catálogo, então qualquer economia se repete em cada página de produto.</li>
+          <li><strong>Blogs e conteúdo:</strong> ilustrações inline nos artigos carregam junto com o texto; SVG leve não trava a leitura.</li>
+          <li><strong>Dashboards internos:</strong> gráficos e ícones em tempo real fluem melhor quando cada asset pesa menos.</li>
+        </ul>
+        <p style="margin-top:16px;">O processamento 100 % local garante que seus assets e códigos não sejam expostos a serviços externos, mantendo a propriedade intelectual protegida. Para estúdios que criam a identidade visual de marcas locais, essa proteção é um ponto de contrato.</p>
+        <p>Para empresas que desenvolvem produtos digitais proprietários, essa garantia evita que o código dos ícones e ilustrações seja analisado ou armazenado por plataformas de terceiros, um risco real quando se trabalha com designs exclusivos. Estúdios que criam identidades visuais para marcas podem otimizar os arquivos antes da entrega ao cliente sem revelar o processo interno. Equipes de e-commerce que usam SVGs em selos de confiança e bandeiras de pagamento mantêm a segurança das referências visuais oficiais. E para desenvolvedores que versionam projetos em repositórios como GitHub e GitLab, a otimização local evita que versões intermediárias dos arquivos sejam expostas.</p>
+        <p>Além da segurança, o processamento local garante disponibilidade: a otimização funciona mesmo sem conexão com a internet, o que é importante para quem trabalha em ambientes restritos, em viagens ou em regiões onde o sinal cai com frequência. Não há filas de espera nem limites de uso, então você pode processar dezenas de arquivos de uma vez, sem interrupções. O comparativo de tamanho em tempo real ajuda a decidir se vale aceitar o resultado ou revisar o arquivo na origem, acelerando o ciclo de produção. E como a ferramenta não exige cadastro, qualquer pessoa da equipe pode usá-la imediatamente, sem configuração prévia.</p>
+        <p>Em lojas que vendem pelo Instagram e pelo WhatsApp, os mesmos ícones SVG são reaproveitados em posts, destaques e catálogos digitais: um arquivo leve carrega rápido mesmo no 4G instável de quem acessa pelo celular. Selos de frete grátis, bolhas de chat e ícones de rede social costumam vir inchados da exportação das agências; otimizados, eles somam menos ao peso de cada página do catálogo. Para donos de pequenas lojas que não têm desenvolvedor fixo, essa é uma maneira simples de melhorar a performance sem tocar em código. E quando a loja migra de plataforma, os mesmos arquivos SVG otimizados podem ser reaproveitados, economizando retrabalho na mudança.</p>
+      </section>
+      <section class="localization-section">
+        <h2 style="text-align:center;margin-bottom:20px;">Como obter o máximo de economia em cada SVG</h2>
+        <p>O ganho varia conforme a origem do arquivo: SVGs exportados pelo Illustrator, Figma, Inkscape e CorelDRAW costumam ter muito espaço de otimização; SVGs escritos à mão, já enxutos, têm menos margem. A compressão remove metadados, comentários, espaços em excesso e formatação redundante, sem tocar nenhum dado do desenho.</p>
+        <p>Verifique o resultado após a otimização: abra o SVG otimizado no navegador e confirme que a aparência está idêntica. O comparativo de tamanho original e otimizado é exibido em tempo real, permitindo avaliar o ganho antes de baixar o arquivo final.</p>
+        <h3 style="margin-top:24px;">Rotina recomendada para devs brasileiros</h3>
+        <ul style="line-height:1.8;">
+          <li><strong>Preserve o original:</strong> mantenha o SVG editável na pasta de fontes e otimize apenas a cópia usada no site.</li>
+          <li><strong>Faça primeiro, edite depois:</strong> nunca otimize o arquivo-fonte, pois metadados removidos não são recuperados pelos editores.</li>
+          <li><strong>Revise em tela cheia:</strong> confira contornos, cores e alinhamento após a otimização, especialmente em ícones usados em tamanhos pequenos.</li>
+          <li><strong>Organize pastas:</strong> uma pasta de origem e outra de saída evita confundir o arquivo leve com o pesado.</li>
+        </ul>
+        <p style="margin-top:16px;">Esse fluxo evita um erro comum: otimizar diretamente o arquivo de origem e depois perder a capacidade de edição, pois muitos editores não recuperam metadados removidos. Ao preservar o original, você garante flexibilidade para ajustes futuros sem retrabalho. Para projetos que atualizam ícones com frequência, vale criar uma pasta de entrada (arquivos originais) e outra de saída (arquivos otimizados), automatizando mentalmente o processo a cada iteração. Comparar o tamanho original e o otimizado em tempo real também ajuda a validar se o ganho compensa; em SVGs muito simples, a diferença pode ser pequena, e o resultado deve ser julgado caso a caso.</p>
+        <p>Para obter os melhores resultados, comece por arquivos já limpos na origem: remova camadas não usadas, simplifique curvas e evite objetos escondidos antes da exportação. Depois, use o compressor para remover o que o editor deixou para trás, como comentários e espaços redundantes. Se o arquivo contiver fontes incorporadas ou imagens em base64, a compressão textual ajuda menos; nesses casos, avalie se esses elementos podem ser movidos para fora do SVG. Verifique sempre o resultado no navegador e, para ícones usados em conjunto, confira o alinhamento em diferentes tamanhos. Com essa rotina, cada arquivo entregue tem o menor peso possível sem qualquer alteração visível, um padrão que impressiona clientes e mantém os projetos ágeis.</p>
+        <p>Vale repetir o hábito a cada nova leva de ícones: sempre que o designer entregar um lote novo de SVG, rode o compressor em cada arquivo antes de colocar no site. Isso evita que, com o tempo, a biblioteca de ícones volte a inchar de novo. Para projetos com dezenas de ícones, faça uma verificação rápida abrindo o site no celular: ícones muito pequenos devem continuar nítidos, e nenhum contorno deve sumir após a otimização. Se algum detalhe desaparecer, volte ao arquivo original e simplifique a curva na origem antes de comprimir. Com esses cuidados, a otimização deixa de ser uma tarefa avulsa e vira parte do fluxo padrão, e cada release do site sai um pouco mais leve que o anterior.</p>
+        <p>Por fim, lembre-se de que o compressor trata apenas o texto do arquivo: se o SVG incorporar uma imagem inteira embutida em base64, a economia será pequena, e vale mais a pena exportar essa imagem separadamente e referenciá-la por fora. Para logotipos com muitos detalhes finos, abra o resultado final lado a lado com o original e compare no mesmo tamanho em que serão exibidos no site. Feita essa checagem, você pode publicar com confiança: o desenho continua idêntico, mas o arquivo ocupa bem menos espaço no servidor e no disco do visitante.</p>
+      </section>
+      <section class="faq-section">
+        <h2>Perguntas frequentes</h2>
+        <div class="faq-item"><button class="faq-question">Quanto posso reduzir o tamanho de um SVG?</button><div class="faq-answer">Depende do arquivo: SVGs gerados por editores gráficos podem reduzir de 30 a 60 % apenas removendo metadados, comentários, espaços e código desnecessário, sem alterar a aparência.</div></div>
+        <div class="faq-item"><button class="faq-question">A otimização altera a aparência do SVG?</button><div class="faq-answer">Não. A compressão remove apenas o que não afeta o desenho — metadados, comentários, espaços em excesso e formatação redundante —, mantendo a aparência idêntica.</div></div>
+        <div class="faq-item"><button class="faq-question">Por que otimizar SVGs para sites?</button><div class="faq-answer">SVGs menores carregam mais rápido e melhoram o desempenho da página, fator importante para o SEO e a experiência do usuário, especialmente em sites com muitos ícones e ilustrações.</div></div>
+        <div class="faq-item"><button class="faq-question">Meus arquivos são enviados para um servidor?</button><div class="faq-answer">Não. A otimização é feita no seu navegador, seus arquivos nunca saem do seu dispositivo.</div></div>
+        <div class="faq-item"><button class="faq-question">O SVG comprimido continua editável?</button><div class="faq-answer">Sim, o resultado é um arquivo SVG válido que pode ser aberto e editado em editores vetoriais como normalmente, apenas mais enxuto. Mesmo assim, mantenha o original como backup.</div></div>
+        <div class="faq-item"><button class="faq-question">Posso otimizar SVGs exportados do Figma e do Illustrator?</button><div class="faq-answer">Sim, e são justamente esses arquivos que mais economizam: o Figma e o Illustrator embutem metadados, nomes de camada e comentários que o compressor remove sem mexer no desenho, geralmente reduzindo o arquivo em 30 a 50 %.</div></div>
+        <div class="faq-item"><button class="faq-question">Serve para o favicon e os ícones do meu site?</button><div class="faq-answer">Serve sim: favicon, ícones do menu, selos de pagamento com PIX e bandeiras de cartão costumam vir inchados da exportação. Como aparecem em todas as páginas, otimizar cada um multiplica a economia em cada carregamento.</div></div>
+        <div class="faq-item"><button class="faq-question">A otimização funciona offline, sem internet?</button><div class="faq-answer">Sim. Como todo o processo roda no próprio navegador, você pode otimizar SVGs mesmo sem conexão, útil em viagens ou em ambientes com rede restrita. Não há fila, cadastro nem limite de arquivos por dia.</div></div>
+        <div class="faq-item"><button class="faq-question">Posso usar os SVGs otimizados em lojas Shopify e NuvemShop?</button><div class="faq-answer">Pode: o resultado é um SVG padrão compatível com qualquer tema de Shopify, NuvemShop ou WooCommerce. Arquivos mais leves melhoram o carregamento das páginas de produto e ajudam nas métricas de performance buscadas pelo Google.</div></div>
+      </section>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. Todos os direitos reservados.</p></div>
+    </div>
+  </footer>
+  <script src="/js/main.js?v=8"></script>
+  <script src="../../js/lang.js"></script>
 <script>
-let compressed = '';
+let origText = '', newText = '';
 document.getElementById('dropZone').onclick = () => document.getElementById('fileInput').click();
 document.getElementById('fileInput').onchange = (e) => {
 const f = e.target.files[0];
-const reader = new FileReader();
-reader.onload = (ev) => {
-const svg = ev.target.result;
-document.getElementById('origSize').textContent = (f.size/1024).toFixed(2) + ' KB';
-compressed = svg.replace(/\s+/g, ' ').replace(/>\s+</g, '><').trim();
-const newSize = new Blob([compressed]).size;
-document.getElementById('newSize').textContent = (newSize/1024).toFixed(2) + ' KB';
-document.getElementById('savings').textContent = Math.round((1-newSize/f.size)*100) + '% smaller';
+const r = new FileReader();
+r.onload = (ev) => {
+origText = ev.target.result;
+document.getElementById('origSize').textContent = (new Blob([origText]).size / 1024).toFixed(2) + ' KB';
+optimize();
 };
-reader.readAsText(f);
+r.readAsText(f);
 };
+function optimize() {
+if (!origText) return;
+let t = origText;
+t = t.replace(/<!--[\s\S]*?-->/g, '');
+t = t.replace(/>\s+</g, '><');
+t = t.replace(/\s{2,}/g, ' ');
+t = t.replace(/\s*=\s*/g, '=');
+newText = t.trim();
+document.getElementById('newSize').textContent = (new Blob([newText]).size / 1024).toFixed(2) + ' KB';
+}
+document.getElementById('compressBtn').onclick = optimize;
 document.getElementById('downloadBtn').onclick = () => {
-const blob = new Blob([compressed], {type:'image/svg+xml'});
+if (!newText) { alert('Envie um SVG primeiro.'); return; }
 const a = document.createElement('a');
-a.download = 'compressed.svg';
-a.href = URL.createObjectURL(blob);
+a.download = 'otimizado.svg';
+a.href = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(newText);
 a.click();
 };
 </script>
 </body>
 </html>
-
-

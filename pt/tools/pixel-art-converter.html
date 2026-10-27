@@ -1,71 +1,296 @@
 ﻿<!DOCTYPE html>
-<html lang="pt" data-theme="dark">
+<html lang="pt" data-theme="dark" data-tool-id="pixel-art-converter">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Conversor de pixel art — transforme fotos em 8 bits</title>
-<meta name="description" content="Converta qualquer imagem em pixel art 8 bits escolhendo a resolução e a paleta. Grátis, no navegador e sem enviar arquivos.">
-<link rel="canonical" href="https://smartimgkit.com/pt/tools/pixel-art-converter">
-<link rel="stylesheet" href="/css/style.css?v=15">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>Converter foto em pixel art — efeito retrô instantâneo</title>
+  <meta name="description" content="Transforme fotos em pixel art com tamanho de bloco ajustável e paleta de cores. Ideal para avatares, jogos e arte retrô. Gratuito, 100 % local, sem envio.">
+  <meta name="keywords" content="pixel art, foto para pixel art, efeito retrô, avatar pixel, converter pixel art">
+  <link rel="canonical" href="https://smartimgkit.com/pt/tools/pixel-art-converter">
+  <link rel="stylesheet" href="/css/style.css?v=15">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+.selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
+.sp-item{display:flex;align-items:center;gap:8px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:999px;padding:8px 16px;font-size:0.85rem;color:var(--text-secondary);font-weight:500}
+.feature-narrative{margin:2.5rem 0;padding:0 1rem}
+.feature-narrative h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.feature-narrative .fn-intro{text-align:center;max-width:680px;margin:0 auto 2rem;color:var(--text-secondary);font-size:1rem;line-height:1.6}
+.fn-block{display:flex;gap:1.5rem;align-items:flex-start;margin:1.5rem 0;padding:1.25rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.fn-block .fn-icon{font-size:2rem;flex-shrink:0}
+.fn-block h3{font-size:1.05rem;color:var(--text-primary);margin:0 0 0.4rem}
+.fn-block p{color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin:0}
+.features-grid-section{margin:2.5rem 0;padding:0 1rem}
+.features-grid-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:0.5rem;text-align:center}
+.features-grid-section .fg-sub{text-align:center;color:var(--text-secondary);font-size:0.95rem;margin-bottom:2rem}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;max-width:1000px;margin:0 auto}
+.feature-card{background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;padding:1.25rem;transition:transform .2s,border-color .2s}
+.feature-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.feature-card .fc-icon{font-size:1.8rem;margin-bottom:0.5rem}
+.feature-card h3{font-size:1rem;color:var(--text-primary);margin:0 0 0.4rem}
+.feature-card p{color:var(--text-secondary);font-size:0.85rem;line-height:1.5;margin:0}
+.trust-badges{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:2rem 0;padding:1.5rem;background:var(--bg-secondary);border-radius:12px;border:1px solid var(--border)}
+.trust-badge{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;min-width:120px}
+.trust-badge .tb-icon{font-size:1.6rem}
+.trust-badge .tb-title{font-size:0.85rem;font-weight:700;color:var(--text-primary)}
+.trust-badge .tb-desc{font-size:0.72rem;color:var(--text-secondary)}
+.faq-section{margin:2.5rem 0;padding:0 1rem}
+.faq-section h2{font-size:1.6rem;color:var(--text-primary);margin-bottom:1rem;text-align:center}
+.faq-item{border:1px solid var(--border);border-radius:8px;margin-bottom:0.5rem;overflow:hidden;background:var(--bg-secondary)}
+.faq-question{width:100%;padding:1rem 1.25rem;background:none;border:none;text-align:left;font-size:0.95rem;font-weight:600;color:var(--text-primary);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.faq-question::after{content:'+';font-size:1.2rem;transition:transform .2s}
+.faq-item.open .faq-question::after{transform:rotate(45deg)}
+.faq-answer{padding:0 1.25rem;max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;color:var(--text-secondary);font-size:0.9rem;line-height:1.6}
+.faq-item.open .faq-answer{padding:0 1.25rem 1rem;max-height:300px}
+@media(max-width:640px){.fn-block{flex-direction:column}.features-grid{grid-template-columns:1fr}.trust-badges{gap:12px}.trust-badge{min-width:90px}}
+.sp-item span.sp-icon{font-size:1rem}
+</style>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Photo to Pixel Art Converter",
+  "name": "Converter foto em pixel art",
   "url": "https://smartimgkit.com/pt/tools/pixel-art-converter",
   "inLanguage": "pt",
-  "description": "Converta qualquer imagem em pixel art 8 bits escolhendo a resolução e a paleta. Grátis, no navegador e sem enviar arquivos.",
+  "description": "Transforme fotos em pixel art com tamanho de bloco ajustável e paleta de cores. Ideal para avatares, jogos e arte retrô. Gratuito, 100 % local, sem envio.",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
   "isAccessibleForFree": true,
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  }
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "O que é pixel art?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Pixel art é uma forma de arte digital em que a imagem é composta por pequenos blocos de cor, como nos videogames clássicos dos anos 80 e 90. O efeito recria essa estética retrô a partir de qualquer foto."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Qual tamanho de bloco devo usar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Blocos pequenos (4 a 8) preservam mais detalhes, ideais para retratos; blocos grandes (12 a 20) criam um visual mais retrô e estilizado, perfeito para avatares e ícones."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Posso escolher a paleta de cores?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim, é possível alternar entre a paleta original da foto, uma paleta retrô limitada (estilo NES) e uma versão em tons de cinza, para diferentes estilos de pixel art."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Minhas fotos são enviadas para um servidor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Não. O processamento é feito no seu navegador, suas fotos nunca saem do seu dispositivo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Qual formato de exportação é oferecido?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A pixel art é exportada em PNG em alta resolução, ideal para avatares, jogos, camisetas e arte digital."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Dá para usar o efeito em avatar do WhatsApp ou do Instagram?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Dá, e é um dos usos mais comuns no Brasil. Use blocos médios de 8 a 12 e a paleta retrô para um rosto reconhecível e estilizado. O avatar pixelado se destaca na lista de contatos do WhatsApp e no feed do Instagram, gerando curiosidade e identificação com a estética gamer."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Posso vender camisetas ou adesivos com pixel art gerado aqui?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim, desde que a foto original seja sua ou que você tenha direito de uso. Microempreendedores estampam em camisetas, canecas e adesivos, usando a paleta retrô para um visual nostálgico. Exporte em alta resolução e confira a borda dos blocos antes de enviar para a gráfica ou para o fornecedor de produtos personalizados."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Foto de personagem de jogo também funciona?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Funciona bem, especialmente em artes conceituais e sprites de jogos indie. Prefira imagens com contornos limpos e cores chapadas, e mantenha o mesmo tamanho de bloco em todos os sprites do projeto para manter a consistência visual. O processamento local permite testar variações sem enviar o personagem para servidores externos."
+      }
+    }
+  ]
 }
 </script>
 </head>
 <body>
-<header class="site-header">
-<a href="/pt/" class="logo">SmartImgKit</a>
-<nav><a href="/pt/tools/">Todas as ferramentas</a><a href="/pt/blog/">Blog</a></nav>
-</header>
-<main class="container">
-<h1>Photo to Pixel Art Converter</h1>
-<p class="lead">Turn any photo into retro 8-bit pixel art style, 100% local processing, no upload, no signup.</p>
-<div class="upload-area" id="dropZone">
-<p>Upload your photo to convert to pixel art</p>
-<input type="file" id="fileInput" accept="image/*" hidden>
-</div>
-<div class="controls" style="margin:1rem 0;">
-<label>Pixel Size: <input type="range" id="pixelSize" min="2" max="50" value="10"> <span id="sizeVal">10px</span></label>
-<button id="downloadBtn" class="primary">Download Pixel Art</button>
-</div>
-<canvas id="canvas" style="max-width:100%;border:1px solid #333;"></canvas>
-</main>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/pt/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
+      <nav class="main-nav"><a href="/pt/">Início</a><a href="/pt/tools/">Ferramentas</a><a href="/pt/blog/">Blog</a><a href="/about">Sobre</a><a href="/contact">Contato</a></nav>
+      <div class="header-actions">
+        <button class="theme-toggle" id="themeToggle">🌙</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+  <main class="tool-page">
+    <div class="container">
+      <div class="tool-page-header">
+        <h1>👾 Converter foto em pixel art</h1>
+        <p>Transforme fotos em pixel art retrô com blocos ajustáveis e paletas de cores. 100 % local, sem envio.</p>
+      </div>
+      <div class="tool-workspace">
+        <div class="upload-area" id="dropZone">
+          <p>Solte sua foto aqui</p>
+          <input type="file" id="fileInput" accept="image/*" hidden>
+        </div>
+        <div class="controls" style="margin:1rem 0;display:flex;gap:1rem;flex-wrap:wrap;align-items:center;">
+          <label>Tamanho do bloco : <input type="range" id="blockSize" min="4" max="24" value="10" style="width:180px;"></label>
+          <label>Paleta :
+            <select id="paletteSel" style="background:var(--bg-primary);color:var(--text-primary);border:1px solid var(--border);border-radius:8px;padding:4px 8px;">
+              <option value="original" selected>Original</option>
+              <option value="retro">Retrô (NES)</option>
+              <option value="gray">Cinza</option>
+            </select>
+          </label>
+          <button id="downloadBtn" class="btn btn-primary">Baixar pixel art</button>
+        </div>
+        <canvas id="canvas" style="max-width:100%;border:1px solid #333;display:none;"></canvas>
+      </div>
+      <div class="selling-points">
+        <div class="sp-item"><span class="sp-icon">👾</span>Estética retrô instantânea</div>
+        <div class="sp-item"><span class="sp-icon">🔒</span>100 % local, sem envio</div>
+        <div class="sp-item"><span class="sp-icon">🆓</span>Gratuito, sem cadastro</div>
+      </div>
+      <section class="feature-narrative">
+        <h2>A estética dos videogames clássicos, nas suas fotos</h2>
+        <p class="fn-intro">O pixel art remete aos videogames dos anos 80 e 90, quando as imagens eram compostas por blocos de cor visíveis. Hoje, essa estética retrô é uma tendência criativa: avatares, ícones, artes de perfil e ilustrações em pixel art aparecem em todos os lugares. Este conversor transforma qualquer foto nesse estilo, com controle do tamanho do bloco e da paleta de cores.</p>
+        <div class="fn-block"><div class="fn-icon">👾</div><div><h3>Blocos ajustáveis</h3><p>Do detalhe fino (4 px) ao retrô marcado (24 px), o tamanho do bloco define o estilo da arte.</p></div></div>
+        <div class="fn-block"><div class="fn-icon">🎨</div><div><h3>Paletas de cores</h3><p>Original, retrô estilo NES ou tons de cinza — escolha a paleta que combina com a sua arte.</p></div></div>
+        <div class="fn-block"><div class="fn-icon">🔒</div><div><h3>100 % local</h3><p>O processamento é feito no seu navegador, suas fotos nunca saem do seu dispositivo.</p></div></div>
+      </section>
+      <section class="features-grid-section">
+        <h2>O essencial para arte retrô</h2>
+        <p class="fg-sub">Simples, retrô e privado.</p>
+        <div class="features-grid">
+          <div class="feature-card"><div class="fc-icon">👾</div><h3>Pixel art real</h3><p>Blocos de cor estilo videogame.</p></div>
+          <div class="feature-card"><div class="fc-icon">🎨</div><h3>Paletas variadas</h3><p>Original, retrô ou cinza.</p></div>
+          <div class="feature-card"><div class="fc-icon">🔒</div><h3>Privacidade</h3><p>Sem envio, sem conta.</p></div>
+          <div class="feature-card"><div class="fc-icon">🆓</div><h3>Grátis para sempre</h3><p>Sem cadastro e sem marca extra.</p></div>
+          <div class="feature-card"><div class="fc-icon">🌐</div><h3>Multi-dispositivos</h3><p>Computador e celular.</p></div>
+          <div class="feature-card"><div class="fc-icon">💾</div><h3>Exportação PNG</h3><p>Alta resolução para qualquer uso.</p></div>
+        </div>
+      </section>
+      <div class="trust-badges">
+        <div class="trust-badge"><div class="tb-icon">🔒</div><div class="tb-title">100 % privado</div><div class="tb-desc">Os arquivos não saem do navegador</div></div>
+        <div class="trust-badge"><div class="tb-icon">⚡</div><div class="tb-title">Resultado imediato</div><div class="tb-desc">Efeito aplicado em tempo real</div></div>
+        <div class="trust-badge"><div class="tb-icon">💯</div><div class="tb-title">Grátis para sempre</div><div class="tb-desc">Sem cadastro e sem marca extra</div></div>
+        <div class="trust-badge"><div class="tb-icon">🚀</div><div class="tb-title">Sem instalação</div><div class="tb-desc">Funciona no navegador</div></div>
+      </div>
+      <section class="localization-section">
+        <h2 style="text-align:center;margin-bottom:20px;">Pixel art na cultura gamer brasileira</h2>
+        <p>No Brasil, a cultura gamer é gigante: dos fliperamas e consoles clássicos aos jogos indie atuais, o pixel art mantém um lugar especial no coração dos jogadores. Transformar uma foto em pixel art é uma forma de homenagear essa estética — avatares de perfil, logos de times de e-sports, capas de vídeos e artes de camisetas usam o estilo retrô como identidade visual.</p>
+        <p>Para criadores de conteúdo de games, o pixel art é uma forma de diferenciar o canal: uma foto transformada em pixel art na abertura do vídeo ou na capa da thumbnail chama a atenção e conecta com o público que ama a estética dos clássicos. O efeito também é popular em artes de perfil de WhatsApp e redes sociais.</p>
+        <p>Dica: para avatares, use blocos médios (8 a 12) e a paleta retrô; para artes grandes, blocos de 4 a 6 preservam mais detalhes; para um visual bem marcado, blocos de 16 a 24 criam o efeito mais estilizado.</p>
+        <p>Além dos usos criativos, a estética pixelada também aparece em campanhas de grandes marcas que querem falar com o público jovem: anúncios de energia, bancos digitais e aplicativos usam referências de videogame para criar identificação imediata. Para pequenos negócios, transformar o logo em pixel art é uma forma barata de criar uma versão divertida da marca para eventos, camisetas e materiais promocionais. Professores e escolas de informática usam a ferramenta em oficinas de design, mostrando na prática como a resolução e a paleta de cores influenciam o resultado visual. E para quem coleciona cartazes e artes retrô, converter fotos de família em pixel art é uma forma nostálgica de relembrar momentos com a estética dos jogos que marcaram gerações. Como o processamento é local, cada experimentação é gratuita e ilimitada, permitindo explorar todas as combinações de blocos, paletas e formatos sem pressa.</p>
+        <p>Um cuidado importante é escolher imagens com contornos claros e áreas de cor uniforme, pois o pixel art valoriza formas simples. Fotos com muito ruído ou iluminação irregular tendem a gerar blocos confusos, que perdem a identidade do assunto. Para retratos, prefira fotos frontais e bem iluminadas; para objetos, fundos neutros ajudam o contorno a aparecer. Você também pode combinar o pixel art com recortes: transforme apenas o produto ou a pessoa em pixel art sobre um fundo limpo, criando um contraste moderno. Nas redes sociais, avatares pixelados se destacam em listas de contatos e em comentários, gerando curiosidade e reconhecimento. Com essas orientações, cada conversão produz uma arte coesa e agradável, seja para um projeto profissional ou para um toque pessoal em suas redes.</p>
+        <p>Para quem quer vender arte pixelada, o estilo retrô tem mercado garantido: pôsteres, camisetas, adesivos e capas de celular com pixel art são procurados em feiras e lojas online, especialmente entre fãs de videogames. Um diferencial é criar séries temáticas, como personagens de games clássicos ou ícones de cultura pop, que funcionam bem como coleções. Em encomendas personalizadas, transformar a foto do cliente em pixel art é um produto criativo e de baixo custo de produção, com alto valor emocional. Nas redes sociais, oferecer versões pixeladas de fotos do público gera interação e compartilhamentos espontâneos. E para quem mantém uma loja de artes digitais, a conversão instantânea permite testar novos designs e responder rapidamente às tendências, mantendo o catálogo sempre atualizado.</p>
+        <p>Para criar peças memoráveis, combine o pixel art com uma narrativa: uma série que conta uma história curta, como a jornada de um personagem em três frames, engaja muito mais do que artes isoladas. Nas redes sociais, postar o processo de criação (da foto original ao pixel art final) gera curiosidade e aproxima o público do artista. Em festas temáticas e eventos de games, o pixel art aplicado em convites, banners e lembrancinhas cria uma identidade visual completa e divertida. E para quem ensina, transformar desenhos dos alunos em pixel art é uma atividade lúdica que conecta arte digital e matemática, explorando noções de grade e cor. Com essas ideias, o conversor alimenta não apenas a produção de imagens, mas também a criatividade e o engajamento do público em diferentes projetos.</p>
+      </section>
+      <section class="localization-section">
+        <h2 style="text-align:center;margin-bottom:20px;">Pixel art para jogos e projetos indie</h2>
+        <p>Para desenvolvedores de jogos indie brasileiros, o pixel art é uma escolha estética comum: além de charme retrô, ele é leve e econômico de produzir. Converter fotos de referência em pixel art ajuda a criar sprites, texturas e artes conceituais de forma rápida, mantendo a consistência visual do projeto.</p>
+        <p>Designers também usam o pixel art em camisetas, adesivos, canecas e materiais de eventos: a estética retrô tem forte apelo nostálgico e se destaca em produtos e campanhas voltados ao público gamer. Um logo ou mascote em pixel art é memorável e diferencia a marca.</p>
+        <p>O processamento 100 % local é ideal: artes de jogos em desenvolvimento, designs de produtos e materiais confidenciais são processados sem sair do dispositivo.</p>
+        <p>Para estúdios que assinam contratos de confidencialidade, essa privacidade é essencial: nenhuma imagem de personagem, cenário ou protótipo é enviada a servidores externos, eliminando o risco de vazamento antes do anúncio oficial. Criadores de conteúdo podem preparar artes surpresa para lançamentos sem revelar nada prematuramente. Escolas de game design usam a ferramenta em laboratórios, permitindo que alunos convertam fotos em sprites com total segurança e sem custo. E para agências de marketing que desenvolvem campanhas temáticas de games, o conversor acelera a produção de artes de apoio, mantendo a consistência visual exigida pelo briefing. O resultado é uma ferramenta que combina criatividade, rapidez e segurança, adaptada às necessidades de quem trabalha com propriedade intelectual e conteúdo exclusivo no dia a dia profissional.</p>
+        <p>Para projetos de jogos, o fluxo mais eficiente é preparar a arte em alta resolução e testar diferentes tamanhos de bloco até encontrar o estilo do projeto, mantendo um padrão único para todos os sprites. Isso evita a mistura de estilos que deixa a produção visual desorganizada. Documente também os parâmetros usados (tamanho de bloco e paleta) para reproduzir o mesmo visual em atualizações futuras, sem depender de memória. Se o jogo for publicado em múltiplas plataformas, gere versões em diferentes resoluções a partir do mesmo original, garantindo consistência em telas de tamanhos distintos. E para artes de divulgação, use o mesmo estilo do jogo nas capas e banners, criando uma identidade forte desde o anúncio. Com essa organização, o pixel art se torna parte integrante do processo criativo, acelerando a produção e valorizando o trabalho da equipe.</p>
+        <p>Para projetos colaborativos, definir um padrão visual desde o início evita retrabalho: escolha a paleta e o tamanho de bloco antes de converter as artes, e documente essas escolhas para toda a equipe seguir. Em estúdios que trabalham com propriedade intelectual, o processamento local garante que nenhuma imagem de personagem ou cenário saia do ambiente seguro, protegendo o conteúdo até o lançamento. Para produtoras de conteúdo, o pixel art pode ser usado em capas de episódios e thumbnails, criando uma identidade visual que diferencia o canal na plataforma. E em campanhas publicitárias com temática retrô, a estética pixelada une as peças de mídia, do banner ao post, reforçando o conceito da campanha. Com esse fluxo organizado, a equipe ganha velocidade e consistência, transformando o pixel art em um recurso confiável do processo criativo.</p>
+        <p>Um detalhe técnico que melhora o resultado é a escolha da resolução de saída: para artes usadas em telas, uma resolução próxima da tela alvo evita o efeito borrado causado pela ampliação dos blocos; para impressões, gere versões maiores e verifique a nitidez em tamanho real. Ao comparar as opções de tamanho de bloco, observe como os detalhes do rosto e os contornos principais são preservados em cada configuração. Para artes com muito texto, lembre-se de que a pixelização reduz a legibilidade, então prefira blocos grandes e fontes simples. E se o resultado ficar com cores muito vibrantes, reduza o número de cores da paleta para um visual mais equilibrado e coeso. Com esses ajustes técnicos, cada conversão atinge o padrão visual desejado, seja para um jogo, uma campanha ou uma arte pessoal.</p>
+      </section>
+      <section class="localization-section">
+        <h2 style="text-align:center;margin-bottom:20px;">Como escolher bloco e paleta</h2>
+        <p>O tamanho do bloco define o estilo: blocos pequenos (4 a 8) preservam a fisionomia e os detalhes, ideais para retratos e fotos de pessoas; blocos médios (10 a 14) equilibram detalhe e estética retrô, perfeitos para avatares e ícones; blocos grandes (16 a 24) criam um visual bem pixelado e estilizado, ideal para artes gráficas.</p>
+        <p>A paleta muda completamente o clima: a paleta original mantém as cores da foto; a retrô (estilo NES) reduz as cores a uma paleta limitada de tons clássicos, criando o visual autêntico dos videogames; a versão em cinza produz um pixel art monocromático, elegante e minimalista.</p>
+        <p>Experimente combinações: uma foto de rosto com blocos de 10 e paleta retrô cria um avatar clássico; a mesma foto com blocos de 6 e paleta original vira uma arte detalhada. O processamento em tempo real permite testar até encontrar o estilo perfeito.</p>
+        <p>Um ponto que faz diferença é a preparação da foto: recorte o assunto principal antes de converter, pois o pixel art amplia imperfeições de enquadramento. Fotos com áreas de cor uniforme, como céu limpo ou paredes lisas, produzem resultados mais limpos, enquanto fundos muito texturizados geram ruído visual. Se o resultado parecer artificial, reduza o número de cores da paleta; se estiver detalhado demais, aumente o tamanho do bloco. Para artes que serão usadas em tamanho grande, exporte em alta resolução e verifique o contorno das formas; para ícones pequenos, blocos maiores garantem legibilidade. Com a prática, você desenvolve um olhar para escolher a combinação ideal de bloco, paleta e formato para cada tipo de imagem, criando artes originais que se destacam em qualquer lugar, das redes sociais aos produtos impressos.</p>
+        <p>Em camisetas e produtos impressos, o pixel art pede uma resolução de saída maior do que para telas, pois a impressão amplia os blocos e pode revelar bordas desalinhadas. Confira a arte em tamanho real antes de enviar para gráfica e, se possível, peça uma prova. Para adesivos e imãs, blocos médios funcionam bem e mantêm o charme retrô em formatos pequenos. Em apresentações e capas de vídeo, o pixel art pode ser combinado com tipografia grossa e cores do estilo retrô, criando um conjunto coeso. E para quem desenvolve material de festas e eventos temáticos, o estilo pixelado dá um toque lúdico que agrada públicos de todas as idades. Com essas considerações, você aproveita o potencial do pixel art em todos os suportes, sem surpresas na hora da impressão ou da publicação.</p>
+        <p>Uma vantagem do processamento local é a liberdade de experimentação: você pode testar dezenas de combinações de bloco, paleta e formato em minutos, sem custo e sem espera, comparando os resultados lado a lado até encontrar o estilo ideal. Essa agilidade é valiosa em projetos com prazo apertado, quando o cliente pede variações rápidas do mesmo design. Para quem ensina, a ferramenta também é útil em aulas de arte digital: os alunos entendem na prática como a resolução e a quantidade de cores mudam a aparência da imagem, conectando a teoria à produção. E para criadores que buscam inspiração, converter fotos do cotidiano em pixel art revela formas e composições surpreendentes, que podem servir de ponto de partida para novas criações. Com essa combinação de liberdade e praticidade, o conversor se torna uma ferramenta indispensável no repertório de qualquer artista ou produtor de conteúdo.</p>
+        <p>Ao final, vale revisar a arte em diferentes telas antes da divulgação: o pixel art em monitores de alta densidade pode parecer mais suave, enquanto em telas de baixa resolução os blocos ganham destaque. Confira também o contraste da imagem em modo escuro e claro, pois o estilo pixelado muda bastante conforme o brilho do dispositivo. Se a arte for usada em um jogo, teste-a no tamanho real de exibição junto com outros sprites, verificando a harmonia entre as peças. Para artes vendidas como produto, registre os parâmetros usados em cada criação, permitindo reproduzir o mesmo estilo em novas encomendas. Com esses últimos cuidados, o pixel art produzido pela ferramenta estará pronto para qualquer destino, com qualidade consistente e impacto visual garantido.</p>
+      </section>
+      <section class="faq-section">
+        <h2>Perguntas frequentes</h2>
+        <div class="faq-item"><button class="faq-question">O que é pixel art?</button><div class="faq-answer">Pixel art é uma forma de arte digital em que a imagem é composta por pequenos blocos de cor, como nos videogames clássicos dos anos 80 e 90. O efeito recria essa estética retrô a partir de qualquer foto.</div></div>
+        <div class="faq-item"><button class="faq-question">Qual tamanho de bloco devo usar?</button><div class="faq-answer">Blocos pequenos (4 a 8) preservam mais detalhes, ideais para retratos; blocos grandes (12 a 20) criam um visual mais retrô e estilizado, perfeito para avatares e ícones.</div></div>
+        <div class="faq-item"><button class="faq-question">Posso escolher a paleta de cores?</button><div class="faq-answer">Sim, é possível alternar entre a paleta original da foto, uma paleta retrô limitada (estilo NES) e uma versão em tons de cinza, para diferentes estilos de pixel art.</div></div>
+        <div class="faq-item"><button class="faq-question">Minhas fotos são enviadas para um servidor?</button><div class="faq-answer">Não. O processamento é feito no seu navegador, suas fotos nunca saem do seu dispositivo.</div></div>
+        <div class="faq-item"><button class="faq-question">Qual formato de exportação é oferecido?</button><div class="faq-answer">A pixel art é exportada em PNG em alta resolução, ideal para avatares, jogos, camisetas e arte digital.</div></div>
+        <div class="faq-item"><button class="faq-question">Dá para usar o efeito em avatar do WhatsApp ou do Instagram?</button><div class="faq-answer">Dá, e é um dos usos mais comuns no Brasil. Use blocos médios de 8 a 12 e a paleta retrô para um rosto reconhecível e estilizado. O avatar pixelado se destaca na lista de contatos do WhatsApp e no feed do Instagram, gerando curiosidade e identificação com a estética gamer.</div></div>
+        <div class="faq-item"><button class="faq-question">Posso vender camisetas ou adesivos com pixel art gerado aqui?</button><div class="faq-answer">Sim, desde que a foto original seja sua ou que você tenha direito de uso. Microempreendedores estampam em camisetas, canecas e adesivos, usando a paleta retrô para um visual nostálgico. Exporte em alta resolução e confira a borda dos blocos antes de enviar para a gráfica ou para o fornecedor de produtos personalizados.</div></div>
+        <div class="faq-item"><button class="faq-question">Foto de personagem de jogo também funciona?</button><div class="faq-answer">Funciona bem, especialmente em artes conceituais e sprites de jogos indie. Prefira imagens com contornos limpos e cores chapadas, e mantenha o mesmo tamanho de bloco em todos os sprites do projeto para manter a consistência visual. O processamento local permite testar variações sem enviar o personagem para servidores externos.</div></div>
+      </section>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. Todos os direitos reservados.</p></div>
+    </div>
+  </footer>
+  <script src="/js/main.js?v=8"></script>
+  <script src="../../js/lang.js"></script>
 <script>
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 let img = new Image();
 document.getElementById('dropZone').onclick = () => document.getElementById('fileInput').click();
-document.getElementById('fileInput').onchange = (e) => {const f=e.target.files[0]; const r=new FileReader(); r.onload=(ev)=>{img.onload=()=>{canvas.width=img.width;canvas.height=img.height;draw();};img.src=ev.target.result;}; r.readAsDataURL(f);};
+document.getElementById('fileInput').onchange = (e) => {const f=e.target.files[0]; const r=new FileReader(); r.onload=(ev)=>{img.onload=()=>{canvas.style.display='block';draw();};img.src=ev.target.result;}; r.readAsDataURL(f);};
 function draw() {
-const ps = parseInt(document.getElementById('pixelSize').value);
-document.getElementById('sizeVal').textContent = ps+'px';
-ctx.drawImage(img,0,0);
-const w = canvas.width, h = canvas.height;
+const bs = parseInt(document.getElementById('blockSize').value);
+const pal = document.getElementById('paletteSel').value;
 const temp = document.createElement('canvas');
-temp.width = w/ps; temp.height = h/ps;
+temp.width = img.width; temp.height = img.height;
 const tctx = temp.getContext('2d');
-tctx.drawImage(img,0,0,w/ps,h/ps);
-ctx.imageSmoothingEnabled = false;
-ctx.drawImage(temp,0,0,w,h);
+tctx.drawImage(img, 0, 0);
+const sw = Math.max(1, Math.floor(img.width / bs));
+const sh = Math.max(1, Math.floor(img.height / bs));
+const small = document.createElement('canvas');
+small.width = sw; small.height = sh;
+const sctx = small.getContext('2d');
+sctx.drawImage(temp, 0, 0, sw, sh);
+const d = sctx.getImageData(0, 0, sw, sh);
+const data = d.data;
+if (pal === 'gray') {
+for (let i = 0; i < data.length; i += 4) {
+const g = 0.299*data[i] + 0.587*data[i+1] + 0.114*data[i+2];
+data[i]=g; data[i+1]=g; data[i+2]=g;
 }
-document.getElementById('pixelSize').oninput = draw;
-document.getElementById('downloadBtn').onclick = () => {const a=document.createElement('a');a.download='pixel-art.png';a.href=canvas.toDataURL('image/png');a.click();};
+} else if (pal === 'retro') {
+const steps = [0, 85, 170, 255];
+for (let i = 0; i < data.length; i += 4) {
+const q = (v) => { let best=0, bd=999; for(const s of steps){const d2=Math.abs(v-s); if(d2<bd){bd=d2;best=s;}} return best; };
+data[i]=q(data[i]); data[i+1]=q(data[i+1]); data[i+2]=q(data[i+2]);
+}
+}
+sctx.putImageData(d, 0, 0);
+ctx.imageSmoothingEnabled = false;
+canvas.width = sw * bs; canvas.height = sh * bs;
+ctx.drawImage(small, 0, 0, canvas.width, canvas.height);
+}
+document.getElementById('blockSize').oninput = draw;
+document.getElementById('paletteSel').onchange = draw;
+document.getElementById('downloadBtn').onclick = () => {
+if (!img.src) { alert('Envie uma foto primeiro.'); return; }
+const a=document.createElement('a');a.download='pixel-art.png';a.href=canvas.toDataURL('image/png');a.click();
+};
 </script>
 </body>
 </html>
-
-

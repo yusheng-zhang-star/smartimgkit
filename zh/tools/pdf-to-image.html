@@ -179,6 +179,22 @@
         "@type": "Answer",
         "text": "不需要。全部在浏览器内运行——无需应用、插件或扩展。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "PDF 带密码，可以转换吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不支持带密码保护的 PDF。请先解除文档加密，或使用没有访问限制的 PDF 版本。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "转换后的图片可以再压缩吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "可以。转出的 JPG/WebP 如需进一步减小体积，可用站内 图片压缩工具处理，在几乎不损失画质的情况下再压缩一轮。"
+      }
     }
   ]
 }
@@ -327,19 +343,23 @@
       </div>
 
       <section class="feature-narrative">
-        <h2>PDF 转图片：将 PDF 页面转为高质量图片</h2>
-        <p class="fn-intro">这款免费的 pdf转图片在线工具让你将 PDF 页面转为高质量图片。全部在浏览器本地处理，无需上传、无需注册。</p>
+        <h2>PDF 转图片：把 PDF 页面变成 PNG / JPG / WebP</h2>
+        <p class="fn-intro">PDF 转图片工具在浏览器本地完成全部渲染，不需要上传文件，不需要注册账号，也没有水印。你只需要选择 PDF、设置输出格式和缩放倍数，每一页就会转成独立的图片文件，可以单张下载或一次性打包成 ZIP。</p>
       <div class="fn-block">
         <div class="fn-icon">⚡</div>
-        <div><h3>将 PDF 页面提取为图片用于演示</h3><p>将 PDF 页面提取为图片用于演示。这是人们使用PDF 转图片最常见的理由之一——几秒内即可在浏览器中完成。</p></div>
+        <div><h3>把 PDF 页面提取成图片，用于演示和分享</h3><p>开会要讲一份 PDF 报告，直接把关键页面转成 PNG 拖进幻灯片，比截图更清晰，也比录屏更省事。导出时可以选 2x 或 3x 缩放，让文字在放大投影后依然锐利。每一页都是独立文件，你只分享需要的几页，而不是把整个 PDF 发给对方。</p></div>
       </div>
       <div class="fn-block">
         <div class="fn-icon">🎯</div>
-        <div><h3>把 PDF 报告转为可分享的图片幻灯片</h3><p>把 PDF 报告转为可分享的图片幻灯片。这是人们使用PDF 转图片最常见的理由之一——几秒内即可在浏览器中完成。</p></div>
+        <div><h3>把合同、票据、简历转成图片用于提交</h3><p>很多在线表单只接受图片格式，不接受 PDF。把合同扫描页、银行流水、发票或简历转成 JPG 后就可以直接上传。输出 JPG 时默认压缩质量 92%，文件体积小、容易通过大小限制，同时文字依然清晰可读。</p></div>
       </div>
       <div class="fn-block">
         <div class="fn-icon">🔒</div>
-        <div><h3>为社交媒体渲染 PDF 页面</h3><p>为社交媒体渲染 PDF 页面。这是人们使用PDF 转图片最常见的理由之一——几秒内即可在浏览器中完成。</p></div>
+        <div><h3>敏感文件不出本机，放心转换</h3><p>身份证明、工资单、内部文档这类敏感 PDF，交给云端工具处理总是让人不放心。这个工具用 pdf.js 在浏览器内渲染页面，文件数据从头到尾不出你的设备，关掉页面即消失。需要处理敏感材料时，这是比上传到在线服务更稳妥的选择。</p></div>
+      </div>
+      <div class="fn-block">
+        <div class="fn-icon">🔍</div>
+        <div><h3>为 OCR 或排版检查准备高清页面图</h3><p>把 PDF 页面以 3x 缩放渲染成 PNG，再配合站内的 <a href="/zh/tools/ocr">OCR 文字识别工具</a>，可以从扫描版 PDF 里提取可编辑文字。高分辨率输出保留了文字的边缘细节，识别准确率比低分辨率截图明显更高。</p></div>
       </div>
       </section>
 
@@ -398,6 +418,59 @@
 
 <h2>详细使用指南</h2>
 
+      <section class="feature-narrative">
+        <h2>渲染原理：为什么输出清晰且不占服务器资源</h2>
+        <p class="fn-intro">理解工具的工作原理，才能选对参数、得到理想的输出。PDF 转图片用的是 pdf.js 渲染引擎，处理全程在你自己的浏览器里完成。</p>
+        <div class="fn-block">
+          <div class="fn-icon">🖥️</div>
+          <div><h3>pdf.js 本地渲染，不上传文件</h3><p>pdf.js 是浏览器端的 PDF 解析与渲染引擎。你选择的 PDF 通过 FileReader 读入内存，pdf.js 解析每一页的矢量内容和字体，再通过 Canvas 把页面绘制成位图。整个过程没有任何一步把文件发送到服务器，这也是"100% 隐私"承诺的来源。</p></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-icon">📐</div>
+          <div><h3>缩放倍数（Scale）决定分辨率</h3><p>PDF 页面本身是矢量数据，理论上可以任意倍率渲染。1x 输出与页面原始尺寸一致，适合预览；2x 是推荐值，文字和线条已经足够清晰，文件体积可控；3x 适合打印、OCR 或需要放大查看细节的场景。缩放倍数越高，生成的长宽像素越多，转换耗时和文件体积也越大。</p></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-icon">🛡️</div>
+          <div><h3>格式与体积的取舍</h3><p>PNG 无损，文字边缘最锐利，适合需要二次编辑或 OCR 的页面；JPG 有损但体积小，适合上传到只收图片的在线表单；WebP 在同等画质下体积比 JPG 更小，适合网页使用。对以文字为主的 PDF 页面，JPG 92% 质量压缩肉眼几乎看不出区别，文件却小得多。</p></div>
+        </div>
+      </section>
+
+      <section class="features-grid-section">
+        <h2>不同格式与缩放的适用场景</h2>
+        <p class="fg-sub">选对组合，输出既清晰又不会文件过大。</p>
+        <div class="features-grid">
+          <div class="feature-card"><div class="fc-icon">🖼️</div><h3>PNG + 3x：OCR 与打印</h3><p>需要把扫描版 PDF 转图片再提取文字，或要打印出来核对，用 PNG 3x 输出，文字细节保留最完整。</p></div>
+          <div class="feature-card"><div class="fc-icon">📤</div><h3>JPG + 2x：上传表单与分享</h3><p>简历、发票、流水这类要提交给在线系统的文件，JPG 2x 清晰度和体积最平衡，绝大多数表单的限制都能满足。</p></div>
+          <div class="feature-card"><div class="fc-icon">🌐</div><h3>WebP + 2x：网页与演示</h3><p>转成 WebP 后直接用于网页配图或文档插图，体积比 PNG 小很多，加载更快。</p></div>
+          <div class="feature-card"><div class="fc-icon">📦</div><h3>批量导出 ZIP：整份处理</h3><p>几十页的 PDF 一次转换，所有页面打包成一个 ZIP 下载，不用逐张点保存。</p></div>
+        </div>
+      </section>
+
+      <section class="feature-narrative">
+        <h2>常见错误与实用技巧</h2>
+        <p class="fn-intro">几个小习惯能让你的转换结果更专业。</p>
+        <div class="fn-block">
+          <div class="fn-icon">⚠️</div>
+          <div><h3>错误一：不设页码范围，整本转换浪费时间</h3><p>200 页的 PDF 全部转完要等很久，还生成一大堆文件。先在页面范围里填上需要的页码（比如 3 到 8），只转换要用的那几页，几秒钟就完成。工具支持页码范围输入，留空才默认全部页面。</p></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-icon">⚠️</div>
+          <div><h3>错误二：需要清晰文字却用 1x 输出</h3><p>1x 输出在手机或电脑屏幕上缩放着看还行，一旦放大或打印，文字边缘就会发虚。凡是打算放大查看、打印或做 OCR 的页面，直接用 2x 或 3x 重转一次，效果立竿见影。</p></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-icon">💡</div>
+          <div><h3>技巧：先转一页看效果，再批量转换</h3><p>不确定哪个格式和缩放合适时，先把第 1 页转出来检查清晰度和体积，满意后再填页码范围批量转换，避免整本转完才发现参数不合适。</p></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-icon">💡</div>
+          <div><h3>技巧：需要可编辑文字就配 OCR</h3><p>PDF 转图片只是把页面变成位图，图片本身没有可编辑文字。如果最终目的是提取文字，转成 PNG 后用站内 <a href="/zh/tools/ocr">OCR 工具</a>识别，再复制到文档里。</p></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-icon">💡</div>
+          <div><h3>技巧：文件太大先压缩 PDF</h3><p>如果 PDF 体积接近 100MB 上限或转换卡顿，先用站内的 PDF 压缩工具减小体积再转换；也可以用 <a href="/zh/tools/image-to-pdf">图片转 PDF</a> 把多张图合成 PDF 后统一处理。</p></div>
+        </div>
+      </section>
+
       <div class="guide-block">
         <h3>Step 1: Upload PDF</h3>
         <p>Click the upload area and select a PDF file.</p>
@@ -442,6 +515,8 @@
 <div class="faq-item"><button class="faq-question">所有页面都会导出吗？</button><div class="faq-answer">是的——每页渲染为独立图片文件。</div></div>
 <div class="faq-item"><button class="faq-question">有文件大小限制吗？</button><div class="faq-answer">支持最大 100MB 的文件。超大文件可能需要多几秒处理。</div></div>
 <div class="faq-item"><button class="faq-question">需要安装任何东西吗？</button><div class="faq-answer">不需要。全部在浏览器内运行——无需应用、插件或扩展。</div></div>
+<div class="faq-item"><button class="faq-question">PDF 带密码，可以转换吗？</button><div class="faq-answer">不支持带密码保护的 PDF。请先解除文档加密，或使用没有访问限制的 PDF 版本。</div></div>
+<div class="faq-item"><button class="faq-question">转换后的图片可以再压缩吗？</button><div class="faq-answer">可以。转出的 JPG/WebP 如需进一步减小体积，可用站内 <a href="/zh/tools/compressor">图片压缩工具</a>处理，在几乎不损失画质的情况下再压缩一轮。</div></div>
       </section>
 
 <section class="related-tools">
@@ -473,6 +548,23 @@
     </a>
   </div>
 </section>
+
+      <section class="feature-narrative">
+        <h2>和在线 PDF 转换网站相比，本地渲染好在哪</h2>
+        <p class="fn-intro">主流在线 PDF 转图片服务通常需要你把文件上传到服务器，然后排队等待、下载结果。这个工具的差异在于整个流程都在你的浏览器里完成。</p>
+        <div class="fn-block">
+          <div class="fn-icon">🔒</div>
+          <div><h3>隐私：文件不出设备</h3><p>在线网站会把 PDF 上传到云端处理，敏感内容等于经过了第三方服务器。本地渲染没有任何上传动作，工资单、证件、内部资料都可以放心转换，这是两者最本质的区别。</p></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-icon">⚡</div>
+          <div><h3>速度与额度：不限次数、不排队</h3><p>在线服务普遍有免费转换次数限制、每日额度或水印。本地渲染没有任何次数限制，也没有等待队列，转换速度只取决于你设备的性能。不需要注册账号，打开页面就能用。</p></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-icon">📊</div>
+          <div><h3>功能对比速览</h3><p>在线网站通常支持多种输出格式但限制免费额度，有的还会在输出图上加水印；本地工具输出 PNG/JPG/WebP 三选一、支持 1x–3x 缩放、可指定页码范围、可打包 ZIP，且无任何使用限制。如果你只需要把页面转成清晰图片、不想上传敏感文件，本地渲染是更稳妥的选择。</p></div>
+        </div>
+      </section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
@@ -484,26 +576,26 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand"><a href="/zh/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>尊重您隐私的免费 AI 图像工具。</p></div>
-        <div class="footer-links footer-links-multi"><h4>工具</h4><a href="/zh/tools/background-remover">Background Remover</a><a href="/zh/tools/compressor">Compressor</a><a href="/zh/tools/converter">Converter</a><a href="/zh/tools/resizer">Resizer</a>
-          <a href="/zh/tools/gif-editor">GIF Editor</a>
-          <a href="/zh/tools/pdf-to-image">PDF to Image</a>
+        <div class="footer-links footer-links-multi"><h4>工具</h4><a href="/zh/tools/background-remover">去背景</a><a href="/zh/tools/compressor">图片压缩</a><a href="/zh/tools/converter">格式转换</a><a href="/zh/tools/resizer">尺寸调整</a>
+          <a href="/zh/tools/gif-editor">GIF 编辑器</a>
+          <a href="/zh/tools/pdf-to-image">PDF 转图片</a>
         </div>
         <div class="footer-links footer-links-multi"><h4>更多工具</h4>
           <div class="footer-links-list">
-          <a href="/zh/tools/cropper">Cropper</a><a href="/zh/tools/watermark">Watermark</a><a href="/zh/tools/image-merger">Image Merger</a><a href="/zh/tools/screenshot-to-image">Screenshot to Image</a><a href="/zh/tools/image-filters">Image Filters</a><a href="/zh/tools/svg-to-png">SVG to PNG</a><a href="/zh/tools/image-compare">Image Compare</a><a href="/zh/tools/print-resizer">Print-Ready Resizer</a><a href="/zh/tools/meme-generator">Meme Generator</a>          <a href="/zh/tools/face-blur">Face Blur</a>
-          <a href="/zh/tools/heic-converter">HEIC Converter</a>
-          <a href="/zh/tools/metadata-viewer">Metadata Viewer</a>
-          <a href="/zh/tools/avif-support">AVIF Support</a>
-          <a href="/zh/tools/image-adjust">Image Adjustment</a>
-          <a href="/zh/tools/image-border">Image Border</a>
-          <a href="/zh/tools/image-flip">Image Flip</a>
-          <a href="/zh/tools/image-grayscale">Image Grayscale</a>
-          <a href="/zh/tools/image-shadow">Image Shadow</a>
-          <a href="/zh/tools/image-splitter">Image Splitter</a>
-          <a href="/zh/tools/image-exif-remover">EXIF Remover</a><a href="/zh/tools/circle-crop">Circle Crop</a><a href="/zh/tools/favicon-generator">Favicon Generator</a><a href="/zh/tools/ocr">OCR Text</a><a href="/zh/tools/bulk-processor">Bulk Processor</a><a href="/zh/tools/image-to-pdf">Image to PDF</a>          <a href="/zh/tools/id-photo">ID Photo Maker</a>
-          <a href="/zh/tools/product-white-background">Product White BG</a>
-          <a href="/zh/tools/social-media-post">Social Media Post</a>
-          <a href="/zh/tools/photo-restoration">Photo Restoration</a><a href="/zh/tools/image-enhancer">Image Enhancer</a>
+          <a href="/zh/tools/cropper">图片裁剪</a><a href="/zh/tools/watermark">图片水印</a><a href="/zh/tools/image-merger">图片合并</a><a href="/zh/tools/screenshot-to-image">截图转图片</a><a href="/zh/tools/image-filters">图片滤镜</a><a href="/zh/tools/svg-to-png">SVG 转 PNG</a><a href="/zh/tools/image-compare">图片对比</a><a href="/zh/tools/print-resizer">打印尺寸调整</a><a href="/zh/tools/meme-generator">表情包制作</a>          <a href="/zh/tools/face-blur">人脸打码</a>
+          <a href="/zh/tools/heic-converter">HEIC 转换</a>
+          <a href="/zh/tools/metadata-viewer">元数据查看</a>
+          <a href="/zh/tools/avif-support">AVIF 支持</a>
+          <a href="/zh/tools/image-adjust">图片亮度调整</a>
+          <a href="/zh/tools/image-border">图片边框</a>
+          <a href="/zh/tools/image-flip">图片翻转</a>
+          <a href="/zh/tools/image-grayscale">黑白图片</a>
+          <a href="/zh/tools/image-shadow">图片阴影</a>
+          <a href="/zh/tools/image-splitter">图片分割</a>
+          <a href="/zh/tools/image-exif-remover">EXIF 清除</a><a href="/zh/tools/circle-crop">圆形裁剪</a><a href="/zh/tools/favicon-generator">网站图标生成</a><a href="/zh/tools/ocr">文字识别 OCR</a><a href="/zh/tools/bulk-processor">批量处理</a><a href="/zh/tools/image-to-pdf">图片转 PDF</a>          <a href="/zh/tools/id-photo">证件照制作</a>
+          <a href="/zh/tools/product-white-background">商品白底图</a>
+          <a href="/zh/tools/social-media-post">社媒配图</a>
+          <a href="/zh/tools/photo-restoration">老照片修复</a><a href="/zh/tools/image-enhancer">图片增强放大</a>
           </div>
         </div>
         <div class="footer-links"><h4>法律</h4><a href="/privacy">隐私政策</a><a href="/terms">服务条款</a><a href="/cookie-policy">Cookie 政策</a>

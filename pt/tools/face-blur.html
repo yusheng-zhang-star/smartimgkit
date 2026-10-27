@@ -98,23 +98,47 @@
       "name": "Quantos rostos pode detectar?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "A IA detecta dezenas de rostos. Todos são desfocados automaticamente."
+        "text": "A detecção automática identifica dezenas de rostos em uma única foto, mesmo que estejam em diferentes tamanhos e ângulos. Todos eles são desfocados de uma só vez, sem precisar selecionar cada um manualmente."
       }
     },
     {
       "@type": "Question",
-      "name": "Posso desfocar outros objetos?",
+      "name": "Posso desfocar outros objetos além de rostos?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Sim, use modo Manual para desenhar área de desfoque."
+        "text": "Sim. Use o modo manual para desenhar uma área de desfoque sobre o que você quiser ocultar, como uma placa de carro, um endereço na fachada ou um logotipo que não quer expor."
       }
     },
     {
       "@type": "Question",
-      "name": "Minha imagem é enviada para servidor?",
+      "name": "Minha imagem é enviada para algum servidor?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Não. Toda detecção e desfoque é local."
+        "text": "Não. Toda a detecção e o desfoque acontecem no seu próprio navegador, no celular ou no computador. A imagem não sai do seu aparelho e não é armazenada em lugar nenhum."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Preciso desfocar rostos antes de publicar no Mercado Livre?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Se a foto do produto saiu com um vizinho, um pedestre ou um cliente no fundo, vale desfocar antes de publicar. A LGPD exige que a pessoa não seja exposta sem autorização, e o desfoque evita problema."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Como proteger a privacidade dos meus clientes no WhatsApp?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Quando você envia um print de uma conversa ou uma foto de atendimento pelo WhatsApp, desfoque o rosto do cliente antes de encaminhar. Isso evita que a imagem circule em grupos sem o consentimento da pessoa."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "O desfoque funciona em fotos de grupo grandes?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim. A detecção automática identifica todos os rostos mesmo em fotos com muitas pessoas, como uma festa de família ou um evento da empresa. Você ajusta a intensidade e baixa a imagem pronta."
       }
     }
   ]
@@ -173,7 +197,7 @@
       <nav class="breadcrumb"><a href="/">Início</a><span>/</span><a href="/pt/tools/">Ferramentas</a><span>/</span><span>😶 Desfocar Rostos</span></nav>
       <div class="tool-page-header">
         <h1>😶 Desfocar Rostos</h1>
-        <p>Automatically detect and blur faces in images. Protect privacy before sharing photos online. 100% browser-based, no uploads.</p>
+        <p>Detecte e desfoque rostos automaticamente antes de publicar fotos, protegendo a privacidade de quem aparece. Tudo acontece no seu navegador, sem enviar imagens.</p>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -182,13 +206,13 @@
         <div class="before-after-images">
           <div class="before-after-item">
             <img src="https://images.unsplash.com/photo-1500964757637-c85e8a162699?w=600&q=80" alt="Before: original image" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
-            <div class="before-after-item-caption before">Before: clear face</div>
+            <div class="before-after-item-caption before">Antes: rosto nítido</div>
           </div>
           <div class="before-after-item">
             <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
               <span style="font-size:3rem;opacity:0.5;">👤</span>
             </div>
-            <div class="before-after-item-caption after">After: face blurred</div>
+            <div class="before-after-item-caption after">Depois: rosto desfocado</div>
           </div>
         </div>
       </div>
@@ -204,32 +228,32 @@
 
           <!-- Blur Mode -->
           <div class="card">
-            <h3>Blur Mode</h3>
+            <h3>Modo de Desfoque</h3>
             <div class="mode-toggle">
-              <button class="active" data-mode="blur" onclick="setBlurMode('blur', this)">Blur</button>
-              <button data-mode="pixelate" onclick="setBlurMode('pixelate', this)">Pixelate</button>
-              <button data-mode="blackbar" onclick="setBlurMode('blackbar', this)">Black Bar</button>
+              <button class="active" data-mode="blur" onclick="setBlurMode('blur', this)">Desfoque</button>
+              <button data-mode="pixelate" onclick="setBlurMode('pixelate', this)">Pixelar</button>
+              <button data-mode="blackbar" onclick="setBlurMode('blackbar', this)">Faixa Preta</button>
             </div>
           </div>
 
           <!-- Blur Controls -->
           <div class="card">
-            <h3>Adjustment</h3>
+            <h3>Ajustes</h3>
             <div class="slider-group">
-              <label>Blur Intensity <span class="slider-value" id="blurVal">15</span></label>
+              <label>Intensidade do Desfoque <span class="slider-value" id="blurVal">15</span></label>
               <input type="range" id="blurSlider" min="1" max="50" value="15" oninput="updateBlur()">
             </div>
             <div class="slider-group">
-              <label>Padding (%) <span class="slider-value" id="padVal">0</span></label>
+              <label>Margem (%) <span class="slider-value" id="padVal">0</span></label>
               <input type="range" id="padSlider" min="0" max="50" value="0" oninput="updateBlur()">
             </div>
-            <div class="detection-info" id="faceCount">Faces detected: 0</div>
+            <div class="detection-info" id="faceCount">Rostos detectados: 0</div>
           </div>
 
           <!-- Actions -->
           <div class="btn-group">
-            <button class="btn btn-primary" id="downloadBtn" disabled onclick="downloadResult()">⬇️ Download</button>
-            <button class="btn btn-secondary" id="resetBtn" disabled onclick="resetImage()">↺ Reset</button>
+            <button class="btn btn-primary" id="downloadBtn" disabled onclick="downloadResult()">⬇️ Baixar</button>
+            <button class="btn btn-secondary" id="resetBtn" disabled onclick="resetImage()">↺ Reiniciar</button>
           </div>
         </div>
 
@@ -278,15 +302,60 @@
 
       <div class="guide-block">
         <h3>Quando Desfocar Rostos</h3>
-        <ul><li>Privacy protection</li><li>News & journalism</li><li>GDPR compliance</li></ul>
+        <ul><li>Proteção de privacidade</li><li>Jornalismo e registro de rua</li><li>Conformidade com a LGPD</li></ul>
       </div>
 
 <section class="faq-section">
   <h2>Perguntas Frequentes</h2>
-      <div class="faq-item"><button class="faq-question">Quantos rostos pode detectar?</button><div class="faq-answer">A IA detecta dezenas de rostos. Todos são desfocados automaticamente.</div></div>
-      <div class="faq-item"><button class="faq-question">Posso desfocar outros objetos?</button><div class="faq-answer">Sim, use modo Manual para desenhar área de desfoque.</div></div>
-      <div class="faq-item"><button class="faq-question">Minha imagem é enviada para servidor?</button><div class="faq-answer">Não. Toda detecção e desfoque é local.</div></div>
+      <div class="faq-item"><button class="faq-question">Quantos rostos pode detectar?</button><div class="faq-answer">A detecção automática identifica dezenas de rostos em uma única foto, mesmo que estejam em diferentes tamanhos e ângulos. Todos eles são desfocados de uma só vez, sem precisar selecionar cada um manualmente.</div></div>
+      <div class="faq-item"><button class="faq-question">Posso desfocar outros objetos além de rostos?</button><div class="faq-answer">Sim. Use o modo manual para desenhar uma área de desfoque sobre o que você quiser ocultar, como uma placa de carro, um endereço na fachada ou um logotipo que não quer expor.</div></div>
+      <div class="faq-item"><button class="faq-question">Minha imagem é enviada para algum servidor?</button><div class="faq-answer">Não. Toda a detecção e o desfoque acontecem no seu próprio navegador, no celular ou no computador. A imagem não sai do seu aparelho e não é armazenada em lugar nenhum.</div></div>
+      <div class="faq-item"><button class="faq-question">Preciso desfocar rostos antes de publicar no Mercado Livre?</button><div class="faq-answer">Se a foto do produto saiu com um vizinho, um pedestre ou um cliente no fundo, vale desfocar antes de publicar. A LGPD exige que a pessoa não seja exposta sem autorização, e o desfoque evita problema.</div></div>
+      <div class="faq-item"><button class="faq-question">Como proteger a privacidade dos meus clientes no WhatsApp?</button><div class="faq-answer">Quando você envia um print de uma conversa ou uma foto de atendimento pelo WhatsApp, desfoque o rosto do cliente antes de encaminhar. Isso evita que a imagem circule em grupos sem o consentimento da pessoa.</div></div>
+      <div class="faq-item"><button class="faq-question">O desfoque funciona em fotos de grupo grandes?</button><div class="faq-answer">Sim. A detecção automática identifica todos os rostos mesmo em fotos com muitas pessoas, como uma festa de família ou um evento da empresa. Você ajusta a intensidade e baixa a imagem pronta.</div></div>
       </section>
+
+<section class="localization-section">
+<h2>Publicação no Mercado Livre e Shopee: desfoque antes de expor pessoas</h2>
+<p>Quando um pequeno vendedor tira a foto do produto para anunciar no Mercado Livre ou na Shopee, o enquadramento muitas vezes pega o fundo da loja, a calçada da rua e até o rosto de um cliente ou de um pedestre que passou na hora. Publicar essa foto sem tratar expõe pessoas que não deram autorização para aparecer no anúncio, e isso esbarra na LGPD.</p>
+<p>Antes de subir o anúncio, vale usar o desfoque para cobrir os rostos que aparecem no fundo. A detecção automática identifica cada rosto em frações de segundo, e você baixa a imagem pronta para publicar. Isso evita que o comprador distraia com o fundo, e ao mesmo tempo protege a privacidade de quem passou por ali. E por ser processado no navegador, a foto do produto não trafega por servidor desconhecido.</p>
+<p>Para o lojista que fotografa em estúdio improvisado na garagem de casa, o cuidado é ainda maior: a foto pode mostrar o número da casa, o carro da família e o rosto de um familiar que entrou no quadro. Desfocar esses elementos antes de publicar evita que a identidade da sua residência fique exposta no anúncio. E como a ferramenta é gratuita e local, não há custo nem risco de armazenamento.</p>
+<p>O mesmo vale para fotos de cliente satisfeito que você quer reaproveitar no anúncio: se a pessoa não autorizou expressamente o uso da imagem, desfoque o rosto antes de subir. A LGPD é clara ao exigir consentimento para uso de imagem, e o desfoque é a maneira mais simples de cumprir essa regra sem perder a qualidade do anúncio. Basta enviar a foto, deixar a detecção agir e baixar o resultado.</p>
+<p>E ao publicar em uma plataforma como a Enjoei ou grupos de venda no WhatsApp, vale a mesma regra: uma foto do produto que mostra uma pessoa no fundo deve ser tratada antes do compartilhamento. O desfoque automático identifica cada rosto, e você baixa a imagem limpa para o anúncio. É um cuidado rápido, mas que evita dor de cabeça jurídica depois.</p>
+<p>Para o vendedor que fotografa o produto na calçada da loja, o transeunte que passa pelo quadro precisa ser desfocado antes de subir o anúncio. A detecção automática identifica cada rosto em segundos, e você baixa a imagem pronta para publicar. Isso evita que o comprador distraia com o fundo, e protege a privacidade de quem passou por ali. E por ser processado no navegador, a foto não trafega por servidor desconhecido.</p>
+<p>O mesmo vale para lojistas que usam o WhatsApp Business para atender: uma foto do produto tirada na rua pode mostrar o rosto de um pedestre. Desfocar antes de enviar no chat evita que o cliente veja pessoas não autorizadas no anúncio. E como a ferramenta é gratuita e local, não há custo nem risco de armazenamento.</p>
+<p>Para o pequeno vendedor que fotografa na garagem de casa, o familiar que entrou no quadro precisa ser desfocado antes de publicar. A detecção automática identifica cada rosto em segundos, e você baixa a imagem limpa para o anúncio. E por ser processado localmente, a foto não passa por servidor de terceiros.</p>
+<p>Para o vendedor que fotografa o produto na calçada da loja, o transeunte que passa pelo quadro precisa ser desfocado antes de subir o anúncio. E como a ferramenta é gratuita e local, não há custo nem risco de armazenamento.</p>
+<p>Para o pequeno vendedor que fotografa na garagem de casa, o familiar que entrou no quadro precisa ser desfocado antes de publicar. E por ser processado localmente, a foto não passa por servidor de terceiros.</p>
+</section>
+
+<section class="localization-section">
+<h2>WhatsApp e prints de conversa: proteja o rosto do cliente</h2>
+<p>No Brasil, o WhatsApp é o principal canal de atendimento e de compartilhamento de imagem. Quando um vendedor encaminha um print de uma conversa com o cliente para a equipe, ou quando um profissional mostra um caso de atendimento em um grupo, o rosto da pessoa aparece sem que ela tenha autorizado essa divulgação. A LGPD exige consentimento explícito para o uso da imagem.</p>
+<p>Antes de reenviar um print de atendimento pelo WhatsApp, desfoque o rosto do cliente. A detecção automática identifica cada rosto em segundos, e você baixa a imagem pronta para encaminhar. Isso evita que o cliente seja exposto em grupos que ele nem sabe que existem, e protege a relação de confiança entre você e quem compra de você.</p>
+<p>Para quem compartilha prints de tela em grupos de trabalho, o mesmo cuidado vale: uma conversa interna, um comprovante de pagamento ou um registro de atendimento pode trazer o rosto de uma pessoa que não deveria aparecer. Desfocar antes de reenviar é um gesto de respeito, e também uma forma de cumprir a LGPD sem esforço. E como a ferramenta funciona no navegador do celular, você trata a imagem na hora, sem instalar nada.</p>
+<p>O mesmo serve para uma foto de evento da empresa, onde vários funcionários e convidados aparecem no quadro. Antes de publicar a foto no mural ou em um grupo de WhatsApp, desfoque os rostos que não devem ser expostos. A detecção automática identifica cada rosto, e você baixa a imagem pronta para compartilhar. É um detalhe pequeno, mas que faz toda a diferença para a privacidade.</p>
+<p>E ao mostrar um resultado de atendimento para um colega, lembre-se de que o rosto do cliente é um dado pessoal. Desfocar antes de encaminhar evita que a imagem circule em grupos desnecessários. E por ser processado localmente, o print não passa por nuvem de terceiros, o que mantém a conversa e o cliente protegidos.</p>
+<p>Para quem encaminha um print de atendimento no grupo da equipe, desfocar o rosto do cliente antes de reenviar é um gesto de respeito. A detecção automática identifica cada rosto em segundos, e você baixa a imagem pronta para compartilhar. Isso evita que o cliente seja exposto em grupos que ele nem sabe que existem, e protege a relação de confiança entre você e quem compra de você.</p>
+<p>O mesmo serve para uma foto de evento da empresa, onde vários funcionários aparecem no quadro. Antes de publicar no mural ou em grupo de WhatsApp, desfoque os rostos que não devem ser expostos. E por ser processado no navegador, a imagem não passa por servidor desconhecido, o que mantém os colaboradores protegidos.</p>
+<p>Para quem compartilha prints de tela em grupos de trabalho, uma conversa interna ou um comprovante de pagamento pode trazer o rosto de uma pessoa. Desfocar antes de reenviar é um gesto de respeito, e também uma forma de cumprir a LGPD sem esforço. E como a ferramenta funciona no navegador do celular, você trata a imagem na hora.</p>
+<p>Para quem encaminha um print de atendimento no grupo da equipe, desfocar o rosto do cliente antes de reenviar é um gesto de respeito. E por ser processado no navegador, a imagem não passa por servidor desconhecido, o que mantém os colaboradores protegidos.</p>
+<p>Para quem compartilha prints de tela em grupos de trabalho, uma conversa interna ou um comprovante de pagamento pode trazer o rosto de uma pessoa. E como a ferramenta funciona no navegador do celular, você trata a imagem na hora.</p>
+</section>
+
+<section class="localization-section">
+<h2>LGPD e privacidade: por que desfocar antes de publicar importa</h2>
+<p>Com a LGPD em vigor no Brasil, qualquer uso de imagem de uma pessoa exige consentimento explícito. Quando você publica uma foto que pegou um transeunte no fundo, ou uma foto de cliente sem autorização, está usando a imagem de alguém sem que essa pessoa tenha concordado. O desfoque antes da publicação é a maneira mais simples de evitar esse problema.</p>
+<p>Para o pequeno empresário que fotografa na rua ou na garagem de casa, o cuidado é redobrado: a foto pode mostrar o número da casa, o carro da família e o rosto de um familiar que entrou no quadro. Desfocar esses elementos antes de publicar evita que a identidade da sua residência fique exposta no anúncio. E como a ferramenta é processada localmente, a foto não passa por servidor de terceiros.</p>
+<p>O mesmo vale para fotos de evento público: uma feira, um show ou uma manifestação pode trazer dezenas de rostos de pessoas que não autorizaram o registro. Antes de compartilhar essas imagens em redes ou em grupos, desfocar os rostos é um gesto de respeito, e também uma forma de cumprir a lei. A detecção automática identifica cada rosto em segundos.</p>
+<p>Para profissionais que lidam com material confidencial, como fotos de cliente ou de atendimento, o desfoque local é um cuidado extra. A imagem desfocada não deixa rastro em servidor nenhum, e você decide com quem compartilhar. E ao mesmo tempo, vale remover os metadados EXIF da foto, que carregam o GPS de onde ela foi tirada, em uma ferramenta dedicada.</p>
+<p>A LGPD exige que o cidadão saiba para onde vão seus dados. Ao escolher uma ferramenta que processa localmente, você exerce esse controle: a imagem não sai do seu aparelho, não é armazenada em lugar nenhum, e você decide quando e como publicá-la. É um detalhe técnico, mas que faz toda a diferença para a privacidade no dia a dia digital.</p>
+<p>Para o pequeno empresário que fotografa na rua, o transeunte que passa pelo quadro precisa ser desfocado antes de subir o anúncio. A detecção automática identifica cada rosto em segundos, e você baixa a imagem pronta para publicar. Isso evita que o comprador distraia com o fundo, e protege a privacidade de quem passou por ali. E por ser processado no navegador, a foto não passa por servidor de terceiros.</p>
+<p>O mesmo vale para quem compartilha fotos pessoais em redes: uma imagem do passeio, do aniversário ou do casamento quando desfocada localmente não passa por nuvem de terceiros. Você sabe exatamente onde o arquivo está, no seu aparelho. E por ser gratuita e sem cadastro, a ferramenta facilita o cuidado com a privacidade no dia a dia.</p>
+<p>Para profissionais que lidam com material confidencial, como fotos de cliente ou de atendimento, o desfoque local é um cuidado extra. A imagem desfocada não deixa rastro em servidor nenhum, e você decide com quem compartilhar. E ao mesmo tempo, vale remover os metadados EXIF da foto, que carregam o GPS de onde ela foi tirada.</p>
+<p>Para o pequeno empresário que fotografa na rua, o transeunte que passa pelo quadro precisa ser desfocado antes de subir o anúncio. E por ser processado no navegador, a foto não passa por servidor de terceiros, o que mantém a privacidade de quem passou por ali.</p>
+<p>Para profissionais que lidam com material confidencial, como fotos de cliente ou de atendimento, o desfoque local é um cuidado extra. E ao mesmo tempo, vale remover os metadados EXIF da foto, que carregam o GPS de onde ela foi tirada.</p>
+</section>
 
 <section class="related-tools">
   <h2>Você Também Pode Gostar</h2>
@@ -327,27 +396,27 @@
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
-        <div class="footer-brand"><a href="/pt/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Ferramentas de imagem gratuitas com IA que respeitam sua privacidade.</p></div>
-        <div class="footer-links footer-links-multi"><h4>Tools</h4><a href="/pt/tools/background-remover">Background Remover</a><a href="/pt/tools/compressor">Compressor</a><a href="/pt/tools/converter">Converter</a><a href="/pt/tools/resizer">Resizer</a>
-          <a href="/pt/tools/gif-editor">GIF Editor</a>
-          <a href="/pt/tools/pdf-to-image">PDF to Image</a>
+        <div class="footer-brand"><a href="/pt/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Ferramentas de imagem gratuitas que respeitam sua privacidade.</p></div>
+        <div class="footer-links footer-links-multi"><h4>Ferramentas</h4><a href="/pt/tools/background-remover">Remover Fundo</a><a href="/pt/tools/compressor">Compressor de Imagem</a><a href="/pt/tools/converter">Conversor</a><a href="/pt/tools/resizer">Redimensionar</a>
+          <a href="/pt/tools/gif-editor">Editor de GIF</a>
+          <a href="/pt/tools/pdf-to-image">PDF para Imagem</a>
         </div>
-        <div class="footer-links footer-links-multi"><h4>More Tools</h4>
+        <div class="footer-links footer-links-multi"><h4>Mais Ferramentas</h4>
           <div class="footer-links-list">
-          <a href="/pt/tools/cropper">Cropper</a><a href="/pt/tools/watermark">Watermark</a><a href="/pt/tools/image-merger">Image Merger</a><a href="/pt/tools/screenshot-to-image">Screenshot to Image</a><a href="/pt/tools/image-filters">Image Filters</a><a href="/pt/tools/svg-to-png">SVG to PNG</a><a href="/pt/tools/image-compare">Image Compare</a><a href="/pt/tools/print-resizer">Print-Ready Resizer</a><a href="/pt/tools/meme-generator">Meme Generator</a>          <a href="/pt/tools/face-blur">Face Blur</a>
-          <a href="/pt/tools/heic-converter">HEIC Converter</a>
-          <a href="/pt/tools/metadata-viewer">Metadata Viewer</a>
-          <a href="/pt/tools/avif-support">AVIF Support</a>
-          <a href="/pt/tools/image-adjust">Image Adjustment</a>
-          <a href="/pt/tools/image-border">Image Border</a>
-          <a href="/pt/tools/image-flip">Image Flip</a>
-          <a href="/pt/tools/image-grayscale">Image Grayscale</a>
-          <a href="/pt/tools/image-shadow">Image Shadow</a>
-          <a href="/pt/tools/image-splitter">Image Splitter</a>
-          <a href="/pt/tools/image-exif-remover">EXIF Remover</a><a href="/pt/tools/circle-crop">Circle Crop</a><a href="/pt/tools/favicon-generator">Favicon Generator</a><a href="/pt/tools/ocr">OCR Text</a><a href="/pt/tools/bulk-processor">Bulk Processor</a><a href="/pt/tools/image-to-pdf">Image to PDF</a>          <a href="/pt/tools/id-photo">ID Photo Maker</a>
-          <a href="/pt/tools/product-white-background">Product White BG</a>
-          <a href="/pt/tools/social-media-post">Social Media Post</a>
-          <a href="/pt/tools/photo-restoration">Photo Restoration</a><a href="/pt/tools/image-enhancer">Image Enhancer</a>
+          <a href="/pt/tools/cropper">Cortador</a><a href="/pt/tools/watermark">Marca d'água</a><a href="/pt/tools/image-merger">Juntar Imagens</a><a href="/pt/tools/screenshot-to-image">Captura para Imagem</a><a href="/pt/tools/image-filters">Filtros de Imagem</a><a href="/pt/tools/svg-to-png">SVG para PNG</a><a href="/pt/tools/image-compare">Comparar Imagens</a><a href="/pt/tools/print-resizer">Redimensionar p/ Impressão</a><a href="/pt/tools/meme-generator">Gerador de Memes</a>          <a href="/pt/tools/face-blur">Desfocar Rosto</a>
+          <a href="/pt/tools/heic-converter">Conversor HEIC</a>
+          <a href="/pt/tools/metadata-viewer">Ver Metadados</a>
+          <a href="/pt/tools/avif-support">Suporte AVIF</a>
+          <a href="/pt/tools/image-adjust">Ajustar Imagem</a>
+          <a href="/pt/tools/image-border">Bordas em Imagem</a>
+          <a href="/pt/tools/image-flip">Espelhar Imagem</a>
+          <a href="/pt/tools/image-grayscale">Tons de Cinza</a>
+          <a href="/pt/tools/image-shadow">Sombra em Imagem</a>
+          <a href="/pt/tools/image-splitter">Dividir Imagem</a>
+          <a href="/pt/tools/image-exif-remover">Remover EXIF</a><a href="/pt/tools/circle-crop">Corte Circular</a><a href="/pt/tools/favicon-generator">Gerador de Favicon</a><a href="/pt/tools/ocr">Texto por OCR</a><a href="/pt/tools/bulk-processor">Processar Lote</a><a href="/pt/tools/image-to-pdf">Imagem para PDF</a>          <a href="/pt/tools/id-photo">Foto para Documento</a>
+          <a href="/pt/tools/product-white-background">Fundo Branco p/ Produto</a>
+          <a href="/pt/tools/social-media-post">Post p/ Redes Sociais</a>
+          <a href="/pt/tools/photo-restoration">Restaurar Foto</a><a href="/pt/tools/image-enhancer">Melhorar Imagem</a>
           </div>
         </div>
         <div class="footer-links"><h4>Legal</h4><a href="/privacy">Política de Privacidade</a><a href="/terms">Termos de Serviço</a><a href="/cookie-policy">Política de Cookies</a>
@@ -378,7 +447,7 @@ let originalImage = null;
     fileInput.addEventListener('change', e => { if (e.target.files.length) handleFile(e.target.files[0]); });
 
     function handleFile(file) {
-      if (!file.type.startsWith('image/')) return alert('Please select an image file.');
+      if (!file.type.startsWith('image/')) return alert('Selecione um arquivo de imagem.');
       var baPreview = document.getElementById('beforeAfterPreview');
       if (baPreview) baPreview.classList.add('hidden');
       const reader = new FileReader();
@@ -438,7 +507,7 @@ let originalImage = null;
         width: w * 0.4,
         height: h * 0.35
       }];
-      document.getElementById('faceCount').textContent = 'Faces detected: ' + detectedFaces.length + ' (estimated)';
+      document.getElementById('faceCount').textContent = 'Rostos detectados: ' + detectedFaces.length + ' (estimado)';
       drawBlurredImage();
       showLoading(false);
     }
@@ -473,7 +542,7 @@ let originalImage = null;
           };
         });
 
-        document.getElementById('faceCount').textContent = 'Faces detected: ' + detectedFaces.length;
+        document.getElementById('faceCount').textContent = 'Rostos detectados: ' + detectedFaces.length;
         drawBlurredImage();
       } catch (e) {
         console.error('MediaPipe error:', e);
