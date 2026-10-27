@@ -20,6 +20,14 @@
   <meta name="twitter:description" content="Elimina los metadatos EXIF de una imagen o de todo un lote: ubicación GPS, cámara y fechas. Sin subir archivos y sin perder calidad.">
   <meta name="twitter:image" content="https://smartimgkit.com/screenshots/home.png">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/batch-exif-remover">
+  <link rel="alternate" hreflang="pt" href="https://smartimgkit.com/pt/tools/batch-exif-remover">
+  <link rel="alternate" hreflang="id" href="https://smartimgkit.com/id/tools/batch-exif-remover">
+  <link rel="alternate" hreflang="fr" href="https://smartimgkit.com/fr/tools/batch-exif-remover">
+  <link rel="alternate" hreflang="vi" href="https://smartimgkit.com/vi/tools/batch-exif-remover">
+  <link rel="alternate" hreflang="ar" href="https://smartimgkit.com/ar/tools/batch-exif-remover">
+  <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/batch-exif-remover">
+  <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/batch-exif-remover">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/batch-exif-remover">
   <link rel="stylesheet" href="/css/style.css?v=15">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -150,7 +158,7 @@
   <header class="site-header">
     <div class="container header-inner">
       <a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
-      <nav class="main-nav"><a href="/">Home</a><a href="/es/tools/">Tools</a><a href="/blog/">Blog</a><a href="/about">About</a><a href="/contact">Contact</a></nav>
+      <nav class="main-nav"><a href="/es/">Inicio</a><a href="/es/tools/">Herramientas</a><a href="/es/blog/">Blog</a><a href="/about">Acerca de</a><a href="/contact">Contacto</a></nav>
       <div class="header-actions">
         <div class="lang-switcher" style="position:relative;">
           <button class="lang-btn" aria-label="Switch language">🇬🇧 EN</button>
@@ -172,18 +180,18 @@
 
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/es/tools/">Tools</a><span>/</span><span>📦 Batch EXIF Remover</span></nav>
+      <nav class="breadcrumb"><a href="/es/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>📦 Quitar EXIF en Lote</span></nav>
       <div class="tool-page-header">
-        <h1>📦 Batch EXIF Remover</h1>
+        <h1>📦 Quitar EXIF en Lote</h1>
         <p>Elimina los metadatos EXIF de varias imágenes a la vez. Borra ubicación GPS, datos de cámara e información oculta — conserva el formato original. 100% privado, en tu navegador.</p>
       </div>
 
       <div class="selling-points">
-        <div class="sp-item"><span class="sp-icon">📦</span>Batch process multiple images</div>
-        <div class="sp-item"><span class="sp-icon">🎯</span>Preserve original format</div>
-        <div class="sp-item"><span class="sp-icon">📍</span>Remove GPS location</div>
-        <div class="sp-item"><span class="sp-icon">🔒</span>100% private — no upload</div>
-        <div class="sp-item"><span class="sp-icon">🗜️</span>Download as ZIP</div>
+        <div class="sp-item"><span class="sp-icon">📦</span>Procesa varias imágenes a la vez</div>
+        <div class="sp-item"><span class="sp-icon">🎯</span>Conserva el formato original</div>
+        <div class="sp-item"><span class="sp-icon">📍</span>Elimina la ubicación GPS</div>
+        <div class="sp-item"><span class="sp-icon">🔒</span>100% privado, sin subir archivos</div>
+        <div class="sp-item"><span class="sp-icon">🗜️</span>Descarga todo en un ZIP</div>
       </div>
 
       <div class="tool-workspace">
@@ -191,9 +199,9 @@
           <!-- Dropzone -->
           <div class="batch-dropzone" id="dropzone">
             <div class="icon">📸</div>
-            <h3>Drop images here or click to browse</h3>
-            <p>Select multiple images to remove EXIF metadata in batch</p>
-            <div class="formats">JPG, PNG, WebP — Multiple files OK</div>
+            <h3>Arrastra las imágenes aquí o haz clic para buscarlas</h3>
+            <p>Selecciona varias imágenes para quitar sus metadatos EXIF en lote</p>
+            <div class="formats">JPG, PNG, WebP — varios archivos a la vez</div>
             <input type="file" id="fileInput" accept="image/*" multiple style="display:none">
           </div>
 
@@ -201,20 +209,20 @@
           <div class="batch-toolbar" id="toolbar" style="display:none;">
             <div class="batch-stats">
               <div class="batch-stat"><div class="value" id="totalCount">0</div><div class="label">Total</div></div>
-              <div class="batch-stat"><div class="value" id="doneCount">0</div><div class="label">Done</div></div>
-              <div class="batch-stat"><div class="value" id="pendingCount">0</div><div class="label">Pending</div></div>
+              <div class="batch-stat"><div class="value" id="doneCount">0</div><div class="label">Hechas</div></div>
+              <div class="batch-stat"><div class="value" id="pendingCount">0</div><div class="label">Pendientes</div></div>
             </div>
             <div class="batch-actions">
-              <button class="batch-btn primary" id="processAllBtn">🗑️ Process All</button>
-              <button class="batch-btn secondary" id="downloadZipBtn" disabled>🗜️ Download ZIP</button>
-              <button class="batch-btn secondary" id="clearBtn">🗑️ Clear</button>
+              <button class="batch-btn primary" id="processAllBtn">🗑️ Procesar todas</button>
+              <button class="batch-btn secondary" id="downloadZipBtn" disabled>🗜️ Descargar ZIP</button>
+              <button class="batch-btn secondary" id="clearBtn">🗑️ Limpiar</button>
             </div>
           </div>
 
           <!-- Progress -->
           <div id="progressContainer" style="display:none;">
             <div style="display:flex;justify-content:space-between;font-size:0.8rem;color:var(--text-secondary);margin-bottom:4px;">
-              <span id="progressText">Processing...</span>
+              <span id="progressText">Procesando...</span>
               <span id="progressPercent">0%</span>
             </div>
             <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
@@ -227,81 +235,81 @@
 
       <!-- Feature Narrative -->
       <div class="feature-narrative">
-        <h2>Protect Your Privacy in Bulk</h2>
-        <p class="fn-intro">Sharing photos online? Don't expose your location, camera details, and personal data. Batch EXIF Remover strips metadata from dozens of images in seconds.</p>
+        <h2>Protege tu privacidad en lote</h2>
+        <p class="fn-intro">¿Vas a compartir fotos en redes o en tu tienda? No expongas tu ubicación, los datos de tu cámara ni tu información personal. Este removedor borra los metadatos de decenas de imágenes en segundos, todo dentro de tu navegador.</p>
 
         <div class="fn-block">
           <div class="fn-icon">📍</div>
           <div>
-            <h3>Remove GPS Location Data</h3>
-            <p>Most smartphones embed GPS coordinates into every photo. Before sharing to social media, marketplaces, or forums, strip this data to protect your home, workplace, and daily routine.</p>
+            <h3>Elimina los datos de GPS</h3>
+            <p>La mayoría de los celulares guardan las coordenadas GPS de cada foto. Antes de compartir tus imágenes en redes, en Mercado Libre o en WhatsApp, borra esa información para proteger tu casa, tu trabajo y tu rutina diaria.</p>
           </div>
         </div>
 
         <div class="fn-block">
           <div class="fn-icon">📦</div>
           <div>
-            <h3>Process Dozens at Once</h3>
-            <p>No more one-by-one. Upload your entire album, click Process All, and download everything as a convenient ZIP file. Perfect for bloggers, sellers, and photographers.</p>
+            <h3>Procesa decenas de fotos a la vez</h3>
+            <p>Ya no tienes que quitar los metadatos una por una. Sube todo tu álbum, pulsa el botón de procesar todo y descarga las fotos limpias en un solo archivo ZIP. Ideal para vendedores, blogueros y fotógrafos.</p>
           </div>
         </div>
 
         <div class="fn-block">
           <div class="fn-icon">🎯</div>
           <div>
-            <h3>Preserve Original Format & Quality</h3>
-            <p>Unlike other tools that force PNG output, we preserve your original format. JPEGs stay JPEGs with adjustable quality, and PNGs stay lossless. No unnecessary file bloat.</p>
+            <h3>Conserva el formato y la calidad original</h3>
+            <p>A diferencia de otras herramientas que obligan a exportar en PNG, aquí conservamos tu formato original. Las fotos JPEG siguen siendo JPEG con calidad ajustable, y las PNG se mantienen sin pérdida. Sin archivos inflados de más.</p>
           </div>
         </div>
 
         <div class="fn-block">
           <div class="fn-icon">🔒</div>
           <div>
-            <h3>Your Photos Never Leave Your Device</h3>
-            <p>All processing happens locally in your browser. No server uploads, no cloud storage, no privacy risks. Your images stay yours.</p>
+            <h3>Tus fotos nunca salen de tu dispositivo</h3>
+            <p>Todo el procesamiento ocurre localmente en tu navegador. No hay subidas a servidores, ni almacenamiento en la nube, ni riesgos de privacidad. Tus imágenes siguen siendo tuyas, solo tuyas.</p>
           </div>
         </div>
       </div>
 
       <!-- FAQ -->
       <div class="faq-section" style="margin: 2.5rem 0; padding: 0 1rem;">
-        <h2 style="text-align:center; font-size:1.6rem; color:var(--text-primary); margin-bottom:1.5rem;">Frequently Asked Questions</h2>
+        <h2 style="text-align:center; font-size:1.6rem; color:var(--text-primary); margin-bottom:1.5rem;">Preguntas Frecuentes</h2>
         <div class="faq-item" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:10px; margin-bottom:10px; overflow:hidden;">
-          <button class="faq-question" style="width:100%; padding:16px 20px; background:none; border:none; text-align:left; font-size:0.95rem; font-weight:600; color:var(--text-primary); cursor:pointer; display:flex; justify-content:space-between; align-items:center;">Does batch EXIF removal reduce image quality?<span>▼</span></button>
-          <div class="faq-answer" style="padding:0 20px 16px; color:var(--text-secondary); font-size:0.9rem; line-height:1.6; display:none;">No. We use canvas re-encoding which preserves visual quality. For JPEGs, you can choose quality level. The output keeps your original format.</div>
+          <button class="faq-question" style="width:100%; padding:16px 20px; background:none; border:none; text-align:left; font-size:0.95rem; font-weight:600; color:var(--text-primary); cursor:pointer; display:flex; justify-content:space-between; align-items:center;">¿Quitar el EXIF reduce la calidad de la imagen?<span>▼</span></button>
+          <div class="faq-answer" style="padding:0 20px 16px; color:var(--text-secondary); font-size:0.9rem; line-height:1.6; display:none;">No. Re-codificamos la imagen conservando la calidad visual original. En las fotos JPEG puedes ajustar el nivel de calidad, y la salida mantiene el formato que tenías desde el principio.</div>
         </div>
         <div class="faq-item" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:10px; margin-bottom:10px; overflow:hidden;">
-          <button class="faq-question" style="width:100%; padding:16px 20px; background:none; border:none; text-align:left; font-size:0.95rem; font-weight:600; color:var(--text-primary); cursor:pointer; display:flex; justify-content:space-between; align-items:center;">How many images can I process at once?<span>▼</span></button>
-          <div class="faq-answer" style="padding:0 20px 16px; color:var(--text-secondary); font-size:0.9rem; line-height:1.6; display:none;">There's no hard limit, but for best performance we recommend up to 50 images per batch. Larger batches may take longer.</div>
+          <button class="faq-question" style="width:100%; padding:16px 20px; background:none; border:none; text-align:left; font-size:0.95rem; font-weight:600; color:var(--text-primary); cursor:pointer; display:flex; justify-content:space-between; align-items:center;">¿Cuántas imágenes puedo procesar a la vez?<span>▼</span></button>
+          <div class="faq-answer" style="padding:0 20px 16px; color:var(--text-secondary); font-size:0.9rem; line-height:1.6; display:none;">No hay un límite estricto, pero para un mejor rendimiento recomendamos hasta 50 fotos por lote. Lotes más grandes pueden tardar más en procesarse dentro del navegador de tu celular o computadora.</div>
         </div>
         <div class="faq-item" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:10px; margin-bottom:10px; overflow:hidden;">
-          <button class="faq-question" style="width:100%; padding:16px 20px; background:none; border:none; text-align:left; font-size:0.95rem; font-weight:600; color:var(--text-primary); cursor:pointer; display:flex; justify-content:space-between; align-items:center;">Are my photos uploaded to a server?<span>▼</span></button>
-          <div class="faq-answer" style="padding:0 20px 16px; color:var(--text-secondary); font-size:0.9rem; line-height:1.6; display:none;">No. All processing happens locally in your browser. Your photos never leave your device.</div>
+          <button class="faq-question" style="width:100%; padding:16px 20px; background:none; border:none; text-align:left; font-size:0.95rem; font-weight:600; color:var(--text-primary); cursor:pointer; display:flex; justify-content:space-between; align-items:center;">¿Mis fotos se suben a algún servidor?<span>▼</span></button>
+          <div class="faq-answer" style="padding:0 20px 16px; color:var(--text-secondary); font-size:0.9rem; line-height:1.6; display:none;">No. Todo el procesamiento ocurre localmente en tu navegador. Tus fotos nunca salen de tu dispositivo, y no hay almacenamiento en la nube de por medio. Es la forma más segura de proteger tu privacidad.</div>
         </div>
         <div class="faq-item" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:10px; margin-bottom:10px; overflow:hidden;">
-          <button class="faq-question" style="width:100%; padding:16px 20px; background:none; border:none; text-align:left; font-size:0.95rem; font-weight:600; color:var(--text-primary); cursor:pointer; display:flex; justify-content:space-between; align-items:center;">What metadata is removed?<span>▼</span></button>
-          <div class="faq-answer" style="padding:0 20px 16px; color:var(--text-secondary); font-size:0.9rem; line-height:1.6; display:none;">All EXIF data including GPS coordinates, camera model, lens info, shutter speed, aperture, ISO, date/time, and software information.</div>
+          <button class="faq-question" style="width:100%; padding:16px 20px; background:none; border:none; text-align:left; font-size:0.95rem; font-weight:600; color:var(--text-primary); cursor:pointer; display:flex; justify-content:space-between; align-items:center;">¿Qué metadatos se eliminan?<span>▼</span></button>
+          <div class="faq-answer" style="padding:0 20px 16px; color:var(--text-secondary); font-size:0.9rem; line-height:1.6; display:none;">Se borran todos los datos EXIF: coordenadas GPS, modelo de cámara, información del lente, velocidad de obturación, apertura, ISO, fecha y hora, y datos del software con el que se editó la foto.</div>
         </div>
       </div>
 
       <!-- Related Tools -->
       <div style="margin: 2.5rem 0; padding: 0 1rem;">
-        <h2 style="text-align:center; font-size:1.6rem; color:var(--text-primary); margin-bottom:1.5rem;">Related Tools</h2>
+        <h2 style="text-align:center; font-size:1.6rem; color:var(--text-primary); margin-bottom:1.5rem;">Herramientas relacionadas</h2>
         <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px; max-width:900px; margin:0 auto;">
-          <a href="/tools/image-exif-remover" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:12px; padding:1.25rem; text-decoration:none; transition:transform .2s,border-color .2s;">
+          <a href="/es/tools/image-exif-remover" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:12px; padding:1.25rem; text-decoration:none; transition:transform .2s,border-color .2s;">
             <div style="font-size:1.8rem; margin-bottom:0.5rem;">🗑️</div>
-            <strong style="color:var(--text-primary); font-size:1rem;">EXIF Remover</strong>
-            <p style="color:var(--text-secondary); font-size:0.85rem; margin:0.4rem 0 0;">Single image EXIF removal</p>
+            <strong style="color:var(--text-primary); font-size:1rem;">Quitar EXIF</strong>
+            <p style="color:var(--text-secondary); font-size:0.85rem; margin:0.4rem 0 0;">Borra metadatos de una sola imagen</p>
           </a>
-          <a href="/tools/metadata-viewer" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:12px; padding:1.25rem; text-decoration:none; transition:transform .2s,border-color .2s;">
+          <a href="/es/tools/metadata-viewer" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:12px; padding:1.25rem; text-decoration:none; transition:transform .2s,border-color .2s;">
             <div style="font-size:1.8rem; margin-bottom:0.5rem;">📊</div>
-            <strong style="color:var(--text-primary); font-size:1rem;">Metadata Viewer</strong>
-            <p style="color:var(--text-secondary); font-size:0.85rem; margin:0.4rem 0 0;">View EXIF and GPS data</p>
+            <strong style="color:var(--text-primary); font-size:1rem;">Ver Metadatos</strong>
+            <p style="color:var(--text-secondary); font-size:0.85rem; margin:0.4rem 0 0;">Revisa los datos EXIF y de GPS de tu foto</p>
           </a>
-          <a href="/tools/photo-map" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:12px; padding:1.25rem; text-decoration:none; transition:transform .2s,border-color .2s;">
+          <a href="/es/tools/photo-map" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:12px; padding:1.25rem; text-decoration:none; transition:transform .2s,border-color .2s;">
             <div style="font-size:1.8rem; margin-bottom:0.5rem;">📍</div>
-            <strong style="color:var(--text-primary); font-size:1rem;">Photo Location Map</strong>
-            <p style="color:var(--text-secondary); font-size:0.85rem; margin:0.4rem 0 0;">See where photos were taken</p>
+            <strong style="color:var(--text-primary); font-size:1rem;">Mapa de Fotos</strong>
+            <p style="color:var(--text-secondary); font-size:0.85rem; margin:0.4rem 0 0;">Descubre dónde se tomaron tus fotografías</p>
           </a>
         </div>
       </div>
@@ -310,38 +318,99 @@
 
     <section class="amazon-store-section">
       <div class="container">
-        <h2 style="font-size:1.3rem;font-weight:700;text-align:center;margin-bottom:6px;">Recommended Tools for Image Projects</h2>
-        <p style="text-align:center;color:var(--text-secondary);font-size:.9rem;margin-bottom:0;">Check these useful supplies to print and create your edited images.</p>
+        <h2 style="font-size:1.3rem;font-weight:700;text-align:center;margin-bottom:6px;">Equipo recomendado para tus proyectos de foto</h2>
+        <p style="text-align:center;color:var(--text-secondary);font-size:.9rem;margin-bottom:0;">Todo lo que necesitas para imprimir y crear con tus imágenes ya editadas desde el navegador.</p>
         <div class="amazon-store-grid">
           <a class="amazon-card" href="https://www.amazon.com/dp/B000TT7YRY?tag=sendafun20-20" target="_blank" rel="noopener sponsored nofollow">
-            <h3>Glossy Photo Paper</h3>
-            <p>High-quality photo paper for printing your edited pictures.</p>
+            <h3>Papel Fotográfico Brillante</h3>
+            <p>Papel fotográfico de alta calidad para imprimir tus fotos ya retocadas.</p>
           </a>
           <a class="amazon-card" href="https://www.amazon.com/dp/B0BF6T86WD?tag=sendafun20-20" target="_blank" rel="noopener sponsored nofollow">
             <h3>Canon SELPHY CP1500</h3>
-            <p>Wireless compact photo printer — print 4x6 photos from your phone.</p>
+            <p>Impresora de fotos compacta e inalámbrica: imprime fotos de 10x15 cm desde tu celular.</p>
           </a>
           <a class="amazon-card" href="https://www.amazon.com/dp/B0000721Z3?tag=sendafun20-20" target="_blank" rel="noopener sponsored nofollow">
-            <h3>Matte Inkjet Art Paper</h3>
-            <p>Matte heavy-weight paper for art prints & graphic works.</p>
+            <h3>Papel Mate para Arte e Impresión</h3>
+            <p>Papel mate de alto gramaje para impresiones artísticas y trabajos gráficos.</p>
           </a>
           <a class="amazon-card" href="https://www.amazon.com/dp/B08HN37XC1?tag=sendafun20-20" target="_blank" rel="noopener sponsored nofollow">
-            <h3>SanDisk Extreme SSD 1TB</h3>
-            <p>Rugged portable SSD — fast backup for photos, videos, and large files.</p>
+            <h3>SSD SanDisk Extreme de 1TB</h3>
+            <p>Unidad portátil resistente: respaldo rápido para fotos, videos y archivos grandes.</p>
           </a>
           <a class="amazon-card" href="https://www.amazon.com/dp/B00DIHSZCC?tag=sendafun20-20" target="_blank" rel="noopener sponsored nofollow">
-            <h3>Etekcity 24" 5-in-1 Reflector</h3>
-            <p>Ultra-lightweight 8oz reflector — easy to carry on location shoots.</p>
+            <h3>Reflector Etekcity 5 en 1 de 61 cm</h3>
+            <p>Reflector ultraligero, fácil de llevar en tus sesiones de foto al aire libre.</p>
           </a>
         </div>
-        <p class="amazon-disclaimer">As an Amazon Associate, we earn from qualifying purchases.</p>
+        <p class="amazon-disclaimer">Como afiliados de Amazon, obtenemos ingresos por las compras que cumplen los requisitos.</p>
       </div>
     </section>
+
+    <section class="localization-section"><div style="max-width:900px;margin:3rem auto;padding:0 1rem;">
+      <h2 style="margin-bottom:1rem;">Antes de mandar fotos por WhatsApp, borra tu ubicación</h2>
+      <p>En Latinoamérica el WhatsApp es el lugar donde pasa la vida: el grupo de la familia, el grupo de la oficina, el grupo de los amigos del colegio. Cada foto que tomas con el celular guarda, dentro del archivo, las coordenadas GPS exactas del lugar donde la tomaste, el modelo de tu teléfono, la fecha y hora, y hasta información del software con el que la editaste. Cuando mandas una foto por el chat, ese viaje de datos viaja con la imagen, aunque no la veas.</p>
+      <p>Antes de enviar tus fotos al grupo familiar, a tus compañeros de trabajo o a tu cliente, conviene quitar esos metadatos. Así evitas que alguien pueda ver dónde vives, dónde trabajas o a qué hora sueles tomar fotos en la calle. La herramienta hace ese trabajo en segundos: subes las fotos al navegador, pulsas el botón de procesar todo, y descargas las imágenes limpias en un solo archivo ZIP listo para compartir.</p>
+      <p>La idea es sencilla: antes de mandar la foto del almuerzo, del paseo por el centro o de la reunión familiar, préndele una pasada a tus imágenes para borrar la información oculta. Es un hábito de privacidad que no te toma más de dos minutos, y que protege tu dirección, tu rutina y la seguridad de tu familia. Todo ocurre dentro del navegador de tu celular, sin subir archivos a servidores externos.</p>
+      <ul style="line-height:1.8;margin:1rem 0;">
+        <li><strong>Borra las coordenadas GPS:</strong> que nadie sepa la cuadra exacta donde tomaste la foto.</li>
+        <li><strong>Elimina los datos del celular:</strong> modelo, fecha, hora y software de edición quedan fuera de la imagen.</li>
+        <li><strong>Comparte por WhatsApp con tranquilidad:</strong> la foto llega limpia al chat, sin rastro de tu ubicación.</li>
+        <li><strong>Procesa todo el álbum de una vez:</strong> sube veinte fotos y descárgalas todas en un ZIP.</li>
+      </ul>
+      <p>Para los usuarios que cuidan su privacidad, este es el primer paso antes de publicar en redes o mandar fotos por el chat. No necesitas una app especial ni pagar una suscripción: todo sucede en el navegador, y el archivo nunca sale de tu dispositivo. Cuando terminas, compartes la foto limpia y ya, sin explicarle a nadie que tuviste que retocar la imagen.</p>
+      <p>Son pasos muy simples: subes entre 10 y 50 fotos de una sola vez, pulsas el boton de procesar todo, y esperas unos segundos mientras el navegador borra cada coordenada GPS, cada dato del modelo del telefono, cada registro de fecha y hora. Cuando la barra de progreso llega al 100 por ciento, descargas todo el lote en un solo archivo ZIP. Ese archivo lo abres en tu celular, y cada foto ya viene sin la informacion oculta que podria exponer tu casa, tu trabajo o la rutina diaria de tu familia. No hay cargos, no hay registros, no hay servidores externos de por medio.</p>
+      <p>En la practica, esto te lleva menos de tres minutos. Abres el navegador de tu celular, subes el lote de fotos que tomaste el fin de semana, pulsas el boton verde, y esperas a que la barra llegue al final. Descargas el ZIP, lo descomprimes, y cada imagen ya esta limpia. La mandas por WhatsApp al grupo familiar, y nadie puede ver la cuadra exacta donde vives, la hora a la que sales a caminar, ni el modelo de tu telefono. Es el primer paso de privacidad que todo latino deberia dar antes de compartir fotos en el chat.</p>
+      <p>Un detalle final: esta herramienta no necesita cuenta de usuario, no guarda tus archivos en ningun servidor, y no tiene publicidad que interrumpa el proceso. Abres la pagina, subes las fotos, pulsas procesar, y descargas el ZIP. Es la forma mas simple de cuidar tu privacidad y la de tu familia, mientras conservas los recuerdos de las reuniones que tanto quieres guardar.</p>
+    </div></section>
+
+    <section class="localization-section"><div style="max-width:900px;margin:3rem auto;padding:0 1rem;">
+      <h2 style="margin-bottom:1rem;">Fotos de Mercado Libre con metadatos uniformes</h2>
+      <p>Si vendes en Mercado Libre, en Amazon México o en tu propia tienda de Instagram, sabes que cada foto que subes lleva dentro un montón de datos ocultos: coordenadas GPS del lugar donde tomaste la foto del producto, modelo de tu celular, fecha y hora exacta, y hasta el software con el que la retocaste. Antes de publicar tu anuncio, conviene limpiar esa información para que todas las fotos se vean uniformes y profesionales.</p>
+      <p>La herramienta te permite subir todo el lote de fotos del producto en una sola vez, pulsar el botón de procesar todo, y descargar las imágenes limpias en un ZIP. Así tu publicación tiene fotos consistentes, sin datos de cámara que delaten dónde tomaste la foto, y sin información personal que podría filtrarse a tus competidores o a tus clientes.</p>
+      <p>Para un vendedor latino esto significa una ventaja real: preparas tu anuncio desde la cama de tu casa, después del trabajo, sin depender de un diseñador ni pagar software de edición. Subes las fotos, las procesas, y las subes directo a la plataforma de venta. Todo ocurre en el navegador de tu celular, sin exponer tus archivos a servicios externos.</p>
+      <ul style="line-height:1.8;margin:1rem 0;">
+        <li><strong>Fotos uniformes por lote:</strong> todas tus imágenes del mismo producto con los mismos metadatos limpios.</li>
+        <li><strong>Protege tu ubicación:</strong> que nadie vea la dirección exacta donde tomaste las fotos del producto.</li>
+        <li><strong>Publicación profesional:</strong> sin datos de cámara ni software de edición visibles en el archivo.</li>
+        <li><strong>Descarga en ZIP:</strong> todo el lote listo para subir a Mercado Libre o Amazon México.</li>
+      </ul>
+      <p>Cuando preparas tu anuncio, revisa tres cosas antes de publicar: primero, que todas las fotos tengan los metadatos ya limpios; segundo, que el fondo del producto sea consistente; tercero, que ninguna imagen lleve coordenadas GPS de tu casa o de tu local. Todo esto lo logras con un solo lote en el navegador, sin pasos complicados.</p>
+      <p>Un vendedor de Mercado Libre suele subir entre 5 y 12 fotos por producto. Si cada foto lleva las coordenadas GPS de su casa o de su bodega, cualquier comprador podria ver la direccion exacta. Con esta herramienta, subes el lote completo, pulsas procesar todo, y descargas las fotos ya limpias en un ZIP. Asi tu publicacion se ve profesional, tus datos personales quedan protegidos, y no necesitas un diseñador ni un software de edicion costoso para dejar las fotos listas para la venta.</p>
+      <p>En la practica, preparas tu anuncio desde la cama de tu casa, despues de cenar, en menos de diez minutos. Subes las fotos del producto, pulsas el boton, y el navegador borra cada metadato por ti. Descargas el ZIP, subes las imagenes a Mercado Libre, y tu publicacion queda con fotos uniformes, sin datos de camara que delaten donde tomaste la foto. No necesitas una suscripcion mensual, ni un estudio fotográfico, ni un diseñador que te cobre por dejar las fotos listas.</p>
+      <p>Un tip para vendedores: antes de subir el anuncio, revisa que todas las fotos del producto vengan del mismo lote procesado. Si tomaste una foto con otra app que no borra los metadatos, vuelve a procesarla en el navegador. Asi tu publicacion se ve profesional, y los datos de tu bodega o de tu casa quedan protegidos de los compradores y de la competencia.</p>
+      <p>Un detalle final: esta herramienta no necesita cuenta de usuario, no guarda tus fotos en ningun servidor, y no tiene publicidad. Abres la pagina, subes el lote, pulsas procesar, y descargas el ZIP. Es la forma mas simple de dejar tus fotos de Mercado Libre listas para publicar, sin gastar nada.</p>
+    </div></section>
+
+    <section class="localization-section"><div style="max-width:900px;margin:3rem auto;padding:0 1rem;">
+      <h2 style="margin-bottom:1rem;">Fotos familiares limpias antes del grupo de WhatsApp</h2>
+      <p>Las reuniones familiares en Latinoamérica son sagradas: la cena de Navidad, el cumpleaños del abuelo, el Día de Muertos en el panteón, el asado del domingo en el patio. Cuando tomas fotos de esos momentos con el celular, cada archivo guarda coordenadas GPS del lugar, modelo del teléfono, fecha y hora exacta, y datos del software con el que la editaste. Antes de mandarlas al grupo de WhatsApp, conviene quitar esa información oculta.</p>
+      <p>La idea es proteger tu privacidad y la de tu familia: si una foto del altar del Día de Muertos lleva la dirección exacta de tu casa dentro del archivo, esa información viaja con la imagen aunque nadie la vea. Con esta herramienta subes todas las fotos del evento en un lote, pulsas procesar todo, y descargas las imágenes limpias en un ZIP listo para compartir por el chat.</p>
+      <p>Es un hábito simple: antes de mandar la foto del brindis, de la cena o de la foto grupal, préndele una pasada a tus imágenes para borrar los metadatos. No te toma más de dos minutos, y protege tu dirección, tu rutina y la seguridad de toda la familia. Todo sucede en el navegador de tu celular, sin subir archivos a la nube.</p>
+      <ul style="line-height:1.8;margin:1rem 0;">
+        <li><strong>Fotos del Día de Muertos:</strong> limpia los metadatos del altar y de las calaveras de azúcar antes de compartirlas.</li>
+        <li><strong>Cena de Navidad:</strong> borra las coordenadas GPS de la mesa donde tomaste la foto familiar.</li>
+        <li><strong>Brindis de Año Nuevo:</strong> protege la dirección exacta de tu casa dentro del archivo de la foto.</li>
+        <li><strong>Recuerdo para los tíos:</strong> un ZIP de fotos limpias que puedes enviar por el chat familiar sin preocupaciones.</li>
+      </ul>
+      <p>Lo más lindo de todo es que no necesitas explicarle a nadie que limpiaste las fotos: la imagen llega igual de bonita al grupo de WhatsApp, pero sin los datos ocultos que podrían exponer tu ubicación. Es la forma más simple de cuidar tu privacidad y la de tu familia, mientras conservas los recuerdos de las reuniones que tanto quieres guardar.</p>
+      <p>Cada foto que tomas con el celular guarda un viaje de datos oculto: las coordenadas GPS exactas del lugar, el modelo de tu teléfono, la fecha y hora precisa, y la información del software con el que la editaste. Cuando mandas la foto del almuerzo, del paseo por el centro o de la cena familiar al grupo de WhatsApp, ese viaje viaja contigo aunque no lo veas. Por eso conviene procesar el lote en el navegador antes de compartir: subes veinte fotos, pulsas procesar todo, y descargas las imágenes limpias en un ZIP listo para enviar. No necesitas una app especial ni pagar una suscripción mensual, y tus archivos nunca salen de tu dispositivo.</p>
+      <p>Un tip para familias: si tomaste mas de 20 fotos del evento, procesalas en lotes de 20 para que el navegador no se sature. Descarga cada ZIP, revisa que las fotos esten limpias, y las mandas por el chat. Es el habito simple que protege tu direccion, tu rutina y la seguridad de toda la familia, sin que tengas que explicar nada a nadie.</p>
+      <p>Un detalle final: la cena de Navidad, el cumpleaños del abuelo y el altar del Día de Muertos son momentos que quieres conservar. Tomas las fotos con el celular, las subes al navegador, pulsas procesar todo, y descargas el ZIP con las imagenes limpias. Las mandas por el grupo de WhatsApp, y nadie puede ver la direccion de tu casa. Es la forma mas simple de cuidar la privacidad de tu gente, mientras conservas los recuerdos de la reunion.</p>
+    </div></section>
+
+      <div class="faq-item" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:10px; margin-bottom:10px; overflow:hidden;">
+        <button class="faq-question" style="width:100%; padding:16px 20px; background:none; border:none; text-align:left; font-size:0.95rem; font-weight:600; color:var(--text-primary); cursor:pointer; display:flex; justify-content:space-between; align-items:center;">¿Debo borrar los metadatos antes de mandar fotos por WhatsApp?<span>▼</span></button>
+        <div class="faq-answer" style="padding:0 20px 16px; color:var(--text-secondary); font-size:0.9rem; line-height:1.6; display:none;">Sí, es una buena práctica. Cada foto que tomas con el celular guarda coordenadas GPS, modelo del teléfono y datos de edición. Antes de enviarlas al grupo familiar, procesa el lote en el navegador y descarga las imágenes limpias en un ZIP, así proteges tu ubicación y la de tu familia.</div>
+      </div>
+      <div class="faq-item" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:10px; margin-bottom:10px; overflow:hidden;">
+        <button class="faq-question" style="width:100%; padding:16px 20px; background:none; border:none; text-align:left; font-size:0.95rem; font-weight:600; color:var(--text-primary); cursor:pointer; display:flex; justify-content:space-between; align-items:center;">¿Puedo limpiar fotos de producto para mi tienda de Mercado Libre?<span>▼</span></button>
+        <div class="faq-answer" style="padding:0 20px 16px; color:var(--text-secondary); font-size:0.9rem; line-height:1.6; display:none;">Claro. Sube todo el lote de fotos del producto, pulsa el botón de procesar todo y descarga las imágenes limpias en un ZIP. Así tu publicación tiene fotos uniformes, sin datos de cámara que delaten dónde tomaste la foto, y lista para subir directo a la plataforma de venta.</div>
+      </div>
 </main>
 
   <footer class="site-footer">
     <div class="container">
-      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. All rights reserved.</p></div>
+      <div class="footer-bottom"><p>&copy; 2026 SmartImgKit. Todos los derechos reservados.</p></div>
     </div>
   </footer>
 
@@ -406,7 +475,7 @@
             <div class="batch-meta">${(item.file.size / 1024).toFixed(1)} KB · ${item.file.type}</div>
           </div>
           <div class="batch-status ${item.status}">
-            ${item.status === 'pending' ? '⏳ Pending' : item.status === 'processing' ? '🔄 Processing...' : item.status === 'done' ? '✅ Done' : '❌ Error'}
+            ${item.status === 'pending' ? '⏳ Pendiente' : item.status === 'processing' ? '🔄 Procesando...' : item.status === 'done' ? '✅ Hecho' : '❌ Error'}
           </div>
           <button class="batch-download" data-index="${i}" ${item.status !== 'done' ? 'disabled' : ''}>⬇️</button>
           <button class="batch-remove" data-index="${i}">✕</button>
@@ -456,7 +525,7 @@
       for (const item of pending) {
         item.status = 'processing';
         renderList();
-        progressText.textContent = `Processing ${item.file.name}...`;
+        progressText.textContent = `Procesando ${item.file.name}...`;
 
         try {
           const blob = await removeExifFromFile(item.file);
@@ -474,7 +543,7 @@
         renderList();
       }
 
-      progressText.textContent = '✅ All done!';
+      progressText.textContent = '✅ ¡Todo listo!';
       processAllBtn.disabled = false;
       setTimeout(() => { progressContainer.style.display = 'none'; }, 2000);
     }
@@ -520,7 +589,7 @@
       if (done.length === 0) return;
 
       downloadZipBtn.disabled = true;
-      downloadZipBtn.textContent = '🗜️ Creating ZIP...';
+      downloadZipBtn.textContent = '🗜️ Creando ZIP...';
 
       const zip = new JSZip();
       done.forEach((item, i) => {
@@ -537,7 +606,7 @@
       a.click();
 
       downloadZipBtn.disabled = false;
-      downloadZipBtn.textContent = '🗜️ Download ZIP';
+      downloadZipBtn.textContent = '🗜️ Descargar ZIP';
     }
 
     function resetAll() {
@@ -566,38 +635,38 @@
   <script src="/js/lang.js"></script>
   <script src="/js/ad-loader.js?v=4"></script>
 <!-- Viral Share Button -->
-<button onclick="shareOurTool()" style="position:fixed;bottom:20px;right:20px;background:#0ea5e9;color:white;border:none;border-radius:50%;width:60px;height:60px;font-size:24px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.2);z-index:999;" title="Share this free tool">💛</button>
+<button onclick="shareOurTool()" style="position:fixed;bottom:20px;right:20px;background:#0ea5e9;color:white;border:none;border-radius:50%;width:60px;height:60px;font-size:24px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.2);z-index:999;" title="Comparte esta herramienta gratuita">💛</button>
 <script>
 function shareOurTool() {
   const pageName = document.title.split("—")[0].trim();
   const url = window.location.href;
-  const text = `I just used this free 100% browser-based ${pageName} — no upload, no watermark, no signup! Try it: ${url}`;
+  const text = `Acabo de usar este ${pageName} GRATIS directamente en mi navegador — sin subir archivos, sin marca de agua, sin registro! Pruébalo: ${url}`;
   if (navigator.share) { navigator.share({text: text}); }
-  else { navigator.clipboard.writeText(text); alert("✅ Share text copied! Post it online to help others!"); }
+  else { navigator.clipboard.writeText(text); alert("✅ ¡Texto copiado! Compártelo en tus redes para ayudar a otros."); }
 }
 </script>
-<button onclick="shareOurTool(event)" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;">💛 Share Free Tool</button>
+<button onclick="shareOurTool(event)" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;">💛 Comparte esta herramienta gratis</button>
 <script>
 function shareOurTool(e) {
   e.stopPropagation();
   const toolName = document.title.split("—")[0].trim();
   const url = window.location.href;
-  const text = `I just used this FREE ${toolName} in my browser — no upload, no watermark, no signup! Saved me $29.99 on Photoshop. Try it: ${url}`;
+  const text = `Acabo de usar este ${toolName} GRATIS directamente en mi navegador — sin subir archivos, sin marca de agua, sin registro! Me ahorró dinero de Photoshop. Pruébalo: ${url}`;
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
   window.open(twitterUrl, '_blank', 'width=550,height=420');
 }
 </script>
-<button onclick="shareOurTool()" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;">💛 Share Free Tool</button>
+<button onclick="shareOurTool()" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;">💛 Comparte esta herramienta gratis</button>
 <script>
 function shareOurTool() {
   const toolName = document.title.split("—")[0].trim();
   const url = window.location.href;
-  const text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
+  const text = `Acabo de usar este ${toolName} GRATIS directamente en mi navegador — sin subir archivos, sin marca de agua, sin registro! Me ahorró dinero de Photoshop. Pruébalo: ${url}`;
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
   window.open(twitterUrl, '_blank', 'width=550,height=420');
 }
 </script>
-<button onclick="shareOurTool()" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;" id="shareBtn">💛 Share Free Tool</button>
+<button onclick="shareOurTool()" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;" id="shareBtn">💛 Comparte esta herramienta gratis</button>
 <script>
 function shareOurTool() {
   const lang = document.documentElement.lang || 'en';
@@ -608,18 +677,18 @@ function shareOurTool() {
     btnText = '💛 分享免费工具';
     text = `我刚在浏览器里用这个免费${toolName}，不用上传、无水印、不用注册！帮我省了Photoshop的钱，推荐你试试：${url}`;
   } else if (lang.startsWith('es')) {
-    btnText = '💛 Compartir Herramienta Gratis';
+    btnText = '💛 Comparte esta herramienta gratis';
     text = `Acabo de usar este ${toolName} GRATIS directamente en mi navegador — sin subir archivos, sin marca de agua, sin registro! Me ahorró dinero de Photoshop. Pruébalo: ${url}`;
   } else {
-    btnText = '💛 Share Free Tool';
-    text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
+    btnText = '💛 Comparte esta herramienta gratis';
+    text = `Acabo de usar este ${toolName} GRATIS directamente en mi navegador — sin subir archivos, sin marca de agua, sin registro! Me ahorró dinero de Photoshop. Pruébalo: ${url}`;
   }
   document.getElementById('shareBtn').innerText = btnText;
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
   window.open(twitterUrl, '_blank', 'width=550,height=420');
 }
 </script>
-<button onclick="shareOurTool()" style="position:fixed;bottom:32px;right:20px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:50%;width:48px;height:48px;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(245,158,11,0.4);z-index:999;" id="shareBtn" title="Share this free tool">💛</button>
+<button onclick="shareOurTool()" style="position:fixed;bottom:32px;right:20px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:50%;width:48px;height:48px;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(245,158,11,0.4);z-index:999;" id="shareBtn" title="Comparte esta herramienta gratuita">💛</button>
 <script>
 function shareOurTool() {
   const lang = document.documentElement.lang || 'en';
@@ -631,7 +700,7 @@ function shareOurTool() {
   } else if (lang.startsWith('es')) {
     text = `Acabo de usar este ${toolName} GRATIS directamente en mi navegador — sin subir archivos, sin marca de agua, sin registro! Me ahorró dinero de Photoshop. Pruébalo: ${url}`;
   } else {
-    text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
+    text = `Acabo de usar este ${toolName} GRATIS directamente en mi navegador — sin subir archivos, sin marca de agua, sin registro! Me ahorró dinero de Photoshop. Pruébalo: ${url}`;
   }
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
   window.open(twitterUrl, '_blank', 'width=550,height=420');
