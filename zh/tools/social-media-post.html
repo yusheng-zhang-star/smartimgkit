@@ -70,7 +70,7 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "宽ebApplication",
+  "@type": "WebApplication",
   "name": "社媒配图",
   "url": "https://smartimgkit.com/zh/tools/social-media-post",
   "inLanguage": "zh",
@@ -100,10 +100,10 @@
     },
     {
       "@type": "Question",
-      "name": "宽hat social media platforms does this tool support?",
+      "name": "这个工具支持哪些社媒平台？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "It supports Instagram (Post & Story), Facebook (Post & Cover), Twitter/X (Post & 高eader), LinkedIn (Post & Banner), YouTube (Thumbnail & Channel Art), TikTok Video, Pinterest Pin, and any custom size you specify."
+        "text": "It supports Instagram (Post & Story), Facebook (Post & Cover), Twitter/X (Post &amp; 页眉图), LinkedIn (Post & Banner), YouTube (Thumbnail & Channel Art), TikTok Video, Pinterest Pin, and any custom size you specify."
       }
     },
     {
@@ -124,7 +124,7 @@
     },
     {
       "@type": "Question",
-      "name": "宽ill my designs lose quality when I download?",
+      "name": "Will my designs lose quality when I download?",
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "不会。设计按平台全分辨率渲染（如 Instagram 1080×1080），以无损 PNG 格式下载。"
@@ -200,7 +200,7 @@
 </style>
 </head>
 <body>
-  <!-- 高eader: exact match image-rotator compact format -->
+  <!-- 页眉图: exact match image-rotator compact format -->
   <header class="site-header">
     <div class="container header-inner">
       <a href="/zh/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a>
@@ -227,7 +227,7 @@
 
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span></span></nav>
+      <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>📱 社媒配图</span></nav>
       <div class="tool-page-header">
         <h1>📱 社媒配图</h1>
         <p></p>
@@ -245,7 +245,7 @@
         <button class="platform-btn" data-w="1200" data-h="630" onclick="selectPlatform(this,'Facebook Post',1200,630)">Facebook Post<span class="sub">1200×630</span></button>
         <button class="platform-btn" data-w="1640" data-h="624" onclick="selectPlatform(this,'Facebook Cover',1640,624)">Facebook Cover<span class="sub">1640×624</span></button>
         <button class="platform-btn" data-w="1200" data-h="675" onclick="selectPlatform(this,'Twitter Post',1200,675)">Twitter/X Post<span class="sub">1200×675</span></button>
-        <button class="platform-btn" data-w="1500" data-h="500" onclick="selectPlatform(this,'Twitter 高eader',1500,500)">Twitter/X 高eader<span class="sub">1500×500</span></button>
+        <button class="platform-btn" data-w="1500" data-h="500" onclick="selectPlatform(this,'Twitter 页眉图',1500,500)">Twitter/X 页眉图<span class="sub">1500×500</span></button>
         <button class="platform-btn" data-w="1200" data-h="627" onclick="selectPlatform(this,'LinkedIn Post',1200,627)">LinkedIn Post<span class="sub">1200×627</span></button>
         <button class="platform-btn" data-w="1584" data-h="396" onclick="selectPlatform(this,'LinkedIn Banner',1584,396)">LinkedIn Banner<span class="sub">1584×396</span></button>
         <button class="platform-btn" data-w="1280" data-h="720" onclick="selectPlatform(this,'YouTube Thumbnail',1280,720)">YouTube Thumbnail<span class="sub">1280×720</span></button>
@@ -255,10 +255,10 @@
       </div>
       <div style="margin-top:8px;">
         <div class="custom-size-row">
-          <input type="number" id="custom宽" placeholder="宽" min="100" max="4000" value="1200">
+          <input type="number" id="customW" placeholder="宽" min="100" max="4000" value="1200">
           <span>×</span>
-          <input type="number" id="custom高" placeholder="高" min="100" max="4000" value="800">
-          <button class="platform-btn" style="white-space:nowrap;padding:6px 10px;" onclick="select自定义Size()">自定义</button>
+          <input type="number" id="customH" placeholder="高" min="100" max="4000" value="800">
+          <button class="platform-btn" style="white-space:nowrap;padding:6px 10px;" onclick="selectCustomSize()">自定义</button>
         </div>
       </div>
         <div class="selling-points">
@@ -307,7 +307,7 @@
         </div>
         <div class="control-row">
           <label>垂直偏移：</label>
-          <input type="range" id="textYSlider" min="-1000" max="1000" value="0" oninput="update文字Y()">
+          <input type="range" id="textYSlider" min="-1000" max="1000" value="0" oninput="updateTextY()">
           <span class="cv" id="textYVal">0</span>
         </div>
         <div class="toggle-group">
@@ -351,7 +351,7 @@
         <canvas id="mainCanvas"></canvas>
         <div id="dragOverlay" style="position:absolute;top:0;left:0;right:0;bottom:0;cursor:move;z-index:5;"></div>
       </div>
-      <div id="placeholder文字" style="color:var(--text-muted);font-size:.9rem;position:absolute;">选择一个预设开始设计</div>
+      <div id="placeholderText" style="color:var(--text-muted);font-size:.9rem;position:absolute;">选择一个预设开始设计</div>
     </div>
     <div class="dim-label" id="dimensionLabel">当前： 1080 × 1080 px (Instagram Post)</div>
   </div>
@@ -376,7 +376,7 @@
             <tr style="border-bottom:1px solid var(--border-color);"><td style="padding:6px;">Facebook</td><td>Post / Link Share</td><td style="text-align:center;">1200 × 630</td><td>1.9:1</td></tr>
             <tr style="border-bottom:1px solid var(--border-color);"><td style="padding:6px;">Facebook</td><td>Cover Photo</td><td style="text-align:center;">1640 × 624</td><td>2.63:1</td></tr>
             <tr style="border-bottom:1px solid var(--border-color);"><td style="padding:6px;">Twitter / X</td><td>Post (Single Image)</td><td style="text-align:center;">1200 × 675</td><td>16:9</td></tr>
-            <tr style="border-bottom:1px solid var(--border-color);"><td style="padding:6px;">Twitter / X</td><td>高eader</td><td style="text-align:center;">1500 × 500</td><td>3:1</td></tr>
+            <tr style="border-bottom:1px solid var(--border-color);"><td style="padding:6px;">Twitter / X</td><td>页眉图</td><td style="text-align:center;">1500 × 500</td><td>3:1</td></tr>
             <tr style="border-bottom:1px solid var(--border-color);"><td style="padding:6px;">LinkedIn</td><td>Post</td><td style="text-align:center;">1200 × 627</td><td>1.91:1</td></tr>
             <tr style="border-bottom:1px solid var(--border-color);"><td style="padding:6px;">LinkedIn</td><td>Banner</td><td style="text-align:center;">1584 × 396</td><td>4:1</td></tr>
             <tr style="border-bottom:1px solid var(--border-color);"><td style="padding:6px;">YouTube</td><td>Thumbnail</td><td style="text-align:center;">1280 × 720</td><td>16:9</td></tr>
@@ -405,7 +405,7 @@
           <li><strong>Instagram Story / Reel (9:16):</strong> Full-screen mobile content, time-sensitive announcements, behind-the-scenes, short video covers.</li>
           <li><strong>Facebook Post (1.9:1 / 1200×630):</strong> Standard link shares, blog post promotion, event announcements. This is the most commonly shared format across the web.</li>
           <li><strong>Facebook Cover (2.63:1):</strong> Your Facebook page header. Avoid critical content near the edges — profile picture and CTA button overlay on mobile.</li>
-          <li><strong>Twitter/X Post (16:9):</strong> Shared images in the timeline. 宽ide format performs well for screenshots, infographics, and visual tweets.</li>
+          <li><strong>Twitter/X Post (16:9):</strong> Shared images in the timeline. Wide format performs well for screenshots, infographics, and visual tweets.</li>
           <li><strong>LinkedIn Banner (4:1):</strong> Professional profile header. Keep it clean and minimal — your headline and photo overlay on the left.</li>
           <li><strong>YouTube Thumbnail (16:9):</strong> The most important design element for video click-through rate. Use bold text (large font), high contrast, faces/emotions, and bright colors.</li>
           <li><strong>TikTok Video (9:16):</strong> Vertical full-screen covers. 文字 should be large and centered. Leave room for captions and UI elements at top and bottom.</li>
@@ -417,10 +417,10 @@
       <section class="faq-section">
         <h2>常见问题</h2>
         <div class="faq-item"><button class="faq-question">社媒配图工具真的免费吗？</button><div class="faq-answer">是的——完全免费。无需注册、无水印、无隐藏收费。全部在浏览器本地处理，图片不上传服务器。</div></div>
-        <div class="faq-item"><button class="faq-question">宽hat social media platforms does this tool support?</button><div class="faq-answer">It supports Instagram (Post &amp; Story), Facebook (Post &amp; Cover), Twitter/X (Post &amp; 高eader), LinkedIn (Post &amp; Banner), YouTube (Thumbnail &amp; Channel Art), TikTok Video, Pinterest Pin, and any custom size you specify.</div></div>
+        <div class="faq-item"><button class="faq-question">这个工具支持哪些社媒平台？</button><div class="faq-answer">It supports Instagram (Post &amp; Story), Facebook (Post &amp; Cover), Twitter/X (Post &amp; 页眉图), LinkedIn (Post &amp; Banner), YouTube (Thumbnail &amp; Channel Art), TikTok Video, Pinterest Pin, and any custom size you specify.</div></div>
         <div class="faq-item"><button class="faq-question">可以用自己的品牌颜色吗？</button><div class="faq-answer">可以用取色器设置任意文字颜色、字号和对齐方式。品牌色可用十六进制色值精确匹配。</div></div>
         <div class="faq-item"><button class="faq-question">可以调整文字和图片位置吗？</button><div class="faq-answer">可以。用滑块调整文字和叠加图片的垂直偏移，画布实时更新，方便微调位置。</div></div>
-        <div class="faq-item"><button class="faq-question">宽ill my designs lose quality when I download?</button><div class="faq-answer">不会。设计按平台全分辨率渲染（如 Instagram 1080×1080），以无损 PNG 格式下载。</div></div>
+        <div class="faq-item"><button class="faq-question">Will my designs lose quality when I download?</button><div class="faq-answer">不会。设计按平台全分辨率渲染（如 Instagram 1080×1080），以无损 PNG 格式下载。</div></div>
         <div class="faq-item"><button class="faq-question">我的设计会上传到服务器吗？</button><div class="faq-answer">绝对不会。全部在浏览器本地合成，图片和文字不上传任何服务器。设计只保留在你的设备上。</div></div>
       <div class="faq-item"><button class="faq-question">支持哪些平台？</button><div class="faq-answer">Instagram、Facebook、Twitter、LinkedIn 等。</div></div>
 <div class="faq-item"><button class="faq-question">尺寸是预设的吗？</button><div class="faq-answer">是的——每个平台正确尺寸内置。</div></div>
@@ -573,13 +573,13 @@
 
   <script src="/js/main.js?v=8"></script>
   <script>
-let canvas宽 = 1080, canvas高 = 1080;
+let canvasW = 1080, canvasH = 1080;
 let platformName = 'Instagram Post';
 let canvas = document.getElementById('mainCanvas');
 let ctx = canvas.getContext('2d');
 let bgImage = null;
 let logoImage = null;
-let isDragging文字 = false;
+let isDraggingText = false;
 let isDraggingLogo = false;
 let dragStartY = 0;
 let textYOffset = 0;
@@ -589,39 +589,39 @@ let logoYOffset = -150;
 initCanvas();
 
 function initCanvas() {
-  canvas.width = canvas宽;
-  canvas.height = canvas高;
+  canvas.width = canvasW;
+  canvas.height = canvasH;
   renderCanvas();
 }
 
 function selectPlatform(btn, name, w, h) {
   document.querySelectorAll('.platform-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  canvas宽 = w;
-  canvas高 = h;
+  canvasW = w;
+  canvasH = h;
   platformName = name;
   canvas.width = w;
   canvas.height = h;
   document.getElementById('dimensionLabel').textContent = '当前： ' + w + ' × ' + h + ' px (' + name + ')';
-  document.getElementById('placeholder文字').style.display = 'none';
+  document.getElementById('placeholderText').style.display = 'none';
   renderCanvas();
 }
 
-function select自定义Size() {
-  const w = parseInt(document.getElementById('custom宽').value);
-  const h = parseInt(document.getElementById('custom高').value);
+function selectCustomSize() {
+  const w = parseInt(document.getElementById('customW').value);
+  const h = parseInt(document.getElementById('customH').value);
   if (!w || !h || w < 100 || h < 100 || w > 4000 || h > 4000) {
     alert('Please enter valid dimensions between 100 and 4000.');
     return;
   }
   document.querySelectorAll('.platform-btn').forEach(b => b.classList.remove('active'));
-  canvas宽 = w;
-  canvas高 = h;
+  canvasW = w;
+  canvasH = h;
   platformName = '自定义 ' + w + '×' + h;
   canvas.width = w;
   canvas.height = h;
   document.getElementById('dimensionLabel').textContent = '当前： ' + w + ' × ' + h + ' px (自定义)';
-  document.getElementById('placeholder文字').style.display = 'none';
+  document.getElementById('placeholderText').style.display = 'none';
   renderCanvas();
 }
 
@@ -680,7 +680,7 @@ function updateFontSize() {
   renderCanvas();
 }
 
-function update文字Y() {
+function updateTextY() {
   textYOffset = parseInt(document.getElementById('textYSlider').value);
   document.getElementById('textYVal').textContent = textYOffset;
   renderCanvas();
@@ -698,18 +698,18 @@ function renderCanvas() {
   const fontSize = parseInt(document.getElementById('fontSizeSlider').value);
   const textColor = document.getElementById('textColorPicker').value;
   const textAlign = document.getElementById('textAlignSelect').value;
-  const has阴影 = document.getElementById('shadowToggle').checked;
-  const has描边 = document.getElementById('outlineToggle').checked;
+  const hasShadow = document.getElementById('shadowToggle').checked;
+  const hasStroke = document.getElementById('outlineToggle').checked;
   const logoScaler = parseInt(document.getElementById('logoScaler').value);
 
-  ctx.clearRect(0, 0, canvas宽, canvas高);
+  ctx.clearRect(0, 0, canvasW, canvasH);
 
   // Draw background
   if (bgImage) {
-    ctx.drawImage(bgImage, 0, 0, canvas宽, canvas高);
+    ctx.drawImage(bgImage, 0, 0, canvasW, canvasH);
   } else {
     ctx.fillStyle = bgColor;
-    ctx.fillRect(0, 0, canvas宽, canvas高);
+    ctx.fillRect(0, 0, canvasW, canvasH);
   }
 
   // Draw logo/overlay
@@ -717,39 +717,39 @@ function renderCanvas() {
     const scale = logoScaler / 100;
     const lw = logoImage.width * scale;
     const lh = logoImage.height * scale;
-    const lx = (canvas宽 - lw) / 2;
-    let ly = (canvas高 - lh) / 2 + logoYOffset;
+    const lx = (canvasW - lw) / 2;
+    let ly = (canvasH - lh) / 2 + logoYOffset;
     ctx.drawImage(logoImage, lx, ly, lw, lh);
   }
 
   // Draw text
   if (text) {
-    let alignX = canvas宽 / 2;
-    let textX = canvas宽 / 2;
+    let alignX = canvasW / 2;
+    let textX = canvasW / 2;
     if (textAlign === 'left') {
-      textX = canvas宽 * 0.08;
-      alignX = canvas宽 * 0.08;
+      textX = canvasW * 0.08;
+      alignX = canvasW * 0.08;
     } else if (textAlign === 'right') {
-      textX = canvas宽 * 0.92;
-      alignX = canvas宽 * 0.92;
+      textX = canvasW * 0.92;
+      alignX = canvasW * 0.92;
     } else {
-      textX = canvas宽 / 2;
-      alignX = canvas宽 / 2;
+      textX = canvasW / 2;
+      alignX = canvasW / 2;
     }
-    let textY = canvas高 / 2 + textYOffset;
+    let textY = canvasH / 2 + textYOffset;
 
     ctx.textAlign = textAlign;
     ctx.textBaseline = 'middle';
 
-    if (has描边) {
+    if (hasStroke) {
       ctx.strokeStyle = '#000000';
-      ctx.line宽idth = Math.max(2, fontSize * 0.06);
+      ctx.lineWidth = Math.max(2, fontSize * 0.06);
       ctx.lineJoin = 'round';
       ctx.font = 'bold ' + fontSize + 'px Inter, sans-serif';
-      ctx.stroke文字(text, textX, textY);
+      ctx.strokeText(text, textX, textY);
     }
 
-    if (has阴影) {
+    if (hasShadow) {
       ctx.shadowColor = 'rgba(0,0,0,0.7)';
       ctx.shadowBlur = fontSize * 0.25;
       ctx.shadowOffsetX = Math.max(2, fontSize * 0.04);
@@ -758,7 +758,7 @@ function renderCanvas() {
 
     ctx.fillStyle = textColor;
     ctx.font = 'bold ' + fontSize + 'px Inter, sans-serif';
-    ctx.fill文字(text, textX, textY);
+    ctx.fillText(text, textX, textY);
 
     ctx.shadowColor = 'transparent';
     ctx.shadowBlur = 0;
@@ -772,7 +772,7 @@ const dragOverlay = document.getElementById('dragOverlay');
 let dragging = false;
 let dragMode = 'none';
 let dragStartMouseY = 0;
-let dragStart文字Y = 0;
+let dragStartTextY = 0;
 let dragStartLogoY = 0;
 
 dragOverlay.addEventListener('mousedown', function(e) {
@@ -786,11 +786,11 @@ dragOverlay.addEventListener('mousedown', function(e) {
     scale = parseInt(document.getElementById('logoScaler').value) / 100;
     lw = logoImage.width * scale;
     lh = logoImage.height * scale;
-    lx = (canvas宽 - lw) / 2;
-    const ly = (canvas高 - lh) / 2 + logoYOffset;
+    lx = (canvasW - lw) / 2;
+    const ly = (canvasH - lh) / 2 + logoYOffset;
     // Map mouse to canvas coordinates
-    const cmx = (mx / rect.width) * canvas宽;
-    const cmy = (my / rect.height) * canvas高;
+    const cmx = (mx / rect.width) * canvasW;
+    const cmy = (my / rect.height) * canvasH;
     if (cmx >= lx && cmx <= lx + lw && cmy >= ly && cmy <= ly + lh) {
       dragMode = 'logo';
       document.body.style.cursor = 'grabbing';
@@ -806,15 +806,15 @@ dragOverlay.addEventListener('mousedown', function(e) {
 document.addEventListener('mousemove', function(e) {
   if (dragMode === 'none') return;
   rect = dragOverlay.getBoundingClientRect();
-  const dy = ((e.clientY - rect.top) / rect.height) * canvas高 - ((e.clientY - rect.top) / rect.height) * canvas高 + (e.movementY / rect.height) * canvas高;
+  const dy = ((e.clientY - rect.top) / rect.height) * canvasH - ((e.clientY - rect.top) / rect.height) * canvasH + (e.movementY / rect.height) * canvasH;
 
   if (dragMode === 'text') {
-    textYOffset = Math.max(-canvas高, Math.min(canvas高, textYOffset + (e.movementY / rect.height) * canvas高));
+    textYOffset = Math.max(-canvasH, Math.min(canvasH, textYOffset + (e.movementY / rect.height) * canvasH));
     document.getElementById('textYSlider').value = Math.round(textYOffset);
     document.getElementById('textYVal').textContent = Math.round(textYOffset);
     renderCanvas();
   } else if (dragMode === 'logo') {
-    logoYOffset = Math.max(-canvas高, Math.min(canvas高, logoYOffset + (e.movementY / rect.height) * canvas高));
+    logoYOffset = Math.max(-canvasH, Math.min(canvasH, logoYOffset + (e.movementY / rect.height) * canvasH));
     document.getElementById('logoYSlider').value = Math.round(logoYOffset);
     document.getElementById('logoYVal').textContent = Math.round(logoYOffset);
     renderCanvas();
@@ -829,7 +829,7 @@ document.addEventListener('mouseup', function() {
 // Download
 function downloadPost() {
   var safeName = (platformName || 'social').replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
-  SmartImgKit._triggerDownload(canvas.toDataURL('image/png'), safeName + '-' + canvas宽 + 'x' + canvas高 + '.png');
+  SmartImgKit._triggerDownload(canvas.toDataURL('image/png'), safeName + '-' + canvasW + 'x' + canvasH + '.png');
 }
 
 // Reset all
@@ -870,8 +870,8 @@ document.addEventListener('click', function(e) {
   const q = e.target.closest('.faq-question');
   if (q) {
     const answer = q.nextElementSibling;
-    const isOpen = answer.style.max高eight && answer.style.max高eight !== '0px';
-    answer.style.max高eight = isOpen ? '0px' : answer.scroll高eight + 'px';
+    const isOpen = answer.style.maxHeight && answer.style.maxHeight !== '0px';
+    answer.style.maxHeight = isOpen ? '0px' : answer.scrollHeight + 'px';
   }
 });
 
@@ -892,7 +892,7 @@ if (document.getElementById('themeToggle')) {
 <!-- Result Modal 高ook -->
 <script>
 (function(){
-  function try高ook(){
+  function tryHook(){
     if (typeof openResultModal !== 'function') return;
 
     // 高elper: get result blob from page scope
@@ -944,8 +944,8 @@ if (document.getElementById('themeToggle')) {
           saveRate = (s > 0 ? s : 0) + '%';
         }
         openResultModal({
-          orig字号： fmtSize(origSize),
-          opt字号： fmtSize(optSize),
+          origSize:  fmtSize(origSize),
+          optSize:  fmtSize(optSize),
           saveRate: saveRate,
           originalBlob: of,
           resultBlob: rb,
@@ -981,8 +981,8 @@ if (document.getElementById('themeToggle')) {
                   sr2 = (ss > 0 ? ss : 0) + '%';
                 }
                 openResultModal({
-                  orig字号： fmtSize(origSize2),
-                  opt字号： fmtSize(optSize2),
+                  origSize:  fmtSize(origSize2),
+                  optSize:  fmtSize(optSize2),
                   saveRate: sr2,
                   originalBlob: of,
                   resultBlob: rb,
@@ -1004,8 +1004,8 @@ if (document.getElementById('themeToggle')) {
             sr2 = (ss > 0 ? ss : 0) + '%';
           }
           openResultModal({
-            orig字号： fmtSize(origSize2),
-            opt字号： fmtSize(optSize2),
+            origSize:  fmtSize(origSize2),
+            optSize:  fmtSize(optSize2),
             saveRate: sr2,
             originalBlob: of,
             resultBlob: rb,
@@ -1017,8 +1017,8 @@ if (document.getElementById('themeToggle')) {
     });
   }
 
-  if (document.readyState !== 'loading') { try高ook(); setTimeout(try高ook, 1500); setTimeout(try高ook, 3500); }
-  else { document.addEventListener('DOMContentLoaded', function(){ try高ook(); setTimeout(try高ook, 1500); setTimeout(try高ook, 3500); }); }
+  if (document.readyState !== 'loading') { tryHook(); setTimeout(tryHook, 1500); setTimeout(tryHook, 3500); }
+  else { document.addEventListener('DOMContentLoaded', function(){ tryHook(); setTimeout(tryHook, 1500); setTimeout(tryHook, 3500); }); }
 })();
 </script>
 
