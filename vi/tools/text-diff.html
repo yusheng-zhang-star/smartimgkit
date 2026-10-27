@@ -30,12 +30,11 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/text-diff">
   <link rel="stylesheet" href="/css/style.css?v=15">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <script type="application/ld+json">
-{
-  
-  "inLanguage": "vi","@context": "https://schema.org",
+  <script type="application/ld+json">{
+  "inLanguage": "vi",
+  "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Text Diff Checker",
+  "name": "So sánh hai đoạn văn bản",
   "url": "https://smartimgkit.com/vi/tools/text-diff",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
@@ -44,42 +43,9 @@
     "price": "0",
     "priceCurrency": "USD"
   },
-  "description": "Dán hai đoạn văn bản và xem khác biệt được tô sáng theo từng dòng. Phù hợp soát code, hợp đồng và bản dịch. Miễn phí."
-}
-</script>
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "HowTo",
-  "name": "How to Use",
-  "step": [
-    {
-      "@type": "HowToStep",
-      "position": 1,
-      "name": "Paste Original",
-      "text": "Put the original text in the left box."
-    },
-    {
-      "@type": "HowToStep",
-      "position": 2,
-      "name": "Paste Modified",
-      "text": "Put the modified text in the right box."
-    },
-    {
-      "@type": "HowToStep",
-      "position": 3,
-      "name": "Compare",
-      "text": "Click Compare Texts."
-    },
-    {
-      "@type": "HowToStep",
-      "position": 4,
-      "name": "View Diff",
-      "text": "Green = added, Red = deleted, Gray = unchanged."
-    }
-  ]
-}
-</script>
+  "description": "So sánh hai văn bản theo từng dòng bằng thuật toán diff, tô sáng dòng thêm và xoá. Miễn phí, chạy trên trình duyệt."
+}</script>
+  
   <style>
 
     .tool-workspace { display: flex; flex-direction: column; gap: 24px; }
@@ -111,38 +77,7 @@
     }
 
   </style>
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "What algorithm is used?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "LCS (Longest Common Subsequence) — the standard diff algorithm. Same as used by Git diff."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Does it support word-level diff?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Currently line-level only. For word-level, paste single words per line or use a dedicated code diff tool."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is my data uploaded?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. All comparison happens in your browser."
-      }
-    }
-  ]
-}
-</script>
+  
 <style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
 
 <meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
@@ -173,57 +108,124 @@
 <div class="ad-zone ad-header ad-loader-slot" data-ad-type="header" data-current-mobile="0"></div>
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">Trang chủ</a><span>/</span><a href="/vi/">Công cụ</a><span>/</span><span>↔️ Text Diff Checker</span></nav>
+      <nav class="breadcrumb"><a href="/">Trang chủ</a><span>/</span><a href="/vi/">Công cụ</a><span>/</span><span>↔️ So sánh hai đoạn văn bản</span></nav>
       <div class="tool-page-header">
-        <h1>↔️ Text Diff Checker</h1>
-        <p>Compare two texts and see differences highlighted — free, in your browser.</p>
+        <h1>↔️ So sánh hai đoạn văn bản</h1>
+        <p>Dán hai phiên bản văn bản và xem khác biệt được tô sáng theo từng dòng — dòng thêm, dòng xoá, dòng giữ nguyên hiển thị rõ ràng.</p>
+        <p class="answer-lead">So sánh văn bản gốc và bản chỉnh sửa theo thuật toán diff từng dòng: dòng chỉ có ở bản mới được đánh dấu thêm, dòng bị bỏ đánh dấu xoá, phần còn lại hiển thị không đổi. Mọi phép tính chạy trên máy bạn — nội dung không gửi đi đâu.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Thuật toán</span><span class="f-v">So khớp dãy dài nhất chung (LCS) trên từng dòng</span></li>
+          <li><span class="f-k">Màu hiển thị</span><span class="f-v">Dòng thêm và dòng xoá tô khác màu, dòng không đổi hiển thị mờ</span></li>
+          <li><span class="f-k">Đơn vị so sánh</span><span class="f-v">Theo dòng — một dòng khác một ký tự cũng tính là khác</span></li>
+          <li><span class="f-k">Bảo mật</span><span class="f-v">Hai đoạn văn bản không rời khỏi trình duyệt</span></li>
+        </ul>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">Hai văn bản → kết quả diff</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">📄</span></div>
-              <div class="before-after-item-caption before">Two texts</div>
+              <div class="before-after-item-caption before">Văn bản gốc</div>
             </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🔍</span></div>
-              <div class="before-after-item-caption after">Diff output</div>
+              <div class="before-after-item-caption after">Văn bản đã sửa</div>
             </div>
           </div>
         </div>
 
 <div class="two-col">
           <div class="controls">
-            <h2>📄 Original Text</h2>
-            <textarea id="diffOriginal" placeholder="Paste original text here..."></textarea>
+            <h2>📄 Văn bản gốc</h2>
+            <textarea id="diffOriginal" placeholder="Dán văn bản gốc vào đây..."></textarea>
           </div>
           <div class="controls">
-            <h2>📝 Modified Text</h2>
-            <textarea id="diffModified" placeholder="Paste modified text here..."></textarea>
+            <h2>📝 Văn bản đã sửa</h2>
+            <textarea id="diffModified" placeholder="Dán văn bản đã sửa vào đây..."></textarea>
           </div>
         </div>
         <div class="controls">
           <div class="btn-row">
-            <button class="btn btn-primary" id="diffBtn">🔍 Compare Texts</button>
-            <button class="btn btn-secondary" id="diffClearBtn">Clear</button>
+            <button class="btn btn-primary" id="diffBtn">🔍 So sánh</button>
+            <button class="btn btn-secondary" id="diffClearBtn">Xoá</button>
           </div>
         </div>
         <div class="result-section">
-          <h2>📊 Differences</h2>
+          <h2>📊 Khác biệt</h2>
           <div id="diffStats" class="status-text"></div>
           <div id="diffOutput" class="diff-output"></div>
         </div>
 
       </div>
-<section class="how-to-section"><h2>How to Use</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Paste Original</h4><p>Put the original text in the left box.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Paste Modified</h4><p>Put the modified text in the right box.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Compare</h4><p>Click Compare Texts.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>View Diff</h4><p>Green = added, Red = deleted, Gray = unchanged.</p></div></div></section>
-<h2>Detailed User Guide</h2><div class="guide-block"><h3>Paste Original</h3><p>Put the original text in the left box.</p></div><div class="guide-block"><h3>Paste Modified</h3><p>Put the modified text in the right box.</p></div><div class="guide-block"><h3>Compare</h3><p>Click Compare Texts.</p></div><div class="guide-block"><h3>View Diff</h3><p>Green = added, Red = deleted, Gray = unchanged.</p></div>
-<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">What algorithm is used?</button><div class="faq-answer">LCS (Longest Common Subsequence) — the standard diff algorithm. Same as used by Git diff.</div></div><div class="faq-item"><button class="faq-question">Does it support word-level diff?</button><div class="faq-answer">Currently line-level only. For word-level, paste single words per line or use a dedicated code diff tool.</div></div><div class="faq-item"><button class="faq-question">Is my data uploaded?</button><div class="faq-answer">No. All comparison happens in your browser.</div></div></section>
-<section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/text-find-replace" class="related-tool-card"><span class="tool-icon">🔄</span><div class="tool-info"><strong>Find & Replace</strong><span class="tool-desc">Find and replace text</span></div><span class="tool-arrow">→</span></a><a href="/tools/case-converter" class="related-tool-card"><span class="tool-icon">🔠</span><div class="tool-info"><strong>Case Converter</strong><span class="tool-desc">Convert text case</span></div><span class="tool-arrow">→</span></a><a href="/tools/json-formatter" class="related-tool-card"><span class="tool-icon">🔧</span><div class="tool-info"><strong>JSON Formatter</strong><span class="tool-desc">Format JSON</span></div><span class="tool-arrow">→</span></a></div></section>
+
+<section class="how-to-section">
+  <h2>Cách dùng</h2>
+  <div class="how-to-steps">
+    <div class="how-to-step"><div class="step-number">1</div><h4>Dán bản gốc</h4><p>Dán phiên bản cũ vào ô "Văn bản gốc" — hợp đồng trước khi sửa, bản dịch nháp, file config cũ.</p></div>
+    <div class="how-to-step"><div class="step-number">2</div><h4>Dán bản đã sửa</h4><p>Dán phiên bản mới vào ô bên cạnh. Hai bên nên cùng xuống dòng theo dòng để kết quả chính xác nhất.</p></div>
+    <div class="how-to-step"><div class="step-number">3</div><h4>Bấm So sánh</h4><p>Nhấn nút So sánh — bảng khác biệt hiện bên dưới với dòng thêm/xoá được đánh dấu màu.</p></div>
+    <div class="how-to-step"><div class="step-number">4</div><h4>Đọc thống kê</h4><p>Dòng thống kê tóm tắt: bao nhiêu dòng thêm, bao nhiêu xoá, bao nhiêu giữ nguyên — nắm tổng quan trước khi đọc chi tiết.</p></div>
+  </div>
+</section>
+
+<h2>Kết quả diff đọc thế nào cho đúng</h2>
+<div class="guide-block">
+  <h3>Cách thuật toán chia dòng</h3>
+  Công cụ tách mỗi văn bản thành mảng các dòng rồi tìm dãy dòng chung dài nhất (LCS — Longest Common Subsequence). Những dòng nằm ngoài dãy chung sẽ được gắn nhãn thêm hoặc xoá. Hệ quả quan trọng: so sánh theo dòng nghĩa là nếu bạn chỉ sửa một từ trong dòng dài, cả dòng sẽ được đánh dấu là xoá + thêm dòng mới — hai dòng màu thay vì một từ tô sáng. Đây là hành vi chuẩn của mọi diff theo dòng, từ git cho đến công cụ này.
+</div>
+<div class="guide-block">
+  <h3>Đọc ba loại dòng trong kết quả</h3>
+  Dòng bị xoá (chỉ có ở bản gốc) và dòng được thêm (chỉ có ở bản sửa) được tô màu để mắt bắt ngay; các dòng giữ nguyên hiển thị nhẹ hơn làm nền. Thống kê trên cùng cho biết tổng số từng loại — ví dụ "Thêm 3 dòng, xoá 2 dòng, giữ nguyên 14 dòng" cho bạn biết mức độ thay đổi trước khi đọc từng dòng.
+</div>
+<div class="guide-block">
+  <h3>Chuẩn bị đầu vào để kết quả đáng tin</h3>
+  Ba việc nên làm trước khi so sánh: một là thống nhất kiểu xuống dòng — văn bản copy từ Windows (CRLF) và từ web (LF) trộn nhau sẽ làm mọi dòng tưởng như khác nhau; hai là soát khoảng trắng ở cuối dòng, vì dòng chỉ khác dấu cách vẫn tính là khác; ba là với văn bản rất dài, cắt đúng đoạn cần so thay vì dán cả trăm trang — kết quả nhanh hơn và dễ đọc hơn nhiều.
+</div>
+<div class="guide-block">
+  <h3>Giới hạn cần biết</h3>
+  Công cụ so theo dòng, không có chế độ so theo từ hay theo ký tự. Văn bản một dòng duy nhất (ví dụ đoạn JSON nén) sẽ hiển thị như một khối — hãy dùng công cụ JSON Formatter để định dạng nhiều dòng trước rồi so.
+</div>
+
+<section style="max-width:900px;margin:3rem auto;padding:0 1rem;">
+  <h2>Tình huống thực tế</h2>
+  <div class="guide-block"><h3>Soát hai phiên bản hợp đồng</h3><p>Nhận bản sửa hợp đồng thuê nhà xưởng từ đối tác dưới dạng văn bản. Dán bản cũ và bản mới vào, nhìn ngay dòng điều khoản nào bị thêm hoặc bỏ — không phải đọc lại mười trang.</p></div>
+  <div class="guide-block"><h3>Kiểm tra nội dung dịch trước khi đăng</h3><p>Biên tập viên so bản gốc và bản dịch đã biên tập của bài đăng sản phẩm, bắt được câu bị xoá sót hoặc đoạn bị chèn trùng trước khi lên trang.</p></div>
+  <div class="guide-block"><h3>Đối chiếu file cấu hình hai môi trường</h3><p>File cấu hình staging và production khác nhau ở đâu ra sao — dán hai file vào, các dòng khác biệt hiện ra thay vì phải mở hai cửa sổ nhìn bằng mắt.</p></div>
+</section>
+
+<section class="faq-section">
+  <h2>Câu hỏi thường gặp</h2>
+  <div class="faq-item"><button class="faq-question">So sánh theo dòng hay theo từ?</button><div class="faq-answer">Theo dòng. Một dòng chỉ khác một ký tự vẫn được tính là dòng xoá + dòng thêm. Nếu cần soi từng từ bên trong dòng, hãy xuống dòng thủ công ở các vị trí quan trọng trước khi so.</div></div>
+  <div class="faq-item"><button class="faq-question">Dùng thuật toán gì để so khớp?</button><div class="faq-answer">Thuật toán LCS (dãy con chung dài nhất) chạy trên mảng dòng — cùng họ với thuật toán diff của git. Nó ưu tiên giữ số dòng chung lớn nhất nên kết quả sát với cách người đọc hiểu "thay đổi".</div></div>
+  <div class="faq-item"><button class="faq-question">Hai đoạn văn bản có được gửi lên máy chủ không?</button><div class="faq-answer">Không. Việc tách dòng và so khớp hoàn toàn bằng JavaScript trong tab của bạn, đóng trang là dữ liệu biến mất.</div></div>
+  <div class="faq-item"><button class="faq-question">Văn bản rất dài có so được không?</button><div class="faq-answer">Được, nhưng LCS có độ phức tạp tăng theo tích số dòng hai bên — vài nghìn dòng vẫn ổn, hàng chục nghìn dòng có thể chờ vài giây. Nên cắt đúng đoạn cần so.</div></div>
+  <div class="faq-item"><button class="faq-question">Vì sao hai văn bản nhìn "giống nhau" mà vẫn hiện khác?</button><div class="faq-answer">Thường do khác kiểu xuống dòng (CRLF/LF), khoảng trắng ở cuối dòng, hoặc ký tự không nhìn thấy (tab, non-breaking space). Dán lại từ cùng một nguồn hoặc xoá khoảng trắng thừa trước khi so.</div></div>
+  <div class="faq-item"><button class="faq-question">Có hiển thị diff với màu bên cạnh nhau (side-by-side) không?</button><div class="faq-answer">Kết quả hiển thị dạng danh sách dòng đánh dấu màu (unified), chưa có chế độ hai cột song song. Với hầu hết nhu cầu soát nội dung, dạng này vẫn theo đúng thứ tự đọc.</div></div>
+  <div class="faq-item"><button class="faq-question">Có lưu lại lịch sử các lần so sánh không?</button><div class="faq-answer">Không. Không có cơ chế lưu gì cả — mỗi lần tải trang là bắt đầu sạch, dữ liệu không nằm lại trên máy của bạn dưới bất kỳ hình thức nào.</div></div>
+</section>
+
+<section class="related-tools">
+  <h2>Công cụ liên quan</h2>
+  <div class="related-tools-grid">
+    <a href="/vi/tools/text-find-replace" class="related-tool-card"><span class="tool-icon">🧩</span><div class="tool-info"><strong>Tìm và thay văn bản</strong><span class="tool-desc">Sửa hàng loạt trước khi so sánh hai bản</span></div><span class="tool-arrow">→</span></a>
+    <a href="/vi/tools/json-formatter" class="related-tool-card"><span class="tool-icon">🧩</span><div class="tool-info"><strong>Định dạng JSON</strong><span class="tool-desc">Định dạng nhiều dòng trước khi diff hai file cấu hình</span></div><span class="tool-arrow">→</span></a>
+    <a href="/vi/tools/case-converter" class="related-tool-card"><span class="tool-icon">🧩</span><div class="tool-info"><strong>Chuyển chữ hoa thường</strong><span class="tool-desc">Chuẩn hoá kiểu chữ để loại khác biệt không đáng kể</span></div><span class="tool-arrow">→</span></a>
+    <a href="/vi/tools/word-counter" class="related-tool-card"><span class="tool-icon">🧩</span><div class="tool-info"><strong>Đếm từ và ký tự</strong><span class="tool-desc">Thống kê độ dài hai bản trước và sau sửa</span></div><span class="tool-arrow">→</span></a>
+    <a href="/vi/tools/text-sorter" class="related-tool-card"><span class="tool-icon">🧩</span><div class="tool-info"><strong>Sắp xếp dòng văn bản</strong><span class="tool-desc">Sắp dòng trước khi so để bỏ qua khác biệt thứ tự</span></div><span class="tool-arrow">→</span></a>
+  </div>
+</section>
+<section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/text-find-replace" class="related-tool-card"><span class="tool-icon">🔄</span><div class="tool-info"><strong>Tìm và thay thế</strong><span class="tool-desc">Tìm và thay hàng loạt trong văn bản</span></div><span class="tool-arrow">→</span></a><a href="/tools/case-converter" class="related-tool-card"><span class="tool-icon">🔠</span><div class="tool-info"><strong>Case Converter</strong><span class="tool-desc">Convert text case</span></div><span class="tool-arrow">→</span></a><a href="/tools/json-formatter" class="related-tool-card"><span class="tool-icon">🔧</span><div class="tool-info"><strong>JSON Formatter</strong><span class="tool-desc">Format JSON</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
+  <script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "HowTo", "name": "Cách so sánh hai đoạn văn bản", "step": [{"@type": "HowToStep", "position": 1, "name": "Dán bản gốc", "text": "Dán phiên bản cũ vào ô \"Văn bản gốc\" — hợp đồng trước khi sửa, bản dịch nháp, file config cũ."}, {"@type": "HowToStep", "position": 2, "name": "Dán bản đã sửa", "text": "Dán phiên bản mới vào ô bên cạnh. Hai bên nên cùng xuống dòng theo dòng để kết quả chính xác nhất."}, {"@type": "HowToStep", "position": 3, "name": "Bấm So sánh", "text": "Nhấn nút So sánh — bảng khác biệt hiện bên dưới với dòng thêm/xoá được đánh dấu màu."}, {"@type": "HowToStep", "position": 4, "name": "Đọc thống kê", "text": "Dòng thống kê tóm tắt: bao nhiêu dòng thêm, bao nhiêu xoá, bao nhiêu giữ nguyên — nắm tổng quan trước khi đọc chi tiết."}]}
+  </script>
+  <script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "So sánh theo dòng hay theo từ?", "acceptedAnswer": {"@type": "Answer", "text": "Theo dòng. Một dòng chỉ khác một ký tự vẫn được tính là dòng xoá + dòng thêm. Nếu cần soi từng từ bên trong dòng, hãy xuống dòng thủ công ở các vị trí quan trọng trước khi so."}}, {"@type": "Question", "name": "Dùng thuật toán gì để so khớp?", "acceptedAnswer": {"@type": "Answer", "text": "Thuật toán LCS (dãy con chung dài nhất) chạy trên mảng dòng — cùng họ với thuật toán diff của git. Nó ưu tiên giữ số dòng chung lớn nhất nên kết quả sát với cách người đọc hiểu \"thay đổi\"."}}, {"@type": "Question", "name": "Hai đoạn văn bản có được gửi lên máy chủ không?", "acceptedAnswer": {"@type": "Answer", "text": "Không. Việc tách dòng và so khớp hoàn toàn bằng JavaScript trong tab của bạn, đóng trang là dữ liệu biến mất."}}, {"@type": "Question", "name": "Văn bản rất dài có so được không?", "acceptedAnswer": {"@type": "Answer", "text": "Được, nhưng LCS có độ phức tạp tăng theo tích số dòng hai bên — vài nghìn dòng vẫn ổn, hàng chục nghìn dòng có thể chờ vài giây. Nên cắt đúng đoạn cần so."}}, {"@type": "Question", "name": "Vì sao hai văn bản nhìn \"giống nhau\" mà vẫn hiện khác?", "acceptedAnswer": {"@type": "Answer", "text": "Thường do khác kiểu xuống dòng (CRLF/LF), khoảng trắng ở cuối dòng, hoặc ký tự không nhìn thấy (tab, non-breaking space). Dán lại từ cùng một nguồn hoặc xoá khoảng trắng thừa trước khi so."}}, {"@type": "Question", "name": "Có hiển thị diff với màu bên cạnh nhau (side-by-side) không?", "acceptedAnswer": {"@type": "Answer", "text": "Kết quả hiển thị dạng danh sách dòng đánh dấu màu (unified), chưa có chế độ hai cột song song. Với hầu hết nhu cầu soát nội dung, dạng này vẫn theo đúng thứ tự đọc."}}, {"@type": "Question", "name": "Có lưu lại lịch sử các lần so sánh không?", "acceptedAnswer": {"@type": "Answer", "text": "Không. Không có cơ chế lưu gì cả — mỗi lần tải trang là bắt đầu sạch, dữ liệu không nằm lại trên máy của bạn dưới bất kỳ hình thức nào."}}]}
+  </script>
 </main>
   <div class="ad-zone ad-footer ad-loader-slot" data-ad-type="footer"></div>
 <footer class="site-footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="/" class="logo"><span class="logo-icon">🎨</span><span class="logo-text">SmartImgKit</span></a><p>Công cụ hình ảnh AI miễn phí, tôn trọng quyền riêng tư.</p></div><div class="footer-links"><h4>Công cụ</h4><a href="/vi/tools/background-remover">Xóa nền</a><a href="/vi/tools/compressor">Nén ảnh</a><a href="/vi/tools/converter">Chuyển đổi</a><a href="/vi/tools/resizer">Đổi kích thước</a><a href="/vi/tools/cropper">Cắt ảnh</a><a href="/vi/tools/watermark">Watermark</a></div><div class="footer-links"><h4>Công cụ khác</h4><a href="/vi/tools/image-upscaler">Phóng to ảnh</a><a href="/vi/tools/gif-editor">Chỉnh sửa GIF</a><a href="/vi/tools/pdf-to-image">PDF sang Ảnh</a><a href="/vi/tools/heic-converter">Chuyển đổi HEIC</a><a href="/vi/tools/meme-generator">Tạo Meme</a><a href="/vi/tools/face-blur">Làm mờ khuôn mặt</a></div><div class="footer-links"><h4>Trang web</h4><a href="/about">Giới thiệu</a><a href="/contact">Liên hệ</a><a href="/privacy">Bảo mật</a><a href="/terms">Điều khoản</a></div></div><div class="footer-bottom"><p>© 2026 SmartImgKit. Xử lý 100% cục bộ — tệp của bạn không bao giờ rời khỏi thiết bị.</p></div></div></footer>
@@ -255,7 +257,7 @@
     const d = diff(orig.value, mod.value);
     const adds = d.filter(x => x.type === '+').length;
     const dels = d.filter(x => x.type === '-').length;
-    stats.textContent = `${adds} addition(s), ${dels} deletion(s), ${d.filter(x=>x.type==='=').length} unchanged line(s)`;
+    stats.textContent = `Thêm ${adds} dòng, xoá ${dels} dòng, giữ nguyên ${d.filter(x=>x.type==='=').length} dòng`;
     out.innerHTML = d.map(x => {
       const cls = x.type === '+' ? 'diff-add' : (x.type === '-' ? 'diff-del' : '');
       const prefix = x.type === '+' ? '+ ' : (x.type === '-' ? '- ' : '  ');
