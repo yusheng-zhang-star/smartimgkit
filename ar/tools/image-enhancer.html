@@ -65,10 +65,10 @@
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Image Enhancer — Enhance Your Photos",
+  "name": "محسّن الصور أونلاين — سطوع وتباين وإبراز حواف",
   "url": "https://smartimgkit.com/ar/tools/image-enhancer",
   "inLanguage": "ar",
-  "description": "حسّن صورك بضبط دقيق للسطوع والتباين والتشبع والحدة، مع مقارنة قبل/بعد. مجاناً وبدون رفع، كل شيء داخل المتصفح.",
+  "description": "عدّل صورك داخل المتصفح: سطوع وتباين وتشبع، وإبراز حواف بنواة التفاف 3×3، وتحسين تلقائي يفحص الصورة. مجانًا، دون رفع، وإخراج PNG.",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
   "isAccessibleForFree": true,
@@ -79,46 +79,7 @@
   }
 }
 </script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Is this really free?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes — 100% free. All processing runs in your browser. No signup, no limits."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What image formats are supported?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "JPG, PNG, WebP, and most browser-supported formats. Output is PNG."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Will I lose image quality?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "The tool uses non-destructive adjustments. Downloaded PNG is lossless. Heavy editing may cause minor quality loss due to repeated processing."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is my image private?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Absolutely. Your image never leaves your browser. No uploads, no tracking."
-      }
-    }
-  ]
-}
-</script>
+
 
 <style id="missing-rules-css">
 .preset-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
@@ -160,10 +121,17 @@
 
   <main class="tool-page">
     <div class="container">
-      <nav class="breadcrumb"><a href="/">الرئيسية</a><span>/</span><a href="/ar/tools/">الأدوات</a><span>/</span><span></span></nav>
+      <nav class="breadcrumb"><a href="/">الرئيسية</a><span>/</span><a href="/ar/tools/">الأدوات</a><span>/</span><span>محسّن الصور</span></nav>
       <div class="tool-page-header">
-        <h1>Image Enhancer — Enhance Your Photos</h1>
-        <p></p>
+        <h1>📷 محسّن الصور أونلاين — سطوع وتباين وإبراز حواف</h1>
+        <p>أداة تعديل صور تعمل بالكامل داخل المتصفح: سطوع وتباين وتشبع، وإبراز حواف بنواة التفاف 3×3، وتحسين تلقائي يفحص صورتك أولًا. الصورة لا تغادر جهازك.</p>
+        <p class="answer-lead">صورة منتج باهتة من جلسة تصوير سريعة، أو لقطة طعام غارقة في الإضاءة الصفراء، أو صورة شخصية للينكدإن تحتاج لمسة أخيرة؟ هذه الأداة تعالج الصورة داخل متصفحك عبر Canvas: حرّك المنزلق وشاهد النتيجة فورًا، أو اضغط «تحسين تلقائي» ليقيس المتصفح متوسط الإضاءة ويعيدها نحو الرمادي المتوازن، ثم نزّل الصورة PNG دون فقدان جودة. لا تثبيت، لا تسجيل، ولا رفع لأي خادم.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">مجاني بالكامل</span><span class="f-v">بلا حد لعدد الصور</span></li>
+          <li><span class="f-k">معالجة محلية</span><span class="f-v">الصورة لا تغادر المتصفح</span></li>
+          <li><span class="f-k">PNG بلا فقدان</span><span class="f-v">جودة الأبعاد الأصلية</span></li>
+          <li><span class="f-k">6 أوضاع جاهزة</span><span class="f-v">تلقائي / بورتريه / منظر…</span></li>
+        </ul>
       </div>
       <div class="tool-workspace">
 <!-- Upload + Preview -->
@@ -172,58 +140,58 @@
     <input type="file" id="fileInput" accept="image/*" style="display:none;">
     <label for="fileInput" class="dropzone" id="dropzone">
       <div class="upload-icon">📁</div>
-      <div class="upload-text">انقر أو اسحب image here</div>
+      <div class="upload-text">انقر أو اسحب الصورة هنا</div>
       <div class="upload-hint">JPG / PNG / WebP — الحد الأقصى 20MB</div>
     </label>
 
     <!-- Presets -->
     <div class="card">
-      <h3>Quick Presets</h3>
+      <h3>الأوضاع الجاهزة</h3>
       <div class="preset-grid">
-        <button class="preset-btn" onclick="applyPreset('auto')"> Auto Enhance</button>
-        <button class="preset-btn" onclick="applyPreset('portrait')"> Portrait</button>
-        <button class="preset-btn" onclick="applyPreset('landscape')"> Landscape</button>
-        <button class="preset-btn" onclick="applyPreset('vivid')"> Vivid</button>
-        <button class="preset-btn" onclick="applyPreset('warm')"> Warm</button>
-        <button class="preset-btn" onclick="applyPreset('cool')"> Cool</button>
+        <button class="preset-btn" onclick="applyPreset('auto')"> تحسين تلقائي</button>
+        <button class="preset-btn" onclick="applyPreset('portrait')"> بورتريه</button>
+        <button class="preset-btn" onclick="applyPreset('landscape')"> منظر طبيعي</button>
+        <button class="preset-btn" onclick="applyPreset('vivid')"> زاهي</button>
+        <button class="preset-btn" onclick="applyPreset('warm')"> دافئ</button>
+        <button class="preset-btn" onclick="applyPreset('cool')"> بارد</button>
       </div>
     </div>
 
     <!-- Manual Adjustments -->
     <div class="card">
-      <h3>Manual Adjustments</h3>
+      <h3>الضبط اليدوي</h3>
       <div class="slider-group">
-        <label>Brightness <span class="slider-value" id="brightVal">0</span></label>
+        <label>السطوع <span class="slider-value" id="brightVal">0</span></label>
         <input type="range" id="brightSlider" min="-100" max="100" value="0" oninput="onSliderChange()">
       </div>
       <div class="slider-group">
-        <label>Contrast <span class="slider-value" id="contrastVal">0</span></label>
+        <label>التباين <span class="slider-value" id="contrastVal">0</span></label>
         <input type="range" id="contrastSlider" min="-100" max="100" value="0" oninput="onSliderChange()">
       </div>
       <div class="slider-group">
-        <label>Saturation <span class="slider-value" id="saturateVal">0</span></label>
+        <label>التشبع <span class="slider-value" id="saturateVal">0</span></label>
         <input type="range" id="saturateSlider" min="-100" max="100" value="0" oninput="onSliderChange()">
       </div>
       <div class="slider-group">
-        <label>Sharpen <span class="slider-value" id="sharpenVal">0</span></label>
+        <label>إبراز الحواف <span class="slider-value" id="sharpenVal">0</span></label>
         <input type="range" id="sharpenSlider" min="0" max="100" value="0" oninput="onSliderChange()">
       </div>
       <div class="slider-group">
-        <label>Exposure <span class="slider-value" id="exposureVal">0</span></label>
+        <label>التعريض <span class="slider-value" id="exposureVal">0</span></label>
         <input type="range" id="exposureSlider" min="-100" max="100" value="0" oninput="onSliderChange()">
       </div>
       <div class="slider-group">
-        <label>Highlights <span class="slider-value" id="highlightsVal">0</span></label>
+        <label>المناطق الساطعة <span class="slider-value" id="highlightsVal">0</span></label>
         <input type="range" id="highlightsSlider" min="-100" max="100" value="0" oninput="onSliderChange()">
       </div>
       <div class="btn-group" style="margin-top:10px;">
-        <button class="btn btn-secondary" onclick="resetSliders()">إعادة تعيين All</button>
+        <button class="btn btn-secondary" onclick="resetSliders()">إعادة تعيين الكل</button>
       </div>
     </div>
 
     <!-- Actions -->
     <div class="btn-group">
-      <button class="btn btn-primary" id="downloadBtn" disabled onclick="downloadImage()">⬇️ تحميل Enhanced</button>
+      <button class="btn btn-primary" id="downloadBtn" disabled onclick="downloadImage()">⬇️ تنزيل الصورة المحسّنة</button>
       <button class="btn btn-secondary" id="resetBtn" disabled onclick="resetAll()">🔄 إعادة تعيين</button>
     </div>
   </div>
@@ -231,13 +199,13 @@
   <div class="tool-canvas-area">
     <div class="preview-box" id="previewBox">
       <canvas id="previewCanvas" style="display:none;"></canvas>
-      <div id="placeholderText" style="color:var(--text-muted);font-size:.9rem;">رفع an image to start enhancing</div>
+      <div id="placeholderText" style="color:var(--text-muted);font-size:.9rem;">ارفع صورة لبدء التحسين</div>
     </div>
     <div style="margin-top:12px;display:flex;gap:10px;align-items:center;">
       <label style="font-size:.82rem;color:var(--text-secondary);cursor:pointer;">
-        <input type="checkbox" id="compareToggle" onchange="toggleCompare()"> Show Before/After
+        <input type="checkbox" id="compareToggle" onchange="toggleCompare()"> مقارنة قبل/بعد
       </label>
-      <span style="font-size:.75rem;color:var(--text-muted);">Drag slider to compare</span>
+      <span style="font-size:.75rem;color:var(--text-muted);">اسحب المقبض للمقارنة</span>
     </div>
     <div class="preview-box compare-slider" id="compareBox" style="display:none;margin-top:12px;">
       <canvas id="beforeCanvas"></canvas>
@@ -248,41 +216,74 @@
 </div>
       </div>
 
-  <div class="guide-block">
-  <h3>Quick Presets</h3>
-  <p>Click <strong>Auto Enhance</strong> for a one-click improvement. Or try Portrait (skin tone optimize), Landscape (color boost), Vivid (max saturation), Warm (golden tone), or Cool (blue tone).</p>
+  
+  <section class="how-to-section">
+    <h2>كيف تحسّن صورتك في 4 خطوات</h2>
+    <div class="how-to-steps">
+      <div class="how-to-step"><div class="step-number">1</div><h4>ارفع الصورة</h4><p>انقر منطقة الرفع أو أسقط ملف JPG/PNG/WebP فيها (حتى 20MB).</p></div>
+      <div class="how-to-step"><div class="step-number">2</div><h4>اختر وضعًا أو اضبط يدويًا</h4><p>اضغط «تحسين تلقائي» ليحلل المتصفح الصورة، أو اختر بورتريه/منظر/زاهي، أو تحكم بكل معنى عبر المنزلقات.</p></div>
+      <div class="how-to-step"><div class="step-number">3</div><h4>قارن قبل وبعد</h4><p>فعّل «مقارنة قبل/بعد» ثم اسحب المقبض أفقيًا لترى الفرق بوضوح.</p></div>
+      <div class="how-to-step"><div class="step-number">4</div><h4>نزّل PNG</h4><p>اضغط «تنزيل الصورة المحسّنة» لتحصل على ملف PNG دون إعادة ضغط وبالأبعاد الأصلية.</p></div>
+    </div>
+  </section>
+
+  <h2>شرح مفصل لكل متغير</h2>
+<div class="guide-block">
+  <h3>الأوضاع الجاهزة — قيم محددة خلف كل زر</h3>
+  <p>زر <strong>تحسين تلقائي</strong> يأخذ عينة من عشرات آلاف البكسلات: إن انحرف متوسط الإضاءة عن الرمادي المتوسط (128) يرفع السطوع حتى +40، وإن ضاق مدى الإضاءة تحت 100 وسّع التباين، والصور الباهتة (تشبع متوسط أقل من 0.15) ترفع تشبعها إلى +30، مع حدة خفيفة 25. أما الأوضاع الخمسة فمجموعات ثابتة: <strong>بورتريه</strong> يحافظ على لون البشرة (سطوع +10، تباين +15، حدة 30، خفض المناطق الساطعة -15)، <strong>منظر طبيعي</strong> يرفع التباين +25 والتشبع +35، <strong>زاهي</strong> يدفع التشبع إلى +60، <strong>دافئ</strong> يميل للأصفر بتعريض +15، <strong>بارد</strong> يخفض التشبع -10.</p>
 </div>
 <div class="guide-block">
-  <h3>Manual Adjustments</h3>
-  <ul>
-    <li><strong>Brightness</strong>: Lighten or darken the image (-100 to 100).</li>
-    <li><strong>Contrast</strong>: Make darks darker and lights lighter.</li>
-    <li><strong>Saturation</strong>: Boost or reduce color intensity.</li>
-    <li><strong>Sharpen</strong>: Enhance edge definition (0-100).</li>
-    <li><strong>Exposure</strong>: Adjust overall exposure like camera exposure compensation.</li>
-    <li><strong>Highlights</strong>: Recover or boost bright areas.</li>
-  </ul>
+  <h3>المنزلقات الستة — أيها يغيّر الصورة فعلًا</h3>
+  <p><strong>السطوع</strong> و<strong>التعريض</strong> يعملان على المتغير نفسه: التعريض يساهم بنصف قوته (سحبه إلى +100 يعني دفع سطوع إضافي +50). <strong>التباين</strong> و<strong>التشبع</strong> يمرّان عبر فلتر CSS في Canvas. <strong>إبراز الحواف</strong> يستخدم نواة التفاف 3×3 (وزن مركزي 1+4k وأربعة جيران -k) وقد يستغرق ثانية أو اثنتين مع الصور الأعرض من 4000 بكسل. <strong>المناطق الساطعة</strong> يمس فقط البكسلات التي تزيد إضاءتها عن 128: اسحبه سالبًا لاستعادة تفاصيل السماء، وموجبًا لتوهج المناطق الفاتحة أكثر.</p>
 </div>
 <div class="guide-block">
-  <h3>Before/After Comparison</h3>
-  <p>Check "Show Before/After" to enable the slider comparison. Drag the slider handle to compare original and enhanced versions side by side.</p>
+  <h3>المقارنة قبل/بعد وحدود نافذة المعاينة</h3>
+  <p>نافذة المقارنة تعرض السطوع والتباين والتشبع فقط — <strong>لا تشمل إبراز الحواف ولا المناطق الساطعة</strong>، لذا قد تبدو الصورة المنزّلة أحدث من المعاينة قليلًا. هذا فرق مقصود بين معاينة سريعة ونتيجة نهائية كاملة.</p>
 </div>
 <div class="guide-block">
-  <h3>Download</h3>
-  <p>Click "Download Enhanced" to save your image as PNG. All processing is done in your browser — no data is uploaded to any server.</p>
+  <h3>التنزيل — PNG دون إعادة ضغط</h3>
+  <p>تُصدَّر الصورة بصيغة PNG التي لا تفقد بيانات، بالأبعاد الأصلية نفسها واسم الملف <code>enhanced-image.png</code>. كل الحسابات تجري في متصفحك عبر Canvas API — الصورة لا تُرسل لأي جهة، وهو الخيار الآمن لصور الأوراق الرسمية وصور المنتجات التي لم تُنشر بعد.</p>
 </div>
 
+  <section style="max-width:900px;margin:3rem auto;padding:0 1rem;">
+    <h2>استخدامات شائعة لدى المستخدمين العرب</h2>
+    <div class="guide-block"><h3>صور متاجر نون وسلة وأمازون</h3><p>صور المنتجات بالجوال كثيرًا ما تخرج باهتة تحت إضاءة الغرفة. اختر وضع «زاهي» أو ارفع التشبع +30 لينقشع الخلفية البيضاء — النظافة البصرية للخلفية من أبرز ما يميز المتاجر المحترفة.</p></div>
+    <div class="guide-block"><h3>صور الطعام والحلويات</h3><p>إضاءة المطاعم الصفراء تجعل الأطباق مصفرّة. اخفض المناطق الساطعة -15 لتحافظ على تفاصيل الصلصة، وارفع الحدة 40 لتظهر قرمشة المقليات.</p></div>
+    <div class="guide-block"><h3>صور لينكدإن والسيرة الذاتية</h3><p>البورتريه يحتاج لون بشرة طبيعيًا: استخدم وضع «بورتريه» ولا ترفع التشبع فوق +20. الإخراج PNG يعني لا هالات ضغط حول حواف الياقة.</p></div>
+    <div class="guide-block"><h3>صور إنستقرام بجودة أصلية</h3><p>إنستقرام يعيد ضغط الصور المرفوعة؛ ابدأ بملف PNG نظيف من هذه الأداة فتبقى تفاصيل صورتك أفضل بعد ضغط المنصة.</p></div>
+  </section>
+
 <section class="faq-section">
-  <h2>Frequently Asked Questions</h2>
-  <div class="faq-item"><button class="faq-question">Is this really free?</button><div class="faq-answer">Yes — 100% free. All processing runs in your browser. No signup, no limits.</div></div>
-  <div class="faq-item"><button class="faq-question">What image formats are supported?</button><div class="faq-answer">JPG, PNG, WebP, and most browser-supported formats. Output is PNG.</div></div>
-  <div class="faq-item"><button class="faq-question">Will I lose image quality?</button><div class="faq-answer">The tool uses non-destructive adjustments. Downloaded PNG is lossless. Heavy editing may cause minor quality loss due to repeated processing.</div></div>
-  <div class="faq-item"><button class="faq-question">Is my image private?</button><div class="faq-answer">Absolutely. Your image never leaves your browser. No uploads, no tracking.</div></div>
+  <h2>الأسئلة الشائعة</h2>
+  <div class="faq-item"><button class="faq-question">هل الأداة مجانية فعلًا؟</button><div class="faq-answer">نعم، مجانية بالكامل ودون حد لعدد الصور. المعالجة تجري في متصفحك، فلا نتحمل تكاليف خوادم لمعالجة الصور ولا نحتاج لفرض رسوم أو إضافة علامة مائية.</div></div>
+  <div class="faq-item"><button class="faq-question">هل تُرفع صوري إلى خادم؟</button><div class="faq-answer">لا. تُقرأ الصورة عبر FileReader في المتصفح، وتُعدَّل على Canvas، وتُحفظ على جهازك مباشرة. يمكنك قطع الإنترنت والأداة تعمل كالمعتاد.</div></div>
+  <div class="faq-item"><button class="faq-question">لماذا تبدو المعاينة أقل حدّة من الصورة المنزّلة؟</button><div class="faq-answer">نافذة المقارنة ترسم السطوع والتباين والتشبع فقط تسريعًا؛ أما الحدة (الالتفاف 3×3) والمناطق الساطعة فتُطبق على الصورة النهائية وحدها. الملف المنزّل يحمل التعديلات الخمسة كاملة.</div></div>
+  <div class="faq-item"><button class="faq-question">هل تفقد الصورة جودتها بعد التعديل؟</button><div class="faq-answer">لا. المنزلقات معاملات فقط، والصورة الأصلية تبقى سليمة في الذاكرة، والتصدير PNG دون إعادة ضغط. لا توجد خطوة ضغط JPEG تُسبب الضبابية أو التكسير كما في المحررات التقليدية.</div></div>
+  <div class="faq-item"><button class="faq-question">ما الصيغ المدعومة وماذا أستلم؟</button><div class="faq-answer">تقبل أي صيغة يقرأها المتصفح: JPG وPNG وWebP وGIF الثابتة وBMP. الناتج PNG بالأبعاد الأصلية نفسها. لتحويل صيغ أخرى استخدم أداة Image Converter في الموقع.</div></div>
+  <div class="faq-item"><button class="faq-question">هل تعمل على الجوال؟</button><div class="faq-answer">نعم، الواجهة تعمل في متصفح الهاتف. الصور حتى 12 ميغابكسل تُعالج بسلاسة؛ صور 48 ميغابكسل فأكثر قد تستغرق ثوانٍ في خطوة إبراز الحواف لأنها تمسح كل بكسل.</div></div>
+  <div class="faq-item"><button class="faq-question">ما الفرق عن فلاتر تطبيقات الكاميرا؟</button><div class="faq-answer">الفرق أنك تتحكم بكل معنى برقم محدد وترى الأصل مقابله فورًا. التطبيقات غالبًا تدمج كل شيء في شريط «تجميل» واحد يجعل البشرة بلاستيكية؛ هنا أنت من يحدد قوة كل تأثير.</div></div>
+</section>
+
+<section class="related-tools">
+  <h2>أدوات ذات صلة</h2>
+  <div class="related-tools-grid">
+    <a href="/ar/tools/social-media-post" class="related-tool-card"><span class="tool-icon">🧩</span><div class="tool-info"><strong>منشورات السوشيال ميديا</strong><span class="tool-desc">صور بمقاسات كل منصة</span></div><span class="tool-arrow">→</span></a>
+    <a href="/ar/tools/image-filters" class="related-tool-card"><span class="tool-icon">🧩</span><div class="tool-info"><strong>فلاتر الصور</strong><span class="tool-desc">تأثيرات لونية جاهزة</span></div><span class="tool-arrow">→</span></a>
+    <a href="/ar/tools/image-border" class="related-tool-card"><span class="tool-icon">🧩</span><div class="tool-info"><strong>إطار الصورة</strong><span class="tool-desc">أضف حدودًا قبل النشر</span></div><span class="tool-arrow">→</span></a>
+    <a href="/ar/tools/watermark" class="related-tool-card"><span class="tool-icon">🧩</span><div class="tool-info"><strong>علامة مائية</strong><span class="tool-desc">ختم شعارك على صور المتجر</span></div><span class="tool-arrow">→</span></a>
+    <a href="/ar/tools/image-compressor" class="related-tool-card"><span class="tool-icon">🧩</span><div class="tool-info"><strong>ضغط الصور</strong><span class="tool-desc">قلّل الحجم قبل الإرسال</span></div><span class="tool-arrow">→</span></a>
+  </div>
 </section>
 
     </div>
 
 <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
+  <script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "HowTo", "name": "كيف تحسّن صورتك في 4 خطوات", "step": [{"@type": "HowToStep", "position": 1, "name": "ارفع الصورة", "text": "انقر منطقة الرفع أو أسقط ملف JPG/PNG/WebP فيها (حتى 20MB)."}, {"@type": "HowToStep", "position": 2, "name": "اختر وضعًا أو اضبط يدويًا", "text": "اضغط «تحسين تلقائي» ليحلل المتصفح الصورة، أو اختر بورتريه/منظر/زاهي، أو تحكم بكل معنى عبر المنزلقات."}, {"@type": "HowToStep", "position": 3, "name": "قارن قبل وبعد", "text": "فعّل «مقارنة قبل/بعد» ثم اسحب المقبض أفقيًا لترى الفرق بوضوح."}, {"@type": "HowToStep", "position": 4, "name": "نزّل PNG", "text": "اضغط «تنزيل الصورة المحسّنة» لتحصل على ملف PNG دون إعادة ضغط وبالأبعاد الأصلية."}]}
+  </script>
+  <script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "هل الأداة مجانية فعلًا؟", "acceptedAnswer": {"@type": "Answer", "text": "نعم، مجانية بالكامل ودون حد لعدد الصور. المعالجة تجري في متصفحك، فلا نتحمل تكاليف خوادم لمعالجة الصور ولا نحتاج لفرض رسوم أو إضافة علامة مائية."}}, {"@type": "Question", "name": "هل تُرفع صوري إلى خادم؟", "acceptedAnswer": {"@type": "Answer", "text": "لا. تُقرأ الصورة عبر FileReader في المتصفح، وتُعدَّل على Canvas، وتُحفظ على جهازك مباشرة. يمكنك قطع الإنترنت والأداة تعمل كالمعتاد."}}, {"@type": "Question", "name": "لماذا تبدو المعاينة أقل حدّة من الصورة المنزّلة؟", "acceptedAnswer": {"@type": "Answer", "text": "نافذة المقارنة ترسم السطوع والتباين والتشبع فقط تسريعًا؛ أما الحدة (الالتفاف 3×3) والمناطق الساطعة فتُطبق على الصورة النهائية وحدها. الملف المنزّل يحمل التعديلات الخمسة كاملة."}}, {"@type": "Question", "name": "هل تفقد الصورة جودتها بعد التعديل؟", "acceptedAnswer": {"@type": "Answer", "text": "لا. المنزلقات معاملات فقط، والصورة الأصلية تبقى سليمة في الذاكرة، والتصدير PNG دون إعادة ضغط. لا توجد خطوة ضغط JPEG تُسبب الضبابية أو التكسير كما في المحررات التقليدية."}}, {"@type": "Question", "name": "ما الصيغ المدعومة وماذا أستلم؟", "acceptedAnswer": {"@type": "Answer", "text": "تقبل أي صيغة يقرأها المتصفح: JPG وPNG وWebP وGIF الثابتة وBMP. الناتج PNG بالأبعاد الأصلية نفسها. لتحويل صيغ أخرى استخدم أداة Image Converter في الموقع."}}, {"@type": "Question", "name": "هل تعمل على الجوال؟", "acceptedAnswer": {"@type": "Answer", "text": "نعم، الواجهة تعمل في متصفح الهاتف. الصور حتى 12 ميغابكسل تُعالج بسلاسة؛ صور 48 ميغابكسل فأكثر قد تستغرق ثوانٍ في خطوة إبراز الحواف لأنها تمسح كل بكسل."}}, {"@type": "Question", "name": "ما الفرق عن فلاتر تطبيقات الكاميرا؟", "acceptedAnswer": {"@type": "Answer", "text": "الفرق أنك تتحكم بكل معنى برقم محدد وترى الأصل مقابله فورًا. التطبيقات غالبًا تدمج كل شيء في شريط «تجميل» واحد يجعل البشرة بلاستيكية؛ هنا أنت من يحدد قوة كل تأثير."}}]}
+  </script>
 </main>
 
   <div class="ad-zone ad-footer ad-loader-slot" data-ad-type="footer"></div>
@@ -310,7 +311,7 @@ dropzone.addEventListener('drop', e => {
 fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
 
 function handleFile(file) {
-  if (!file.type.startsWith('image/')) { alert('Please select an image file.'); return; }
+  if (!file.type.startsWith('image/')) { alert('اختر ملف صورة.'); return; }
   const reader = new FileReader();
   reader.onload = e => {
     const img = new Image();
@@ -339,7 +340,8 @@ function applyFilters() {
   const exposure = parseInt(document.getElementById('exposureSlider').value);
   const highlights = parseInt(document.getElementById('highlightsVal').textContent);
   let filters = [];
-  if (bright !== 0) filters.push(`brightness(${100 + bright}%)`);
+  const effBright = bright + Math.round(exposure * 0.5);
+  if (effBright !== 0) filters.push(`brightness(${100 + effBright}%)`);
   if (contrast !== 0) filters.push(`contrast(${100 + contrast}%)`);
   if (saturate !== 0) filters.push(`saturate(${100 + saturate}%)`);
   if (filters.length > 0) {
@@ -350,6 +352,7 @@ function applyFilters() {
   // Sharpen via convolution
   const sharpenVal = parseInt(document.getElementById('sharpenSlider').value);
   if (sharpenVal > 0) applySharpen(sharpenVal / 100);
+  if (highlights !== 0) applyHighlights(highlights / 100);
 }
 
 function applySharpen(amount) {
@@ -377,12 +380,29 @@ function applySharpen(amount) {
   ctx.putImageData(dst, 0, 0);
 }
 
+function applyHighlights(amount) {
+  const w = canvas.width, h = canvas.height;
+  const src = ctx.getImageData(0, 0, w, h);
+  const d = src.data;
+  for (let i = 0; i < d.length; i += 4) {
+    const lum = 0.299*d[i] + 0.587*d[i+1] + 0.114*d[i+2];
+    if (lum > 128) {
+      const f = 1 + amount * ((lum - 128) / 127) * 0.6;
+      d[i]   = Math.max(0, Math.min(255, d[i] * f));
+      d[i+1] = Math.max(0, Math.min(255, d[i+1] * f));
+      d[i+2] = Math.max(0, Math.min(255, d[i+2] * f));
+    }
+  }
+  ctx.putImageData(src, 0, 0);
+}
+
 function onSliderChange() {
   document.getElementById('brightVal').textContent = document.getElementById('brightSlider').value;
   document.getElementById('contrastVal').textContent = document.getElementById('contrastSlider').value;
   document.getElementById('saturateVal').textContent = document.getElementById('saturateSlider').value;
   document.getElementById('sharpenVal').textContent = document.getElementById('sharpenSlider').value;
   document.getElementById('exposureVal').textContent = document.getElementById('exposureSlider').value;
+  document.getElementById('highlightsVal').textContent = document.getElementById('highlightsSlider').value;
   applyFilters();
   if (isComparing) updateCompare();
 }
@@ -472,8 +492,10 @@ function updateCompare() {
   bright = parseInt(document.getElementById('brightSlider').value);
   contrast = parseInt(document.getElementById('contrastSlider').value);
   saturate = parseInt(document.getElementById('saturateSlider').value);
+  exposure = parseInt(document.getElementById('exposureSlider').value);
   let filters = [];
-  if (bright !== 0) filters.push(`brightness(${100+bright}%)`);
+  const effBright = bright + Math.round(exposure * 0.5);
+  if (effBright !== 0) filters.push(`brightness(${100+effBright}%)`);
   if (contrast !== 0) filters.push(`contrast(${100+contrast}%)`);
   if (saturate !== 0) filters.push(`saturate(${100+saturate}%)`);
   if (filters.length > 0) {
