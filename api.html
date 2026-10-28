@@ -35,25 +35,11 @@ pre{background:#0f172a;padding:1rem;border-radius:8px;overflow-x:auto;color:#e2e
 <main class="tool-page"><div class="container">
 <article class="api-page">
 <h1>SmartImgKit API</h1>
-<p>Free image processing API for developers. No API key required. All processing runs in the user's browser, which means zero server costs for you and complete privacy for your users.</p>
+<p>SmartImgKit currently exposes a single, simple API endpoint: the <strong>Image Info API</strong>. All image processing tools (compress, resize, convert, remove background) run client-side in the browser and are not yet available as a server-side or embeddable SDK. This page documents only what is live today.</p>
 
 <div class="endpoint">
-<h2>1. URL Parameter API (Instant)</h2>
-<p>Load any tool with a pre-filled image URL. Perfect for integrations where you want to send users directly to a tool with their image already loaded.</p>
-<pre>https://smartimgkit.com/tools/compressor?url=https://example.com/photo.jpg
-https://smartimgkit.com/tools/resizer?url=https://example.com/photo.jpg&w=800
-https://smartimgkit.com/tools/converter?url=https://example.com/photo.jpg&to=webp</pre>
-<p><strong>Parameters:</strong></p>
-<ul>
-<li><code>url</code> — Image URL to auto-load (CORS-permitted images work best)</li>
-<li><code>w</code>, <code>h</code> — Target dimensions (resizer only)</li>
-<li><code>to</code> — Target format: webp, jpeg, png (converter only)</li>
-</ul>
-</div>
-
-<div class="endpoint">
-<h2>2. Image Info API</h2>
-<p>Get image metadata (dimensions, format, file size) as JSON.</p>
+<h2>Image Info API</h2>
+<p>Get image metadata (dimensions, format, file size) as JSON. No API key required.</p>
 <p><span class="method get">GET</span><code>/api/info?url=IMAGE_URL</code></p>
 <pre>curl "https://smartimgkit.com/api/info?url=https://example.com/photo.jpg"
 
@@ -64,18 +50,11 @@ https://smartimgkit.com/tools/converter?url=https://example.com/photo.jpg&to=web
   "size": 2458392,
   "ok": true
 }</pre>
-</div>
-
-<div class="endpoint">
-<h2>3. JavaScript SDK (Browser)</h2>
-<p>Embed image processing directly in your web app using our open-source browser-based approach. No server needed.</p>
-<pre>&lt;script src="https://smartimgkit.com/js/imkit-sdk.js"&gt;&lt;/script&gt;
-&lt;script&gt;
-  // Compress an image file to WebP
-  const blob = await IMKit.compress(file, { format: 'webp', quality: 0.8 });
-  // blob is the compressed image — send it anywhere
-&lt;/script&gt;</pre>
-<p>The SDK is a thin wrapper around Canvas API and WebCodecs. Your users' images never touch our servers.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>url</code> — The image URL to inspect (required). The server fetches only the image header to determine dimensions and format.</li>
+</ul>
+<p><strong>Response:</strong> <code>width</code>, <code>height</code> (pixels), <code>type</code> (MIME type), <code>size</code> (bytes), <code>ok</code> (boolean). On error, <code>ok</code> is false with an <code>error</code> message and an appropriate HTTP status.</p>
 </div>
 
 <div class="endpoint">
