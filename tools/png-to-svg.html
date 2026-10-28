@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PNG to SVG Converter — Vectorize Images Free | SmartImgKit</title>
-  <meta name="description" content="Convert PNG/JPG to SVG vector online free. Trace images in your browser, no upload. Perfect for logos, line art and print.">
-  <meta name="keywords" content="png to svg, image vectorizer, bitmap to svg, logo vector converter, online svg converter">
+  <title>Image to SVG — Block Trace Converter | SmartImgKit</title>
+  <meta name="description" content="Convert an image into an SVG made of 2-pixel blocks, entirely in your browser. This is a block trace, not outline vectorization: ideal for two-tone silhouettes, icons and stencils, and honest about what it cannot do for photos or logos.">
+  <meta name="keywords" content="image to svg, png to svg converter, block trace svg, silhouette to svg, icon to svg, stencil svg">
   <link rel="canonical" href="https://smartimgkit.com/tools/png-to-svg">
   <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/png-to-svg">
   <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/png-to-svg">
@@ -14,14 +14,75 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script type="application/ld+json">
 {
-  
-  "inLanguage": "en","@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "PNG to SVG Converter",
-  "url": "https://smartimgkit.com/tools/png-to-svg",
-  "applicationCategory": "DesignApplication",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "description": "Convert PNG/JPG images to SVG vector format. Free, browser-based, no upload."
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "inLanguage": "en",
+      "@type": "WebApplication",
+      "name": "Image to SVG (Block Trace)",
+      "url": "https://smartimgkit.com/tools/png-to-svg",
+      "applicationCategory": "DesignApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Turn an image into an SVG built from 2-pixel blocks, in the browser. A block trace for two-tone silhouettes, stencils and simple icons; not an outline vectorizer, and stated as such."
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is the output a real vector trace?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. It is a mosaic of 2×2 rectangles in an SVG wrapper. It is genuinely vector — it scales without pixelation and every element is a shape — but it is not a traced outline, so it will not give you smooth curves to edit."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is the SVG larger than the PNG?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Each block is a separate line of markup of about 55 characters, and a typical image needs tens of thousands of them. A 1–2 MB SVG against a 100 KB PNG is normal. Outline tracers avoid this by storing a few paths instead of filling every area with squares."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the Color Count slider change anything?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Not currently. The value is read by the script but the drawing loop only ever emits black blocks, which is why the output stays monochrome whether you set 2 or 16. The control is kept in the interface for a planned multi-colour version."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What kind of image gives a usable result?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "High-contrast, two-tone subjects: silhouettes, stencils, stamps, bold lettering, simple pictograms. Photographs and gradients turn into noise, because every intermediate grey has to be forced to either black or nothing at the threshold."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I edit the SVG in Illustrator or Figma?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It opens, and every rectangle is individually selectable, but do not expect a tidy object tree: you will see thousands of separate squares rather than a few closed paths. Editing is practical for deleting stray blocks, not for reshaping a logo."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the resolution ceiling, and what are the sliders?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The image is downscaled to at most 800 pixels wide before sampling, so the finest detail in the SVG is 2 pixels of that reduced image, not of your original. Threshold sets the cut-off between black and empty, from 0 to 255 with 128 as the default; lower values keep fewer blocks, higher values keep more."
+          }
+        }
+      ]
+    }
+  ]
 }
 </script>
   <style>
@@ -54,14 +115,27 @@
   </nav>
 
   <main class="container">
-    <h1 style="text-align:center;margin-bottom:.5rem">PNG to SVG Converter</h1>
-    <p class="answer-lead">PNG to SVG traces raster logos, icons, and line art into scalable vector SVG in your browser. Traced vectors scale to any size without blur — ideal for print, vinyl cutters, and design work. Detailed photos trace poorly, since the tracer is built for flat shapes; your file never uploads and tracing is free.</p>
+    <h1 style="text-align:center;margin-bottom:.5rem">Image to SVG (Block Trace)</h1>
+    <p class="answer-lead">This converter turns an image into an SVG built from small rectangles: it samples the picture on a 2-pixel grid and, wherever a sample is darker than your threshold, writes a 2&times;2 block into the file. The result scales without blurring and opens in any vector editor, but it is a mosaic rather than a traced outline &mdash; there are no Bezier curves and no paths to drag. High-contrast silhouettes, stencils, simple icons and lettering come out useful; photographs and detailed logos do not.</p>
     <ul class="facts-strip">
       <li><span class="f-k">Price</span><span class="f-v">Free, unlimited</span></li>
       <li><span class="f-k">Sign-up</span><span class="f-v">Not required</span></li>
-      <li><span class="f-k">Output</span><span class="f-v">SVG (traced)</span></li>
+      <li><span class="f-k">Output</span><span class="f-v">SVG (block trace)</span></li>
       <li><span class="f-k">Upload</span><span class="f-v">Never — local</span></li>
     </ul>
+        <div class="compare-table">
+          <h2>Block trace, outline trace and hand tracing</h2>
+          <table>
+            <thead><tr><th>Method</th><th>What ends up in the file</th><th>Editable as paths</th><th>Suited to</th></tr></thead>
+            <tbody>
+              <tr><td>Block trace (this page)</td><td>One black <code>&lt;rect&gt;</code> per dark 2&times;2 block</td><td>No &mdash; thousands of separate rectangles</td><td>Two-tone silhouettes, stencils, blocky icons</td></tr>
+              <tr><td>Outline trace</td><td>A handful of Bezier paths per shape</td><td>Yes</td><td>Logos, line art, signatures, maps</td></tr>
+              <tr><td>Hand tracing</td><td>Paths drawn by a person</td><td>Yes, precisely</td><td>Anything that has to be exact</td></tr>
+              <tr><td>Keeping the PNG</td><td>Pixels</td><td>Not applicable</td><td>Photographs and anything with soft gradients</td></tr>
+            </tbody>
+          </table>
+        </div>
+
 
     <div class="upload" id="dropZone">
       <div style="font-size:3rem;margin-bottom:1rem">🖼️</div>
@@ -90,6 +164,55 @@
       <button class="btn btn-primary" onclick="downloadSVG()">⬇️ Download SVG</button>
       <button class="btn btn-secondary" onclick="reset()">🔄 New Image</button>
     </div>
+<section class="detail-sec" style="max-width:800px;margin:32px auto">
+  <h2>How the block trace builds the file</h2>
+  <p>The first step is a downscale. The image is drawn to a canvas no wider than 800 pixels, so a 3000-pixel-wide source is reduced before any sampling happens &mdash; the output resolution is capped by that 800-pixel ceiling, not by your original file.</p>
+  <p>Then the canvas is read on a 2-pixel grid. For each sample the tool averages the red, green and blue channels into one grey value and compares it with the threshold slider, which runs from 0 to 255 and starts at 128. If the sample is transparent it is skipped; if it is darker than the threshold, one line of SVG is appended &mdash; a 2&times;2 rectangle filled black at that x and y. Everything else stays empty, so the background of the exported file is transparent rather than white.</p>
+  <p>That 2-pixel step is the whole design. An 800&times;600 image becomes a 400&times;300 grid, or 120,000 possible cells; a typical silhouette covers a quarter to a third of them, which is 30,000 to 40,000 rectangles. Every one of those is independent: no rectangle is merged with its neighbour, and no edge is shared. The output therefore looks like fine graph paper when you zoom in, and each rectangle can be selected and moved on its own.</p>
+</section>
+
+<section class="detail-sec" style="max-width:800px;margin:32px auto">
+  <h2>Why the SVG is often bigger than the PNG you started with</h2>
+  <p>A single rectangle costs roughly 55 characters of markup, so 35,000 of them come to about 1.9 MB of text before any compression. A flat two-tone PNG of the same picture is often 40&ndash;150 KB. The converter is therefore a format trade, not a size optimisation: you gain infinite scaling and editability at the block level, and you pay for it in file size.</p>
+  <p>That is not a flaw in the implementation so much as a property of this approach. An outline tracer would store one path per shape and reach a few kilobytes because it describes boundaries rather than filling area. If your goal is a smaller asset, convert the image to WebP or AVIF instead; if your goal is a file a cutting machine can use, export a block trace or a real outline trace, not a PNG.</p>
+</section>
+
+<section class="detail-sec" style="max-width:800px;margin:32px auto">
+  <h2>What a real vectorizer does, and what this page does not</h2>
+  <p>Outline tracing works in three stages. It walks the boundary between dark and light regions to collect the exact contour pixels (a marching-squares pass), simplifies each contour by dropping points that sit close to a straight line, and finally fits cubic Bezier curves through what remains. The result is a small number of smooth paths that look identical at any scale. Separately, colour vectorizers quantize the image into a fixed palette first, then trace one layer per palette entry.</p>
+  <p>This page does none of that. There is no contour walk, no curve fitting and no colour layering: the slider labelled Color Count is read by the script but does not currently influence the output, which is always black blocks on a transparent background. That is a known limitation rather than an intended feature, and it is stated here so you do not spend time looking for a setting that would change it.</p>
+  <p>In practice, use the block trace for things that are already two-tone &mdash; a stencil cut from card, a stamp, a bold icon that will be printed small, a silhouette for a vinyl cutter where 2-pixel stair-steps disappear at cutting size. For a logo that must survive being enlarged to a billboard, or line art that a designer will edit, the source needs to be re-drawn or traced with an outline tracer; a block trace will hand back tens of thousands of squares instead of a handful of curves.</p>
+</section>
+
+<section class="detail-sec" id="faq" style="max-width:800px;margin:32px auto">
+  <h2>Frequently asked questions</h2>
+  <div class="faq-section">
+    <div class="faq-item">
+      <button class="faq-question">Is the output a real vector trace?</button>
+      <div class="faq-answer"><p>No. It is a mosaic of 2&times;2 rectangles in an SVG wrapper. It is genuinely vector &mdash; it scales without pixelation and every element is a shape &mdash; but it is not a traced outline, so it will not give you smooth curves to edit.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Why is the SVG larger than the PNG?</button>
+      <div class="faq-answer"><p>Each block is a separate line of markup of about 55 characters, and a typical image needs tens of thousands of them. A 1&ndash;2 MB SVG against a 100 KB PNG is normal. Outline tracers avoid this by storing a few paths instead of filling every area with squares.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Does the Color Count slider change anything?</button>
+      <div class="faq-answer"><p>Not currently. The value is read by the script but the drawing loop only ever emits black blocks, which is why the output stays monochrome whether you set 2 or 16. The control is kept in the interface for a planned multi-colour version.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">What kind of image gives a usable result?</button>
+      <div class="faq-answer"><p>High-contrast, two-tone subjects: silhouettes, stencils, stamps, bold lettering, simple pictograms. Photographs and gradients turn into noise, because every intermediate grey has to be forced to either black or nothing at the threshold.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Can I edit the SVG in Illustrator or Figma?</button>
+      <div class="faq-answer"><p>It opens, and every rectangle is individually selectable, but do not expect a tidy object tree: you will see thousands of separate squares rather than a few closed paths. Editing is practical for deleting stray blocks, not for reshaping a logo.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">What is the resolution ceiling, and what are the sliders?</button>
+      <div class="faq-answer"><p>The image is downscaled to at most 800 pixels wide before sampling, so the finest detail in the SVG is 2 pixels of that reduced image, not of your original. Threshold sets the cut-off between black and empty, from 0 to 255 with 128 as the default; lower values keep fewer blocks, higher values keep more.</p></div>
+    </div>
+  </div>
+</section>
 </main>
 
   <script>
@@ -183,59 +306,10 @@
   })();
   </script>
 <!-- Viral Share Button -->
-<button onclick="shareOurTool()" style="position:fixed;bottom:20px;right:20px;background:#0ea5e9;color:white;border:none;border-radius:50%;width:60px;height:60px;font-size:24px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.2);z-index:999;" title="Share this free tool">💛</button>
-<script>
-function shareOurTool() {
-  const pageName = document.title.split("—")[0].trim();
-  const url = window.location.href;
-  const text = `I just used this free 100% browser-based ${pageName} — no upload, no watermark, no signup! Try it: ${url}`;
-  if (navigator.share) { navigator.share({text: text}); }
-  else { navigator.clipboard.writeText(text); alert("✅ Share text copied! Post it online to help others!"); }
-}
-</script>
-<button onclick="shareOurTool(event)" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;">💛 Share Free Tool</button>
-<script>
-function shareOurTool(e) {
-  e.stopPropagation();
-  const toolName = document.title.split("—")[0].trim();
-  const url = window.location.href;
-  const text = `I just used this FREE ${toolName} in my browser — no upload, no watermark, no signup! Saved me $29.99 on Photoshop. Try it: ${url}`;
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
-  window.open(twitterUrl, '_blank', 'width=550,height=420');
-}
-</script>
-<button onclick="shareOurTool()" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;">💛 Share Free Tool</button>
-<script>
-function shareOurTool() {
-  const toolName = document.title.split("—")[0].trim();
-  const url = window.location.href;
-  const text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
-  window.open(twitterUrl, '_blank', 'width=550,height=420');
-}
-</script>
-<button onclick="shareOurTool()" style="position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(245,158,11,0.4);z-index:999;" id="shareBtn">💛 Share Free Tool</button>
-<script>
-function shareOurTool() {
-  const lang = document.documentElement.lang || 'en';
-  const toolName = document.title.split("—")[0].trim();
-  const url = window.location.href;
-  let text, btnText;
-  if (lang.startsWith('zh')) {
-    btnText = '💛 分享免费工具';
-    text = `我刚在浏览器里用这个免费${toolName}，不用上传、无水印、不用注册！帮我省了Photoshop的钱，推荐你试试：${url}`;
-  } else if (lang.startsWith('es')) {
-    btnText = '💛 Compartir Herramienta Gratis';
-    text = `Acabo de usar este ${toolName} GRATIS directamente en mi navegador — sin subir archivos, sin marca de agua, sin registro! Me ahorró dinero de Photoshop. Pruébalo: ${url}`;
-  } else {
-    btnText = '💛 Share Free Tool';
-    text = `I just used this FREE ${toolName} right in my browser — no upload, no watermark, no signup! Saved me money on Photoshop. Try it: ${url}`;
-  }
-  document.getElementById('shareBtn').innerText = btnText;
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
-  window.open(twitterUrl, '_blank', 'width=550,height=420');
-}
-</script>
+
+
+
+
 <button onclick="shareOurTool()" style="position:fixed;bottom:32px;right:20px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;border:none;border-radius:50%;width:48px;height:48px;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(245,158,11,0.4);z-index:999;" id="shareBtn" title="Share this free tool">💛</button>
 <script>
 function shareOurTool() {

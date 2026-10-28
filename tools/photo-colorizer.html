@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Free Batch Old Photo Colorizer | Colorize B&W Photos Online No Upload</title>
-<meta name="description" content="Colorize multiple black and white old photos in batch directly in your browser. No upload, no signup, natural colors, private processing.">
+<title>Old Photo Colorizer — Warm Tone Tint for Black &amp; White Photos | SmartImgKit</title>
+<meta name="description" content="Apply a warm sepia tone to black-and-white photos in a batch, entirely in your browser. This is a fixed tone curve, not AI colorization: it will not turn sky blue or grass green. Free, no upload, full resolution output.">
+  <meta name="keywords" content="old photo colorizer, sepia tone photo, warm tone black and white photo, batch photo tint, restore old photo tone">
 <link rel="canonical" href="https://smartimgkit.com/tools/photo-colorizer">
 <style>
 * {margin:0; padding:0; box-sizing:border-box; font-family:system-ui, sans-serif;}
@@ -30,19 +31,76 @@ button:disabled {background:#a8a29e; cursor:not-allowed;}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Free Batch Old Photo Colorizer",
-  "url": "https://smartimgkit.com/tools/photo-colorizer",
-  "inLanguage": "en",
-  "description": "Colorize multiple black and white old photos in batch directly in your browser. No upload, no signup, natural colors, private processing.",
-  "applicationCategory": "MultimediaApplication",
-  "operatingSystem": "Any",
-  "isAccessibleForFree": true,
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  }
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Batch Old Photo Colorizer",
+      "url": "https://smartimgkit.com/tools/photo-colorizer",
+      "inLanguage": "en",
+      "description": "Apply a warm sepia tone curve to black-and-white photos in a batch, locally in the browser. A fixed tone map rather than AI colorization: no object recognition, no invented colours, full resolution output.",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Any",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Does it work out real colours for each object?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Every pixel goes through the same three-branch curve based only on its own brightness, so the result is a warm tint and not a colourisation. A grey sky stays grey, just warmer, and a black coat stays black with a reddish cast."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does everything come out brown?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Because the midtone branch multiplies red by 1.1 while cutting green and blue, which is a sepia curve. It is the intended look, not a failure, and the same curve is applied to every file in the batch so the results match each other."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use it on a photo that is already in colour?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can, and it will flatten the original hues into a warm monochrome-ish cast — useful if you want a period look on purpose. If you want to keep the original colour, do not run it at all: the tool does not detect whether the input is greyscale."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are scratches, dust and fold lines removed?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. A tone curve operates on brightness, so damage is tinted along with everything else and often becomes more visible. Retouch first and tint afterwards."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is the resolution kept, and what about EXIF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pixel dimensions are preserved exactly; nothing is resampled. The export is JPEG at quality 0.9, and re-encoding through a canvas discards the original EXIF block, including capture date and camera data. Keep the source file if those matter."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What file name do I get back?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Each result downloads as colorized- followed by your original file name. Note that the extension follows the JPEG export even if the source was a PNG, so a file named scan.png arrives as colorized-scan.png containing JPEG data."
+          }
+        }
+      ]
+    }
+  ]
 }
 </script>
 </head>
@@ -54,14 +112,27 @@ button:disabled {background:#a8a29e; cursor:not-allowed;}
 <a href="/blog/">Blog</a>
 </div></nav>
 <main class="container">
-<h1>Free Batch Old Photo Colorizer</h1>
-<p class="answer-lead">Photo Colorizer adds natural, realistic color to black-and-white photos with AI that runs entirely in your browser. It handles portraits, landscapes and historical photos, and keeps the original resolution on export. Free, no signup, no watermark, no uploads.</p>
+<h1>Batch Old Photo Colorizer</h1>
+<p class="answer-lead">This tool applies a warm sepia tone to black-and-white photos, one at a time or in a batch, by running each pixel through a fixed luminance-to-colour curve. It does not identify objects and it does not assign colours &mdash; a sky will not become blue and grass will not become green. What it does well is make a set of scans share one consistent warm tone, which is the look most people are after when they say a photo should feel restored.</p>
         <ul class="facts-strip">
           <li><span class="f-k">Price</span><span class="f-v">Free, unlimited</span></li>
           <li><span class="f-k">Sign-up</span><span class="f-v">Not required</span></li>
-          <li><span class="f-k">Output</span><span class="f-v">Full resolution</span></li>
+          <li><span class="f-k">Method</span><span class="f-v">Fixed tone curve</span></li>
           <li><span class="f-k">Upload</span><span class="f-v">Never — local</span></li>
         </ul>
+        <div class="compare-table">
+          <h2>Three ways to colour a black-and-white photo</h2>
+          <table>
+            <thead><tr><th>Approach</th><th>Where the colour comes from</th><th>Needs a model</th><th>Best for</th></tr></thead>
+            <tbody>
+              <tr><td>Tone curve (this page)</td><td>A fixed mapping from brightness to red, green and blue</td><td>No</td><td>One consistent sepia look across a batch of scans</td></tr>
+              <tr><td>AI colorization</td><td>Learned guesses per object: skin, sky, foliage, fabric</td><td>Yes &mdash; tens to hundreds of MB</td><td>Bringing plausible colour to portraits and street scenes</td></tr>
+              <tr><td>Hand colouring</td><td>A person decides the colour of each area</td><td>No</td><td>Restoration and archive work where accuracy is checked</td></tr>
+              <tr><td>Doing nothing</td><td>&mdash;</td><td>No</td><td>When the original grey is the honest record</td></tr>
+            </tbody>
+          </table>
+        </div>
+
 
 <div class="drop-area" id="dropArea">
 <p style="font-size:1.2rem; color:#78350f;">Drag & Drop multiple old B&W photos here, or click to upload</p>
@@ -72,6 +143,60 @@ button:disabled {background:#a8a29e; cursor:not-allowed;}
 <button id="processBtn" style="display:none;">Colorize All Photos</button>
 <div class="loading" id="loading"><span class="spinner"></span>Colorizing your old photos, please wait...</div>
 <div class="batch-list" id="result"></div>
+<section class="detail-sec" style="max-width:800px;margin:32px auto">
+  <h2>What happens to each pixel</h2>
+  <p>The loop reads one value out of every pixel &mdash; the red channel &mdash; and treats it as brightness. That is a deliberate shortcut rather than a mistake worth hiding: for a true greyscale scan all three channels are equal, so the red channel is the grey value. On a photo that still carries a colour cast, the red channel sits higher than the real luminance, and the whole image is treated as brighter than it is. If your source is a tinted or faded scan rather than a clean greyscale file, convert it to greyscale first for predictable results.</p>
+  <p>That single value then picks one of three branches, and each branch multiplies the channels by a different amount:</p>
+  <ul>
+    <li><strong>Above 200 (highlights).</strong> Red gains 20, green 10 and blue 30, so bright areas drift towards a cool, paper-white tone instead of turning cream.</li>
+    <li><strong>Between 120 and 200 (midtones).</strong> Red is multiplied by 1.1, green by 0.9 and blue by 0.8 &mdash; the strongest warm push, which is where most of the sepia character comes from.</li>
+    <li><strong>At or below 120 (shadows).</strong> Red by 1.05, green by 0.95, blue by 0.85, a gentler tilt so dark areas keep their depth instead of going muddy red.</li>
+  </ul>
+  <p>Each pixel is handled in isolation. There is no neighbour sampling, no edge detection and no notion of what the pixel represents, which is exactly why the output is a tint rather than a colourisation.</p>
+</section>
+
+<section class="detail-sec" style="max-width:800px;margin:32px auto">
+  <h2>Why a warm tone reads as &ldquo;restored&rdquo;</h2>
+  <p>Silver-based prints fade unevenly: the cyan and blue dyes go first, leaving the yellow and red to dominate. A century-old family photo therefore looks brown-gold not because that was the scene, but because that is what survived. Viewers have learned the association, so adding warmth back into a flat grey scan produces the same recognition a genuine aged print triggers.</p>
+  <p>This is a real effect, and it is worth being precise about what it delivers: a coherent period look, quickly, across a whole folder of scans. It is also why the tool is popular for reunions, memorial pages and family-history books, where the goal is that forty photographs from four different scanners look like they belong together. The tone curve gives you exactly one look, applied identically to every file, which is the property that makes a batch coherent in the first place.</p>
+</section>
+
+<section class="detail-sec" style="max-width:800px;margin:32px auto">
+  <h2>Where the tone curve stops, and what real colorization needs</h2>
+  <p>Assigning plausible colour requires knowing what things are: sky at the top of the frame, skin in the middle, foliage at the edges. That is a semantic problem, and solving it needs a trained model that has seen millions of photographs and can guess which hue belongs where. Such models exist and can be impressive on portraits and street scenes, but they guess rather than know &mdash; a brown coat may come back blue, and the same photo colorized twice can disagree with itself. This page does not do that, and adding a tint should never be described as colorizing.</p>
+  <p>Other things this page does not do, so you are not surprised later: it does not remove dust, scratches or fold lines (those need retouching, with a healing brush or an inpainting tool); it does not increase sharpness; and it does not recover detail from a blown-out or crushed scan. Its export is JPEG at quality 0.9, which re-encodes the image and drops the original EXIF block, so if the capture date matters, keep your source file. Dimensions are preserved, so nothing is resampled.</p>
+  <p>A practical order of operations for restoring a family archive: scan at the highest optical resolution you have, spot the dust and scratches first, adjust the tonal range so the shadows are not clipped, and only then apply the warm tone. Tinting before retouching makes every scratch easier to see and harder to remove, because the tone curve amplifies the contrast around them.</p>
+</section>
+
+<section class="detail-sec" id="faq" style="max-width:800px;margin:32px auto">
+  <h2>Frequently asked questions</h2>
+  <div class="faq-section">
+    <div class="faq-item">
+      <button class="faq-question">Does it work out real colours for each object?</button>
+      <div class="faq-answer"><p>No. Every pixel goes through the same three-branch curve based only on its own brightness, so the result is a warm tint and not a colourisation. A grey sky stays grey, just warmer, and a black coat stays black with a reddish cast.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Why does everything come out brown?</button>
+      <div class="faq-answer"><p>Because the midtone branch multiplies red by 1.1 while cutting green and blue, which is a sepia curve. It is the intended look, not a failure, and the same curve is applied to every file in the batch so the results match each other.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Can I use it on a photo that is already in colour?</button>
+      <div class="faq-answer"><p>You can, and it will flatten the original hues into a warm monochrome-ish cast &mdash; useful if you want a period look on purpose. If you want to keep the original colour, do not run it at all: the tool does not detect whether the input is greyscale.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Are scratches, dust and fold lines removed?</button>
+      <div class="faq-answer"><p>No. A tone curve operates on brightness, so damage is tinted along with everything else and often becomes more visible. Retouch first and tint afterwards.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Is the resolution kept, and what about EXIF?</button>
+      <div class="faq-answer"><p>Pixel dimensions are preserved exactly; nothing is resampled. The export is JPEG at quality 0.9, and re-encoding through a canvas discards the original EXIF block, including capture date and camera data. Keep the source file if those matter.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">What file name do I get back?</button>
+      <div class="faq-answer"><p>Each result downloads as <code>colorized-</code> followed by your original file name. Note that the extension follows the JPEG export even if the source was a PNG, so a file named scan.png arrives as colorized-scan.png containing JPEG data.</p></div>
+    </div>
+  </div>
+</section>
 </main>
 
 <script>

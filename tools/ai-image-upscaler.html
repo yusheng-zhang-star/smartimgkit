@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Image Upscaler — Enlarge Photos 2x/4x Free, No Upload</title>
-<meta name="description" content="Upscale one image or a whole batch 2x/4x in your browser. Sharpen small photos for print and marketplaces without uploading anything. Free, no watermark.">
+<title>Batch Image Upscaler — 2x/4x Resample in Your Browser | SmartImgKit</title>
+<meta name="description" content="Enlarge images 2x or 4x in a batch with the browser's own high-quality resampling, then export PNG. No AI model, nothing uploaded, no watermark. Best for meeting print or marketplace size thresholds, not for rescuing soft photos.">
+  <meta name="keywords" content="batch image upscaler, enlarge image 2x, upscale image 4x, resize image for print, marketplace image minimum size">
 <link rel="canonical" href="https://smartimgkit.com/tools/ai-image-upscaler">
 <style>
 * {margin:0; padding:0; box-sizing:border-box; font-family:system-ui, sans-serif;}
@@ -32,19 +33,76 @@ button:disabled {background:#94a3b8; cursor:not-allowed;}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Free Online Batch Image Upscaler",
-  "url": "https://smartimgkit.com/tools/ai-image-upscaler",
-  "inLanguage": "en",
-  "description": "Upscale one image or a whole batch 2x/4x in your browser. Sharpen small photos for print and marketplaces without uploading anything. Free, no watermark.",
-  "applicationCategory": "MultimediaApplication",
-  "operatingSystem": "Any",
-  "isAccessibleForFree": true,
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  }
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Batch Image Upscaler",
+      "url": "https://smartimgkit.com/tools/ai-image-upscaler",
+      "inLanguage": "en",
+      "description": "Enlarge images 2x or 4x in a batch by redrawing them on a canvas at high interpolation quality, then export PNG. No AI model and no upload; best for meeting print and marketplace pixel thresholds.",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Any",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is this an AI upscaler?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. There is no model, no download and no inference. The page redraws the image on a canvas with the browser's high-quality smoothing and exports the result. The previous description of this page mentioned Real-ESRGAN; that was inaccurate and has been corrected."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will a blurry photo come out sharp?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Blur means high-frequency detail is missing from the file, and interpolation only redistributes what remains. The result is a larger, smoother version of the same softness. Sharpening filters can add local contrast and make it look crisper for a moment, but they cannot restore information that was never recorded."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is the downloaded PNG so much bigger?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Two reasons stack: PNG is lossless, and the pixel count grows by 4x at 2x and by 16x at 4x. File size scales roughly with pixel count for photographic content, so a 10 MB original can become 40 MB at 2x and well over 100 MB at 4x."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the largest image it can handle?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The limit is the browser's canvas, not the tool. Desktop Chrome allows up to 16384 pixels on a side and about 268 megapixels in total; mobile browsers are stricter and vary by device. If a batch item fails silently, that canvas limit is the usual cause."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can it shrink an image as well?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Not on this page — the only factors offered are 2x and 4x. Use a resize or compress tool for anything that needs to get smaller, and come back here only when the pixel count has to go up."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens to the file names and format?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Each result downloads as PNG with an upscaled- prefix in front of your original name. JPEG and WebP sources are re-encoded to PNG, so transparency in WebP is preserved and JPEG artefacts are baked in rather than removed."
+          }
+        }
+      ]
+    }
+  ]
 }
 </script>
 </head>
@@ -56,14 +114,27 @@ button:disabled {background:#94a3b8; cursor:not-allowed;}
 <a href="/blog/">Blog</a>
 </div></nav>
 <main class="container">
-<h1>Free Online Batch Image Upscaler</h1>
-<p class="answer-lead">AI Image Upscaler enlarges low-resolution photos up to 4x using Real-ESRGAN super-resolution, running locally in your browser. It sharpens edges, cleans compression artifacts and recovers plausible detail while enlarging. Free with no signup, no watermark, and no uploads.</p>
+<h1>Batch Image Upscaler</h1>
+<p class="answer-lead">This tool enlarges an image 2x or 4x by redrawing it on a canvas at the browser's highest interpolation quality, then exporting a PNG. It is not a super-resolution model: it interpolates between the pixels that are already there, so a soft photo comes out larger and still soft. That makes it dependable for hitting a size threshold and useless for recovering detail that was never captured. Everything runs locally, with no model to download.</p>
         <ul class="facts-strip">
           <li><span class="f-k">Price</span><span class="f-v">Free, unlimited</span></li>
           <li><span class="f-k">Sign-up</span><span class="f-v">Not required</span></li>
-          <li><span class="f-k">Model</span><span class="f-v">Real-ESRGAN</span></li>
+          <li><span class="f-k">Method</span><span class="f-v">Canvas resampling</span></li>
           <li><span class="f-k">Upload</span><span class="f-v">Never — local</span></li>
         </ul>
+        <div class="compare-table">
+          <h2>What each setting produces from a 4000&times;3000 photo</h2>
+          <table>
+            <thead><tr><th>Setting</th><th>Output pixels</th><th>Best for</th><th>What to watch</th></tr></thead>
+            <tbody>
+              <tr><td>2&times;</td><td>8000&times;6000 &mdash; 48 MP</td><td>Marketplace minimums, medium prints, HD slides</td><td>PNG file size roughly quadruples</td></tr>
+              <tr><td>4&times;</td><td>16000&times;12000 &mdash; 192 MP</td><td>Large-format prints from a small original</td><td>Many phones and laptops run out of canvas memory</td></tr>
+              <tr><td>Super-resolution model</td><td>Same pixel counts, detail reconstructed</td><td>Blurry or heavily compressed originals</td><td>Not offered here: needs a model download and far more memory</td></tr>
+              <tr><td>Downscaling</td><td>Smaller than the source</td><td>Web delivery, email attachments</td><td>Use a resize tool; this page only goes up</td></tr>
+            </tbody>
+          </table>
+        </div>
+
 
 <div class="drop-area" id="dropArea">
 <p style="font-size:1.2rem; color:#1e3a8a;">Drag & Drop multiple images here, or click to upload</p>
@@ -88,6 +159,61 @@ button:disabled {background:#94a3b8; cursor:not-allowed;}
 <div class="loading" id="loading"><span class="spinner"></span>Processing images, please wait...</div>
 
 <div class="batch-list" id="result"></div>
+<section class="detail-sec" style="max-width:800px;margin:32px auto">
+  <h2>What resampling actually does to a pixel</h2>
+  <p>The enlarging step is a single canvas call. The tool creates a canvas whose width and height are the original dimensions multiplied by the factor you picked, switches smoothing on, sets the smoothing quality to <code>high</code>, and draws the source image scaled up to fill it. Every output pixel is therefore a weighted average of the source pixels around it &mdash; a wider, smoother-weighted average than the browser would use at default quality, but still an average.</p>
+  <p>That single sentence explains both the strength and the limit. When you enlarge 2x, four output pixels share the information of one input pixel; at 4x, sixteen do. Edges that were one pixel wide become two or four pixels of gradient, which is why an enlarged image looks smooth rather than blocky. Nothing is added. A photo that was already soft, motion-blurred or compressed comes out larger, smoother and just as soft in the same proportion.</p>
+  <p>A super-resolution model behaves differently: it has learned what natural images look like and generates plausible fine detail, which is why it can make an out-of-focus portrait look convincing. The trade is that generated detail is invented rather than measured &mdash; small text can turn into invented letterforms and faces can drift. This page deliberately takes the conservative route: whatever is in your file stays exactly as measured, only bigger.</p>
+</section>
+
+<section class="detail-sec" style="max-width:800px;margin:32px auto">
+  <h2>Situations where enlarging is genuinely the right fix</h2>
+  <p>Print and marketplace rules are written in pixels, not in perceived sharpness, which is where an upscale earns its place:</p>
+  <ul>
+    <li><strong>Print at 300 dpi.</strong> A 4&times;6 inch print needs about 1200&times;1800 pixels; A4 needs roughly 2480&times;3508. A 600&times;900 original only needs 2x to clear the smaller of those, and the print will look correct at arm's length even though no new detail appeared.</li>
+    <li><strong>Marketplace upload floors.</strong> Several large marketplaces ask for a long edge of at least 1000&ndash;1600 pixels before they enable zoom, and hand-made and print-on-demand platforms often want 2000. Enlarging a decent 1200-pixel product shot to 2400 satisfies the check without inventing anything misleading.</li>
+    <li><strong>Screens and slide decks.</strong> A 1280&times;720 asset on a 1920&times;1080 projector shows visible pixel steps; a 2x pass removes the stepping and reads as intentional at viewing distance.</li>
+    <li><strong>Mockups and placeholders.</strong> When a low-resolution image is going to sit inside a template at a fixed display size, enlarging it avoids soft-edged blocks in the layout.</li>
+  </ul>
+  <p>Places where it will disappoint, and no amount of interpolation fixes: an out-of-focus shot, a photo with heavy JPEG blocking (each 8&times;8 block is enlarged along with everything else), a low-quality scan, and any case where a viewer will look for real texture at 100% zoom. For those, the honest options are a super-resolution model, a re-shoot, or a higher-resolution source file.</p>
+</section>
+
+<section class="detail-sec" style="max-width:800px;margin:32px auto">
+  <h2>Batch behaviour, memory ceilings and output size</h2>
+  <p>Files are handled one after another: each is read with <code>FileReader</code>, decoded through an <code>Image</code> object, drawn to a canvas, and exported with <code>toDataURL('image/png')</code>. There is no queue limit and no per-file progress bar &mdash; a batch of twenty finishes in order, and each finished thumbnail appears as its turn completes. Because the page holds the source images and their enlarged copies in memory at the same time, peak memory is roughly the sum of all canvases rather than the largest one.</p>
+  <p>Canvas size is the practical ceiling. Desktop Chrome refuses a canvas whose longest side exceeds 16384 pixels or whose total area passes roughly 268 megapixels; mobile Safari is stricter, and the limit varies with available memory rather than being a fixed number. A 4000&times;3000 photo at 4x becomes 16000&times;12000 &mdash; 192 megapixels, 768 MB of uncompressed pixel data before PNG encoding &mdash; which is exactly the case that fails on a phone. If a 4x run dies, drop to 2x or crop first.</p>
+  <p>Output is always lossless PNG, so file size tracks pixel count rather than visual complexity: a photographic 4000&times;3000 PNG is typically 8&ndash;15 MB, and the 4x version can pass 100 MB. If the destination is a website, convert the result to JPEG or WebP afterwards. The download keeps your original name with an <code>upscaled-</code> prefix.</p>
+</section>
+
+<section class="detail-sec" id="faq" style="max-width:800px;margin:32px auto">
+  <h2>Frequently asked questions</h2>
+  <div class="faq-section">
+    <div class="faq-item">
+      <button class="faq-question">Is this an AI upscaler?</button>
+      <div class="faq-answer"><p>No. There is no model, no download and no inference. The page redraws the image on a canvas with the browser's high-quality smoothing and exports the result. The previous description of this page mentioned Real-ESRGAN; that was inaccurate and has been corrected.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Will a blurry photo come out sharp?</button>
+      <div class="faq-answer"><p>No. Blur means high-frequency detail is missing from the file, and interpolation only redistributes what remains. The result is a larger, smoother version of the same softness. Sharpening filters can add local contrast and make it look crisper for a moment, but they cannot restore information that was never recorded.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Why is the downloaded PNG so much bigger?</button>
+      <div class="faq-answer"><p>Two reasons stack: PNG is lossless, and the pixel count grows by 4x at 2x and by 16x at 4x. File size scales roughly with pixel count for photographic content, so a 10 MB original can become 40 MB at 2x and well over 100 MB at 4x.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">What is the largest image it can handle?</button>
+      <div class="faq-answer"><p>The limit is the browser's canvas, not the tool. Desktop Chrome allows up to 16384 pixels on a side and about 268 megapixels in total; mobile browsers are stricter and vary by device. If a batch item fails silently, that canvas limit is the usual cause.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Can it shrink an image as well?</button>
+      <div class="faq-answer"><p>Not on this page &mdash; the only factors offered are 2x and 4x. Use a resize or compress tool for anything that needs to get smaller, and come back here only when the pixel count has to go up.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">What happens to the file names and format?</button>
+      <div class="faq-answer"><p>Each result downloads as PNG with an <code>upscaled-</code> prefix in front of your original name. JPEG and WebP sources are re-encoded to PNG, so transparency in WebP is preserved and JPEG artefacts are baked in rather than removed.</p></div>
+    </div>
+  </div>
+</section>
 </main>
 
 <script>
