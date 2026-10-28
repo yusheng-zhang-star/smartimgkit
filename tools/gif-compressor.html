@@ -3,13 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Free GIF Compressor Online — Reduce GIF File Size</title>
-<meta name="description" content="Free online GIF compressor. Reduce animated GIF file size instantly, 100% local processing no upload.">
+<title>GIF Size Checker — Measure a GIF and Save It Unchanged | SmartImgKit</title>
+<meta name="description" content="Check the size of an animated GIF in your browser and save the file back unchanged. This page does not re-encode GIFs, and says so plainly, plus a practical guide to the edits that do make one smaller.">
+  <meta name="keywords" content="gif size checker, check gif file size, reduce gif file size, shrink animated gif, gif too large, gif frame rate">
 <link rel="canonical" href="https://smartimgkit.com/tools/gif-compressor">
   <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/gif-compressor">
   <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/gif-compressor">
-  <link rel="alternate" hreflang="fr" href="https://smartimgkit.com/fr/tools/gif-compressor">
-  <link rel="alternate" hreflang="pt" href="https://smartimgkit.com/pt/tools/gif-compressor">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/gif-compressor">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/gif-compressor">
 <link rel="stylesheet" href="/css/style.css?v=15">
@@ -20,19 +19,76 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "GIF Compressor",
-  "url": "https://smartimgkit.com/tools/gif-compressor",
-  "inLanguage": "en",
-  "description": "Free online GIF compressor. Reduce animated GIF file size instantly, 100% local processing no upload.",
-  "applicationCategory": "MultimediaApplication",
-  "operatingSystem": "Any",
-  "isAccessibleForFree": true,
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  }
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "GIF Size Checker",
+      "url": "https://smartimgkit.com/tools/gif-compressor",
+      "inLanguage": "en",
+      "description": "Report the size of an animated GIF in the browser and save the file back unchanged. No re-encoding: a browser has no native GIF encoder, and the page says so instead of pretending to compress.",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Any",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Does this page compress my GIF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The file you download is identical to the file you selected; only the reported size is read from it. Encode-free honesty is the point of this page: a browser has no native GIF encoder, so nothing here re-encodes frames."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Then why is it still called a GIF compressor?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The address predates the current implementation, which reports size only. Renaming a URL would break existing links and bookmarks, so the page states its real behaviour up front instead of pretending. A real encoder is on the list; until it exists, this is a checker."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "So how do I actually make my GIF smaller?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Trim the duration, lower the frame rate, shrink the canvas, and only then reduce the palette. For anything longer than a few seconds, converting to MP4 or WebM saves far more than any GIF re-encode can, and short transparent loops are usually smaller as WebP or APNG."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does loading a file change it in any way?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The bytes are held in memory, the size is formatted for display, and the download points at the same in-memory copy. Frame count, palette, comments and loop metadata all survive untouched because nothing is decoded."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is the file uploaded anywhere?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Everything happens in the page's own memory; there is no network request carrying your file. That is also why it works offline once the page has loaded."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens if I select a non-GIF file?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The picker filters for GIF extensions, but the script itself does not inspect the contents: any file you force in is measured and handed back unchanged. It is a size readout, not a format checker."
+          }
+        }
+      ]
+    }
+  ]
 }
 </script>
 </head>
@@ -42,17 +98,100 @@
 <nav><a href="/tools/">All Tools</a><a href="/blog/">Blog</a></nav>
 </header>
 <main class="container">
-<h1>GIF Compressor</h1>
-<p class="lead">Compress animated GIF files to reduce file size for social media and messaging, 100% local processing, no upload.</p>
+<h1>GIF Size Checker</h1>
+<p class="answer-lead">This page reports how large an animated GIF is and hands the same file back to you, entirely inside the browser. It does not re-encode, downscale or drop frames: the download is byte-for-byte what you loaded. That is worth saying plainly, because a browser has no built-in GIF encoder &mdash; genuinely recompressing an animation in the page needs a WebAssembly build of ffmpeg or a JavaScript GIF library, and neither ships here. What you do get is a fast size check, and an honest guide to the changes that actually take weight off a GIF.</p>
+
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, unlimited</span></li>
+          <li><span class="f-k">Sign-up</span><span class="f-v">Not required</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">Original file, unchanged</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local</span></li>
+        </ul>
+        <div class="compare-table">
+          <h2>What actually makes a GIF smaller</h2>
+          <table>
+            <thead><tr><th>Change</th><th>What it affects</th><th>Typical saving</th><th>What you pay</th></tr></thead>
+            <tbody>
+              <tr><td>Fewer frames (30 &rarr; 12 fps)</td><td>Frame rate</td><td>50&ndash;60%</td><td>Motion looks choppier</td></tr>
+              <tr><td>Smaller canvas (width halved)</td><td>Area, to a quarter</td><td>70&ndash;75%</td><td>Soft on high-density screens</td></tr>
+              <tr><td>Smaller palette (256 &rarr; 64 colours)</td><td>Colour table in every frame</td><td>20&ndash;40%</td><td>Banding in skies and gradients</td></tr>
+              <tr><td>Trim static stretches</td><td>Duration</td><td>Depends on the clip</td><td>Nothing, if nothing moves there</td></tr>
+              <tr><td>Switch to MP4 or WebM</td><td>Codec</td><td>80&ndash;95%</td><td>Loses alpha in some players</td></tr>
+              <tr><td>Switch to WebP or APNG</td><td>Codec</td><td>60&ndash;90%</td><td>Patchier support in older apps</td></tr>
+              <tr><td>Re-encoding the GIF</td><td>All of the above, in one pass</td><td>30&ndash;60%</td><td>Not done here: needs ffmpeg.wasm or a JS encoder</td></tr>
+            </tbody>
+          </table>
+        </div>
+
 <div class="upload-area" id="dropZone">
 <p>Upload your animated GIF here</p>
 <input type="file" id="fileInput" accept=".gif,image/gif" hidden>
 </div>
 <div class="result" style="margin:1rem 0;">
-<p>Original size: <span id="origSize">-</span></p>
-<button id="downloadBtn" class="primary">Download Compressed GIF</button>
+<p>File size: <span id="origSize">-</span></p>
+<button id="downloadBtn" class="primary">Download the same GIF</button>
 </div>
-<p style="font-size:0.9rem;opacity:0.7;">Note: GIF compression reduces resolution and frame rate to shrink file size.</p>
+<p style="font-size:0.9rem;opacity:0.7;">No re-encoding happens on this page. The download is identical to the file you selected.</p>
+<section class="detail-sec" style="max-width:800px;margin:32px auto">
+  <h2>Why a browser cannot simply recompress a GIF</h2>
+  <p>Canvas can encode exactly three formats: PNG, JPEG and WebP. GIF is not among them, and there is no browser API that takes decoded frames and writes a GIF back out. Doing it in the page therefore means shipping an encoder, and the two realistic options are heavy in different ways. A WebAssembly build of ffmpeg is around 30 MB, needs cross-origin isolation headers to run its threaded version, and takes seconds to boot even on a fast laptop. A JavaScript GIF encoder is smaller but must re-quantise every frame in a worker, and the output quality depends on how well its palette reduction behaves on your particular artwork.</p>
+  <p>This page ships neither. Rather than fake the work &mdash; for instance by handing back the original file and calling it compressed &mdash; it measures the file and tells you what to change. If a real in-browser encoder is added later, this description will be replaced at the same time; a page that claims a feature it does not have is worse than one that admits the gap.</p>
+</section>
+
+<section class="detail-sec" style="max-width:800px;margin:32px auto">
+  <h2>Where the weight of a GIF actually comes from</h2>
+  <p>A GIF is a sequence of images, each with its own colour table of at most 256 entries, optionally storing only the rectangle that changed since the previous frame. That structure explains the size behaviour that surprises people:</p>
+  <ul>
+    <li><strong>Frame count dominates.</strong> Doubling the duration doubles the frames and roughly doubles the file, even if nothing in the scene moves. A ten-second loop at 30 fps is 300 frames; the same loop at 12 fps is 120.</li>
+    <li><strong>Area multiplies quickly.</strong> Halving the width and height cuts the pixel count to a quarter, and the saving follows closely because every frame carries that area.</li>
+    <li><strong>Dithering is expensive.</strong> Smooth gradients forced into 256 colours get dithered, and dither noise is nearly incompressible &mdash; a photographic GIF can be several times larger than a flat-colour cartoon of the same dimensions.</li>
+    <li><strong>Full-frame updates waste space.</strong> Many editors export every frame in full rather than only the changed region, which inflates a mostly-static clip several times over.</li>
+  </ul>
+  <p>A quick diagnostic: a GIF that is heavy but visually simple is usually storing full frames or too many of them; a GIF that is heavy and visually busy is usually fighting the 256-colour limit and would be better as video or WebP.</p>
+</section>
+
+<section class="detail-sec" style="max-width:800px;margin:32px auto">
+  <h2>The order that saves the most for the least damage</h2>
+  <p>Work down this list and stop as soon as the file is small enough, because each step costs quality:</p>
+  <ul>
+    <li><strong>Cut the duration first.</strong> Trim the lead-in, the hold at the end, and any stretch where nothing moves. This is free quality-wise and often the single biggest win.</li>
+    <li><strong>Drop the frame rate, not the size.</strong> Most messaging apps and social feeds are watched on a phone at arm's length; 12&ndash;15 fps reads as smooth for a short loop, and the saving is proportional to the frames removed.</li>
+    <li><strong>Then shrink the canvas.</strong> Match the display size you actually need &mdash; a 480-pixel-wide GIF shown in a chat bubble never needs to be 1080 wide.</li>
+    <li><strong>Reduce colours last.</strong> Cutting 256 down to 64 or 32 helps, but it is the step most likely to introduce visible banding, so do it after the cheap wins.</li>
+    <li><strong>Consider a different container.</strong> For anything longer than a few seconds, MP4 or WebM is an order of magnitude smaller; for short transparent loops, WebP or APNG usually beats GIF on both size and colour depth.</li>
+  </ul>
+  <p>Each of those edits needs an editor that decodes and re-encodes &mdash; a desktop tool, an ffmpeg command line, or a dedicated GIF editor. Use this page to establish the baseline size and to decide which lever to pull, then make the change where the encoder actually lives.</p>
+</section>
+
+<section class="detail-sec" id="faq" style="max-width:800px;margin:32px auto">
+  <h2>Frequently asked questions</h2>
+  <div class="faq-section">
+    <div class="faq-item">
+      <button class="faq-question">Does this page compress my GIF?</button>
+      <div class="faq-answer"><p>No. The file you download is identical to the file you selected; only the reported size is read from it. Encode-free honesty is the point of this page: a browser has no native GIF encoder, so nothing here re-encodes frames.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Then why is it still called a GIF compressor?</button>
+      <div class="faq-answer"><p>The address predates the current implementation, which reports size only. Renaming a URL would break existing links and bookmarks, so the page states its real behaviour up front instead of pretending. A real encoder is on the list; until it exists, this is a checker.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">So how do I actually make my GIF smaller?</button>
+      <div class="faq-answer"><p>Trim the duration, lower the frame rate, shrink the canvas, and only then reduce the palette. For anything longer than a few seconds, converting to MP4 or WebM saves far more than any GIF re-encode can, and short transparent loops are usually smaller as WebP or APNG.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Does loading a file change it in any way?</button>
+      <div class="faq-answer"><p>No. The bytes are held in memory, the size is formatted for display, and the download points at the same in-memory copy. Frame count, palette, comments and loop metadata all survive untouched because nothing is decoded.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Is the file uploaded anywhere?</button>
+      <div class="faq-answer"><p>No. Everything happens in the page's own memory; there is no network request carrying your file. That is also why it works offline once the page has loaded.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">What happens if I select a non-GIF file?</button>
+      <div class="faq-answer"><p>The picker filters for GIF extensions, but the script itself does not inspect the contents: any file you force in is measured and handed back unchanged. It is a size readout, not a format checker.</p></div>
+    </div>
+  </div>
+</section>
 </main>
 <script>
 let compressedBlob = null;
