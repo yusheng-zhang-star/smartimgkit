@@ -16,20 +16,15 @@
   var LANGS = {
     'en': { flag: 'gb', name: 'EN', native: 'English' },
     'es': { flag: 'es', name: 'ES', native: 'Espa\u00f1ol' },
-    'pt': { flag: 'pt', name: 'PT', native: 'Portugu\u00eas' },
-    'id': { flag: 'id', name: 'ID', native: 'Bahasa Indonesia' },
-    'fr': { flag: 'fr', name: 'FR', native: 'Fran\u00e7ais' },
-    'vi': { flag: 'vn', name: 'VI', native: 'Ti\u1EBFng Vi\u1EC7t' },
-    'ar': { flag: 'sa', name: 'AR', native: '\u0627\u0644\u0639\u0631\u0628\u064A\u0629' },
     'zh': { flag: 'cn', name: 'ZH', native: '\u4E2D\u6587' }
   };
 
   var FLAG_CDN = 'https://flagcdn.com/w40/';
 
   // Ordered list of language codes for dropdown rendering
-  var LANG_ORDER = ['en', 'es', 'pt', 'id', 'fr', 'vi', 'ar', 'zh'];
+  var LANG_ORDER = ['en', 'es', 'zh'];
 
-  var PREFIXES = ['es', 'pt', 'id', 'fr', 'vi', 'ar', 'zh'];
+  var PREFIXES = ['es', 'zh'];
 
   // ── Detect current language ──────────────────────────────────────
   function getCurrentLanguage() {
@@ -84,11 +79,6 @@
   function langFromHref(href) {
     if (!href || href === '/' || href === '') return 'en';
     if (href.indexOf('/es') === 0) return 'es';
-    if (href.indexOf('/pt') === 0) return 'pt';
-    if (href.indexOf('/id') === 0) return 'id';
-    if (href.indexOf('/fr') === 0) return 'fr';
-    if (href.indexOf('/vi') === 0) return 'vi';
-    if (href.indexOf('/ar') === 0) return 'ar';
     if (href.indexOf('/zh') === 0) return 'zh';
     return 'en';
   }
@@ -138,7 +128,7 @@
       // Also remove inline style from switcher itself
       switcher.removeAttribute('style');
 
-      // Clear existing content and rebuild with ALL 8 languages
+      // Clear existing content and rebuild with all 3 languages
       dropdown.innerHTML = '';
       for (var i = 0; i < LANG_ORDER.length; i++) {
         var code = LANG_ORDER[i];
