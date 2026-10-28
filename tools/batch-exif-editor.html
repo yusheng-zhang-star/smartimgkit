@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="dark" data-tool-id="batch-exif-editor">
 <head>
 <meta charset="UTF-8">
@@ -81,6 +81,7 @@
 .sec{margin:2.5rem 0}
 .sec>h2{font-size:1.55rem;margin:0 0 .5rem;text-align:center;color:var(--text-primary)}
 .sec>.sub{text-align:center;color:var(--text-secondary);margin:0 auto 1.6rem;max-width:660px;font-size:.95rem;line-height:1.6}
+    .sec>p:not(.sub){margin:0 0 1rem;line-height:1.75}
 .grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
 .card2{background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;padding:1.1rem}
 .card2 h3{font-size:1rem;margin:0 0 .4rem;color:var(--text-primary)}
@@ -106,11 +107,6 @@
           <button class="lang-btn" aria-label="Switch language">🇬🇧 EN</button>
           <div class="lang-dropdown" style="position:absolute;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
             <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
-            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
-            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
-            <a href="/fr/" hreflang="fr" lang="fr">🇫🇷 Français</a>
-            <a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a>
-            <a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a>
           </div>
         </div>
 <button class="theme-toggle" id="themeToggle">🌙</button>
@@ -165,14 +161,36 @@
         </ol>
       </section>
 
-      <section class="sec faq">
-        <h2>Frequently Asked Questions</h2>
-        <details><summary>Which file types are supported?</summary><p>JPEG only. EXIF dates are a JPEG/TIFF feature — PNG, WebP and GIF files do not carry a capture date, so they are skipped automatically.</p></details>
-        <details><summary>Will this reduce image quality?</summary><p>No. Only the small EXIF header segment is rewritten; the compressed image data is copied unchanged.</p></details>
-        <details><summary>Can I set different dates for different photos?</summary><p>Not in one pass. Set one date for the whole batch, download the results, then run the ones that need a different date a second time.</p></details>
-        <details><summary>Does my photo get uploaded?</summary><p>Never. Everything runs in your browser using a local copy of the piexif library. You can disconnect from the internet after the page has loaded and the tool still works.</p></details>
-        <details><summary>How do I undo it?</summary><p>Save the originals before you overwrite them. This tool downloads edited copies and never touches the files on your disk, so your originals stay intact.</p></details>
+      <section class="sec">
+        <h2>The three timestamps hiding in every JPEG</h2>
+        <p class="sub">A single photo usually carries more than one date, and they do not have to agree. This page rewrites all three at once so that sorting, filtering and timeline views stop contradicting each other.</p>
+        <ul style="line-height:1.85;padding-left:1.25rem;margin:1rem 0">
+          <li><strong>DateTime (IFD0).</strong> The primary modification timestamp. Photo browsers, file managers and many web galleries read this one first, which is why it is the field that decides where a picture lands in a folder sorted by date.</li>
+          <li><strong>DateTimeOriginal (Exif IFD).</strong> Recorded by the camera at the moment of capture. Lightroom, Apple Photos, Google Photos and most DAM systems treat this as the authoritative capture time — if it is wrong, a whole import lands in the wrong month.</li>
+          <li><strong>DateTimeDigitized (Exif IFD).</strong> When the image was written to digital storage. On a scanned film shot this can legitimately differ from the original by decades, so some archivists use it deliberately.</li>
+        </ul>
+        <p>Because the tool writes the same value into all three, pick the date you want a viewer to believe rather than the date the file technically carries. Everything else in the EXIF block — camera model, lens, aperture, shutter, ISO, GPS, orientation — is read out and reinserted untouched, so the edit does not strip your metadata down to a bare timestamp.</p>
       </section>
+
+      <section class="sec">
+        <h2>The timestamp format, and why a wrong separator breaks everything</h2>
+        <p class="sub">EXIF does not store dates the way you type them. The specification requires exactly 19 characters in the pattern <code>YYYY:MM:DD HH:MM:SS</code> — colons in the date part, a space before the time, zero-padded everywhere.</p>
+        <p>The date picker gives you <code>2024-05-17</code>; the tool converts the hyphens to colons and appends <code>HH:MM:SS</code> before writing. This matters because EXIF readers are strict: a value containing hyphens, a missing pair of seconds, or a two-digit year is not silently repaired — some readers fall back to the file's modification time, others discard the field entirely. The result is a photo that looks edited in one app and unedited in another.</p>
+        <p>Time zone is worth a second thought. EXIF timestamps carry no offset — no <code>+07:00</code>, no <code>Z</code>, nothing. If you are fixing a camera that was still set to its factory time zone, adjust the clock time by hand here rather than expecting the tool to infer the offset from your machine.</p>
+      </section>
+
+      <section class="sec">
+        <h2>Real situations this fixes</h2>
+        <p class="sub">Correcting camera clocks is the headline use, but most people arrive here for one of four narrower reasons.</p>
+        <ul style="line-height:1.85;padding-left:1.25rem;margin:1rem 0">
+          <li><strong>A camera reset to 2015.</strong> Flat battery or a factory reset often clears the clock. Every shot since then sits at the wrong end of your library until the timestamps are corrected.</li>
+          <li><strong>Two photographers, two clocks.</strong> A wedding or an event shot on two bodies whose clocks differ by six minutes will interleave wrongly in a merged, time-sorted set. Rewriting one batch onto a shared timeline restores the true order.</li>
+          <li><strong>Scans of film and paperwork.</strong> A flatbed scan gets today's timestamp, which is useless if the negative was shot in 1998. Writing the real capture date makes the archive searchable by era.</li>
+          <li><strong>Listing photos for a marketplace.</strong> Sites that display a capture date show a stale one when the camera clock drifted; a corrected batch looks freshly shot, which is exactly what a buyer expects to see.</li>
+        </ul>
+        <p>What it does not do: it will not re-encode the pixels. The image data is copied byte-for-byte and only the metadata segment is rebuilt, so there is no generational quality loss and the file size barely moves. It also refuses non-JPEG input, which is not an arbitrary restriction — PNG, WebP and HEIC have no EXIF date block in the same place, so a timestamp written there would be invisible to the apps you are trying to satisfy.</p>
+      </section>
+
 
       <section class="sec">
         <h2>Related tools</h2>
@@ -183,6 +201,81 @@
           <a href="/tools/compressor">Image Compressor</a>
         </div>
       </section>
+<section class="faq-section">
+        <h2>Editing EXIF dates in bulk</h2>
+      <div class="faq-item"><button class="faq-question">Which EXIF fields does it rewrite?</button><div class="faq-answer">Three of them, and all three are set to the same value: DateTime in the image directory, plus DateTimeOriginal and DateTimeDigitized in the EXIF directory. That covers what file managers, photo apps and backup tools read.</div></div>
+      <div class="faq-item"><button class="faq-question">What happens to the rest of the metadata?</button><div class="faq-answer">It is preserved. The tool loads the existing EXIF block, changes only those three date entries, and writes the block back. GPS coordinates, camera model, lens and exposure settings all survive.</div></div>
+      <div class="faq-item"><button class="faq-question">Can I give every photo in the batch a different date?</button><div class="faq-answer">No. One date-time applies to the whole batch — that is the point of the tool: making a folder of scans or mixed photos line up on the same date so they sort correctly.</div></div>
+      <div class="faq-item"><button class="faq-question">What if a photo has no EXIF at all?</button><div class="faq-answer">The batch list shows &quot;no EXIF date found&quot; against it. Such a file can still be written — the tool creates the empty EXIF structure it needs — but note that a JPEG stripped by a social platform may not carry metadata through cleanly.</div></div>
+      <div class="faq-item"><button class="faq-question">Does it change the photo itself?</button><div class="faq-answer">No. Only the metadata block is rewritten; the compressed image data is untouched, so there is no re-encoding and no quality loss.</div></div>
+      <div class="faq-item"><button class="faq-question">Does it work on PNG files?</button><div class="faq-answer">EXIF in PNG is not standard in the way it is in JPEG, so treat PNG as unsupported. Convert to JPEG first if you need the date to stick.</div></div>
+      <div class="faq-item"><button class="faq-question">Are my photos uploaded while this runs?</button><div class="faq-answer">Never. The EXIF library runs in the page, the files are read locally, and the edited copies go straight to your downloads.</div></div>
+      </section>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Which EXIF fields does it rewrite?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Three of them, and all three are set to the same value: DateTime in the image directory, plus DateTimeOriginal and DateTimeDigitized in the EXIF directory. That covers what file managers, photo apps and backup tools read."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens to the rest of the metadata?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It is preserved. The tool loads the existing EXIF block, changes only those three date entries, and writes the block back. GPS coordinates, camera model, lens and exposure settings all survive."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I give every photo in the batch a different date?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. One date-time applies to the whole batch — that is the point of the tool: making a folder of scans or mixed photos line up on the same date so they sort correctly."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What if a photo has no EXIF at all?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The batch list shows \"no EXIF date found\" against it. Such a file can still be written — the tool creates the empty EXIF structure it needs — but note that a JPEG stripped by a social platform may not carry metadata through cleanly."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it change the photo itself?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Only the metadata block is rewritten; the compressed image data is untouched, so there is no re-encoding and no quality loss."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it work on PNG files?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "EXIF in PNG is not standard in the way it is in JPEG, so treat PNG as unsupported. Convert to JPEG first if you need the date to stick."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are my photos uploaded while this runs?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Never. The EXIF library runs in the page, the files are read locally, and the edited copies go straight to your downloads."
+      }
+    }
+  ]
+}
+</script>
+
 
 </div>
 </main>

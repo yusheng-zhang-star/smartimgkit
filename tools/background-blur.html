@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="dark" data-tool-id="background-blur">
 <head>
 <meta charset="UTF-8">
@@ -82,6 +82,7 @@
 .sec{margin:2.5rem 0}
 .sec>h2{font-size:1.55rem;margin:0 0 .5rem;text-align:center;color:var(--text-primary)}
 .sec>.sub{text-align:center;color:var(--text-secondary);margin:0 auto 1.6rem;max-width:660px;font-size:.95rem;line-height:1.6}
+    .sec>p:not(.sub){margin:0 0 1rem;line-height:1.75}
 .grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
 .card2{background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;padding:1.1rem}
 .card2 h3{font-size:1rem;margin:0 0 .4rem;color:var(--text-primary)}
@@ -107,11 +108,6 @@
           <button class="lang-btn" aria-label="Switch language">🇬🇧 EN</button>
           <div class="lang-dropdown" style="position:absolute;top:100%;right:0;z-index:100;min-width:160px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:4px;margin-top:4px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
             <a href="/es/" hreflang="es" lang="es">🇪🇸 Español</a>
-            <a href="/pt/" hreflang="pt" lang="pt">🇧🇷 Português</a>
-            <a href="/id/" hreflang="id" lang="id">🇮🇩 Bahasa Indonesia</a>
-            <a href="/fr/" hreflang="fr" lang="fr">🇫🇷 Français</a>
-            <a href="/vi/" hreflang="vi" lang="vi">🇻🇳 Tiếng Việt</a>
-            <a href="/ar/" hreflang="ar" lang="ar">🇸🇦 العربية</a>
           </div>
         </div>
 <button class="theme-toggle" id="themeToggle">🌙</button>
@@ -170,14 +166,33 @@
         </ol>
       </section>
 
-      <section class="sec faq">
-        <h2>Frequently Asked Questions</h2>
-        <details><summary>Is the blur real or a fake effect?</summary><p>It is a real composite: the subject is cut out with a neural network, the background is genuinely blurred with a Gaussian filter, and the two layers are merged. Nothing is faked with an overlay.</p></details>
-        <details><summary>Why does the subject sometimes get clipped?</summary><p>Segmentation is a best-effort prediction. Unusual poses, very low contrast between subject and background, or hair against a similar colour can produce a rough edge. Try a photo with more separation.</p></details>
-        <details><summary>Does it work on group photos or pets?</summary><p>Yes — the model segments the salient foreground, which can be several people, a pet, or an object. Results vary with how busy the scene is.</p></details>
-        <details><summary>Why is the first run slow?</summary><p>The browser downloads the model file (about 30 MB) once. Every subsequent photo uses the cached copy, so only the first image waits.</p></details>
-        <details><summary>Can I undo the blur?</summary><p>Yes — this page never modifies your original file. Only the newly generated PNG is saved.</p></details>
+      <section class="sec">
+        <h2>Two layers, one mask — why the edge is the whole job</h2>
+        <p class="sub">A convincing blurred backdrop is not a filter applied to the photo. It is two images composited: the original blurred, and the subject cut out and laid back on top. The quality of the result is decided almost entirely by the mask between them.</p>
+        <p>The pipeline here uses the <code>isnet_fp16</code> segmentation model to produce an alpha mask, blurs the full-resolution original into a background layer, then draws the cut-out subject over it at the same pixel size. Because the cut-out keeps its own sharp edges, the boundary between subject and backdrop stays crisp — the tell-tale failure of a gradient overlay, where the blur bleeds across the shoulders and hair, never happens.</p>
+        <p>There is a small detail in the compositing that is easy to miss. Before blurring, the background layer is scaled up slightly around its centre — by 6% at minimum, and more as the radius grows. Without that, the blur kernel samples past the canvas edge and the outermost pixels turn transparent, leaving a faint dark or light rim around the frame. The overscan hides that sampling gap so the border of the photo stays solid.</p>
       </section>
+
+      <section class="sec">
+        <h2>Picking a radius that still reads as a photograph</h2>
+        <p class="sub">The slider runs from 0 to 40 px and starts at 14. The number is a canvas blur radius applied at the image's own resolution, so the same setting looks different on a phone snapshot and on a 24-megapixel file.</p>
+        <ul style="line-height:1.85;padding-left:1.25rem;margin:1rem 0">
+          <li><strong>0–8 px.</strong> Barely a blur. Useful when you only want to knock down a distracting sign or a parked car without losing the sense of place.</li>
+          <li><strong>10–20 px.</strong> The portrait range, and where the default sits. Background shapes stay recognisable but stop competing with the face.</li>
+          <li><strong>22–30 px.</strong> Heavy separation for busy scenes — a street market, an office, a cluttered kitchen. Texture disappears and colour remains.</li>
+          <li><strong>32–40 px.</strong> An abstract colour wash. Good behind large headline text or a product cut-out, where any structure in the backdrop would be noise.</li>
+        </ul>
+        <p>Two practical notes on the number. First, because the radius is in pixels of the original image, a high-resolution photo needs a larger value than a small one to reach the same visual softness — doubling the pixel dimensions roughly doubles the radius you want. Second, going past 30 px on a low-resolution image starts to look artificial, because the blur runs out of neighbouring pixels to average and the background flattens into bands.</p>
+      </section>
+
+      <section class="sec">
+        <h2>What happens on a browser without the native blur filter</h2>
+        <p class="sub">Canvas filtering is not universal. The page tests support on load by assigning a blur to a throwaway 2D context and reading it back; if the value does not survive, a different path runs.</p>
+        <p>The fallback shrinks the background to a fraction of its size, then scales it back up with high-quality smoothing. The divisor scales with the radius — roughly the radius divided by 1.6, plus 2, never below 2 — so a heavier blur simply means a smaller intermediate image. The visual difference is subtle: the softness is real, but the bokeh highlights come out slightly blockier than a true Gaussian, and very fine detail can smear into flat patches.</p>
+        <p>Crucially, only the background takes this path. The subject is composited from the segmentation mask at full resolution either way, so a fallback browser still returns sharp eyes, sharp text on a shirt, and a clean hairline. If you are comparing two machines and one result looks softer in the backdrop but identical in the subject, this is the reason.</p>
+        <p>The download is always a PNG at the original pixel dimensions, named after your file with a <code>-blurred</code> suffix. PNG is used deliberately: the subject layer is already a lossless cut-out, and re-encoding the composite as JPEG would put compression artefacts on exactly the edges this tool exists to protect. Convert to JPEG afterwards if you need a smaller upload.</p>
+      </section>
+
 
       <section class="sec">
         <h2>Related tools</h2>
@@ -188,6 +203,81 @@
           <a href="/tools/image-border">Image Border</a>
         </div>
       </section>
+<section class="faq-section">
+        <h2>Blurred background: questions people actually ask</h2>
+      <div class="faq-item"><button class="faq-question">Does this app fake the bokeh with a gradient overlay?</button><div class="faq-answer">No. A segmentation model cuts the subject out first, the background layer is genuinely blurred, and the two are composited back together. An overlay would blur the subject's edges too — here the hairline between subject and background stays sharp.</div></div>
+      <div class="faq-item"><button class="faq-question">What does the blur slider actually do?</button><div class="faq-answer">It sets a Gaussian blur radius in pixels, from 0 to 40. At 0 you get an unblurred cut-out; around 10–20 the background reads as a shallow depth of field; 30–40 turns it into an abstract colour wash behind the subject.</div></div>
+      <div class="faq-item"><button class="faq-question">What happens on a browser that cannot blur that way?</button><div class="faq-answer">The tool checks whether the canvas supports the native blur filter on load. If it does not, it falls back to shrinking the background image and scaling it back up, which approximates the same softness at a slightly lower quality.</div></div>
+      <div class="faq-item"><button class="faq-question">Why does the first run take so long?</button><div class="faq-answer">The segmentation model has to download once before any processing starts. The browser caches it, so the second photo is fast. Clearing site data or switching to a private window forces the download again.</div></div>
+      <div class="faq-item"><button class="faq-question">Is my portrait uploaded anywhere?</button><div class="faq-answer">No. The model runs inside the tab, the compositing happens on a canvas on your device, and the finished image is written straight to a download. Nothing travels over the network.</div></div>
+      <div class="faq-item"><button class="faq-question">Can I blur the subject instead, and keep the background sharp?</button><div class="faq-answer">Not in this tool — it only blurs the layer behind the subject. Inverting the mask would need a manual selection mode, which this page does not have.</div></div>
+      <div class="faq-item"><button class="faq-question">Which photos work badly?</button><div class="faq-answer">Busy backgrounds with the same tone as the subject, subjects that touch three or four edges of the frame, and very low-contrast lighting. In those cases part of the background may stay sharp or part of the subject may soften.</div></div>
+      </section>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does this app fake the bokeh with a gradient overlay?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. A segmentation model cuts the subject out first, the background layer is genuinely blurred, and the two are composited back together. An overlay would blur the subject's edges too — here the hairline between subject and background stays sharp."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does the blur slider actually do?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It sets a Gaussian blur radius in pixels, from 0 to 40. At 0 you get an unblurred cut-out; around 10–20 the background reads as a shallow depth of field; 30–40 turns it into an abstract colour wash behind the subject."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens on a browser that cannot blur that way?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The tool checks whether the canvas supports the native blur filter on load. If it does not, it falls back to shrinking the background image and scaling it back up, which approximates the same softness at a slightly lower quality."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does the first run take so long?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The segmentation model has to download once before any processing starts. The browser caches it, so the second photo is fast. Clearing site data or switching to a private window forces the download again."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my portrait uploaded anywhere?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The model runs inside the tab, the compositing happens on a canvas on your device, and the finished image is written straight to a download. Nothing travels over the network."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I blur the subject instead, and keep the background sharp?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not in this tool — it only blurs the layer behind the subject. Inverting the mask would need a manual selection mode, which this page does not have."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which photos work badly?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Busy backgrounds with the same tone as the subject, subjects that touch three or four edges of the frame, and very low-contrast lighting. In those cases part of the background may stay sharp or part of the subject may soften."
+      }
+    }
+  ]
+}
+</script>
+
 
 </div>
 </main>
