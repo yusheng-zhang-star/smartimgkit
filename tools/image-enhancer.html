@@ -412,6 +412,61 @@
       </div>
       </section>
 
+      <section class="feature-narrative">
+        <h2>How the photo enhancer actually works</h2>
+        <p class="fn-intro">This is a filter-based enhancer, not an AI upscaler. Knowing the difference sets realistic expectations for what it can and can't do to your photo.</p>
+        <div class="fn-block">
+          <div class="fn-icon">🌗</div>
+          <div><h3>Brightness, contrast, saturation, and exposure</h3>
+          <p>These four adjustments are applied as browser Canvas filters — <code>brightness()</code>, <code>contrast()</code> and <code>saturate()</code> — computed pixel-by-pixel on your device. Exposure is folded into brightness at half strength, so a +10 exposure nudges overall lightness by roughly +5. None of these steps re-compress the image; the pixels keep their original bit depth until you export.</p></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-icon">🔺</div>
+          <div><h3>Sharpen is edge enhancement, not detail recovery</h3>
+          <p>The Sharpen slider runs a 3×3 convolution kernel over every pixel: it boosts the center pixel and subtracts its four neighbours, which increases local contrast along edges. This makes soft edges look crisper, but it cannot reconstruct detail the lens never captured. An out-of-focus photo will look "edgier", not genuinely sharp.</p></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-icon">✨</div>
+          <div><h3>Highlights touches brightness only</h3>
+          <p>Highlights only affects pixels brighter than mid-gray (luminance above 128 on a 0–255 scale). Pulling the slider negative darkens those bright areas to recover washed-out skies or blown skin, while leaving shadows untouched. Pixels that are already pure white (255) hold no recoverable detail and will not change.</p></div>
+        </div>
+        <div class="fn-block">
+          <div class="fn-icon">🤖</div>
+          <div><h3>Smart Auto Enhance reads the image, then sets the sliders</h3>
+          <p>Auto Enhance samples up to roughly 50,000 pixels across the photo and measures three things: average luminance (how bright the image is overall), contrast range (the gap between the darkest and brightest samples), and color saturation. It then picks a starting point for each slider — brightening a dark photo toward middle gray, widening a flat contrast range, boosting weak color — and leaves the final call to you.</p></div>
+        </div>
+      </section>
+
+      <section class="feature-narrative">
+        <h2>What this enhancer honestly can't do</h2>
+        <p class="fn-intro">Every editing tool has edges. These are the cases where you should reach for something else — or lower your expectations.</p>
+        <ul style="max-width:760px;margin:0 auto;text-align:left;color:var(--text-secondary);line-height:1.7;font-size:0.95rem;">
+          <li><strong>It is not AI upscaling or restoration.</strong> Tools like Remini or Topaz synthesize new detail with machine-learning models. This enhancer does not — it only adjusts brightness, contrast, color, and edge sharpness on the pixels you already have.</li>
+          <li><strong>Heavily blurred or out-of-focus photos will stay soft.</strong> Sharpening increases edge contrast, but it can't invent the missing texture. A motion-blurred shot or a misfocused portrait won't be "fixed", only slightly crisper around the edges.</li>
+          <li><strong>High sharpen values cause halos.</strong> Pushing Sharpen toward 100 can create bright ringing around high-contrast edges (trees against sky, text). For most photos, a value around 20–40 is plenty.</li>
+          <li><strong>Blown highlights are gone for good.</strong> If a bright area was already clipped to pure white when the photo was taken, the Highlights slider can't bring it back — there is no data left in those pixels to recover.</li>
+          <li><strong>PNG export means larger files.</strong> The result is saved losslessly as PNG at full resolution, which preserves quality but produces bigger files than a compressed JPEG. If you need a smaller file, follow up with the <a href="/tools/compressor">compressor</a>.</li>
+          <li><strong>20 MB input limit.</strong> Photos larger than 20 MB are rejected, and very large images run the per-pixel sharpening step more slowly since it processes every pixel in JavaScript.</li>
+          <li><strong>Bad light can't be fully fixed.</strong> If a photo is nearly black, there is little shadow detail to lift — brightening it will mostly turn the noise into gray mush.</li>
+        </ul>
+      </section>
+
+      <section class="feature-narrative">
+        <h2>Slider ranges and what the numbers mean</h2>
+        <p class="fn-intro">A quick reference for dialing in a result that looks natural rather than over-edited.</p>
+        <table class="compare-table">
+          <thead><tr><th scope="col">Control</th><th scope="col">Range</th><th scope="col">Low end does</th><th scope="col">High end does</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Brightness</th><td>−100 … 100</td><td>Darkens for mood</td><td>Lifts an underexposed photo</td></tr>
+            <tr><th scope="row">Contrast</th><td>−100 … 100</td><td>Flattens (good for hazy scans)</td><td>Deepens darks, pops highlights</td></tr>
+            <tr><th scope="row">Saturation</th><td>−100 … 100</td><td>Mutes toward grayscale</td><td>Vivid — can look fake past ~60</td></tr>
+            <tr><th scope="row">Sharpen</th><td>0 … 100</td><td>No change</td><td>Strong edge crispness, halo risk</td></tr>
+            <tr><th scope="row">Exposure</th><td>−100 … 100</td><td>Darkens overall (half-strength)</td><td>Brightens overall (half-strength)</td></tr>
+            <tr><th scope="row">Highlights</th><td>−100 … 100</td><td>Recovers bright areas (negative)</td><td>Boosts bright areas (positive)</td></tr>
+          </tbody>
+        </table>
+      </section>
+
       <section class="features-grid-section">
         <h2>Everything You Need in a Image Enhancer</h2>
         <p class="fg-sub">Powerful features that make Image Enhancer fast, private, and free.</p>
