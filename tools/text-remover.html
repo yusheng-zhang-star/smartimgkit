@@ -274,6 +274,26 @@
     </div>
 
     <section style="max-width:900px;margin:3rem auto;padding:0 1rem;">
+      <h2 style="margin-bottom:1rem;">How text removal actually works</h2>
+      <p style="font-size:.95rem;line-height:1.7;color:var(--text-secondary);margin-bottom:1rem;">Behind the "Remove Text" button is a reconstruction model called <strong>LaMa</strong> (Large Mask Inpainting), running entirely in your browser. Understanding the three steps below is what separates a clean removal from a smudged one.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin:1.5rem 0 2rem;">
+        <div style="padding:1.5rem;border-radius:12px;background:var(--bg-secondary);">
+          <h3>1. You paint the mask</h3>
+          <p>The brush marks the pixels you want gone — the letters plus a sliver of their edge. The mask is the only instruction the model gets: it does not "read" the text or recognize glyphs, it treats everything under the brush as a hole to fill.</p>
+        </div>
+        <div style="padding:1.5rem;border-radius:12px;background:var(--bg-secondary);">
+          <h3>2. The model crops to the region</h3>
+          <p>Instead of processing the whole photo, the engine crops to the masked area's bounding box plus a 128-pixel margin, then runs inference on that region at 256–512 px. This region-of-interest pass is why a removal takes seconds rather than minutes.</p>
+        </div>
+        <div style="padding:1.5rem;border-radius:12px;background:var(--bg-secondary);">
+          <h3>3. LaMa reconstructs the background</h3>
+          <p>The ONNX model, executed through WebAssembly and ONNX Runtime Web, synthesizes new pixels from the surrounding texture so the background continues across the hole. It invents a plausible continuation — it does not recover detail that was never in the image.</p>
+        </div>
+      </div>
+      <p style="font-size:.9rem;line-height:1.7;color:var(--text-secondary);">The model is downloaded once and cached by your browser, then runs offline. Images larger than 1280×720 are downscaled for the inpainting pass and restored to full resolution on export, and you can undo up to 20 brush strokes.</p>
+    </section>
+
+    <section style="max-width:900px;margin:3rem auto;padding:0 1rem;">
       <h2 style="margin-bottom:1rem;">Free text remover vs. typical free tools</h2>
       <table class="compare-table">
         <thead>
