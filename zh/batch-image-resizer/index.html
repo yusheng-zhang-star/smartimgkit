@@ -6,6 +6,10 @@
 <title>批量图片缩放压缩工具 | 浏览器本地处理，不上传 | SmartImgKit</title>
 <meta name="description" content="批量缩放、压缩、转换图片，全部在浏览器本地完成，不上传服务器，无数量限制，免费免注册，适合跨境电商卖家处理商品图。">
 <link rel="canonical" href="https://smartimgkit.com/zh/batch-image-resizer/">
+<link rel="alternate" hreflang="en" href="https://smartimgkit.com/batch-image-resizer/">
+<link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/batch-image-resizer/">
+<link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/batch-image-resizer/">
+<link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/batch-image-resizer/">
 <style>
 * {margin:0; padding:0; box-sizing:border-box;}
 body {font-family:system-ui,sans-serif; background:#f8fafc; color:#1e293b; line-height:1.6;}
@@ -25,7 +29,93 @@ button {background:#0d9488; color:white; border:none; padding:0.9rem 1.8rem; bor
 .preview-grid {display:grid; grid-template-columns:repeat(auto-fill, minmax(180px,1fr)); gap:1rem; margin:2rem 0;}
 .preview-item {padding:1rem; border:1px solid #e2e8f0; border-radius:8px; text-align:center;}
 .preview-item img {max-width:100%; border-radius:4px; margin-bottom:0.5rem;}
+
+.guide {background:white; padding:2rem; border-radius:16px; box-shadow:0 4px 16px rgba(0,0,0,0.06); margin-top:2rem;}
+.guide h2 {color:#0d9488; font-size:1.35rem; margin:2rem 0 0.8rem;}
+.guide h2:first-child {margin-top:0;}
+.guide p {margin-bottom:1rem; color:#334155;}
+.guide ul {margin:0 0 1rem 1.4rem; color:#334155;}
+.guide li {margin-bottom:0.5rem;}
+.faq-item {border:1px solid #e2e8f0; border-radius:10px; margin-bottom:0.6rem; overflow:hidden;}
+.faq-question {width:100%; text-align:left; background:#f8fafc; color:#1e293b; border:none; padding:1rem 1.2rem; font-size:1rem; font-weight:600; cursor:pointer; display:flex; justify-content:space-between; align-items:center; margin:0; border-radius:0;}
+.faq-answer {display:none; padding:0 1.2rem 1rem; color:#475569; font-size:0.95rem;}
+.faq-item.open .faq-answer {display:block;}
+.faq-question span {transition:transform .2s; font-size:1.1rem; line-height:1;}
+.faq-item.open .faq-question span {transform:rotate(45deg);}
 </style>
+<!-- FAQ 结构化数据：与页面可见问答逐条一致的 8 条 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "一次最多能放多少张图片？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "没有数量上限。文件选择器支持多选，也可以把整个文件夹里的图片一次拖进来。唯一的限制是你电脑的内存，一次几百张小图没问题，几百张 4000 像素的原图会明显变慢。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "图片会不会被上传到你们服务器？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不会。解码、缩放、重绘、编码全部在你自己的浏览器里完成，页面上没有任何上传接口。想验证的话，按 F12 打开开发者工具切到 Network，处理几张图，你会看到处理过程中没有向外发出的请求。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么导出的 PNG 透明背景变成了白色？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "这是有意为之。工具在重绘前会先铺一层纯白底，避免透明区域在某些平台上显示成黑色。需要保留透明通道的图，请改用格式转换或抠图工具，不要在这里批量缩放。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "能设置 300DPI 这样的打印分辨率吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能。输出文件里只有像素尺寸，不写 DPI 信息。印刷厂要求 300DPI 时，先用「成品厘米数 ÷ 2.54 × 300」算出需要多少像素，把这个数填进自定义宽度即可。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "iPhone 拍的 HEIC 图片能直接拖进来吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "取决于浏览器能不能解码 HEIC。Safari 可以；Chrome、Edge 和大部分安卓浏览器默认不支持，拖进去会失败。稳妥做法是先在手机相册里导出成 JPG，再批量上传。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "压缩之后画质差很多怎么办？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "先看质量滑块是不是被拉到了 60 以下，回到 85 通常就够了。如果原图本来分辨率就低，再缩放只会更糊，这种情况应该关掉缩放、只压体积，或者改用 AI 超分把尺寸补上来。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "在手机上能用吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "能，页面是响应式的，iOS Safari 和安卓 Chrome 都能跑。但手机处理大图容易因为内存不足闪退，批量十几张以上建议用电脑。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "需要注册或者付费吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不需要。没有账号、没有次数限制、没有导出水印，也不会有「免费版只能处理 10 张」这类限制。"
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <div class="top">
@@ -77,6 +167,71 @@ button {background:#0d9488; color:white; border:none; padding:0.9rem 1.8rem; bor
     </div>
     <div class="preview-grid" id="previewGrid"></div>
   </div>
+  <section class="guide">
+
+    <h2>它怎么缩放：按最长边等比，不做裁切</h2>
+    <p>选 2000×2000 之后，图片不会被硬拉成正方形。工具先算出「最长边缩到 2000」需要的倍数，宽高同乘，比例保持不变：一张 3000×2000 的横图会变成 2000×1333，一张 2000×3000 的竖图会变成 1333×2000。淘宝主图要求正方形，那一步得在缩放之后另行裁剪，这个工具不提供裁剪。</p>
+    <p>原图比目标尺寸小的时候，工具照样会放大到设定值。放大只是插值填充，凭空补不出细节，结果只会更糊。真要提升分辨率，得用 AI 超分。</p>
+
+    <h2>国内用户主要在拿它做这些事</h2>
+    <p><strong>淘宝天猫的主图和详情页。</strong>手机拍的原图常见 4000×3000、5 到 8MB，一次十几张就是上百 MB。批量缩到 1200 至 1600 像素、质量 85 的 JPG，单张通常落到 200 到 400KB，后台上传不再卡，买家手机端打开也快。</p>
+    <p><strong>拼多多和闲鱼。</strong>这两个入口对单张体积更敏感。二手卖家一次挂十几张实拍图，先用这里压一轮，能少碰很多「图片过大」的提示。</p>
+    <p><strong>小红书和公众号。</strong>竖图 3:4、方图 1:1 是主流画幅。选 1080 方形预设时，横图会被等比缩到最长边 1080，两侧要不要留白由你自己决定。公众号正文配图压小一点，读者滑动加载会明显更顺。</p>
+    <p><strong>不方便外传的素材。</strong>未上市的新品图、内部物料、证件照翻拍，这些丢进任何在线工具都等于先把文件交出去。这里的解码和重绘全在本机完成，断网也能继续跑。</p>
+
+    <h2>四个参数的实际含义</h2>
+    <p><strong>尺寸预设。</strong>「不缩放」只压体积；2000 方形和 1080 方形都按最长边算；自定义只让你填一个「最大宽度」，但对竖图真正生效的是高度——它不是宽度上限，是最长边上限。</p>
+    <p><strong>输出格式。</strong>JPG 体积最小、到处都认，商品图和实拍照首选；PNG 适合需要透明的图标和 logo，但同一画面通常是 JPG 的三到五倍；WebP 在相同观感下还能再小三成左右，微信和主流浏览器都支持，只在少数老系统上打不开。</p>
+    <p><strong>质量。</strong>默认 85。80 到 90 之间肉眼基本分辨不出差别，是性价比最高的一段；掉到 60 以下，渐变背景和皮肤会起明显色块；拉到 100 等于不额外压缩，体积反而最大。</p>
+    <p><strong>处理顺序。</strong>工具按你选进来的顺序一张一张做，做完最后一张按钮才恢复。中途关页面或者切走太久，没做完的会停在半途，需要重新拖一次。</p>
+
+    <h2>这几个限制，提前说清楚</h2>
+    <p><strong>透明背景会变成白色。</strong>工具在重绘前会先铺一层纯白底，所以带透明通道的 PNG 导出后透明区域是白的。要保留透明，请走单独的格式转换或抠图工具。</p>
+    <p><strong>不写 DPI。</strong>输出文件只有像素尺寸，没有打印分辨率信息。印刷厂要 300DPI 时，自己按成品尺寸换算出像素再填。</p>
+    <p><strong>不打包 ZIP，也不能批量重命名。</strong>每张图单独点下载，会在新窗口打开，右键另存。几十张就得手工点几十次。</p>
+    <p><strong>串行处理，量大就慢。</strong>一次丢 100 张 4000 像素原图，整体跑几分钟很正常，这段时间别关标签页。</p>
+    <p><strong>会清掉 EXIF。</strong>重新绘制会丢掉拍摄参数和 GPS 位置。发二手、发社交平台之前这反而是好事，但要保留版权信息的话得另存原件。</p>
+
+    <h2>结果不对时怎么查</h2>
+    <ul>
+      <li>体积没降下来：先看是不是选了 PNG，或者原图本身就是压过头的小尺寸 JPG，没什么空间可压。换 WebP、质量调到 75 再看。</li>
+      <li>尺寸和想要的不一样：确认它是按最长边缩放的。要精确到某个宽高，用自定义并接受另一边按比例变化。</li>
+      <li>画质明显变差：检查是不是把小图放大了，或者质量被拉到 60 以下。</li>
+    </ul>
+    <h2>常见问题</h2>
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">一次最多能放多少张图片？<span>＋</span></button>
+      <div class="faq-answer">没有数量上限。文件选择器支持多选，也可以把整个文件夹里的图片一次拖进来。唯一的限制是你电脑的内存，一次几百张小图没问题，几百张 4000 像素的原图会明显变慢。</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">图片会不会被上传到你们服务器？<span>＋</span></button>
+      <div class="faq-answer">不会。解码、缩放、重绘、编码全部在你自己的浏览器里完成，页面上没有任何上传接口。想验证的话，按 F12 打开开发者工具切到 Network，处理几张图，你会看到处理过程中没有向外发出的请求。</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">为什么导出的 PNG 透明背景变成了白色？<span>＋</span></button>
+      <div class="faq-answer">这是有意为之。工具在重绘前会先铺一层纯白底，避免透明区域在某些平台上显示成黑色。需要保留透明通道的图，请改用格式转换或抠图工具，不要在这里批量缩放。</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">能设置 300DPI 这样的打印分辨率吗？<span>＋</span></button>
+      <div class="faq-answer">不能。输出文件里只有像素尺寸，不写 DPI 信息。印刷厂要求 300DPI 时，先用「成品厘米数 ÷ 2.54 × 300」算出需要多少像素，把这个数填进自定义宽度即可。</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">iPhone 拍的 HEIC 图片能直接拖进来吗？<span>＋</span></button>
+      <div class="faq-answer">取决于浏览器能不能解码 HEIC。Safari 可以；Chrome、Edge 和大部分安卓浏览器默认不支持，拖进去会失败。稳妥做法是先在手机相册里导出成 JPG，再批量上传。</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">压缩之后画质差很多怎么办？<span>＋</span></button>
+      <div class="faq-answer">先看质量滑块是不是被拉到了 60 以下，回到 85 通常就够了。如果原图本来分辨率就低，再缩放只会更糊，这种情况应该关掉缩放、只压体积，或者改用 AI 超分把尺寸补上来。</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">在手机上能用吗？<span>＋</span></button>
+      <div class="faq-answer">能，页面是响应式的，iOS Safari 和安卓 Chrome 都能跑。但手机处理大图容易因为内存不足闪退，批量十几张以上建议用电脑。</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">需要注册或者付费吗？<span>＋</span></button>
+      <div class="faq-answer">不需要。没有账号、没有次数限制、没有导出水印，也不会有「免费版只能处理 10 张」这类限制。</div>
+    </div>
+  </section>
 </div>
 <script>
 const dropZone=document.getElementById('dropZone'),fileInput=document.getElementById('fileInput'),processBtn=document.getElementById('processBtn'),preset=document.getElementById('preset'),customSize=document.getElementById('customSize'),customWidth=document.getElementById('customWidth'),format=document.getElementById('format'),quality=document.getElementById('quality'),qualityVal=document.getElementById('qualityVal'),previewGrid=document.getElementById('previewGrid');
@@ -86,6 +241,17 @@ preset.addEventListener('change',()=>customSize.style.display=preset.value==='cu
 dropZone.addEventListener('click',()=>fileInput.click());
 fileInput.addEventListener('change',e=>{files=Array.from(e.target.files);processBtn.disabled=files.length===0;previewGrid.innerHTML='';files.forEach(f=>{const url=URL.createObjectURL(f);const div=document.createElement('div');div.className='preview-item';div.innerHTML=`<img src="${url}"><p style="font-size:0.8rem;">${f.name}</p>`;previewGrid.appendChild(div);});});
 processBtn.addEventListener('click',async()=>{processBtn.disabled=true;for(let i=0;i<files.length;i++){const f=files[i];const img=new Image();img.src=URL.createObjectURL(f);await new Promise(r=>img.onload=r);let w,h;if(preset.value!=='none'){let maxW=preset.value==='custom'?parseInt(customWidth.value):parseInt(preset.value.split(',')[0]);const ratio=Math.min(maxW/img.width,maxW/img.height);w=img.width*ratio;h=img.height*ratio;}else{w=img.width;h=img.height;}const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);ctx.drawImage(img,0,0,w,h);const outBlob=await new Promise(r=>canvas.toBlob(r,format.value,quality.value/100));const outUrl=URL.createObjectURL(outBlob);previewGrid.children[i].innerHTML=`<img src="${outUrl}"><p style="font-size:0.8rem;">${(outBlob.size/1024).toFixed(0)} KB</p><button onclick="window.open('${outUrl}')" style="padding:0.4rem 0.8rem;font-size:0.8rem;">下载</button>`;}processBtn.disabled=false;});
+</script>
+<script>
+document.querySelectorAll('.faq-question').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var item = btn.parentElement;
+    var open = item.classList.contains('open');
+    item.parentElement.querySelectorAll('.faq-item').forEach(function(i){ i.classList.remove('open'); });
+    if (!open) item.classList.add('open');
+    btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+  });
+});
 </script>
 </body>
 </html>

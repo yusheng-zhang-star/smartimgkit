@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -6,6 +6,10 @@
 <title>Bulk Image Resizer & Compressor | Process Images Locally in Browser</title>
 <meta name="description" content="Bulk resize, crop & compress images 100% locally in your browser. No upload, unlimited batch, no signup. Perfect for Etsy, Amazon, Shopify sellers.">
 <link rel="canonical" href="https://smartimgkit.com/batch-image-resizer/">
+<link rel="alternate" hreflang="en" href="https://smartimgkit.com/batch-image-resizer/">
+<link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/batch-image-resizer/">
+<link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/batch-image-resizer/">
+<link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/batch-image-resizer/">
 <script type="application/ld+json">
 {
   
@@ -24,9 +28,62 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {"@type": "Question", "name": "Do my images get uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. All resizing, compression and conversion happens 100% locally in your browser. Your photos never leave your device."}},
-    {"@type": "Question", "name": "Is there a limit on how many images I can process?", "acceptedAnswer": {"@type": "Answer", "text": "No. Free users can process unlimited images in batches, no signup required. No per-batch count limits."}},
-    {"@type": "Question", "name": "Can I resize images for Etsy or Amazon listings?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Use the built-in Etsy 2000px and Amazon 2000px square presets to instantly prepare product photos for marketplaces."}}
+    {
+      "@type": "Question",
+      "name": "Do my images get uploaded to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All resizing, compression and conversion happens 100% locally in your browser. Your photos never leave your device, which means zero privacy risk for sensitive product photos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a limit on how many images I can process?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Free users can process unlimited images in batches, no signup required. There is no per-batch cap of 10 or 20 files like iLoveIMG or ResizePixel."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I resize images for Etsy or Amazon listings?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Use the built-in Etsy / Amazon 2000x2000 square preset to instantly prepare product photos that meet marketplace size requirements, without paying for a Pro subscription."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this tool work on mobile?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The tool is fully responsive and works on phones and tablets. You can bulk process photos directly from your camera roll without a desktop computer."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it remove EXIF metadata automatically?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, all processed images automatically have all EXIF/GPS metadata stripped out during export, so sensitive location and camera data is never included in your final product photos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will the watermark be visible on a white product photo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Barely. The watermark is white at 70% opacity, which is designed to sit on dark or busy areas. On a pure white background it almost disappears. If you need a visible credit line, place it over a darker part of the image or use a dedicated watermark tool where color and position can be changed."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I crop to a square and resize in the same pass?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Pick the ratio in Crop ratio and the pixel size in the size preset; the tool crops from the center first, then scales the result. It is one pass per image, so you do not need to run the file twice."
+      }
+    }
   ]
 }
 </script>
@@ -89,13 +146,6 @@ button:disabled {background:#94a3b8; cursor:not-allowed;}
     <div style="background:#fffbeb; padding:1.5rem; border-radius:12px;">
       <h3 style="color:#b45309; margin-bottom:0.5rem;">⚡ AVIF Support</h3>
       <p>Export to AVIF format — 30% smaller than WebP, faster page loads for your Etsy/Shopify store. No other free bulk tool offers this.</p>
-    </div>
-  </div>
-      <p style="font-size:0.95rem;">Your images never leave your device. No upload to any server, no privacy risk for sensitive product photos or personal pictures.</p>
-    </div>
-    <div style="background:#f0fdfa; padding:1.5rem; border-radius:12px;">
-      <h3 style="color:#0d9488; margin-bottom:0.5rem;">♾️ Unlimited Batch</h3>
-      <p style="font-size:0.95rem;">No per-batch limits. Process 5 or 500 images in one go, no signup required, no paywall for basic bulk processing.</p>
     </div>
     <div style="background:#f0fdfa; padding:1.5rem; border-radius:12px;">
       <h3 style="color:#0d9488; margin-bottom:0.5rem;">⚡ Instant Processing</h3>
@@ -180,6 +230,19 @@ button:disabled {background:#94a3b8; cursor:not-allowed;}
   </div>
 
   <div class="faq">
+    <h2>What each control actually does</h2>
+    <p><strong>Crop ratio.</strong> A value of 1:1 or 4:5 does a <em>center crop</em>, not a stretch. The tool keeps the middle of the frame and trims the longer side to reach the ratio, then scales what is left. On a 3000×2000 photo, 1:1 keeps the central 2000×2000 strip and discards 500px from each side, so check your subject sits in the middle before processing a batch.</p>
+    <p><strong>Rotate.</strong> 90, 180 or 270 degrees, applied before scaling. At 90 and 270 the width and height swap, which is why a preset written for landscape can still come out portrait.</p>
+    <p><strong>Watermark text.</strong> Draws your text once, bottom-right, in white at 70% opacity, sized at 1/25 of the output width. On light or busy backgrounds it is close to invisible; treat it as a light deterrent, not a copyright notice. It is baked into the pixels, so remove it by re-processing the original.</p>
+    <p><strong>Rename pattern.</strong> Any text plus <code>{index}</code>, which becomes 1, 2, 3 in processing order. "product-{index}" gives product-1.jpg, product-2.jpg and so on. Names only apply to the ZIP download.</p>
+    <p><strong>Download all as ZIP.</strong> Bundles every processed file into one archive so you do not have to save forty files by hand. The ZIP library loads from a CDN, so if you are offline you can still resize images but the bundle button will not work.</p>
+
+    <h2>What this tool deliberately does not do</h2>
+    <p><strong>It paints a white background.</strong> Every output starts as a white canvas before the image is drawn onto it, so a transparent PNG loses its alpha channel and comes out with white where it used to be transparent. If you need to keep transparency, do not run it through the bulk resizer.</p>
+    <p><strong>It strips EXIF.</strong> Redrawing the image drops camera settings, timestamps and GPS coordinates. That is usually what you want for marketplace listings and second-hand sales, but keep an untouched copy if you rely on that metadata.</p>
+    <p><strong>It writes no DPI.</strong> The output carries pixel dimensions only. For 300 dpi print work, compute the pixels yourself (centimetres ÷ 2.54 × 300) and enter that as the custom width.</p>
+    <p><strong>It processes one file at a time.</strong> A hundred 4000px originals can take several minutes on a laptop. Keep the tab open; closing it mid-run loses the queue. An upscale is also just interpolation here, so making small photos bigger will look softer, not sharper.</p>
+
     <h2>Who Uses This Tool?</h2>
     <p style="margin:1rem 0;">This bulk image resizer is built for:</p>
     <ul style="margin:1rem 0 1rem 2rem;">
@@ -210,6 +273,14 @@ button:disabled {background:#94a3b8; cursor:not-allowed;}
     <details>
       <summary>Does it remove EXIF metadata automatically?</summary>
       <p>Yes, all processed images automatically have all EXIF/GPS metadata stripped out during export, so sensitive location and camera data is never included in your final product photos.</p>
+    </details>
+    <details>
+      <summary>Will the watermark be visible on a white product photo?</summary>
+      <p>Barely. The watermark is white at 70% opacity, which is designed to sit on dark or busy areas. On a pure white background it almost disappears. If you need a visible credit line, place it over a darker part of the image or use a dedicated watermark tool where color and position can be changed.</p>
+    </details>
+    <details>
+      <summary>Can I crop to a square and resize in the same pass?</summary>
+      <p>Yes. Pick the ratio in Crop ratio and the pixel size in the size preset; the tool crops from the center first, then scales the result. It is one pass per image, so you do not need to run the file twice.</p>
     </details>
   </div>
 </div>

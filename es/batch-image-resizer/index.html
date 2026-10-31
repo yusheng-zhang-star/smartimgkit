@@ -6,6 +6,10 @@
 <title>Redimensionar y Comprimir Imágenes por Lote Localmente | SmartImgKit</title>
 <meta name="description" content="Redimensiona, comprime y convierte imágenes por lotes 100% localmente en tu navegador. Sin subir archivos, sin registro, ideal para vendedores de Etsy/Amazon.">
 <link rel="canonical" href="https://smartimgkit.com/es/batch-image-resizer/">
+<link rel="alternate" hreflang="en" href="https://smartimgkit.com/batch-image-resizer/">
+<link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/batch-image-resizer/">
+<link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/batch-image-resizer/">
+<link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/batch-image-resizer/">
 <style>
 * {margin:0; padding:0; box-sizing:border-box;}
 body {font-family:system-ui,sans-serif; background:#f8fafc; color:#1e293b; line-height:1.6;}
@@ -25,7 +29,93 @@ button {background:#0d9488; color:white; border:none; padding:0.9rem 1.8rem; bor
 .preview-grid {display:grid; grid-template-columns:repeat(auto-fill, minmax(180px,1fr)); gap:1rem; margin:2rem 0;}
 .preview-item {padding:1rem; border:1px solid #e2e8f0; border-radius:8px; text-align:center;}
 .preview-item img {max-width:100%; border-radius:4px; margin-bottom:0.5rem;}
+
+.guide {background:white; padding:2rem; border-radius:16px; box-shadow:0 4px 16px rgba(0,0,0,0.06); margin-top:2rem;}
+.guide h2 {color:#0d9488; font-size:1.35rem; margin:2rem 0 0.8rem;}
+.guide h2:first-child {margin-top:0;}
+.guide p {margin-bottom:1rem; color:#334155;}
+.guide ul {margin:0 0 1rem 1.4rem; color:#334155;}
+.guide li {margin-bottom:0.5rem;}
+.faq-item {border:1px solid #e2e8f0; border-radius:10px; margin-bottom:0.6rem; overflow:hidden;}
+.faq-question {width:100%; text-align:left; background:#f8fafc; color:#1e293b; border:none; padding:1rem 1.2rem; font-size:1rem; font-weight:600; cursor:pointer; display:flex; justify-content:space-between; align-items:center; margin:0; border-radius:0;}
+.faq-answer {display:none; padding:0 1.2rem 1rem; color:#475569; font-size:0.95rem;}
+.faq-item.open .faq-answer {display:block;}
+.faq-question span {transition:transform .2s; font-size:1.1rem; line-height:1;}
+.faq-item.open .faq-question span {transform:rotate(45deg);}
 </style>
+<!-- Datos estructurados FAQ: las mismas 8 preguntas que se ven en la página -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Mis fotos se suben a algún servidor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. La decodificación, el escalado y la compresión ocurren dentro de tu navegador y la página no tiene ningún endpoint de subida. Puedes comprobarlo abriendo las herramientas de desarrollo (F12), pestaña Red, y procesando varias imágenes: no verás peticiones salientes mientras trabajas."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuántas imágenes puedo cargar a la vez?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No hay tope. El selector acepta selección múltiple y también puedes arrastrar una carpeta completa. El único límite real es la memoria del equipo: cientos de miniaturas van bien, cientos de originales de 4000 píxeles se vuelven lentos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué el PNG sale con el fondo blanco?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Porque la herramienta pinta un lienzo blanco antes de redibujar, para que las zonas transparentes no aparezcan en negro en algunas plataformas. Si necesitas conservar la transparencia, convierte con otra herramienta de la colección."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Me sirve para las fotos de Mercado Libre?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sirve para dejar el archivo ligero y con el lado mayor dentro del tamaño que pide la plataforma, pero el recorte al cuadrado de la foto principal tienes que hacerlo aparte: aquí no hay recorte. Revisa siempre los requisitos vigentes del vendedor, cambian por país y por categoría."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo fijar 300 dpi para imprenta?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No, el archivo resultante solo guarda píxeles. Para una salida a 300 dpi calcula los píxeles necesarios: centímetros ÷ 2,54 × 300, y escribe ese número como ancho personalizado."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Acepta HEIC del iPhone?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende de si tu navegador sabe decodificarlo. En Safari sí funciona; en Chrome, Edge y la mayoría de navegadores Android no, y el archivo fallará al cargar. Lo práctico es exportar a JPG desde la app Fotos antes de arrastrar."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se nota mucho la pérdida de calidad?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Con el control en 85 y sin ampliar, la diferencia es prácticamente invisible en pantalla. Se nota cuando bajas de 60 o cuando partes de una imagen ya pequeña y la escalas hacia arriba, porque ahí solo se interpolan píxeles."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Hay que registrarse o pagar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Sin cuenta, sin límite de usos y sin marca de agua en la descarga. Tampoco hay un corte tipo «diez imágenes gratis» que te obligue a pasar por caja."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <div class="top">
@@ -77,6 +167,75 @@ button {background:#0d9488; color:white; border:none; padding:0.9rem 1.8rem; bor
     </div>
     <div class="preview-grid" id="previewGrid"></div>
   </div>
+  <section class="guide">
+
+    <h2>Cómo escala realmente: lado mayor, sin recortes</h2>
+    <p>Cuando eliges 2000×2000 el resultado no es un cuadrado forzado. La herramienta calcula el factor que lleva el <strong>lado más largo</strong> a 2000 px y lo aplica igual al otro lado: una foto de 3000×2000 sale en 2000×1333, y una vertical de 2000×3000 sale en 1333×2000. Si necesitas el cuadrado exacto que piden muchas fichas de producto, el recorte va después y por tu cuenta: aquí no hay recorte.</p>
+    <p>Si la imagen es más pequeña que el valor elegido, se escala hacia arriba igual. Eso no recupera detalle, solo interpola píxeles y el resultado se ve más blando. Para eso hace falta un ampliador con IA.</p>
+
+    <h2>Para qué lo usan los vendedores de la región</h2>
+    <p><strong>Mercado Libre y Amazon.</strong> Una sesión con el celular deja archivos de 4 a 8 MB cada uno; diez publicaciones nuevas pueden sumar 80 MB. Bajar todo a 1200–1600 px con calidad 85 en JPG deja cada archivo entre 200 y 400 KB: el panel de carga responde al instante y las fichas abren rápido en datos móviles, que es donde compra la mayoría.</p>
+    <p><strong>Wallapop y Marketplace.</strong> Publicar un lote como particular suele chocar con el límite de peso por imagen. Pasar las fotos primero por aquí evita el error a mitad de la publicación, cuando ya llevas veinte minutos escribiendo el anuncio.</p>
+    <p><strong>WhatsApp Business.</strong> Mandar el catálogo completo por chat sin que la app recomprima cada foto: si ya salen ligeras, el cliente las recibe con el aspecto que tú elegiste.</p>
+    <p><strong>Estudios de fotografía y eventos.</strong> Las pruebas de selección para novios o clientes de boda viajan mucho más rápido en 1600 px que en un RAW convertido, y el cliente las puede ver desde el celular sin descargar nada.</p>
+
+    <h2>Los cuatro controles, uno por uno</h2>
+    <p><strong>Preajuste de tamaño.</strong> «Sin cambio» solo comprime. Los dos cuadrados (2000 y 1080) trabajan sobre el lado mayor. «Personalizado» te pide un único valor de ancho máximo, pero en vertical lo que manda es la altura: es un límite del lado mayor, no del ancho.</p>
+    <p><strong>Formato de salida.</strong> JPG pesa menos y se abre en cualquier parte; es la opción para fotos de producto. PNG conserva transparencias pero suele triplicar el peso. WebP ahorra otro 30 % con la misma apariencia y ya lo leen todos los navegadores actuales, aunque algún sistema viejo puede no abrirlo.</p>
+    <p><strong>Calidad.</strong> Viene en 85. Entre 80 y 90 la diferencia es imperceptible y ahí está la mejor relación entre peso y aspecto. Por debajo de 60 aparecen bloques en degradados y en piel. En 100 no se comprime nada extra y el archivo crece.</p>
+    <p><strong>Orden de proceso.</strong> Va de una en una, en el orden en que las cargaste, y el botón no vuelve hasta terminar la última. Si cierras la pestaña a medias, lo pendiente se pierde y hay que volver a arrastrar.</p>
+
+    <h2>Lo que esta herramienta no hace</h2>
+    <p><strong>Rellena el fondo con blanco.</strong> Antes de redibujar pinta un lienzo blanco, así que un PNG con transparencia sale con esas zonas en blanco. Si necesitas conservar el canal alfa, usa otro conversor de la colección.</p>
+    <p><strong>No escribe DPI.</strong> El archivo solo lleva píxeles. Para imprenta a 300 dpi haz tú la cuenta: centímetros ÷ 2,54 × 300, y ese número va en el ancho personalizado.</p>
+    <p><strong>No genera ZIP ni renombra.</strong> Cada imagen se descarga por separado, abriéndose en una pestaña nueva. Con cuarenta fotos son cuarenta clics.</p>
+    <p><strong>Procesa en serie.</strong> Cien originales de 4000 px pueden tardar varios minutos; no cierres la pestaña mientras corre.</p>
+    <p><strong>Elimina los EXIF.</strong> Al redibujar se pierden los datos de cámara y la geolocalización. Para vender de segunda mano es una ventaja; si necesitas conservar la autoría, guarda el original aparte.</p>
+
+    <h2>Cuando el resultado no es el esperado</h2>
+    <ul>
+      <li>No baja de peso: revisa si elegiste PNG, o si el original ya venía muy comprimido. Prueba WebP con calidad 75.</li>
+      <li>El tamaño no coincide: recuerda que manda el lado mayor. Para un ancho exacto, usa personalizado y acepta que la altura cambie en proporción.</li>
+      <li>Se ve borroso: o estabas ampliando una imagen pequeña, o la calidad quedó por debajo de 60.</li>
+      <li>El fondo transparente salió blanco: es el comportamiento descrito arriba, no un fallo.</li>
+    </ul>
+
+    <h2>Cuándo no conviene usar esta página</h2>
+    <p>Si lo que buscas es recortar a un encuadre concreto, aquí no hay recorte. Si necesitas quitar el fondo, usa el removedor de fondo. Si el objetivo es subir resolución de verdad, el ampliador con IA da un resultado muy distinto. Y si trabajas con RAW de cámara, primero hay que revelarlos: por aquí solo entran JPG, PNG y WebP.</p>
+    <h2>Preguntas frecuentes</h2>
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">¿Mis fotos se suben a algún servidor?<span>＋</span></button>
+      <div class="faq-answer">No. La decodificación, el escalado y la compresión ocurren dentro de tu navegador y la página no tiene ningún endpoint de subida. Puedes comprobarlo abriendo las herramientas de desarrollo (F12), pestaña Red, y procesando varias imágenes: no verás peticiones salientes mientras trabajas.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">¿Cuántas imágenes puedo cargar a la vez?<span>＋</span></button>
+      <div class="faq-answer">No hay tope. El selector acepta selección múltiple y también puedes arrastrar una carpeta completa. El único límite real es la memoria del equipo: cientos de miniaturas van bien, cientos de originales de 4000 píxeles se vuelven lentos.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">¿Por qué el PNG sale con el fondo blanco?<span>＋</span></button>
+      <div class="faq-answer">Porque la herramienta pinta un lienzo blanco antes de redibujar, para que las zonas transparentes no aparezcan en negro en algunas plataformas. Si necesitas conservar la transparencia, convierte con otra herramienta de la colección.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">¿Me sirve para las fotos de Mercado Libre?<span>＋</span></button>
+      <div class="faq-answer">Sirve para dejar el archivo ligero y con el lado mayor dentro del tamaño que pide la plataforma, pero el recorte al cuadrado de la foto principal tienes que hacerlo aparte: aquí no hay recorte. Revisa siempre los requisitos vigentes del vendedor, cambian por país y por categoría.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">¿Puedo fijar 300 dpi para imprenta?<span>＋</span></button>
+      <div class="faq-answer">No, el archivo resultante solo guarda píxeles. Para una salida a 300 dpi calcula los píxeles necesarios: centímetros ÷ 2,54 × 300, y escribe ese número como ancho personalizado.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">¿Acepta HEIC del iPhone?<span>＋</span></button>
+      <div class="faq-answer">Depende de si tu navegador sabe decodificarlo. En Safari sí funciona; en Chrome, Edge y la mayoría de navegadores Android no, y el archivo fallará al cargar. Lo práctico es exportar a JPG desde la app Fotos antes de arrastrar.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">¿Se nota mucho la pérdida de calidad?<span>＋</span></button>
+      <div class="faq-answer">Con el control en 85 y sin ampliar, la diferencia es prácticamente invisible en pantalla. Se nota cuando bajas de 60 o cuando partes de una imagen ya pequeña y la escalas hacia arriba, porque ahí solo se interpolan píxeles.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">¿Hay que registrarse o pagar?<span>＋</span></button>
+      <div class="faq-answer">No. Sin cuenta, sin límite de usos y sin marca de agua en la descarga. Tampoco hay un corte tipo «diez imágenes gratis» que te obligue a pasar por caja.</div>
+    </div>
+  </section>
 </div>
 <script>
 const dropZone=document.getElementById('dropZone'),fileInput=document.getElementById('fileInput'),processBtn=document.getElementById('processBtn'),preset=document.getElementById('preset'),customSize=document.getElementById('customSize'),customWidth=document.getElementById('customWidth'),format=document.getElementById('format'),quality=document.getElementById('quality'),qualityVal=document.getElementById('qualityVal'),previewGrid=document.getElementById('previewGrid');
@@ -86,6 +245,17 @@ preset.addEventListener('change',()=>customSize.style.display=preset.value==='cu
 dropZone.addEventListener('click',()=>fileInput.click());
 fileInput.addEventListener('change',e=>{files=Array.from(e.target.files);processBtn.disabled=files.length===0;previewGrid.innerHTML='';files.forEach(f=>{const url=URL.createObjectURL(f);const div=document.createElement('div');div.className='preview-item';div.innerHTML=`<img src="${url}"><p style="font-size:0.8rem;">${f.name}</p>`;previewGrid.appendChild(div);});});
 processBtn.addEventListener('click',async()=>{processBtn.disabled=true;for(let i=0;i<files.length;i++){const f=files[i];const img=new Image();img.src=URL.createObjectURL(f);await new Promise(r=>img.onload=r);let w,h;if(preset.value!=='none'){let maxW=preset.value==='custom'?parseInt(customWidth.value):parseInt(preset.value.split(',')[0]);const ratio=Math.min(maxW/img.width,maxW/img.height);w=img.width*ratio;h=img.height*ratio;}else{w=img.width;h=img.height;}const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);ctx.drawImage(img,0,0,w,h);const outBlob=await new Promise(r=>canvas.toBlob(r,format.value,quality.value/100));const outUrl=URL.createObjectURL(outBlob);previewGrid.children[i].innerHTML=`<img src="${outUrl}"><p style="font-size:0.8rem;">${(outBlob.size/1024).toFixed(0)} KB</p><button onclick="window.open('${outUrl}')" style="padding:0.4rem 0.8rem;font-size:0.8rem;">Descargar</button>`;}processBtn.disabled=false;});
+</script>
+<script>
+document.querySelectorAll('.faq-question').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var item = btn.parentElement;
+    var open = item.classList.contains('open');
+    item.parentElement.querySelectorAll('.faq-item').forEach(function(i){ i.classList.remove('open'); });
+    if (!open) item.classList.add('open');
+    btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+  });
+});
 </script>
 </body>
 </html>
