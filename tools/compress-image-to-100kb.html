@@ -105,6 +105,38 @@
         "@type": "Answer",
         "text": "Upload it and the page will decode it in the browser. If your browser cannot decode HEIC, use the HEIC Converter first."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it resize or crop the image to reach 100 KB?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Neither. The canvas is created at the image's original width and height, so the output has exactly the same pixel count as the input; only the JPEG or WebP quality changes. Cropping happens only if you use a separate cropper."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens if 100 KB cannot be reached?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You get the smallest file the search produced, and the size line says how much larger it still is. The tool does not silently pad, crop, or downscale to force the number — reduce the pixel dimensions and run it again."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are EXIF, GPS and camera data kept?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Re-encoding through a canvas drops all metadata, including GPS coordinates, camera model and the original date. That is usually what you want before posting a photo publicly; keep a copy of the original if you need the metadata."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does a PNG ignore the 100 KB box?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "PNG is lossless and has no quality parameter, so the quality search is deliberately skipped for it. A photographic PNG therefore stays large; switch the output to JPG or WebP, or convert first. The Auto option also keeps PNG as PNG and turns everything else into JPEG."
+      }
     }
   ]
 }
@@ -170,7 +202,27 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>🗜️ Image Compressor</span></nav>
       <div class="tool-page-header">
         <h1>Compress Image to 100 KB</h1>
-        <p>100 KB is the sweet spot for portals and email: small enough for tight limits, big enough to keep a photo looking clean.</p>
+        <p class="answer-lead">This page re-encodes a JPG, PNG or WebP at up to eight quality steps and keeps the smallest version that lands at or under 100 KB. Pixel dimensions are never touched — if the photo is 4000 px wide, 100 KB will look soft until you resize it first. The whole search runs in your tab, so the file is never uploaded.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Target</span><span class="f-v">100 KB, editable</span></li>
+          <li><span class="f-k">Formats in</span><span class="f-v">JPG · PNG · WebP</span></li>
+          <li><span class="f-k">Resizing</span><span class="f-v">No — quality only</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>When 100 KB is the right target — and when it is not</h2>
+          <table>
+            <thead><tr><th>Your situation</th><th>What the target box actually does</th><th>Better move</th></tr></thead>
+            <tbody>
+              <tr><td>Portal or form with a 100 KB cap</td><td>Lands somewhere between roughly 60 and 95 KB, whichever is the largest file that still fits</td><td>Also check the portal's pixel rule — most also demand a minimum width</td></tr>
+              <tr><td>Phone photo, 3000–4000 px wide</td><td>Cannot get there by quality alone; you get the smallest it managed and a "larger by" label</td><td>Resize the long edge to 1600 px, then run the same target again</td></tr>
+              <tr><td>Flat-colour PNG, logo or screenshot</td><td>Nothing — the search is skipped for PNG because the format has no quality knob</td><td>Keep the PNG if it is already small, or export a JPEG copy for photo-like content</td></tr>
+              <tr><td>Marketplace listing photo, 800–1200 px</td><td>Comfortable; 100 KB is plenty at that size and stays visibly clean</td><td>Shoot or export at that size instead of downscaling a huge original</td></tr>
+              <tr><td>Email or chat attachment seen on a phone</td><td>Fits, but a retina screen shows the softness</td><td>Use 200–300 KB if the recipient's limit allows it</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -381,6 +433,10 @@
         <div class="faq-item"><button class="faq-question">Will a 100 KB photo look pixelated on the portal?</button><div class="faq-answer">At typical portal display sizes (200–600 px wide) it looks fine. Blurriness at 100 KB usually means the file is still 4000 px wide and the browser is downscaling it — resizing first fixes that.</div></div>
         <div class="faq-item"><button class="faq-question">What is the best format for hitting 100 KB?</button><div class="faq-answer">JPG for photos, WebP if you want a bit more quality at the same size. Avoid PNG for photographs.</div></div>
         <div class="faq-item"><button class="faq-question">Does this work on HEIC files from an iPhone?</button><div class="faq-answer">Upload it and the page will decode it in the browser. If your browser cannot decode HEIC, use the <a href="/tools/heic-converter">HEIC Converter</a> first.</div></div>
+        <div class="faq-item"><button class="faq-question">Does it resize or crop the image to reach 100 KB?</button><div class="faq-answer">Neither. The canvas is created at the image's original width and height, so the output has exactly the same pixel count as the input; only the JPEG or WebP quality changes. Cropping happens only if you use a separate cropper.</div></div>
+        <div class="faq-item"><button class="faq-question">What happens if 100 KB cannot be reached?</button><div class="faq-answer">You get the smallest file the search produced, and the size line says how much larger it still is. The tool does not silently pad, crop, or downscale to force the number — reduce the pixel dimensions and run it again.</div></div>
+        <div class="faq-item"><button class="faq-question">Are EXIF, GPS and camera data kept?</button><div class="faq-answer">No. Re-encoding through a canvas drops all metadata, including GPS coordinates, camera model and the original date. That is usually what you want before posting a photo publicly; keep a copy of the original if you need the metadata.</div></div>
+        <div class="faq-item"><button class="faq-question">Why does a PNG ignore the 100 KB box?</button><div class="faq-answer">PNG is lossless and has no quality parameter, so the quality search is deliberately skipped for it. A photographic PNG therefore stays large; switch the output to JPG or WebP, or convert first. The Auto option also keeps PNG as PNG and turns everything else into JPEG.</div></div>
       </section>
 
 <section class="related-tools">
@@ -616,10 +672,10 @@ const dropzone = document.getElementById('dropzone');
           var _extMap = { 'image/jpeg': 'jpg', 'image/webp': 'webp', 'image/png': 'png' };
           openResultModal({
             origSize: currentFile.size,
-            optSize: blob.size,
+            optSize: resultBlob.size,
             saveRate: (saved > 0 ? saved : 0) + '%',
             originalBlob: currentFile,
-            resultBlob: blob,
+            resultBlob: resultBlob,
             fileName: currentFile.name.replace(/\.[^.]+$/, '') + '-compressed.' + (_extMap[outType] || 'png')
           });
         }
