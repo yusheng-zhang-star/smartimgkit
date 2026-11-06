@@ -22,7 +22,10 @@
 <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/batch-rename">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/css/style.css?v=16">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 <script type="application/ld+json">
 {
   
@@ -85,6 +88,46 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "No. Everything is processed in your browser; the images never leave your device."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I sort the files before numbering?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The list is displayed in arrival order and there is no sort, drag or reverse control, so the sequence is whatever the file dialog or the drop handed over. Dropping a folder usually produces alphabetical order from the browser, but mixed sources are unpredictable — rename in separate runs per source."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are my original files renamed on disk?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Browsers cannot rename files, so the page reads each file, attaches it to a new name inside a ZIP, and downloads that archive. Your originals stay exactly where they were with their old names, which is also why keeping them is a reasonable safety net."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens to the file extension?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It is taken from the original name and lowercased, so a .JPG becomes .jpg and a .PNG stays .png. The prefix and counter replace only the part before the dot. A file with no dot in its name is given the extension img, which is worth checking for before you download."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which characters are allowed in the prefix?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Backslash, slash, colon, asterisk, question mark, double quote, angle brackets and the pipe character are each replaced with an underscore, because they are illegal or dangerous in Windows file names. Spaces and accented letters pass through untouched, which can trip up older tools downstream."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What if two files end up with the same name?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "They cannot. Every file in the batch gets its own index, so the counter alone keeps the names unique, and the prefix is identical by design. What can look wrong instead is alignment: with two digits allowed, the hundredth file is padded no further and prints as photo-100 rather than photo-99, so the sort order in a file manager stops being alphabetical."
       }
     }
   ]
@@ -164,7 +207,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>📝 Batch Rename</span></nav>
       <div class="tool-page-header">
         <h1>Batch Rename Images</h1>
-        <p>Give dozens of photos a consistent name in one go — a shared prefix plus sequential numbering (<code>holiday-001.jpg</code>, <code>holiday-002.jpg</code>…). Renaming happens locally and the results arrive as a ZIP.</p>
+        <p class="answer-lead">This page builds new names from a prefix, an optional separator and a zero-padded counter, keeps each file's original extension, and hands back one ZIP containing the renamed copies — the files on your disk are not touched. Numbering follows the order the files arrived in, and there is no sort control, so the preview list is the only place to check the sequence.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no account</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">JPG · PNG · WebP · GIF · BMP · AVIF · SVG</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local JSZip</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">One ZIP of renamed copies</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Numbering follows the drop order, not the file name</h2>
+          <table>
+            <thead><tr><th>What you drop in</th><th>How it gets numbered</th><th>Check before downloading</th></tr></thead>
+            <tbody>
+              <tr><td>20 photos selected in order</td><td>001, 002 … in exactly that order</td><td>Nothing — what you see is what you get</td></tr>
+              <tr><td>A folder dragged in whole</td><td>Browser order, usually alphabetical</td><td>Read the preview list first</td></tr>
+              <tr><td>Photos from two cameras</td><td>Interleaved into one sequence</td><td>Rename in two separate runs</td></tr>
+              <tr><td>A prefix containing / or :</td><td>Illegal characters become underscores</td><td>Keep slashes out of the prefix</td></tr>
+              <tr><td>An empty prefix box</td><td>Falls back to photo</td><td>Type the name you actually want</td></tr>
+              <tr><td>Files you want to keep as-is</td><td>Every file is renamed, none skipped</td><td>Keep a copy of the originals</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div class="toolui">
@@ -231,6 +295,11 @@
         <details><summary>What order are files numbered in?</summary><p>In the order you added them — the same order shown in the preview list. Add files in one drop to keep that order predictable.</p></details>
         <details><summary>Can I include the original filename?</summary><p>Not in this version. The output is always prefix + separator + number, which is what most galleries, CMS uploads and print labs expect.</p></details>
         <details><summary>Are my photos uploaded?</summary><p>No. Everything is processed in your browser; the images never leave your device.</p></details>
+        <details><summary>Can I sort the files before numbering?</summary><p>No. The list is displayed in arrival order and there is no sort, drag or reverse control, so the sequence is whatever the file dialog or the drop handed over. Dropping a folder usually produces alphabetical order from the browser, but mixed sources are unpredictable — rename in separate runs per source.</p></details>
+        <details><summary>Are my original files renamed on disk?</summary><p>No. Browsers cannot rename files, so the page reads each file, attaches it to a new name inside a ZIP, and downloads that archive. Your originals stay exactly where they were with their old names, which is also why keeping them is a reasonable safety net.</p></details>
+        <details><summary>What happens to the file extension?</summary><p>It is taken from the original name and lowercased, so a .JPG becomes .jpg and a .PNG stays .png. The prefix and counter replace only the part before the dot. A file with no dot in its name is given the extension img, which is worth checking for before you download.</p></details>
+        <details><summary>Which characters are allowed in the prefix?</summary><p>Backslash, slash, colon, asterisk, question mark, double quote, angle brackets and the pipe character are each replaced with an underscore, because they are illegal or dangerous in Windows file names. Spaces and accented letters pass through untouched, which can trip up older tools downstream.</p></details>
+        <details><summary>What if two files end up with the same name?</summary><p>They cannot. Every file in the batch gets its own index, so the counter alone keeps the names unique, and the prefix is identical by design. What can look wrong instead is alignment: with two digits allowed, the hundredth file is padded no further and prints as photo-100 rather than photo-99, so the sort order in a file manager stops being alphabetical.</p></details>
       </section>
 
       <section class="sec">

@@ -42,12 +42,96 @@
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  "mainEntity": [ {"@type": "Question", "name": "How does the batch watermark work?", "acceptedAnswer": {"@type": "Answer", "text": "Each image is drawn to its own canvas and the text is rendered on top with the Canvas API. All images are processed locally in your browser — none are uploaded."}},
-    {"@type": "Question", "name": "Can I position or style the watermark?", "acceptedAnswer": {"@type": "Answer", "text": "This tool stamps the text in the bottom-left corner in a semi-transparent white style. For more control over position, colour and opacity, use the single-image Watermark tool."}},
-    {"@type": "Question", "name": "How many images can I watermark at once?", "acceptedAnswer": {"@type": "Answer", "text": "There is no hard limit — you are only bounded by your device's memory. A large batch of high-resolution photos may take longer to render."}},
-    {"@type": "Question", "name": "Are my original files changed?", "acceptedAnswer": {"@type": "Answer", "text": "No. Every output is a new JPG; your source files on disk are never touched."}},
-    {"@type": "Question", "name": "Which image formats are supported?", "acceptedAnswer": {"@type": "Answer", "text": "JPG, PNG and WebP on input. Output is JPG for every image."}},
-    {"@type": "Question", "name": "Is a text watermark enough to protect my photos?", "acceptedAnswer": {"@type": "Answer", "text": "A visible watermark deters casual reuse but is not unbreakable. For stronger protection, combine it with publishing lower-resolution versions only."}} ]
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How does the batch watermark work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Each image is drawn to its own canvas and the text is rendered on top with the Canvas API. All images are processed locally in your browser — none are uploaded."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I position or style the watermark?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "This tool stamps the text in the bottom-left corner in a semi-transparent white style. For more control over position, colour and opacity, use the single-image Watermark tool."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many images can I watermark at once?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There is no hard limit — you are only bounded by your device's memory. A large batch of high-resolution photos may take longer to render."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are my original files changed?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Every output is a new JPG; your source files on disk are never touched."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which image formats are supported?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "JPG, PNG and WebP on input. Output is JPG for every image."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is a text watermark enough to protect my photos?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A visible watermark deters casual reuse but is not unbreakable. For stronger protection, combine it with publishing lower-resolution versions only."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I move the watermark or make it bigger?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not on this page. The drawing call hard-codes a 20 px font, white at 70% opacity, at 10 px from the left edge and 10 px up from the bottom. There is no position picker, no size box, no opacity slider and no tiled pattern. For a custom mark, the single-image watermark tool exposes the placement controls."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is my watermark invisible on some photos?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because it is white at 70% opacity, drawn on top of whatever is in the bottom-left corner. On a bright sky, a white product or a light wall it blends into the background almost completely. There is no outline, shadow or background plate, so the mark only reads on mid-to-dark areas."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does the preview not match the text I typed?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Previews are rendered once when the files are loaded, using whatever text was in the box at that moment. Typing afterwards changes only what the download draws, so the thumbnails keep the old wording. Reload the same files and the previews catch up."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are the original file names kept?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Output names are watermarked_0.jpg, watermarked_1.jpg and so on, in the order the files were selected — the original name and any folder structure are not carried over. Keep the source files if you need to match results back to originals."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it work with PNG transparency?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Only partly. Every image is exported through the JPEG encoder, so an alpha channel is flattened away and a transparent logo gains a solid background before the text is drawn. Transparent PNGs are better handled in an editor that keeps alpha through the watermark step."
+      }
+    }
+  ]
 }
 </script><style id="enrich-css">
 .selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
@@ -111,7 +195,28 @@
 </header>
 <main class="container">
 <h1>Batch Text Watermark</h1>
-<p class="lead">Add a custom text watermark to all your uploaded photos automatically, 100% local processing, no upload, no watermark from us.</p>
+        <p class="answer-lead">This page draws one line of text onto every photo you drop in: 20 px sans-serif, white at 70% opacity, 10 px from the left and bottom edge. There is no control over position, size, opacity or tiling, and the output is always a JPEG named watermarked-0, watermarked-1 and so on. Everything happens on a canvas in the tab, so the photos are not uploaded.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">Any image in → JPEG out</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — canvas only</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">watermarked_0.jpg, _1, _2 …</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>One fixed stamp, and how it behaves on real photos</h2>
+          <table>
+            <thead><tr><th>Your photo</th><th>What the mark looks like</th><th>What to do about it</th></tr></thead>
+            <tbody>
+              <tr><td>1200 px web image</td><td>Readable, discreet, bottom-left</td><td>Fine as a preview mark</td></tr>
+              <tr><td>4000 px camera original</td><td>20 px text is nearly invisible</td><td>Resize first, watermark after</td></tr>
+              <tr><td>Bright or busy corner</td><td>White on white simply disappears</td><td>Choose photos with a dark corner</td></tr>
+              <tr><td>Needs a centred or tiled mark</td><td>Not possible — the position is fixed</td><td>Use a single-image watermark tool</td></tr>
+              <tr><td>Text typed after loading</td><td>Download uses it, preview still shows the old</td><td>Reload the files to refresh</td></tr>
+              <tr><td>Twenty files at once</td><td>Twenty separate downloads fire</td><td>Allow multiple downloads in the browser</td></tr>
+            </tbody>
+          </table>
+        </div>
 <div class="upload-area" id="dropZone">
 <p>Upload multiple photos to add watermark</p>
 <input type="file" id="fileInput" accept="image/*" multiple hidden>
@@ -166,7 +271,12 @@
 <div class="faq-item"><button class="faq-question">Are my original files changed?</button><div class="faq-answer">No. Every output is a new JPG; your source files on disk are never touched.</div></div>
 <div class="faq-item"><button class="faq-question">Which image formats are supported?</button><div class="faq-answer">JPG, PNG and WebP on input. Output is JPG for every image.</div></div>
 <div class="faq-item"><button class="faq-question">Is a text watermark enough to protect my photos?</button><div class="faq-answer">A visible watermark deters casual reuse but is not unbreakable. For stronger protection, combine it with publishing lower-resolution versions only.</div></div>
-</section>
+        <div class="faq-item"><button class="faq-question">Can I move the watermark or make it bigger?</button><div class="faq-answer">Not on this page. The drawing call hard-codes a 20 px font, white at 70% opacity, at 10 px from the left edge and 10 px up from the bottom. There is no position picker, no size box, no opacity slider and no tiled pattern. For a custom mark, the single-image watermark tool exposes the placement controls.</div></div>
+        <div class="faq-item"><button class="faq-question">Why is my watermark invisible on some photos?</button><div class="faq-answer">Because it is white at 70% opacity, drawn on top of whatever is in the bottom-left corner. On a bright sky, a white product or a light wall it blends into the background almost completely. There is no outline, shadow or background plate, so the mark only reads on mid-to-dark areas.</div></div>
+        <div class="faq-item"><button class="faq-question">Why does the preview not match the text I typed?</button><div class="faq-answer">Previews are rendered once when the files are loaded, using whatever text was in the box at that moment. Typing afterwards changes only what the download draws, so the thumbnails keep the old wording. Reload the same files and the previews catch up.</div></div>
+        <div class="faq-item"><button class="faq-question">Are the original file names kept?</button><div class="faq-answer">No. Output names are watermarked_0.jpg, watermarked_1.jpg and so on, in the order the files were selected — the original name and any folder structure are not carried over. Keep the source files if you need to match results back to originals.</div></div>
+        <div class="faq-item"><button class="faq-question">Does it work with PNG transparency?</button><div class="faq-answer">Only partly. Every image is exported through the JPEG encoder, so an alpha channel is flattened away and a transparent logo gains a solid background before the text is drawn. Transparent PNGs are better handled in an editor that keeps alpha through the watermark step.</div></div>
+      </section>
 <section class="related-tools">
 <h2>You Might Also Like</h2>
 <div class="related-tools-grid"><a href="/tools/watermark" class="related-tool-card"><span class="tool-icon">💧</span><div class="tool-info"><strong>Watermark</strong><span class="tool-desc">Single-image watermark with full controls</span></div><span class="tool-arrow">→</span></a>

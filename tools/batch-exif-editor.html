@@ -22,7 +22,10 @@
 <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/batch-exif-editor">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/css/style.css?v=16">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 <script type="application/ld+json">
 {
   
@@ -123,7 +126,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>🗓️ Batch EXIF Editor</span></nav>
       <div class="tool-page-header">
         <h1>Batch EXIF Date Editor</h1>
-        <p>Set the capture date and time on many JPG photos at once — for scanned archives, camera-clock drift, or re-dating a batch before you import it. The rewrite happens in your browser; the photos are never uploaded.</p>
+        <p class="answer-lead">This page rewrites the three EXIF timestamps inside JPEG files — DateTime, DateTimeOriginal and DateTimeDigitized — using piexif, without touching a single pixel, so there is no re-compression and no quality loss. Every file in the batch gets the same date and time, which is the point for a scanned archive and the limitation for a mixed shoot. Nothing is uploaded.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">JPG and JPEG only</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local piexif</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">Original JPEG, dates rewritten</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>One date for the whole batch — when that helps and when it hurts</h2>
+          <table>
+            <thead><tr><th>Your situation</th><th>What this produces</th><th>Better approach</th></tr></thead>
+            <tbody>
+              <tr><td>Scanned archive, all undated</td><td>One believable date on every file</td><td>Use the scan date, not today's</td></tr>
+              <tr><td>Camera clock was days off</td><td>Every photo shifted to the new date</td><td>Per-file offsets are not possible</td></tr>
+              <tr><td>Shoot spread over a week</td><td>All collapses to a single timestamp</td><td>Run one batch per shoot day</td></tr>
+              <tr><td>PNG screenshot</td><td>Rejected — no EXIF block to write</td><td>Convert to JPEG first if needed</td></tr>
+              <tr><td>A file with no EXIF</td><td>Block created, the three dates written</td><td>Viewers may still show the file date</td></tr>
+              <tr><td>GPS you want to keep</td><td>Untouched, along with camera and lens</td><td>Strip it separately if you must</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div class="toolui">
@@ -213,6 +237,11 @@
       <div class="faq-item"><button class="faq-question">Does it change the photo itself?</button><div class="faq-answer">No. Only the metadata block is rewritten; the compressed image data is untouched, so there is no re-encoding and no quality loss.</div></div>
       <div class="faq-item"><button class="faq-question">Does it work on PNG files?</button><div class="faq-answer">EXIF in PNG is not standard in the way it is in JPEG, so treat PNG as unsupported. Convert to JPEG first if you need the date to stick.</div></div>
       <div class="faq-item"><button class="faq-question">Are my photos uploaded while this runs?</button><div class="faq-answer">Never. The EXIF library runs in the page, the files are read locally, and the edited copies go straight to your downloads.</div></div>
+              <div class="faq-item"><button class="faq-question">Does this re-compress the image?</button><div class="faq-answer">No. piexif rewrites the EXIF segment inside the JPEG and leaves the entropy-coded image data exactly as it was, so the file size moves by a few bytes at most and there is no generation loss. That is the reason to use a date editor rather than re-saving through an image editor.</div></div>
+        <div class="faq-item"><button class="faq-question">Can each photo get a different date?</button><div class="faq-answer">Not on this page. The form holds one date and one time field, and every file in the list receives that same value. The workflow that works is to sort your photos into folders by day and run one batch per folder, rather than trying to feed a spreadsheet of dates in.</div></div>
+        <div class="faq-item"><button class="faq-question">What happens to a photo without an existing EXIF block?</button><div class="faq-answer">A minimal one is created so the three date fields have somewhere to live, and the rest of the metadata stays absent. Some tools and galleries then show the embedded date while the operating system still shows the file's modification date, which is a separate value this page does not change.</div></div>
+        <div class="faq-item"><button class="faq-question">Why is only JPEG supported?</button><div class="faq-answer">Because the edit is a surgical rewrite of a JPEG marker segment. PNG stores metadata in tEXt or eXIf chunks and WebP in its own container, neither of which piexif handles here, so those files are filtered out at the dropzone. A PNG can be converted to JPEG first, at the cost of transparency.</div></div>
+        <div class="faq-item"><button class="faq-question">Are my photos uploaded while this runs?</button><div class="faq-answer">No. The file is read with a FileReader, modified in memory, and handed back as a download. There is no network request for the image data. If you want to confirm it, open the network panel before dropping the files and watch that nothing leaves the page.</div></div>
       </section>
 <script type="application/ld+json">
 {
@@ -273,6 +302,38 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "Never. The EXIF library runs in the page, the files are read locally, and the edited copies go straight to your downloads."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this re-compress the image?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. piexif rewrites the EXIF segment inside the JPEG and leaves the entropy-coded image data exactly as it was, so the file size moves by a few bytes at most and there is no generation loss. That is the reason to use a date editor rather than re-saving through an image editor."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can each photo get a different date?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not on this page. The form holds one date and one time field, and every file in the list receives that same value. The workflow that works is to sort your photos into folders by day and run one batch per folder, rather than trying to feed a spreadsheet of dates in."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens to a photo without an existing EXIF block?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A minimal one is created so the three date fields have somewhere to live, and the rest of the metadata stays absent. Some tools and galleries then show the embedded date while the operating system still shows the file's modification date, which is a separate value this page does not change."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is only JPEG supported?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because the edit is a surgical rewrite of a JPEG marker segment. PNG stores metadata in tEXt or eXIf chunks and WebP in its own container, neither of which piexif handles here, so those files are filtered out at the dropzone. A PNG can be converted to JPEG first, at the cost of transparency."
       }
     }
   ]

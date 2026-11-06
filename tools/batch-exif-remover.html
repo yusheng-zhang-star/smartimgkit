@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="index, follow">
   <title>EXIF Remover — Strip Metadata & GPS from Photos Free</title>
-  <meta name="description" content="Remove EXIF metadata from one image or a whole batch: GPS location, camera model, timestamps. Keeps original quality and format. Free, private, browser-based.">
+  <meta name="description" content="Remove EXIF metadata from one image or a whole batch: GPS location, camera model, timestamps. Keeps the original file format. Free, private, browser-based.">
   <meta name="keywords" content="batch exif remover, remove metadata multiple images, bulk exif remover, strip gps batch, photo privacy batch, exif remover bulk">
   <link rel="canonical" href="https://smartimgkit.com/tools/batch-exif-remover">
   <meta name="theme-color" content="#6366f1">
@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/batch-exif-remover">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/batch-exif-remover">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
   <script type="application/ld+json">
 {
@@ -110,13 +113,81 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {"@type": "Question", "name": "Does batch EXIF removal reduce image quality?", "acceptedAnswer": {"@type": "Answer", "text": "No. We use canvas re-encoding which preserves visual quality. For JPEGs, you can choose quality level. The output keeps your original format."}},
-    {"@type": "Question", "name": "How many images can I process at once?", "acceptedAnswer": {"@type": "Answer", "text": "There's no hard limit, but for best performance we recommend up to 50 images per batch. Larger batches may take longer."}},
-    {"@type": "Question", "name": "Are my photos uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. All processing happens locally in your browser. Your photos never leave your device."}},
-    {"@type": "Question", "name": "What metadata is removed?", "acceptedAnswer": {"@type": "Answer", "text": "All EXIF data including GPS coordinates, camera model, lens info, shutter speed, aperture, ISO, date/time, and software information."}}
+    {
+      "@type": "Question",
+      "name": "Does batch EXIF removal reduce image quality?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Partly. Every image is re-encoded through a canvas, so a JPEG is decoded and compressed again at a fixed 92% - one generation of loss that is usually invisible but real. PNG output is genuinely lossless. The format itself is preserved; the quality setting is not adjustable here."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many images can I process at once?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There's no hard limit, but for best performance we recommend up to 50 images per batch. Larger batches may take longer."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are my photos uploaded to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All processing happens locally in your browser. Your photos never leave your device."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What metadata is removed?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "All EXIF data including GPS coordinates, camera model, lens info, shutter speed, aperture, ISO, date/time, and software information."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the image quality really unchanged?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No, and the page used to say otherwise. Every file is drawn to a canvas and encoded again, so a JPEG is decoded and re-compressed at 92% — one generation of loss, usually invisible at a glance but measurable in the histogram. PNG output is genuinely lossless because the format is."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I choose the JPEG quality?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not in this build. The value 0.92 is written directly into the encoder call and no control is bound to it, so the output size and quality are fixed. To go smaller, strip here first and then run the result through the compressor with a target size."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it remove GPS as well as camera data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, and that is the point for most people — the re-encode discards the entire EXIF block, so GPS coordinates, camera serial number, lens, timestamps and orientation all go. Note that orientation goes with it: a portrait photo that relied on the EXIF rotate flag may come back sideways."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the output still the same format?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For JPEG, PNG and WebP, yes — the MIME type of the source file decides the encoder. Anything else, including HEIC or BMP, falls through to JPEG, which is why those should be converted deliberately first rather than quietly ending up as .jpg."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I download the whole batch?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There is a ZIP button that packs the processed copies, built with a library loaded from a CDN on demand — so a blocked CDN means the ZIP fails while the individual downloads still work. Stripping happens per file and a failure marks only that row, so the rest of the batch completes."
+      }
+    }
   ]
 }
-  </script>
+</script>
 <style id="lang-hover-style">.lang-switcher:hover .lang-dropdown,.lang-switcher:focus-within .lang-dropdown{display:block!important}</style>
 <meta name="p:domain_verify" content="9b55a1eb1c3b2279e088fffbb62e8450"/>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
@@ -177,7 +248,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>📦 Batch EXIF Remover</span></nav>
       <div class="tool-page-header">
         <h1>📦 Batch EXIF Remover</h1>
-        <p>Strip EXIF metadata from multiple images at once. Remove GPS location, camera info, and hidden data — preserve original format. 100% private, in your browser.</p>
+        <p class="answer-lead">Each image is redrawn onto a canvas and re-encoded, which drops every metadata block — GPS, camera model, timestamps — in one pass. JPEG, PNG and WebP keep their own format. Be clear about the cost: this is a re-encode, not a surgical strip, so JPEGs lose one generation at a fixed 92% quality and there is no slider to change it.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">JPG · PNG · WebP, format kept</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — canvas re-encode</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">Metadata-free copies, ZIP option</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>What the re-encode costs, file by file</h2>
+          <table>
+            <thead><tr><th>Input file</th><th>Result after stripping</th><th>What it costs you</th></tr></thead>
+            <tbody>
+              <tr><td>JPEG at 4 MB</td><td>Same pixels at 92%, GPS gone</td><td>One generation of JPEG loss</td></tr>
+              <tr><td>PNG screenshot</td><td>Lossless PNG, metadata gone</td><td>Alpha kept, file may grow</td></tr>
+              <tr><td>WebP photo</td><td>Re-encoded WebP, metadata gone</td><td>Encoder default quality applies</td></tr>
+              <tr><td>Wanted smaller files too</td><td>Not adjustable — 92% is hard-coded</td><td>Run the compressor afterwards</td></tr>
+              <tr><td>HEIC from an iPhone</td><td>Decoded only if the browser can</td><td>Convert to JPEG before stripping</td></tr>
+              <tr><td>Fifty photos at once</td><td>Fifty copies, ZIP available</td><td>ZIP library comes from a CDN</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div class="selling-points">
@@ -252,7 +344,7 @@
           <div class="fn-icon">🎯</div>
           <div>
             <h3>Preserve Original Format & Quality</h3>
-            <p>Unlike other tools that force PNG output, we preserve your original format. JPEGs stay JPEGs with adjustable quality, and PNGs stay lossless. No unnecessary file bloat.</p>
+            <p>Unlike tools that force PNG output, the original format is preserved: JPEGs stay JPEGs at a fixed 92% quality, PNGs stay lossless, WebP stays WebP. There is no quality control on this page - strip first, then compress if you also need a smaller file.</p>
           </div>
         </div>
 
@@ -272,7 +364,7 @@
 <div class="how-to-step"><div class="step-number">4</div><h4>Confirm the metadata is gone</h4><p>Optionally re-check a file with the metadata viewer to confirm the GPS, camera, and date fields are now empty.</p></div></div></section>
 <h2>Detailed User Guide</h2>
 <div class="guide-blocks"><div class="guide-block"><h3>What EXIF removal actually removes</h3><p>EXIF metadata stores the GPS coordinates, camera make and model, shutter settings, and timestamps of a photo. Stripping it means those details no longer travel with the image you share.</p></div>
-<div class="guide-block"><h3>The pixels are left untouched</h3><p>Removing metadata does not recompress or degrade the image. Only the hidden header data is dropped, so quality is identical to the original.</p></div>
+<div class="guide-block"><h3>The image is re-encoded, not surgically stripped</h3><p>Each file is drawn onto a canvas and encoded again, which is what actually removes the metadata. For JPEG that means one generation of loss at a fixed 92% quality; for PNG the encode is lossless. Read it as removing metadata by re-saving, not as deleting a header.</p></div>
 <div class="guide-block"><h3>Batch processing saves real time</h3><p>Instead of opening each photo in an editor to clear metadata one by one, drop the whole folder here and get every file cleaned in a single pass.</p></div>
 <div class="guide-block"><h3>Privacy is the main reason to do this</h3><p>Posting an unmodified phone photo can leak where you live or work through embedded GPS. Stripping EXIF before uploading is a basic privacy hygiene step.</p></div>
 <div class="guide-block"><h3>Processed locally, never uploaded</h3><p>The rewriting happens in your browser, so the photos — and the location data they briefly contain — never leave your device.</p></div>
@@ -283,7 +375,7 @@
         <h2 style="text-align:center; font-size:1.6rem; color:var(--text-primary); margin-bottom:1.5rem;">Frequently Asked Questions</h2>
         <div class="faq-item" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:10px; margin-bottom:10px; overflow:hidden;">
           <button class="faq-question" style="width:100%; padding:16px 20px; background:none; border:none; text-align:left; font-size:0.95rem; font-weight:600; color:var(--text-primary); cursor:pointer; display:flex; justify-content:space-between; align-items:center;">Does batch EXIF removal reduce image quality?<span>▼</span></button>
-          <div class="faq-answer" style="padding:0 20px 16px; color:var(--text-secondary); font-size:0.9rem; line-height:1.6; display:none;">No. We use canvas re-encoding which preserves visual quality. For JPEGs, you can choose quality level. The output keeps your original format.</div>
+          <div class="faq-answer" style="padding:0 20px 16px; color:var(--text-secondary); font-size:0.9rem; line-height:1.6; display:none;">Partly. Every image is re-encoded through a canvas, so a JPEG is decoded and compressed again at a fixed 92% - one generation of loss that is usually invisible but real. PNG output is genuinely lossless. The format itself is preserved; the quality setting is not adjustable here.</div>
         </div>
         <div class="faq-item" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:10px; margin-bottom:10px; overflow:hidden;">
           <button class="faq-question" style="width:100%; padding:16px 20px; background:none; border:none; text-align:left; font-size:0.95rem; font-weight:600; color:var(--text-primary); cursor:pointer; display:flex; justify-content:space-between; align-items:center;">How many images can I process at once?<span>▼</span></button>
@@ -297,7 +389,12 @@
           <button class="faq-question" style="width:100%; padding:16px 20px; background:none; border:none; text-align:left; font-size:0.95rem; font-weight:600; color:var(--text-primary); cursor:pointer; display:flex; justify-content:space-between; align-items:center;">What metadata is removed?<span>▼</span></button>
           <div class="faq-answer" style="padding:0 20px 16px; color:var(--text-secondary); font-size:0.9rem; line-height:1.6; display:none;">All EXIF data including GPS coordinates, camera model, lens info, shutter speed, aperture, ISO, date/time, and software information.</div>
         </div>
-      </div>
+              <div class="faq-item" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:10px; margin-bottom:10px; overflow:hidden;"><button class="faq-question" style="width:100%; padding:16px 20px; background:none; border:none; text-align:left; font-size:0.95rem; font-weight:600; color:var(--text-primary); cursor:pointer; display:flex; justify-content:space-between; align-items:center;">Is the image quality really unchanged?<span>&#9660;</span></button><div class="faq-answer" style="padding:0 20px 16px; color:var(--text-secondary); font-size:0.9rem; line-height:1.6; display:none;">No, and the page used to say otherwise. Every file is drawn to a canvas and encoded again, so a JPEG is decoded and re-compressed at 92% — one generation of loss, usually invisible at a glance but measurable in the histogram. PNG output is genuinely lossless because the format is.</div></div>
+        <div class="faq-item" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:10px; margin-bottom:10px; overflow:hidden;"><button class="faq-question" style="width:100%; padding:16px 20px; background:none; border:none; text-align:left; font-size:0.95rem; font-weight:600; color:var(--text-primary); cursor:pointer; display:flex; justify-content:space-between; align-items:center;">Can I choose the JPEG quality?<span>&#9660;</span></button><div class="faq-answer" style="padding:0 20px 16px; color:var(--text-secondary); font-size:0.9rem; line-height:1.6; display:none;">Not in this build. The value 0.92 is written directly into the encoder call and no control is bound to it, so the output size and quality are fixed. To go smaller, strip here first and then run the result through the compressor with a target size.</div></div>
+        <div class="faq-item" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:10px; margin-bottom:10px; overflow:hidden;"><button class="faq-question" style="width:100%; padding:16px 20px; background:none; border:none; text-align:left; font-size:0.95rem; font-weight:600; color:var(--text-primary); cursor:pointer; display:flex; justify-content:space-between; align-items:center;">Does it remove GPS as well as camera data?<span>&#9660;</span></button><div class="faq-answer" style="padding:0 20px 16px; color:var(--text-secondary); font-size:0.9rem; line-height:1.6; display:none;">Yes, and that is the point for most people — the re-encode discards the entire EXIF block, so GPS coordinates, camera serial number, lens, timestamps and orientation all go. Note that orientation goes with it: a portrait photo that relied on the EXIF rotate flag may come back sideways.</div></div>
+        <div class="faq-item" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:10px; margin-bottom:10px; overflow:hidden;"><button class="faq-question" style="width:100%; padding:16px 20px; background:none; border:none; text-align:left; font-size:0.95rem; font-weight:600; color:var(--text-primary); cursor:pointer; display:flex; justify-content:space-between; align-items:center;">Is the output still the same format?<span>&#9660;</span></button><div class="faq-answer" style="padding:0 20px 16px; color:var(--text-secondary); font-size:0.9rem; line-height:1.6; display:none;">For JPEG, PNG and WebP, yes — the MIME type of the source file decides the encoder. Anything else, including HEIC or BMP, falls through to JPEG, which is why those should be converted deliberately first rather than quietly ending up as .jpg.</div></div>
+        <div class="faq-item" style="background:var(--bg-secondary); border:1px solid var(--border); border-radius:10px; margin-bottom:10px; overflow:hidden;"><button class="faq-question" style="width:100%; padding:16px 20px; background:none; border:none; text-align:left; font-size:0.95rem; font-weight:600; color:var(--text-primary); cursor:pointer; display:flex; justify-content:space-between; align-items:center;">How do I download the whole batch?<span>&#9660;</span></button><div class="faq-answer" style="padding:0 20px 16px; color:var(--text-secondary); font-size:0.9rem; line-height:1.6; display:none;">There is a ZIP button that packs the processed copies, built with a library loaded from a CDN on demand — so a blocked CDN means the ZIP fails while the individual downloads still work. Stripping happens per file and a failure marks only that row, so the rest of the batch completes.</div></div>
+</div>
 
       <!-- Related Tools -->
       <div style="margin: 2.5rem 0; padding: 0 1rem;">

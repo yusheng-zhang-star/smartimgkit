@@ -24,7 +24,10 @@
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/pdf-to-word">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/pdf-to-word">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
   {
     
@@ -128,6 +131,46 @@
         "@type": "Answer",
         "text": "There is no hard limit. Very large PDFs (100MB+) may slow down your browser."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is my DOCX one long column when the PDF had two?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because the extraction groups text by vertical position, and two columns share the same vertical positions. Each band of the page therefore becomes one line reading left column then right column, joined with no separator. A two-column academic paper comes out interleaved; there is no column detection in this build."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are images from the PDF carried over?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Only the text layer is read, and the DOCX is assembled from paragraphs and page breaks. Figures, logos, charts and scans are simply absent from the result. If you need them, render the pages to images and place them yourself, or use a converter that rasterises each page."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is bold or font size preserved?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Every line is written as a plain text run in the default document style, so headings stop being headings. That is the real cost of a text-only conversion: the words come through faithfully, the visual hierarchy does not, and reapplying it is a manual pass with Word's style pane."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens with a scanned PDF?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The page counts extracted characters as it goes, and when that total is zero it shows a note instead of producing a file. Nothing is downloaded and nothing is silently blank. A scan has no text layer at all, so OCR has to happen first — this page does not perform it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How faithful is the line reconstruction?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Lines are rebuilt by rounding each text fragment's vertical position and joining fragments left to right on the same rounded row. That is reliable for ordinary documents and unreliable for anything with superscripts, tight ledes, or text rotated 90 degrees — a rotated sidebar can be appended to the wrong line."
+      }
     }
   ]
 }
@@ -192,7 +235,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>PDF to Word</span></nav>
       <div class="tool-page-header">
         <h1>📄 PDF to Word Converter</h1>
-        <p>Convert PDF to editable Word (.docx). Extracts text from each page into a clean Word document. 100% in your browser.</p>
+        <p class="answer-lead">This page reads the text layer of a PDF with pdf.js and rebuilds it as paragraphs in a .docx, with a page break wherever the PDF had one. Both libraries are served from this site, so the document never leaves the tab. What it does not do is copy images, tables, bold, font sizes or columns — a two-column report arrives as one column of loose lines.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">PDF → DOCX</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — pdf.js is local</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">Plain paragraphs, page breaks kept</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>What crosses into Word, and what stays behind</h2>
+          <table>
+            <thead><tr><th>Content on the page</th><th>What lands in the .docx</th><th>Work left for you</th></tr></thead>
+            <tbody>
+              <tr><td>Single-column body text</td><td>One paragraph per visual line</td><td>Join hard wraps before reflowing</td></tr>
+              <tr><td>A two-column layout</td><td>Columns run together line by line</td><td>Rebuild the columns by hand</td></tr>
+              <tr><td>A data table</td><td>Cell text as loose paragraphs</td><td>Redraw the table in Word</td></tr>
+              <tr><td>Bold, sizes, colours</td><td>Uniform body style, none preserved</td><td>Reapply the formatting</td></tr>
+              <tr><td>Photographs and charts</td><td>Nothing — images are not copied</td><td>Export pages as images separately</td></tr>
+              <tr><td>A scanned page</td><td>No text found, no file produced</td><td>Run OCR before converting</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
         <div class="tool-container">
@@ -328,6 +392,11 @@
 <div class="faq-item"><button class="faq-question">Are tables preserved?</button><div class="faq-answer">Text and basic structure are extracted; complex layouts may simplify.</div></div>
 <div class="faq-item"><button class="faq-question">Are my PDFs uploaded to a server?</button><div class="faq-answer">No. All processing happens locally in your browser using pdf-lib and pdf.js.</div></div>
 <div class="faq-item"><button class="faq-question">Is there a page or file limit?</button><div class="faq-answer">There is no hard limit. Very large PDFs (100MB+) may slow down your browser.</div></div>
+              <div class="faq-item"><button class="faq-question">Why is my DOCX one long column when the PDF had two?</button><div class="faq-answer">Because the extraction groups text by vertical position, and two columns share the same vertical positions. Each band of the page therefore becomes one line reading left column then right column, joined with no separator. A two-column academic paper comes out interleaved; there is no column detection in this build.</div></div>
+        <div class="faq-item"><button class="faq-question">Are images from the PDF carried over?</button><div class="faq-answer">No. Only the text layer is read, and the DOCX is assembled from paragraphs and page breaks. Figures, logos, charts and scans are simply absent from the result. If you need them, render the pages to images and place them yourself, or use a converter that rasterises each page.</div></div>
+        <div class="faq-item"><button class="faq-question">Is bold or font size preserved?</button><div class="faq-answer">No. Every line is written as a plain text run in the default document style, so headings stop being headings. That is the real cost of a text-only conversion: the words come through faithfully, the visual hierarchy does not, and reapplying it is a manual pass with Word's style pane.</div></div>
+        <div class="faq-item"><button class="faq-question">What happens with a scanned PDF?</button><div class="faq-answer">The page counts extracted characters as it goes, and when that total is zero it shows a note instead of producing a file. Nothing is downloaded and nothing is silently blank. A scan has no text layer at all, so OCR has to happen first — this page does not perform it.</div></div>
+        <div class="faq-item"><button class="faq-question">How faithful is the line reconstruction?</button><div class="faq-answer">Lines are rebuilt by rounding each text fragment's vertical position and joining fragments left to right on the same rounded row. That is reliable for ordinary documents and unreliable for anything with superscripts, tight ledes, or text rotated 90 degrees — a rotated sidebar can be appended to the wrong line.</div></div>
       </section>
 
       <section class="related-tools">
@@ -358,12 +427,28 @@
   </footer>
 
   <script src="/js/main.js?v=8"></script>
-  <script src="/js/pdf.min.js?v=3.11.174"></script>
+  <script>
+(function(){
+  var _p=null;
+  window.__pdfReady=function(){
+    if(_p) return _p;
+    _p=new Promise(function(resolve,reject){
+      var s=document.createElement('script');
+      s.src='/js/pdf.min.js?v=3.11.174';
+      s.onload=function(){ window.pdfjsLib.GlobalWorkerOptions.workerSrc='/js/pdf.worker.min.js'; resolve(window.pdfjsLib); };
+      s.onerror=function(){ _p=null; reject(new Error("pdf.js load failed")); };
+      document.head.appendChild(s);
+    });
+    return _p;
+  };
+  function kick(){ window.__pdfReady(); ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.removeEventListener(e,kick,true); }); }
+  ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.addEventListener(e,kick,true); });
+})();
+</script>
   <script src="/js/docx.umd.min.js"></script>
   <script>
   (function() {
     'use strict';
-    pdfjsLib.GlobalWorkerOptions.workerSrc = '/js/pdf.worker.min.js';
     var docxLib = window.docx || (window.docx = {});
     var fileInput = document.getElementById('fileInput');
     var dropzone = document.getElementById('dropzone');
@@ -416,7 +501,7 @@
       setStatus('⏳ Reading PDF…');
       try {
         var arrayBuffer = await currentFile.arrayBuffer();
-        var pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        var pdf = await (await window.__pdfReady()).getDocument({ data: arrayBuffer }).promise;
         var numPages = pdf.numPages;
         var children = [];
         var extractedChars = 0;

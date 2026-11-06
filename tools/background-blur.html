@@ -22,7 +22,10 @@
 <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/background-blur">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/css/style.css?v=16">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 <script type="application/ld+json">
 {
   
@@ -124,7 +127,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>✨ Background Blur</span></nav>
       <div class="tool-page-header">
         <h1>Blur Photo Background</h1>
-        <p>Add a DSLR-style bokeh background to any portrait. The subject is detected automatically, the background is blurred, and the result is composited — all inside your browser, with no upload.</p>
+        <p class="answer-lead">A segmentation model cuts the subject out of your portrait, the background layer is genuinely blurred, and the two are composited back at full resolution — the same two-layer trick a phone uses for portrait mode. Blur strength runs from 0 to 40 px and the export is a PNG. The model is about 30 MB and downloads once; the photo itself never leaves the device.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">JPG · PNG · WebP → PNG</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Photo no; model from CDN</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">Full-resolution PNG</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>The mask, not the blur, decides whether it looks right</h2>
+          <table>
+            <thead><tr><th>Your portrait</th><th>What comes back</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr><td>Person against a plain wall</td><td>Clean edge, believable bokeh</td><td>The mask has an easy boundary</td></tr>
+              <tr><td>Hair in front of foliage</td><td>Halo or eaten strands at the edge</td><td>Segmentation is the weak link, not the blur</td></tr>
+              <tr><td>Two people, one behind</td><td>Both stay sharp, the gap blurs</td><td>The model returns one combined subject</td></tr>
+              <tr><td>Product on a table</td><td>Usually good; reflections may soften</td><td>The mask follows the table edge</td></tr>
+              <tr><td>Radius above 30 px</td><td>Visible smear band around the subject</td><td>Stay near 10–20 px for faces</td></tr>
+              <tr><td>Blur left at zero</td><td>Nothing changes, still exports a PNG</td><td>Use the slider before downloading</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div class="toolui">
@@ -215,6 +239,11 @@
       <div class="faq-item"><button class="faq-question">Is my portrait uploaded anywhere?</button><div class="faq-answer">No. The model runs inside the tab, the compositing happens on a canvas on your device, and the finished image is written straight to a download. Nothing travels over the network.</div></div>
       <div class="faq-item"><button class="faq-question">Can I blur the subject instead, and keep the background sharp?</button><div class="faq-answer">Not in this tool — it only blurs the layer behind the subject. Inverting the mask would need a manual selection mode, which this page does not have.</div></div>
       <div class="faq-item"><button class="faq-question">Which photos work badly?</button><div class="faq-answer">Busy backgrounds with the same tone as the subject, subjects that touch three or four edges of the frame, and very low-contrast lighting. In those cases part of the background may stay sharp or part of the subject may soften.</div></div>
+              <div class="faq-item"><button class="faq-question">Does the subject really stay sharp, or is it a gradient?</button><div class="faq-answer">It stays sharp. The mask is applied as an alpha cut-out of the original pixels and drawn on top of the blurred background at the same size, so eyes, text on a shirt and the hairline keep their original detail. A gradient overlay would soften those along with everything else, which is the usual tell of a fake bokeh.</div></div>
+        <div class="faq-item"><button class="faq-question">What does a 40 px radius look like on a phone photo?</button><div class="faq-answer">Overshot. At 40 px on a 3000 px image the backdrop spreads into flat colour and the boundary against the subject starts to look cut out rather than optical. A real portrait lens at f/1.8 produces something closer to 10–18 px here, which is also where the mask errors are least visible.</div></div>
+        <div class="faq-item"><button class="faq-question">Can I keep the background sharp and blur the subject?</button><div class="faq-answer">No, the pipeline only blurs the layer behind the mask. Inverting the mask is a one-line change in principle, but the page does not expose it. For that effect, cut the subject out with a background remover and blur it in an editor instead.</div></div>
+        <div class="faq-item"><button class="faq-question">Why does the first photo take so long?</button><div class="faq-answer">The about 30 MB segmentation model has to be fetched and initialised before any pixels are processed, and the download goes to a CDN rather than this site. Once it is cached, later photos run in a couple of seconds. Clearing site data or opening a private window forces the whole download again.</div></div>
+        <div class="faq-item"><button class="faq-question">Will the export keep my original resolution?</button><div class="faq-answer">Yes. The canvas is sized to the photo's natural width and height and the composite is drawn at that size, so nothing is downscaled on the way out. The cost is a PNG that can be tens of megabytes for a 12-megapixel photo — compress it afterwards if it is going on the web.</div></div>
       </section>
 <script type="application/ld+json">
 {
@@ -275,6 +304,46 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "Busy backgrounds with the same tone as the subject, subjects that touch three or four edges of the frame, and very low-contrast lighting. In those cases part of the background may stay sharp or part of the subject may soften."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the subject really stay sharp, or is it a gradient?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It stays sharp. The mask is applied as an alpha cut-out of the original pixels and drawn on top of the blurred background at the same size, so eyes, text on a shirt and the hairline keep their original detail. A gradient overlay would soften those along with everything else, which is the usual tell of a fake bokeh."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does a 40 px radius look like on a phone photo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Overshot. At 40 px on a 3000 px image the backdrop spreads into flat colour and the boundary against the subject starts to look cut out rather than optical. A real portrait lens at f/1.8 produces something closer to 10–18 px here, which is also where the mask errors are least visible."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I keep the background sharp and blur the subject?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No, the pipeline only blurs the layer behind the mask. Inverting the mask is a one-line change in principle, but the page does not expose it. For that effect, cut the subject out with a background remover and blur it in an editor instead."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does the first photo take so long?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The about 30 MB segmentation model has to be fetched and initialised before any pixels are processed, and the download goes to a CDN rather than this site. Once it is cached, later photos run in a couple of seconds. Clearing site data or opening a private window forces the whole download again."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will the export keep my original resolution?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The canvas is sized to the photo's natural width and height and the composite is drawn at that size, so nothing is downscaled on the way out. The cost is a PNG that can be tens of megabytes for a 12-megapixel photo — compress it afterwards if it is going on the web."
       }
     }
   ]

@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/base64">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/base64">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -143,6 +146,38 @@
         "@type": "Answer",
         "text": "No. Everything is processed in your browser and discarded when you close the tab."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the encoder output raw base64 or a full data URL?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A full data URL, prefix included — data:image/jpeg;base64, and then the payload. That is exactly what a CSS background-image or an img src wants, so it pastes straight in. If an API is asking for the bare payload, strip everything up to and including the comma."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does decoding report success on a broken string?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because the handler wraps the assignment in a try block that cannot fail: it prepends a type prefix and sets the image source, then prints the success message immediately. There is no error listener on the image, so a corrupt payload shows a broken image next to a green tick. Trust the picture, not the message."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I decode base64 into text instead of an image?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The decode tab forces the string into an image data URL and displays the result in an img element; there is no plain-text output path. Screenshots of base64-encoded JSON will not work. Use a developer console or a text-oriented decoder for that."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is a data URL more efficient than a separate image file?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Never in bytes — base64 adds about 33%, and the whole string is re-sent with the HTML and cannot be cached separately. It is worth it only for very small icons where one fewer request matters. For anything over a few kilobytes, a normal file plus a cache header is smaller and faster."
+      }
     }
   ]
 }
@@ -208,7 +243,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>📋 Base64 Encoder</span></nav>
       <div class="tool-page-header">
         <h1>📋 Base64 Encoder</h1>
-        <p>Convert images to Base64 data URLs for embedding in HTML, CSS, and JavaScript. Or decode Base64 back to an image.</p>
+        <p class="answer-lead">One tab turns an image file into a complete data URL — prefix and all — ready to paste into CSS or an img tag, and the other turns a pasted data URL back into a viewable image. Both directions are local and instant. There is no text or JSON mode, and because the string is base64 the output is roughly a third larger than the file you started with.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no account</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">Any image → data URL</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local reader</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">Text to copy, or a PNG download</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>What the two modes really do with your input</h2>
+          <table>
+            <thead><tr><th>What you put in</th><th>What comes back</th><th>The catch</th></tr></thead>
+            <tbody>
+              <tr><td>A 200 KB JPEG</td><td>A data URL about 270 KB long</td><td>Inline CSS grows the HTML by that much</td></tr>
+              <tr><td>Raw base64, no prefix</td><td>Labelled as PNG whatever it started as</td><td>Wrong type label, usually still renders</td></tr>
+              <tr><td>A truncated string</td><td>Success message plus a broken image</td><td>No validation runs at all</td></tr>
+              <tr><td>Base64 of a plain text file</td><td>Nothing usable — image decode only</td><td>This is not a text decoder</td></tr>
+              <tr><td>Download the result</td><td>Always named decoded-image.png</td><td>Rename it to the real format</td></tr>
+              <tr><td>A 5 MB photo</td><td>The textarea holds the whole string</td><td>Use a file reference for big assets</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <div style="text-align:center;margin-bottom:16px">
@@ -273,7 +329,7 @@
       </div>
       <div class="fn-block">
         <div class="fn-icon">🎯</div>
-        <div><h3>Decode Base64 strings to text</h3><p>Decode Base64 strings to text. This is one of the most common reasons people reach for Base64 Encoder/Decoder — and it handles the job in seconds, entirely in your browser.</p></div>
+        <div><h3>Decode a data URL back into an image</h3><p>Decode Base64 strings to text. This is one of the most common reasons people reach for Base64 Encoder/Decoder — and it handles the job in seconds, entirely in your browser.</p></div>
       </div>
       <div class="fn-block">
         <div class="fn-icon">🔒</div>
@@ -312,8 +368,8 @@
         </div>
         <div class="feature-card">
           <div class="fc-icon">🔧</div>
-          <h3>Regex & JSON Support</h3>
-          <p>Full regular expression and JSON validation built in.</p>
+          <h3>Copy and Download</h3>
+          <p>The encoded string copies to the clipboard in one click, and the decoded image saves straight to a file.</p>
         </div>
         </div>
       </section>
@@ -421,6 +477,10 @@
 <div class="faq-item"><button class="faq-question">Is decoding accurate?</button><div class="faq-answer">Yes — lossless round-trip encoding and decoding.</div></div>
 <div class="faq-item"><button class="faq-question">Are these tools accurate enough for production?</button><div class="faq-answer">Yes — they follow standard specifications (RFC 3986, JSON spec, etc.).</div></div>
 <div class="faq-item"><button class="faq-question">Is my input stored?</button><div class="faq-answer">No. Everything is processed in your browser and discarded when you close the tab.</div></div>
+              <div class="faq-item"><button class="faq-question">Does the encoder output raw base64 or a full data URL?</button><div class="faq-answer">A full data URL, prefix included — data:image/jpeg;base64, and then the payload. That is exactly what a CSS background-image or an img src wants, so it pastes straight in. If an API is asking for the bare payload, strip everything up to and including the comma.</div></div>
+        <div class="faq-item"><button class="faq-question">Why does decoding report success on a broken string?</button><div class="faq-answer">Because the handler wraps the assignment in a try block that cannot fail: it prepends a type prefix and sets the image source, then prints the success message immediately. There is no error listener on the image, so a corrupt payload shows a broken image next to a green tick. Trust the picture, not the message.</div></div>
+        <div class="faq-item"><button class="faq-question">Can I decode base64 into text instead of an image?</button><div class="faq-answer">No. The decode tab forces the string into an image data URL and displays the result in an img element; there is no plain-text output path. Screenshots of base64-encoded JSON will not work. Use a developer console or a text-oriented decoder for that.</div></div>
+        <div class="faq-item"><button class="faq-question">Is a data URL more efficient than a separate image file?</button><div class="faq-answer">Never in bytes — base64 adds about 33%, and the whole string is re-sent with the HTML and cannot be cached separately. It is worth it only for very small icons where one fewer request matters. For anything over a few kilobytes, a normal file plus a cache header is smaller and faster.</div></div>
       </section>
 
 <section class="related-tools">
