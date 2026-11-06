@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/compressor">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/compressor">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -133,6 +136,14 @@
         "@type": "Answer",
         "text": "No. Everything runs in your browser — no apps, plugins, or extensions."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does the target box do nothing when PNG is selected?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because PNG is lossless: the encoder has no quality dial to search, so the targeting loop is skipped for it. The Auto option also keeps a PNG as PNG rather than converting it. Pick JPG or WebP when you actually need a byte target, or resize the image instead."
+      }
     }
   ]
 }
@@ -198,7 +209,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>🗜️ Image Compressor</span></nav>
       <div class="tool-page-header">
         <h1>🗜️ Image Compressor</h1>
-        <p>Reduce image file size while maintaining visual quality. All processing happens in your browser.</p>
+        <p class="answer-lead">The full compressor: a quality slider from 10 to 95, JPG, PNG or WebP output, and an optional target in KB or MB that runs an eight-pass search for the largest encoding that fits. One image per run, pixel dimensions always untouched, everything local. PNG output ignores the target entirely, because the format has no quality parameter to search.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">JPG · PNG · WebP</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local canvas</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">Same pixels, new encoding</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Choosing between the slider and the target box</h2>
+          <table>
+            <thead><tr><th>What you want</th><th>Which control</th><th>What to expect</th></tr></thead>
+            <tbody>
+              <tr><td>Just smaller, quality first</td><td>Quality slider</td><td>Deterministic result, size is whatever it is</td></tr>
+              <tr><td>A portal's 500 KB cap</td><td>Target box in KB</td><td>Largest encode that fits, just under</td></tr>
+              <tr><td>Smallest web image</td><td>WebP output</td><td>Clearly smaller than JPEG at the same quality</td></tr>
+              <tr><td>Lossless archiving</td><td>PNG output</td><td>Target ignored, size barely moves</td></tr>
+              <tr><td>A folder of photos</td><td>No queue on this page</td><td>Bulk processor, quality only</td></tr>
+              <tr><td>Under 10 KB from a photo</td><td>Neither control helps</td><td>Resize first, then compress</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -452,6 +484,7 @@
 <div class="faq-item"><button class="faq-question">Does compression change image dimensions?</button><div class="faq-answer">No. Compression reduces file size while keeping the original pixel dimensions. Use the Resizer tool to change dimensions.</div></div>
 
 <div class="faq-item"><button class="faq-question">Do I need to install anything?</button><div class="faq-answer">No. Everything runs in your browser — no apps, plugins, or extensions.</div></div>
+              <div class="faq-item"><button class="faq-question">Why does the target box do nothing when PNG is selected?</button><div class="faq-answer">Because PNG is lossless: the encoder has no quality dial to search, so the targeting loop is skipped for it. The Auto option also keeps a PNG as PNG rather than converting it. Pick JPG or WebP when you actually need a byte target, or resize the image instead.</div></div>
       </section>
 
 <section class="related-tools">

@@ -11,7 +11,10 @@
   <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/css-generator">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/css-generator">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -53,12 +56,64 @@
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  "mainEntity": [ {"@type": "Question", "name": "What CSS does this generator produce?", "acceptedAnswer": {"@type": "Answer", "text": "It produces a standard box-shadow declaration and a border-radius declaration using the values you set — no proprietary syntax, just plain CSS you can drop anywhere."}},
-    {"@type": "Question", "name": "What do the shadow parameters mean?", "acceptedAnswer": {"@type": "Answer", "text": "Offset X and Y move the shadow, Blur softens its edge, Spread expands or shrinks it beyond the element, and Opacity (via an alpha channel on the colour) controls visibility."}},
-    {"@type": "Question", "name": "Does it work without an internet connection?", "acceptedAnswer": {"@type": "Answer", "text": "Yes — it is a pure client-side tool. Once the page loads, everything runs in your browser with no network calls."}},
-    {"@type": "Question", "name": "Can I generate gradients too?", "acceptedAnswer": {"@type": "Answer", "text": "The tool focuses on box-shadow and border-radius. The preview background uses a gradient for demonstration, but the generated code you copy is for shadow and rounded corners."}},
-    {"@type": "Question", "name": "Is my data sent anywhere?", "acceptedAnswer": {"@type": "Answer", "text": "No. Nothing is uploaded or stored — the tool only computes CSS strings in your browser."}},
-    {"@type": "Question", "name": "Can I use the output in any framework?", "acceptedAnswer": {"@type": "Answer", "text": "Yes — the CSS is framework-agnostic and works in plain CSS, styled-components, Tailwind's arbitrary values, and any CSS-in-JS setup."}} ]
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What CSS does this generator produce?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It produces a standard box-shadow declaration and a border-radius declaration using the values you set — no proprietary syntax, just plain CSS you can drop anywhere."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What do the shadow parameters mean?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Offset X and Y move the shadow, Blur softens its edge, Spread expands or shrinks it beyond the element, and Opacity (via an alpha channel on the colour) controls visibility."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it work without an internet connection?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — it is a pure client-side tool. Once the page loads, everything runs in your browser with no network calls."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I generate gradients too?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The tool focuses on box-shadow and border-radius. The preview background uses a gradient for demonstration, but the generated code you copy is for shadow and rounded corners."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my data sent anywhere?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Nothing is uploaded or stored — the tool only computes CSS strings in your browser."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use the output in any framework?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — the CSS is framework-agnostic and works in plain CSS, styled-components, Tailwind's arbitrary values, and any CSS-in-JS setup."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the preview an image of the CSS result?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The preview element is styled with the very declarations in the output box, so what you see is what the browser will actually render — including any browser-specific softness. Screenshots of the preview are not exports; the deliverable is the text."
+      }
+    }
+  ]
 }
 </script><style id="enrich-css">
 .selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
@@ -129,7 +184,28 @@
 
   <main style="padding:2rem 1rem">
     <h1 style="text-align:center;margin-bottom:.5rem">CSS Code Generator</h1>
-    <p style="text-align:center;color:var(--text-secondary);margin-bottom:2rem">Adjust sliders, copy the CSS. Free, no signup, runs in your browser.</p>
+        <p class="answer-lead">Move sliders — offset X and Y, blur, spread, opacity and colour — and copy the plain box-shadow and border-radius declarations it writes for you. There is no file here at all: nothing can be uploaded or downloaded, the preview is drawn with the CSS itself, and the output is ordinary declarations you can paste anywhere.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">CSS text out</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Nothing — no file exists</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">box-shadow + border-radius</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Slider to property, with the usual surprises</h2>
+          <table>
+            <thead><tr><th>Slider</th><th>What it writes</th><th>What people misread</th></tr></thead>
+            <tbody>
+              <tr><td>Offset X / Y</td><td>The first two box-shadow lengths</td><td>Negative values pull the shadow up and left</td></tr>
+              <tr><td>Blur</td><td>The third length, the blur radius</td><td>Zero gives a hard, print-like edge</td></tr>
+              <tr><td>Spread</td><td>The fourth length</td><td>Negative spread shrinks the shadow inward</td></tr>
+              <tr><td>Opacity</td><td>Alpha inside the rgba() colour</td><td>Zero hides the shadow completely</td></tr>
+              <tr><td>Colour</td><td>The shadow colour itself</td><td>Coloured glow needs blur to read well</td></tr>
+              <tr><td>Radius</td><td>A separate border-radius declaration</td><td>It rounds the element, not the shadow</td></tr>
+            </tbody>
+          </table>
+        </div>
 
     <div class="container">
       <div>
@@ -207,12 +283,12 @@
 <section class="features-grid-section">
 <h2>Everything You Need in a CSS Code Generator</h2>
 <p class="fg-sub">Powerful features that make CSS Code Generator fast, private, and free.</p>
-<div class="features-grid"><div class="feature-card"><div class="fc-icon">⚡</div><h3>Instant Processing</h3><p>Everything runs locally on canvas with no server round-trip, so results appear the moment you move a slider.</p></div>
-<div class="feature-card"><div class="fc-icon">🔒</div><h3>100% Private</h3><p>Your photos never leave your device. There is no upload, no server, and no copy stored anywhere.</p></div>
-<div class="feature-card"><div class="fc-icon">🔄</div><h3>Non-Destructive</h3><p>The original file stays untouched — every change is applied to a fresh canvas copy you download.</p></div>
+<div class="features-grid"><div class="feature-card"><div class="fc-icon">⚡</div><h3>Live Preview</h3><p>The preview element is styled with the CSS itself, so every slider move updates the code and the look at the same moment.</p></div>
+<div class="feature-card"><div class="fc-icon">🔒</div><h3>Nothing to Upload</h3><p>There are no files in this tool at all — only sliders and text, so there is nothing to send or store.</p></div>
+<div class="feature-card"><div class="fc-icon">🔄</div><h3>Plain Standard CSS</h3><p>The output is ordinary box-shadow and border-radius declarations — no proprietary syntax, nothing to uninstall later.</p></div>
 <div class="feature-card"><div class="fc-icon">🆓</div><h3>Free Forever</h3><p>No sign-up, no watermark, no file-size limit and no daily cap.</p></div>
 <div class="feature-card"><div class="fc-icon">📱</div><h3>Works Everywhere</h3><p>Runs in any modern browser on desktop, tablet or phone — nothing to install.</p></div>
-<div class="feature-card"><div class="fc-icon">🎨</div><h3>Full Resolution</h3><p>Export at your image's native resolution, not a downscaled preview.</p></div></div>
+<div class="feature-card"><div class="fc-icon">🎨</div><h3>Paste Anywhere</h3><p>Copy the declarations into a stylesheet, a Tailwind arbitrary value or any CSS-in-JS setup unchanged.</p></div></div>
 </section>
 <div class="trust-badges">
 <div class="trust-badge"><div class="tb-icon">🔒</div><div class="tb-title">100% Private</div><div class="tb-desc">Files never leave your browser</div></div>
@@ -242,7 +318,8 @@
 <div class="faq-item"><button class="faq-question">Can I generate gradients too?</button><div class="faq-answer">The tool focuses on box-shadow and border-radius. The preview background uses a gradient for demonstration, but the generated code you copy is for shadow and rounded corners.</div></div>
 <div class="faq-item"><button class="faq-question">Is my data sent anywhere?</button><div class="faq-answer">No. Nothing is uploaded or stored — the tool only computes CSS strings in your browser.</div></div>
 <div class="faq-item"><button class="faq-question">Can I use the output in any framework?</button><div class="faq-answer">Yes — the CSS is framework-agnostic and works in plain CSS, styled-components, Tailwind's arbitrary values, and any CSS-in-JS setup.</div></div>
-</section>
+        <div class="faq-item"><button class="faq-question">Is the preview an image of the CSS result?</button><div class="faq-answer">No. The preview element is styled with the very declarations in the output box, so what you see is what the browser will actually render — including any browser-specific softness. Screenshots of the preview are not exports; the deliverable is the text.</div></div>
+      </section>
 <section class="related-tools">
 <h2>You Might Also Like</h2>
 <div class="related-tools-grid"><a href="/tools/color-palette" class="related-tool-card"><span class="tool-icon">🎨</span><div class="tool-info"><strong>Color Palette</strong><span class="tool-desc">Generate a color palette</span></div><span class="tool-arrow">→</span></a>

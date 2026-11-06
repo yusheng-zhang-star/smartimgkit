@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/cropper">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/cropper">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -152,6 +155,14 @@
         "@type": "Answer",
         "text": "Yes — batch processing is supported for resize and crop operations."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is my JPEG saved with a .png file name?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because the download name is built by appending -cropped.png to the original name regardless of encoding, while the blob itself is encoded with the source's MIME type. A JPEG source therefore produces JPEG bytes wearing a .png label. Most viewers and uploaders sniff the content and cope; a strict script expecting PNG will not. Rename it if that matters."
+      }
     }
   ]
 }
@@ -217,7 +228,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>🖼️ Image Cropper</span></nav>
       <div class="tool-page-header">
         <h1>🖼️ Image Cropper Online</h1>
-        <p>Crop images with preset aspect ratios or free-form selection. Perfect for social media posts.</p>
+        <p class="answer-lead">Drag a rectangle, or lock it to one of five ratios: 1:1, 4:3, 16:9, 3:2 or 9:16. The crop is re-encoded at 95% quality and the download is always named after the source file with -cropped.png appended — even when the encoding actually follows the source format, so a JPEG comes out as JPEG data in a .png name.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">Any image in</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local canvas</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">Crop at 95% quality</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Ratio presets against real destinations</h2>
+          <table>
+            <thead><tr><th>Destination</th><th>Ratio to pick</th><th>The gotcha</th></tr></thead>
+            <tbody>
+              <tr><td>Profile picture</td><td>1:1 Square</td><td>Full resolution kept — resize afterwards</td></tr>
+              <tr><td>Video thumbnail</td><td>16:9 Widescreen</td><td>1280×720 is the spec; this only sets shape</td></tr>
+              <tr><td>Story or reel cover</td><td>9:16</td><td>Safe zones for UI are not marked</td></tr>
+              <tr><td>Marketplace listing</td><td>1:1</td><td>Some sites want margins, not a tight crop</td></tr>
+              <tr><td>Print photograph</td><td>3:2 Photo</td><td>Paper aspect differs from the image area</td></tr>
+              <tr><td>Custom shape</td><td>Free Form</td><td>No numeric size input — drag only</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div style="background:var(--bg-secondary); border-left:3px solid var(--accent); padding:16px 20px; margin:20px 0; border-radius:0 8px 8px 0;">
@@ -436,6 +468,7 @@
 <div class="faq-item"><button class="faq-question">Can I crop freely?</button><div class="faq-answer">Yes — drag the crop box to any dimensions.</div></div>
 <div class="faq-item"><button class="faq-question">Will resizing reduce quality?</button><div class="faq-answer">Resizing uses high-quality interpolation. Upscaling cannot add detail that is not present in the original.</div></div>
 <div class="faq-item"><button class="faq-question">Can I process multiple images?</button><div class="faq-answer">Yes — batch processing is supported for resize and crop operations.</div></div>
+              <div class="faq-item"><button class="faq-question">Why is my JPEG saved with a .png file name?</button><div class="faq-answer">Because the download name is built by appending -cropped.png to the original name regardless of encoding, while the blob itself is encoded with the source's MIME type. A JPEG source therefore produces JPEG bytes wearing a .png label. Most viewers and uploaders sniff the content and cope; a strict script expecting PNG will not. Rename it if that matters.</div></div>
       </section>
 
 <section class="related-tools">

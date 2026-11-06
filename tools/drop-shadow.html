@@ -15,7 +15,10 @@
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/drop-shadow">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/drop-shadow">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -65,12 +68,64 @@
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  "mainEntity": [ {"@type": "Question", "name": "How does the drop shadow work?", "acceptedAnswer": {"@type": "Answer", "text": "A blurred, semi-transparent copy of your PNG's silhouette is drawn offset beneath the original, so the shadow follows the actual shape of the image."}},
-    {"@type": "Question", "name": "Do I need a transparent PNG?", "acceptedAnswer": {"@type": "Answer", "text": "For the best result, yes. An image without transparency will cast a rectangular shadow instead of a shaped one."}},
-    {"@type": "Question", "name": "What can I adjust?", "acceptedAnswer": {"@type": "Answer", "text": "Three sliders: offset (distance), blur (softness) and opacity (darkness). Together they control the whole look of the shadow."}},
-    {"@type": "Question", "name": "Is my image uploaded?", "acceptedAnswer": {"@type": "Answer", "text": "No. Everything runs on a canvas in your browser. Your image never leaves your device."}},
-    {"@type": "Question", "name": "What output format do I get?", "acceptedAnswer": {"@type": "Answer", "text": "A transparent PNG, so the shadow composites cleanly over any background."}},
-    {"@type": "Question", "name": "Can I change the shadow direction?", "acceptedAnswer": {"@type": "Answer", "text": "The shadow offsets to one side at a fixed angle. For full directional control, rotate the subject or edit the result in a full image editor."}} ]
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How does the drop shadow work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A blurred, semi-transparent copy of your PNG's silhouette is drawn offset beneath the original, so the shadow follows the actual shape of the image."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need a transparent PNG?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For the best result, yes. An image without transparency will cast a rectangular shadow instead of a shaped one."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What can I adjust?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Three sliders: offset (distance), blur (softness) and opacity (darkness). Together they control the whole look of the shadow."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my image uploaded?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Everything runs on a canvas in your browser. Your image never leaves your device."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What output format do I get?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A transparent PNG, so the shadow composites cleanly over any background."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I change the shadow direction?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The shadow offsets to one side at a fixed angle. For full directional control, rotate the subject or edit the result in a full image editor."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the shadow shaped like my product?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. It is a filled, blurred rectangle sized to a fraction of the canvas, drawn before the product so the transparent areas let it show through. A sneaker gets a rectangle, not a sneaker-shaped shadow. For contact shadows that follow the silhouette you need a mask-based tool or a manual pass in an editor."
+      }
+    }
+  ]
 }
 </script><style id="enrich-css">
 .selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
@@ -141,7 +196,28 @@
 
   <main class="tool-container">
     <h1 style="text-align:center;margin-bottom:.5rem">Add Shadow to PNG</h1>
-    <p style="text-align:center;color:var(--text-secondary);margin-bottom:2rem">Make transparent product photos look professional. Add realistic drop shadow — free, no upload.</p>
+        <p class="answer-lead">Paints a blurred black rectangle behind a transparent PNG or WebP — blur 0–60 px, opacity, vertical offset, and a 50–120% scale — then exports a PNG at the image's own pixel size. The shadow is a rectangle, not a silhouette traced around the product, so a shaped ground shadow is outside what this page does. JPEG has no alpha and is not accepted.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no account</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">PNG · WebP only</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local canvas</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">PNG, same pixel size</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>How the shadow actually behaves</h2>
+          <table>
+            <thead><tr><th>Your image</th><th>What appears</th><th>What to do</th></tr></thead>
+            <tbody>
+              <tr><td>Cut-out product PNG</td><td>A soft dark plate behind the object</td><td>Less blur reads as ground contact</td></tr>
+              <tr><td>Opaque JPEG</td><td>Shadow hidden entirely behind it</td><td>Remove the background first</td></tr>
+              <tr><td>WebP with alpha</td><td>Behaves exactly like a PNG</td><td>Nothing to fix</td></tr>
+              <tr><td>Scale above 100%</td><td>Product grows past the canvas and clips</td><td>Stay at 100% or export smaller</td></tr>
+              <tr><td>Offset pushed high</td><td>Shadow band slides below the frame</td><td>Watch the bottom edge</td></tr>
+              <tr><td>Shaped silhouette wanted</td><td>Not possible — it is a rectangle</td><td>Trace the shape in an editor</td></tr>
+            </tbody>
+          </table>
+        </div>
 
     <div class="upload-zone" id="dropZone">
       <div style="font-size:3rem;margin-bottom:1rem">👤</div>
@@ -224,7 +300,8 @@
 <div class="faq-item"><button class="faq-question">Is my image uploaded?</button><div class="faq-answer">No. Everything runs on a canvas in your browser. Your image never leaves your device.</div></div>
 <div class="faq-item"><button class="faq-question">What output format do I get?</button><div class="faq-answer">A transparent PNG, so the shadow composites cleanly over any background.</div></div>
 <div class="faq-item"><button class="faq-question">Can I change the shadow direction?</button><div class="faq-answer">The shadow offsets to one side at a fixed angle. For full directional control, rotate the subject or edit the result in a full image editor.</div></div>
-</section>
+        <div class="faq-item"><button class="faq-question">Is the shadow shaped like my product?</button><div class="faq-answer">No. It is a filled, blurred rectangle sized to a fraction of the canvas, drawn before the product so the transparent areas let it show through. A sneaker gets a rectangle, not a sneaker-shaped shadow. For contact shadows that follow the silhouette you need a mask-based tool or a manual pass in an editor.</div></div>
+      </section>
 <section class="related-tools">
 <h2>You Might Also Like</h2>
 <div class="related-tools-grid"><a href="/tools/image-shadow" class="related-tool-card"><span class="tool-icon">🌑</span><div class="tool-info"><strong>Image Shadow</strong><span class="tool-desc">Add shadow to photos</span></div><span class="tool-arrow">→</span></a>

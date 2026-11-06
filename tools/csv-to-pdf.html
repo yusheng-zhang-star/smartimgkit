@@ -24,7 +24,10 @@
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/csv-to-pdf">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/csv-to-pdf">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
   { 
   "inLanguage": "en","@context": "https://schema.org", "@type": "WebApplication", "name": "CSV to PDF Converter", "url": "https://smartimgkit.com/tools/csv-to-pdf", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }, "description": "Convert CSV files to PDF tables. 100% browser-based, no uploads." }
@@ -95,6 +98,14 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "There is no hard limit. Very large PDFs (100MB+) may slow down your browser."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will Chinese, Japanese or Arabic characters render?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not reliably. jsPDF's standard fonts cover Latin script, so CJK and right-to-left text usually come out as blanks or garbage unless the font happens to be embedded by the plugin — which it is not here. For non-Latin data, use a converter that lets you load a Unicode font, or render the table to an image first."
       }
     }
   ]
@@ -180,7 +191,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>CSV to PDF</span></nav>
       <div class="tool-page-header">
         <h1>📊 CSV to PDF Converter</h1>
-        <p>Convert CSV files into a formatted PDF table. Handles quoted fields, commas inside fields, and large datasets. 100% in your browser.</p>
+        <p class="answer-lead">One CSV becomes a paginated PDF table through jsPDF and its autotable plugin, on A4, Letter or A3 landscape, with the delimiter detected from the first line or forced to comma, semicolon or tab — quoted fields follow RFC 4180. Both libraries are served locally and nothing is uploaded. Styling is autotable's default look; there are no theme or font options.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">CSV / TSV → PDF</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — jsPDF is local</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">Paginated table PDF</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Settings that decide whether the table survives</h2>
+          <table>
+            <thead><tr><th>Situation</th><th>Setting</th><th>Result</th></tr></thead>
+            <tbody>
+              <tr><td>Excel saved with semicolons</td><td>Auto reads the first line</td><td>Force the delimiter if row one lies</td></tr>
+              <tr><td>Commas inside quoted fields</td><td>RFC 4180 parser</td><td>Unquoted commas split mid-field</td></tr>
+              <tr><td>Too many columns for one page</td><td>A3 landscape</td><td>Font shrinks rather than wrapping</td></tr>
+              <tr><td>Thousands of rows</td><td>Pagination is automatic</td><td>Watch the page count before printing</td></tr>
+              <tr><td>Chinese or Arabic text</td><td>Standard PDF fonts only</td><td>Non-Latin glyphs may not render</td></tr>
+              <tr><td>Empty cells</td><td>Left blank in the grid</td><td>No special styling for missing data</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
         <div class="tool-container">
@@ -324,6 +356,7 @@
 <div class="faq-item"><button class="faq-question">Are large datasets supported?</button><div class="faq-answer">Yes, with auto-pagination across pages.</div></div>
 <div class="faq-item"><button class="faq-question">Are my PDFs uploaded to a server?</button><div class="faq-answer">No. All processing happens locally in your browser using pdf-lib and pdf.js.</div></div>
 <div class="faq-item"><button class="faq-question">Is there a page or file limit?</button><div class="faq-answer">There is no hard limit. Very large PDFs (100MB+) may slow down your browser.</div></div>
+              <div class="faq-item"><button class="faq-question">Will Chinese, Japanese or Arabic characters render?</button><div class="faq-answer">Not reliably. jsPDF's standard fonts cover Latin script, so CJK and right-to-left text usually come out as blanks or garbage unless the font happens to be embedded by the plugin — which it is not here. For non-Latin data, use a converter that lets you load a Unicode font, or render the table to an image first.</div></div>
       </section>
 
       <section class="related-tools">

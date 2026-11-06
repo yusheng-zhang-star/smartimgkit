@@ -5,19 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="index, follow">
   <title>Bulk Image Processor — Resize, Compress & Convert Multiple Images</title>
-  <meta name="description" content="Free bulk image processor: batch resize, compress, convert, rename and watermark multiple images at once. In-browser, no uploads, no limits.">
+  <meta name="description" content="Free bulk image processor: batch resize, compress, convert and watermark multiple images at once. In-browser, no uploads, no limits.">
   <meta name="keywords" content="bulk image processor, batch image resize, bulk image compress, batch convert images, bulk rename images, image watermark batch, batch image processing, free image processor online, multiple image editor, SmartImgKit bulk processor">
   <link rel="canonical" href="https://smartimgkit.com/tools/bulk-processor">
   <meta name="theme-color" content="#6366f1">
   <meta property="og:title" content="Bulk Image Processor — Batch Resize, Compress & Convert | SmartImgKit">
-  <meta property="og:description" content="Process dozens of images in one click. Batch resize, compress, convert format, rename and watermark. 100% browser-based, no server uploads.">
+  <meta property="og:description" content="Process dozens of images in one click. Batch resize, compress, convert format and watermark. 100% browser-based, no server uploads.">
   <meta property="og:url" content="https://smartimgkit.com/tools/bulk-processor">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SmartImgKit">
   <meta property="og:image" content="https://smartimgkit.com/screenshots/bulk-processor.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Bulk Image Processor — Batch Resize, Compress & Convert | SmartImgKit">
-  <meta name="twitter:description" content="Process dozens of images in one click. Batch resize, compress, convert format, rename and watermark. 100% browser-based, no server uploads.">
+  <meta name="twitter:description" content="Process dozens of images in one click. Batch resize, compress, convert format and watermark. 100% browser-based, no server uploads.">
   <meta name="twitter:image" content="https://smartimgkit.com/screenshots/bulk-processor.png">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/bulk-processor">
@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/bulk-processor">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/bulk-processor">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -154,6 +157,14 @@
         "@type": "Answer",
         "text": "Yes — batch analysis is supported where relevant."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a per-file size target?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The batch applies one quality level to every image and accepts whatever size comes out — there is no kilobyte or megabyte target loop like the single-file compressor has. If your portal demands 200 KB, find the quality that gets a typical photo there first, then run the batch with that value."
+      }
     }
   ]
 }
@@ -219,7 +230,27 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>Bulk Image Processor</span></nav>
       <div class="tool-page-header">
         <h1>Bulk Image Processor</h1>
-        <p>Batch resize, compress, convert, rename, and watermark multiple images at once — 100% in your browser, no uploads, no signup, no limits.</p>
+        <p class="answer-lead">One pass over up to 50 images with optional resize, output format, a quality level and an optional text watermark, then a single ZIP download — files keep their original names, so there is no batch rename here. Compression works by quality slider, not by a per-file size target, so test one representative image before committing the whole batch.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">JPG · PNG · WebP · BMP in</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local loop</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">One ZIP, names unchanged</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Batch settings and what each one decides</h2>
+          <table>
+            <thead><tr><th>Setting</th><th>What it controls</th><th>The trap</th></tr></thead>
+            <tbody>
+              <tr><td>Resize width and height</td><td>Applied to every file, ratio kept</td><td>Small files get upscaled too</td></tr>
+              <tr><td>Output format</td><td>JPG, PNG, WebP or keep original</td><td>PNG makes the ZIP balloon</td></tr>
+              <tr><td>Quality slider</td><td>JPEG and WebP encode quality, 10–100</td><td>Same setting, very different sizes per photo</td></tr>
+              <tr><td>Watermark text</td><td>Drawn once per image, size and opacity set</td><td>Position is fixed, not chosen</td></tr>
+              <tr><td>File count</td><td>50 images per batch</td><td>No resume if the tab stalls mid-run</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <div class="upload-area" id="uploadArea">
@@ -395,6 +426,7 @@
 <div class="faq-item"><button class="faq-question">Is there a file count limit?</button><div class="faq-answer">Limited only by your browser memory; hundreds of files work fine.</div></div>
 <div class="faq-item"><button class="faq-question">Is the analysis accurate?</button><div class="faq-answer">Yes — tools use standard algorithms and parsers for reliable results.</div></div>
 <div class="faq-item"><button class="faq-question">Can I process multiple files?</button><div class="faq-answer">Yes — batch analysis is supported where relevant.</div></div>
+              <div class="faq-item"><button class="faq-question">Is there a per-file size target?</button><div class="faq-answer">No. The batch applies one quality level to every image and accepts whatever size comes out — there is no kilobyte or megabyte target loop like the single-file compressor has. If your portal demands 200 KB, find the quality that gets a typical photo there first, then run the batch with that value.</div></div>
       </section>
 
 <section class="related-tools">

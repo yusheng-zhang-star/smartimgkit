@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/color-palette">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/color-palette">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -139,6 +142,14 @@
         "@type": "Answer",
         "text": "Yes — batch analysis is supported where relevant."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Why are the extracted colours slightly off from the image?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because each RGB channel is rounded to a multiple of 32 before counting, which keeps the maths cheap at the cost of precision. A peach of #F7C3A0 snaps to the nearest bucket and can land several steps darker or lighter. Treat the swatches as a starting palette and tune the hex values by hand."
+      }
     }
   ]
 }
@@ -204,7 +215,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>🎨 Color Palette</span></nav>
       <div class="tool-page-header">
         <h1>🎨 Color Palette</h1>
-        <p>Extract dominant colors from any image and get CSS-ready color codes. Perfect for designers and developers.</p>
+        <p class="answer-lead">The image is downsampled to a 100×100 grid, every pixel's RGB is snapped to 32-step buckets, and the most frequent buckets become the palette — 3 to 12 swatches, each copyable as HEX, plus a ready :root CSS block. It is frequency counting, not clustering, so a smooth gradient comes back as banded steps rather than the midtone your eye picks.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">Any image in</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local canvas</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">HEX swatches + CSS variables</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>What the sampler decides, and where it misleads</h2>
+          <table>
+            <thead><tr><th>Your image</th><th>What you get back</th><th>Why it differs from what you see</th></tr></thead>
+            <tbody>
+              <tr><td>Flat brand poster</td><td>The brand colours, cleanly separated</td><td>Nothing — flat colour quantises to itself</td></tr>
+              <tr><td>Sunset photograph</td><td>Banded steps across the gradient</td><td>Buckets, not clustering</td></tr>
+              <tr><td>Product on white</td><td>White crowds out the product colours</td><td>Background pixels count equally</td></tr>
+              <tr><td>Fine fabric or pattern</td><td>Blended averages, not thread colours</td><td>The 100×100 downsample</td></tr>
+              <tr><td>Dark, moody photo</td><td>Deep tones fill every slot</td><td>Frequency ignores visual salience</td></tr>
+              <tr><td>Need a 20-colour palette</td><td>The slider stops at 12</td><td>No export beyond twelve swatches</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -414,6 +446,7 @@
 <div class="faq-item"><button class="faq-question">Are color codes provided?</button><div class="faq-answer">Yes — HEX codes for each color, ready to copy.</div></div>
 <div class="faq-item"><button class="faq-question">Is the analysis accurate?</button><div class="faq-answer">Yes — tools use standard algorithms and parsers for reliable results.</div></div>
 <div class="faq-item"><button class="faq-question">Can I process multiple files?</button><div class="faq-answer">Yes — batch analysis is supported where relevant.</div></div>
+              <div class="faq-item"><button class="faq-question">Why are the extracted colours slightly off from the image?</button><div class="faq-answer">Because each RGB channel is rounded to a multiple of 32 before counting, which keeps the maths cheap at the cost of precision. A peach of #F7C3A0 snaps to the nearest bucket and can land several steps darker or lighter. Treat the swatches as a starting palette and tune the hex values by hand.</div></div>
       </section>
 
 <section class="related-tools">

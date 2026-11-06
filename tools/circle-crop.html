@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/circle-crop">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/circle-crop">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -149,6 +152,14 @@
         "@type": "Answer",
         "text": "Yes — batch processing is supported for resize and crop operations."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the output a circle file or a square with a circle in it?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A square canvas the size of your source image, with the circle drawn inside and everything outside it transparent, white or your chosen colour. PNG keeps the alpha, but a JPEG-style consumer of the file will still see a square. If the destination wants a true circular asset, that has to be handled by the platform, not the file format."
+      }
     }
   ]
 }
@@ -214,7 +225,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>Circle Crop Image</span></nav>
       <div class="tool-page-header">
         <h1>Circle Crop Image</h1>
-        <p>Crop any image into a perfect circle with transparent background — free, no upload, no watermark. Works right in your browser.</p>
+        <p class="answer-lead">Draws a circular hole over your photo — size 10–100% and a movable centre on two sliders — then fills everything outside it with transparency, white or a custom colour and exports a PNG at the original pixel size. Note that most platforms re-crop avatars to a square and display it round, so a PNG that is already circular is often redundant.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no account</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">Any image → PNG</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local canvas</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">Square PNG with a circular cut</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Circle crop settings for real destinations</h2>
+          <table>
+            <thead><tr><th>Destination</th><th>Settings that fit</th><th>Watch out</th></tr></thead>
+            <tbody>
+              <tr><td>Forum avatar</td><td>100% size, transparent background</td><td>Most sites re-crop to a square anyway</td></tr>
+              <tr><td>Print on white card</td><td>White fill, not transparency</td><td>Transparent areas can print black</td></tr>
+              <tr><td>Logo over a coloured page</td><td>Custom colour close to the page</td><td>Picked colour is not sampled from the page</td></tr>
+              <tr><td>Story highlight cover</td><td>Size below 100 to keep a margin</td><td>Output stays square with round art</td></tr>
+              <tr><td>Off-centre subject</td><td>Shift the hole with offset X / Y</td><td>A corner subject still clips</td></tr>
+              <tr><td>Favicon at 32 px</td><td>Crop tight, then resize separately</td><td>No icon sizes are produced here</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <div class="upload-area" id="uploadArea">
@@ -375,6 +407,7 @@
 <div class="faq-item"><button class="faq-question">Can I adjust the circle position?</button><div class="faq-answer">Yes — drag to position the circle over your subject.</div></div>
 <div class="faq-item"><button class="faq-question">Will resizing reduce quality?</button><div class="faq-answer">Resizing uses high-quality interpolation. Upscaling cannot add detail that is not present in the original.</div></div>
 <div class="faq-item"><button class="faq-question">Can I process multiple images?</button><div class="faq-answer">Yes — batch processing is supported for resize and crop operations.</div></div>
+              <div class="faq-item"><button class="faq-question">Is the output a circle file or a square with a circle in it?</button><div class="faq-answer">A square canvas the size of your source image, with the circle drawn inside and everything outside it transparent, white or your chosen colour. PNG keeps the alpha, but a JPEG-style consumer of the file will still see a square. If the destination wants a true circular asset, that has to be handled by the platform, not the file format.</div></div>
       </section>
 
 <section class="related-tools">

@@ -69,11 +69,38 @@
         "@type": "Answer",
         "text": "The adjustments are a starting point — use the Edit tools for fine-tuning."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there real face detection?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Nothing looks for eyes, mouths or faces — every slider is a per-pixel colour test. Skin smoothing targets pixels matching a red-dominant skin-tone rule, teeth whitening targets pale yellow-white pixels, and red-eye removal targets anything strongly red. That is why a leather sofa gets smoothed and a red jumper gets desaturated: the test sees colours, not a face."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does nothing change when I move a slider?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sliders only update their number; the image is re-rendered when you press Apply. That is deliberate, because each pass redraws from the saved original rather than stacking on the previous result. If you expected a live preview, the behaviour is press-to-render, not paint-as-you-drag."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the output keep the original resolution?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The canvas is sized to the photo's natural width and height and exported losslessly as PNG, so nothing is downscaled. A 12-megapixel portrait produces a large PNG, often 10 MB or more, because smoothing adds low-frequency detail that compresses poorly — run it through the compressor afterwards if it is going on the web."
+      }
     }
   ]
 }
 </script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 
 <style id="enrich-css">
 .selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
@@ -135,7 +162,28 @@
     <div class="container">
       <div class="tool-page-header">
         <h1>✨ Beauty Editor — Portrait Retouch</h1>
-        <p>Remove red-eye, smooth skin, whiten teeth, and enhance your portraits.</p>
+        <p class="answer-lead">Five sliders drive heuristic pixel filters, not a face-aware model: smoothing blends a blur into pixels that resemble skin, red-eye desaturates anything strongly red, and teeth whitening lifts pale yellow-white tones. That speed has a cost — wooden furniture smooths like skin, and red clothing loses its punch. Move the sliders, press Apply, and download a full-size PNG.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">Any image in → PNG out</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local canvas</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">Full-resolution PNG</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>What the five sliders change, pixel by pixel</h2>
+          <table>
+            <thead><tr><th>Slider</th><th>What it does under the hood</th><th>Where it leaks</th></tr></thead>
+            <tbody>
+              <tr><td>Skin Smoothing</td><td>Blur blended 70% into skin-tone-coloured pixels</td><td>Wood, sand and terracotta smooth too</td></tr>
+              <tr><td>Red-eye Removal</td><td>Desaturates any pixel that is strongly red</td><td>Red lips and clothing lose saturation</td></tr>
+              <tr><td>Teeth Whitening</td><td>Lifts pale yellow-white pixels toward blue</td><td>Paper, walls and clouds brighten</td></tr>
+              <tr><td>Skin Brightening</td><td>Adds the same value to every pixel</td><td>Highlights clip to pure white</td></tr>
+              <tr><td>Contrast Boost</td><td>Standard contrast curve around mid-grey</td><td>Shadows crush at higher values</td></tr>
+              <tr><td>All of them together</td><td>Applied in order on one canvas pass</td><td>Stack effects compound, not average</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
         <input type="file" id="fileInput" accept="image/*" style="display:none;">
@@ -301,6 +349,9 @@
 <div class="faq-item"><button class="faq-question">Can I control the strength?</button><div class="faq-answer">Yes — adjustable intensity sliders.</div></div>
 <div class="faq-item"><button class="faq-question">Does processing happen on a server?</button><div class="faq-answer">No. All processing runs entirely in your browser.</div></div>
 <div class="faq-item"><button class="faq-question">What if the result is not perfect?</button><div class="faq-answer">The adjustments are a starting point — use the Edit tools for fine-tuning.</div></div>
+              <div class="faq-item"><button class="faq-question">Is there real face detection?</button><div class="faq-answer">No. Nothing looks for eyes, mouths or faces — every slider is a per-pixel colour test. Skin smoothing targets pixels matching a red-dominant skin-tone rule, teeth whitening targets pale yellow-white pixels, and red-eye removal targets anything strongly red. That is why a leather sofa gets smoothed and a red jumper gets desaturated: the test sees colours, not a face.</div></div>
+        <div class="faq-item"><button class="faq-question">Why does nothing change when I move a slider?</button><div class="faq-answer">Sliders only update their number; the image is re-rendered when you press Apply. That is deliberate, because each pass redraws from the saved original rather than stacking on the previous result. If you expected a live preview, the behaviour is press-to-render, not paint-as-you-drag.</div></div>
+        <div class="faq-item"><button class="faq-question">Does the output keep the original resolution?</button><div class="faq-answer">Yes. The canvas is sized to the photo's natural width and height and exported losslessly as PNG, so nothing is downscaled. A 12-megapixel portrait produces a large PNG, often 10 MB or more, because smoothing adds low-frequency detail that compresses poorly — run it through the compressor afterwards if it is going on the web.</div></div>
       </section>
 
 

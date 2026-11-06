@@ -59,12 +59,64 @@ canvas {max-width:100%; border:1px solid #e2e8f0; border-radius:8px; margin:1rem
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  "mainEntity": [ {"@type": "Question", "name": "Is the AI really local, or is my photo uploaded?", "acceptedAnswer": {"@type": "Answer", "text": "The background-removal computation runs on your device. Only the AI model itself is fetched from a CDN on first use; your product photo is never sent anywhere."}},
-    {"@type": "Question", "name": "Why does the first run take longer?", "acceptedAnswer": {"@type": "Answer", "text": "The first time you generate, the AI model is downloaded and cached. Subsequent runs reuse the cached model and are faster."}},
-    {"@type": "Question", "name": "What output do I get?", "acceptedAnswer": {"@type": "Answer", "text": "A 1600×1600 PNG with your product centred on a pure white background at 80% scale — ready for most marketplace listings."}},
-    {"@type": "Question", "name": "Do I need an internet connection?", "acceptedAnswer": {"@type": "Answer", "text": "You need a connection for the one-time model download. After that, processing is local, though re-clearing your browser cache may require re-downloading."}},
-    {"@type": "Question", "name": "Which products work best?", "acceptedAnswer": {"@type": "Answer", "text": "Products with clear, distinct edges against a contrasting background produce the cleanest cut-outs. Blurry or low-contrast shots may leave rough edges."}},
-    {"@type": "Question", "name": "What file types and sizes are supported?", "acceptedAnswer": {"@type": "Answer", "text": "JPG and PNG up to 20MB. Very large images take longer because the model processes the full resolution locally."}} ]
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is the AI really local, or is my photo uploaded?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The background-removal computation runs on your device. Only the AI model itself is fetched from a CDN on first use; your product photo is never sent anywhere."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does the first run take longer?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The first time you generate, the AI model is downloaded and cached. Subsequent runs reuse the cached model and are faster."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What output do I get?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A 1600×1600 PNG with your product centred on a pure white background at 80% scale — ready for most marketplace listings."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need an internet connection?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You need a connection for the one-time model download. After that, processing is local, though re-clearing your browser cache may require re-downloading."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which products work best?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Products with clear, distinct edges against a contrasting background produce the cleanest cut-outs. Blurry or low-contrast shots may leave rough edges."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What file types and sizes are supported?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "JPG and PNG up to 20MB. Very large images take longer because the model processes the full resolution locally."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I choose a different output size or aspect ratio?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The canvas is hard-coded to 1600 by 1600 with the product scaled to 80% and centred, and there are no controls to change any of it. If a marketplace or theme wants 2048, export here first and resize afterwards — the white background survives resizing cleanly."
+      }
+    }
+  ]
 }
 </script><style id="enrich-css">
 .selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
@@ -131,7 +183,28 @@ canvas {max-width:100%; border:1px solid #e2e8f0; border-radius:8px; margin:1rem
 </div>
 <div class="container">
   <h1>Ecommerce Product Studio</h1>
-  <p>Clean product photos for Shopify/WooCommerce, 100% local. AI background removal, white background, no upload.</p>
+        <p class="answer-lead">An ISNet background-removal model, fetched once from a CDN, cuts the product out, and the page composites it centred at 80% scale on a 1600×1600 pure-white PNG. There is no size, ratio or margin control — every export is exactly that format, which is the shape most marketplace primary-image rules ask for.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">Any image → PNG</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Photo no; model from CDN</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">1600×1600 white PNG</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Marketplace rules versus what this exports</h2>
+          <table>
+            <thead><tr><th>Platform requirement</th><th>What this page gives</th><th>Gap to check</th></tr></thead>
+            <tbody>
+              <tr><td>Zoom-enabled listing, 1600 px+</td><td>Exactly 1600×1600</td><td>Nothing — it qualifies</td></tr>
+              <tr><td>Shopify square listing</td><td>1600×1600 white</td><td>Some themes want 2048</td></tr>
+              <tr><td>Large marketplace primaries</td><td>1600×1600 white</td><td>Accepted as-is</td></tr>
+              <tr><td>4:3 or 4:5 gallery crops</td><td>Square only</td><td>The platform crops, not this page</td></tr>
+              <tr><td>Soft-edged product</td><td>Rough mask on busy backgrounds</td><td>Reshoot on a plain backdrop</td></tr>
+              <tr><td>Need 2048 or custom size</td><td>No size option at all</td><td>Resize after exporting</td></tr>
+            </tbody>
+          </table>
+        </div>
   <div class="workspace">
     <div class="drop-zone" id="dropZone">
       <p style="font-size:1.2rem; margin-bottom:0.5rem;">📦 Drop your product photo here</p>
@@ -161,7 +234,8 @@ canvas {max-width:100%; border:1px solid #e2e8f0; border-radius:8px; margin:1rem
 <div class="feature-card"><div class="fc-icon">🔄</div><h3>Non-Destructive</h3><p>The original file stays untouched — every change is applied to a fresh canvas copy you download.</p></div>
 <div class="feature-card"><div class="fc-icon">🆓</div><h3>Free Forever</h3><p>No sign-up, no watermark, no file-size limit and no daily cap.</p></div>
 <div class="feature-card"><div class="fc-icon">📱</div><h3>Works Everywhere</h3><p>Runs in any modern browser on desktop, tablet or phone — nothing to install.</p></div>
-<div class="feature-card"><div class="fc-icon">🎨</div><h3>Full Resolution</h3><p>Export at your image's native resolution, not a downscaled preview.</p></div></div>
+<div class="feature-card"><div class="fc-icon">🎨</div><h3>Fixed Listing Format</h3>
+          <p>Every export is a 1600&#215;1600 white PNG at 80% scale — consistent, but not configurable.</p></div></div>
 </section>
 <div class="trust-badges">
 <div class="trust-badge"><div class="tb-icon">🔒</div><div class="tb-title">100% Private</div><div class="tb-desc">Files never leave your browser</div></div>
@@ -191,7 +265,8 @@ canvas {max-width:100%; border:1px solid #e2e8f0; border-radius:8px; margin:1rem
 <div class="faq-item"><button class="faq-question">Do I need an internet connection?</button><div class="faq-answer">You need a connection for the one-time model download. After that, processing is local, though re-clearing your browser cache may require re-downloading.</div></div>
 <div class="faq-item"><button class="faq-question">Which products work best?</button><div class="faq-answer">Products with clear, distinct edges against a contrasting background produce the cleanest cut-outs. Blurry or low-contrast shots may leave rough edges.</div></div>
 <div class="faq-item"><button class="faq-question">What file types and sizes are supported?</button><div class="faq-answer">JPG and PNG up to 20MB. Very large images take longer because the model processes the full resolution locally.</div></div>
-</section>
+        <div class="faq-item"><button class="faq-question">Can I choose a different output size or aspect ratio?</button><div class="faq-answer">No. The canvas is hard-coded to 1600 by 1600 with the product scaled to 80% and centred, and there are no controls to change any of it. If a marketplace or theme wants 2048, export here first and resize afterwards — the white background survives resizing cleanly.</div></div>
+      </section>
 <section class="related-tools">
 <h2>You Might Also Like</h2>
 <div class="related-tools-grid"><a href="/tools/background-remover" class="related-tool-card"><span class="tool-icon">🪄</span><div class="tool-info"><strong>Background Remover</strong><span class="tool-desc">Remove background without AI model</span></div><span class="tool-arrow">→</span></a>
