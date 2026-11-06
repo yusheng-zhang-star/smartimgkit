@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/image-to-pdf">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/image-to-pdf">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -156,6 +159,46 @@
         "@type": "Answer",
         "text": "No. Everything runs in your browser — no apps, plugins, or extensions."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does Fit to Image give me an enormous page?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because the image's pixel count is used directly as PDF points, and 72 points make one inch. A 3000 px wide photo therefore becomes a page over 40 inches wide, which is fine on screen and wrong on any printer. For a document people will print, pick A4 or Letter and let the image scale into the margin."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the orientation dropdown do anything?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not in the current build. Orientation is decided per page by comparing the image's width and height, and the selected value is never read. A landscape photo therefore lands on a landscape page whichever option is showing. Set the page size you want and ignore that control."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will the PDF be searchable or selectable?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Each page is a raster image wrapped in a PDF, so there is no text layer to select, search or copy. If the source images were scans, the PDF behaves exactly like the scans. Adding searchable text needs an OCR pass, which this page does not perform."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there really a 50-image limit?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The interface advertises up to 50, but the loader itself does not reject a 51st file — it simply keeps appending. The real ceiling is memory, since every image is held as a decoded bitmap in the tab. Past a few hundred pages on a laptop, expect the tab to stall rather than an error."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I keep the original image quality?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not losslessly. Every page is embedded with the JPEG encoder regardless of the input format, so a PNG's lossless detail and any transparency are re-encoded. For screenshots of text, that shows up as slight fringing around letters. Keep the source images if you need them intact."
+      }
     }
   ]
 }
@@ -221,7 +264,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>Image to PDF</span></nav>
       <div class="tool-page-header">
         <h1>Image to PDF</h1>
-        <p>Convert JPG, PNG, and WebP images into a single PDF file — free, no upload, no watermark, 100% in your browser.</p>
+        <p class="answer-lead">This page writes your images into a single PDF page by page, in the order shown in the list, which you can drag to reorder before exporting. Page size can be A4, Letter, or the image's own size, and jsPDF assembles the file in the tab without uploading anything. Every page is embedded as JPEG, so the result is an image-only PDF with no text layer.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">JPG · PNG · WebP → PDF</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local jsPDF</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">One PDF, image-only pages</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Page size settings and what they actually produce</h2>
+          <table>
+            <thead><tr><th>Setting you pick</th><th>What the PDF contains</th><th>The gotcha</th></tr></thead>
+            <tbody>
+              <tr><td>A4 with a portrait photo</td><td>Image centred, leftover space stays blank</td><td>Margin is applied in points, not pixels</td></tr>
+              <tr><td>Letter</td><td>612×792 pt pages, image scaled to fit</td><td>Slightly wider and shorter than A4</td></tr>
+              <tr><td>Fit to Image</td><td>Page equals the image size in points</td><td>A 3000 px photo becomes a 41-inch page</td></tr>
+              <tr><td>Orientation dropdown</td><td>Nothing changes at all</td><td>Rotation follows width versus height</td></tr>
+              <tr><td>PNG with transparency</td><td>Flattened onto a JPEG page</td><td>Alpha does not survive the re-encode</td></tr>
+              <tr><td>Fifty scanned pages</td><td>50 pages, no numbering or bookmarks</td><td>No text layer — not searchable</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <div class="upload-area" id="uploadArea">
@@ -376,6 +440,11 @@
 <div class="faq-item"><button class="faq-question">Are margins adjustable?</button><div class="faq-answer">Yes, including a no-margin option for full-bleed images.</div></div>
 <div class="faq-item"><button class="faq-question">Is there a file size limit?</button><div class="faq-answer">Files up to 100MB are supported. Very large files may take a few extra seconds to process.</div></div>
 <div class="faq-item"><button class="faq-question">Do I need to install anything?</button><div class="faq-answer">No. Everything runs in your browser — no apps, plugins, or extensions.</div></div>
+              <div class="faq-item"><button class="faq-question">Why does Fit to Image give me an enormous page?</button><div class="faq-answer">Because the image's pixel count is used directly as PDF points, and 72 points make one inch. A 3000 px wide photo therefore becomes a page over 40 inches wide, which is fine on screen and wrong on any printer. For a document people will print, pick A4 or Letter and let the image scale into the margin.</div></div>
+        <div class="faq-item"><button class="faq-question">Does the orientation dropdown do anything?</button><div class="faq-answer">Not in the current build. Orientation is decided per page by comparing the image's width and height, and the selected value is never read. A landscape photo therefore lands on a landscape page whichever option is showing. Set the page size you want and ignore that control.</div></div>
+        <div class="faq-item"><button class="faq-question">Will the PDF be searchable or selectable?</button><div class="faq-answer">No. Each page is a raster image wrapped in a PDF, so there is no text layer to select, search or copy. If the source images were scans, the PDF behaves exactly like the scans. Adding searchable text needs an OCR pass, which this page does not perform.</div></div>
+        <div class="faq-item"><button class="faq-question">Is there really a 50-image limit?</button><div class="faq-answer">The interface advertises up to 50, but the loader itself does not reject a 51st file — it simply keeps appending. The real ceiling is memory, since every image is held as a decoded bitmap in the tab. Past a few hundred pages on a laptop, expect the tab to stall rather than an error.</div></div>
+        <div class="faq-item"><button class="faq-question">Can I keep the original image quality?</button><div class="faq-answer">Not losslessly. Every page is embedded with the JPEG encoder regardless of the input format, so a PNG's lossless detail and any transparency are re-encoded. For screenshots of text, that shows up as slight fringing around letters. Keep the source images if you need them intact.</div></div>
       </section>
 
 <section class="related-tools">

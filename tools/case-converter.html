@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/case-converter">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/case-converter">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -141,7 +144,7 @@
       "name": "What cases are supported?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "UPPER, lower, Title, Sentence, and camelCase."
+        "text": "Eight: UPPER, lower, Title Case, Sentence case, camelCase, PascalCase, snake_case and kebab-case. Each one is a button under the output box, and each rewrites the whole textarea from scratch rather than editing what is already there."
       }
     },
     {
@@ -149,7 +152,7 @@
       "name": "Is it instant?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes — conversion happens as you type."
+        "text": "Not quite. The conversion runs when you press a case button; typing does not re-run it. Change the input after converting and the output box keeps the old result until you press the button again, which is also why the previous version stays there for comparison."
       }
     },
     {
@@ -157,7 +160,7 @@
       "name": "Is the analysis accurate?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes — tools use standard algorithms and parsers for reliable results."
+        "text": "The transformations are plain string operations, so the same input always gives the same output. Where they fall short is exactly where English casing is irregular: Title Case cannot tell a proper noun from a common one, and Sentence case lowercases names that should stay capitalised."
       }
     },
     {
@@ -165,7 +168,7 @@
       "name": "Can I process multiple files?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes — batch analysis is supported where relevant."
+        "text": "No. There is no file input on this page at all — you paste text into a textarea and read the result from a second one. Any number of lines can be pasted in a single go, but that is one block of text, not a batch of files."
       }
     }
   ]
@@ -230,7 +233,29 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>🔠 Case Converter</span></nav>
       <div class="tool-page-header">
         <h1>🔠 Case Converter</h1>
-        <p>Convert text between UPPERCASE, lowercase, Title Case, and more — free, in your browser.</p>
+        <p class="answer-lead">Eight conversions run on whatever text you paste: UPPER, lower, Title, Sentence, camelCase, PascalCase, snake_case and kebab-case. There is no file field and no network call — the textarea, the buttons and the output box are the entire tool, so the text never leaves the tab. Title Case here raises every word, including short ones like of and the.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">Plain text, 8 case modes</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">None — text stays in tab</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">Copy button, no file saved</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Which button fits your text — and where the output surprises people</h2>
+          <table>
+            <thead><tr><th>Text you have</th><th>Button to press</th><th>What to watch</th></tr></thead>
+            <tbody>
+              <tr><td>Retyped headline in caps</td><td>Title Case</td><td>Every word raised, even and / of / the</td></tr>
+              <tr><td>Email draft stuck in caps</td><td>Sentence case</td><td>Proper nouns lose their capitals too</td></tr>
+              <tr><td>Column header with spaces</td><td>snake_case</td><td>Existing hyphens are split as well</td></tr>
+              <tr><td>A CSS class name</td><td>kebab-case</td><td>Hyphens joined, nothing prefixed</td></tr>
+              <tr><td>A JavaScript variable</td><td>camelCase</td><td>A number becomes its own token</td></tr>
+              <tr><td>Word with an accent</td><td>UPPER or lower</td><td>Title Case leaves éclair as éClair</td></tr>
+              <tr><td>Contraction such as don't</td><td>Anything but Title</td><td>Title Case returns Don'T</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -381,10 +406,10 @@
         <p class="amazon-disclaimer">As an Amazon Associate, we earn from qualifying purchases.</p>
       </div>
     </section>
-<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">Does Title Case handle articles?</button><div class="faq-answer">This tool capitalizes every word. For AP-style (excluding articles like 'a', 'the'), use a dedicated title case tool.</div></div><div class="faq-item"><button class="faq-question">Is Unicode supported?</button><div class="faq-answer">Yes. Unicode letters are converted using native JS toUpperCase/toLowerCase which supports Unicode.</div></div><div class="faq-item"><button class="faq-question">What is the difference between snake_case and kebab-case?</button><div class="faq-answer">snake_case uses underscores (Python/Ruby convention). kebab-case uses hyphens (URL/CSS convention).</div></div><div class="faq-item"><button class="faq-question">What cases are supported?</button><div class="faq-answer">UPPER, lower, Title, Sentence, and camelCase.</div></div>
-<div class="faq-item"><button class="faq-question">Is it instant?</button><div class="faq-answer">Yes — conversion happens as you type.</div></div>
-<div class="faq-item"><button class="faq-question">Is the analysis accurate?</button><div class="faq-answer">Yes — tools use standard algorithms and parsers for reliable results.</div></div>
-<div class="faq-item"><button class="faq-question">Can I process multiple files?</button><div class="faq-answer">Yes — batch analysis is supported where relevant.</div></div>
+<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">Does Title Case handle articles?</button><div class="faq-answer">This tool capitalizes every word. For AP-style (excluding articles like 'a', 'the'), use a dedicated title case tool.</div></div><div class="faq-item"><button class="faq-question">Is Unicode supported?</button><div class="faq-answer">Yes. Unicode letters are converted using native JS toUpperCase/toLowerCase which supports Unicode.</div></div><div class="faq-item"><button class="faq-question">What is the difference between snake_case and kebab-case?</button><div class="faq-answer">snake_case uses underscores (Python/Ruby convention). kebab-case uses hyphens (URL/CSS convention).</div></div><div class="faq-item"><button class="faq-question">What cases are supported?</button><div class="faq-answer">Eight: UPPER, lower, Title Case, Sentence case, camelCase, PascalCase, snake_case and kebab-case. Each one is a button under the output box, and each rewrites the whole textarea from scratch rather than editing what is already there.</div></div>
+<div class="faq-item"><button class="faq-question">Is it instant?</button><div class="faq-answer">Not quite. The conversion runs when you press a case button; typing does not re-run it. Change the input after converting and the output box keeps the old result until you press the button again, which is also why the previous version stays there for comparison.</div></div>
+<div class="faq-item"><button class="faq-question">Is the analysis accurate?</button><div class="faq-answer">The transformations are plain string operations, so the same input always gives the same output. Where they fall short is exactly where English casing is irregular: Title Case cannot tell a proper noun from a common one, and Sentence case lowercases names that should stay capitalised.</div></div>
+<div class="faq-item"><button class="faq-question">Can I process multiple files?</button><div class="faq-answer">No. There is no file input on this page at all — you paste text into a textarea and read the result from a second one. Any number of lines can be pasted in a single go, but that is one block of text, not a batch of files.</div></div>
       </section>
 <section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/word-counter" class="related-tool-card"><span class="tool-icon">📝</span><div class="tool-info"><strong>Word Counter</strong><span class="tool-desc">Count words in your text</span></div><span class="tool-arrow">→</span></a><a href="/tools/text-sorter" class="related-tool-card"><span class="tool-icon">↕️</span><div class="tool-info"><strong>Text Sorter</strong><span class="tool-desc">Sort lines alphabetically</span></div><span class="tool-arrow">→</span></a><a href="/tools/text-find-replace" class="related-tool-card"><span class="tool-icon">🔄</span><div class="tool-info"><strong>Find & Replace</strong><span class="tool-desc">Find and replace text</span></div><span class="tool-arrow">→</span></a></div></section>
 

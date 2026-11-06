@@ -23,7 +23,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/compress-image-to-256kb">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -105,6 +108,46 @@
         "@type": "Answer",
         "text": "Not on this page. The Bulk Image Processor applies compression across many files at once."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Is 256 KB even a reduction for a modern photo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For a 12 MP JPEG straight off a phone, yes — those are often 3–5 MB, so 256 KB is a ninety-something percent cut. For a photo already exported for the web at 1200 px, no: it may already be 180 KB and the search will barely move, or push quality so high that the file comes out slightly larger. The size line tells you which happened."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the tool change the resolution?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Never. The canvas is built at the source's natural width and height, so the output has an identical pixel grid. Everything that changes is inside the JPEG or WebP encoder. If a portal rejects the file for being too narrow, this page cannot fix it; a resizer has to run first."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I type a decimal target such as 0.5 MB?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Switch the unit menu next to the target box from KB to MB and type 0.5, and it is treated as 512 KB. That is useful for portals that state a megabyte limit rather than a kilobyte one, and it avoids the arithmetic mistake of typing 0.5 while the unit still reads KB."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens if my file is already under 256 KB?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The search still runs and may hand back a file that is larger than what you fed it, because forcing a high quality ceiling can inflate an already-lean JPEG. Read the comparison line: if it says larger by some percent, discard the output and upload your original."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are colour profiles preserved?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The canvas re-encode writes plain sRGB pixels and does not carry the embedded ICC profile forward, so a photo shot in Display P3 or Adobe RGB can shift slightly in saturation. For portal uploads that is harmless; for print work, keep the profiled original and use a proper editor."
+      }
     }
   ]
 }
@@ -170,7 +213,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>🗜️ Image Compressor</span></nav>
       <div class="tool-page-header">
         <h1>Compress Image to 256 KB</h1>
-        <p>256 KB is really 0.25 MB — a ceiling you meet on systems that think in binary units. The target is set; compress locally and download.</p>
+        <p class="answer-lead">256 KB is not a compression challenge, it is a unit question: 256 KB means 262,144 bytes, while some portals write 0.25 MB and mean 250,000. The tool finds the best quality under whichever number you type, in your browser, without resizing the image or sending it anywhere.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">JPG · PNG · WebP</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local only</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">JPG/WebP near 90% quality</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>256 KB, 250 KB, 0.25 MB — which number the form means</h2>
+          <table>
+            <thead><tr><th>What the portal says</th><th>What actually satisfies it</th><th>Risk if you guess</th></tr></thead>
+            <tbody>
+              <tr><td>256 KB ceiling</td><td>262,144 bytes — the binary reading</td><td>A 260 KB file passes here, fails at 250 KB</td></tr>
+              <tr><td>0.25 MB ceiling</td><td>Also 262,144 bytes if MB is binary</td><td>Plenty of portals mean 250,000 bytes</td></tr>
+              <tr><td>Modern 12 MP photo</td><td>Easy; quality settles near 90%</td><td>Almost nothing is lost — not a squeeze</td></tr>
+              <tr><td>File already at 200 KB</td><td>May come out larger after re-encode</td><td>Keep the original if it already passes</td></tr>
+              <tr><td>Transparent PNG</td><td>No search applied to PNG output</td><td>Pick JPG if the background can be white</td></tr>
+              <tr><td>Twenty product shots</td><td>One image per run</td><td>Bulk processor compresses by quality, not KB</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -381,6 +445,12 @@
         <div class="faq-item"><button class="faq-question">Is 256 KB the same as 0.25 MB?</button><div class="faq-answer">In systems that count 1 MB as 1024 KB, yes — 256 × 4 = 1024. Some portals instead treat 1 MB as 1000 KB, in which case 256 KB is a slightly smaller slice.</div></div>
         <div class="faq-item"><button class="faq-question">Why target 250 KB instead of 256 KB?</button><div class="faq-answer">Rounding. If the checker rounds up, a file at 256.2 KB fails a 256 KB limit. Landing slightly under avoids that.</div></div>
         <div class="faq-item"><button class="faq-question">Can I do this in bulk?</button><div class="faq-answer">Not on this page. The <a href="/tools/bulk-processor">Bulk Image Processor</a> applies compression across many files at once.</div></div>
+              <div class="faq-item"><button class="faq-question">Is 256 KB even a reduction for a modern photo?</button><div class="faq-answer">For a 12 MP JPEG straight off a phone, yes — those are often 3–5 MB, so 256 KB is a ninety-something percent cut. For a photo already exported for the web at 1200 px, no: it may already be 180 KB and the search will barely move, or push quality so high that the file comes out slightly larger. The size line tells you which happened.</div></div>
+        <div class="faq-item"><button class="faq-question">Does the tool change the resolution?</button><div class="faq-answer">Never. The canvas is built at the source's natural width and height, so the output has an identical pixel grid. Everything that changes is inside the JPEG or WebP encoder. If a portal rejects the file for being too narrow, this page cannot fix it; a resizer has to run first.</div></div>
+        <div class="faq-item"><button class="faq-question">Can I type a decimal target such as 0.5 MB?</button><div class="faq-answer">Yes. Switch the unit menu next to the target box from KB to MB and type 0.5, and it is treated as 512 KB. That is useful for portals that state a megabyte limit rather than a kilobyte one, and it avoids the arithmetic mistake of typing 0.5 while the unit still reads KB.</div></div>
+        <div class="faq-item"><button class="faq-question">What happens if my file is already under 256 KB?</button><div class="faq-answer">The search still runs and may hand back a file that is larger than what you fed it, because forcing a high quality ceiling can inflate an already-lean JPEG. Read the comparison line: if it says larger by some percent, discard the output and upload your original.</div></div>
+        <div class="faq-item"><button class="faq-question">Are colour profiles preserved?</button><div class="faq-answer">No. The canvas re-encode writes plain sRGB pixels and does not carry the embedded ICC profile forward, so a photo shot in Display P3 or Adobe RGB can shift slightly in saturation. For portal uploads that is harmless; for print work, keep the profiled original and use a proper editor.</div></div>
+        <div class="faq-item"><button class="faq-question">Why target 250 KB instead of 256 KB?</button><div class="faq-answer">Because a surprising number of upload screens compute the limit in decimal megabytes and reject anything above 250,000 bytes, while labelling it 0.25 MB. Aiming at 250 KB in this tool costs you almost nothing in visible quality and covers both readings of the rule.</div></div>
       </section>
 
 <section class="related-tools">

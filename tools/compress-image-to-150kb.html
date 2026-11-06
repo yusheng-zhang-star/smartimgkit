@@ -23,7 +23,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/compress-image-to-150kb">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -105,6 +108,54 @@
         "@type": "Answer",
         "text": "No. Target-size mode only tunes compression quality. If the pixel count is the problem, resize first."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Is 150 KB enough for a readable contract scan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Usually yes, if the scan is greyscale or near-grey and the text is at least 10 pt. Photographs of paper with uneven lighting are the weak case: the encoder spends bytes on the shadow gradient and the letters pay for it. A flatbed scan or a phone scan app with perspective correction gets far more out of the same 150 KB."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much quality is left at 150 KB?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For a 1500–2000 px photo the search typically settles between 65% and 85%, which is visually clean on screen and fine for print at small sizes. For a 4000 px photo it will sit much lower, and the softness is a symptom of the pixel count, not of this tool."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it strip EXIF data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, every metadata block goes, because the image is redrawn onto a canvas before encoding. GPS coordinates, camera model and capture time are all removed. If the document needs a timestamp for a legal file, record it separately — the image will not carry it any more."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What if the source is already under 150 KB?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Then you can stop; re-encoding will likely produce a larger or blurrier file for no benefit. The size line will read something like larger by 8%, which is the tool telling you the original was already better. Submit the original instead."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which format should I pick for a scanned document?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "JPEG at this size, because every portal accepts it and greyscale text compresses well in it. WebP would hold more detail per byte, but document portals are exactly the places least likely to accept it. Keep PNG only if the page is line art or a stamp that must not develop artefacts."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I process several pages at once?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "This page handles a single image per run, and the preview pane is built around one before/after pair. There is no page queue and no PDF output. A common workflow is compressing each scanned page here, then assembling them with a PDF tool — order matters, so compress before merging."
+      }
     }
   ]
 }
@@ -170,7 +221,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>🗜️ Image Compressor</span></nav>
       <div class="tool-page-header">
         <h1>Compress Image to 150 KB</h1>
-        <p>150 KB shows up as a hard ceiling on a lot of document-upload screens. Set the target and the tool works out the quality for you.</p>
+        <p class="answer-lead">150 KB shows up as a hard limit on document-upload screens, from visa portals to university systems. The tool keeps your pixel dimensions and searches eight quality levels for the largest JPG or WebP that fits under 150 KB, all locally. Text-heavy scans are easy at this size; photographs are the ones that feel the squeeze.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no account</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">JPG · PNG · WebP in</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — runs offline</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">Quality-searched JPG/WebP</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>150 KB is generous for text and tight for photographs</h2>
+          <table>
+            <thead><tr><th>What you are uploading</th><th>How 150 KB treats it</th><th>What to watch</th></tr></thead>
+            <tbody>
+              <tr><td>Scanned A4 at 300 dpi</td><td>Lands around 90–140 KB; body text stays sharp</td><td>Check the small print is still readable</td></tr>
+              <tr><td>Contract photo from a phone</td><td>Reaches 150 KB at roughly 2000 px wide</td><td>Crop the desk out before compressing</td></tr>
+              <tr><td>Property listing photo</td><td>Plenty of room; quality settles near 80%</td><td>Keep 1200 px wide for the portal preview</td></tr>
+              <tr><td>Full-page screenshot</td><td>Fits, but thin UI lines soften</td><td>Export PNG if the portal accepts it</td></tr>
+              <tr><td>Transparent logo PNG</td><td>Unchanged — no quality search for PNG</td><td>Switch output to JPG, or just resize</td></tr>
+              <tr><td>Multi-page PDF scan</td><td>One image per run; pages stay separate</td><td>Compress each page, then merge as PDF</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -381,6 +453,12 @@
         <div class="faq-item"><button class="faq-question">Is 150 KB enough for a readable scanned document?</button><div class="faq-answer">Yes for a single page at around 1500 px. Text at that resolution compresses well because it has large flat areas. Photos of text at 12 MP will not fit.</div></div>
         <div class="faq-item"><button class="faq-question">Can I compress several pages at once?</button><div class="faq-answer">This page is single-image. For multi-file work use the <a href="/tools/bulk-processor">Bulk Image Processor</a>, which applies the same engine across a batch.</div></div>
         <div class="faq-item"><button class="faq-question">Does the tool change the dimensions?</button><div class="faq-answer">No. Target-size mode only tunes compression quality. If the pixel count is the problem, resize first.</div></div>
+              <div class="faq-item"><button class="faq-question">Is 150 KB enough for a readable contract scan?</button><div class="faq-answer">Usually yes, if the scan is greyscale or near-grey and the text is at least 10 pt. Photographs of paper with uneven lighting are the weak case: the encoder spends bytes on the shadow gradient and the letters pay for it. A flatbed scan or a phone scan app with perspective correction gets far more out of the same 150 KB.</div></div>
+        <div class="faq-item"><button class="faq-question">How much quality is left at 150 KB?</button><div class="faq-answer">For a 1500–2000 px photo the search typically settles between 65% and 85%, which is visually clean on screen and fine for print at small sizes. For a 4000 px photo it will sit much lower, and the softness is a symptom of the pixel count, not of this tool.</div></div>
+        <div class="faq-item"><button class="faq-question">Does it strip EXIF data?</button><div class="faq-answer">Yes, every metadata block goes, because the image is redrawn onto a canvas before encoding. GPS coordinates, camera model and capture time are all removed. If the document needs a timestamp for a legal file, record it separately — the image will not carry it any more.</div></div>
+        <div class="faq-item"><button class="faq-question">What if the source is already under 150 KB?</button><div class="faq-answer">Then you can stop; re-encoding will likely produce a larger or blurrier file for no benefit. The size line will read something like larger by 8%, which is the tool telling you the original was already better. Submit the original instead.</div></div>
+        <div class="faq-item"><button class="faq-question">Which format should I pick for a scanned document?</button><div class="faq-answer">JPEG at this size, because every portal accepts it and greyscale text compresses well in it. WebP would hold more detail per byte, but document portals are exactly the places least likely to accept it. Keep PNG only if the page is line art or a stamp that must not develop artefacts.</div></div>
+        <div class="faq-item"><button class="faq-question">Can I process several pages at once?</button><div class="faq-answer">This page handles a single image per run, and the preview pane is built around one before/after pair. There is no page queue and no PDF output. A common workflow is compressing each scanned page here, then assembling them with a PDF tool — order matters, so compress before merging.</div></div>
       </section>
 
 <section class="related-tools">

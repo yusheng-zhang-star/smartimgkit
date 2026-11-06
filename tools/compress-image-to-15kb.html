@@ -23,7 +23,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/compress-image-to-15kb">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -105,6 +108,54 @@
         "@type": "Answer",
         "text": "This page handles one image at a time. For many files, use the Bulk Image Processor instead."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Does compressing to 15 KB change the pixel size?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It does not. The output is drawn at the source image's natural width and height, so a 3000 px photo stays 3000 px and simply carries less data per pixel. That is precisely why big photos fail here: the tool reduces quality, never geometry, and the two are not interchangeable."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which output format holds up best at 15 KB?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "WebP keeps noticeably more detail than JPEG at the same byte count, so pick it when the receiving system accepts .webp. Most legacy forms do not, and demand .jpg — in that case stay on JPEG and accept some softening around edges rather than fighting the format."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can the tool guarantee a file is exactly 15 KB?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No, and no honest compressor can. The search narrows in on the boundary in eight passes and returns the largest result that did not exceed the target, which usually lands a few percent under. A form that demands the file be at least 10 KB as well as under 15 KB may need two attempts."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will my file be uploaded to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The decoding, the quality search and the download link are all produced inside the tab by the canvas API. If you open developer tools and watch the network panel while compressing, no image request leaves the page — only the page's own scripts were fetched before you started."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it accept HEIC photos from an iPhone?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It accepts them only if your browser can decode HEIC, which Safari can and Chrome on Windows generally cannot. When decoding fails the preview stays empty. Run the file through the HEIC converter first to get a JPEG, then bring that JPEG back to this 15 KB target."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why did my second attempt look worse than the first?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because each pass re-encodes whatever you feed it. Compressing an already-compressed JPEG stacks two rounds of loss on the same pixels and looks softer than one round from the original. Always start from the untouched source file, and keep that source somewhere safe."
+      }
     }
   ]
 }
@@ -170,7 +221,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>🗜️ Image Compressor</span></nav>
       <div class="tool-page-header">
         <h1>Compress Image to 15 KB</h1>
-        <p>A 15 KB ceiling is common on older upload forms. The target is already set — pick a file, compress, download, all locally in your browser.</p>
+        <p class="answer-lead">15 KB is an old ceiling that still survives on government and school upload forms. The target box is pre-filled at 15, so you drop a file, the tool searches eight quality steps for the largest encoding that fits, and you download the result. Nothing is sent to a server, and the pixel dimensions stay untouched.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no account</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">JPG · PNG · WebP</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">None — stays on device</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">Re-encoded JPG or WebP</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Where a 15 KB ceiling actually bites</h2>
+          <table>
+            <thead><tr><th>Upload situation</th><th>What 15 KB costs you</th><th>Smarter route</th></tr></thead>
+            <tbody>
+              <tr><td>Legacy form, avatar slot</td><td>Met at 400–800 px wide; edges stay clean</td><td>Nothing — download and submit</td></tr>
+              <tr><td>A4 document scan</td><td>Thin strokes break and grey fills go blotchy</td><td>Rescan at 150 dpi in greyscale first</td></tr>
+              <tr><td>Sky or skin gradient</td><td>Banding appears before detail is lost</td><td>Aim at 20 KB if the form allows it</td></tr>
+              <tr><td>ID photo for a card</td><td>Hair edges smear at any width above 1000 px</td><td>Resize to the printed size, then compress</td></tr>
+              <tr><td>PNG with transparency</td><td>The search is skipped outright</td><td>Pick JPG in the output format menu</td></tr>
+              <tr><td>Forty avatars at once</td><td>One file per run, no queue</td><td>Bulk processor — quality only, no KB target</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -381,6 +453,12 @@
         <div class="faq-item"><button class="faq-question">What if my image is still over 15 KB after compressing?</button><div class="faq-answer">Reduce the pixel dimensions first. The quality search has a floor; dimension is the only remaining lever. The Resizer handles that in one pass.</div></div>
         <div class="faq-item"><button class="faq-question">Does 15 KB work for transparent images?</button><div class="faq-answer">Not well. Transparency requires PNG or WebP-alpha. PNG ignores the target-size search, and WebP with alpha compresses less efficiently, so expect a larger file.</div></div>
         <div class="faq-item"><button class="faq-question">Is there a batch mode?</button><div class="faq-answer">This page handles one image at a time. For many files, use the <a href="/tools/bulk-processor">Bulk Image Processor</a> instead.</div></div>
+              <div class="faq-item"><button class="faq-question">Does compressing to 15 KB change the pixel size?</button><div class="faq-answer">It does not. The output is drawn at the source image's natural width and height, so a 3000 px photo stays 3000 px and simply carries less data per pixel. That is precisely why big photos fail here: the tool reduces quality, never geometry, and the two are not interchangeable.</div></div>
+        <div class="faq-item"><button class="faq-question">Which output format holds up best at 15 KB?</button><div class="faq-answer">WebP keeps noticeably more detail than JPEG at the same byte count, so pick it when the receiving system accepts .webp. Most legacy forms do not, and demand .jpg — in that case stay on JPEG and accept some softening around edges rather than fighting the format.</div></div>
+        <div class="faq-item"><button class="faq-question">Can the tool guarantee a file is exactly 15 KB?</button><div class="faq-answer">No, and no honest compressor can. The search narrows in on the boundary in eight passes and returns the largest result that did not exceed the target, which usually lands a few percent under. A form that demands the file be at least 10 KB as well as under 15 KB may need two attempts.</div></div>
+        <div class="faq-item"><button class="faq-question">Will my file be uploaded to a server?</button><div class="faq-answer">No. The decoding, the quality search and the download link are all produced inside the tab by the canvas API. If you open developer tools and watch the network panel while compressing, no image request leaves the page — only the page's own scripts were fetched before you started.</div></div>
+        <div class="faq-item"><button class="faq-question">Does it accept HEIC photos from an iPhone?</button><div class="faq-answer">It accepts them only if your browser can decode HEIC, which Safari can and Chrome on Windows generally cannot. When decoding fails the preview stays empty. Run the file through the HEIC converter first to get a JPEG, then bring that JPEG back to this 15 KB target.</div></div>
+        <div class="faq-item"><button class="faq-question">Why did my second attempt look worse than the first?</button><div class="faq-answer">Because each pass re-encodes whatever you feed it. Compressing an already-compressed JPEG stacks two rounds of loss on the same pixels and looks softer than one round from the original. Always start from the untouched source file, and keep that source somewhere safe.</div></div>
       </section>
 
 <section class="related-tools">

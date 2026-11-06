@@ -23,7 +23,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/compress-image-to-20kb">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -105,6 +108,54 @@
         "@type": "Answer",
         "text": "You can, but the 20 KB target will not apply. PNG ignores the quality value, so the size stays whatever the pixel data requires."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I resize the photo before aiming at 20 KB?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, whenever the portal also states a pixel size such as 200×230 or 3.5×4.5 cm. Compressing first and resizing afterwards throws away the quality you just paid for, because the resizer re-encodes again. Fix the geometry first, then let this page spend its eight quality passes on the final size."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does my signature look grey instead of black?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A phone photo of pen on paper is a continuous-tone image, and JPEG spends its bits reproducing the paper texture and lighting gradient rather than the stroke. At 20 KB the stroke stops being black. Raising the contrast, or scanning in black-and-white mode, gives the encoder far less to describe."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the tool crop the signature automatically?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It does not crop anything — the canvas matches the input dimensions exactly. If the sheet of paper fills the frame, the white margins eat most of the 20 KB budget. Crop to the ink in a crop tool, then come back here, and the same byte count buys visibly crisper strokes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will the file always come out under 20 KB?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It will, as long as the image is small enough for any quality to fit. The loop keeps the largest encoding that did not exceed the target, so the result sits at or just below 20 KB. When even the lowest quality overshoots, you get the smallest attempt plus a label telling you how far over it is."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my passport photo uploaded anywhere?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The file is read with the browser's file API, drawn onto a canvas in the page, and the download link is a local blob URL. Nothing is transmitted. That matters for identity documents, which is why the whole compression path was built without a server component."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I keep the output as PNG?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can select it, but the 20 KB target will then be ignored, because PNG has no quality setting to search. A photographic PNG at phone resolution is usually 2–6 MB, nowhere near the cap. Choose JPG for photos and reserve PNG for flat graphics that are already small."
+      }
     }
   ]
 }
@@ -170,7 +221,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>🗜️ Image Compressor</span></nav>
       <div class="tool-page-header">
         <h1>Compress Image to 20 KB</h1>
-        <p>20 KB is one of the most common upload ceilings on application and exam portals. Set it once and the tool finds the best quality that fits.</p>
+        <p class="answer-lead">20 KB is the ceiling on a lot of exam, scholarship and job application portals. Drop a JPG, PNG or WebP and the tool searches for the best quality that still fits, entirely inside your browser — the photo is never uploaded. It does not crop, so a signature shot with wide white margins usually has to be cropped elsewhere first.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">JPG · PNG · WebP</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local tab</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">JPG/WebP, target pre-set to 20 KB</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Exam and job portals: what 20 KB can and cannot do</h2>
+          <table>
+            <thead><tr><th>What the form asks for</th><th>What fits at 20 KB</th><th>The catch</th></tr></thead>
+            <tbody>
+              <tr><td>Passport photo, 200×230</td><td>Comfortable; quality settles near 70%</td><td>Get the pixels right first, the cap follows</td></tr>
+              <tr><td>Signature on white paper</td><td>Fits only after the empty margin is cropped</td><td>Compression alone never gets there</td></tr>
+              <tr><td>Photo straight from a phone</td><td>Reaches roughly 200–400 px wide</td><td>Resize before setting the target, not after</td></tr>
+              <tr><td>Scanned certificate</td><td>Text survives, rubber stamps go muddy</td><td>Send a PDF instead if the portal takes one</td></tr>
+              <tr><td>PNG chosen as output</td><td>No compression happens at all</td><td>Switch the format menu to JPG</td></tr>
+              <tr><td>Photo plus signature</td><td>One per run; the 20 KB box persists</td><td>Drop the second file and compress again</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -381,6 +453,12 @@
         <div class="faq-item"><button class="faq-question">Should I target exactly 20 KB or slightly less?</button><div class="faq-answer">Target a little under. Some portals measure in a way that rounds up, and a file of 20.4 KB can be rejected. 18–19 KB is a safer landing zone.</div></div>
         <div class="faq-item"><button class="faq-question">Why is my compressed signature blurry?</button><div class="faq-answer">At 20 KB you are near the practical floor for a legible signature. Crop to just the signature before compressing; removing empty background buys you much more quality than lowering compression further.</div></div>
         <div class="faq-item"><button class="faq-question">Can I keep it as PNG?</button><div class="faq-answer">You can, but the 20 KB target will not apply. PNG ignores the quality value, so the size stays whatever the pixel data requires.</div></div>
+              <div class="faq-item"><button class="faq-question">Should I resize the photo before aiming at 20 KB?</button><div class="faq-answer">Yes, whenever the portal also states a pixel size such as 200×230 or 3.5×4.5 cm. Compressing first and resizing afterwards throws away the quality you just paid for, because the resizer re-encodes again. Fix the geometry first, then let this page spend its eight quality passes on the final size.</div></div>
+        <div class="faq-item"><button class="faq-question">Why does my signature look grey instead of black?</button><div class="faq-answer">A phone photo of pen on paper is a continuous-tone image, and JPEG spends its bits reproducing the paper texture and lighting gradient rather than the stroke. At 20 KB the stroke stops being black. Raising the contrast, or scanning in black-and-white mode, gives the encoder far less to describe.</div></div>
+        <div class="faq-item"><button class="faq-question">Does the tool crop the signature automatically?</button><div class="faq-answer">It does not crop anything — the canvas matches the input dimensions exactly. If the sheet of paper fills the frame, the white margins eat most of the 20 KB budget. Crop to the ink in a crop tool, then come back here, and the same byte count buys visibly crisper strokes.</div></div>
+        <div class="faq-item"><button class="faq-question">Will the file always come out under 20 KB?</button><div class="faq-answer">It will, as long as the image is small enough for any quality to fit. The loop keeps the largest encoding that did not exceed the target, so the result sits at or just below 20 KB. When even the lowest quality overshoots, you get the smallest attempt plus a label telling you how far over it is.</div></div>
+        <div class="faq-item"><button class="faq-question">Is my passport photo uploaded anywhere?</button><div class="faq-answer">No. The file is read with the browser's file API, drawn onto a canvas in the page, and the download link is a local blob URL. Nothing is transmitted. That matters for identity documents, which is why the whole compression path was built without a server component.</div></div>
+        <div class="faq-item"><button class="faq-question">Can I keep the output as PNG?</button><div class="faq-answer">You can select it, but the 20 KB target will then be ignored, because PNG has no quality setting to search. A photographic PNG at phone resolution is usually 2–6 MB, nowhere near the cap. Choose JPG for photos and reserve PNG for flat graphics that are already small.</div></div>
       </section>
 
 <section class="related-tools">

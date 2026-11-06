@@ -13,7 +13,10 @@
   <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/batch-background-remover">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/batch-background-remover">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script type="application/ld+json">
 {
@@ -71,12 +74,96 @@
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  "mainEntity": [ {"@type": "Question", "name": "How does the background removal work?", "acceptedAnswer": {"@type": "Answer", "text": "An on-device AI model segments the subject from the background and outputs a transparent PNG. The computation runs locally in your browser, not on a remote server."}},
-    {"@type": "Question", "name": "Are my photos uploaded anywhere?", "acceptedAnswer": {"@type": "Answer", "text": "No. The AI model may be downloaded once and cached, but your photos themselves never leave your device."}},
-    {"@type": "Question", "name": "Can I process many photos at once?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Add a whole batch and the tool works through them in sequence, then packs every result into a single ZIP."}},
-    {"@type": "Question", "name": "What output format do I get?", "acceptedAnswer": {"@type": "Answer", "text": "Each result is a transparent PNG, and all of them are bundled into one ZIP archive for easy download."}},
-    {"@type": "Question", "name": "Why is the first run slower?", "acceptedAnswer": {"@type": "Answer", "text": "The AI model is downloaded on first use. After that it is cached by your browser, so later batches run without re-downloading."}},
-    {"@type": "Question", "name": "Is there a limit on batch size?", "acceptedAnswer": {"@type": "Answer", "text": "The limit is your device's memory, not an artificial cap. Very large batches or huge photos may need to be split into smaller groups."}} ]
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How does the background removal work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An on-device AI model segments the subject from the background and outputs a transparent PNG. The computation runs locally in your browser, not on a remote server."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are my photos uploaded anywhere?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The AI model may be downloaded once and cached, but your photos themselves never leave your device."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I process many photos at once?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Add a whole batch and the tool works through them in sequence, then packs every result into a single ZIP."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What output format do I get?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Each result is a transparent PNG, and all of them are bundled into one ZIP archive for easy download."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is the first run slower?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The AI model is downloaded on first use. After that it is cached by your browser, so later batches run without re-downloading."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a limit on batch size?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The limit is your device's memory, not an artificial cap. Very large batches or huge photos may need to be split into smaller groups."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens if one image fails?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The other images keep going. Each file has its own status line, and a failure switches that row to an error state with the message the decoder returned. The batch still finishes and the ZIP contains only the successful cutouts, so a missing product means you re-run just that file."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why can I not add files while a batch is running?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because the processing loop is guarded by a flag: dropping more files during a run only appends them to the visible list, and the loop has already fixed its queue. The new rows sit at Waiting forever. Either wait for the batch to end, or press Start Over and add everything in one drop."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the output at the original resolution?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, the returned PNG matches the input's pixel dimensions. The model itself works on a reduced copy to keep memory sane and the mask is scaled back up, so genuinely fine detail — single loose hairs, thin straps, mesh — can come back slightly simplified compared with a hand-drawn mask."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does the first run seem to download more than stated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The page announces roughly 30 MB, and that is the quantised model fetched for warm-up. Each file is then processed with the half-precision variant, so the first batch can pull a second set of weights. After that both are cached by the browser and later batches start instantly."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it need an internet connection?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The first run does, because the model code and weights come from a CDN. Once cached, the segmentation itself runs offline. If you work in a locked-down network the import can fail outright, and the batch stops with a model load error before touching any photo."
+      }
+    }
+  ]
 }
 </script><style id="enrich-css">
 .selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
@@ -147,7 +234,28 @@
 
   <main class="tool-container">
     <h1 style="text-align:center;margin-bottom:.5rem">Batch Background Remover</h1>
-    <p style="text-align:center;color:var(--text-secondary);margin-bottom:2rem">Remove backgrounds from 20+ product photos at once. 100% in your browser — no upload, no watermark.</p>
+        <p class="answer-lead">Drop up to 100 photos and an isnet segmentation model runs on your device, two images at a time, returning a transparent PNG for each plus a single ZIP. Your photos are never uploaded, though the model code and weights are fetched from a CDN the first time. There is no start button — adding files begins the batch immediately.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no account</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">JPG · PNG · WebP → PNG</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Photos never; model from CDN</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">Transparent PNG + ZIP</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>What the batch handles and where you still have to step in</h2>
+          <table>
+            <thead><tr><th>Your product shot</th><th>What the model returns</th><th>Where you take over</th></tr></thead>
+            <tbody>
+              <tr><td>Plain studio backdrop</td><td>Clean cutout, edges hold up</td><td>Nothing — download the PNG</td></tr>
+              <tr><td>Product on a busy shelf</td><td>Subject separated, shelf shadows leak in</td><td>Retouch the mask in an editor</td></tr>
+              <tr><td>Wispy hair or fur</td><td>Soft halo where the mask is unsure</td><td>Composite on a similar background</td></tr>
+              <tr><td>White item on white sheet</td><td>Edges merge into the backdrop</td><td>Reshoot against contrast if you can</td></tr>
+              <tr><td>Filing a 120th photo</td><td>Ignored — the list stops at 100</td><td>Reset and run a second batch</td></tr>
+              <tr><td>Adding files mid-batch</td><td>Listed, but never processed</td><td>Wait, reset, then add them again</td></tr>
+            </tbody>
+          </table>
+        </div>
 
     <div class="upload-zone" id="dropZone">
       <div class="upload-icon">🖼️</div>
@@ -213,7 +321,12 @@
 <div class="faq-item"><button class="faq-question">What output format do I get?</button><div class="faq-answer">Each result is a transparent PNG, and all of them are bundled into one ZIP archive for easy download.</div></div>
 <div class="faq-item"><button class="faq-question">Why is the first run slower?</button><div class="faq-answer">The AI model is downloaded on first use. After that it is cached by your browser, so later batches run without re-downloading.</div></div>
 <div class="faq-item"><button class="faq-question">Is there a limit on batch size?</button><div class="faq-answer">The limit is your device's memory, not an artificial cap. Very large batches or huge photos may need to be split into smaller groups.</div></div>
-</section>
+        <div class="faq-item"><button class="faq-question">What happens if one image fails?</button><div class="faq-answer">The other images keep going. Each file has its own status line, and a failure switches that row to an error state with the message the decoder returned. The batch still finishes and the ZIP contains only the successful cutouts, so a missing product means you re-run just that file.</div></div>
+        <div class="faq-item"><button class="faq-question">Why can I not add files while a batch is running?</button><div class="faq-answer">Because the processing loop is guarded by a flag: dropping more files during a run only appends them to the visible list, and the loop has already fixed its queue. The new rows sit at Waiting forever. Either wait for the batch to end, or press Start Over and add everything in one drop.</div></div>
+        <div class="faq-item"><button class="faq-question">Is the output at the original resolution?</button><div class="faq-answer">Yes, the returned PNG matches the input's pixel dimensions. The model itself works on a reduced copy to keep memory sane and the mask is scaled back up, so genuinely fine detail — single loose hairs, thin straps, mesh — can come back slightly simplified compared with a hand-drawn mask.</div></div>
+        <div class="faq-item"><button class="faq-question">Why does the first run seem to download more than stated?</button><div class="faq-answer">The page announces roughly 30 MB, and that is the quantised model fetched for warm-up. Each file is then processed with the half-precision variant, so the first batch can pull a second set of weights. After that both are cached by the browser and later batches start instantly.</div></div>
+        <div class="faq-item"><button class="faq-question">Does it need an internet connection?</button><div class="faq-answer">The first run does, because the model code and weights come from a CDN. Once cached, the segmentation itself runs offline. If you work in a locked-down network the import can fail outright, and the batch stops with a model load error before touching any photo.</div></div>
+      </section>
 <section class="related-tools">
 <h2>You Might Also Like</h2>
 <div class="related-tools-grid"><a href="/tools/background-remover" class="related-tool-card"><span class="tool-icon">🪄</span><div class="tool-info"><strong>Background Remover</strong><span class="tool-desc">Remove BG from one photo</span></div><span class="tool-arrow">→</span></a>

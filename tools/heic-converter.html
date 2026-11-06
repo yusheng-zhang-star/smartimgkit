@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/heic-converter">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/heic-converter">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -128,7 +131,7 @@
       "name": "Will the converted JPG look the same?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "At 90%+ quality, visually indistinguishable from original."
+        "text": "At the default slider position it is close to the original on screen, because the photo is re-encoded at the same pixel size. The HEIC original is still the better master file: it holds the wider colour range and the depth data that the JPEG drops."
       }
     },
     {
@@ -160,7 +163,7 @@
       "name": "Is there a file size limit?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Files up to 100MB are supported. Very large files may take a few extra seconds to process."
+        "text": "No limit is enforced by the page. The file is read into memory and decoded in the tab, so the real ceiling is available RAM — a multi-hundred-megabyte file is more likely to stall or crash the tab than to finish."
       }
     },
     {
@@ -169,6 +172,54 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "No. Everything runs in your browser — no apps, plugins, or extensions."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the quality slider change the output?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Only for JPEG. The slider value is passed to the decoder when the target is JPG and ignored for PNG and WebP, so switching format makes the slider disappear rather than change meaning. If you need a specific file size, convert to JPG here and then run the result through the compressor with a kilobyte target."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the conversion keep the original resolution?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. heic2any decodes at the stored resolution and writes a file at the same width and height — nothing is downscaled on the way through. An iPhone photo that is 4032 by 3024 arrives as a 4032 by 3024 JPG, which is usually several megabytes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens if a file cannot be decoded?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The decode call is wrapped in a catch that does nothing, so a failed file simply produces no download link and no message. You will only notice by counting the links against the files you dropped. If one is missing, the file is probably truncated, uses a variant the bundled decoder does not cover, or was renamed to .heic without actually being one."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I convert a whole folder in one go?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can queue as many files as you like and the loop walks them in order, then offers a ZIP when there is more than one result. There is no progress bar and no resume, so on a large folder it can look frozen for a while before the links appear."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is anything uploaded to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The decoder library is loaded as a local file from this site, not from a third-party CDN, and the conversion itself uses the browser's memory. The photo is read with the file API and never appears in a network request — worth confirming yourself in the developer tools if the images are sensitive."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it work on a Windows or Android device?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, and that is the usual reason to be here: Windows Photos and most Android gallery apps cannot open HEIC at all, while this page only needs a modern browser. Nothing has to be installed, and the converted JPG opens everywhere afterwards."
       }
     }
   ]
@@ -237,7 +288,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>🖼️ HEIC Converter</span></nav>
       <div class="tool-page-header">
         <h1>🖼️ HEIC Converter</h1>
-        <p>Convert HEIC (iPhone photos) to JPG, PNG, or WebP. Free, fast, no uploads. Powered by heic2any (browser-based).</p>
+        <p class="answer-lead">This page turns iPhone .heic and .heif files into JPG, PNG or WebP with heic2any, which is served from this site and runs inside the tab — no photo is sent anywhere. Several files can be queued at once and downloaded together as a ZIP. Two limits are worth knowing before you start: the quality slider only affects JPEG output, and a file that fails to decode is skipped without any error message.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">HEIC/HEIF → JPG · PNG · WebP</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — decoder runs locally</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">Per-file links, or one ZIP</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>What is inside the HEIC file decides what you get back</h2>
+          <table>
+            <thead><tr><th>Source file</th><th>What comes out</th><th>What is lost</th></tr></thead>
+            <tbody>
+              <tr><td>Single iPhone photo</td><td>One JPG at the original pixel size</td><td>EXIF, GPS and the HDR gain map</td></tr>
+              <tr><td>Live Photo container</td><td>The still frame only</td><td>The paired motion clip</td></tr>
+              <tr><td>Burst or multi-image HEIC</td><td>First image only, extras discarded</td><td>Every other frame in the file</td></tr>
+              <tr><td>Photo with depth data</td><td>A flat image, no depth channel</td><td>Portrait-mode blur information</td></tr>
+              <tr><td>Ten files dropped at once</td><td>Ten download links plus a ZIP button</td><td>Only the first one previews</td></tr>
+              <tr><td>Corrupt or truncated file</td><td>Silently skipped, no link appears</td><td>No error message is shown</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -422,12 +494,18 @@
 <section class="faq-section">
   <h2>Frequently Asked Questions</h2>
   <div class="faq-item"><button class="faq-question">Is HEIC the same as HEIF?</button><div class="faq-answer">Yes. They are often used interchangeably.</div></div>
-  <div class="faq-item"><button class="faq-question">Will the converted JPG look the same?</button><div class="faq-answer">At 90%+ quality, visually indistinguishable from original.</div></div>
+  <div class="faq-item"><button class="faq-question">Will the converted JPG look the same?</button><div class="faq-answer">At the default slider position it is close to the original on screen, because the photo is re-encoded at the same pixel size. The HEIC original is still the better master file: it holds the wider colour range and the depth data that the JPEG drops.</div></div>
   <div class="faq-item"><button class="faq-question">Are my photos uploaded to a server?</button><div class="faq-answer">No. All conversion happens in your browser.</div></div>
 <div class="faq-item"><button class="faq-question">Why does iPhone use HEIC?</button><div class="faq-answer">HEIC offers better compression than JPG, but compatibility is limited — converting solves that.</div></div>
 <div class="faq-item"><button class="faq-question">Are Live Photos supported?</button><div class="faq-answer">Only the still image is converted; motion data is not preserved.</div></div>
-<div class="faq-item"><button class="faq-question">Is there a file size limit?</button><div class="faq-answer">Files up to 100MB are supported. Very large files may take a few extra seconds to process.</div></div>
+<div class="faq-item"><button class="faq-question">Is there a file size limit?</button><div class="faq-answer">No limit is enforced by the page. The file is read into memory and decoded in the tab, so the real ceiling is available RAM — a multi-hundred-megabyte file is more likely to stall or crash the tab than to finish.</div></div>
 <div class="faq-item"><button class="faq-question">Do I need to install anything?</button><div class="faq-answer">No. Everything runs in your browser — no apps, plugins, or extensions.</div></div>
+              <div class="faq-item"><button class="faq-question">Does the quality slider change the output?</button><div class="faq-answer">Only for JPEG. The slider value is passed to the decoder when the target is JPG and ignored for PNG and WebP, so switching format makes the slider disappear rather than change meaning. If you need a specific file size, convert to JPG here and then run the result through the compressor with a kilobyte target.</div></div>
+        <div class="faq-item"><button class="faq-question">Does the conversion keep the original resolution?</button><div class="faq-answer">Yes. heic2any decodes at the stored resolution and writes a file at the same width and height — nothing is downscaled on the way through. An iPhone photo that is 4032 by 3024 arrives as a 4032 by 3024 JPG, which is usually several megabytes.</div></div>
+        <div class="faq-item"><button class="faq-question">What happens if a file cannot be decoded?</button><div class="faq-answer">The decode call is wrapped in a catch that does nothing, so a failed file simply produces no download link and no message. You will only notice by counting the links against the files you dropped. If one is missing, the file is probably truncated, uses a variant the bundled decoder does not cover, or was renamed to .heic without actually being one.</div></div>
+        <div class="faq-item"><button class="faq-question">Can I convert a whole folder in one go?</button><div class="faq-answer">You can queue as many files as you like and the loop walks them in order, then offers a ZIP when there is more than one result. There is no progress bar and no resume, so on a large folder it can look frozen for a while before the links appear.</div></div>
+        <div class="faq-item"><button class="faq-question">Is anything uploaded to a server?</button><div class="faq-answer">No. The decoder library is loaded as a local file from this site, not from a third-party CDN, and the conversion itself uses the browser's memory. The photo is read with the file API and never appears in a network request — worth confirming yourself in the developer tools if the images are sensitive.</div></div>
+        <div class="faq-item"><button class="faq-question">Does it work on a Windows or Android device?</button><div class="faq-answer">Yes, and that is the usual reason to be here: Windows Photos and most Android gallery apps cannot open HEIC at all, while this page only needs a modern browser. Nothing has to be installed, and the converted JPG opens everywhere afterwards.</div></div>
       </section>
 
 <section class="related-tools">
@@ -569,7 +647,9 @@ async function convertHeic() {
   for (let i = 0; i < heicFiles.length; i++) {
     if (heicFiles[i].converted) continue;
     try {
-      const result = await heic2any({ blob: heicFiles[i].file, toType: fmt });
+      const opts = { blob: heicFiles[i].file, toType: fmt };
+      if (fmt === 'image/jpeg') opts.quality = parseInt(qualSlider.value, 10) / 100;
+      const result = await heic2any(opts);
       heicFiles[i].converted = Array.isArray(result) ? result[0] : result;
     } catch (e) {
 

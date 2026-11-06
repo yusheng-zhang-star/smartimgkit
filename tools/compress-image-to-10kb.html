@@ -23,7 +23,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/compress-image-to-10kb">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -105,6 +108,46 @@
         "@type": "Answer",
         "text": "No. Compression runs inside the page using a canvas. Your file never leaves the browser, and there is no signup."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the tool resize the image to reach 10 KB?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The canvas is created at the image's own width and height, so the output carries exactly the same pixel count as the input; only the JPEG or WebP quality changes. If 10 KB is out of reach, fewer pixels are the only real fix, and that has to happen in a resizer before or after this page."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does a PNG stay the same size?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "PNG is lossless and has no quality parameter to search, so the targeting loop is skipped for it entirely. The Auto option also keeps a PNG as PNG. Switch the output format to JPG or WebP if the image is photographic, or keep the PNG and reduce its dimensions instead."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens when 10 KB cannot be reached?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You get the smallest file the eight passes produced, and the size line reports how much larger it still is. The page does not pad the file, crop it, or quietly downscale it to force the number — that honesty is the point, because a silently resized photo is harder to notice than a label saying it missed."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are EXIF, GPS and camera fields kept?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Drawing the image onto a canvas and re-encoding it drops every metadata block, including GPS coordinates, camera model and capture date. For a public upload that is usually what you want. Keep the untouched original if you need the metadata for a record."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I send a whole folder through at 10 KB?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not on this page — it takes one file per run and the preview reflects that single file. The bulk processor handles up to 50 images at once, but it compresses by quality slider only; it has no per-file kilobyte target, so you would have to test one image to find the quality that lands near 10 KB and reuse it."
+      }
     }
   ]
 }
@@ -170,7 +213,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>🗜️ Image Compressor</span></nav>
       <div class="tool-page-header">
         <h1>Compress Image to 10 KB</h1>
-        <p>Set the target to 10 KB and let the tool search for the highest quality that still fits. Everything runs on your device — nothing is uploaded.</p>
+        <p class="answer-lead">This page runs an eight-step quality search on a JPG or WebP and keeps the largest version that still lands at or under 10 KB. It never resizes, so a 12-megapixel phone photo will miss the number no matter how far the quality drops — 10 KB only works once the pixel dimensions are small too. Encoding happens in your browser tab and the file is never uploaded.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">JPG · PNG · WebP in</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">JPG or WebP, quality searched</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>What 10 KB really asks of an image</h2>
+          <table>
+            <thead><tr><th>Your file</th><th>What the search returns</th><th>What to do instead</th></tr></thead>
+            <tbody>
+              <tr><td>Favicon or badge icon</td><td>Reaches it comfortably; flat colour keeps its edges</td><td>Use the output as it is</td></tr>
+              <tr><td>12 MP phone photo</td><td>Stalls near 40–90 KB even at 10% quality</td><td>Resize the long edge to 640 px first</td></tr>
+              <tr><td>Scanned signature</td><td>Strokes go grey and broken below about 5 KB</td><td>Crop tight to the ink, then resize</td></tr>
+              <tr><td>Transparent PNG logo</td><td>No change — PNG skips the quality search</td><td>Flatten onto white and export JPG</td></tr>
+              <tr><td>Screenshot of small text</td><td>Fine at 1000 px wide, mush at 4000 px</td><td>Crop to the paragraph you actually need</td></tr>
+              <tr><td>File already under 10 KB</td><td>A second pass can come out bigger</td><td>Skip it; you are already inside the limit</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -381,6 +445,11 @@
         <div class="faq-item"><button class="faq-question">Can a 4000×3000 photo really be compressed to 10 KB?</button><div class="faq-answer">Not at full resolution. 10 KB cannot hold that many pixels. Treat 10 KB as a two-step job: reduce the dimensions in the Image Resizer, then compress here.</div></div>
         <div class="faq-item"><button class="faq-question">Why does the tool stop at a size above 10 KB?</button><div class="faq-answer">The tool searches JPEG/WebP quality between roughly 10% and 95% and gives you the smallest result it can reach. If even the lowest quality is above 10 KB, the pixel count is the blocker — resize first.</div></div>
         <div class="faq-item"><button class="faq-question">Does anything get uploaded?</button><div class="faq-answer">No. Compression runs inside the page using a canvas. Your file never leaves the browser, and there is no signup.</div></div>
+              <div class="faq-item"><button class="faq-question">Does the tool resize the image to reach 10 KB?</button><div class="faq-answer">No. The canvas is created at the image's own width and height, so the output carries exactly the same pixel count as the input; only the JPEG or WebP quality changes. If 10 KB is out of reach, fewer pixels are the only real fix, and that has to happen in a resizer before or after this page.</div></div>
+        <div class="faq-item"><button class="faq-question">Why does a PNG stay the same size?</button><div class="faq-answer">PNG is lossless and has no quality parameter to search, so the targeting loop is skipped for it entirely. The Auto option also keeps a PNG as PNG. Switch the output format to JPG or WebP if the image is photographic, or keep the PNG and reduce its dimensions instead.</div></div>
+        <div class="faq-item"><button class="faq-question">What happens when 10 KB cannot be reached?</button><div class="faq-answer">You get the smallest file the eight passes produced, and the size line reports how much larger it still is. The page does not pad the file, crop it, or quietly downscale it to force the number — that honesty is the point, because a silently resized photo is harder to notice than a label saying it missed.</div></div>
+        <div class="faq-item"><button class="faq-question">Are EXIF, GPS and camera fields kept?</button><div class="faq-answer">No. Drawing the image onto a canvas and re-encoding it drops every metadata block, including GPS coordinates, camera model and capture date. For a public upload that is usually what you want. Keep the untouched original if you need the metadata for a record.</div></div>
+        <div class="faq-item"><button class="faq-question">Can I send a whole folder through at 10 KB?</button><div class="faq-answer">Not on this page — it takes one file per run and the preview reflects that single file. The bulk processor handles up to 50 images at once, but it compresses by quality slider only; it has no per-file kilobyte target, so you would have to test one image to find the quality that lands near 10 KB and reuse it.</div></div>
       </section>
 
 <section class="related-tools">
