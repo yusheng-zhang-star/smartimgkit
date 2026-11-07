@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/pdf-to-image">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/pdf-to-image">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -239,7 +242,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>📄 PDF to Image</span></nav>
       <div class="tool-page-header">
         <h1>📄 PDF to Image</h1>
-        <p>Convert PDF pages to PNG, JPG, or WebP images — free, in your browser.</p>
+        <p class="answer-lead">PDF to Image renders every page of your PDF as PNG, JPG or WebP at 1x–3x scale, entirely in your browser. All pages are exported as a set you download individually — there is no page-selection step. Nothing is uploaded, and higher scales mean sharper but heavier images.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Formats</span><span class="f-v">PNG · JPG · WebP</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">One image per page</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Format and scale for your use</h2>
+          <table>
+            <thead><tr><th>Use case</th><th>Format & scale</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr><td>Sharing in chat</td><td>JPG, 1.5x</td><td>Small files, readable text</td></tr>
+              <tr><td>Archiving a document</td><td>PNG, 2x</td><td>Lossless and crisp</td></tr>
+              <tr><td>Slides or social posts</td><td>JPG or WebP, 2x</td><td>Balanced quality and weight</td></tr>
+              <tr><td>Printing a page</td><td>PNG, 3x</td><td>Most pixels for the printer</td></tr>
+              <tr><td>Modern web embedding</td><td>WebP, 1.5x</td><td>Smallest at good quality</td></tr>
+              <tr><td>Picking specific pages only</td><td>Not supported</td><td>All pages render every time</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -352,13 +376,11 @@
         </div>
         <div class="feature-card">
           <div class="fc-icon">🎯</div>
-          <h3>Adjustable Quality</h3>
-          <p>Fine-tune compression or output settings to balance size and quality.</p>
+          <h3>Adjustable Quality</h3><p>Pick PNG, JPG or WebP and a render scale from 1x to 3x to balance resolution against file size.</p>
         </div>
         <div class="feature-card">
           <div class="fc-icon">📦</div>
-          <h3>Batch Support</h3>
-          <p>Process multiple files at once and download them together.</p>
+          <h3>Batch Support</h3><p>A multi-page PDF becomes a full set of images — download each one individually.</p>
         </div>
         <div class="feature-card">
           <div class="fc-icon">🆓</div>
@@ -499,12 +521,27 @@
   </footer>
 
   <script src="/js/main.js?v=8"></script>
-  <script src="/js/pdf.min.js?v=3.11.174"></script>
+  <script>
+(function(){
+  var _p=null;
+  window.__pdfReady=function(){
+    if(_p) return _p;
+    _p=new Promise(function(resolve,reject){
+      var s=document.createElement('script');
+      s.src='/js/pdf.min.js?v=3.11.174';
+      s.onload=function(){ window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js'; resolve(window.pdfjsLib); };
+      s.onerror=function(){ _p=null; reject(new Error("pdf.js load failed")); };
+      document.head.appendChild(s);
+    });
+    return _p;
+  };
+  function kick(){ window.__pdfReady(); ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.removeEventListener(e,kick,true); }); }
+  ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.addEventListener(e,kick,true); });
+})();
+</script>
   <script>
 (function() {
         // Set pdf.js worker source
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
-
         const dropzone = document.getElementById('dropzone');
         const fileInput = document.getElementById('fileInput');
         const controlsSection = document.getElementById('controlsSection');
@@ -563,7 +600,7 @@
 
         async function loadPDF(arrayBuffer) {
             try {
-                const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+                const loadingTask = (await window.__pdfReady()).getDocument({ data: arrayBuffer });
                 pdfDoc = await loadingTask.promise;
                 pageTo.placeholder = pdfDoc.numPages;
                 pdfInfo.innerHTML += ` &nbsp;|&nbsp; <strong>Pages:</strong> ${pdfDoc.numPages}`;

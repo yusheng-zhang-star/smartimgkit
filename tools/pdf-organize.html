@@ -24,7 +24,10 @@
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/pdf-organize">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/pdf-organize">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
   { 
   "inLanguage": "en","@context": "https://schema.org", "@type": "WebApplication", "name": "PDF Organizer", "url": "https://smartimgkit.com/tools/pdf-organize", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }, "description": "Reorder, delete, and duplicate PDF pages. 100% browser-based." }
@@ -161,7 +164,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>PDF Organize</span></nav>
       <div class="tool-page-header">
         <h1>📋 PDF Organizer</h1>
-        <p>Reorder, delete, and duplicate PDF pages. Drag thumbnails to rearrange. 100% in your browser.</p>
+        <p class="answer-lead">PDF Organizer shows every page as a draggable thumbnail: rearrange by dragging, click ⧉ to duplicate a page, click ✕ to delete one, then build a clean new PDF. Encrypted files are not supported, the source document is never modified, and everything happens in your browser.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Actions</span><span class="f-v">Reorder · Duplicate · Delete</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">Rebuilt PDF</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Organizing moves and what they do</h2>
+          <table>
+            <thead><tr><th>Operation</th><th>How</th><th>Note</th></tr></thead>
+            <tbody>
+              <tr><td>Fix scan order</td><td>Drag thumbnails into place</td><td>Live preview before saving</td></tr>
+              <tr><td>Repeat a blank page</td><td>Click ⧉ on it</td><td>Useful for forms you fill by hand</td></tr>
+              <tr><td>Drop a stray page</td><td>Click ✕ on it</td><td>Permanent in the output only</td></tr>
+              <tr><td>Move one page far away</td><td>Drag it across the grid</td><td>Long documents scroll in the grid</td></tr>
+              <tr><td>Encrypted bank file</td><td>Not accepted</td><td>Unlock it first</td></tr>
+              <tr><td>The original file</td><td>Never touched</td><td>Every change lands in the copy</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
         <div class="tool-container">
@@ -190,7 +214,7 @@
 
 
     <h2>Detailed User Guide</h2>
-<div class="guide-blocks"><div class="guide-block"><h3>One tool for reorder, rotate, and delete</h3><p>The organizer bundles the most common page operations into one place: drag to reorder, rotate pages, and remove unwanted pages before saving.</p></div>
+<div class="guide-blocks"><div class="guide-block"><h3>One tool for reorder, duplicate, and delete</h3><p>The organizer bundles the most common page operations into one place: drag thumbnails to reorder, click ⧉ to duplicate a page, and click ✕ to remove unwanted pages before saving.</p></div>
 <div class="guide-block"><h3>Preview thumbnails before you commit</h3><p>Each page shows as a thumbnail, so you can see exactly what you are about to change. This prevents mistakes when trimming a long document.</p></div>
 <div class="guide-block"><h3>Produces a clean, rebuilt PDF</h3><p>The final output is a fresh PDF with your chosen order and rotations applied, ready to download and share.</p></div>
 <div class="guide-block"><h3>Encrypted files are not supported</h3><p>Unlock password-protected PDFs first — the local pdf-lib engine cannot read encrypted content.</p></div>
@@ -289,7 +313,7 @@
         </div>
       </section>
 <section class="how-to-section"><h2>How to Use</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Upload the PDF</h4><p>Add the document that needs reorganizing.</p></div>
-<div class="how-to-step"><div class="step-number">2</div><h4>Reorder, rotate, and delete pages</h4><p>Drag thumbnails to reorder, turn pages, or remove unwanted ones — all from one view.</p></div>
+<div class="how-to-step"><div class="step-number">2</div><h4>Reorder, duplicate, and delete pages</h4><p>Drag thumbnails to reorder, click ⧉ to duplicate, or click ✕ to remove unwanted ones — all from one view.</p></div>
 <div class="how-to-step"><div class="step-number">3</div><h4>Preview before committing</h4><p>Each page shows as a thumbnail, so you can see exactly what you are about to change.</p></div>
 <div class="how-to-step"><div class="step-number">4</div><h4>Download the organized PDF</h4><p>Save the rebuilt document and confirm the final order and rotations are correct.</p></div></div></section>
 
@@ -327,12 +351,28 @@
   </footer>
 
   <script src="/js/main.js?v=8"></script>
-  <script src="/js/pdf.min.js?v=3.11.174"></script>
+  <script>
+(function(){
+  var _p=null;
+  window.__pdfReady=function(){
+    if(_p) return _p;
+    _p=new Promise(function(resolve,reject){
+      var s=document.createElement('script');
+      s.src='/js/pdf.min.js?v=3.11.174';
+      s.onload=function(){ window.pdfjsLib.GlobalWorkerOptions.workerSrc='/js/pdf.worker.min.js'; resolve(window.pdfjsLib); };
+      s.onerror=function(){ _p=null; reject(new Error("pdf.js load failed")); };
+      document.head.appendChild(s);
+    });
+    return _p;
+  };
+  function kick(){ window.__pdfReady(); ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.removeEventListener(e,kick,true); }); }
+  ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.addEventListener(e,kick,true); });
+})();
+</script>
   <script src="/js/pdf-lib.min.js"></script>
   <script>
   (function() {
     'use strict';
-    pdfjsLib.GlobalWorkerOptions.workerSrc = '/js/pdf.worker.min.js';
     var fileInput = document.getElementById('fileInput');
     var dropzone = document.getElementById('dropzone');
     var organizeArea = document.getElementById('organizeArea');
@@ -354,7 +394,7 @@
       setStatus('⏳ Loading PDF…');
       try {
         pdfBytes = await f.arrayBuffer();
-        var pdfDoc = await pdfjsLib.getDocument({ data: new Uint8Array(pdfBytes.slice(0)) }).promise;
+        var pdfDoc = await (await window.__pdfReady()).getDocument({ data: new Uint8Array(pdfBytes.slice(0)) }).promise;
         var numPages = pdfDoc.numPages;
         pageOrder = [];
         thumbCanvases = [];

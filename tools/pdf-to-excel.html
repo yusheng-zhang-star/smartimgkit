@@ -24,7 +24,10 @@
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/pdf-to-excel">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/pdf-to-excel">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
   { 
   "inLanguage": "en","@context": "https://schema.org", "@type": "WebApplication", "name": "PDF to Excel Converter", "url": "https://smartimgkit.com/tools/pdf-to-excel", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }, "description": "Convert PDF to Excel (.xlsx) online for free. 100% browser-based, no uploads." }
@@ -60,22 +63,6 @@
     },
     {
       "@type": "Question",
-      "name": "How are tables detected?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "The tool analyzes text X/Y positions to reconstruct rows and columns."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Does it work on scanned PDFs?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No — scanned PDFs need OCR first; this tool reads text layers."
-      }
-    },
-    {
-      "@type": "Question",
       "name": "Are my PDFs uploaded to a server?",
       "acceptedAnswer": {
         "@type": "Answer",
@@ -88,6 +75,14 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "There is no hard limit. Very large PDFs (100MB+) may slow down your browser."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I convert multiple PDFs at once?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No — one PDF per conversion. Run the tool again for each additional file; nothing is uploaded either way."
       }
     }
   ]
@@ -167,7 +162,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>PDF to Excel</span></nav>
       <div class="tool-page-header">
         <h1>📊 PDF to Excel Converter</h1>
-        <p>Convert PDF to Excel (.xlsx). Extracts text and detects table-like structures from each page into spreadsheet rows. 100% in your browser.</p>
+        <p class="answer-lead">PDF to Excel rebuilds spreadsheet structure by analyzing the X/Y position of every text item — shared baselines become rows, aligned edges become columns — and writes an .xlsx entirely in your browser. Scanned PDFs have no text layer and need OCR first, and complex merged layouts will need cleanup. One file per pass.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Method</span><span class="f-v">Text X/Y position analysis</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">.xlsx workbook</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>What converts cleanly and what does not</h2>
+          <table>
+            <thead><tr><th>PDF content</th><th>Conversion result</th><th>Workaround</th></tr></thead>
+            <tbody>
+              <tr><td>Simple bordered table</td><td>Rows and columns reconstruct well</td><td>Verify numbers after</td></tr>
+              <tr><td>Bank statement</td><td>Mostly clean grid</td><td>Spot-check a few rows</td></tr>
+              <tr><td>Merged / nested cells</td><td>Structure breaks down</td><td>Fix up by hand in Excel</td></tr>
+              <tr><td>Scanned paper table</td><td>No text layer — fails</td><td>Run OCR first, then convert</td></tr>
+              <tr><td>Multi-page tables</td><td>One sheet per page area</td><td>Stitch sheets afterwards</td></tr>
+              <tr><td>Charts and images</td><td>Not extracted</td><td>Recreate from the numbers</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
         <div class="tool-container">
@@ -299,10 +315,9 @@
         <div class="faq-item"><button class="faq-question">How does table detection work?</button><div class="faq-answer">The tool analyzes the X/Y positions of text items in the PDF. Items on the same horizontal line become a row, and items clustered at similar X positions become columns.</div></div>
         <div class="faq-item"><button class="faq-question">Does it work with scanned PDFs?</button><div class="faq-answer">No. Scanned PDFs are images without text layers. Use an OCR tool first to get text, then convert.</div></div>
         <div class="faq-item"><button class="faq-question">Is my PDF uploaded to a server?</button><div class="faq-answer">No. All processing happens locally in your browser. Your file never leaves your device.</div></div>
-      <div class="faq-item"><button class="faq-question">How are tables detected?</button><div class="faq-answer">The tool analyzes text X/Y positions to reconstruct rows and columns.</div></div>
-<div class="faq-item"><button class="faq-question">Does it work on scanned PDFs?</button><div class="faq-answer">No — scanned PDFs need OCR first; this tool reads text layers.</div></div>
 <div class="faq-item"><button class="faq-question">Are my PDFs uploaded to a server?</button><div class="faq-answer">No. All processing happens locally in your browser using pdf-lib and pdf.js.</div></div>
 <div class="faq-item"><button class="faq-question">Is there a page or file limit?</button><div class="faq-answer">There is no hard limit. Very large PDFs (100MB+) may slow down your browser.</div></div>
+              <div class="faq-item"><button class="faq-question">Can I convert multiple PDFs at once?</button><div class="faq-answer">No — one PDF per conversion. Run the tool again for each additional file; nothing is uploaded either way.</div></div>
       </section>
 
       <section class="related-tools">
@@ -333,12 +348,28 @@
   </footer>
 
   <script src="/js/main.js?v=8"></script>
-  <script src="/js/pdf.min.js?v=3.11.174"></script>
+  <script>
+(function(){
+  var _p=null;
+  window.__pdfReady=function(){
+    if(_p) return _p;
+    _p=new Promise(function(resolve,reject){
+      var s=document.createElement('script');
+      s.src='/js/pdf.min.js?v=3.11.174';
+      s.onload=function(){ window.pdfjsLib.GlobalWorkerOptions.workerSrc='/js/pdf.worker.min.js'; resolve(window.pdfjsLib); };
+      s.onerror=function(){ _p=null; reject(new Error("pdf.js load failed")); };
+      document.head.appendChild(s);
+    });
+    return _p;
+  };
+  function kick(){ window.__pdfReady(); ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.removeEventListener(e,kick,true); }); }
+  ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.addEventListener(e,kick,true); });
+})();
+</script>
   <script src="/js/xlsx.full.min.js"></script>
   <script>
   (function() {
     'use strict';
-    pdfjsLib.GlobalWorkerOptions.workerSrc = '/js/pdf.worker.min.js';
     var fileInput = document.getElementById('fileInput');
     var dropzone = document.getElementById('dropzone');
     var convertBtn = document.getElementById('convertBtn');
@@ -390,7 +421,7 @@
       setProgress(0); setStatus('⏳ Reading PDF…');
       try {
         var arrayBuffer = await currentFile.arrayBuffer();
-        var pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        var pdf = await (await window.__pdfReady()).getDocument({ data: arrayBuffer }).promise;
         var numPages = pdf.numPages;
         var wb = XLSX.utils.book_new();
         var totalCells = 0;

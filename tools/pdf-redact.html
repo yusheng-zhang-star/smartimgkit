@@ -24,7 +24,10 @@
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/pdf-redact">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/pdf-redact">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
   { 
   "inLanguage": "en","@context": "https://schema.org", "@type": "WebApplication", "name": "Redact PDF", "url": "https://smartimgkit.com/tools/pdf-redact", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }, "description": "Black out sensitive info in PDFs. 100% browser-based, privacy-first." }
@@ -166,7 +169,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>Redact PDF</span></nav>
       <div class="tool-page-header">
         <h1>⬛ Redact PDF</h1>
-        <p>Black out sensitive information in your PDF. Drag over text, names, or numbers to permanently hide them. 100% in your browser — your file never leaves your device.</p>
+        <p class="answer-lead">Redact PDF draws opaque black rectangles over anything you drag across and bakes them into the saved file. This is visual redaction: the underlying text can still exist in the PDF structure, so for sensitive documents run the result through a flatten or print-to-PDF step afterwards. Everything stays on your device.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Method</span><span class="f-v">Opaque black boxes</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">Redacted-looking PDF</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Redaction in practice — know the boundary</h2>
+          <table>
+            <thead><tr><th>You hide</th><th>What actually happens</th><th>Extra step for safety</th></tr></thead>
+            <tbody>
+              <tr><td>A name or amount</td><td>Black box baked onto the page</td><td>Text may survive underneath</td></tr>
+              <tr><td>A whole paragraph</td><td>Box covers it visually</td><td>Same caveat applies</td></tr>
+              <tr><td>Regulated / legal content</td><td>Visual cover only</td><td>Flatten or print-to-PDF after</td></tr>
+              <tr><td>Metadata and comments</td><td>Not touched by boxes</td><td>Review file properties too</td></tr>
+              <tr><td>Many areas on many pages</td><td>Drag per page, navigation built in</td><td>Check each page before saving</td></tr>
+              <tr><td>Copy-paste protection</td><td>Not guaranteed</td><td>True removal needs re-authoring</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
         <div class="tool-container">
@@ -182,7 +206,7 @@
               <span id="pageInfo">Page 1 / 1</span>
               <button class="btn btn-secondary" id="nextPage">Next ▶</button>
             </div>
-            <p style="text-align:center;font-size:0.85rem;color:var(--text-secondary);">Drag over the area you want to redact. Black rectangles will cover it permanently.</p>
+            <p style="text-align:center;font-size:0.85rem;color:var(--text-secondary);">Drag over the area you want to redact. Black rectangles will cover the area on the saved copy.</p>
             <div class="canvas-wrap" id="canvasWrap"><canvas id="pageCanvas"></canvas></div>
             <div class="redaction-list" id="redactionList"></div>
             <div class="status" id="statusText"></div>
@@ -202,8 +226,8 @@
 
 
     <h2>Detailed User Guide</h2>
-<div class="guide-blocks"><div class="guide-block"><h3>True redaction removes the underlying data</h3><p>Unlike a black box drawn over text, this tool removes the content underneath the redaction so it cannot be recovered by copying or searching. Use it for sensitive numbers and names.</p></div>
-<div class="guide-block"><h3>Apply black boxes over the areas to hide</h3><p>Select the regions you want to redact and the tool strips the text and images beneath them, producing a genuinely safe document.</p></div>
+<div class="guide-blocks"><div class="guide-block"><h3>Black boxes hide content visually</h3><p>The tool draws opaque black rectangles over the areas you select. The underlying text can still exist in the PDF structure, so this is visual redaction — for regulated documents, follow up with a flatten or print-to-PDF step.</p></div>
+<div class="guide-block"><h3>Draw a box over each area to hide</h3><p>Drag over names, numbers or paragraphs and the tool bakes an opaque black rectangle into the saved PDF at that exact position.</p></div>
 <div class="guide-block"><h3>Check for hidden data before sharing</h3><p>Redaction here targets visible content. Review the final PDF for metadata, comments, and hidden text if the document must be fully sanitized.</p></div>
 <div class="guide-block"><h3>Local processing means the redaction stays private</h3><p>Everything runs in your browser, so sensitive records never pass through a third-party server.</p></div>
 <div class="guide-block"><h3>Verify the result carefully</h3><p>Open the redacted PDF and search for the terms you meant to remove to confirm they are gone — this final check is essential for legal documents.</p></div></div>
@@ -337,12 +361,28 @@
   </footer>
 
   <script src="/js/main.js?v=8"></script>
-  <script src="/js/pdf.min.js?v=3.11.174"></script>
+  <script>
+(function(){
+  var _p=null;
+  window.__pdfReady=function(){
+    if(_p) return _p;
+    _p=new Promise(function(resolve,reject){
+      var s=document.createElement('script');
+      s.src='/js/pdf.min.js?v=3.11.174';
+      s.onload=function(){ window.pdfjsLib.GlobalWorkerOptions.workerSrc='/js/pdf.worker.min.js'; resolve(window.pdfjsLib); };
+      s.onerror=function(){ _p=null; reject(new Error("pdf.js load failed")); };
+      document.head.appendChild(s);
+    });
+    return _p;
+  };
+  function kick(){ window.__pdfReady(); ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.removeEventListener(e,kick,true); }); }
+  ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.addEventListener(e,kick,true); });
+})();
+</script>
   <script src="/js/pdf-lib.min.js"></script>
   <script>
   (function() {
     'use strict';
-    pdfjsLib.GlobalWorkerOptions.workerSrc = '/js/pdf.worker.min.js';
     var fileInput = document.getElementById('fileInput');
     var dropzone = document.getElementById('dropzone');
     var redactArea = document.getElementById('redactArea');
@@ -369,7 +409,7 @@
       setStatus('⏳ Loading PDF…');
       try {
         pdfBytes = await f.arrayBuffer();
-        pdfDoc = await pdfjsLib.getDocument({ data: new Uint8Array(pdfBytes.slice(0)) }).promise;
+        pdfDoc = await (await window.__pdfReady()).getDocument({ data: new Uint8Array(pdfBytes.slice(0)) }).promise;
         numPages = pdfDoc.numPages; currentPage = 1; redactions = {};
         redactArea.style.display = 'block'; dropzone.style.display = 'none';
         await renderPage();
