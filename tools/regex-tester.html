@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/regex-tester">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/regex-tester">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -146,14 +149,6 @@
     },
     {
       "@type": "Question",
-      "name": "What regex flavor is used?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Standard JavaScript regular expressions."
-      }
-    },
-    {
-      "@type": "Question",
       "name": "Are these tools accurate enough for production?",
       "acceptedAnswer": {
         "@type": "Answer",
@@ -230,7 +225,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>🔍 Regex Tester</span></nav>
       <div class="tool-page-header">
         <h1>🔍 Regex Tester</h1>
-        <p>Test and debug regular expressions with real-time matching — free, in your browser.</p>
+        <p class="answer-lead">Regex Tester runs your pattern against sample text live, using JavaScript's ES2018+ regex engine — lookaheads, lookbehinds, named groups and Unicode classes all work, while PCRE/Python-only syntax does not. Matches and capture groups are highlighted as you type, and nothing ever leaves your browser.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Flavor</span><span class="f-v">JavaScript ES2018+</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">Highlighted matches</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Regex features in this tester</h2>
+          <table>
+            <thead><tr><th>Feature</th><th>Supported?</th><th>Note</th></tr></thead>
+            <tbody>
+              <tr><td>Lookaheads & lookbehinds</td><td>Yes</td><td>ES2018+ engine</td></tr>
+              <tr><td>Named groups (?<name>…)</td><td>Yes</td><td>Shown in the match list</td></tr>
+              <tr><td>Unicode classes \p{…}</td><td>Yes</td><td>Pair with the u flag</td></tr>
+              <tr><td>PCRE / PHP-only syntax</td><td>No</td><td>JavaScript flavor only</td></tr>
+              <tr><td>Python-specific syntax</td><td>No</td><td>(?:…) differences may bite</td></tr>
+              <tr><td>Catastrophic backtracking</td><td>Possible</td><td>A pathological pattern can hang the tab</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -381,7 +397,6 @@
       </div>
     </section>
 <section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">Which regex flavor is used?</button><div class="faq-answer">JavaScript (ES2018+) regex. Supports lookaheads, lookbehinds, named groups, and Unicode.</div></div><div class="faq-item"><button class="faq-question">Do you support PCRE/PHP/Python regex?</button><div class="faq-answer">Not directly. This tool uses JavaScript regex which is slightly different from PCRE.</div></div><div class="faq-item"><button class="faq-question">Is my data safe?</button><div class="faq-answer">Yes. Everything runs in your browser. No data is sent anywhere.</div></div><div class="faq-item"><button class="faq-question">Are match highlights shown?</button><div class="faq-answer">Yes — matches are highlighted in the input text.</div></div>
-<div class="faq-item"><button class="faq-question">What regex flavor is used?</button><div class="faq-answer">Standard JavaScript regular expressions.</div></div>
 <div class="faq-item"><button class="faq-question">Are these tools accurate enough for production?</button><div class="faq-answer">Yes — they follow standard specifications (RFC 3986, JSON spec, etc.).</div></div>
 <div class="faq-item"><button class="faq-question">Is my input stored?</button><div class="faq-answer">No. Everything is processed in your browser and discarded when you close the tab.</div></div>
       </section>

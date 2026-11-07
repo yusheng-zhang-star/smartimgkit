@@ -24,7 +24,10 @@
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/pdf-to-ppt">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/pdf-to-ppt">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
   { 
   "inLanguage": "en","@context": "https://schema.org", "@type": "WebApplication", "name": "PDF to PowerPoint Converter", "url": "https://smartimgkit.com/tools/pdf-to-ppt", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }, "description": "Convert PDF to PowerPoint (.pptx) online for free. 100% browser-based, no uploads." }
@@ -60,14 +63,6 @@
     },
     {
       "@type": "Question",
-      "name": "Is the text editable?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Slides contain page images; for editable text use PDF to Word."
-      }
-    },
-    {
-      "@type": "Question",
       "name": "Are my PDFs uploaded to a server?",
       "acceptedAnswer": {
         "@type": "Answer",
@@ -80,6 +75,14 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "There is no hard limit. Very large PDFs (100MB+) may slow down your browser."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I convert multiple PDFs at once?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No — one PDF per conversion. Run the tool again for each file; every run stays local."
       }
     }
   ]
@@ -161,7 +164,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>PDF to PPT</span></nav>
       <div class="tool-page-header">
         <h1>📑 PDF to PowerPoint Converter</h1>
-        <p>Convert PDF to PowerPoint (.pptx). Each page is rendered as a high-resolution image on its own slide. 100% in your browser.</p>
+        <p class="answer-lead">PDF to PowerPoint turns each PDF page into a high-resolution image on its own slide — layout fidelity is perfect, but the text is not editable in PowerPoint. Three quality levels (1.5x / 2x / 3x) trade file size for sharpness. Conversion is local and handles one PDF per pass.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Mapping</span><span class="f-v">One page = one slide</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">.pptx, image slides</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Quality settings and their trade-offs</h2>
+          <table>
+            <thead><tr><th>Your goal</th><th>Quality setting</th><th>Trade-off</th></tr></thead>
+            <tbody>
+              <tr><td>Quick internal deck</td><td>Standard (1.5x)</td><td>Smallest file, softer zooms</td></tr>
+              <tr><td>Presenting on a projector</td><td>High (2x)</td><td>Default — crisp at full screen</td></tr>
+              <tr><td>Large screens or printing slides</td><td>Maximum (3x)</td><td>Sharpest, slowest to build</td></tr>
+              <tr><td>Editable slide text</td><td>Not possible</td><td>Use PDF to Word instead</td></tr>
+              <tr><td>Rearranging slide order</td><td>In PowerPoint afterwards</td><td>Pages land in PDF order</td></tr>
+              <tr><td>Multiple files at once</td><td>One PDF per pass</td><td>Run the tool again per file</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
         <div class="tool-container">
@@ -296,9 +320,9 @@
         <div class="faq-item"><button class="faq-question">Is the text editable in the PPT?</button><div class="faq-answer">No — each slide contains a high-resolution image of the PDF page, preserving the exact layout. This guarantees visual fidelity but text is not selectable. For editable text, use the PDF to Word tool.</div></div>
         <div class="faq-item"><button class="faq-question">Is my PDF uploaded to a server?</button><div class="faq-answer">No. All rendering and PPT generation happens locally in your browser.</div></div>
       <div class="faq-item"><button class="faq-question">How are pages converted?</button><div class="faq-answer">Each PDF page becomes a high-resolution image slide.</div></div>
-<div class="faq-item"><button class="faq-question">Is the text editable?</button><div class="faq-answer">Slides contain page images; for editable text use PDF to Word.</div></div>
 <div class="faq-item"><button class="faq-question">Are my PDFs uploaded to a server?</button><div class="faq-answer">No. All processing happens locally in your browser using pdf-lib and pdf.js.</div></div>
 <div class="faq-item"><button class="faq-question">Is there a page or file limit?</button><div class="faq-answer">There is no hard limit. Very large PDFs (100MB+) may slow down your browser.</div></div>
+              <div class="faq-item"><button class="faq-question">Can I convert multiple PDFs at once?</button><div class="faq-answer">No — one PDF per conversion. Run the tool again for each file; every run stays local.</div></div>
       </section>
 
       <section class="related-tools">
@@ -329,12 +353,28 @@
   </footer>
 
   <script src="/js/main.js?v=8"></script>
-  <script src="/js/pdf.min.js?v=3.11.174"></script>
+  <script>
+(function(){
+  var _p=null;
+  window.__pdfReady=function(){
+    if(_p) return _p;
+    _p=new Promise(function(resolve,reject){
+      var s=document.createElement('script');
+      s.src='/js/pdf.min.js?v=3.11.174';
+      s.onload=function(){ window.pdfjsLib.GlobalWorkerOptions.workerSrc='/js/pdf.worker.min.js'; resolve(window.pdfjsLib); };
+      s.onerror=function(){ _p=null; reject(new Error("pdf.js load failed")); };
+      document.head.appendChild(s);
+    });
+    return _p;
+  };
+  function kick(){ window.__pdfReady(); ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.removeEventListener(e,kick,true); }); }
+  ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.addEventListener(e,kick,true); });
+})();
+</script>
   <script src="/js/pptxgen.bundle.js"></script>
   <script>
   (function() {
     'use strict';
-    pdfjsLib.GlobalWorkerOptions.workerSrc = '/js/pdf.worker.min.js';
     var fileInput = document.getElementById('fileInput');
     var dropzone = document.getElementById('dropzone');
     var convertBtn = document.getElementById('convertBtn');
@@ -368,7 +408,7 @@
       try {
         var scale = parseFloat(scaleSel.value);
         var arrayBuffer = await currentFile.arrayBuffer();
-        var pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        var pdf = await (await window.__pdfReady()).getDocument({ data: arrayBuffer }).promise;
         var numPages = pdf.numPages;
         var pptx = new PptxGenJS();
         // Use 10x7.5 inches (standard 4:3) or 13.33x7.5 (16:9) based on first page aspect

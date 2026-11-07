@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/qr-code-generator">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/qr-code-generator">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <style>
     .tool-workspace { display: flex; flex-direction: column; gap: 24px; }
     .controls { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
@@ -131,7 +134,7 @@
       "name": "Can I use my own images and fonts?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes — upload your own assets and use built-in font options."
+        "text": "Customization covers the six content types, foreground and background colors, and a size from 100 to 1000 px. There is no logo or image upload here — keep contrast high so the code stays scannable."
       }
     },
     {
@@ -140,6 +143,22 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "No. Your downloads are clean and watermark-free."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What size should I use for print?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The size field goes from 100 to 1000 px. For anything printed, download the SVG instead — it scales to any dimensions without blurring. Always test-scan a printed proof before a full print run."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do the QR codes expire or track scans?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. These are static codes generated in your browser — the content is baked into the pattern itself. There is no redirect service, no expiry and no scan counting."
       }
     }
   ]
@@ -170,7 +189,28 @@
     <div class="container">
       <div class="tool-page-header">
         <h1>📱 QR Code Generator</h1>
-        <p>Generate QR codes instantly. Free, online, no signup.</p>
+        <p class="answer-lead">QR Code Generator builds static QR codes for URLs, plain text, Wi-Fi networks, email, phone numbers and SMS — with adjustable foreground/background colors and a 100–1000 px size, downloadable as PNG or SVG. Codes are generated locally, never expire and never track scans; there is no logo overlay.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Content types</span><span class="f-v">URL · Text · WiFi · Email · Phone · SMS</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">PNG or SVG</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Content types and what they do on a phone</h2>
+          <table>
+            <thead><tr><th>Content type</th><th>Encodes</th><th>Use it for</th></tr></thead>
+            <tbody>
+              <tr><td>URL / Website</td><td>A web address</td><td>Menus, packaging, business cards</td></tr>
+              <tr><td>WiFi Network</td><td>SSID + password</td><td>Guests join without typing</td></tr>
+              <tr><td>Plain Text</td><td>Any message</td><td>Notes, serial numbers, codes</td></tr>
+              <tr><td>Email</td><td>Address (+ subject)</td><td>Pre-filled contact messages</td></tr>
+              <tr><td>Phone Number</td><td>A tel: link</td><td>One-tap dialing on flyers</td></tr>
+              <tr><td>SMS</td><td>Number + draft text</td><td>Text-me campaigns</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div class="tool-workspace">
@@ -322,7 +362,7 @@
 <div class="guide-block"><h3>Generated locally, no data sent</h3><p>The QR code is created in your browser, so any content you encode — including WiFi passwords — never leaves your device.</p></div>
 <div class="guide-block"><h3>Test before printing in bulk</h3><p>Scan the code with your phone before committing it to hundreds of printed copies, to confirm it opens the right destination.</p></div>
 <div class="guide-block"><h3>Error correction keeps codes scannable</h3><p>QR codes include error-correction data, so they remain scannable even with minor damage or a logo overlay. A larger code with more correction is more robust.</p></div>
-<div class="guide-block"><h3>Add a logo or custom styling</h3><p>A QR code can be styled with your brand colors or a centered logo while staying scannable, thanks to built-in error correction. Test after styling to be sure it still works.</p></div>
+<div class="guide-block"><h3>Custom colors and size</h3><p>Foreground and background colors are adjustable, and the code can be generated from 100 to 1000 px or downloaded as SVG for print scaling. There is no logo overlay — keep contrast strong and test with a real phone camera.</p></div>
 <div class="guide-block"><h3>Static vs dynamic content</h3><p>A static QR code encodes the content directly, so it always works offline but cannot be edited later. For content you may change, use a dynamic redirect service instead.</p></div></div>
 
     <section class="amazon-store-section">
@@ -358,8 +398,10 @@
         <h2>Frequently Asked Questions</h2>
 <div class="faq-item"><button class="faq-question">Can I customize the QR code?</button><div class="faq-answer">Yes — size, color, and error-correction level.</div></div>
 <div class="faq-item"><button class="faq-question">What can I encode?</button><div class="faq-answer">URLs, text, phone numbers, and more.</div></div>
-<div class="faq-item"><button class="faq-question">Can I use my own images and fonts?</button><div class="faq-answer">Yes — upload your own assets and use built-in font options.</div></div>
+<div class="faq-item"><button class="faq-question">Can I use my own images and fonts?</button><div class="faq-answer">Customization covers the six content types, foreground and background colors, and a size from 100 to 1000 px. There is no logo or image upload here — keep contrast high so the code stays scannable.</div></div>
 <div class="faq-item"><button class="faq-question">Are the outputs watermarked?</button><div class="faq-answer">No. Your downloads are clean and watermark-free.</div></div>
+              <div class="faq-item"><button class="faq-question">What size should I use for print?</button><div class="faq-answer">The size field goes from 100 to 1000 px. For anything printed, download the SVG instead — it scales to any dimensions without blurring. Always test-scan a printed proof before a full print run.</div></div>
+        <div class="faq-item"><button class="faq-question">Do the QR codes expire or track scans?</button><div class="faq-answer">No. These are static codes generated in your browser — the content is baked into the pattern itself. There is no redirect service, no expiry and no scan counting.</div></div>
       </section>
 
 
