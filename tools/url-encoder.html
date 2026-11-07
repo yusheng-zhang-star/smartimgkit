@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/url-encoder">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/url-encoder">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -138,14 +141,6 @@
     },
     {
       "@type": "Question",
-      "name": "Does it follow RFC 3986?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes — standard percent-encoding for URLs."
-      }
-    },
-    {
-      "@type": "Question",
       "name": "Can it encode full URLs?",
       "acceptedAnswer": {
         "@type": "Answer",
@@ -230,7 +225,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>🔗 URL Encoder / Decoder</span></nav>
       <div class="tool-page-header">
         <h1>🔗 URL Encoder / Decoder</h1>
-        <p>Encode and decode URL strings with percent-encoding — free, in your browser.</p>
+        <p class="answer-lead">URL Encoder/Decoder applies standard percent-encoding (RFC 3986, via the browser's native encodeURIComponent) and decodes it back, with full UTF-8 support, live as you type. Use it before putting user text into query strings, and to decode those cryptic redirect URLs when debugging. Everything runs locally.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Standard</span><span class="f-v">RFC 3986 percent-encoding</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">Encoded / decoded text</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Encode or Encode Component — which one</h2>
+          <table>
+            <thead><tr><th>Content</th><th>What to use</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr><td>A query parameter value</td><td>Encode component</td><td>&, = and ? get escaped</td></tr>
+              <tr><td>A full URL you want to pass along</td><td>Encode (whole URL)</td><td>Keeps :// and separators intact</td></tr>
+              <tr><td>Spaces in a search term</td><td>Encode component</td><td>Becomes %20, link survives</td></tr>
+              <tr><td>Non-Latin characters</td><td>Either — UTF-8 safe</td><td>Emoji and 中文 encode correctly</td></tr>
+              <tr><td>A % that is not valid escape</td><td>Decode fails</td><td>Garbage in, error out</td></tr>
+              <tr><td>Plus signs for spaces</td><td>Decode treats + literally</td><td>Form-style encoding differs</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -374,7 +390,7 @@
         <p class="amazon-disclaimer">As an Amazon Associate, we earn from qualifying purchases.</p>
       </div>
     </section>
-<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">What is the difference between Encode and Encode Component?</button><div class="faq-answer">encodeURI preserves URL separators like / and ?. encodeURIComponent encodes everything including them — use for query parameters.</div></div><div class="faq-item"><button class="faq-question">Is this RFC 3986 compliant?</button><div class="faq-answer">Yes, using the native JavaScript encodeURIComponent function which follows the standard.</div></div><div class="faq-item"><button class="faq-question">Why does decode sometimes fail?</button><div class="faq-answer">If the input contains invalid percent sequences (like %ZZ), decode will fail. Check your input.</div></div><div class="faq-item"><button class="faq-question">Does it follow RFC 3986?</button><div class="faq-answer">Yes — standard percent-encoding for URLs.</div></div>
+<section class="faq-section"><h2>Frequently Asked Questions</h2><div class="faq-item"><button class="faq-question">What is the difference between Encode and Encode Component?</button><div class="faq-answer">encodeURI preserves URL separators like / and ?. encodeURIComponent encodes everything including them — use for query parameters.</div></div><div class="faq-item"><button class="faq-question">Is this RFC 3986 compliant?</button><div class="faq-answer">Yes, using the native JavaScript encodeURIComponent function which follows the standard.</div></div><div class="faq-item"><button class="faq-question">Why does decode sometimes fail?</button><div class="faq-answer">If the input contains invalid percent sequences (like %ZZ), decode will fail. Check your input.</div></div>
 <div class="faq-item"><button class="faq-question">Can it encode full URLs?</button><div class="faq-answer">Yes — encode components or full URLs.</div></div>
 <div class="faq-item"><button class="faq-question">Are these tools accurate enough for production?</button><div class="faq-answer">Yes — they follow standard specifications (RFC 3986, JSON spec, etc.).</div></div>
 <div class="faq-item"><button class="faq-question">Is my input stored?</button><div class="faq-answer">No. Everything is processed in your browser and discarded when you close the tab.</div></div>
