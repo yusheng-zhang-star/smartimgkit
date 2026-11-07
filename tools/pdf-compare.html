@@ -24,7 +24,10 @@
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/pdf-compare">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/pdf-compare">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
   { 
   "inLanguage": "en","@context": "https://schema.org", "@type": "WebApplication", "name": "PDF Compare", "url": "https://smartimgkit.com/tools/pdf-compare", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }, "description": "Compare two PDFs side by side. 100% browser-based." }
@@ -176,7 +179,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>PDF Compare</span></nav>
       <div class="tool-page-header">
         <h1>🔍 PDF Compare</h1>
-        <p>Compare two PDF files side by side with synchronized scrolling. Visual page-by-page comparison. 100% in your browser.</p>
+        <p class="answer-lead">PDF Compare shows two PDFs side by side with synchronized scrolling, so page-by-page differences between a contract draft and its revision stand out as you scroll. It is a visual review tool — there is no automated text diff — and files with different page counts are handled by showing what it can. Both documents stay in your browser.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Input</span><span class="f-v">Two PDFs</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">Visual side-by-side view</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Reviewing two PDF revisions</h2>
+          <table>
+            <thead><tr><th>Difference type</th><th>How it shows up</th><th>Fallback</th></tr></thead>
+            <tbody>
+              <tr><td>Rewritten clause</td><td>Visible when you scroll to the page</td><td>Zoom in and read line by line</td></tr>
+              <tr><td>Moved or resized layout</td><td>Offset text on the paired page</td><td>Check where page numbers diverge</td></tr>
+              <tr><td>Added or removed page</td><td>Page counts stop matching</td><td>Note where the shift begins</td></tr>
+              <tr><td>Scan versus digital copy</td><td>Both render as page images</td><td>Visual only — no text extraction</td></tr>
+              <tr><td>Metadata-only change</td><td>Invisible here</td><td>Compare file properties instead</td></tr>
+              <tr><td>Machine-readable diff needed</td><td>Not this tool</td><td>Export text and run Text Diff Checker</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
         <div class="tool-container">
@@ -347,11 +371,27 @@
   </footer>
 
   <script src="/js/main.js?v=8"></script>
-  <script src="/js/pdf.min.js?v=3.11.174"></script>
+  <script>
+(function(){
+  var _p=null;
+  window.__pdfReady=function(){
+    if(_p) return _p;
+    _p=new Promise(function(resolve,reject){
+      var s=document.createElement('script');
+      s.src='/js/pdf.min.js?v=3.11.174';
+      s.onload=function(){ window.pdfjsLib.GlobalWorkerOptions.workerSrc='/js/pdf.worker.min.js'; resolve(window.pdfjsLib); };
+      s.onerror=function(){ _p=null; reject(new Error("pdf.js load failed")); };
+      document.head.appendChild(s);
+    });
+    return _p;
+  };
+  function kick(){ window.__pdfReady(); ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.removeEventListener(e,kick,true); }); }
+  ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.addEventListener(e,kick,true); });
+})();
+</script>
   <script>
   (function() {
     'use strict';
-    pdfjsLib.GlobalWorkerOptions.workerSrc = '/js/pdf.worker.min.js';
     var statusText = document.getElementById('statusText');
     var resultArea = document.getElementById('resultArea');
     var file1 = document.getElementById('file1');
@@ -370,7 +410,7 @@
       var f = e.target.files[0]; if (!f) return;
       var reader = new FileReader();
       reader.onload = async function(ev) {
-        try { pdfA = await pdfjsLib.getDocument({ data: new Uint8Array(ev.target.result) }).promise; }
+        try { pdfA = await (await window.__pdfReady()).getDocument({ data: new Uint8Array(ev.target.result) }).promise; }
         catch(err) { setStatus('❌ PDF A error: ' + err.message); return; }
         document.getElementById('label1').textContent = f.name + ' (' + pdfA.numPages + ' pages)';
         box1.classList.add('loaded');
@@ -382,7 +422,7 @@
       var f = e.target.files[0]; if (!f) return;
       var reader = new FileReader();
       reader.onload = async function(ev) {
-        try { pdfB = await pdfjsLib.getDocument({ data: new Uint8Array(ev.target.result) }).promise; }
+        try { pdfB = await (await window.__pdfReady()).getDocument({ data: new Uint8Array(ev.target.result) }).promise; }
         catch(err) { setStatus('❌ PDF B error: ' + err.message); return; }
         document.getElementById('label2').textContent = f.name + ' (' + pdfB.numPages + ' pages)';
         box2.classList.add('loaded');

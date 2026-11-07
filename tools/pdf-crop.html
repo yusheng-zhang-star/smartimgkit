@@ -24,7 +24,10 @@
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/pdf-crop">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/pdf-crop">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
   { 
   "inLanguage": "en","@context": "https://schema.org", "@type": "WebApplication", "name": "PDF Crop", "url": "https://smartimgkit.com/tools/pdf-crop", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }, "description": "Crop PDF pages online for free. 100% browser-based." }
@@ -168,7 +171,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>PDF Crop</span></nav>
       <div class="tool-page-header">
         <h1>✂️ PDF Crop</h1>
-        <p>Crop PDF pages by visually selecting the area to keep. Drag to select, then apply to current or all pages. 100% in your browser.</p>
+        <p class="answer-lead">PDF Crop lets you drag a crop box on a page preview and apply it to the current page or all pages, cutting away outer margins. The hidden area is masked, not deleted — content still exists in the file, so use Redact PDF when something must truly be gone. Encrypted PDFs must be unlocked first, and everything runs locally.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Scope</span><span class="f-v">One page or all pages</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">Cropped PDF</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Cropping choices and their consequences</h2>
+          <table>
+            <thead><tr><th>You do</th><th>What changes</th><th>Watch out</th></tr></thead>
+            <tbody>
+              <tr><td>Crop scan borders on all pages</td><td>Every page gets the same box</td><td>Spot-check each page after</td></tr>
+              <tr><td>Crop a single page</td><td>Only that page changes</td><td>Use the current-page option</td></tr>
+              <tr><td>Trim a header or footer strip</td><td>Hidden from view</td><td>The text still exists in the file</td></tr>
+              <tr><td>Sensitive content at the edge</td><td>Crop only hides it visually</td><td>Use Redact PDF to remove it</td></tr>
+              <tr><td>Encrypted bank PDF</td><td>Tool refuses it</td><td>Unlock first</td></tr>
+              <tr><td>Crop box set too tight</td><td>Boundary text gets clipped</td><td>Leave a small margin</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
         <div class="tool-container">
@@ -343,12 +367,28 @@
   </footer>
 
   <script src="/js/main.js?v=8"></script>
-  <script src="/js/pdf.min.js?v=3.11.174"></script>
+  <script>
+(function(){
+  var _p=null;
+  window.__pdfReady=function(){
+    if(_p) return _p;
+    _p=new Promise(function(resolve,reject){
+      var s=document.createElement('script');
+      s.src='/js/pdf.min.js?v=3.11.174';
+      s.onload=function(){ window.pdfjsLib.GlobalWorkerOptions.workerSrc='/js/pdf.worker.min.js'; resolve(window.pdfjsLib); };
+      s.onerror=function(){ _p=null; reject(new Error("pdf.js load failed")); };
+      document.head.appendChild(s);
+    });
+    return _p;
+  };
+  function kick(){ window.__pdfReady(); ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.removeEventListener(e,kick,true); }); }
+  ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.addEventListener(e,kick,true); });
+})();
+</script>
   <script src="/js/pdf-lib.min.js"></script>
   <script>
   (function() {
     'use strict';
-    pdfjsLib.GlobalWorkerOptions.workerSrc = '/js/pdf.worker.min.js';
     var fileInput = document.getElementById('fileInput');
     var dropzone = document.getElementById('dropzone');
     var cropArea = document.getElementById('cropArea');
@@ -374,7 +414,7 @@
       setStatus('⏳ Loading PDF…');
       try {
         pdfBytes = await f.arrayBuffer();
-        pdfDoc = await pdfjsLib.getDocument({ data: new Uint8Array(pdfBytes.slice(0)) }).promise;
+        pdfDoc = await (await window.__pdfReady()).getDocument({ data: new Uint8Array(pdfBytes.slice(0)) }).promise;
         numPages = pdfDoc.numPages; currentPage = 1;
         cropArea.style.display = 'block'; dropzone.style.display = 'none';
         selStart = null; selEnd = null;

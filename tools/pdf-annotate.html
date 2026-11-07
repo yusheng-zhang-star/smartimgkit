@@ -24,7 +24,10 @@
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/pdf-annotate">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/pdf-annotate">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
   { 
   "inLanguage": "en","@context": "https://schema.org", "@type": "WebApplication", "name": "PDF Annotate", "url": "https://smartimgkit.com/tools/pdf-annotate", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }, "description": "Highlight, underline, and annotate PDFs. 100% browser-based." }
@@ -167,7 +170,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>PDF Annotate</span></nav>
       <div class="tool-page-header">
         <h1>🖍️ PDF Annotate</h1>
-        <p>Add highlights, underlines, and text notes to your PDF. Drag to highlight or underline, click to place notes. 100% in your browser.</p>
+        <p class="answer-lead">PDF Annotate adds highlights, underlines and text notes to a PDF in your browser: drag across text to mark it, click to place a note, and pick your highlight color. The marks are drawn into the output file, so any PDF viewer shows them. Password-protected PDFs must be unlocked first. The document never leaves your device.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Marks</span><span class="f-v">Highlight, underline, note</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">Annotated PDF</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Choosing the right mark</h2>
+          <table>
+            <thead><tr><th>Review need</th><th>Mark to use</th><th>Behavior</th></tr></thead>
+            <tbody>
+              <tr><td>Key passage in a contract</td><td>Highlight (pick a color)</td><td>Drawn onto the page</td></tr>
+              <tr><td>Clause to revisit later</td><td>Underline</td><td>Lighter than a highlight</td></tr>
+              <tr><td>Question for a co-author</td><td>Text note</td><td>Your words appear where you click</td></tr>
+              <tr><td>Marking several pages</td><td>Page navigation</td><td>Annotate page by page</td></tr>
+              <tr><td>Encrypted bank-statement PDF</td><td>Tool refuses it</td><td>Unlock first, then annotate</td></tr>
+              <tr><td>Editable comments in Acrobat</td><td>Not what this does</td><td>Marks are flattened into pages</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
         <div class="tool-container">
@@ -353,12 +377,28 @@
   </footer>
 
   <script src="/js/main.js?v=8"></script>
-  <script src="/js/pdf.min.js?v=3.11.174"></script>
+  <script>
+(function(){
+  var _p=null;
+  window.__pdfReady=function(){
+    if(_p) return _p;
+    _p=new Promise(function(resolve,reject){
+      var s=document.createElement('script');
+      s.src='/js/pdf.min.js?v=3.11.174';
+      s.onload=function(){ window.pdfjsLib.GlobalWorkerOptions.workerSrc='/js/pdf.worker.min.js'; resolve(window.pdfjsLib); };
+      s.onerror=function(){ _p=null; reject(new Error("pdf.js load failed")); };
+      document.head.appendChild(s);
+    });
+    return _p;
+  };
+  function kick(){ window.__pdfReady(); ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.removeEventListener(e,kick,true); }); }
+  ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.addEventListener(e,kick,true); });
+})();
+</script>
   <script src="/js/pdf-lib.min.js"></script>
   <script>
   (function() {
     'use strict';
-    pdfjsLib.GlobalWorkerOptions.workerSrc = '/js/pdf.worker.min.js';
     var fileInput = document.getElementById('fileInput');
     var dropzone = document.getElementById('dropzone');
     var annotArea = document.getElementById('annotArea');
@@ -395,7 +435,7 @@
       setStatus('⏳ Loading PDF…');
       try {
         pdfBytes = await f.arrayBuffer();
-        pdfDoc = await pdfjsLib.getDocument({ data: new Uint8Array(pdfBytes.slice(0)) }).promise;
+        pdfDoc = await (await window.__pdfReady()).getDocument({ data: new Uint8Array(pdfBytes.slice(0)) }).promise;
         numPages = pdfDoc.numPages; currentPage = 1; annotations = {};
         annotArea.style.display = 'block'; dropzone.style.display = 'none';
         await renderPage();
