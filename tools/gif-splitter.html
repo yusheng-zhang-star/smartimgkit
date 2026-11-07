@@ -20,7 +20,10 @@
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/gif-splitter">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/gif-splitter">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <style>
     .frames-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; margin-top: 1rem; }
     .frame-item { position: relative; border: 2px solid var(--border-color); border-radius: 8px; overflow: hidden; background: var(--bg-secondary); }
@@ -123,6 +126,22 @@
         "@type": "Answer",
         "text": "Yes — JPG, PNG, WebP, and other common formats are supported."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Why are the extracted PNGs bigger than my GIF?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A GIF stores palette-compressed frames and often only the pixels that changed between frames. Each extracted PNG is a complete full-frame image, so the combined size can be many times the original GIF. That is normal, not a bug."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I turn the frames back into an animation?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — download the frames, then load them into the GIF Editor tool, which rebuilds a GIF or APNG with adjustable per-frame delay and optional resizing."
+      }
     }
   ]
 }
@@ -145,7 +164,28 @@
     <div class="container">
       <div class="tool-page-header">
         <h1>🎬 GIF Splitter — Extract Frames</h1>
-        <p>Split animated GIF or APNG into individual frames. Download as PNG images or ZIP.</p>
+        <p class="answer-lead">GIF Splitter pulls an animated GIF or APNG apart into its individual frames, right in your browser: each frame appears as a PNG you can download one by one, or all together as a ZIP. Frame order matches playback order, transparency is preserved, and the original animation is never modified. Nothing is uploaded.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Input</span><span class="f-v">GIF or APNG</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">PNG frames, ZIP option</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>What you get from splitting an animation</h2>
+          <table>
+            <thead><tr><th>Input</th><th>Output you get</th><th>Worth knowing</th></tr></thead>
+            <tbody>
+              <tr><td>10-frame reaction GIF</td><td>10 PNG files</td><td>Download All grabs them as a ZIP</td></tr>
+              <tr><td>APNG with transparency</td><td>PNGs keep their alpha</td><td>Shown on a checkerboard preview</td></tr>
+              <tr><td>200-frame animation</td><td>200 PNGs</td><td>The grid may take a second to fill</td></tr>
+              <tr><td>Delta-encoded GIF</td><td>Full PNGs, not just changes</td><td>Total size far exceeds the GIF</td></tr>
+              <tr><td>Single-frame GIF</td><td>One PNG</td><td>Handled like any other</td></tr>
+              <tr><td>One frame you want to edit</td><td>Save just that PNG</td><td>Rebuild later in GIF Editor</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
         <input type="file" id="fileInput" accept=".gif,.apng,image/gif,image/apng,image/png" style="display:none;">
@@ -283,6 +323,8 @@
 <div class="faq-item"><button class="faq-question">Can I download all frames at once?</button><div class="faq-answer">Yes — as a ZIP archive.</div></div>
 <div class="faq-item"><button class="faq-question">Are edits reversible?</button><div class="faq-answer">Yes — reset to the original at any time before downloading. Your source file is untouched.</div></div>
 <div class="faq-item"><button class="faq-question">Do edits work on all image formats?</button><div class="faq-answer">Yes — JPG, PNG, WebP, and other common formats are supported.</div></div>
+              <div class="faq-item"><button class="faq-question">Why are the extracted PNGs bigger than my GIF?</button><div class="faq-answer">A GIF stores palette-compressed frames and often only the pixels that changed between frames. Each extracted PNG is a complete full-frame image, so the combined size can be many times the original GIF. That is normal, not a bug.</div></div>
+        <div class="faq-item"><button class="faq-question">Can I turn the frames back into an animation?</button><div class="faq-answer">Yes — download the frames, then load them into the GIF Editor tool, which rebuilds a GIF or APNG with adjustable per-frame delay and optional resizing.</div></div>
       </section>
 
 

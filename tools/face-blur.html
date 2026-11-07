@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/face-blur">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/face-blur">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -231,7 +234,28 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>👤 Face Blur / Anonymizer</span></nav>
       <div class="tool-page-header">
         <h1>👤 Face Blur / Anonymizer</h1>
-        <p>Automatically detect and blur faces in images. Protect privacy before sharing photos online. 100% browser-based, no uploads.</p>
+        <p class="answer-lead">Face Blur detects faces with a MediaPipe model that runs entirely on your device, then blurs each one before you share the photo. Detection is best on clear, front-facing faces; anything it misses can be covered with the manual brush. If the model cannot load, the tool falls back to an estimated upper-center region labeled (estimated) — so always review the result. No image is uploaded.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Price</span><span class="f-v">Free, no signup</span></li>
+          <li><span class="f-k">Detection</span><span class="f-v">On-device MediaPipe</span></li>
+          <li><span class="f-k">Upload</span><span class="f-v">Never — local</span></li>
+          <li><span class="f-k">Output</span><span class="f-v">PNG</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Face detection in practice — what to expect</h2>
+          <table>
+            <thead><tr><th>Photo situation</th><th>Detection result</th><th>Your move</th></tr></thead>
+            <tbody>
+              <tr><td>Clear, front-facing face</td><td>Detected and blurred automatically</td><td>Review and export</td></tr>
+              <tr><td>Profile or tilted face</td><td>May be missed</td><td>Paint over it with the manual brush</td></tr>
+              <tr><td>Small faces in a crowd</td><td>Often below detection size</td><td>Zoom in and blur manually</td></tr>
+              <tr><td>Several faces in one frame</td><td>Each detected box gets blurred</td><td>Check nobody was skipped</td></tr>
+              <tr><td>Model CDN unreachable</td><td>Estimated box, labeled (estimated)</td><td>Reposition manually before saving</td></tr>
+              <tr><td>Backlit or motion-blurred face</td><td>Detection confidence drops</td><td>Fall back to the manual brush</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace" id="workspace">
 <!-- Before/After Preview -->
