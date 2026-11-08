@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/uuid-generator">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/uuid-generator">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -167,6 +170,14 @@
         "@type": "Answer",
         "text": "No. Everything is processed in your browser and discarded when you close the tab."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use these UUIDs as secrets?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Only v4 is appropriate: it comes from the browser cryptographic random source and carries no timestamp. v1 and v7 encode the creation time by design, so they are identifiers, not secrets."
+      }
     }
   ]
 }
@@ -230,7 +241,27 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>🆔 UUID Generator</span></nav>
       <div class="tool-page-header">
         <h1>🆔 UUID Generator</h1>
-        <p>Generate UUID v1, v4, and v7 in bulk — free, in your browser.</p>
+<p class="answer-lead">Generates UUID v1 (timestamp-based), v4 (random) and v7 (time-ordered) in bulk from the browser crypto random source - no sign-up, no API keys and no cap on how many you request. v4 is the safe default for opaque identifiers; v7 embeds a millisecond timestamp, which keeps database indexes from scattering. Every string is produced in your tab and nothing is transmitted.</p>
+<ul class="facts-strip">
+  <li><span class="f-k">Versions</span><span class="f-v">v1, v4, v7</span></li>
+  <li><span class="f-k">Source</span><span class="f-v">Browser crypto RNG</span></li>
+  <li><span class="f-k">Bulk</span><span class="f-v">Yes, no cap</span></li>
+  <li><span class="f-k">Upload</span><span class="f-v">Never - local</span></li>
+</ul>
+<style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+<div class="compare-table">
+  <h2>Which version belongs in your table</h2>
+  <table>
+  <thead><tr><th>Your situation</th><th>What this generator returns</th><th>Better move</th></tr></thead>
+  <tbody>
+  <tr><td>Primary key for a new Postgres table</td><td>v7 starts with a millisecond timestamp, so new rows cluster</td><td>Choose v7 and store it as uuid, not as a padded string</td></tr>
+  <tr><td>Password reset or invite token</td><td>v4 draws 122 random bits with no time or machine hint</td><td>Choose v4; never use v1 or v7 for anything that must be unguessable</td></tr>
+  <tr><td>Rows must sort by creation time</td><td>v7 gives rough chronological order, v4 gives none</td><td>Use v7 plus a real created_at column when you need exact ordering</td></tr>
+  <tr><td>Recreating the same ID next week</td><td>Every run draws fresh randomness; there is no seed or stored machine ID</td><td>Save the value you generate - it cannot be reproduced later</td></tr>
+  <tr><td>Seeding a test fixture</td><td>Bulk output gives as many independent values as you request</td><td>Generate once and paste the block in; each run starts from a fresh draw</td></tr>
+  <tr><td>IDs that appear in a public URL</td><td>v1 exposes a timestamp and a node field</td><td>Pick v4 so the URL leaks nothing about when or where it was made</td></tr>
+  </tbody></table>
+</div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -388,7 +419,9 @@
 <div class="faq-item"><button class="faq-question">Can I batch-generate?</button><div class="faq-answer">Yes — generate multiple UUIDs at once.</div></div>
 <div class="faq-item"><button class="faq-question">Are these tools accurate enough for production?</button><div class="faq-answer">Yes — they follow standard specifications (RFC 3986, JSON spec, etc.).</div></div>
 <div class="faq-item"><button class="faq-question">Is my input stored?</button><div class="faq-answer">No. Everything is processed in your browser and discarded when you close the tab.</div></div>
-      </section>
+      
+  <div class="faq-item"><button class="faq-question">Can I use these UUIDs as secrets?</button><div class="faq-answer">Only v4 is appropriate: it comes from the browser cryptographic random source and carries no timestamp. v1 and v7 encode the creation time by design, so they are identifiers, not secrets.</div></div>
+</section>
 <section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/password-generator" class="related-tool-card"><span class="tool-icon">🔐</span><div class="tool-info"><strong>Password Generator</strong><span class="tool-desc">Create secure passwords</span></div><span class="tool-arrow">→</span></a><a href="/tools/word-counter" class="related-tool-card"><span class="tool-icon">📝</span><div class="tool-info"><strong>Word Counter</strong><span class="tool-desc">Count words and characters</span></div><span class="tool-arrow">→</span></a><a href="/tools/base64" class="related-tool-card"><span class="tool-icon">🔐</span><div class="tool-info"><strong>Base64 Converter</strong><span class="tool-desc">Encode/decode Base64</span></div><span class="tool-arrow">→</span></a></div></section>
 
 

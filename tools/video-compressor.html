@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/video-compressor">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/video-compressor">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -167,6 +170,14 @@
         "@type": "Answer",
         "text": "No hard limit, but longer videos take more time and memory to process."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the output smaller only because of quality?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The resolution selector defaults to 720p, so the video is downscaled as well as re-encoded at CRF 24. Set resolution to Original if you want the size reduction to come from quality alone."
+      }
     }
   ]
 }
@@ -231,7 +242,27 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>🗜️ Video Compressor</span></nav>
       <div class="tool-page-header">
         <h1>🗜️ Video Compressor</h1>
-        <p>Reduce video file size by adjusting quality and resolution — free.</p>
+<p class="answer-lead">Re-encodes a local video with ffmpeg.wasm using libx264 at one of four CRF values (28, 24, 20 or 16) and AAC audio at 128 kbps, with an optional downscale to 1080p or 720p. The default is 720p plus Medium, so the output is smaller partly because it has fewer pixels - this is a lossy conversion, not a repackaging. The roughly 25 MB runtime downloads on first use and caches afterwards; your file never leaves the browser.</p>
+<ul class="facts-strip">
+  <li><span class="f-k">Default</span><span class="f-v">720p at CRF 24</span></li>
+  <li><span class="f-k">Quality</span><span class="f-v">CRF 28 / 24 / 20 / 16</span></li>
+  <li><span class="f-k">Audio</span><span class="f-v">Re-encoded to AAC 128k</span></li>
+  <li><span class="f-k">Upload</span><span class="f-v">Never - ffmpeg.wasm local</span></li>
+</ul>
+<style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+<div class="compare-table">
+  <h2>Pick the CRF and resolution for the size you actually need</h2>
+  <table>
+  <thead><tr><th>Your situation</th><th>What the settings actually change</th><th>Better move</th></tr></thead>
+  <tbody>
+  <tr><td>Clip for an eBay listing with a size cap</td><td>720p plus CRF 24 cuts pixel count and bitrate together</td><td>Keep the original too; recompressing an already compressed clip compounds loss</td></tr>
+  <tr><td>Screen recording with small text</td><td>Downscaling to 720p makes 12 px labels unreadable</td><td>Leave resolution at Original and raise quality to CRF 20 or 16</td></tr>
+  <tr><td>1080p source already under the cap</td><td>Re-encoding still costs quality and a full decode pass</td><td>Skip compression - the file is already small enough</td></tr>
+  <tr><td>First time on this browser</td><td>ffmpeg.wasm, about 25 MB, downloads before processing starts</td><td>Run once on a short clip; later conversions reuse the cached runtime</td></tr>
+  <tr><td>Long 4K clip on a laptop</td><td>All decoding happens in browser memory, with no hard duration limit</td><td>Trim it with the crop tool first, then compress the segment</td></tr>
+  <tr><td>Need the original audio untouched</td><td>Audio is always re-encoded to AAC at 128 kbps</td><td>Extract the audio separately if the soundtrack matters</td></tr>
+  </tbody></table>
+</div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -400,7 +431,9 @@
 <div class="faq-item"><button class="faq-question">Is quality preserved?</button><div class="faq-answer">Yes — balanced compression keeps quality acceptable.</div></div>
 <div class="faq-item"><button class="faq-question">What video formats are supported?</button><div class="faq-answer">MP4, WebM, and other formats your browser can play. Processing uses ffmpeg.wasm.</div></div>
 <div class="faq-item"><button class="faq-question">Is there a video length limit?</button><div class="faq-answer">No hard limit, but longer videos take more time and memory to process.</div></div>
-      </section>
+      
+  <div class="faq-item"><button class="faq-question">Is the output smaller only because of quality?</button><div class="faq-answer">No. The resolution selector defaults to 720p, so the video is downscaled as well as re-encoded at CRF 24. Set resolution to Original if you want the size reduction to come from quality alone.</div></div>
+</section>
 <section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/video-to-gif" class="related-tool-card"><span class="tool-icon">🎞️</span><div class="tool-info"><strong>Video to GIF</strong><span class="tool-desc">Convert video to GIF</span></div><span class="tool-arrow">→</span></a><a href="/tools/compressor" class="related-tool-card"><span class="tool-icon">🗜️</span><div class="tool-info"><strong>Image Compressor</strong><span class="tool-desc">Compress images</span></div><span class="tool-arrow">→</span></a></div></section>
 
 

@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/video-to-mp3">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/video-to-mp3">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -167,6 +170,14 @@
         "@type": "Answer",
         "text": "No hard limit, but longer videos take more time and memory to process."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Does converting to MP3 change the sound?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The audio is decoded from the source and encoded again with libmp3lame, which is a lossy step. Higher bitrates reduce but do not remove that loss. If your player accepts the original audio codec, copying that stream without re-encoding preserves it exactly."
+      }
     }
   ]
 }
@@ -231,7 +242,27 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>🎵 Video to MP3</span></nav>
       <div class="tool-page-header">
         <h1>🎵 Video to MP3</h1>
-        <p>Extract high-quality MP3 audio from video files — free.</p>
+<p class="answer-lead">Strips the audio from a local video with ffmpeg.wasm using -vn and libmp3lame at 64, 128, 192, 256 or 320 kbps, with 192 kbps selected by default. The video track is dropped entirely, so picture quality is not a concern, but the source audio is decoded and encoded again into MP3, which is a lossy step. The roughly 25 MB runtime caches after the first use and nothing is uploaded.</p>
+<ul class="facts-strip">
+  <li><span class="f-k">Bitrate</span><span class="f-v">64 to 320 kbps</span></li>
+  <li><span class="f-k">Default</span><span class="f-v">192 kbps</span></li>
+  <li><span class="f-k">Video track</span><span class="f-v">Discarded with -vn</span></li>
+  <li><span class="f-k">Upload</span><span class="f-v">Never - local</span></li>
+</ul>
+<style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+<div class="compare-table">
+  <h2>Pick a bitrate for what the audio actually contains</h2>
+  <table>
+  <thead><tr><th>Your situation</th><th>What libmp3lame produces</th><th>Better move</th></tr></thead>
+  <tbody>
+  <tr><td>Spoken webinar for a commute</td><td>192 kbps preserves speech with plenty of headroom</td><td>128 kbps is usually indistinguishable for voice</td></tr>
+  <tr><td>Music clip you plan to keep</td><td>MP3 is lossy, adding a second encode on top of the source</td><td>Use 320 kbps, or keep the original container</td></tr>
+  <tr><td>Source already has AAC audio</td><td>It is decoded and re-encoded into MP3</td><td>If you can play AAC, copy that stream without re-encoding elsewhere</td></tr>
+  <tr><td>Very long recording</td><td>The whole file is held in browser memory during conversion</td><td>Trim the segment first, then extract the audio</td></tr>
+  <tr><td>Video contains no audio track</td><td>There is nothing for libmp3lame to encode</td><td>Check the source in a player before converting</td></tr>
+  <tr><td>Need a small file for email</td><td>64 kbps is the smallest option on the page</td><td>Use 64 kbps for speech only; music becomes noticeably dull</td></tr>
+  </tbody></table>
+</div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -392,7 +423,9 @@
 <div class="faq-item"><button class="faq-question">Is there a length limit?</button><div class="faq-answer">Long videos are supported but take longer to process.</div></div>
 <div class="faq-item"><button class="faq-question">What video formats are supported?</button><div class="faq-answer">MP4, WebM, and other formats your browser can play. Processing uses ffmpeg.wasm.</div></div>
 <div class="faq-item"><button class="faq-question">Is there a video length limit?</button><div class="faq-answer">No hard limit, but longer videos take more time and memory to process.</div></div>
-      </section>
+      
+  <div class="faq-item"><button class="faq-question">Does converting to MP3 change the sound?</button><div class="faq-answer">Yes. The audio is decoded from the source and encoded again with libmp3lame, which is a lossy step. Higher bitrates reduce but do not remove that loss. If your player accepts the original audio codec, copying that stream without re-encoding preserves it exactly.</div></div>
+</section>
 <section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/video-to-gif" class="related-tool-card"><span class="tool-icon">🎞️</span><div class="tool-info"><strong>Video to GIF</strong><span class="tool-desc">Convert video to GIF</span></div><span class="tool-arrow">→</span></a><a href="/tools/compressor" class="related-tool-card"><span class="tool-icon">🗜️</span><div class="tool-info"><strong>Image Compressor</strong><span class="tool-desc">Compress images</span></div><span class="tool-arrow">→</span></a></div></section>
 
 

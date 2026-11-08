@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/video-speed">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/video-speed">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -167,6 +170,14 @@
         "@type": "Answer",
         "text": "No hard limit, but longer videos take more time and memory to process."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the audio pitch change with the speed?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The audio path uses the ffmpeg atempo filter, which adjusts tempo while preserving pitch. Voices keep their register; what changes is how fast they speak. Older wording elsewhere on this page about pitch shifting describes a different implementation, not the filter actually used here."
+      }
     }
   ]
 }
@@ -231,7 +242,27 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>⏩ Video Speed Changer</span></nav>
       <div class="tool-page-header">
         <h1>⏩ Video Speed Changer</h1>
-        <p>Speed up or slow down videos (0.25x to 4x) — free, in your browser.</p>
+<p class="answer-lead">Changes playback rate from 0.25x to 4x with ffmpeg.wasm: video timestamps are scaled with setpts and audio is stretched with atempo, then both streams are mapped into a new file. atempo changes tempo while preserving pitch, so voices keep their register even at double speed. The page reads the whole clip in browser memory and the roughly 25 MB runtime downloads once; files stay local.</p>
+<ul class="facts-strip">
+  <li><span class="f-k">Range</span><span class="f-v">0.25x to 4x</span></li>
+  <li><span class="f-k">Video</span><span class="f-v">setpts, re-encoded</span></li>
+  <li><span class="f-k">Audio</span><span class="f-v">atempo, re-encoded</span></li>
+  <li><span class="f-k">Upload</span><span class="f-v">Never - local</span></li>
+</ul>
+<style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+<div class="compare-table">
+  <h2>What each speed range is actually good for</h2>
+  <table>
+  <thead><tr><th>Your situation</th><th>What setpts and atempo do</th><th>Better move</th></tr></thead>
+  <tbody>
+  <tr><td>0.25x to study a golf swing</td><td>Spreads the same frames over four times the duration</td><td>Use 0.25x on a short excerpt; a full match becomes very long</td></tr>
+  <tr><td>2x for a lecture recording</td><td>Halves the duration; speech stays intelligible at 2x</td><td>Keep 1.5x or 2x for talking-head content</td></tr>
+  <tr><td>4x time-lapse of a build</td><td>Compresses most of the temporal detail into a very short file</td><td>Start with 3x - 4x on handheld footage looks jerky</td></tr>
+  <tr><td>Dense narration must stay clear</td><td>atempo keeps the pitch, but the timing is compressed</td><td>Pick 1.5x rather than 2x when every word matters</td></tr>
+  <tr><td>Need the original file untouched</td><td>Writes a new output file rather than editing in place</td><td>Keep the source; the re-encode is lossy</td></tr>
+  <tr><td>First conversion in this browser</td><td>ffmpeg.wasm, about 25 MB, loads before any frame is processed</td><td>Try a 10 s clip first to warm the cache</td></tr>
+  </tbody></table>
+</div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -396,7 +427,9 @@
 <div class="faq-item"><button class="faq-question">Is audio affected?</button><div class="faq-answer">Audio pitch is adjusted with the speed.</div></div>
 <div class="faq-item"><button class="faq-question">What video formats are supported?</button><div class="faq-answer">MP4, WebM, and other formats your browser can play. Processing uses ffmpeg.wasm.</div></div>
 <div class="faq-item"><button class="faq-question">Is there a video length limit?</button><div class="faq-answer">No hard limit, but longer videos take more time and memory to process.</div></div>
-      </section>
+      
+  <div class="faq-item"><button class="faq-question">Does the audio pitch change with the speed?</button><div class="faq-answer">The audio path uses the ffmpeg atempo filter, which adjusts tempo while preserving pitch. Voices keep their register; what changes is how fast they speak. Older wording elsewhere on this page about pitch shifting describes a different implementation, not the filter actually used here.</div></div>
+</section>
 <section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/video-to-gif" class="related-tool-card"><span class="tool-icon">🎞️</span><div class="tool-info"><strong>Video to GIF</strong><span class="tool-desc">Convert video to GIF</span></div><span class="tool-arrow">→</span></a><a href="/tools/compressor" class="related-tool-card"><span class="tool-icon">🗜️</span><div class="tool-info"><strong>Image Compressor</strong><span class="tool-desc">Compress images</span></div><span class="tool-arrow">→</span></a></div></section>
 
 

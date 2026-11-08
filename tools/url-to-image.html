@@ -43,12 +43,64 @@
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  "mainEntity": [ {"@type": "Question", "name": "Does this work for every website?", "acceptedAnswer": {"@type": "Answer", "text": "No. Some sites block themselves from being embedded in a frame or prevent their content from being read by a canvas. Pages that allow embedding capture cleanly; others may return blank or partial results."}},
-    {"@type": "Question", "name": "Is the capture done on a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. The page loads and is rendered entirely in your own browser. There is no server-side screenshot service and nothing is uploaded."}},
-    {"@type": "Question", "name": "What output format do I get?", "acceptedAnswer": {"@type": "Answer", "text": "You can save the capture as a PNG or JPG, depending on which download button you use."}},
-    {"@type": "Question", "name": "Why is my capture blank?", "acceptedAnswer": {"@type": "Answer", "text": "The page likely blocks cross-origin embedding or canvas access. Try a page you control, or one that permits framing, to confirm the tool is working."}},
-    {"@type": "Question", "name": "Does it capture the full page or just the viewport?", "acceptedAnswer": {"@type": "Answer", "text": "It captures the content of the preview frame. Very long pages may be limited by the frame's height — results vary by site."}},
-    {"@type": "Question", "name": "Do I need to include https://?", "acceptedAnswer": {"@type": "Answer", "text": "No. If you type a bare domain, the tool automatically prepends https:// for you."}} ]
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does this work for every website?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Some sites block themselves from being embedded in a frame or prevent their content from being read by a canvas. Pages that allow embedding capture cleanly; others may return blank or partial results."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the capture done on a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The page loads and is rendered entirely in your own browser. There is no server-side screenshot service and nothing is uploaded."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What output format do I get?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can save the capture as a PNG or JPG, depending on which download button you use."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is my capture blank?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The page likely blocks cross-origin embedding or canvas access. Try a page you control, or one that permits framing, to confirm the tool is working."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it capture the full page or just the viewport?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It captures the content of the preview frame. Very long pages may be limited by the frame's height — results vary by site."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to include https://?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. If you type a bare domain, the tool automatically prepends https:// for you."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does capture fail on some websites?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The capture reads the embedded frame DOM. Browsers hide that DOM for cross-origin pages, and many sites refuse to be embedded through X-Frame-Options or CSP frame-ancestors. That is a browser security rule, not something this page can bypass."
+      }
+    }
+  ]
 }
 </script><style id="enrich-css">
 .selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
@@ -112,7 +164,27 @@
 </header>
 <main class="container">
 <h1>URL to Image Converter</h1>
-<p class="lead">Enter any webpage URL to capture a full-page screenshot and download it as a high-resolution PNG or JPG. Perfect for saving web content, creating previews, or archiving pages.</p>
+<p class="answer-lead">This page loads a URL in a 500 px embedded frame and renders that frame body with html2canvas into a PNG or a JPG at quality 0.9. It is a client-side DOM capture, not a headless browser: a site that refuses to be framed stays blank, and a cross-origin frame hides its DOM from the browser. No upload - the URL and the resulting image stay in your tab.</p>
+<ul class="facts-strip">
+  <li><span class="f-k">Output</span><span class="f-v">PNG or JPG at 0.9</span></li>
+  <li><span class="f-k">Capture</span><span class="f-v">Embedded frame DOM</span></li>
+  <li><span class="f-k">Framing</span><span class="f-v">Required; many sites block</span></li>
+  <li><span class="f-k">Upload</span><span class="f-v">Never - local</span></li>
+</ul>
+<style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+<div class="compare-table">
+  <h2>Before you paste a URL, check which case you are in</h2>
+  <table>
+  <thead><tr><th>Your situation</th><th>What the frame actually does</th><th>Better move</th></tr></thead>
+  <tbody>
+  <tr><td>Page on your own domain</td><td>Loads in the iframe, html2canvas reads the DOM and writes a PNG</td><td>Increase the frame height first; a 500 px frame only lays out part of a long page</td></tr>
+  <tr><td>Site sends X-Frame-Options: DENY</td><td>Frame stays blank and contentDocument is empty, so nothing can be drawn</td><td>Use your browser screenshot or a server-side capture service</td></tr>
+  <tr><td>Cross-origin page that allows framing</td><td>You see the page, but the browser blocks access to contentDocument</td><td>Host the capture on the same origin, or use a headless browser</td></tr>
+  <tr><td>Landing page for an Etsy campaign review</td><td>Only the laid-out body of the frame is drawn, not the whole scroll</td><td>Capture in sections, or use a full-page screenshot tool</td></tr>
+  <tr><td>Web fonts and lazy images still loading</td><td>The canvas may contain fallback fonts or empty image boxes</td><td>Wait for the frame to settle, then capture and inspect the result</td></tr>
+  <tr><td>Need JPG instead of PNG</td><td>The second button writes image/jpeg at quality 0.9</td><td>Pick PNG for text-heavy pages; JPG 0.9 can soften small type</td></tr>
+  </tbody></table>
+</div>
 <div class="url-input-group" style="margin:2rem 0;">
 <input type="url" id="urlInput" placeholder="https://example.com" style="width:70%;padding:0.8rem;font-size:1rem;">
 <button id="captureBtn" class="primary">Capture Screenshot</button>
@@ -171,6 +243,8 @@
 <div class="faq-item"><button class="faq-question">Why is my capture blank?</button><div class="faq-answer">The page likely blocks cross-origin embedding or canvas access. Try a page you control, or one that permits framing, to confirm the tool is working.</div></div>
 <div class="faq-item"><button class="faq-question">Does it capture the full page or just the viewport?</button><div class="faq-answer">It captures the content of the preview frame. Very long pages may be limited by the frame's height — results vary by site.</div></div>
 <div class="faq-item"><button class="faq-question">Do I need to include https://?</button><div class="faq-answer">No. If you type a bare domain, the tool automatically prepends https:// for you.</div></div>
+
+  <div class="faq-item"><button class="faq-question">Why does capture fail on some websites?</button><div class="faq-answer">The capture reads the embedded frame DOM. Browsers hide that DOM for cross-origin pages, and many sites refuse to be embedded through X-Frame-Options or CSP frame-ancestors. That is a browser security rule, not something this page can bypass.</div></div>
 </section>
 <section class="related-tools">
 <h2>You Might Also Like</h2>

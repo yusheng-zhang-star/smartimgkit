@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/video-to-gif">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/video-to-gif">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -167,6 +170,14 @@
         "@type": "Answer",
         "text": "No hard limit, but longer videos take more time and memory to process."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is my GIF bigger than the original video?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "GIF uses a palette-based codec with at most 256 colours per frame, while MP4 compresses across frames. Short, flat-colour clips do well; long photographic clips usually end up much larger. If file size matters, a looping MP4 or WebM is the better format."
+      }
     }
   ]
 }
@@ -231,7 +242,27 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>🎞️ Video to GIF</span></nav>
       <div class="tool-page-header">
         <h1>🎞️ Video to GIF</h1>
-        <p>Convert video clips to animated GIFs — free, in your browser.</p>
+<p class="answer-lead">Turns a slice of a local video into a looping GIF with ffmpeg.wasm: it seeks to a start time, takes a duration, then applies an fps and lanczos scale filter and loops forever. GIF is limited to 256 colours per frame, so photographic footage will show banding and the file can be far larger than the MP4 it came from. Everything runs in your browser and the roughly 25 MB runtime caches after first use.</p>
+<ul class="facts-strip">
+  <li><span class="f-k">Output</span><span class="f-v">Animated GIF, infinite loop</span></li>
+  <li><span class="f-k">Controls</span><span class="f-v">Start, duration, fps, width</span></li>
+  <li><span class="f-k">Scaling</span><span class="f-v">lanczos, height auto</span></li>
+  <li><span class="f-k">Upload</span><span class="f-v">Never - local</span></li>
+</ul>
+<style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+<div class="compare-table">
+  <h2>When a GIF is the right export - and when it is not</h2>
+  <table>
+  <thead><tr><th>Your situation</th><th>What the GIF export produces</th><th>Better move</th></tr></thead>
+  <tbody>
+  <tr><td>Short UI demo for a README</td><td>Low fps and a narrow width keep the loop small</td><td>Use 10-12 fps and 480-600 px wide</td></tr>
+  <tr><td>30 s clip of a sunset</td><td>256 colours per frame causes visible banding in gradients</td><td>Export a looping MP4 or WebM instead</td></tr>
+  <tr><td>Product spin on an Amazon listing</td><td>A few seconds of flat-colour motion compresses well</td><td>Trim to the shortest loop that still shows the product</td></tr>
+  <tr><td>File must stay under a few MB</td><td>Size grows with fps, width and duration together</td><td>Lower fps first, then width; shorten duration last</td></tr>
+  <tr><td>Text overlay must stay crisp</td><td>Downscaling softens small lettering</td><td>Keep the width close to the source and shorten the clip</td></tr>
+  <tr><td>First run in this browser</td><td>ffmpeg.wasm, about 25 MB, downloads before the encode</td><td>Test on a 3 s slice while the runtime caches</td></tr>
+  </tbody></table>
+</div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -399,7 +430,9 @@
 <div class="faq-item"><button class="faq-question">What is the output format?</button><div class="faq-answer">Animated GIF, optimized for size.</div></div>
 <div class="faq-item"><button class="faq-question">What video formats are supported?</button><div class="faq-answer">MP4, WebM, and other formats your browser can play. Processing uses ffmpeg.wasm.</div></div>
 <div class="faq-item"><button class="faq-question">Is there a video length limit?</button><div class="faq-answer">No hard limit, but longer videos take more time and memory to process.</div></div>
-      </section>
+      
+  <div class="faq-item"><button class="faq-question">Why is my GIF bigger than the original video?</button><div class="faq-answer">GIF uses a palette-based codec with at most 256 colours per frame, while MP4 compresses across frames. Short, flat-colour clips do well; long photographic clips usually end up much larger. If file size matters, a looping MP4 or WebM is the better format.</div></div>
+</section>
 <section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/video-to-gif" class="related-tool-card"><span class="tool-icon">🎞️</span><div class="tool-info"><strong>Video to GIF</strong><span class="tool-desc">Convert video to GIF</span></div><span class="tool-arrow">→</span></a><a href="/tools/compressor" class="related-tool-card"><span class="tool-icon">🗜️</span><div class="tool-info"><strong>Image Compressor</strong><span class="tool-desc">Compress images</span></div><span class="tool-arrow">→</span></a></div></section>
 
 

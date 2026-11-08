@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/video-crop">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/video-crop">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -167,6 +170,14 @@
         "@type": "Answer",
         "text": "Yes — batch processing is supported for resize and crop operations."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does my clip start slightly before the time I entered?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The tool uses -c copy, which copies whole packets and can only begin at a keyframe. With sparse keyframes the offset can be a few seconds. A re-encoding trim would be frame-exact, but this page deliberately keeps the original quality instead."
+      }
     }
   ]
 }
@@ -231,7 +242,27 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>✂️ Video Cropper</span></nav>
       <div class="tool-page-header">
         <h1>✂️ Video Cropper</h1>
-        <p>Trim and cut videos to remove unwanted parts — free, in your browser.</p>
+<p class="answer-lead">Cuts a segment from a local video using ffmpeg.wasm with -ss, -t and -c copy, so the selected range is remuxed instead of re-encoded - quick, and the picture quality stays exactly as it was. The trade-off is that stream copy aligns to keyframes, so the cut can start a little before or after the timestamp you typed. The roughly 25 MB runtime is cached after the first load and nothing is uploaded.</p>
+<ul class="facts-strip">
+  <li><span class="f-k">Method</span><span class="f-v">Stream copy (-c copy)</span></li>
+  <li><span class="f-k">Controls</span><span class="f-v">Start time and duration</span></li>
+  <li><span class="f-k">Re-encode</span><span class="f-v">No</span></li>
+  <li><span class="f-k">Upload</span><span class="f-v">Never - local</span></li>
+</ul>
+<style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+<div class="compare-table">
+  <h2>When a stream-copy cut is accurate enough</h2>
+  <table>
+  <thead><tr><th>Your situation</th><th>What -c copy actually does</th><th>Better move</th></tr></thead>
+  <tbody>
+  <tr><td>Removing a 30 s intro from a webinar</td><td>Seeks to the nearest keyframe and remuxes from there</td><td>Check the first seconds; if the cut lands late, nudge the start earlier</td></tr>
+  <tr><td>Frame-exact edit for a product demo</td><td>Keyframe spacing decides where the cut can land</td><td>Use a re-encoding editor for frame-accurate trimming</td></tr>
+  <tr><td>Keeping the original quality</td><td>No re-encode, so the video bitstream is untouched</td><td>This is the right tool - just verify the boundary frames</td></tr>
+  <tr><td>Very long recording, short excerpt</td><td>Only the chosen time range is written out</td><td>Enter a duration rather than processing every second</td></tr>
+  <tr><td>Source with sparse keyframes</td><td>The cut may begin several seconds from your timestamp</td><td>Re-encode once with denser keyframes, then crop</td></tr>
+  <tr><td>Audio must start exactly on a word</td><td>Audio is copied on the same keyframe boundary</td><td>Trim audio separately if the opening sync matters</td></tr>
+  </tbody></table>
+</div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -391,7 +422,9 @@
 <div class="faq-item"><button class="faq-question">Is there a duration limit?</button><div class="faq-answer">Long videos are supported but may take time to process.</div></div>
 <div class="faq-item"><button class="faq-question">Will resizing reduce quality?</button><div class="faq-answer">Resizing uses high-quality interpolation. Upscaling cannot add detail that is not present in the original.</div></div>
 <div class="faq-item"><button class="faq-question">Can I process multiple images?</button><div class="faq-answer">Yes — batch processing is supported for resize and crop operations.</div></div>
-      </section>
+      
+  <div class="faq-item"><button class="faq-question">Why does my clip start slightly before the time I entered?</button><div class="faq-answer">The tool uses -c copy, which copies whole packets and can only begin at a keyframe. With sparse keyframes the offset can be a few seconds. A re-encoding trim would be frame-exact, but this page deliberately keeps the original quality instead.</div></div>
+</section>
 <section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/video-to-gif" class="related-tool-card"><span class="tool-icon">🎞️</span><div class="tool-info"><strong>Video to GIF</strong><span class="tool-desc">Convert video to GIF</span></div><span class="tool-arrow">→</span></a><a href="/tools/compressor" class="related-tool-card"><span class="tool-icon">🗜️</span><div class="tool-info"><strong>Image Compressor</strong><span class="tool-desc">Compress images</span></div><span class="tool-arrow">→</span></a></div></section>
 
 

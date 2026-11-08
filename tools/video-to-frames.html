@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/video-to-frames">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/video-to-frames">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -167,6 +170,14 @@
         "@type": "Answer",
         "text": "No hard limit, but longer videos take more time and memory to process."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "How many images will I get?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In Every N seconds mode the count is roughly the clip duration divided by N. In Total frames mode you set the count and the filter spreads it across the whole clip. A long recording with a small N can produce thousands of files, so check the numbers before you run it."
+      }
     }
   ]
 }
@@ -231,7 +242,27 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>🖼️ Video to Frames</span></nav>
       <div class="tool-page-header">
         <h1>🖼️ Video to Frames</h1>
-        <p>Extract high-quality frames (JPG/PNG) from any video — free.</p>
+<p class="answer-lead">Extracts stills from a local video with ffmpeg.wasm in JPG or PNG, either one frame every N seconds or a fixed total count spread across the clip. The frames are written as frame_0001, frame_0002 and so on, so a long clip at a short interval produces a large set of images. The roughly 25 MB runtime caches after the first use and no video is uploaded.</p>
+<ul class="facts-strip">
+  <li><span class="f-k">Modes</span><span class="f-v">Every N seconds or total count</span></li>
+  <li><span class="f-k">Format</span><span class="f-v">JPG default, PNG optional</span></li>
+  <li><span class="f-k">Filenames</span><span class="f-v">frame_0001, frame_0002, ...</span></li>
+  <li><span class="f-k">Upload</span><span class="f-v">Never - local</span></li>
+</ul>
+<style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+<div class="compare-table">
+  <h2>Choose an extraction mode that fits the clip</h2>
+  <table>
+  <thead><tr><th>Your situation</th><th>What the frame filter outputs</th><th>Better move</th></tr></thead>
+  <tbody>
+  <tr><td>Storyboard for a 60 s ad</td><td>One frame every N seconds gives evenly spaced stills</td><td>Start with N=5; a dozen frames are usually enough to review</td></tr>
+  <tr><td>Exactly 12 thumbnails for a gallery</td><td>Total-count mode spreads 12 frames across the duration</td><td>Use this mode instead of guessing an interval</td></tr>
+  <tr><td>Printing a single sharp still</td><td>PNG keeps detail but each file is much larger</td><td>Pick PNG only for the frame you actually need</td></tr>
+  <tr><td>Two-hour screen recording</td><td>One frame every second would create thousands of images</td><td>Increase the interval, or crop the segment first</td></tr>
+  <tr><td>Contact sheet for an Etsy listing</td><td>JPG at a modest interval keeps the whole set small</td><td>Use JPG; the default format is already the sensible one</td></tr>
+  <tr><td>Need the exact frame at 00:01:23</td><td>Neither mode targets a timestamp directly</td><td>Crop around that moment, then extract a single still</td></tr>
+  </tbody></table>
+</div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -401,7 +432,9 @@
 <div class="faq-item"><button class="faq-question">Can I extract every frame?</button><div class="faq-answer">Yes — or extract at a set interval.</div></div>
 <div class="faq-item"><button class="faq-question">What video formats are supported?</button><div class="faq-answer">MP4, WebM, and other formats your browser can play. Processing uses ffmpeg.wasm.</div></div>
 <div class="faq-item"><button class="faq-question">Is there a video length limit?</button><div class="faq-answer">No hard limit, but longer videos take more time and memory to process.</div></div>
-      </section>
+      
+  <div class="faq-item"><button class="faq-question">How many images will I get?</button><div class="faq-answer">In Every N seconds mode the count is roughly the clip duration divided by N. In Total frames mode you set the count and the filter spreads it across the whole clip. A long recording with a small N can produce thousands of files, so check the numbers before you run it.</div></div>
+</section>
 <section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/video-to-gif" class="related-tool-card"><span class="tool-icon">🎞️</span><div class="tool-info"><strong>Video to GIF</strong><span class="tool-desc">Convert video to GIF</span></div><span class="tool-arrow">→</span></a><a href="/tools/compressor" class="related-tool-card"><span class="tool-icon">🗜️</span><div class="tool-info"><strong>Image Compressor</strong><span class="tool-desc">Compress images</span></div><span class="tool-arrow">→</span></a></div></section>
 
 

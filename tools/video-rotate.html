@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/video-rotate">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/video-rotate">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -167,6 +170,14 @@
         "@type": "Answer",
         "text": "No hard limit, but longer videos take more time and memory to process."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Will rotating change the video quality?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The transpose filter transforms pixels, so ffmpeg.wasm re-encodes the video track. Audio is copied unchanged. If your player is simply ignoring a rotation flag, fixing the metadata elsewhere avoids that extra generation loss."
+      }
     }
   ]
 }
@@ -231,7 +242,27 @@
       <nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span>🔃 Video Rotator</span></nav>
       <div class="tool-page-header">
         <h1>🔃 Video Rotator</h1>
-        <p>Rotate (90°/180°/270°) and flip videos — free, in your browser.</p>
+<p class="answer-lead">Applies a transpose filter (90, 180 or 270 degrees clockwise, or a horizontal / vertical flip) with ffmpeg.wasm and copies the audio stream unchanged. Because the pixels are transformed, the video is re-encoded - this is not a metadata-only rotation flag, so a long clip takes time and the picture is compressed once more. Nothing is uploaded and the roughly 25 MB runtime caches after the first run.</p>
+<ul class="facts-strip">
+  <li><span class="f-k">Angles</span><span class="f-v">90, 180, 270 degrees</span></li>
+  <li><span class="f-k">Flips</span><span class="f-v">Horizontal and vertical</span></li>
+  <li><span class="f-k">Video</span><span class="f-v">Re-encoded with transpose</span></li>
+  <li><span class="f-k">Audio</span><span class="f-v">Copied unchanged</span></li>
+</ul>
+<style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+<div class="compare-table">
+  <h2>Choose the rotation that matches how the clip was shot</h2>
+  <table>
+  <thead><tr><th>Your situation</th><th>What the filter produces</th><th>Better move</th></tr></thead>
+  <tbody>
+  <tr><td>Phone held sideways, 90 degrees off</td><td>transpose=1 turns the frame clockwise once</td><td>Rotate 90 degrees, then preview; the audio is copied as-is</td></tr>
+  <tr><td>Clip is upside down</td><td>Two passes of transpose=1 give a 180 degree turn</td><td>Use the 180 degree option rather than rotating twice in separate runs</td></tr>
+  <tr><td>Mirror needed for a selfie video</td><td>Horizontal flip produces a mirror image, not a rotation</td><td>Pick Flip Horizontal; any text in frame will read backwards</td></tr>
+  <tr><td>Only the player shows it sideways</td><td>Some players ignore rotation metadata, but this tool transforms pixels</td><td>Try another player first; a re-encode is lossy</td></tr>
+  <tr><td>Long 4K recording</td><td>Every frame is decoded, transformed and re-encoded in browser memory</td><td>Rotate a short excerpt first to confirm the orientation</td></tr>
+  <tr><td>Soundtrack must stay bit-identical</td><td>Audio is copied with -c:a copy</td><td>This tool keeps it; the video track still gets re-encoded</td></tr>
+  </tbody></table>
+</div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -392,7 +423,9 @@
 <div class="faq-item"><button class="faq-question">Are all video formats supported?</button><div class="faq-answer">MP4, WebM, and other browser-playable formats.</div></div>
 <div class="faq-item"><button class="faq-question">What video formats are supported?</button><div class="faq-answer">MP4, WebM, and other formats your browser can play. Processing uses ffmpeg.wasm.</div></div>
 <div class="faq-item"><button class="faq-question">Is there a video length limit?</button><div class="faq-answer">No hard limit, but longer videos take more time and memory to process.</div></div>
-      </section>
+      
+  <div class="faq-item"><button class="faq-question">Will rotating change the video quality?</button><div class="faq-answer">Yes. The transpose filter transforms pixels, so ffmpeg.wasm re-encodes the video track. Audio is copied unchanged. If your player is simply ignoring a rotation flag, fixing the metadata elsewhere avoids that extra generation loss.</div></div>
+</section>
 <section class="related-tools"><h2>You Might Also Like</h2><div class="related-tools-grid"><a href="/tools/video-to-gif" class="related-tool-card"><span class="tool-icon">🎞️</span><div class="tool-info"><strong>Video to GIF</strong><span class="tool-desc">Convert video to GIF</span></div><span class="tool-arrow">→</span></a><a href="/tools/compressor" class="related-tool-card"><span class="tool-icon">🗜️</span><div class="tool-info"><strong>Image Compressor</strong><span class="tool-desc">Compress images</span></div><span class="tool-arrow">→</span></a></div></section>
 
 
