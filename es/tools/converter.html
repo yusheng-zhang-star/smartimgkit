@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/converter">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/converter">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 
   <style>
     .tool-container{max-width:900px;margin:2rem auto;padding:0 1rem}
@@ -129,6 +132,14 @@
         "@type": "Answer",
         "text": "Sí. Arrastra todas las fotos del lote (10, 20 o las que necesites), elige el formato de salida y pulsa Convertir Todo: al terminar puedes descargarlas juntas en un solo archivo ZIP. Así preparas el catálogo de Shopee o Amazon México desde el celular, sin instalar programas ni pagar suscripciones."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se conserva la transparencia al convertir a JPG?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. JPG no admite canal alfa, así que las zonas transparentes se rellenan con un color. Si necesitas el fondo transparente, elige PNG o WebP como formato de salida."
+      }
     }
   ]
 }
@@ -185,7 +196,27 @@
       <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🔄 Convertir Imagen</span></nav>
       <div class="tool-page-header">
         <h1>🔄 Convertir Imagen</h1>
-        <p>Convierte entre JPG, PNG, WebP, GIF, BMP y TIFF.</p>
+<p class="answer-lead">Convierte imágenes entre JPG, PNG, WebP, GIF, BMP y TIFF, con varios archivos a la vez, usando el lienzo del navegador. No es un conversor universal: la lectura y la escritura dependen de lo que tu navegador sepa decodificar y codificar, y la transparencia solo sobrevive en formatos que la admiten. No hay subida ni registro.</p>
+<ul class="facts-strip">
+  <li><span class="f-k">Precio</span><span class="f-v">Gratis</span></li>
+  <li><span class="f-k">Formatos</span><span class="f-v">JPG, PNG, WebP, GIF, BMP, TIFF</span></li>
+  <li><span class="f-k">Lote</span><span class="f-v">Varios archivos</span></li>
+  <li><span class="f-k">Subida</span><span class="f-v">Nunca, es local</span></li>
+</ul>
+<style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+<div class="compare-table">
+  <h2>Qué formato conviene según el uso final</h2>
+  <table>
+  <thead><tr><th>Tu situación</th><th>Qué pasa al convertir</th><th>Mejor opción</th></tr></thead>
+  <tbody>
+  <tr><td>Fondo transparente para una ficha de Shopee</td><td>PNG conserva el canal alfa; JPG rellena las zonas vacías</td><td>Elige PNG y revisa el borde sobre fondo blanco</td></tr>
+  <tr><td>Foto de producto para Mercado Libre</td><td>JPG o WebP reducen el peso frente a PNG</td><td>Elige JPG si el portal todavía no acepta WebP</td></tr>
+  <tr><td>Archivo TIFF de una imprenta</td><td>El navegador puede no decodificar algunos perfiles TIFF</td><td>Haz una prueba con un archivo pequeño antes del lote</td></tr>
+  <tr><td>Animación GIF</td><td>La conversión a imagen estática puede quedarse con un solo fotograma</td><td>Usa una herramienta de vídeo si necesitas conservar la animación</td></tr>
+  <tr><td>Incrustar una imagen en CSS</td><td>WebP suele dar menos bytes con calidad similar</td><td>Convierte a WebP y verifica el soporte del navegador destino</td></tr>
+  <tr><td>Necesitas conservar los metadatos EXIF</td><td>El paso por el lienzo vuelve a escribir el archivo</td><td>Usa la herramienta de EXIF si esos datos importan</td></tr>
+  </tbody></table>
+</div>
       </div>
       <div class="tool-workspace">
 <input type="file" id="fileInput" accept="image/*" multiple hidden>
@@ -284,7 +315,9 @@
       <div class="faq-item"><button class="faq-question">¿Cambia la calidad?</button><div class="faq-answer">PNG, WebP lossless y BMP conservan calidad. JPG puede reducir ligeramente.</div></div>
       <div class="faq-item"><button class="faq-question">¿Cómo convertir fotos HEIC del iPhone para subirlas a Mercado Libre?</button><div class="faq-answer">Mercado Libre no acepta archivos HEIC. Sube la foto aquí, elige JPG como formato de salida y descárgala en segundos: la mayoría de las publicaciones piden JPG de al menos 500×500 píxeles y menos de 5 MB. La conversión ocurre en tu navegador, sin que la foto salga de tu celular.</div></div>
       <div class="faq-item"><button class="faq-question">¿Puedo convertir varias fotos de producto a la vez para mi tienda?</button><div class="faq-answer">Sí. Arrastra todas las fotos del lote (10, 20 o las que necesites), elige el formato de salida y pulsa Convertir Todo: al terminar puedes descargarlas juntas en un solo archivo ZIP. Así preparas el catálogo de Shopee o Amazon México desde el celular, sin instalar programas ni pagar suscripciones.</div></div>
-      </section>
+      
+  <div class="faq-item"><button class="faq-question">¿Se conserva la transparencia al convertir a JPG?</button><div class="faq-answer">No. JPG no admite canal alfa, así que las zonas transparentes se rellenan con un color. Si necesitas el fondo transparente, elige PNG o WebP como formato de salida.</div></div>
+</section>
 
 <section class="localization-section" style="max-width:800px;margin:40px auto;padding:0 20px;">
   <h2 style="text-align:center;margin-bottom:20px;">Conversiones de formato que resuelve la gente en Latinoamérica</h2>

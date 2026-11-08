@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/image-rotator">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/image-rotator">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 
   <style>
     .rotate-workspace { display: flex; gap: 24px; flex-wrap: wrap; }
@@ -123,6 +126,30 @@
         "@type": "Answer",
         "text": "Para rotaciones de 90° y 270°, el ancho y alto del lienzo se intercambian. Para ángulos personalizados, el lienzo se expande para contener toda la imagen rotada y el color de fondo rellena el espacio nuevo."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se pierde calidad al girar 90 grados?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Un giro de 90, 180 o 270 grados solo reubica píxeles, así que no debería aparecer interpolación. En ángulos arbitrarios el lienzo vuelve a muestrear la imagen y el detalle puede suavizarse un poco."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué pasa con las esquinas al girar 30 grados?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Quedan zonas vacías porque el rectángulo original ya no encaja en el nuevo. La herramienta no las rellena de forma inteligente: recorta la imagen después o elige un fondo que combine."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se sube mi imagen a un servidor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Todo el giro y el volteo se hacen con Canvas en tu navegador; no hay cuenta ni envío de archivos."
+      }
     }
   ]
 }
@@ -179,7 +206,27 @@
       <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🔄 Rotar Imagen</span></nav>
       <div class="tool-page-header">
         <h1>🔄 Rotar Imagen</h1>
-        <p>Rota imágenes cualquier ángulo o voltéalas.</p>
+<p class="answer-lead">Rota una imagen cualquier ángulo entre 0 y 360 grados con un deslizador y voltéala en horizontal o vertical, todo mediante la API Canvas del navegador. Al girar un ángulo que no sea múltiplo de 90 aparecen esquinas vacías que hay que rellenar o recortar; la herramienta no endereza horizontes de forma automática. Las imágenes no se suben.</p>
+<ul class="facts-strip">
+  <li><span class="f-k">Precio</span><span class="f-v">Gratis</span></li>
+  <li><span class="f-k">Ángulo</span><span class="f-v">0 a 360 grados, paso 1</span></li>
+  <li><span class="f-k">Volteo</span><span class="f-v">Horizontal y vertical</span></li>
+  <li><span class="f-k">Subida</span><span class="f-v">Nunca, es local</span></li>
+</ul>
+<style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+<div class="compare-table">
+  <h2>Qué ángulo conviene según el problema</h2>
+  <table>
+  <thead><tr><th>Tu situación</th><th>Qué hace el giro</th><th>Mejor opción</th></tr></thead>
+  <tbody>
+  <tr><td>Foto del móvil girada 90 grados</td><td>Un giro recto conserva todo el encuadre</td><td>Usa los botones rápidos de 90 grados en lugar del deslizador</td></tr>
+  <tr><td>Horizonte ligeramente inclinado</td><td>Unos pocos grados enderezan, pero dejan esquinas vacías</td><td>Gira lo justo y recorta después las esquinas</td></tr>
+  <tr><td>Escaneo colocado boca abajo</td><td>180 grados corrige la orientación sin pérdida</td><td>Es el caso más limpio</td></tr>
+  <tr><td>Selfie que quieres ver como en el espejo</td><td>El volteo horizontal invierte la imagen</td><td>Ojo: cualquier texto quedará al revés</td></tr>
+  <tr><td>Ángulos como 37 o 213 grados</td><td>El lienzo genera bordes vacíos alrededor</td><td>Planea un recorte posterior</td></tr>
+  <tr><td>Necesitas enderezado automático</td><td>Esta herramienta no detecta líneas ni horizontes</td><td>Usa un editor con enderezado automático</td></tr>
+  </tbody></table>
+</div>
       </div>
       <div class="tool-workspace">
 <!-- Upload Area -->
@@ -332,7 +379,11 @@
       <div class="faq-item"><button class="faq-question">¿La rotación reduce la calidad de la imagen?</button><div class="faq-answer">Las rotaciones de 90° y 180° no tienen pérdida: los píxeles simplemente se reorganizan. Las rotaciones con ángulo personalizado usan interpolación bicúbica de alta calidad. Para la mayoría de los usos, la calidad es excelente.</div></div>
       <div class="faq-item"><button class="faq-question">¿Se subirá mi imagen a un servidor?</button><div class="faq-answer">No. Todo el procesamiento ocurre completamente en tu navegador usando la API Canvas. Tus imágenes nunca salen de tu dispositivo.</div></div>
       <div class="faq-item"><button class="faq-question">¿Qué sucede con el tamaño del lienzo al rotar?</button><div class="faq-answer">Para rotaciones de 90° y 270°, el ancho y alto del lienzo se intercambian. Para ángulos personalizados, el lienzo se expande para contener toda la imagen rotada y el color de fondo rellena el espacio nuevo.</div></div>
-      </section>
+      
+  <div class="faq-item"><button class="faq-question">¿Se pierde calidad al girar 90 grados?</button><div class="faq-answer">Un giro de 90, 180 o 270 grados solo reubica píxeles, así que no debería aparecer interpolación. En ángulos arbitrarios el lienzo vuelve a muestrear la imagen y el detalle puede suavizarse un poco.</div></div>
+  <div class="faq-item"><button class="faq-question">¿Qué pasa con las esquinas al girar 30 grados?</button><div class="faq-answer">Quedan zonas vacías porque el rectángulo original ya no encaja en el nuevo. La herramienta no las rellena de forma inteligente: recorta la imagen después o elige un fondo que combine.</div></div>
+  <div class="faq-item"><button class="faq-question">¿Se sube mi imagen a un servidor?</button><div class="faq-answer">No. Todo el giro y el volteo se hacen con Canvas en tu navegador; no hay cuenta ni envío de archivos.</div></div>
+</section>
 
 <section class="related-tools">
   <h2>También te puede interesar</h2>

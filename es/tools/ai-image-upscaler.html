@@ -20,7 +20,10 @@
 <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/ai-image-upscaler">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/ai-image-upscaler">
 <link rel="stylesheet" href="/css/style.css?v=16">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 <style>
 * {margin:0; padding:0; box-sizing:border-box;}
 .drop-area {border:2px dashed #93c5fd; border-radius:12px; padding:3rem; text-align:center; background:var(--bg-secondary); cursor:pointer; margin:1.5rem 0;}
@@ -119,6 +122,14 @@
         "@type": "Answer",
         "text": "Sí. Digitaliza el retrato con buena luz, amplíalo a 4x y ya tienes un archivo suficiente para un cuadro de 20×30 cm. Es muy usado para regalos de Navidad, retratos del altar de Día de Muertos y recuerdos de bodas."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Esta herramienta usa inteligencia artificial?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. El código dibuja la imagen en un lienzo con imageSmoothingQuality en alto y la guarda como PNG; es interpolación, no un modelo de superresolución. Sirve para cambiar el tamaño en píxeles, pero no inventa ni recupera detalle. El texto antiguo de esta página que habla de nitidez recuperada describe otra cosa distinta de lo que hace el código."
+      }
     }
   ]
 }
@@ -166,7 +177,27 @@
     <nav class="breadcrumb"><a href="/es/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🔍 Ampliar Imagen</span></nav>
     <div class="tool-page-header">
       <h1>🔍 Ampliador de Imágenes por Lotes Gratis</h1>
-      <p>Aumenta el tamaño de varias fotos pequeñas con ampliación 2x y 4x directamente en tu navegador. No se suben imágenes a ningún servidor, sin registro, sin marca de agua, procesamiento local.</p>
+<p class="answer-lead">Amplía fotos a 2x o 4x dibujándolas de nuevo en un lienzo del navegador con interpolación de alta calidad. Aunque el nombre de la página mencione IA, aquí no se ejecuta ningún modelo: el proceso reescala los píxeles existentes y no recupera detalle que ya se perdió, así que una foto borrosa seguirá borrosa, solo que más grande. Sirve para cumplir un mínimo de píxeles en Mercado Libre o para imprimir, no para restaurar. No se suben archivos.</p>
+<ul class="facts-strip">
+  <li><span class="f-k">Precio</span><span class="f-v">Gratis</span></li>
+  <li><span class="f-k">Factor</span><span class="f-v">2x o 4x</span></li>
+  <li><span class="f-k">Método</span><span class="f-v">Interpolación con Canvas</span></li>
+  <li><span class="f-k">Subida</span><span class="f-v">Nunca, es local</span></li>
+</ul>
+<style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+<div class="compare-table">
+  <h2>Cuándo sirve ampliar y cuándo no</h2>
+  <table>
+  <thead><tr><th>Tu situación</th><th>Qué hace realmente el 2x o 4x</th><th>Mejor opción</th></tr></thead>
+  <tbody>
+  <tr><td>Mercado Libre pide al menos 1200 px</td><td>4x lleva una foto de 300 px a 1200 px</td><td>Cumplirás el requisito, pero no ganarás nitidez</td></tr>
+  <tr><td>Foto de proveedor llegada por WhatsApp</td><td>Viene comprimida y con detalle perdido</td><td>Ampliar no lo recupera; pide el archivo original</td></tr>
+  <tr><td>Imprimir un retrato en 20 por 30 cm</td><td>4x da resolución suficiente sobre un original decente</td><td>Parte siempre de la foto más grande que tengas</td></tr>
+  <tr><td>Texto pequeño en una etiqueta</td><td>La interpolación suaviza los bordes de las letras</td><td>No amplíes si el texto debe leerse con precisión</td></tr>
+  <tr><td>Foto familiar antigua y borrosa</td><td>El resultado será una versión grande y borrosa</td><td>Busca una restauración con modelo real, no un reescalado</td></tr>
+  <tr><td>Lote de fotos de catálogo</td><td>2x o 4x se aplica a todas por igual</td><td>Prueba una antes de procesar el lote completo</td></tr>
+  </tbody></table>
+</div>
     </div>
     <div class="tool-workspace">
 <div class="drop-area" id="dropArea">
@@ -262,6 +293,8 @@
   <div class="faq-item"><button class="faq-question">¿Puedo usar esto en el celular sin instalar nada?</button><div class="faq-answer">Sí, funciona desde el navegador de tu teléfono Android o iPhone, sin instalar apps. Toma las fotos de tu galería, arrástralas o selecciónalas, elige el factor y descarga el resultado directamente en tu carpeta de descargas.</div></div>
   <div class="faq-item"><button class="faq-question">¿Cómo preparo las fotos de producto para Mercado Libre o Amazon México?</button><div class="faq-answer">Amplía tus fotos pequeñas a 4x para que el zoom del comprador se vea nítido, recorta el fondo a blanco y comprime el archivo final. Así tu anuncio carga rápido en redes móviles y compite con fotos de tienda establecida.</div></div>
   <div class="faq-item"><button class="faq-question">¿Puedo ampliar una foto vieja de familia para imprimir un cuadro?</button><div class="faq-answer">Sí. Digitaliza el retrato con buena luz, amplíalo a 4x y ya tienes un archivo suficiente para un cuadro de 20×30 cm. Es muy usado para regalos de Navidad, retratos del altar de Día de Muertos y recuerdos de bodas.</div></div>
+
+  <div class="faq-item"><button class="faq-question">¿Esta herramienta usa inteligencia artificial?</button><div class="faq-answer">No. El código dibuja la imagen en un lienzo con imageSmoothingQuality en alto y la guarda como PNG; es interpolación, no un modelo de superresolución. Sirve para cambiar el tamaño en píxeles, pero no inventa ni recupera detalle. El texto antiguo de esta página que habla de nitidez recuperada describe otra cosa distinta de lo que hace el código.</div></div>
 </section>
 
 <section class="related-tools">

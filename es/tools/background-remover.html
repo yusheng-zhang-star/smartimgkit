@@ -30,7 +30,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/background-remover">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/background-remover">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 
   <style>
     .model-selector { margin: 16px 0; padding: 12px 16px; background: var(--surface); border-radius: 12px; border: 1px solid var(--border); }
@@ -137,6 +140,14 @@
         "@type": "Answer",
         "text": "Toma la foto del producto sobre la mesa de tu casa, súbela aquí, quita el fondo y descarga en JPG. La plataforma pide fondo blanco liso, y con este recorte tus fotos cumplen sin rentar un estudio fotográfico."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué tarda tanto la primera imagen?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El modelo de segmentación se descarga y se inicializa en tu navegador la primera vez. Después suele quedar en caché y las siguientes imágenes arrancan antes. El tiempo depende de tu conexión y de tu equipo, no de un servidor nuestro."
+      }
     }
   ]
 }
@@ -193,7 +204,27 @@
       <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>✂️ Quitar Fondo de Imagen</span></nav>
       <div class="tool-page-header">
         <h1>✂️ Quitar Fondo de Imagen</h1>
-        <p>Elimina el fondo de cualquier imagen usando IA — completamente en tu navegador. Sin subidas. Obtén un PNG transparente en segundos.</p>
+<p class="answer-lead">Elimina el fondo de una imagen con el motor @imgly/background-removal, que corre en tu navegador mediante WebAssembly y entrega un PNG transparente. Es un modelo de segmentación real, así que la primera ejecución debe descargar los archivos del modelo y puede tardar; los bordes de pelo, encaje o elementos semitransparentes siguen siendo el caso difícil. Las fotos no se envían a ningún servidor.</p>
+<ul class="facts-strip">
+  <li><span class="f-k">Precio</span><span class="f-v">Gratis, sin registro</span></li>
+  <li><span class="f-k">Motor</span><span class="f-v">@imgly sobre WebAssembly local</span></li>
+  <li><span class="f-k">Salida</span><span class="f-v">PNG transparente</span></li>
+  <li><span class="f-k">Subida</span><span class="f-v">Nunca, es local</span></li>
+</ul>
+<style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+<div class="compare-table">
+  <h2>Cuándo confiar en el recorte automático</h2>
+  <table>
+  <thead><tr><th>Tu situación</th><th>Qué hace la segmentación</th><th>Mejor opción</th></tr></thead>
+  <tbody>
+  <tr><td>Foto de producto sobre fondo liso</td><td>Separa el objeto con bordes limpios</td><td>Es el caso ideal para fichas de Mercado Libre</td></tr>
+  <tr><td>Retrato con cabello suelto</td><td>Los mechones finos pueden quedar recortados o con halo</td><td>Revisa al 200 % y retoca con un editor</td></tr>
+  <tr><td>Primera vez que abres la página</td><td>El modelo se descarga al navegador antes de procesar</td><td>Espera la carga completa y prueba con una foto pequeña</td></tr>
+  <tr><td>Objeto del mismo color que el fondo</td><td>El modelo puede confundir ambos y llevárselos juntos</td><td>Cambia el fondo a un color contrastado y vuelve a fotografiar</td></tr>
+  <tr><td>Lote de fotos de catálogo</td><td>Puedes procesar varias y descargarlas</td><td>Procesa una de muestra antes de lanzar el lote</td></tr>
+  <tr><td>Necesitas transparencia real</td><td>La salida es PNG con canal alfa</td><td>No lo conviertas a JPG o perderás el fondo transparente</td></tr>
+  </tbody></table>
+</div>
       </div>
       <div class="tool-workspace">
 <input type="file" id="fileInput" accept="image/*" multiple hidden>
@@ -304,7 +335,9 @@
       <div class="faq-item"><button class="faq-question">¿Para qué me sirve un PNG con fondo transparente?</button><div class="faq-answer">Lo puedes poner sobre cualquier diseño: stickers de WhatsApp, fotos de perfil, catálogos, tarjetas de presentación y publicaciones. Sin fondo transparente, el recorte sale con un cuadro blanco que tapa el diseño.</div></div>
       <div class="faq-item"><button class="faq-question">¿Se sube mi foto a un servidor?</button><div class="faq-answer">No. Todo el recorte se hace localmente con la IA en tu navegador. Tu imagen nunca sale de tu celular o computadora, lo que es importante para fotos de producto privadas o fotos personales.</div></div>
       <div class="faq-item"><button class="faq-question">¿Cómo hago fotos de producto con fondo blanco para Mercado Libre?</button><div class="faq-answer">Toma la foto del producto sobre la mesa de tu casa, súbela aquí, quita el fondo y descarga en JPG. La plataforma pide fondo blanco liso, y con este recorte tus fotos cumplen sin rentar un estudio fotográfico.</div></div>
-      </section>
+      
+  <div class="faq-item"><button class="faq-question">¿Por qué tarda tanto la primera imagen?</button><div class="faq-answer">El modelo de segmentación se descarga y se inicializa en tu navegador la primera vez. Después suele quedar en caché y las siguientes imágenes arrancan antes. El tiempo depende de tu conexión y de tu equipo, no de un servidor nuestro.</div></div>
+</section>
 
 <section class="localization-section" style="max-width:800px;margin:40px auto;padding:0 20px;">
   <h2 style="text-align:center;margin-bottom:20px;">Fotos de producto y stickers hechos desde el celular</h2>
