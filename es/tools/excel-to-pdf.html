@@ -24,7 +24,10 @@
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/excel-to-pdf">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/excel-to-pdf">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
   { 
   "inLanguage": "es","@context": "https://schema.org", "@type": "WebApplication", "name": "Convertir Excel a PDF", "url": "https://smartimgkit.com/es/tools/excel-to-pdf", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }, "description": "Convierte hojas de Excel (.xlsx) en PDF con tablas limpias y columnas autoajustadas. Procesamiento 100% local, sin subir el archivo." }
@@ -185,7 +188,28 @@
       <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>Convertir Excel a PDF</span></nav>
       <div class="tool-page-header">
         <h1>📊 Convertir Excel a PDF</h1>
-        <p>Convierte Excel (.xlsx) a PDF. Cada hoja se convierte en una página con una tabla ajustada automáticamente. 100% en tu navegador.</p>
+<p class="answer-lead">Convierte cada hoja de un libro .xlsx en una página PDF con una tabla de columnas autoajustadas. Hay dos límites que conviene conocer: se exportan como máximo 5000 filas por hoja (si hay más, se trunca y se indica en la página) y el lector espera la estructura xlsx, así que un .xls antiguo puede fallar aunque el selector de archivos lo admita.</p>
+<ul class="facts-strip">
+  <li><span class="f-k">Entrada</span><span class="f-v">Libro .xlsx</span></li>
+  <li><span class="f-k">Tope</span><span class="f-v">5000 filas por hoja</span></li>
+  <li><span class="f-k">Páginas</span><span class="f-v">Una por hoja</span></li>
+  <li><span class="f-k">Subida</span><span class="f-v">Nunca, todo es local</span></li>
+</ul>
+<style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+<div class="compare-table">
+  <h2>Qué revisar en la planilla antes de exportar</h2>
+  <table>
+  <thead><tr><th>Tu libro</th><th>Qué hace la conversión</th><th>Mejor decisión</th></tr></thead>
+  <tbody>
+  <tr><td>Reporte con 12 hojas</td><td>Cada hoja abre su propia página</td><td>Ordena las pestañas antes de exportar</td></tr>
+  <tr><td>Planilla de 8000 filas</td><td>Se vuelcan las 5000 primeras con un aviso</td><td>Filtra o divide el libro</td></tr>
+  <tr><td>Archivo .xls de Excel 2003</td><td>El lector espera el formato xlsx</td><td>Guarda como .xlsx y vuelve a intentarlo</td></tr>
+  <tr><td>Columnas con texto largo</td><td>autoTable reparte el ancho y puede comprimirlo</td><td>Cambia a orientación horizontal</td></tr>
+  <tr><td>Celdas con fórmulas</td><td>Se exporta el valor que trae el archivo guardado</td><td>Recalcula y guarda antes de subirlo</td></tr>
+  <tr><td>Plantilla con colores y bordes</td><td>El PDF genera una tabla limpia, no clona el diseño</td><td>No lo uses como maqueta visual</td></tr>
+  </tbody>
+  </table>
+</div>
       </div>
       <div class="tool-workspace">
         <div class="tool-container">

@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/face-blur">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/face-blur">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 
   <style>
     .tool-flex { display: flex; gap: 24px; flex-wrap: wrap; }
@@ -128,6 +131,22 @@
         "@type": "Answer",
         "text": "Claro que sí. Mucha gente usa el modo manual para tapar la placa del coche, la dirección que sale en una carta o un comprobante, o el número de una tarjeta antes de mandar una foto. Solo dibuja el rectángulo sobre esa zona y eliges difuminar, pixelar o tapar con una barra negra."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué pasa si el detector de rostros no llega a cargar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El código cae en una función de respaldo que supone que hay una cara en la región superior central de la imagen, equivalente aproximadamente a una cuarta parte del encuadre, y dibuja un único recuadro. El propio contador lo etiqueta como «estimado». En fotos con varias personas, rostros de perfil o sujetos descentrados ese recuadro no cubrirá a todos; revisa siempre el PNG antes de darlo por anonimizado."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿El modelo se ejecuta en mi equipo o se sube la foto a un servidor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El detector se descarga desde un CDN de JavaScript y la inferencia corre en el navegador; tu imagen no se envía a ese servicio. Lo que sí depende de la red es la primera descarga del modelo: sin conexión no está disponible y se activa el modo estimado descrito antes."
+      }
     }
   ]
 }
@@ -184,7 +203,28 @@
       <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>😶 Difuminar Rostros</span></nav>
       <div class="tool-page-header">
         <h1>😶 Difuminar Rostros</h1>
-        <p>Detecta y difumina los rostros de tus fotos automáticamente. Protege tu privacidad antes de compartir fotos por internet. Todo pasa en tu navegador, sin subir tus fotos a ningún lado.</p>
+<p class="answer-lead">Intenta localizar rostros con MediaPipe y los cubre con desenfoque, pixelado o una barra negra; la intensidad va de 1 a 50 y puedes ampliar la zona hasta un 50 %. Dos condiciones reales: el detector se carga desde un CDN, y si no llega a cargar el código recurre a una estimación que marca un único recuadro en la parte superior central de la imagen. Por eso conviene revisar siempre el resultado antes de publicar la foto.</p>
+<ul class="facts-strip">
+  <li><span class="f-k">Detección</span><span class="f-v">MediaPipe desde un CDN</span></li>
+  <li><span class="f-k">Modos</span><span class="f-v">Desenfoque, pixelado, barra</span></li>
+  <li><span class="f-k">Intensidad</span><span class="f-v">1–50</span></li>
+  <li><span class="f-k">Si falla</span><span class="f-v">1 recuadro estimado</span></li>
+</ul>
+<style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+<div class="compare-table">
+  <h2>Qué tan fiable es el resultado en cada escenario</h2>
+  <table>
+  <thead><tr><th>Tu foto</th><th>Qué ocurre</th><th>Qué debes hacer</th></tr></thead>
+  <tbody>
+  <tr><td>Aula con 15 personas</td><td>Sin el detector solo se marca una zona estimada</td><td>Revisa el archivo antes de compartirlo</td></tr>
+  <tr><td>Sin conexión al abrir la página</td><td>El modelo externo puede no estar disponible</td><td>Carga con datos y mira el contador de rostros</td></tr>
+  <tr><td>Rostro de perfil o muy lateral</td><td>La detección de confianza mínima 0,5 puede ignorarlo</td><td>Cubre la zona a mano con otro editor</td></tr>
+  <tr><td>Foto para un grupo de WhatsApp</td><td>El procesamiento ocurre en tu equipo</td><td>Comprueba igual que no quede nada legible</td></tr>
+  <tr><td>Patente de auto a un costado</td><td>La herramienta busca caras, no matrículas</td><td>Tápala con un editor antes de enviarla</td></tr>
+  <tr><td>Retrato de frente y centrado</td><td>Es el caso donde la estimación suele acertar</td><td>Sube el padding para cubrir orejas y pelo</td></tr>
+  </tbody>
+  </table>
+</div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -304,6 +344,8 @@
       <div class="faq-item"><button class="faq-question">¿Mis fotos se suben a algún servidor?</button><div class="faq-answer">No. Toda la detección de rostros y el difuminado ocurren dentro de tu propio navegador, en tu celular o compu. Tus fotos nunca se suben a ningún servidor, no pedimos registro y no guardamos nada. Puedes difuminar fotos sensibles con total confianza.</div></div>
       <div class="faq-item"><button class="faq-question">¿Por qué debería difuminar las caras antes de subir una foto?</button><div class="faq-answer">Cuando subes una foto a redes sociales o la mandas por un grupo de WhatsApp, otras personas pueden reconocer a tus familiares, hijos o vecinos sin su permiso. Difuminar los rostros protege su identidad y evita que la foto se use de otra manera. Es una costumbre sana, sobre todo con fotos de menores.</div></div>
       <div class="faq-item"><button class="faq-question">¿Puedo difuminar la placa de mi auto o mi domicilio en una foto?</button><div class="faq-answer">Claro que sí. Mucha gente usa el modo manual para tapar la placa del coche, la dirección que sale en una carta o un comprobante, o el número de una tarjeta antes de mandar una foto. Solo dibuja el rectángulo sobre esa zona y eliges difuminar, pixelar o tapar con una barra negra.</div></div>
+      <div class="faq-item"><button class="faq-question">¿Qué pasa si el detector de rostros no llega a cargar?</button><div class="faq-answer">El código cae en una función de respaldo que supone que hay una cara en la región superior central de la imagen, equivalente aproximadamente a una cuarta parte del encuadre, y dibuja un único recuadro. El propio contador lo etiqueta como «estimado». En fotos con varias personas, rostros de perfil o sujetos descentrados ese recuadro no cubrirá a todos; revisa siempre el PNG antes de darlo por anonimizado.</div></div>
+      <div class="faq-item"><button class="faq-question">¿El modelo se ejecuta en mi equipo o se sube la foto a un servidor?</button><div class="faq-answer">El detector se descarga desde un CDN de JavaScript y la inferencia corre en el navegador; tu imagen no se envía a ese servicio. Lo que sí depende de la red es la primera descarga del modelo: sin conexión no está disponible y se activa el modo estimado descrito antes.</div></div>
       </section>
 
 <section class="localization-section" style="max-width:800px;margin:40px auto;padding:0 20px;">
