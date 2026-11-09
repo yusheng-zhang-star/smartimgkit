@@ -24,7 +24,10 @@
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/csv-to-pdf">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/csv-to-pdf">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
   { 
   "inLanguage": "es","@context": "https://schema.org", "@type": "WebApplication", "name": "Convertir CSV a PDF Gratis", "url": "https://smartimgkit.com/es/tools/csv-to-pdf", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }, "description": "Convierte CSV a PDF gratis en tu navegador: extractos bancarios, reportes de ventas e inventarios en tablas listas para imprimir. Sin subir archivos." }
@@ -196,7 +199,28 @@
       <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>Convertir CSV a PDF</span></nav>
       <div class="tool-page-header">
         <h1>📊 Convertir CSV a PDF</h1>
-        <p>Convierte archivos CSV en tablas PDF con formato. Maneja campos entre comillas, comas dentro de campos y archivos grandes.</p>
+<p class="answer-lead">Convierte un CSV en una tabla PDF con cabecera. El parser respeta las comillas de RFC 4180, así que las comas y saltos de línea dentro de un campo no parten la fila, y puede detectar el delimitador automáticamente. Si el archivo supera las 5000 filas, solo se exportan las primeras 5000 y la página lo avisa.</p>
+<ul class="facts-strip">
+  <li><span class="f-k">Entrada</span><span class="f-v">Archivo .csv</span></li>
+  <li><span class="f-k">Tope</span><span class="f-v">5000 filas</span></li>
+  <li><span class="f-k">Página</span><span class="f-v">Tamaño y orientación</span></li>
+  <li><span class="f-k">Subida</span><span class="f-v">Nunca, todo es local</span></li>
+</ul>
+<style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+<div class="compare-table">
+  <h2>Cómo preparar el CSV antes de generar el PDF</h2>
+  <table>
+  <thead><tr><th>Tu archivo</th><th>Qué hace el conversor</th><th>Mejor ajuste</th></tr></thead>
+  <tbody>
+  <tr><td>Exportación de Mercado Libre</td><td>Las comillas evitan que una coma parta la columna</td><td>Deja el delimitador en automático</td></tr>
+  <tr><td>Planilla guardada con punto y coma</td><td>El detector lee la primera línea para decidir</td><td>Selecciona «;» si el auto se equivoca</td></tr>
+  <tr><td>Reporte de 9000 movimientos</td><td>Solo se vuelcan las primeras 5000 filas</td><td>Divide el CSV en dos antes de convertirlo</td></tr>
+  <tr><td>Tabla de 15 columnas</td><td>En A4 vertical el texto queda muy comprimido</td><td>Cambia a orientación horizontal</td></tr>
+  <tr><td>CSV sin fila de títulos</td><td>La primera fila se toma como cabecera</td><td>Añade una fila de nombres de columna</td></tr>
+  <tr><td>Campos con saltos de línea</td><td>El parser mantiene unido el texto entre comillas</td><td>Revisa el PDF antes de enviarlo a un cliente</td></tr>
+  </tbody>
+  </table>
+</div>
       </div>
       <div class="tool-workspace">
         <div class="tool-container">

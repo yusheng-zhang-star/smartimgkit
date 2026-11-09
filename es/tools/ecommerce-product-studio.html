@@ -13,7 +13,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/ecommerce-product-studio">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/ecommerce-product-studio">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <style id="tool-css">
 .tool-workspace{background:var(--bg-secondary);border:1px solid var(--border);border-radius:16px;padding:2rem;margin:1.5rem 0}
 .tool-workspace .drop-zone{cursor:pointer;text-align:center;padding:2.5rem;border:2px dashed var(--border);border-radius:12px;transition:border-color .2s,background .2s}
@@ -102,6 +105,14 @@
         "@type": "Answer",
         "text": "Mercado Libre, Amazon México, Shopee y la mayoría de plataformas de comercio recomiendan o exigen fondo blanco limpio para la foto principal. Un fondo uniforme ayuda a que tu publicación se vea más seria y a que el comprador compare productos de forma justa."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Necesito estar conectado a internet para usarlo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, al menos la primera vez. El código importa el modelo de extracción de fondo desde un CDN cuando pulsas «Generar»; sin conexión esa descarga falla y no se produce el recorte. Una vez descargado, el trabajo con tu imagen y la composición en blanco ocurren en el navegador, y la foto no se envía a ningún servidor del modelo."
+      }
     }
   ]
 }
@@ -155,7 +166,28 @@
       <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>📦 Estudio de Producto</span></nav>
       <div class="tool-page-header">
         <h1>📦 Estudio de Fotos de Producto</h1>
-        <p>Convierte una foto de tu celular en una imagen de producto con fondo blanco profesional, lista para Mercado Libre, Shopee o tu catálogo de WhatsApp.</p>
+<p class="answer-lead">Aísla el producto de una foto, lo centra sobre fondo blanco y lo deja listo para una ficha de Mercado Libre, Shopee o un catálogo de WhatsApp. Hay una condición importante: el modelo de extracción se importa desde un CDN la primera vez, así que necesitas conexión para descargarlo, aunque después el recorte y la composición se hacen en tu equipo. La salida es un PNG.</p>
+<ul class="facts-strip">
+  <li><span class="f-k">Entrada</span><span class="f-v">1 imagen</span></li>
+  <li><span class="f-k">Modelo</span><span class="f-v">Se descarga de un CDN</span></li>
+  <li><span class="f-k">Fondo</span><span class="f-v">Blanco fijo</span></li>
+  <li><span class="f-k">Salida</span><span class="f-v">PNG</span></li>
+</ul>
+<style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+<div class="compare-table">
+  <h2>Cuándo sirve esta foto de producto y cuándo no</h2>
+  <table>
+  <thead><tr><th>Tu toma</th><th>Qué hace el proceso</th><th>Qué conviene revisar</th></tr></thead>
+  <tbody>
+  <tr><td>Celular con fondo de mesa</td><td>El modelo aísla el artículo y rellena de blanco</td><td>Usa luz pareja para mejorar el borde</td></tr>
+  <tr><td>Local sin conexión</td><td>La primera ejecución no puede cargar el modelo</td><td>Abre la página con datos antes de ir</td></tr>
+  <tr><td>Producto fino o translúcido</td><td>Son los bordes que peor se recortan</td><td>Repásalos con el refinador de bordes</td></tr>
+  <tr><td>Varios artículos en una foto</td><td>El resultado los deja juntos sobre el blanco</td><td>Toma una foto por artículo</td></tr>
+  <tr><td>Portal que exige 1200×1200</td><td>La herramienta centra y escala, no fija un tamaño</td><td>Comprueba las dimensiones del PNG</td></tr>
+  <tr><td>Foto con reflejo en el piso</td><td>Puede quedar parte del reflejo recortado</td><td>Fotografía sobre un fondo mate</td></tr>
+  </tbody>
+  </table>
+</div>
       </div>
 
       <div class="tool-workspace">
@@ -191,6 +223,7 @@
         <div class="faq-item"><button class="faq-question">¿Mis fotos de producto se suben a un servidor?</button><div class="faq-answer">La imagen se procesa con un modelo de IA que corre dentro de tu propio navegador, en tu dispositivo; la foto no se envía a nuestros servidores. Lo único que se descarga la primera vez es el modelo de inteligencia artificial desde una red de distribución de confianza.</div></div>
         <div class="faq-item"><button class="faq-question">¿De qué tamaño sale la foto final?</button><div class="faq-answer">El resultado se genera en un cuadrado de 1600x1600 píxeles, con el producto centrado y ocupando el 80% del cuadro. Ese formato cuadrado es el que mejor se ve en las publicaciones de Mercado Libre, Shopee y Amazon México, y el tamaño es suficientemente alto para que el comprador pueda acercarse a ver el detalle.</div></div>
         <div class="faq-item"><button class="faq-question">¿Qué plataformas aceptan fotos con fondo blanco?</button><div class="faq-answer">Mercado Libre, Amazon México, Shopee y la mayoría de plataformas de comercio recomiendan o exigen fondo blanco limpio para la foto principal. Un fondo uniforme ayuda a que tu publicación se vea más seria y a que el comprador compare productos de forma justa.</div></div>
+      <div class="faq-item"><button class="faq-question">¿Necesito estar conectado a internet para usarlo?</button><div class="faq-answer">Sí, al menos la primera vez. El código importa el modelo de extracción de fondo desde un CDN cuando pulsas «Generar»; sin conexión esa descarga falla y no se produce el recorte. Una vez descargado, el trabajo con tu imagen y la composición en blanco ocurren en el navegador, y la foto no se envía a ningún servidor del modelo.</div></div>
       </section>
 
 <section class="localization-section">
