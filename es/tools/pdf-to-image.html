@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/pdf-to-image">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/pdf-to-image">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -174,6 +177,14 @@
         "@type": "Answer",
         "text": "No. Todo funciona en tu navegador — sin apps, plugins ni extensiones."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo elegir qué páginas convertir?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí: además de exportar todas las páginas, puedes indicar el rango que te interesa. Es lo recomendable en documentos largos, porque cada página se renderiza en la memoria del navegador."
+      }
     }
   ]
 }
@@ -239,7 +250,28 @@
       <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>📄 PDF a Imagen</span></nav>
       <div class="tool-page-header">
         <h1>📄 PDF a Imagen</h1>
-        <p>Convierte páginas PDF a imágenes PNG, JPG o WebP — gratis, en tu navegador.</p>
+        <p class="answer-lead">Convierte las páginas de un PDF en imágenes PNG, JPG o WebP, con factor de escala de 1x a 3x y rango de páginas a elección: todas, un tramo o una sola. Cada página se renderiza como imagen lista para usar en presentaciones, chats o redes, y el trabajo corre en tu navegador sin subir el archivo.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Precio</span><span class="f-v">Gratis, sin registro</span></li>
+          <li><span class="f-k">Formatos</span><span class="f-v">Entra PDF, sale PNG/JPG/WebP</span></li>
+          <li><span class="f-k">Privacidad</span><span class="f-v">Nunca — local</span></li>
+          <li><span class="f-k">Salida</span><span class="f-v">1x–3x, rango de páginas</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Formato y escala según el destino</h2>
+          <table>
+            <thead><tr><th>Uso que le vas a dar</th><th>Ajuste recomendado</th><th>Por qué</th></tr></thead>
+            <tbody>
+              <tr><td>Enviar una página por WhatsApp</td><td>JPG a 1x–1.5x</td><td>Pesa poco y se ve bien en pantalla</td></tr>
+              <tr><td>Diapositiva de una presentación</td><td>PNG a 2x</td><td>Fondo limpio y texto nítido al proyectar</td></tr>
+              <tr><td>Imprimir una hoja suelta</td><td>PNG a 3x</td><td>Máxima resolución disponible del render</td></tr>
+              <tr><td>Subir un catálogo a la web</td><td>WebP a 1.5x</td><td>Formato moderno, carga más liviana</td></tr>
+              <tr><td>Documento de 80 páginas para archivar</td><td>Convierte sólo el rango que uses</td><td>El render de todo el lote consume memoria del navegador</td></tr>
+              <tr><td>Texto pequeño o letra fina</td><td>PNG a 2x–3x</td><td>A 1x la letra fina se derrama</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -461,6 +493,7 @@
 <div class="faq-item"><button class="faq-question">¿Se exportan todas las páginas?</button><div class="faq-answer">Sí — cada página se convierte en su propio archivo de imagen.</div></div>
 <div class="faq-item"><button class="faq-question">¿Hay un límite de tamaño de archivo?</button><div class="faq-answer">Se admiten archivos de hasta 100 MB. Los archivos muy grandes pueden tardar unos segundos más en procesarse.</div></div>
 <div class="faq-item"><button class="faq-question">¿Necesito instalar algo?</button><div class="faq-answer">No. Todo funciona en tu navegador — sin apps, plugins ni extensiones.</div></div>
+              <div class="faq-item"><button class="faq-question">¿Puedo elegir qué páginas convertir?</button><div class="faq-answer">Sí: además de exportar todas las páginas, puedes indicar el rango que te interesa. Es lo recomendable en documentos largos, porque cada página se renderiza en la memoria del navegador.</div></div>
       </section>
 
 <section class="related-tools">
@@ -535,12 +568,27 @@
   </footer>
 
   <script src="/js/main.js?v=8"></script>
-  <script src="/js/pdf.min.js?v=3.11.174"></script>
+  <script>
+(function(){
+  var _p=null;
+  window.__pdfReady=function(){
+    if(_p) return _p;
+    _p=new Promise(function(resolve,reject){
+      var s=document.createElement('script');
+      s.src='/js/pdf.min.js?v=3.11.174';
+      s.onload=function(){ window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js'; resolve(window.pdfjsLib); };
+      s.onerror=function(){ _p=null; reject(new Error("pdf.js load failed")); };
+      document.head.appendChild(s);
+    });
+    return _p;
+  };
+  function kick(){ window.__pdfReady(); ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.removeEventListener(e,kick,true); }); }
+  ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.addEventListener(e,kick,true); });
+})();
+</script>
   <script>
 (function() {
         // Set pdf.js worker source
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
-
         const dropzone = document.getElementById('dropzone');
         const fileInput = document.getElementById('fileInput');
         const controlsSection = document.getElementById('controlsSection');
@@ -599,7 +647,7 @@
 
         async function loadPDF(arrayBuffer) {
             try {
-                const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+                const loadingTask = (await window.__pdfReady()).getDocument({ data: arrayBuffer });
                 pdfDoc = await loadingTask.promise;
                 pageTo.placeholder = pdfDoc.numPages;
                 pdfInfo.innerHTML += ` &nbsp;|&nbsp; <strong>Pages:</strong> ${pdfDoc.numPages}`;

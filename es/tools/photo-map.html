@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/photo-map">
   <link rel="stylesheet" href="/css/style.css?v=16">
   <link href="/js/maplibre-gl.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -56,12 +59,62 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    { "@type": "Question", "name": "¿Cómo funciona el mapa de ubicación de fotos?", "acceptedAnswer": { "@type": "Answer", "text": "Al subir una foto, la herramienta lee los metadatos EXIF del archivo. La mayoría de móviles y cámaras digitales graban automáticamente las coordenadas GPS al hacer la foto. Extraemos esas coordenadas y las mostramos con la miniatura de cada foto sobre un mapa interactivo basado en OpenFreeMap y OpenStreetMap." } },
-    { "@type": "Question", "name": "¿Se suben mis fotos a algún servidor?", "acceptedAnswer": { "@type": "Answer", "text": "No. Todo el procesamiento ocurre directamente en tu navegador: las fotos nunca salen de tu dispositivo, así que los datos de ubicación se quedan completamente en privado." } },
-    { "@type": "Question", "name": "¿Por qué algunas fotos no muestran datos GPS?", "acceptedAnswer": { "@type": "Answer", "text": "Puede ocurrir si la ubicación estaba desactivada en la cámara o el móvil, si la foto pasó por un editor que borró los metadatos, o si la cámara no tiene GPS. Con nuestro visor EXIF puedes revisar todos los metadatos de una foto." } },
-    { "@type": "Question", "name": "¿Puedo compartir mi mapa de fotos?", "acceptedAnswer": { "@type": "Answer", "text": "Sí, pulsa el botón «Compartir mapa» para generar un enlace. El enlace incluye las coordenadas GPS para que quien lo abra vea el mismo mapa. Ojo: solo se comparten las ubicaciones, no las fotos." } },
-    { "@type": "Question", "name": "¿Puedo exportar las ubicaciones para usarlas en otra app?", "acceptedAnswer": { "@type": "Answer", "text": "Sí, con el botón «Exportar GPX» descargas un archivo estándar con todos los waypoints. Lo puedes abrir en Google Earth, importarlo en Strava o Komoot como ruta, o cargarlo en cualquier software GIS." } },
-    { "@type": "Question", "name": "¿Qué diferencia tiene este mapa de fotos?", "acceptedAnswer": { "@type": "Answer", "text": "En lugar de puntos genéricos, cada marcador es la miniatura real de tu foto. Al pulsar cualquiera se abre una vista ampliada con sus detalles: es literalmente ver tus fotos de viaje clavadas en el punto exacto donde las hiciste." } }
+    {
+      "@type": "Question",
+      "name": "¿Cómo funciona el mapa de ubicación de fotos?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Al subir una foto, la herramienta lee los metadatos EXIF del archivo. La mayoría de móviles y cámaras digitales graban automáticamente las coordenadas GPS al hacer la foto. Extraemos esas coordenadas y las mostramos con la miniatura de cada foto sobre un mapa interactivo basado en OpenFreeMap y OpenStreetMap."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se suben mis fotos a algún servidor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Todo el procesamiento ocurre directamente en tu navegador: las fotos nunca salen de tu dispositivo, así que los datos de ubicación se quedan completamente en privado."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué algunas fotos no muestran datos GPS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Puede ocurrir si la ubicación estaba desactivada en la cámara o el móvil, si la foto pasó por un editor que borró los metadatos, o si la cámara no tiene GPS. Con nuestro visor EXIF puedes revisar todos los metadatos de una foto."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo compartir mi mapa de fotos?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, pulsa el botón «Compartir mapa» para generar un enlace. El enlace incluye las coordenadas GPS para que quien lo abra vea el mismo mapa. Ojo: solo se comparten las ubicaciones, no las fotos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo exportar las ubicaciones para usarlas en otra app?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, con el botón «Exportar GPX» descargas un archivo estándar con todos los waypoints. Lo puedes abrir en Google Earth, importarlo en Strava o Komoot como ruta, o cargarlo en cualquier software GIS."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué diferencia tiene este mapa de fotos?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "En lugar de puntos genéricos, cada marcador es la miniatura real de tu foto. Al pulsar cualquiera se abre una vista ampliada con sus detalles: es literalmente ver tus fotos de viaje clavadas en el punto exacto donde las hiciste."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Si mis fotos vienen de WhatsApp o de una red social aparecen en el mapa?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Probablemente no: esas apps suelen eliminar el EXIF al enviar o publicar, y sin coordenadas no hay dónde colocarlas. La herramienta te lo avisará en el contador de fotos sin GPS. Para fotos con ubicación, usa los archivos originales de la cámara."
+      }
+    }
   ]
 }
 </script>
@@ -183,7 +236,28 @@
 
   <section class="tool-hero">
     <h1>📍 Mapa de Ubicación de Fotos</h1>
-    <p>Sube tus fotos y mira al instante dónde las hiciste sobre un mapa interactivo, con la miniatura de cada foto como marcador. Las coordenadas GPS se extraen directamente de los datos EXIF: 100% privado, nada se sube a ningún servidor.</p>
+        <p class="answer-lead">Sube tus fotos y ubícalas sobre un mapa interactivo leyendo sus coordenadas GPS de los metadatos EXIF, con la miniatura de cada foto como marcador. Incluye contador de fotos con y sin GPS, exportación del recorrido a GPX y póster del mapa; las fotos no se suben a ningún servidor, aunque los tiles del mapa los sirve un proveedor externo al mostrarse.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Precio</span><span class="f-v">Gratis, sin registro</span></li>
+          <li><span class="f-k">Formatos</span><span class="f-v">Entra fotos con EXIF, sale mapa/GPX</span></li>
+          <li><span class="f-k">Privacidad</span><span class="f-v">Fotos locales; tiles del mapa externos</span></li>
+          <li><span class="f-k">Salida</span><span class="f-v">Mapa, GPX, póster</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Qué hacer con el mapa de tus fotos</h2>
+          <table>
+            <thead><tr><th>Objetivo</th><th>Función que lo resuelve</th><th>Detalle</th></tr></thead>
+            <tbody>
+              <tr><td>Revivir la ruta de un viaje</td><td>Marcadores con miniatura en orden</td><td>Sirve el botón de datos de ejemplo para probarlo</td></tr>
+              <tr><td>Detectar qué fotos salieron sin ubicación</td><td>Contador de con GPS y sin GPS</td><td>Las de red social suelen llegar sin EXIF</td></tr>
+              <tr><td>Llevar las ubicaciones a otra app</td><td>Exportar el recorrido en GPX</td><td>Abre el GPX en tu app de mapas o bitácora</td></tr>
+              <tr><td>Regalar un recuerdo del viaje</td><td>Generar el póster del mapa</td><td>Imprímelo en papel fotográfico</td></tr>
+              <tr><td>Revisar qué fotos exponen dónde estuviste</td><td>Mirar los marcadores antes de publicar</td><td>Si te preocupa, quita el EXIF con el limpiador</td></tr>
+              <tr><td>Ordenar un álbum por lugar</td><td>Agrupar por marcadores cercanos</td><td>Las tomas del mismo sitio caen juntas</td></tr>
+            </tbody>
+          </table>
+        </div>
   </section>
 
   <div class="tool-body">
@@ -373,7 +447,8 @@
       <div class="faq-question">¿Qué diferencia tiene este mapa de fotos? <span>+</span></div>
       <div class="faq-answer">En lugar de puntos genéricos, cada marcador es la miniatura real de tu foto. Al pulsar cualquiera se abre una vista ampliada con sus detalles: es literalmente ver tus fotos de viaje clavadas en el punto exacto donde las hiciste.</div>
     </div>
-  </section>
+          <div class="faq-item"><button class="faq-question">¿Si mis fotos vienen de WhatsApp o de una red social aparecen en el mapa?</button><div class="faq-answer">Probablemente no: esas apps suelen eliminar el EXIF al enviar o publicar, y sin coordenadas no hay dónde colocarlas. La herramienta te lo avisará en el contador de fotos sin GPS. Para fotos con ubicación, usa los archivos originales de la cámara.</div></div>
+      </section>
 
   <!-- Related Tools -->
   <section class="related-tools">
