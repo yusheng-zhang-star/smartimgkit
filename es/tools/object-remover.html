@@ -19,7 +19,10 @@
   <meta property="og:site_name" content="SmartImgKit">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <style>
     .or-workspace { display: flex; flex-direction: column; gap: 16px; }
     .or-canvas-wrap {
@@ -182,6 +185,22 @@
         "@type": "Answer",
         "text": "El resultado se descarga como archivo PNG, que conserva la máxima calidad sin artefactos de compresión. Es el formato ideal para publicar en redes sociales, mercados en línea o compartir por WhatsApp sin perder detalle en las pantallas de los celulares."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué la primera vez tarda tanto en empezar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La primera ejecución descarga el modelo de relleno (LaMa) desde su repositorio y lo guarda en el almacenamiento del navegador. Esa descarga sólo ocurre una vez: con el modelo ya en caché, las siguientes sesiones arrancan al instante y el borrado funciona incluso sin conexión."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿El borrado vuelve a salir igual cada vez?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No hay azar de por medio, pero el resultado depende de lo que marques: un trazo dos píxeles más ancho puede cambiar el relleno de la zona. Si un parche no convence, deshaz la pincelada y vuelve a marcar con otro margen alrededor del objeto."
+      }
     }
   ]
 }
@@ -209,7 +228,28 @@
       <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🧹 Removedor de Objetos</span></nav>
       <div class="tool-page-header">
         <h1>🧹 Removedor de Objetos</h1>
-        <p>Borra objetos no deseados, personas, marcas de agua e imperfecciones de tus fotos con relleno automático. Pinta sobre lo que quieras quitar y la imagen se rellena de forma natural. 100% en el navegador, tus imágenes nunca salen de tu dispositivo.</p>
+        <p class="answer-lead">Borra objetos, personas o textos de una foto pintando encima con el pincel: un modelo de relleno (LaMa) reconstruye la zona con lo que la rodea, todo dentro de tu navegador. La primera vez descarga el modelo —unos pocos cientos de MB— y queda guardado para funcionar después sin conexión; tus imágenes jamás se suben a ningún servidor.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Precio</span><span class="f-v">Gratis, sin registro</span></li>
+          <li><span class="f-k">Formatos</span><span class="f-v">Entra JPG/PNG/WebP, sale PNG</span></li>
+          <li><span class="f-k">Privacidad</span><span class="f-v">Nunca — local (modelo se descarga 1 vez)</span></li>
+          <li><span class="f-k">Salida</span><span class="f-v">object-removed.png</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>¿Qué conviene borrar y qué no?</h2>
+          <table>
+            <thead><tr><th>Objeto marcado</th><th>Resultado esperable</th><th>Alternativa sensata</th></tr></thead>
+            <tbody>
+              <tr><td>Turista de fondo en un muro liso</td><td>Relleno casi invisible</td><td>Adelante; pinta un margen alrededor de la persona</td></tr>
+              <tr><td>Peatón sobre textura compleja</td><td>Zona reconstruida con manchas o repeticiones</td><td>Prueba pasadas pequeñas en vez de una grande</td></tr>
+              <tr><td>Cable o línea fina cruzando el cielo</td><td>Desaparece sin rastro</td><td>El caso ideal para el pincel fino</td></tr>
+              <tr><td>Logo grande en el centro del producto</td><td>Textura verosímil, no el patrón real</td><td>Repite la toma o tapa con un rectángulo del editor</td></tr>
+              <tr><td>Texto de un cartel pequeño</td><td>Limpio si el fondo detrás es uniforme</td><td>Amplía la página antes de pintar para acertar</td></tr>
+              <tr><td>Media cara de una persona</td><td>El relleno inventará rasgos que no existen</td><td>No lo hagas para retratos formales</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="selling-points">
         <div class="sp-item"><span class="sp-icon">🧠</span>Relleno automático tipo LaMa</div>
@@ -383,6 +423,8 @@
       <div class="faq-item"><button class="faq-question">¿Qué pasa si me equivoco al pintar sobre la foto?</button><div class="faq-answer">Usa el botón de deshacer para revertir la última pincelada, o el botón de limpiar para empezar de cero. También puedes mantener presionado el botón de comparar para ver el original y soltarlo para ver el resultado, y repetir el proceso hasta que la foto quede como la imaginaste.</div></div>
       <div class="faq-item"><button class="faq-question">¿Puedo borrar turistas de fotos de playa o de ciudad?</button><div class="faq-answer">Sí. Sube la foto de viaje, ajusta el tamaño del pincel y pinta sobre cada persona que se coló en el cuadro. El relleno automático reconstruye el fondo con la arena, el mar o la fachada que había detrás, dejándote una foto limpia sin multitudes.</div></div>
       <div class="faq-item"><button class="faq-question">¿En qué formato se descarga la foto editada?</button><div class="faq-answer">El resultado se descarga como archivo PNG, que conserva la máxima calidad sin artefactos de compresión. Es el formato ideal para publicar en redes sociales, mercados en línea o compartir por WhatsApp sin perder detalle en las pantallas de los celulares.</div></div>
+      <div class="faq-item"><button class="faq-question">¿Por qué la primera vez tarda tanto en empezar?</button><div class="faq-answer">La primera ejecución descarga el modelo de relleno (LaMa) desde su repositorio y lo guarda en el almacenamiento del navegador. Esa descarga sólo ocurre una vez: con el modelo ya en caché, las siguientes sesiones arrancan al instante y el borrado funciona incluso sin conexión.</div></div>
+      <div class="faq-item"><button class="faq-question">¿El borrado vuelve a salir igual cada vez?</button><div class="faq-answer">No hay azar de por medio, pero el resultado depende de lo que marques: un trazo dos píxeles más ancho puede cambiar el relleno de la zona. Si un parche no convence, deshaz la pincelada y vuelve a marcar con otro margen alrededor del objeto.</div></div>
     </section>
 </main>
 

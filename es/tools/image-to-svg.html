@@ -14,7 +14,10 @@
   <meta name="theme-color" content="#0d9488">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script src="/js/potrace.js"></script>
   <script type="application/ld+json">
   {
@@ -89,6 +92,30 @@
         "@type": "Answer",
         "text": "Claro que sí. Las imprentas de serigrafía y los negocios de sublimación piden archivos vectoriales para que cada milímetro se imprima perfecto. Convierte tu diseño aquí, revisa que los bordes queden cerrados y lleva el SVG directamente al taller de tu colonia."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Conserva los colores de mi imagen?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. El trazado con Potrace es monocromo: calcula el umbral de brillo y genera un solo color de tinta sobre fondo transparente. Un SVG a color con varias tintas exige vectorizar capa por capa con software de escritorio."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Sirve para vectorizar una foto familiar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No es su terreno. Una foto tiene degradados y texturas que el trazado por umbral convierte en manchas; el resultado no se parece al original y el archivo crece sin ganancia. Para fotos, queda mejor una versión PNG en alta resolución."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué hace exactamente el control de Umbral?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Decide a partir de qué oscurez un píxel cuenta como tinta. Con logos escaneados, sube el umbral para eliminar el gris del papel; con trazos finos, bájalo para que las líneas no se rompan."
+      }
     }
   ]
 }
@@ -135,7 +162,28 @@
 
   <main class="tool-container">
     <h1 style="text-align:center;margin-bottom:.5rem">Convertir Imagen a SVG</h1>
-    <p style="text-align:center;color:var(--text-secondary);margin-bottom:2rem">Convierte PNG/JPG a SVG vectorial escalable infinitamente. Gratis, sin subida, perfecto para logos e impresión bajo demanda.</p>
+    <p class="answer-lead">Trazador de imágenes a SVG que funciona con umbral de brillo (Potrace): convierte PNG y JPG en un vector monocromo, ideal para logos, texto y dibujo lineal que se van a imprimir o escalar sin perder filo. No vectoriza fotografías a color ni degradados, y no es un conversor genérico de formato. Todo se procesa en tu navegador: el archivo no se sube a ningún servidor.</p>
+    <ul class="facts-strip">
+      <li><span class="f-k">Precio</span><span class="f-v">Gratis, sin registro</span></li>
+      <li><span class="f-k">Formatos</span><span class="f-v">Entra PNG/JPG, sale .svg</span></li>
+      <li><span class="f-k">Privacidad</span><span class="f-v">Nunca — local</span></li>
+      <li><span class="f-k">Salida</span><span class="f-v">vector.svg monocromo</span></li>
+    </ul>
+    <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+    <div class="compare-table">
+      <h2>¿Conviene vectorizar esta imagen aquí?</h2>
+      <table>
+        <thead><tr><th>Situación</th><th>Qué va a pasar</th><th>Tu mejor jugada</th></tr></thead>
+        <tbody>
+          <tr><td>Logo en blanco y negro</td><td>Trazado limpio, escala sin bordes dentados</td><td>Adelante; prueba Detalle 128 y baja si sale graso</td></tr>
+          <tr><td>Logo con degradados o sombras</td><td>El umbral aplana todo a un solo color</td><td>Pasa antes por escala de grises y ajusta el Umbral</td></tr>
+          <tr><td>Foto de producto o retrato</td><td>Sale una silueta manchada, sin color ni detalle</td><td>No lo hagas: este flujo no es para fotos</td></tr>
+          <tr><td>Dibujo lineal escaneado a lápiz</td><td>Buen resultado si el trazo es firme</td><td>Sube el Umbral para quitar el gris del papel</td></tr>
+          <tr><td>Captura con texto para letrero</td><td>El texto sale como trazos vectoriales</td><td>Sirve para vinilos; verifica cada letra al ampliar</td></tr>
+          <tr><td>Arte para serigrafía de una tinta</td><td>Un solo color, perfecto para pantallas</td><td>Baja Detalle hacia 64–96 para curvas más suaves</td></tr>
+        </tbody>
+      </table>
+    </div>
 
     <div class="upload-zone" id="dropZone">
       <div style="font-size:3rem;margin-bottom:1rem">✒️</div>
@@ -231,6 +279,9 @@
       <div class="faq-item"><button class="faq-question">¿Qué puedo hacer con el SVG?</button><div class="faq-answer"><p>Escalarlo sin pérdida de calidad, editarlo en Illustrator/Figma, usarlo en impresión bajo demanda (camisetas, tazas) o corte láser.</p></div></div>
       <div class="faq-item"><button class="faq-question">¿Puedo vectorizar el logo de mi emprendimiento para Mercado Libre?</button><div class="faq-answer"><p>Sí. Sube el PNG de tu logo, ajusta el nivel de detalle hasta que las curvas se vean limpias y descarga el SVG. Así tu foto de perfil en el catálogo se verá nítida y profesional, lista para tarjetas de presentación y stickers de empaque sin gastar en un diseñador.</p></div></div>
       <div class="faq-item"><button class="faq-question">¿El SVG sirve para imprimir playeras o tazas en una imprenta local?</button><div class="faq-answer"><p>Claro que sí. Las imprentas de serigrafía y los negocios de sublimación piden archivos vectoriales para que cada milímetro se imprima perfecto. Convierte tu diseño aquí, revisa que los bordes queden cerrados y lleva el SVG directamente al taller de tu colonia.</p></div></div>
+      <div class="faq-item"><button class="faq-question">¿Conserva los colores de mi imagen?</button><div class="faq-answer"><p>No. El trazado con Potrace es monocromo: calcula el umbral de brillo y genera un solo color de tinta sobre fondo transparente. Un SVG a color con varias tintas exige vectorizar capa por capa con software de escritorio.</p></div></div>
+      <div class="faq-item"><button class="faq-question">¿Sirve para vectorizar una foto familiar?</button><div class="faq-answer"><p>No es su terreno. Una foto tiene degradados y texturas que el trazado por umbral convierte en manchas; el resultado no se parece al original y el archivo crece sin ganancia. Para fotos, queda mejor una versión PNG en alta resolución.</p></div></div>
+      <div class="faq-item"><button class="faq-question">¿Qué hace exactamente el control de Umbral?</button><div class="faq-answer"><p>Decide a partir de qué oscurez un píxel cuenta como tinta. Con logos escaneados, sube el umbral para eliminar el gris del papel; con trazos finos, bájalo para que las líneas no se rompan.</p></div></div>
     </section>
   </main>
 
