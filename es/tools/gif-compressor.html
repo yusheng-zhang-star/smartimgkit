@@ -20,7 +20,10 @@
 <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/gif-compressor">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/gif-compressor">
 <link rel="stylesheet" href="/css/style.css?v=16">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 <style>
 .result{padding:14px 16px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:10px;font-size:.9rem;color:var(--text-secondary);display:flex;align-items:center;flex-wrap:wrap;gap:10px}
 .upload-area{border:2px dashed var(--border-color);border-radius:12px;padding:2.5rem;text-align:center;background:var(--bg-secondary);cursor:pointer;margin:1.5rem 0}
@@ -106,6 +109,22 @@
         "@type": "Answer",
         "text": "Un GIF de producto pesado hace que tu página cargue lento en celulares. Al comprimirlo reduces ese tiempo de carga, ahorras datos móviles de tus compradores y mejoras la experiencia de compra en Mercado Shops o redes."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Este compresor reduce de verdad el tamaño del GIF?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No en la versión actual. Al seleccionar el archivo, el código asigna ese mismo archivo a la variable que luego se descarga; no hay recompresión, recorte de fotogramas ni cambio de paleta. El número que ves en pantalla es el peso original, y el GIF que obtienes al guardar pesa exactamente lo mismo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué la página se llama «compresor» entonces?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El nombre de la herramienta no coincide con lo que hace el código hoy, y preferimos decirlo abiertamente para que no cuentes con un ahorro que no existe. Si lo que necesitas es aligerar la animación, empieza por separar sus fotogramas, quédate con los imprescindibles y vuelve a unirlos con menos resolución, o conviértela a un video MP4."
+      }
     }
   ]
 }
@@ -153,7 +172,28 @@
     <nav class="breadcrumb"><a href="/es/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🗜️ Comprimir GIF</span></nav>
     <div class="tool-page-header">
       <h1>🗜️ Compresor de GIF Animados</h1>
-      <p>Reduce el peso de tus GIF animados para que carguen más rápido en redes sociales y mensajería, 100% local y sin subir archivos.</p>
+<p class="answer-lead">Esta página se llama compresor de GIF, pero conviene ser precisos con lo que hace hoy: el botón de descarga entrega el mismo archivo que seleccionaste, sin reencodearlo, así que el tamaño no baja. Puedes usarla para ver el peso original y guardar una copia idéntica; si necesitas reducir de verdad un GIF, hay que bajar la resolución, quitar fotogramas o pasar la animación a video.</p>
+<ul class="facts-strip">
+  <li><span class="f-k">Entrada</span><span class="f-v">Archivo .gif</span></li>
+  <li><span class="f-k">Reencodeo</span><span class="f-v">No, por ahora</span></li>
+  <li><span class="f-k">Peso de salida</span><span class="f-v">Igual al original</span></li>
+  <li><span class="f-k">Subida</span><span class="f-v">Nunca, todo es local</span></li>
+</ul>
+<style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+<div class="compare-table">
+  <h2>Qué esperar de esta herramienta en cada caso</h2>
+  <table>
+  <thead><tr><th>Lo que buscas</th><th>Qué ocurre realmente</th><th>Camino recomendado</th></tr></thead>
+  <tbody>
+  <tr><td>Bajar un GIF de 8 MB</td><td>El descargable es el mismo archivo byte a byte</td><td>Reduce antes resolución o número de cuadros</td></tr>
+  <tr><td>Solo comprobar cuánto pesa</td><td>La página muestra el tamaño original en MB</td><td>Úsala como lectura rápida</td></tr>
+  <tr><td>GIF para un grupo de WhatsApp</td><td>No hay ahorro: el envío seguirá pesando igual</td><td>Pásalo a MP4 si el destino lo admite</td></tr>
+  <tr><td>Animación de 60 cuadros</td><td>No se descartan fotogramas</td><td>Separa y elige cuadros antes de unir</td></tr>
+  <tr><td>Cumplir un límite de KB</td><td>Aquí no existe control de calidad ni de peso</td><td>Usa un compresor que sí reencodee</td></tr>
+  <tr><td>Conservar el archivo exacto</td><td>La salida es idéntica a la entrada</td><td>Es el único caso en que conviene</td></tr>
+  </tbody>
+  </table>
+</div>
     </div>
     <div class="tool-workspace">
 <div class="upload-area" id="dropZone">
@@ -242,6 +282,8 @@
   <div class="faq-item"><button class="faq-question">¿Puedo usar esta herramienta en el celular?</button><div class="faq-answer">Sí, funciona en el navegador de tu teléfono Android o iPhone sin instalar nada. Guarda el GIF en tu carpeta de descargas, selecciónalo aquí y baja la versión optimizada directamente a tu celular.</div></div>
   <div class="faq-item"><button class="faq-question">¿Mis GIFs se suben a algún servidor?</button><div class="faq-answer">No. Toda la optimización ocurre localmente en tu navegador, así que los GIFs de tus chats privados nunca salen de tu dispositivo. No hay registro ni carga de archivos a la nube.</div></div>
   <div class="faq-item"><button class="faq-question">¿Para qué me sirve un GIF más liviano en mi tienda en línea?</button><div class="faq-answer">Un GIF de producto pesado hace que tu página cargue lento en celulares. Al comprimirlo reduces ese tiempo de carga, ahorras datos móviles de tus compradores y mejoras la experiencia de compra en Mercado Shops o redes.</div></div>
+      <div class="faq-item"><button class="faq-question">¿Este compresor reduce de verdad el tamaño del GIF?</button><div class="faq-answer">No en la versión actual. Al seleccionar el archivo, el código asigna ese mismo archivo a la variable que luego se descarga; no hay recompresión, recorte de fotogramas ni cambio de paleta. El número que ves en pantalla es el peso original, y el GIF que obtienes al guardar pesa exactamente lo mismo.</div></div>
+      <div class="faq-item"><button class="faq-question">¿Por qué la página se llama «compresor» entonces?</button><div class="faq-answer">El nombre de la herramienta no coincide con lo que hace el código hoy, y preferimos decirlo abiertamente para que no cuentes con un ahorro que no existe. Si lo que necesitas es aligerar la animación, empieza por separar sus fotogramas, quédate con los imprescindibles y vuelve a unirlos con menos resolución, o conviértela a un video MP4.</div></div>
 </section>
 
 <section class="related-tools">

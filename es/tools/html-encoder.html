@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/html-encoder">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/html-encoder">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -211,7 +214,28 @@
       <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🏷️ Codificador HTML</span></nav>
       <div class="tool-page-header">
         <h1>🏷️ Codificador HTML</h1>
-        <p>Codifica y decodifica entidades HTML — gratis, en tu navegador.</p>
+<p class="answer-lead">Codifica texto como entidades HTML o revierte el proceso, aprovechando el propio DOM del navegador: para codificar se usa textContent y se lee innerHTML, y para decodificar al revés. También puedes cargar un archivo de texto. No hay envío a servidor y los caracteres Unicode como la ñ se conservan tal cual.</p>
+<ul class="facts-strip">
+  <li><span class="f-k">Entrada</span><span class="f-v">Texto o archivo</span></li>
+  <li><span class="f-k">Método</span><span class="f-v">Codificación vía DOM</span></li>
+  <li><span class="f-k">Unicode</span><span class="f-v">Se conserva</span></li>
+  <li><span class="f-k">Subida</span><span class="f-v">Nunca, todo es local</span></li>
+</ul>
+<style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+<div class="compare-table">
+  <h2>Cuándo hace falta codificar entidades</h2>
+  <table>
+  <thead><tr><th>Tu contenido</th><th>Qué hace la conversión</th><th>Mejor práctica</th></tr></thead>
+  <tbody>
+  <tr><td>Mostrar una etiqueta &lt;script&gt; en un tutorial</td><td>Los signos se convierten en entidades visibles</td><td>Pega el resultado, no el texto original</td></tr>
+  <tr><td>Fragmento ya codificado de un CMS</td><td>Decodificar devuelve el texto legible</td><td>No lo reutilices como plantilla HTML sin revisarlo</td></tr>
+  <tr><td>Comillas dentro de un atributo</td><td>Se convierten en &amp;quot; para no romperlo</td><td>Úsalo al construir atributos a mano</td></tr>
+  <tr><td>Texto con tildes y ñ</td><td>El DOM deja los caracteres Unicode como están</td><td>No hacen falta entidades numéricas</td></tr>
+  <tr><td>Pegar código desde un correo</td><td>Codificar evita que el navegador lo interprete</td><td>Colócalo después dentro de &lt;pre&gt;</td></tr>
+  <tr><td>Archivo con varias líneas</td><td>Se procesa el contenido completo</td><td>Conserva los saltos en el resultado</td></tr>
+  </tbody>
+  </table>
+</div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
