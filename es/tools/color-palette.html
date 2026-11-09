@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/color-palette">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/color-palette">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 
   <style>
     .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; margin-top: 16px; }
@@ -107,6 +110,14 @@
         "@type": "Answer",
         "text": "Sí. La herramienta funciona dentro del navegador de tu celular, sin instalar nada, sin crear una cuenta y sin pagar suscripción. Sube la foto de tu local o de tu producto, extrae los colores dominantes, y copia el código HEX directo para usarlo en tu página web o en tus posts de Instagram."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿La paleta usa inteligencia artificial o entiende qué hay en la foto?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. El código reduce la imagen a 100×100 píxeles, agrupa colores similares en cubos y ordena esos grupos por frecuencia. No reconoce objetos, no nombra los colores ni interpreta el contenido: los HEX son simplemente los tonos que más píxeles ocupan en la muestra."
+      }
     }
   ]
 }
@@ -163,7 +174,28 @@
       <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🎨 Paleta de Colores</span></nav>
       <div class="tool-page-header">
         <h1>🎨 Paleta de Colores</h1>
-        <p>Extrae colores dominantes de cualquier imagen.</p>
+<p class="answer-lead">Extrae entre 3 y 12 colores en formato HEX de una imagen. Para hacerlo reduce la foto a una muestra de 100×100 píxeles, agrupa los tonos parecidos y ordena los grupos por frecuencia: es un recuento de píxeles, no una interpretación del contenido. Todo ocurre en el navegador.</p>
+<ul class="facts-strip">
+  <li><span class="f-k">Entrada</span><span class="f-v">1 imagen</span></li>
+  <li><span class="f-k">Colores</span><span class="f-v">De 3 a 12 HEX</span></li>
+  <li><span class="f-k">Muestreo</span><span class="f-v">100×100 píxeles</span></li>
+  <li><span class="f-k">Subida</span><span class="f-v">Nunca, todo es local</span></li>
+</ul>
+<style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+<div class="compare-table">
+  <h2>Cómo leer la paleta según el tipo de imagen</h2>
+  <table>
+  <thead><tr><th>Tu imagen</th><th>Qué ocurre al extraer</th><th>Cómo usar el resultado</th></tr></thead>
+  <tbody>
+  <tr><td>Banner de una tienda en Mercado Libre</td><td>Los HEX se ordenan por veces que aparecen</td><td>Descarta el fondo si domina la lista</td></tr>
+  <tr><td>Foto con mucho cielo</td><td>El azul puede copar los primeros puestos</td><td>Sube a 12 colores para ver matices</td></tr>
+  <tr><td>Logo de dos colores sobre blanco</td><td>El blanco suele ser el más frecuente</td><td>Toma los dos siguientes de la lista</td></tr>
+  <tr><td>Degradado suave</td><td>Los tonos cercanos caen en cubos contiguos</td><td>Prueba con menos colores para un resumen</td></tr>
+  <tr><td>Captura de una web de referencia</td><td>Solo se leen píxeles de la imagen que subiste</td><td>Úsala como referencia cromática, no como copia</td></tr>
+  <tr><td>Foto original de 4000 px</td><td>Se muestrean 10 000 píxeles antes de contar</td><td>Los detalles finos pueden no aparecer</td></tr>
+  </tbody>
+  </table>
+</div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -276,6 +308,7 @@
       <div class="faq-item"><button class="faq-question">¿Puedo copiar un color con un clic?</button><div class="faq-answer">Sí. Haz clic en cualquier muestra para copiar su HEX.</div></div>
       <div class="faq-item"><button class="faq-question">¿Cómo saco los colores de un altar de Día de Muertos para mi negocio?</button><div class="faq-answer">Toma una foto del altar con el celular, súbela a la herramienta, y ajusta el deslizador a 6 colores dominantes. Obtendrás una paleta con el naranja de las cempasúchiles, el morado de la ofrenda y el dorado de las velas, lista para usar en tus publicaciones de Mercado Libre o de tu negocio de temporada.</div></div>
       <div class="faq-item"><button class="faq-question">¿Puedo usar esta herramienta desde mi celular sin descargar una app?</button><div class="faq-answer">Sí. La herramienta funciona dentro del navegador de tu celular, sin instalar nada, sin crear una cuenta y sin pagar suscripción. Sube la foto de tu local o de tu producto, extrae los colores dominantes, y copia el código HEX directo para usarlo en tu página web o en tus posts de Instagram.</div></div>
+      <div class="faq-item"><button class="faq-question">¿La paleta usa inteligencia artificial o entiende qué hay en la foto?</button><div class="faq-answer">No. El código reduce la imagen a 100×100 píxeles, agrupa colores similares en cubos y ordena esos grupos por frecuencia. No reconoce objetos, no nombra los colores ni interpreta el contenido: los HEX son simplemente los tonos que más píxeles ocupan en la muestra.</div></div>
       </section>
 
 <section class="localization-section"><div style="max-width:900px;margin:3rem auto;padding:0 1rem;">
