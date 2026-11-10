@@ -12,7 +12,10 @@
   <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/png-to-svg">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/png-to-svg">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <style id="tool-css">
 .container{max-width:1000px;margin:2rem auto;padding:0 1rem}
 .upload{border:2px dashed var(--border);border-radius:16px;padding:3rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--surface)}
@@ -118,6 +121,30 @@
         "@type": "Answer",
         "text": "Sí. El SVG descargado se puede subir directamente a Canva, insertarlo en tu página de Facebook profesional, usarlo como ícono en tu sitio web o enviarlo a una imprenta. Muchos vendedores de Mercado Libre lo emplean para colocar su logotipo sobre las fotos de sus productos sin que pierda nitidez."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué se reduce a 800 píxeles de ancho?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Porque el trazado se calcula píxel a píxel y una imagen de 3000 px generaría cientos de miles de formas, un SVG de varios megas que ningún editor abre con soltura. Al limitar a 800 px el archivo se mantiene manejable; el precio es que los detalles menores que 1/800 del ancho desaparecen."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿El SVG se puede editar en Illustrator o Inkscape?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, se abre sin problema, pero llega como una pila de formas rectangulares, no como curvas Bézier limpias. Puedes recolorear y mover grupos; retocar nodos uno a uno es incómodo. Si necesitas un logo editable de verdad, pide el original vectorial al diseñador."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿El SVG pesa menos que el PNG?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A menudo pesa más, sobre todo en imágenes con muchos colores, porque cada tramo de píxeles se convierte en una forma con sus coordenadas en texto. El SVG gana en escalabilidad y en nitidez al imprimir, no en peso de archivo."
+      }
     }
   ]
 }
@@ -170,7 +197,28 @@
       <nav class="breadcrumb"><a href="/es/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🔤 PNG a SVG</span></nav>
       <div class="tool-page-header">
         <h1>🔤 Convertir PNG a SVG</h1>
-        <p>Vectoriza tus imágenes a SVG gratis, ajustando umbral y colores, con procesamiento 100% local y sin necesidad de subir archivos.</p>
+        <p class="answer-lead">Convierte un PNG o un JPG en un SVG trazando la imagen por colores, con umbral y número de colores ajustables. Antes de trazarla, la reduce a 800 píxeles de ancho, así que el SVG resultante es ligero y escalable pero no una vectorización fina: sirve para logos planos, no para fotos. El archivo se genera en tu navegador y la imagen no se sube a ningún servidor.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Precio</span><span class="f-v">Gratis, sin registro</span></li>
+          <li><span class="f-k">Entrada</span><span class="f-v">PNG y JPG, hasta 800 px</span></li>
+          <li><span class="f-k">Privacidad</span><span class="f-v">Local, sin subir</span></li>
+          <li><span class="f-k">Salida</span><span class="f-v">SVG editable</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>¿Tu imagen gana algo al pasar a SVG?</h2>
+          <table>
+            <thead><tr><th>Tipo de imagen</th><th>Qué obtienes</th><th>Qué conviene hacer</th></tr></thead>
+            <tbody>
+              <tr><td>Logo plano de 2 a 4 colores</td><td>SVG con formas separadas por color</td><td>Úsalo tal cual: escala sin pixelarse</td></tr>
+              <tr><td>Ilustración con degradados</td><td>Bandas de color planas, sin transición suave</td><td>Acepta el efecto poster o vectoriza a mano</td></tr>
+              <tr><td>Foto o retrato</td><td>Manchas de color sin forma reconocible</td><td>No lo conviertas: guarda el PNG</td></tr>
+              <tr><td>Icono grande de 512 px</td><td>Trazado fiel dentro del límite de 800 px</td><td>Comprueba el resultado antes de usarlo en imprenta</td></tr>
+              <tr><td>Texto fino o tipografía pequeña</td><td>Se rompe en bloques y pierde legibilidad</td><td>Vuelve a escribir el texto como texto en el SVG</td></tr>
+              <tr><td>PNG con fondo transparente</td><td>Respeta las zonas transparentes</td><td>Revisa que no queden halos en el borde</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div class="upload" id="dropZone">
@@ -220,6 +268,9 @@
         <div class="faq-item"><button class="faq-question">¿Mis imágenes se suben a algún servidor?</button><div class="faq-answer">No. Tu PNG o JPG nunca sale de tu celular o computadora: la vectorización se calcula con JavaScript en tu navegador, sin subidas, sin cuentas y sin seguimiento. Puedes convertir logotipos de tu empresa o dibujos privados con total confidencialidad.</div></div>
         <div class="faq-item"><button class="faq-question">¿Para qué sirve un archivo SVG frente a un PNG?</button><div class="faq-answer">Un PNG es una imagen de píxeles que se ve borrosa al agrandarla; un SVG es un dibujo matemático que se ve perfecto en cualquier tamaño, desde un ícono de 16 píxeles hasta un cartel de 2 metros. Por eso los sitios web, las tarjetas de presentación y las imprentas piden siempre el formato vectorial.</div></div>
         <div class="faq-item"><button class="faq-question">¿Puedo usar el SVG en Canva, Facebook o mi página web?</button><div class="faq-answer">Sí. El SVG descargado se puede subir directamente a Canva, insertarlo en tu página de Facebook profesional, usarlo como ícono en tu sitio web o enviarlo a una imprenta. Muchos vendedores de Mercado Libre lo emplean para colocar su logotipo sobre las fotos de sus productos sin que pierda nitidez.</div></div>
+              <div class="faq-item"><button class="faq-question">¿Por qué se reduce a 800 píxeles de ancho?</button><div class="faq-answer">Porque el trazado se calcula píxel a píxel y una imagen de 3000 px generaría cientos de miles de formas, un SVG de varios megas que ningún editor abre con soltura. Al limitar a 800 px el archivo se mantiene manejable; el precio es que los detalles menores que 1/800 del ancho desaparecen.</div></div>
+        <div class="faq-item"><button class="faq-question">¿El SVG se puede editar en Illustrator o Inkscape?</button><div class="faq-answer">Sí, se abre sin problema, pero llega como una pila de formas rectangulares, no como curvas Bézier limpias. Puedes recolorear y mover grupos; retocar nodos uno a uno es incómodo. Si necesitas un logo editable de verdad, pide el original vectorial al diseñador.</div></div>
+        <div class="faq-item"><button class="faq-question">¿El SVG pesa menos que el PNG?</button><div class="faq-answer">A menudo pesa más, sobre todo en imágenes con muchos colores, porque cada tramo de píxeles se convierte en una forma con sus coordenadas en texto. El SVG gana en escalabilidad y en nitidez al imprimir, no en peso de archivo.</div></div>
       </section>
 
 <section class="localization-section">

@@ -25,7 +25,10 @@
   <meta name="twitter:image" content="https://smartimgkit.com/screenshots/qr-code-generator.png">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <style>
     .tool-workspace { display: flex; flex-direction: column; gap: 24px; }
     .controls { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
@@ -110,13 +113,86 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    { "@type": "Question", "name": "¿Puedo personalizar el aspecto del código QR?", "acceptedAnswer": { "@type": "Answer", "text": "Sí: eliges el tamaño en píxeles y los tonos del código y del fondo. Aun así, mantén buen contraste, con el código oscuro sobre fondo claro, porque los lectores del celular fallan con combinaciones de bajo contraste y así el código no se escanea." } },
-    { "@type": "Question", "name": "¿Qué contenido puedo codificar?", "acceptedAnswer": { "@type": "Answer", "text": "Direcciones web, texto plano, redes WiFi con nombre, contraseña y cifrado, correos electrónicos con asunto, números de teléfono y mensajes SMS. También puedes meter la liga de tu chat de WhatsApp o la dirección de tu menú digital." } },
-    { "@type": "Question", "name": "¿El código QR caduca en algún momento?", "acceptedAnswer": { "@type": "Answer", "text": "No. El código solo contiene la información que escribiste, por ejemplo la dirección, así que funciona mientras ese enlace o esa red sigan existiendo. No usamos redirecciones propias ni cuentas que caduquen, y no pagas una suscripción mensual por él." } },
-    { "@type": "Question", "name": "¿Qué formato conviene descargar: PNG o SVG?", "acceptedAnswer": { "@type": "Answer", "text": "Para webs, WhatsApp o redes sociales, el PNG es lo más cómodo. Para imprenta, folletos, tarjetas o el menú de un restaurante, elige SVG: al ser vectorial no pierde nitidez por grande que sea la impresión y se ve bien a cualquier tamaño de mesa." } },
-    { "@type": "Question", "name": "¿Se guardan mis datos o mis códigos en algún servidor?", "acceptedAnswer": { "@type": "Answer", "text": "No. El código se dibuja en tu navegador con una librería local: ni el texto ni la configuración salen de tu dispositivo, y no hay historial de códigos generados. Puedes crear QR de tu negocio o de tu casa sin que pasen por un servidor ajeno." } },
-    { "@type": "Question", "name": "¿Cómo hago un QR para que me agreguen a WhatsApp sin dar mi número?", "acceptedAnswer": { "@type": "Answer", "text": "Codifica la liga de tu chat, que empieza por wa.me seguido de tu número con código de país. Descarga el código en PNG, imprímelo en tus tarjetas o póntelo en tus redes: quien lo escanea abre un chat contigo, sin tener que guardar tu número a mano ni que tú dictes los dígitos." } },
-    { "@type": "Question", "name": "¿Puedo poner el menú de mi restaurante en un código QR para los clientes?", "acceptedAnswer": { "@type": "Answer", "text": "Claro: enlaza el código a tu menú digital, un PDF o una liga de delivery, e imprímelo en un portacríos de cada mesa. Así actualizas los precios una sola vez y todos los QR de las mesas muestran la carta vigente, sin reimprimir menús de plástico cada temporada." } }
+    {
+      "@type": "Question",
+      "name": "¿Puedo personalizar el aspecto del código QR?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí: eliges el tamaño en píxeles y los tonos del código y del fondo. Aun así, mantén buen contraste, con el código oscuro sobre fondo claro, porque los lectores del celular fallan con combinaciones de bajo contraste y así el código no se escanea."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué contenido puedo codificar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Direcciones web, texto plano, redes WiFi con nombre, contraseña y cifrado, correos electrónicos con asunto, números de teléfono y mensajes SMS. También puedes meter la liga de tu chat de WhatsApp o la dirección de tu menú digital."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿El código QR caduca en algún momento?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. El código solo contiene la información que escribiste, por ejemplo la dirección, así que funciona mientras ese enlace o esa red sigan existiendo. No usamos redirecciones propias ni cuentas que caduquen, y no pagas una suscripción mensual por él."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué formato conviene descargar: PNG o SVG?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Para webs, WhatsApp o redes sociales, el PNG es lo más cómodo. Para imprenta, folletos, tarjetas o el menú de un restaurante, elige SVG: al ser vectorial no pierde nitidez por grande que sea la impresión y se ve bien a cualquier tamaño de mesa."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se guardan mis datos o mis códigos en algún servidor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. El código se dibuja en tu navegador con una librería local: ni el texto ni la configuración salen de tu dispositivo, y no hay historial de códigos generados. Puedes crear QR de tu negocio o de tu casa sin que pasen por un servidor ajeno."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo hago un QR para que me agreguen a WhatsApp sin dar mi número?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Codifica la liga de tu chat, que empieza por wa.me seguido de tu número con código de país. Descarga el código en PNG, imprímelo en tus tarjetas o póntelo en tus redes: quien lo escanea abre un chat contigo, sin tener que guardar tu número a mano ni que tú dictes los dígitos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo poner el menú de mi restaurante en un código QR para los clientes?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Claro: enlaza el código a tu menú digital, un PDF o una liga de delivery, e imprímelo en un portacríos de cada mesa. Así actualizas los precios una sola vez y todos los QR de las mesas muestran la carta vigente, sin reimprimir menús de plástico cada temporada."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo poner mi logo en el centro del código?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No desde esta herramienta: no hay campo para subir imágenes. Como la corrección está en nivel H, sí puedes pegar el logo después en un editor gráfico siempre que no tapes más de un 30 % del patrón y lo pruebes con dos lectores antes de imprimir."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿El QR caduca o deja de funcionar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El código es una codificación estática del texto que escribes: no apunta a ningún servicio nuestro ni lleva fecha de caducidad. Dejará de funcionar solo si cambia el destino, por ejemplo si borras la página o si el enlace acortado se desactiva."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué a veces el móvil no lo lee?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Casi siempre por falta de contraste o de margen. Un QR en verde claro sobre blanco pierde el 40 % de contraste respecto al negro, y si el código toca el borde del papel muchos lectores no encuentran el patrón de posición. Deja un margen blanco de al menos cuatro módulos por lado."
+      }
+    }
   ]
 }
 </script>
@@ -145,7 +221,28 @@
     <div class="container">
       <div class="tool-page-header">
         <h1>📱 Generador de códigos QR</h1>
-        <p>Genera códigos QR al instante. Gratis, en línea, sin registro.</p>
+        <p class="answer-lead">Genera códigos QR de seis tipos —enlace, texto, red WiFi, correo, teléfono y SMS— con color de primer plano y de fondo a tu gusto y un tamaño de 100 a 1000 píxeles. Se crean en tu navegador y puedes descargarlos en PNG o SVG, sin registro y sin marca de agua. La corrección de errores está fijada en nivel H, así que el código aguanta hasta un 30 % de daño o de logo encima.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Precio</span><span class="f-v">Gratis, sin registro</span></li>
+          <li><span class="f-k">Tipos</span><span class="f-v">URL, texto, WiFi, correo, teléfono, SMS</span></li>
+          <li><span class="f-k">Tamaño</span><span class="f-v">100 a 1000 px</span></li>
+          <li><span class="f-k">Salida</span><span class="f-v">PNG y SVG</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Qué tipo elegir según lo que quieras repartir</h2>
+          <table>
+            <thead><tr><th>Para qué lo usas</th><th>Tipo en el selector</th><th>Aviso práctico</th></tr></thead>
+            <tbody>
+              <tr><td>Menú, catálogo o ficha de producto</td><td>URL / página web</td><td>Acorta el enlace antes: cuanto más largo, más denso el patrón</td></tr>
+              <tr><td>Que el cliente entre a tu WiFi sin teclear la clave</td><td>Red WiFi</td><td>Marca WPA/WPA2; ojo, la clave queda legible para quien escanee</td></tr>
+              <tr><td>Tarjeta de presentación impresa</td><td>Correo o teléfono</td><td>Deja 4 mm de margen blanco al recortar</td></tr>
+              <tr><td>Cartel en la puerta de la tienda</td><td>URL o texto</td><td>Imprime en SVG: el PNG se pixela al ampliar</td></tr>
+              <tr><td>Campaña de SMS con número corto</td><td>SMS</td><td>Comprueba el mensaje precargado en dos teléfonos distintos</td></tr>
+              <tr><td>Etiqueta pequeña de 2 cm</td><td>URL corta</td><td>Usa fondo claro y contraste alto, no colores parecidos</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div class="tool-workspace">
@@ -327,7 +424,10 @@
 <div class="faq-item"><button class="faq-question">¿Qué formato conviene descargar: PNG o SVG?</button><div class="faq-answer">Para webs, WhatsApp o redes sociales, el PNG es lo más cómodo. Para imprenta, folletos, tarjetas o el menú de un restaurante, elige SVG: al ser vectorial no pierde nitidez por grande que sea la impresión y se ve bien a cualquier tamaño de mesa.</div></div>
 <div class="faq-item"><button class="faq-question">¿Se guardan mis datos o mis códigos en algún servidor?</button><div class="faq-answer">No. El código se dibuja en tu navegador con una librería local: ni el texto ni la configuración salen de tu dispositivo, y no hay historial de códigos generados. Puedes crear QR de tu negocio o de tu casa sin que pasen por un servidor ajeno.</div></div>
 <div class="faq-item"><button class="faq-question">¿Cómo hago un QR para que me agreguen a WhatsApp sin dar mi número?</button><div class="faq-answer">Codifica la liga de tu chat, que empieza por wa.me seguido de tu número con código de país. Descarga el código en PNG, imprímelo en tus tarjetas o póntelo en tus redes: quien lo escanea abre un chat contigo, sin tener que guardar tu número a mano ni que tú dictes los dígitos.</div></div>
-<div class="faq-item"><button class="faq-question">¿Puedo poner el menú de mi restaurante en un código QR para los clientes?</button><div class="faq-answer">Claro: enlaza el código a tu menú digital, un PDF o una liga de delivery, e imprímelo en un portacríos de cada mesa. Así actualizas los precios una sola vez y todos los QR de las mesas muestran la carta vigente, sin reimprimir menús de plástico cada temporada.</div></div></section>
+<div class="faq-item"><button class="faq-question">¿Puedo poner el menú de mi restaurante en un código QR para los clientes?</button><div class="faq-answer">Claro: enlaza el código a tu menú digital, un PDF o una liga de delivery, e imprímelo en un portacríos de cada mesa. Así actualizas los precios una sola vez y todos los QR de las mesas muestran la carta vigente, sin reimprimir menús de plástico cada temporada.</div></div>        <div class="faq-item"><button class="faq-question">¿Puedo poner mi logo en el centro del código?</button><div class="faq-answer">No desde esta herramienta: no hay campo para subir imágenes. Como la corrección está en nivel H, sí puedes pegar el logo después en un editor gráfico siempre que no tapes más de un 30 % del patrón y lo pruebes con dos lectores antes de imprimir.</div></div>
+        <div class="faq-item"><button class="faq-question">¿El QR caduca o deja de funcionar?</button><div class="faq-answer">El código es una codificación estática del texto que escribes: no apunta a ningún servicio nuestro ni lleva fecha de caducidad. Dejará de funcionar solo si cambia el destino, por ejemplo si borras la página o si el enlace acortado se desactiva.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Por qué a veces el móvil no lo lee?</button><div class="faq-answer">Casi siempre por falta de contraste o de margen. Un QR en verde claro sobre blanco pierde el 40 % de contraste respecto al negro, y si el código toca el borde del papel muchos lectores no encuentran el patrón de posición. Deja un margen blanco de al menos cuatro módulos por lado.</div></div>
+      </section>
   
 
 

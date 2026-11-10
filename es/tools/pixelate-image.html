@@ -82,6 +82,38 @@
         "@type": "Answer",
         "text": "Sí. La herramienta funciona directamente en el navegador de tu teléfono, tanto en Android como en iPhone, sin descargar nada ni crear una cuenta. Toma la foto desde el carrete, píxela con el dedo y guárdala de nuevo en la galería. Pensada precisamente para quienes solo usan el celular."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se puede recuperar lo que tapé?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "En el archivo que descargas, no: el PNG solo contiene los bloques ya pintados y el original nunca se guarda dentro. Ahora bien, el pixelado protege la publicación, no el original: si esa misma foto circula sin pixelar por otro lado, la información sigue ahí."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo deshacer varios trazos seguidos?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí. Cada trazo terminado se guarda en una pila de historial y el botón de deshacer retrocede de uno en uno. Al cargar otra imagen la pila se reinicia, así que conviene decidir el pixelado antes de pasar a la siguiente foto."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué un bloque pequeño no oculta la cara?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Porque el bloque sustituye la zona por cuadros de 2 a 30 píxeles y el ojo recompone muy bien patrones pequeños. En una foto de 12 megapíxeles, un bloque de 8 px deja información suficiente para intuir ojos y boca. Sube el bloque o amplía el pincel hasta que no se distinga ninguna facción."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuánta resolución conserva el archivo exportado?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La misma que la imagen de origen. El lienzo se crea con las medidas del archivo cargado y la descarga sale en PNG a ese tamaño, sin recortes ni ampliaciones. Es importante: si reduces la imagen antes de pixelar, el bloque cubre más zona y el resultado tapa más."
+      }
     }
   ]
 }
@@ -97,7 +129,28 @@
 </header>
 <main class="container">
 <h1>Pixelar Imagen</h1>
-<p class="lead">Pinta sobre cualquier zona de tu imagen para aplicar desenfoque de píxeles, ideal para ocultar caras, matrículas o texto sensible. Todo ocurre 100% en tu navegador: ningún archivo se sube.</p>
+        <p class="answer-lead">Pinta con el ratón o con el dedo sobre la zona que quieres tapar y la herramienta la sustituye por bloques de píxeles: caras, matrículas, números de cuenta o el nombre en un comprobante. Eliges el tamaño del pincel (10 a 100 px) y el grosor del bloque (2 a 30 px), y puedes deshacer los trazos antes de descargar. Todo ocurre en tu navegador: la imagen no se sube, y el PNG final ya no guarda el detalle original.</p>
+
+        <ul class="facts-strip">
+          <li><span class="f-k">Precio</span><span class="f-v">Gratis, sin cuenta</span></li>
+          <li><span class="f-k">Pincel</span><span class="f-v">10 a 100 px</span></li>
+          <li><span class="f-k">Bloque</span><span class="f-v">2 a 30 px</span></li>
+          <li><span class="f-k">Salida</span><span class="f-v">PNG, tamaño original</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Cómo combinar pincel y bloque según lo que tapes</h2>
+          <table>
+            <thead><tr><th>Objetivo</th><th>Pincel / bloque</th><th>Resultado</th></tr></thead>
+            <tbody>
+              <tr><td>Una cara en una foto de grupo</td><td>Pincel 40–60, bloque 12–20</td><td>Rasgos irreconocibles sin destrozar el resto</td></tr>
+              <tr><td>Una matrícula de coche</td><td>Pincel 30–40, bloque 8–12</td><td>Cubre la placa entera con margen</td></tr>
+              <tr><td>Un número de DNI o de cuenta</td><td>Pincel 20, bloque 6–10</td><td>El texto deja de leerse y el bloque no llama la atención</td></tr>
+              <tr><td>El fondo entero de una habitación</td><td>Pincel 100, bloque 25–30</td><td>Se nota el patrón de cuadros, pero oculta el desorden</td></tr>
+              <tr><td>Una zona muy pequeña</td><td>Pincel 10, bloque 2–3</td><td>Difumina poco: el detalle puede seguir adivinándose</td></tr>
+            </tbody>
+          </table>
+        </div>
 <div class="upload-area" id="dropZone">
 <p>Arrastra tu imagen aquí o haz clic para subirla</p>
 <input type="file" id="fileInput" accept="image/*" hidden>
@@ -167,6 +220,10 @@
 <details><summary class="faq-question">¿Puedo tapar la matrícula de mi auto antes de publicarlo en Mercado Libre?</summary><p>Claro que sí. Es justo lo que más recomiendan los vendedores con experiencia: pixela la placa delantera y trasera, tapa los papeles que aparezcan en la guantera y revisa que el fondo de la foto no muestre tu calle. El comprador necesita ver el estado del auto, no tu información personal.</p></details>
 <details><summary class="faq-question">¿El pixelado se puede deshacer o es permanente?</summary><p>El pixelado aplicado sobre la imagen es permanente en el archivo que descargas: nadie puede recuperar el detalle original una vez que exportas la foto. Esa es justamente su ventaja para proteger identidades. Dentro de la sesión de edición, el botón de deshacer sí te permite revertir los trazos antes de descargar.</p></details>
 <details><summary class="faq-question">¿Funciona desde el celular sin instalar ninguna aplicación?</summary><p>Sí. La herramienta funciona directamente en el navegador de tu teléfono, tanto en Android como en iPhone, sin descargar nada ni crear una cuenta. Toma la foto desde el carrete, píxela con el dedo y guárdala de nuevo en la galería. Pensada precisamente para quienes solo usan el celular.</p></details>
+      <details><summary class="faq-question">¿Se puede recuperar lo que tapé?</summary><p>En el archivo que descargas, no: el PNG solo contiene los bloques ya pintados y el original nunca se guarda dentro. Ahora bien, el pixelado protege la publicación, no el original: si esa misma foto circula sin pixelar por otro lado, la información sigue ahí.</p></details>
+      <details><summary class="faq-question">¿Puedo deshacer varios trazos seguidos?</summary><p>Sí. Cada trazo terminado se guarda en una pila de historial y el botón de deshacer retrocede de uno en uno. Al cargar otra imagen la pila se reinicia, así que conviene decidir el pixelado antes de pasar a la siguiente foto.</p></details>
+      <details><summary class="faq-question">¿Por qué un bloque pequeño no oculta la cara?</summary><p>Porque el bloque sustituye la zona por cuadros de 2 a 30 píxeles y el ojo recompone muy bien patrones pequeños. En una foto de 12 megapíxeles, un bloque de 8 px deja información suficiente para intuir ojos y boca. Sube el bloque o amplía el pincel hasta que no se distinga ninguna facción.</p></details>
+      <details><summary class="faq-question">¿Cuánta resolución conserva el archivo exportado?</summary><p>La misma que la imagen de origen. El lienzo se crea con las medidas del archivo cargado y la descarga sale en PNG a ese tamaño, sin recortes ni ampliaciones. Es importante: si reduces la imagen antes de pixelar, el bloque cubre más zona y el resultado tapa más.</p></details>
 </section>
 </main>
 <script>

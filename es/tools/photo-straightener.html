@@ -13,7 +13,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/photo-straightener">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/photo-straightener">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <style id="tool-css">
 .tool-workspace{background:var(--bg-secondary);border:1px solid var(--border);border-radius:16px;padding:2rem;margin:1.5rem 0}
 .tool-workspace .upload-area{cursor:pointer;text-align:center;padding:2.5rem;border:2px dashed var(--border);border-radius:12px;transition:border-color .2s}
@@ -103,6 +106,30 @@
         "@type": "Answer",
         "text": "Sí, muchos vendedores de Mercado Libre y tiendas de Facebook la usan para que la repisa, la mesa o el borde de la caja queden perfectamente horizontales. Una foto de producto derecha transmite orden y profesionalismo, y mejora la primera impresión del comprador."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué aparecen esquinas negras al descargar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Porque el lienzo mantiene el ancho y alto originales y la foto gira dentro de él: lo que queda fuera del rectángulo no tiene píxeles. Al exportar a JPG ese hueco se rellena en negro, ya que el JPG no admite transparencia. Si te molesta, recorta la imagen después."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se pierde calidad al enderezar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La foto se redibuja una sola vez en el lienzo y se exporta como JPG con la compresión que aplica el navegador por defecto. El número de píxeles no cambia, pero hay una recompresión: si vas a seguir editando, haz el enderezado al final del flujo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Sirve para una foto escaneada con los márgenes torcidos?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, y es donde mejor funciona, porque el texto y las líneas del formulario dan una referencia clara. Alinea los renglones con el borde superior, no la firma ni el sello: son trazos irregulares que engañan al ojo."
+      }
     }
   ]
 }
@@ -156,7 +183,27 @@
       <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>📐 Enderezar Fotos</span></nav>
       <div class="tool-page-header">
         <h1>📐 Enderezar Fotos Torcidas</h1>
-        <p>Gira tus fotos en ángulos pequeños para corregir horizontes inclinados y tomas caídas, con un deslizador y procesamiento 100% local sin subir archivos.</p>
+        <p class="answer-lead">Endereza fotos torcidas girándolas de −45° a 45° con un deslizador, mientras ves el resultado en el lienzo antes de descargar. Todo el cálculo ocurre en tu navegador: la foto no se sube a ningún servidor. El archivo sale en JPG a la misma resolución de píxeles que la original, y las esquinas que quedan fuera del encuadre salen en negro.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Precio</span><span class="f-v">Gratis, sin registro</span></li>
+          <li><span class="f-k">Rango</span><span class="f-v">−45° a 45°</span></li>
+          <li><span class="f-k">Privacidad</span><span class="f-v">Local, sin subir</span></li>
+          <li><span class="f-k">Salida</span><span class="f-v">JPG, tamaño original</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Qué ángulo pedir según lo que fotografiaste</h2>
+          <table>
+            <thead><tr><th>Ángulo</th><th>Qué pasa en la imagen</th><th>Para qué sirve</th></tr></thead>
+            <tbody>
+              <tr><td>1° a 3°</td><td>Corrige el horizonte y casi no se nota el recorte</td><td>Paisajes con mar, playa o línea de campo</td></tr>
+              <tr><td>5° a 10°</td><td>Aparecen cuatro triángulos negros en las esquinas</td><td>Facturas, recibos y documentos fotografiados con el móvil</td></tr>
+              <tr><td>15° a 30°</td><td>Pierdes bastante superficie de la foto</td><td>Pizarras o carteles tomados de lado</td></tr>
+              <tr><td>Justo 45°</td><td>Solo queda una franja diagonal aprovechable</td><td>Casi nunca: es mejor repetir la foto</td></tr>
+              <tr><td>90° o 180°</td><td>Este control no llega, su tope son 45°</td><td>Necesitas la herramienta de rotar imagen</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div class="tool-workspace">
@@ -191,6 +238,9 @@
         <div class="faq-item"><button class="faq-question">¿Puedo enderezar una foto desde mi celular?</button><div class="faq-answer">Claro que sí. Abre esta página en el navegador de tu teléfono, toca el área de carga y elige la foto torcida de tu galería. Mueve el deslizador con el dedo y, en segundos, tendrás la imagen corregida lista para guardar o compartir.</div></div>
         <div class="faq-item"><button class="faq-question">¿Qué diferencia hay con rotar la foto 90 grados?</button><div class="faq-answer">Esta herramienta gira la foto en ángulos pequeños, de menos de 45 grados, para corregir horizontes inclinados y tomas caídas. Si lo que necesitas es poner la foto vertical u horizontal, la rotación de 90 grados la haces directamente desde la galería de tu celular.</div></div>
         <div class="faq-item"><button class="faq-question">¿Sirve para las fotos de productos de mi tienda en línea?</button><div class="faq-answer">Sí, muchos vendedores de Mercado Libre y tiendas de Facebook la usan para que la repisa, la mesa o el borde de la caja queden perfectamente horizontales. Una foto de producto derecha transmite orden y profesionalismo, y mejora la primera impresión del comprador.</div></div>
+              <div class="faq-item"><button class="faq-question">¿Por qué aparecen esquinas negras al descargar?</button><div class="faq-answer">Porque el lienzo mantiene el ancho y alto originales y la foto gira dentro de él: lo que queda fuera del rectángulo no tiene píxeles. Al exportar a JPG ese hueco se rellena en negro, ya que el JPG no admite transparencia. Si te molesta, recorta la imagen después.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Se pierde calidad al enderezar?</button><div class="faq-answer">La foto se redibuja una sola vez en el lienzo y se exporta como JPG con la compresión que aplica el navegador por defecto. El número de píxeles no cambia, pero hay una recompresión: si vas a seguir editando, haz el enderezado al final del flujo.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Sirve para una foto escaneada con los márgenes torcidos?</button><div class="faq-answer">Sí, y es donde mejor funciona, porque el texto y las líneas del formulario dan una referencia clara. Alinea los renglones con el borde superior, no la firma ni el sello: son trazos irregulares que engañan al ojo.</div></div>
       </section>
 
 <section class="localization-section">

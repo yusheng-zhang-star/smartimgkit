@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/product-white-background">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/product-white-background">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 
   <style id="enrich-css">
 .selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
@@ -115,7 +118,7 @@
       "name": "¿Qué tan precisa es la eliminación automática de fondo?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Para la mayoría de fotos de producto con sujetos claros y fondos contrastantes, la IA alcanza más del 95% de precisión. El modelo funciona mejor en productos con bordes definidos como electrónica, zapatos y botellas."
+        "text": "No hay una cifra de precisión publicada, y conviene desconfiar de quien la da: el resultado depende del contraste entre el producto y el fondo. Con un fondo liso y bordes definidos —una caja, un zapato, una botella— el recorte sale limpio en casi todos los intentos. Con pelo suelto, tejidos transparentes, cristal o un producto del mismo color que la pared, el modelo deja flecos, agujeros o se come parte del objeto. Procesa una foto de muestra antes de lanzar el catálogo entero y revisa los bordes al 200 % de zoom."
       }
     },
     {
@@ -164,6 +167,30 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "No. Con el celular actual basta si tomas la foto de frente, con luz natural y fondo neutro. Sube la foto a esta herramienta, elige fondo Blanco Puro, y el recorte automático deja la imagen con el fondo limpio que Amazon exige para la imagen principal del listado. Es la forma simple de vender sin invertir en un estudio."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿El modelo necesita conexión a internet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La primera vez sí: al pulsar Procesar se descarga el modelo de segmentación desde un CDN público junto con su motor de ejecución, y esa descarga inicial pesa decenas de megas. Después el navegador la guarda en caché y el procesado sigue funcionando sin red. Tus fotos no viajan en ningún momento: el cálculo es local."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué resolución tienen las fotos de salida?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La misma que la imagen de entrada. El resultado se compone sobre el color de fondo elegido y se exporta en PNG, sin recortar ni ampliar el producto, así que una foto de 2000×2000 px sigue midiendo 2000×2000 px. Para Amazon conviene que el lado mayor llegue a 1000 px o más."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo elegir un fondo que no sea blanco?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí: hay cuatro opciones fijas —blanco puro (#ffffff), transparente, un azul muy claro y un gris suave—. No hay selector de color libre. Si necesitas otro tono, abre el PNG transparente en cualquier editor y rellena el fondo detrás."
       }
     }
   ]
@@ -221,7 +248,28 @@
       <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🛍️ Fondo Blanco</span></nav>
       <div class="tool-page-header">
         <h1>🛍️ Fondo Blanco para Productos</h1>
-        <p>Crea fotos de producto con fondo blanco limpio para e-commerce.</p>
+        <p class="answer-lead">Sube fotos de producto, procesa el lote completo y descarga cada imagen con fondo blanco puro o transparente, lista para fichas de Mercado Libre, Amazon México o Shopee. La separación del fondo la hace un modelo de IA que corre dentro del navegador: tus fotos no se envían a ningún servidor, aunque la primera vez hay que descargar el modelo desde un CDN. La salida es siempre PNG y conserva el tamaño de la imagen original.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Precio</span><span class="f-v">Gratis, sin límite</span></li>
+          <li><span class="f-k">Lote</span><span class="f-v">Varias fotos + ZIP</span></li>
+          <li><span class="f-k">Privacidad</span><span class="f-v">IA local, sin subir fotos</span></li>
+          <li><span class="f-k">Salida</span><span class="f-v">PNG con fondo elegido</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Cómo responde según el fondo de tu foto</h2>
+          <table>
+            <thead><tr><th>Fondo de la foto</th><th>Qué suele pasar</th><th>Qué hacer</th></tr></thead>
+            <tbody>
+              <tr><td>Pared lisa o sábana blanca</td><td>Recorte limpio en la mayoría de intentos</td><td>Procesa directo y revisa una muestra</td></tr>
+              <tr><td>Mesa de madera con sombras</td><td>Puede arrastrar la sombra pegada al producto</td><td>Fotografía sobre papel continuo</td></tr>
+              <tr><td>Producto blanco sobre fondo blanco</td><td>Suele comerse parte del producto</td><td>Cambia a un fondo gris o de color</td></tr>
+              <tr><td>Prenda con tejido fino o encaje</td><td>Bordes con flecos o pequeños agujeros</td><td>Revisa el PNG y retoca a mano</td></tr>
+              <tr><td>Foto con manos sosteniendo el objeto</td><td>Puede conservar la mano o cortarla por la muñeca</td><td>Recorta antes de procesar</td></tr>
+              <tr><td>Veinte fichas de catálogo</td><td>Procesa el lote y entrega un ZIP</td><td>Nombra los archivos antes de subirlos</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
         <!-- Before/After preview -->
@@ -328,13 +376,16 @@
 <section class="faq-section">
         <h2>Preguntas Frecuentes</h2>
       <div class="faq-item"><button class="faq-question">¿Por qué los productos de e-commerce necesitan fondo blanco?</button><div class="faq-answer">Muchos marketplaces online como Amazon, eBay y Google Shopping requieren o recomiendan fondos blancos puros (#ffffff) para imágenes de producto. Los fondos blancos hacen que los productos destaquen y se vean profesionales.</div></div>
-      <div class="faq-item"><button class="faq-question">¿Qué tan precisa es la eliminación automática de fondo?</button><div class="faq-answer">Para la mayoría de fotos de producto con sujetos claros y fondos contrastantes, la IA alcanza más del 95% de precisión. El modelo funciona mejor en productos con bordes definidos como electrónica, zapatos y botellas.</div></div>
+      <div class="faq-item"><button class="faq-question">¿Qué tan precisa es la eliminación automática de fondo?</button><div class="faq-answer">No hay una cifra de precisión publicada, y conviene desconfiar de quien la da: el resultado depende del contraste entre el producto y el fondo. Con un fondo liso y bordes definidos —una caja, un zapato, una botella— el recorte sale limpio en casi todos los intentos. Con pelo suelto, tejidos transparentes, cristal o un producto del mismo color que la pared, el modelo deja flecos, agujeros o se come parte del objeto. Procesa una foto de muestra antes de lanzar el catálogo entero y revisa los bordes al 200 % de zoom.</div></div>
       <div class="faq-item"><button class="faq-question">¿Se suben mis imágenes de producto a un servidor?</button><div class="faq-answer">No. Todo el procesamiento ocurre completamente en tu navegador usando tecnología WebAssembly AI. Tus imágenes nunca salen de tu dispositivo, ideal para fotografía de productos confidencial.</div></div>
       <div class="faq-item"><button class="faq-question">¿Cuántas fotos de producto puedo procesar a la vez?</button><div class="faq-answer">Puedes procesar cualquier cantidad de imágenes en un lote. La memoria de tu navegador es el único límite. Para lotes grandes, recomendamos procesar 20-30 imágenes a la vez.</div></div>
       <div class="faq-item"><button class="faq-question">¿Qué formatos de imagen son compatibles?</button><div class="faq-answer">Esta herramienta admite formatos JPG, PNG y WebP. Las imágenes procesadas se guardan como PNG para preservar la información de fondo transparente.</div></div>
       <div class="faq-item"><button class="faq-question">¿Puedo usar las fotos con fondo blanco para listados de Amazon?</button><div class="faq-answer">Sí. Amazon requiere que la imagen principal del producto tenga un fondo blanco puro (#ffffff). Nuestra herramienta genera imágenes con fondos #ffffff exactos, totalmente compatibles con Amazon, eBay y Shopify.</div></div>
       <div class="faq-item"><button class="faq-question">¿Cómo preparo las fotos de mi producto para Mercado Libre desde el celular?</button><div class="faq-answer">Toma las fotos del producto con luz natural de frente, súbelas a esta herramienta desde el celular, elige fondo Blanco Puro, pulsa Procesar Todo y descarga el ZIP. Las fotos quedan listas para subir a tu publicación de Mercado Libre sin que el fondo se vea con manchas o sombras que no pidas.</div></div>
       <div class="faq-item"><button class="faq-question">¿Necesito una cámara profesional para vender en Amazon México?</button><div class="faq-answer">No. Con el celular actual basta si tomas la foto de frente, con luz natural y fondo neutro. Sube la foto a esta herramienta, elige fondo Blanco Puro, y el recorte automático deja la imagen con el fondo limpio que Amazon exige para la imagen principal del listado. Es la forma simple de vender sin invertir en un estudio.</div></div>
+              <div class="faq-item"><button class="faq-question">¿El modelo necesita conexión a internet?</button><div class="faq-answer">La primera vez sí: al pulsar Procesar se descarga el modelo de segmentación desde un CDN público junto con su motor de ejecución, y esa descarga inicial pesa decenas de megas. Después el navegador la guarda en caché y el procesado sigue funcionando sin red. Tus fotos no viajan en ningún momento: el cálculo es local.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Qué resolución tienen las fotos de salida?</button><div class="faq-answer">La misma que la imagen de entrada. El resultado se compone sobre el color de fondo elegido y se exporta en PNG, sin recortar ni ampliar el producto, así que una foto de 2000×2000 px sigue midiendo 2000×2000 px. Para Amazon conviene que el lado mayor llegue a 1000 px o más.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Puedo elegir un fondo que no sea blanco?</button><div class="faq-answer">Sí: hay cuatro opciones fijas —blanco puro (#ffffff), transparente, un azul muy claro y un gris suave—. No hay selector de color libre. Si necesitas otro tono, abre el PNG transparente en cualquier editor y rellena el fondo detrás.</div></div>
       </section>
 
 <section class="localization-section"><div style="max-width:900px;margin:3rem auto;padding:0 1rem;">

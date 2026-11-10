@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/photo-restoration">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/photo-restoration">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 
   <style id="enrich-css">
 .selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
@@ -154,6 +157,30 @@
         "@type": "Answer",
         "text": "Sí, perfectamente. Esta herramienta funciona directamente en el navegador de tu celular, no necesitas una computadora. Muchos usuarios en Latinoamérica restauran fotos antiguas directamente desde su teléfono, usando apps de escaneo para digitalizar las fotos físicas y luego subiéndolas a esta herramienta."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿La restauración cambia el tamaño de la foto?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. El lienzo de trabajo se crea con el ancho y alto del archivo original, y la descarga sale a esa misma medida. El recuadro comparativo de antes y después reduce la vista a 800×600 píxeles para que quepa en pantalla, pero esa reducción es solo de la previsualización."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué la cara se ve plástica cuando subo el enfoque?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La máscara de enfoque exagera el contraste en cada borde; en retratos amplía poros y arrugas hasta convertirlos en manchas. En caras conviene dejarla por debajo de 30 y compensar con un poco de reducción de ruido."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo restaurar varias fotos de un álbum seguidas?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "De una en una. La herramienta carga un solo archivo por vez y no tiene cola ni descarga en lote; para un álbum entero tendrás que repetir el proceso foto por foto, y con imágenes grandes cada pasada tarda unos segundos."
+      }
     }
   ]
 }
@@ -210,7 +237,28 @@
       <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🕰️ Restaurar Fotos</span></nav>
       <div class="tool-page-header">
         <h1>🕰️ Restaurar Fotos Antiguas</h1>
-        <p>Restaura fotos antiguas, rayadas y descoloridas.</p>
+        <p class="answer-lead">Restaura fotos antiguas con seis filtros clásicos de píxeles —reducción de ruido, rayas, contraste, enfoque, brillo y sepia— que se aplican en tu navegador, sin modelos de IA ni subidas. Sirve para escaneos con grano, polvo y colores apagados; no inventa lo que la foto ya perdió. La descarga sale en PNG sin pérdidas y conserva el tamaño original de la imagen.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Precio</span><span class="f-v">Gratis, sin cuenta</span></li>
+          <li><span class="f-k">Formatos</span><span class="f-v">JPG, PNG y WebP</span></li>
+          <li><span class="f-k">Privacidad</span><span class="f-v">Local, sin subir</span></li>
+          <li><span class="f-k">Salida</span><span class="f-v">PNG sin pérdidas</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Qué arregla cada control y qué no va a recuperar</h2>
+          <table>
+            <thead><tr><th>Daño de la foto</th><th>Qué hace el control</th><th>Lo que no recupera</th></tr></thead>
+            <tbody>
+              <tr><td>Grano del escaneo</td><td>Filtro de mediana con radio de 1 a 4 píxeles</td><td>Detalle que el original nunca tuvo</td></tr>
+              <tr><td>Rayas finas y polvo</td><td>Sustituye los píxeles que destacan frente a sus vecinos laterales</td><td>Roturas anchas, esquinas comidas ni agujeros</td></tr>
+              <tr><td>Colores apagados y grises</td><td>Estira el histograma de cada canal por separado</td><td>El color perdido: una foto en blanco y negro sigue en blanco y negro</td></tr>
+              <tr><td>Contornos blandos</td><td>Máscara de enfoque 3×3 sobre el resultado</td><td>Desenfoque de movimiento o de fuera de foco</td></tr>
+              <tr><td>Papel amarilleado</td><td>Brillo ajustable y virado sepia opcional</td><td>Manchas localizadas: no hay pincel corrector</td></tr>
+              <tr><td>Zonas quemadas o muy oscuras</td><td>Nada: los píxeles a 255 no bajan y los negros no suben</td><td>Detalle en luces altas y sombras cerradas</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
         <div class="restore-layout">
@@ -317,6 +365,9 @@
       <div class="faq-item"><button class="faq-question">¿Puedo restaurar el color en fotos antiguas en blanco y negro?</button><div class="faq-answer">Esta herramienta no realiza coloreado por IA. Sin embargo, puedes usar el control deslizante Calidez/Sepia (0–100) para añadir un tono sepia vintage que da un aspecto clásico a fotos en blanco y negro.</div></div>
       <div class="faq-item"><button class="faq-question">¿Cuál es la mejor manera de escanear fotos antiguas para restaurarlas?</button><div class="faq-answer">Para mejores resultados: escanea a 600 DPI o más con un escáner de cama plana. Si no tienes escáner, usa una app de escaneo en tu celular como CamScanner o Notas de iOS. Evita tomar fotos con flash directo. Guarda como PNG (sin pérdidas) o JPEG de alta calidad.</div></div>
       <div class="faq-item"><button class="faq-question">¿Puedo restaurar fotos de mi celular?</button><div class="faq-answer">Sí, perfectamente. Esta herramienta funciona directamente en el navegador de tu celular, no necesitas una computadora. Muchos usuarios en Latinoamérica restauran fotos antiguas directamente desde su teléfono, usando apps de escaneo para digitalizar las fotos físicas y luego subiéndolas a esta herramienta.</div></div>
+              <div class="faq-item"><button class="faq-question">¿La restauración cambia el tamaño de la foto?</button><div class="faq-answer">No. El lienzo de trabajo se crea con el ancho y alto del archivo original, y la descarga sale a esa misma medida. El recuadro comparativo de antes y después reduce la vista a 800×600 píxeles para que quepa en pantalla, pero esa reducción es solo de la previsualización.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Por qué la cara se ve plástica cuando subo el enfoque?</button><div class="faq-answer">La máscara de enfoque exagera el contraste en cada borde; en retratos amplía poros y arrugas hasta convertirlos en manchas. En caras conviene dejarla por debajo de 30 y compensar con un poco de reducción de ruido.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Puedo restaurar varias fotos de un álbum seguidas?</button><div class="faq-answer">De una en una. La herramienta carga un solo archivo por vez y no tiene cola ni descarga en lote; para un álbum entero tendrás que repetir el proceso foto por foto, y con imágenes grandes cada pasada tarda unos segundos.</div></div>
       </section>
 
 <section class="localization-section" style="max-width:800px;margin:40px auto;padding:0 20px;">

@@ -13,7 +13,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/photo-to-sketch">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/photo-to-sketch">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <style id="tool-css">
 .tool-workspace{background:var(--bg-secondary);border:1px solid var(--border);border-radius:16px;padding:2rem;margin:1.5rem 0}
 .tool-workspace .upload-area{cursor:pointer;text-align:center;padding:2.5rem;border:2px dashed var(--border);border-radius:12px;transition:border-color .2s}
@@ -103,6 +106,30 @@
         "@type": "Answer",
         "text": "No. Tu foto nunca sale de tu dispositivo. Todo el procesamiento se hace con JavaScript en tu navegador, sin subidas, sin cuentas y sin seguimiento. Esto es especialmente importante si vas a convertir fotos familiares o retratos de personas que prefieres no compartir con terceros."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿El resultado parece un dibujo a lápiz de verdad?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No del todo, y conviene saberlo antes de imprimirlo: el filtro compara cada píxel con sus vecinos y lo pinta de negro o de blanco, sin grises intermedios ni textura de papel. Para un regalo queda bien en tamaño pequeño; si buscas trazo de grafito con sombreado, esto no lo da."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué mi foto sale casi en blanco?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Porque el umbral está alto para la cantidad de detalle que tiene la imagen. Baja la intensidad dos o tres niveles y volverás a tener líneas; si la foto es de interior con poca luz, además ayuda subir el contraste antes de convertirla."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Conserva el tamaño y los metadatos?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El tamaño de píxeles se mantiene intacto, porque el lienzo se crea con las medidas de la imagen cargada. Los metadatos EXIF no pasan al PNG resultante: es una imagen nueva dibujada en el navegador, así que la fecha y el modelo de cámara se pierden por el camino."
+      }
     }
   ]
 }
@@ -156,7 +183,27 @@
       <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>✏️ Foto a Boceto</span></nav>
       <div class="tool-page-header">
         <h1>✏️ Convertir Foto a Dibujo a Lápiz</h1>
-        <p>Convierte cualquier foto en un boceto a lápiz realista al instante, con procesamiento 100% local y sin necesidad de subir archivos.</p>
+        <p class="answer-lead">Convierte una foto en un dibujo de dos tonos —negro sobre blanco— detectando los bordes con un filtro de gradiente que corre en tu navegador. No es una ilustración a lápiz con textura: es un trazado de contornos, y funciona mejor con caras, edificios y objetos de silueta clara. El resultado se descarga en PNG a la resolución original, sin subir la foto a ningún servidor.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Precio</span><span class="f-v">Gratis, sin cuenta</span></li>
+          <li><span class="f-k">Entrada</span><span class="f-v">JPG, PNG, WebP</span></li>
+          <li><span class="f-k">Intensidad</span><span class="f-v">10 niveles</span></li>
+          <li><span class="f-k">Salida</span><span class="f-v">PNG 1:1</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Qué intensidad elegir según la luz de la foto</h2>
+          <table>
+            <thead><tr><th>Nivel del control</th><th>Umbral de borde</th><th>Resultado habitual</th></tr></thead>
+            <tbody>
+              <tr><td>1 o 2</td><td>30 a 38</td><td>Casi todo negro; solo sirve para fotos de contraste muy alto</td></tr>
+              <tr><td>3 o 4</td><td>46 a 54</td><td>Retratos con luz plana y fondo liso</td></tr>
+              <tr><td>5 o 6</td><td>62 a 70</td><td>Punto medio para fotos de móvil con luz natural</td></tr>
+              <tr><td>7 u 8</td><td>78 a 86</td><td>Escenas con mucho detalle: fachadas, mercados, grupos</td></tr>
+              <tr><td>9 o 10</td><td>94 a 102</td><td>Solo los contornos más marcados; se pierden rasgos finos</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div class="tool-workspace">
@@ -192,6 +239,9 @@
         <div class="faq-item"><button class="faq-question">¿Esta herramienta usa inteligencia artificial?</button><div class="faq-answer">No. El efecto de dibujo a lápiz se calcula en tiempo real con detección de bordes y ajustes de contraste directamente en tu navegador. El resultado es un boceto fiel a tu foto original, no una reinterpretación generada por IA que cambie los rasgos de la persona.</div></div>
         <div class="faq-item"><button class="faq-question">¿Qué formatos de imagen puedo convertir?</button><div class="faq-answer">Aceptamos JPG, PNG, WebP y la mayoría de formatos que soporta tu navegador, tanto de celular como de computadora. El dibujo se descarga en formato PNG de alta calidad sin pérdidas, ideal para imprimir o para seguir editando en programas como Photoshop o GIMP.</div></div>
         <div class="faq-item"><button class="faq-question">¿Mis fotos se suben a algún servidor?</button><div class="faq-answer">No. Tu foto nunca sale de tu dispositivo. Todo el procesamiento se hace con JavaScript en tu navegador, sin subidas, sin cuentas y sin seguimiento. Esto es especialmente importante si vas a convertir fotos familiares o retratos de personas que prefieres no compartir con terceros.</div></div>
+              <div class="faq-item"><button class="faq-question">¿El resultado parece un dibujo a lápiz de verdad?</button><div class="faq-answer">No del todo, y conviene saberlo antes de imprimirlo: el filtro compara cada píxel con sus vecinos y lo pinta de negro o de blanco, sin grises intermedios ni textura de papel. Para un regalo queda bien en tamaño pequeño; si buscas trazo de grafito con sombreado, esto no lo da.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Por qué mi foto sale casi en blanco?</button><div class="faq-answer">Porque el umbral está alto para la cantidad de detalle que tiene la imagen. Baja la intensidad dos o tres niveles y volverás a tener líneas; si la foto es de interior con poca luz, además ayuda subir el contraste antes de convertirla.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Conserva el tamaño y los metadatos?</button><div class="faq-answer">El tamaño de píxeles se mantiene intacto, porque el lienzo se crea con las medidas de la imagen cargada. Los metadatos EXIF no pasan al PNG resultante: es una imagen nueva dibujada en el navegador, así que la fecha y el modelo de cámara se pierden por el camino.</div></div>
       </section>
 
 <section class="localization-section">
