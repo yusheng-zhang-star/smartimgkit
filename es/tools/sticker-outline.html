@@ -14,7 +14,10 @@
   <meta name="theme-color" content="#db2777">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -88,6 +91,38 @@
         "@type": "Answer",
         "text": "Sí. Muchos vendedores convierten su logo recortado en un sticker con borde para usarlo en el empaque de sus envíos y en las publicaciones de su tienda. Recuerda pedir consentimiento si el sticker lleva el rostro de otra persona antes de compartirlo en un grupo grande."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué el borde sale con escalones?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Porque el contorno se construye desplazando la imagen en pasos de 2 píxeles, de modo que la curva se redondea a saltos. Con grosores grandes apenas se nota; con 4 o 6 píxeles sobre una silueta curva sí. La solución es partir de un PNG de más resolución y reducir después."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Funciona con un JPG sin transparencia?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, pero no obtienes un sticker: el contorno se dibuja alrededor del rectángulo completo de la foto, así que queda un marco. Para que el borde siga la silueta necesitas un PNG ya recortado, con el fondo transparente de verdad."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿El archivo de salida pesa más que el original?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Casi siempre, por dos motivos: el lienzo se amplía el doble del grosor por cada lado y el contorno añade píxeles opacos nuevos. Un PNG de 1200 px con borde de 40 px sale de 1280 px y suele pesar entre un 10 % y un 30 % más."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo guardar los ajustes para repetirlos?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, hay un botón que exporta la configuración a un archivo JSON con la plantilla, el color y el grosor. No la vuelve a aplicar sola al subir otra imagen: sirve como recordatorio de los valores que usaste para mantener una serie coherente."
+      }
     }
   ]
 }
@@ -136,7 +171,28 @@
 
   <main class="tool-container">
     <h1 style="text-align:center;margin-bottom:.5rem">Creador de Bordes para Stickers</h1>
-    <p style="text-align:center;color:var(--text-secondary);margin-bottom:2rem">Añade un borde grueso de color a tu PNG y crea retratos estilo sticker — gratis, sin subida.</p>
+        <p class="answer-lead">Añade un contorno de color a un PNG transparente copiando la imagen desplazada en todas las direcciones y dibujando el original encima; el resultado sale en PNG con la transparencia intacta. El grosor va de 2 a 80 píxeles, con color liso o degradado y sombra suave opcional, y el lienzo crece el doble del grosor para que el borde no se recorte. Se calcula en tu navegador, sin subir el archivo.</p>
+
+        <ul class="facts-strip">
+          <li><span class="f-k">Precio</span><span class="f-v">Gratis, sin registro</span></li>
+          <li><span class="f-k">Grosor</span><span class="f-v">2 a 80 px</span></li>
+          <li><span class="f-k">Privacidad</span><span class="f-v">Local, sin subir</span></li>
+          <li><span class="f-k">Salida</span><span class="f-v">PNG con transparencia</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Qué grosor y qué color pedir según el uso</h2>
+          <table>
+            <thead><tr><th>Uso</th><th>Grosor y color</th><th>Detalle a vigilar</th></tr></thead>
+            <tbody>
+              <tr><td>Sticker de WhatsApp con una cara</td><td>20 px blancos con sombra</td><td>Recorta antes el fondo: el borde sigue la silueta del PNG</td></tr>
+              <tr><td>Logo para el empaque de envíos</td><td>12–16 px en el color de marca</td><td>Si el logo lleva texto fino, el borde se lo come</td></tr>
+              <tr><td>Separar un producto del fondo</td><td>30–40 px oscuros</td><td>El borde no arregla un mal recorte: los halos siguen viéndose</td></tr>
+              <tr><td>Sticker para un grupo de ventas</td><td>8–10 px con degradado</td><td>El degradado recorre todo el lienzo, no sigue el contorno</td></tr>
+              <tr><td>Imagen para imprimir a 20 cm</td><td>60–80 px</td><td>El archivo crece: cada lado suma el grosor elegido</td></tr>
+            </tbody>
+          </table>
+        </div>
 
     <div class="upload-zone" id="dropZone">
       <div style="font-size:3rem;margin-bottom:1rem">✨</div>
@@ -254,7 +310,11 @@
       <div class="faq-item"><button class="faq-question">¿Qué formato de imagen funciona mejor?</button><div class="faq-answer"><p>El PNG transparente funciona mejor. El JPG también sirve, pero se enmarca la imagen completa.</p></div></div>
       <div class="faq-item"><button class="faq-question">¿Cómo hago stickers de WhatsApp con fotos de mi familia?</button><div class="faq-answer"><p>Sube el retrato recortado en formato PNG, elige el borde blanco clásico de unos veinte píxeles y activa la sombra suave. Descarga el resultado y guárdalo en tu carpeta de stickers del grupo familiar. Así los abuelos podrán mandar un saludo con la cara de los nietos.</p></div></div>
       <div class="faq-item"><button class="faq-question">¿Puedo usar los stickers en grupos de venta de Facebook?</button><div class="faq-answer"><p>Sí. Muchos vendedores convierten su logo recortado en un sticker con borde para usarlo en el empaque de sus envíos y en las publicaciones de su tienda. Recuerda pedir consentimiento si el sticker lleva el rostro de otra persona antes de compartirlo en un grupo grande.</p></div></div>
-    </section>
+          <details><summary class="faq-question">¿Por qué el borde sale con escalones?</summary><p>Porque el contorno se construye desplazando la imagen en pasos de 2 píxeles, de modo que la curva se redondea a saltos. Con grosores grandes apenas se nota; con 4 o 6 píxeles sobre una silueta curva sí. La solución es partir de un PNG de más resolución y reducir después.</p></details>
+      <details><summary class="faq-question">¿Funciona con un JPG sin transparencia?</summary><p>Sí, pero no obtienes un sticker: el contorno se dibuja alrededor del rectángulo completo de la foto, así que queda un marco. Para que el borde siga la silueta necesitas un PNG ya recortado, con el fondo transparente de verdad.</p></details>
+      <details><summary class="faq-question">¿El archivo de salida pesa más que el original?</summary><p>Casi siempre, por dos motivos: el lienzo se amplía el doble del grosor por cada lado y el contorno añade píxeles opacos nuevos. Un PNG de 1200 px con borde de 40 px sale de 1280 px y suele pesar entre un 10 % y un 30 % más.</p></details>
+      <details><summary class="faq-question">¿Puedo guardar los ajustes para repetirlos?</summary><p>Sí, hay un botón que exporta la configuración a un archivo JSON con la plantilla, el color y el grosor. No la vuelve a aplicar sola al subir otra imagen: sirve como recordatorio de los valores que usaste para mantener una serie coherente.</p></details>
+</section>
   </main>
 
   <script>

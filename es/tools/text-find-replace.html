@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/text-find-replace">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/text-find-replace">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -175,6 +178,22 @@
         "@type": "Answer",
         "text": "Sí. Con regex activado, busca dos espacios seguidos y reemplazalos por uno. Pulsa Reemplazar todo varias veces hasta que el contador llegue a cero. Asi limpias el texto pegado desde Word o desde WhatsApp, sin que queden huecos raros entre palabras."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué pasa si el patrón no coincide con nada?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El resultado sale idéntico al texto de entrada y el contador marca cero sustituciones. Es la señal de que el patrón no encaja: revisa si la casilla de mayúsculas está invertida respecto a lo que buscas, o si en modo regex hay un punto que debería ir escapado."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Sirve para editar varias fichas a la vez?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No: procesa un texto cada vez, el que pegues en el cuadro. Para veinte fichas es más rápido exportar el catálogo a CSV y hacer el reemplazo con una hoja de cálculo; aquí el flujo cómodo es una ficha por vez, copiar y pegar de vuelta."
+      }
     }
   ]
 }
@@ -211,7 +230,28 @@
       <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>🔄 Buscar y Reemplazar</span></nav>
       <div class="tool-page-header">
         <h1>🔄 Buscar y Reemplazar</h1>
-        <p>Busca y reemplaza texto con soporte de expresiones regulares — gratis, en tu navegador.</p>
+        <p class="answer-lead">Busca una cadena o una expresión regular dentro de un texto y sustitúyela, con opciones para distinguir mayúsculas y para reemplazar solo la primera aparición o todas. En modo regex puedes reutilizar lo capturado con $1, $2, y el contador te dice cuántas sustituciones se hicieron. El texto no sale de tu navegador y el resultado se copia al portapapeles, sin generar archivos.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Precio</span><span class="f-v">Gratis, sin registro</span></li>
+          <li><span class="f-k">Modos</span><span class="f-v">Texto literal o regex</span></li>
+          <li><span class="f-k">Opciones</span><span class="f-v">Mayúsculas y reemplazar todo</span></li>
+          <li><span class="f-k">Salida</span><span class="f-v">Texto para copiar</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Texto literal o regex: cuándo conviene cada modo</h2>
+          <table>
+            <thead><tr><th>Lo que quieres cambiar</th><th>Modo</th><th>Patrón de ejemplo</th></tr></thead>
+            <tbody>
+              <tr><td>Una palabra concreta en toda la ficha</td><td>Texto literal</td><td>iPhone 11 → iPhone 12</td></tr>
+              <tr><td>Todos los importes con formato</td><td>Regex</td><td>(\d+)([.,]\d{2}) € → $1$2 €</td></tr>
+              <tr><td>Los espacios dobles que deja Word</td><td>Regex</td><td> {2,} → un solo espacio</td></tr>
+              <tr><td>El dominio de una lista de correos</td><td>Regex</td><td>@empresa\.com → @nueva.com</td></tr>
+              <tr><td>Reformatear teléfonos en tres bloques</td><td>Regex</td><td>(\d{3}) (\d{3}) (\d{3}) → $1-$2-$3</td></tr>
+              <tr><td>Un punto y coma suelto</td><td>Texto literal</td><td>; → , (los símbolos no hay que escaparlos)</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -268,7 +308,9 @@
       </div>
 <section class="how-to-section"><h2>Cómo funciona</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Pega tu texto</h4><p>Copia la descripción de tu anuncio de Wallapop, la ficha de MercadoLibre o cualquier texto que quieras corregir y pégala en el cuadro de entrada.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Define búsqueda y sustituto</h4><p>Escribe qué buscar y por qué reemplazarlo: por ejemplo, cambiar «iPhone 11» por «iPhone 12» en toda la ficha del producto.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Elige las opciones</h4><p>Activa «Distinguir mayúsculas» si el cambio depende de la caja, «Usar regex» para patrones avanzados y «Reemplazar todo» para repetir el cambio en todo el texto.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>Reemplaza y copia</h4><p>Pulsa Reemplazar, revisa el contador de sustituciones y copia el resultado de vuelta a tu anuncio.</p></div></div></section>
 <h2>Guía detallada</h2><div class="guide-block"><h3>Búsqueda literal sin sustos</h3><p>Sin regex activado, lo que escribas se busca tal cual: puntos, paréntesis o asteriscos se tratan como caracteres normales. Buscar «C/ Mayor, 12» funciona sin escapar nada — la herramienta convierte los caracteres especiales a un patrón seguro antes de aplicar el reemplazo.</p></div><div class="guide-block"><h3>Primera coincidencia o todas</h3><p>Con «Reemplazar todo» se sustituyen todas las apariciones de una vez y el contador indica cuántas fueron. Si lo desactivas, solo cambia la primera: útil para revisar el resultado caso por caso antes de aplicarlo al resto, por ejemplo al corregir el precio en varias secciones de una misma ficha.</p></div><div class="guide-block"><h3>Mayúsculas y minúsculas</h3><p>Por defecto la búsqueda ignora la caja: «madrid» encuentra también «Madrid». Si activas la distinción exacta, el reemplazo respeta la caja tal cual — importante con marcas o siglas como «SEUR» o «BBVA» que no quieres convertir en minúsculas por error.</p></div><div class="guide-block"><h3>Regex con grupos de captura</h3><p>Con regex activo puedes reutilizar lo capturado: buscar <code>(\d{3}) (\d{3}) (\d{3})</code> y reemplazar por <code>$1-$2-$3</code> reformatea un teléfono como 600 123 456 al formato 600-123-456 en una sola pasada. Los grupos se referencian con $1, $2… igual que en JavaScript.</p></div><div class="guide-block"><h3>Casos donde ahorra tiempo</h3><p>Unificar la escritura de una marca en todo el catálogo, cambiar tallas («talla M» por «talla 38») en cada variante, limpiar dobles espacios tras pegar desde Word, o actualizar el año en plantillas de anuncios que reutilizas cada temporada.</p></div><div class="guide-block"><h3>Límites honestos y privacidad</h3><p>El reemplazo se ejecuta con el motor JavaScript de tu navegador: el texto nunca sale de tu equipo, pero tampoco hay historial — copia el resultado antes de cerrar la página. Los saltos de línea se tratan como texto normal: en regex puedes buscarlos con \n. No hay límite estricto de tamaño, aunque textos de varios megabytes tardan más.</p></div>
-<section class="faq-section"><h2>Preguntas frecuentes</h2><div class="faq-item"><button class="faq-question">¿Mi texto se envía a algún servidor?</button><div class="faq-answer">No. Todo el procesamiento ocurre en tu navegador con JavaScript; ni el texto original ni el resultado salen de tu equipo.</div></div><div class="faq-item"><button class="faq-question">¿«Reemplazar todo» solo cambia la primera aparición?</button><div class="faq-answer">Al revés: con la opción activada se sustituyen todas las coincidencias; si la desactivas, solo la primera.</div></div><div class="faq-item"><button class="faq-question">¿Puedo usar $1 en el reemplazo con regex?</button><div class="faq-answer">Sí, $1, $2… referencian los grupos de captura del patrón, igual que en JavaScript.</div></div><div class="faq-item"><button class="faq-question">¿Distingue entre mayúsculas y minúsculas?</button><div class="faq-answer">Por defecto no; hay una casilla para activar la distinción exacta de la caja.</div></div><div class="faq-item"><button class="faq-question">¿Puedo reemplazar saltos de línea o tabulaciones?</button><div class="faq-answer">Con el modo regex sí: usa \n para salto de línea y \t para tabulador. En modo literal se buscan como texto pegado.</div></div><div class="faq-item"><button class="faq-question">¿Qué pasa si mi patrón regex tiene un error?</button><div class="faq-answer">El navegador lo avisa con un mensaje y no se aplica ningún cambio; corrige el patrón y vuelve a intentarlo.</div></div><div class="faq-item"><button class="faq-question">¿Cómo actualizo el año en todas las fichas de Mercado Libre sin editar una por una?</button><div class="faq-answer">Copia el texto de la ficha, pegalo en esta herramienta, busca «2024» y reemplazalo por «2025». Activa Reemplazar todo, pulsa el boton, y copia el resultado de vuelta a tu anuncio. Asi actualizas el año en toda la ficha en una sola pasada, sin reescribir cada parrafo a mano.</div></div><div class="faq-item"><button class="faq-question">¿Puedo arreglar los dobles espacios que salen al pegar texto desde Word?</button><div class="faq-answer">Sí. Con regex activado, busca dos espacios seguidos y reemplazalos por uno. Pulsa Reemplazar todo varias veces hasta que el contador llegue a cero. Asi limpias el texto pegado desde Word o desde WhatsApp, sin que queden huecos raros entre palabras.</div></div></section>
+<section class="faq-section"><h2>Preguntas frecuentes</h2><div class="faq-item"><button class="faq-question">¿Mi texto se envía a algún servidor?</button><div class="faq-answer">No. Todo el procesamiento ocurre en tu navegador con JavaScript; ni el texto original ni el resultado salen de tu equipo.</div></div><div class="faq-item"><button class="faq-question">¿«Reemplazar todo» solo cambia la primera aparición?</button><div class="faq-answer">Al revés: con la opción activada se sustituyen todas las coincidencias; si la desactivas, solo la primera.</div></div><div class="faq-item"><button class="faq-question">¿Puedo usar $1 en el reemplazo con regex?</button><div class="faq-answer">Sí, $1, $2… referencian los grupos de captura del patrón, igual que en JavaScript.</div></div><div class="faq-item"><button class="faq-question">¿Distingue entre mayúsculas y minúsculas?</button><div class="faq-answer">Por defecto no; hay una casilla para activar la distinción exacta de la caja.</div></div><div class="faq-item"><button class="faq-question">¿Puedo reemplazar saltos de línea o tabulaciones?</button><div class="faq-answer">Con el modo regex sí: usa \n para salto de línea y \t para tabulador. En modo literal se buscan como texto pegado.</div></div><div class="faq-item"><button class="faq-question">¿Qué pasa si mi patrón regex tiene un error?</button><div class="faq-answer">El navegador lo avisa con un mensaje y no se aplica ningún cambio; corrige el patrón y vuelve a intentarlo.</div></div><div class="faq-item"><button class="faq-question">¿Cómo actualizo el año en todas las fichas de Mercado Libre sin editar una por una?</button><div class="faq-answer">Copia el texto de la ficha, pegalo en esta herramienta, busca «2024» y reemplazalo por «2025». Activa Reemplazar todo, pulsa el boton, y copia el resultado de vuelta a tu anuncio. Asi actualizas el año en toda la ficha en una sola pasada, sin reescribir cada parrafo a mano.</div></div><div class="faq-item"><button class="faq-question">¿Puedo arreglar los dobles espacios que salen al pegar texto desde Word?</button><div class="faq-answer">Sí. Con regex activado, busca dos espacios seguidos y reemplazalos por uno. Pulsa Reemplazar todo varias veces hasta que el contador llegue a cero. Asi limpias el texto pegado desde Word o desde WhatsApp, sin que queden huecos raros entre palabras.</div></div>        <div class="faq-item"><button class="faq-question">¿Qué pasa si el patrón no coincide con nada?</button><div class="faq-answer">El resultado sale idéntico al texto de entrada y el contador marca cero sustituciones. Es la señal de que el patrón no encaja: revisa si la casilla de mayúsculas está invertida respecto a lo que buscas, o si en modo regex hay un punto que debería ir escapado.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Sirve para editar varias fichas a la vez?</button><div class="faq-answer">No: procesa un texto cada vez, el que pegues en el cuadro. Para veinte fichas es más rápido exportar el catálogo a CSV y hacer el reemplazo con una hoja de cálculo; aquí el flujo cómodo es una ficha por vez, copiar y pegar de vuelta.</div></div>
+      </section>
 
 <section class="localization-section"><div style="max-width:900px;margin:3rem auto;padding:0 1rem;">
       <h2 style="margin-bottom:1rem;">Actualizar fichas de Mercado Libre sin reescribir cada una</h2>

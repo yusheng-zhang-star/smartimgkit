@@ -15,7 +15,10 @@
   <meta name="theme-color" content="#6366f1">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Dancing+Script:wght@400;700&family=Great+Vibes&family=Pacifico&family=Satisfy&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Dancing+Script:wght@400;700&family=Great+Vibes&family=Pacifico&family=Satisfy&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Dancing+Script:wght@400;700&family=Great+Vibes&family=Pacifico&family=Satisfy&display=swap" rel="stylesheet"></noscript>
   <style id="tool-css">
     .tool-workspace { display: flex; flex-direction: column; gap: 24px; }
     .controls, .result-section { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
@@ -133,6 +136,30 @@
         "@type": "Answer",
         "text": "Muchos fotógrafos y vendedores de Mercado Libre usan su rúbrica digital como sello discreto sobre sus fotos de producto o sus retratos. Descarga el PNG en negro, reduce su tamaño y colócalo en una esquina; queda elegante y protege tu imagen sin tapar el contenido principal."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿El SVG que descargo es vectorial de verdad?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. El archivo SVG contiene un elemento de imagen con el PNG incrustado dentro, así que al ampliarlo se comporta como un PNG: nítido hasta el tamaño con el que se generó y borroso por encima. Sirve para incrustarlo en una web, no para enviarlo a imprenta como vector."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se puede firmar con el dedo desde el móvil?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí. El lienzo está preparado para eventos táctiles y se adapta a la densidad de pantalla del dispositivo, así que en un teléfono el trazo sale igual de fino que en el ordenador. Para un trazo más estable, apoya el dedo y dibuja despacio: la firma se captura al soltar."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué resolución tiene la firma exportada?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La del lienzo en pantalla multiplicada por la densidad del dispositivo (normalmente 2 en móviles y pantallas retina). Para el modo de texto, el tamaño sale del valor que pongas en el selector, entre 20 y 120 píxeles de cuerpo, más el ancho que ocupe el nombre."
+      }
     }
   ]
 }
@@ -184,7 +211,27 @@
       <nav class="breadcrumb"><a href="/es/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>✍️ Creador de Firmas</span></nav>
       <div class="tool-page-header">
         <h1>✍️ Creador de Firmas Digitales</h1>
-        <p>Dibuja tu firma con el dedo sobre la pantalla o escríbela con estilo cursiva, y descárgala en PNG transparente gratis y sin registro.</p>
+        <p class="answer-lead">Crea tu firma de dos maneras: dibujándola con el dedo o el ratón sobre el lienzo, o escribiendo tu nombre con una de las cuatro tipografías caligráficas incluidas. Ajusta color y grosor del trazo, o tamaño y color del texto, y descarga en PNG transparente, JPG o SVG. Todo se genera en tu navegador; la firma nunca se envía a un servidor.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Precio</span><span class="f-v">Gratis, sin registro</span></li>
+          <li><span class="f-k">Modos</span><span class="f-v">Dibujar o escribir</span></li>
+          <li><span class="f-k">Fuentes</span><span class="f-v">4 caligráficas</span></li>
+          <li><span class="f-k">Salida</span><span class="f-v">PNG, JPG y SVG</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Firma dibujada o escrita: cuál te sirve más</h2>
+          <table>
+            <thead><tr><th>Para qué la necesitas</th><th>Qué modo usar</th><th>Resultado</th></tr></thead>
+            <tbody>
+              <tr><td>Firmar un PDF de un trámite</td><td>Dibujar con el dedo</td><td>PNG transparente para pegar sobre el documento</td></tr>
+              <tr><td>Una firma que se vea igual siempre</td><td>Escribir con fuente caligráfica</td><td>Repetible, aunque no es tu trazo real</td></tr>
+              <tr><td>Documento que se imprime en blanco y negro</td><td>Dibujar en negro y grosor medio</td><td>Exporta JPG si el destino no acepta PNG</td></tr>
+              <tr><td>Firma para el correo o la web</td><td>Escribir sobre fondo transparente</td><td>Con 300 a 400 px de ancho sobra</td></tr>
+              <tr><td>Cartel grande para imprimir</td><td>Dibujar y guardar a tamaño grande</td><td>El SVG envuelve un PNG: no escala limpio</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div class="tool-workspace">
@@ -268,6 +315,9 @@
         <div class="faq-item"><button class="faq-question">¿Mis datos o mi firma se suben a un servidor?</button><div class="faq-answer">No. Todo se dibuja y procesa en tu propio navegador, sin subidas ni cuentas. Tu rúbrica nunca viaja por internet: es información sensible que queda exclusivamente en tu dispositivo, algo fundamental cuando firmas documentos personales o de tu trabajo.</div></div>
         <div class="faq-item"><button class="faq-question">¿Cómo pego la firma sobre un documento PDF?</button><div class="faq-answer">Descarga el PNG transparente, abre tu PDF con la app de visualización de documentos de tu celular o computadora, usa la opción de insertar imagen y arrastra la firma hasta la línea correspondiente. Programas como Adobe Acrobat, Foxit o incluso el visor de Windows lo permiten sin costo.</div></div>
         <div class="faq-item"><button class="faq-question">¿Puedo usar esta firma como marca personal en mis fotos?</button><div class="faq-answer">Muchos fotógrafos y vendedores de Mercado Libre usan su rúbrica digital como sello discreto sobre sus fotos de producto o sus retratos. Descarga el PNG en negro, reduce su tamaño y colócalo en una esquina; queda elegante y protege tu imagen sin tapar el contenido principal.</div></div>
+              <div class="faq-item"><button class="faq-question">¿El SVG que descargo es vectorial de verdad?</button><div class="faq-answer">No. El archivo SVG contiene un elemento de imagen con el PNG incrustado dentro, así que al ampliarlo se comporta como un PNG: nítido hasta el tamaño con el que se generó y borroso por encima. Sirve para incrustarlo en una web, no para enviarlo a imprenta como vector.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Se puede firmar con el dedo desde el móvil?</button><div class="faq-answer">Sí. El lienzo está preparado para eventos táctiles y se adapta a la densidad de pantalla del dispositivo, así que en un teléfono el trazo sale igual de fino que en el ordenador. Para un trazo más estable, apoya el dedo y dibuja despacio: la firma se captura al soltar.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Qué resolución tiene la firma exportada?</button><div class="faq-answer">La del lienzo en pantalla multiplicada por la densidad del dispositivo (normalmente 2 en móviles y pantallas retina). Para el modo de texto, el tamaño sale del valor que pongas en el selector, entre 20 y 120 píxeles de cuerpo, más el ancho que ocupe el nombre.</div></div>
       </section>
 
 <section class="localization-section">

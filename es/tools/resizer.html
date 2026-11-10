@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/resizer">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/resizer">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 
   <style id="enrich-css">
 .selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
@@ -98,6 +101,30 @@
         "@type": "Answer",
         "text": "Para imprimir a 300 DPI, una foto de 1200 × 1800 px alcanza para un tamaño de 10 × 15 cm. Si la foto es más pequeña, la impresión saldrá con pixeles gruesos o borrosa."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se puede ampliar una imagen, no solo reducir?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí: el porcentaje llega al 200 % y los píxeles admiten valores mayores que el original. El resultado se interpola, así que se ve más blando y con halos en los bordes. Para una ampliación grande conviene partir de un archivo mayor o usar una herramienta de reescalado con IA, que esta no tiene."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué formato tiene el archivo que descargo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "El mismo del original: la extensión y el tipo se copian del archivo cargado y el lienzo se codifica con esa misma clase. Un JPG se guarda con calidad 0,92, un PNG se guarda sin pérdidas y un WebP mantiene su compresión. No hay selector para convertir de formato aquí."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Pierde los datos EXIF al redimensionar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí. La imagen se redibuja en un lienzo nuevo y el archivo resultante solo contiene píxeles, sin fecha, cámara ni coordenadas GPS. En la práctica eso es una ventaja para publicar en Mercado Libre o Wallapop, donde conviene no exponer la ubicación de la foto."
+      }
     }
   ]
 }
@@ -154,7 +181,27 @@
       <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>📐 Redimensionar Imagen</span></nav>
       <div class="tool-page-header">
         <h1>📐 Redimensionar Imagen</h1>
-        <p>Redimensiona imágenes por píxeles o porcentaje.</p>
+        <p class="answer-lead">Cambia el ancho y el alto de una imagen en píxeles exactos o por porcentaje, con la proporción bloqueada para que nada se deforme. Redimensiona en tu navegador y exporta en el mismo formato del archivo original, así que un JPG sigue siendo JPG y un PNG sigue siendo PNG. También amplía, pero al agrandar solo interpola píxeles: no aparece detalle nuevo.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Precio</span><span class="f-v">Gratis, sin registro</span></li>
+          <li><span class="f-k">Modos</span><span class="f-v">Píxeles o porcentaje</span></li>
+          <li><span class="f-k">Privacidad</span><span class="f-v">Local, sin subir</span></li>
+          <li><span class="f-k">Salida</span><span class="f-v">Mismo formato del original</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Píxeles, porcentaje o recorte: qué usar en cada caso</h2>
+          <table>
+            <thead><tr><th>Lo que necesitas</th><th>Cómo hacerlo aquí</th><th>Dónde está el riesgo</th></tr></thead>
+            <tbody>
+              <tr><td>Una foto de 600 px de ancho para un formulario</td><td>Píxeles exactos con la proporción bloqueada</td><td>Si el formulario también exige un alto fijo, tendrás que recortar</td></tr>
+              <tr><td>Reducir el catálogo a la mitad</td><td>Porcentaje al 50 sobre el 100 inicial</td><td>Por debajo del 40 % las etiquetas de precio dejan de leerse</td></tr>
+              <tr><td>Una foto de 4000 px para la web</td><td>1600 px de ancho suele bastar</td><td>Solo reduce: al ampliar la imagen se ve blanda</td></tr>
+              <tr><td>Miniatura cuadrada para un listado</td><td>No hay modo de recorte</td><td>Recorta primero y redimensiona después</td></tr>
+              <tr><td>Mantener la proporción de un logo</td><td>Deja marcada la casilla de proporción</td><td>Desmárcala solo si el destino pide una medida concreta</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -276,6 +323,9 @@
       <div class="faq-item"><button class="faq-question">¿Cómo evito que mi imagen se distorsione?</button><div class="faq-answer">Activa la casilla «Mantener la proporción» para que el alto se ajuste solo cuando cambias el ancho. Así la foto no se estira ni se aplasta.</div></div>
       <div class="faq-item"><button class="faq-question">¿Puedo redimensionar varias imágenes a la vez?</button><div class="faq-answer">Sí. Puedes subir hasta 10 imágenes y todas se redimensionan a las mismas dimensiones, ideal para preparar el catálogo de una tienda en unos minutos.</div></div>
       <div class="faq-item"><button class="faq-question">¿Cómo preparo fotos para imprimir en una tienda?</button><div class="faq-answer">Para imprimir a 300 DPI, una foto de 1200 × 1800 px alcanza para un tamaño de 10 × 15 cm. Si la foto es más pequeña, la impresión saldrá con pixeles gruesos o borrosa.</div></div>
+              <div class="faq-item"><button class="faq-question">¿Se puede ampliar una imagen, no solo reducir?</button><div class="faq-answer">Sí: el porcentaje llega al 200 % y los píxeles admiten valores mayores que el original. El resultado se interpola, así que se ve más blando y con halos en los bordes. Para una ampliación grande conviene partir de un archivo mayor o usar una herramienta de reescalado con IA, que esta no tiene.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Qué formato tiene el archivo que descargo?</button><div class="faq-answer">El mismo del original: la extensión y el tipo se copian del archivo cargado y el lienzo se codifica con esa misma clase. Un JPG se guarda con calidad 0,92, un PNG se guarda sin pérdidas y un WebP mantiene su compresión. No hay selector para convertir de formato aquí.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Pierde los datos EXIF al redimensionar?</button><div class="faq-answer">Sí. La imagen se redibuja en un lienzo nuevo y el archivo resultante solo contiene píxeles, sin fecha, cámara ni coordenadas GPS. En la práctica eso es una ventaja para publicar en Mercado Libre o Wallapop, donde conviene no exponer la ubicación de la foto.</div></div>
       </section>
 
 <section class="localization-section" style="max-width:800px;margin:40px auto;padding:0 20px;">

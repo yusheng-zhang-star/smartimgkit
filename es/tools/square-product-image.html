@@ -13,7 +13,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/square-product-image">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/square-product-image">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <style id="tool-css">
 .tool-workspace{background:var(--bg-secondary);border:1px solid var(--border);border-radius:16px;padding:2rem;margin:1.5rem 0}
 .tool-workspace .upload-area{cursor:pointer;text-align:center;padding:2.5rem;border:2px dashed var(--border);border-radius:12px;transition:border-color .2s}
@@ -111,6 +114,30 @@
         "@type": "Answer",
         "text": "Sí. Elige la opción de fondo transparente y obtendrás un PNG con el producto flotando sobre transparencia, ideal para superponerlo en banners de tu página web, en publicaciones de Instagram o en catálogos con fondo de color. El resultado se ve mucho más limpio que un recorte hecho a mano."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Elimina el fondo de la foto?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No, y es la confusión más habitual con esta herramienta. Lo único que hace es pintar un lienzo cuadrado del color elegido y dibujar encima tu foto completa, escalada. Si el producto está sobre una mesa, la mesa aparece. Para dejarlo sobre blanco puro necesitas separar el fondo antes, con la herramienta de fondo blanco para productos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué queda un margen alrededor del producto?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Porque la escala se multiplica por 0,9 para que la imagen no toque los bordes. Ese 10 % repartido deja un 5 % por lado, que es lo que piden catálogos como Mercado Libre para que el producto no se corte al recortar la miniatura."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Gira o endereza la foto?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No hay control de rotación. La imagen se dibuja en la misma orientación del archivo, así que si la tomaste de lado el resultado sale de lado. Endereza primero con la herramienta de rotar o de enderezar fotos y luego vuelve aquí."
+      }
     }
   ]
 }
@@ -164,7 +191,27 @@
       <nav class="breadcrumb"><a href="/es/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>📦 Foto Cuadrada</span></nav>
       <div class="tool-page-header">
         <h1>📦 Foto de Producto Cuadrada Automática</h1>
-        <p>Centra tu producto sobre un fondo blanco cuadrado 1:1, al instante y sin subir archivos, listo para Mercado Libre, Amazon México y Shopee.</p>
+        <p class="answer-lead">Coloca tu foto de producto en un lienzo cuadrado de 1000, 2000 o 3000 píxeles, sobre fondo blanco, negro o transparente, escalando la imagen al 90 % para que quede un margen parejo. No recorta el fondo ni separa el producto: encuadra la foto tal como está, así que el fondo de la mesa o de la pared sigue ahí. Se genera en el navegador y se descarga en PNG.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Precio</span><span class="f-v">Gratis, sin cuenta</span></li>
+          <li><span class="f-k">Medidas</span><span class="f-v">1000, 2000 o 3000 px</span></li>
+          <li><span class="f-k">Fondo</span><span class="f-v">Blanco, negro o transparente</span></li>
+          <li><span class="f-k">Salida</span><span class="f-v">PNG cuadrado</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Qué hace con tu foto y qué no hace</h2>
+          <table>
+            <thead><tr><th>Foto de entrada</th><th>Resultado</th><th>Lo que no hace</th></tr></thead>
+            <tbody>
+              <tr><td>Producto centrado en una foto cuadrada</td><td>Se escala al 90 % y se centra en el lienzo</td><td>No recorta el fondo ni separa el producto</td></tr>
+              <tr><td>Foto horizontal muy ancha</td><td>Quedan bandas del color elegido arriba y abajo</td><td>No rellena con el fondo de la propia foto</td></tr>
+              <tr><td>Producto pegado a un borde</td><td>Se respeta el margen del 5 % por lado</td><td>No recentra el producto dentro de la foto</td></tr>
+              <tr><td>Foto sobre una mesa de madera</td><td>La mesa se queda en la imagen</td><td>Para fondo blanco puro hay que usar el separador de fondos</td></tr>
+              <tr><td>Original de 800 px para una ficha grande</td><td>Se amplía a 2000 o 3000 px</td><td>No añade detalle: la ficha se verá blanda</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div class="tool-workspace">
@@ -209,6 +256,9 @@
         <div class="faq-item"><button class="faq-question">¿Mis fotos se suben a un servidor?</button><div class="faq-answer">No. La imagen se procesa con JavaScript en tu propio navegador, sin subidas, sin cuentas y sin seguimiento. Esto es importante porque muchas fotos de producto las tomaste en tu bodega o tu local, y no quieres que nadie más vea tu inventario ni tus instalaciones.</div></div>
         <div class="faq-item"><button class="faq-question">¿Qué tamaño debo elegir?</button><div class="faq-answer">Para Mercado Libre y Shopee, el tamaño de 1000x1000 píxeles es suficiente y carga rápido. Para Amazon México y tiendas con zoom, elige 2000x2000, que es el tamaño estándar de las fichas profesionales. Si vas a imprimir catálogos o volantes, usa 3000x3000 para conservar nitidez.</div></div>
         <div class="faq-item"><button class="faq-question">¿Puedo usar fondo transparente en lugar de blanco?</button><div class="faq-answer">Sí. Elige la opción de fondo transparente y obtendrás un PNG con el producto flotando sobre transparencia, ideal para superponerlo en banners de tu página web, en publicaciones de Instagram o en catálogos con fondo de color. El resultado se ve mucho más limpio que un recorte hecho a mano.</div></div>
+              <div class="faq-item"><button class="faq-question">¿Elimina el fondo de la foto?</button><div class="faq-answer">No, y es la confusión más habitual con esta herramienta. Lo único que hace es pintar un lienzo cuadrado del color elegido y dibujar encima tu foto completa, escalada. Si el producto está sobre una mesa, la mesa aparece. Para dejarlo sobre blanco puro necesitas separar el fondo antes, con la herramienta de fondo blanco para productos.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Por qué queda un margen alrededor del producto?</button><div class="faq-answer">Porque la escala se multiplica por 0,9 para que la imagen no toque los bordes. Ese 10 % repartido deja un 5 % por lado, que es lo que piden catálogos como Mercado Libre para que el producto no se corte al recortar la miniatura.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Gira o endereza la foto?</button><div class="faq-answer">No hay control de rotación. La imagen se dibuja en la misma orientación del archivo, así que si la tomaste de lado el resultado sale de lado. Endereza primero con la herramienta de rotar o de enderezar fotos y luego vuelve aquí.</div></div>
       </section>
 
 <section class="localization-section">

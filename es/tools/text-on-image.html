@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/text-on-image">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/text-on-image">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 
   <style>
     .text-workspace { display: flex; gap: 24px; flex-wrap: wrap; }
@@ -125,6 +128,30 @@
         "@type": "Answer",
         "text": "Ofrecemos 10 fuentes seleccionadas de Google Fonts que cubren una amplia gama de estilos. No admitimos carga de fuentes personalizadas, pero hemos seleccionado fuentes que funcionan bien para la mayoría de los casos."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Mantiene la resolución original de la foto?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí. El lienzo se crea con el ancho y alto naturales del archivo, no con el tamaño con el que se muestra en pantalla, así que una foto de 4000 px sigue exportándose a 4000 px aunque la previsualización ocupe 600. El tamaño de la tipografía se mide en píxeles de esa imagen completa."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo coloco el texto exactamente donde quiero?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Arrastrándolo sobre la previsualización, o con los botones de posición que lo alinean a las esquinas y al centro. La posición se guarda en proporción al ancho y alto, de modo que si cambias de imagen el texto aparece en el mismo punto relativo, no desplazado."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se ve bien el texto con acentos y eñes?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, las diez fuentes incluidas cubren el español completo, con tildes, eñes y signos de apertura. Los emoji y los alfabetos no latinos, como el chino o el cirílico, dependen de las fuentes del sistema y pueden salir como cuadros o cambiar de estilo entre dispositivos."
+      }
     }
   ]
 }
@@ -181,7 +208,27 @@
       <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>✏️ Añadir Texto</span></nav>
       <div class="tool-page-header">
         <h1>✏️ Añadir Texto a Imagen</h1>
-        <p>Añade texto personalizado con fuentes, colores y sombras.</p>
+        <p class="answer-lead">Escribe un texto sobre tu imagen y ajusta tipografía entre diez fuentes, tamaño de 10 a 200 px, color, contorno, sombra, opacidad y rotación de −180° a 180°. Puedes arrastrar el texto para colocarlo donde quieras o usar los botones de posición, y admite varias líneas separadas por saltos. Se exporta en PNG, JPG o WebP conservando la resolución original de la foto.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Precio</span><span class="f-v">Gratis, sin registro</span></li>
+          <li><span class="f-k">Fuentes</span><span class="f-v">10 tipografías</span></li>
+          <li><span class="f-k">Texto</span><span class="f-v">1 bloque con varias líneas</span></li>
+          <li><span class="f-k">Salida</span><span class="f-v">PNG, JPG o WebP</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Dónde colocar el texto para que se lea</h2>
+          <table>
+            <thead><tr><th>Uso de la imagen</th><th>Posición y estilo</th><th>Por qué funciona</th></tr></thead>
+            <tbody>
+              <tr><td>Portada de una publicación</td><td>Centro, 60 a 90 px, contorno oscuro</td><td>Se lee sobre cualquier fondo</td></tr>
+              <tr><td>Precio en una ficha de producto</td><td>Esquina inferior, 40 px, sombra suave</td><td>No tapa el producto</td></tr>
+              <tr><td>Cartel para un grupo de WhatsApp</td><td>Arriba, blanco con contorno negro</td><td>El blanco sin contorno desaparece en fondos claros</td></tr>
+              <tr><td>Marca de agua del catálogo</td><td>Centro, 30 % de opacidad, rotado −30°</td><td>Se ve sin arruinar la foto</td></tr>
+              <tr><td>Crédito del autor</td><td>Esquina, 20 px</td><td>A 20 px solo se lee en el original a tamaño completo</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Upload Area -->
@@ -394,6 +441,9 @@
       <div class="faq-item"><button class="faq-question">¿Puedo añadir múltiples elementos de texto?</button><div class="faq-answer">Actualmente, la herramienta admite un elemento de texto por imagen. Para varias capas de texto, descarga el resultado y súbelo de nuevo para añadir un segundo elemento. Consideramos soporte multi-texto en una futura actualización.</div></div>
       <div class="faq-item"><button class="faq-question">¿Se subirá mi imagen a un servidor?</button><div class="faq-answer">No. Todo el procesamiento ocurre completamente en tu navegador usando la API Canvas. Tus imágenes y texto nunca salen de tu dispositivo.</div></div>
       <div class="faq-item"><button class="faq-question">¿Puedo usar fuentes personalizadas?</button><div class="faq-answer">Ofrecemos 10 fuentes seleccionadas de Google Fonts que cubren una amplia gama de estilos. No admitimos carga de fuentes personalizadas, pero hemos seleccionado fuentes que funcionan bien para la mayoría de los casos.</div></div>
+              <div class="faq-item"><button class="faq-question">¿Mantiene la resolución original de la foto?</button><div class="faq-answer">Sí. El lienzo se crea con el ancho y alto naturales del archivo, no con el tamaño con el que se muestra en pantalla, así que una foto de 4000 px sigue exportándose a 4000 px aunque la previsualización ocupe 600. El tamaño de la tipografía se mide en píxeles de esa imagen completa.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Cómo coloco el texto exactamente donde quiero?</button><div class="faq-answer">Arrastrándolo sobre la previsualización, o con los botones de posición que lo alinean a las esquinas y al centro. La posición se guarda en proporción al ancho y alto, de modo que si cambias de imagen el texto aparece en el mismo punto relativo, no desplazado.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Se ve bien el texto con acentos y eñes?</button><div class="faq-answer">Sí, las diez fuentes incluidas cubren el español completo, con tildes, eñes y signos de apertura. Los emoji y los alfabetos no latinos, como el chino o el cirílico, dependen de las fuentes del sistema y pueden salir como cuadros o cambiar de estilo entre dispositivos.</div></div>
       </section>
 
 <section class="related-tools">

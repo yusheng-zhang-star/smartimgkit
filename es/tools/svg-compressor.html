@@ -13,7 +13,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/svg-compressor">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/svg-compressor">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <style id="tool-css">
 .tool-workspace{background:var(--bg-secondary);border:1px solid var(--border);border-radius:16px;padding:2rem;margin:1.5rem 0}
 .tool-workspace .upload-area{cursor:pointer;text-align:center;padding:2.5rem;border:2px dashed var(--border);border-radius:12px;transition:border-color .2s}
@@ -69,7 +72,7 @@
       "name": "¿La compresión arruina la calidad del dibujo?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Esta herramienta elimina espacios en blanco, saltos de línea y metadatos redundantes que añaden peso sin cambiar ni un píxel del dibujo. El vector resultante se ve idéntico al original, pero pesa entre un 40% y un 70% menos, porque la representación de las curvas no se toca."
+        "text": "No, el dibujo queda idéntico: solo se colapsan los espacios y los saltos de línea, y ni los trazados ni los colores ni las coordenadas se tocan. Lo que conviene saber es el reverso: tampoco se quitan los comentarios, el bloque de metadatos ni las capas ocultas que exporta Illustrator, así que el ahorro es menor de lo que prometen los minificadores completos. Si necesitas un SVG de verdad limpio, pásalo por SVGO o por tu editor de vectores."
       }
     },
     {
@@ -101,7 +104,7 @@
       "name": "¿Cuánto reduce típicamente el peso?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "En archivos exportados desde Illustrator o Corel, la reducción habitual está entre el 40% y el 70%. En un logo de 500 kilobytes puedes obtener un archivo final de 120 kilobytes sin perder ni un detalle, lo que se nota de inmediato en la velocidad de tu sitio móvil."
+        "text": "Depende de lo indentado que venga el archivo, y no hay un porcentaje fijo. Un SVG exportado desde Illustrator con dos espacios por nivel y un elemento por línea pierde bastante al quedar en una sola línea; un archivo que ya venía minificado puede quedarse igual, con un 0 % de ahorro. El peso grande de un SVG casi nunca son los espacios, sino los decimales de las coordenadas y las capas vacías, y eso esta herramienta no lo toca."
       }
     },
     {
@@ -110,6 +113,30 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "Aunque la herramienta procesa un archivo a la vez, no hay límite de usos: puedes subir uno tras otro tu catálogo completo de íconos, logotipos e ilustraciones y descargar cada versión optimizada. Para decenas de archivos, una sesión de media tarde es suficiente."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Quita los metadatos del archivo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. El proceso se limita a reemplazar secuencias de espacios por un espacio simple y a eliminar el espacio entre etiquetas; los comentarios, el bloque de metadatos, los identificadores de capa y los nombres de grupo siguen intactos. Si necesitas borrarlos, hazlo en el editor de vectores o con SVGO antes de subir el archivo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo comprimir varios SVG seguidos?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, pero de uno en uno: no hay carga múltiple ni descarga en ZIP. Cada archivo se procesa al seleccionarlo y se descarga con el botón, y al cargar el siguiente se reemplaza el resultado anterior. Para un set de veinte iconos es más rápido usar SVGO desde la terminal."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿El SVG comprimido se puede seguir editando?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, es texto plano con la misma estructura, solo sin saltos de línea. Se abre en Illustrator, Inkscape o Figma sin problema, aunque al estar todo en una línea el editor lo reformatea al guardar. Guarda tu copia de trabajo antes de sustituirla por la versión minificada."
       }
     }
   ]
@@ -164,7 +191,28 @@
       <nav class="breadcrumb"><a href="/es/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>📦 Comprimir SVG</span></nav>
       <div class="tool-page-header">
         <h1>📦 Comprimir SVG Gratis</h1>
-        <p>Minifica tus archivos vectoriales eliminando espacios y metadatos innecesarios, 100% local y sin subir archivos.</p>
+        <p class="answer-lead">Quita los espacios, las tabulaciones y los saltos de línea de un SVG y lo entrega en una sola línea, sin tocar los trazados ni los colores. Es una limpieza de formato: no borra comentarios, ni bloques de metadatos, ni capas ocultas, así que el ahorro depende de lo indentado que venga el archivo. Todo ocurre en tu navegador, sin subir el archivo a ningún servidor.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Precio</span><span class="f-v">Gratis, sin registro</span></li>
+          <li><span class="f-k">Qué hace</span><span class="f-v">Colapsa espacios y saltos</span></li>
+          <li><span class="f-k">Privacidad</span><span class="f-v">Local, sin subir</span></li>
+          <li><span class="f-k">Salida</span><span class="f-v">SVG en una línea</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Qué se ahorra al comprimir y qué se queda igual</h2>
+          <table>
+            <thead><tr><th>Contenido del archivo</th><th>Qué pasa al comprimir</th><th>Efecto en el peso</th></tr></thead>
+            <tbody>
+              <tr><td>Saltos de línea e indentación</td><td>Se colapsan en un espacio y se quitan entre etiquetas</td><td>Es donde más se nota, y depende de lo indentado que venga el archivo</td></tr>
+              <tr><td>Comentarios y bloque de metadatos</td><td>Se quedan exactamente como están</td><td>Ninguno: hay que borrarlos a mano o con otro programa</td></tr>
+              <tr><td>Números con seis decimales</td><td>No se redondean</td><td>Ninguno, y suelen ser la mayor parte del peso</td></tr>
+              <tr><td>Capas y grupos vacíos de Illustrator</td><td>Se conservan</td><td>Ninguno</td></tr>
+              <tr><td>SVG que ya venía minificado</td><td>Casi no cambia, a veces un 0 %</td><td>No esperes mejora en ese caso</td></tr>
+              <tr><td>Atributos con comillas y estilos</td><td>No se reescriben</td><td>Ninguno</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div class="tool-workspace">
@@ -195,12 +243,15 @@
       <section class="faq-section">
         <h2>Preguntas Frecuentes</h2>
         <div class="faq-item"><button class="faq-question">¿Es gratis comprimir archivos SVG?</button><div class="faq-answer">Sí, la compresión de SVG es 100% gratuita, sin registro, sin marcas de agua y sin límite diario de archivos. Puedes optimizar todos los vectores de tu sitio, tu tienda o tu portafolio sin pagar nada, y todo ocurre dentro de tu propio navegador.</div></div>
-        <div class="faq-item"><button class="faq-question">¿La compresión arruina la calidad del dibujo?</button><div class="faq-answer">No. Esta herramienta elimina espacios en blanco, saltos de línea y metadatos redundantes que añaden peso sin cambiar ni un píxel del dibujo. El vector resultante se ve idéntico al original, pero pesa entre un 40% y un 70% menos, porque la representación de las curvas no se toca.</div></div>
+        <div class="faq-item"><button class="faq-question">¿La compresión arruina la calidad del dibujo?</button><div class="faq-answer">No, el dibujo queda idéntico: solo se colapsan los espacios y los saltos de línea, y ni los trazados ni los colores ni las coordenadas se tocan. Lo que conviene saber es el reverso: tampoco se quitan los comentarios, el bloque de metadatos ni las capas ocultas que exporta Illustrator, así que el ahorro es menor de lo que prometen los minificadores completos. Si necesitas un SVG de verdad limpio, pásalo por SVGO o por tu editor de vectores.</div></div>
         <div class="faq-item"><button class="faq-question">¿Mis archivos SVG se suben a un servidor?</button><div class="faq-answer">No. El archivo se lee directamente en tu navegador y la versión comprimida se genera localmente, sin subidas ni cuentas. Esto es importante si tus SVG incluyen logotipos o ilustraciones de un cliente antes del lanzamiento de su marca, cuando aún son confidenciales.</div></div>
         <div class="faq-item"><button class="faq-question">¿Por qué mi SVG pesa tanto si es un vector?</button><div class="faq-answer">Los programas como Illustrator o Inkscape guardan cada SVG con comentarios, capas ocultas, paletas de color y nombres de trazado que nadie ve. Un ícono simple de 5 centímetros puede llegar a pesar 300 kilobytes por esos metadatos; al minificarlo, su peso baja a veces a menos de 5 kilobytes.</div></div>
         <div class="faq-item"><button class="faq-question">¿Puedo usar el SVG comprimido en Canva y en mi página web?</button><div class="faq-answer">Sí. El archivo optimizado sigue siendo un SVG estándar, compatible con Canva, WordPress, Shopify, Vercel y cualquier navegador. Muchos creadores de Latinoamérica lo suben a sus tiendas de Mercado Shops o sus sitios de Wix y notan que las páginas cargan notablemente más rápido.</div></div>
-        <div class="faq-item"><button class="faq-question">¿Cuánto reduce típicamente el peso?</button><div class="faq-answer">En archivos exportados desde Illustrator o Corel, la reducción habitual está entre el 40% y el 70%. En un logo de 500 kilobytes puedes obtener un archivo final de 120 kilobytes sin perder ni un detalle, lo que se nota de inmediato en la velocidad de tu sitio móvil.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Cuánto reduce típicamente el peso?</button><div class="faq-answer">Depende de lo indentado que venga el archivo, y no hay un porcentaje fijo. Un SVG exportado desde Illustrator con dos espacios por nivel y un elemento por línea pierde bastante al quedar en una sola línea; un archivo que ya venía minificado puede quedarse igual, con un 0 % de ahorro. El peso grande de un SVG casi nunca son los espacios, sino los decimales de las coordenadas y las capas vacías, y eso esta herramienta no lo toca.</div></div>
         <div class="faq-item"><button class="faq-question">¿Puedo comprimir varios SVG uno tras otro?</button><div class="faq-answer">Aunque la herramienta procesa un archivo a la vez, no hay límite de usos: puedes subir uno tras otro tu catálogo completo de íconos, logotipos e ilustraciones y descargar cada versión optimizada. Para decenas de archivos, una sesión de media tarde es suficiente.</div></div>
+              <div class="faq-item"><button class="faq-question">¿Quita los metadatos del archivo?</button><div class="faq-answer">No. El proceso se limita a reemplazar secuencias de espacios por un espacio simple y a eliminar el espacio entre etiquetas; los comentarios, el bloque de metadatos, los identificadores de capa y los nombres de grupo siguen intactos. Si necesitas borrarlos, hazlo en el editor de vectores o con SVGO antes de subir el archivo.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Puedo comprimir varios SVG seguidos?</button><div class="faq-answer">Sí, pero de uno en uno: no hay carga múltiple ni descarga en ZIP. Cada archivo se procesa al seleccionarlo y se descarga con el botón, y al cargar el siguiente se reemplaza el resultado anterior. Para un set de veinte iconos es más rápido usar SVGO desde la terminal.</div></div>
+        <div class="faq-item"><button class="faq-question">¿El SVG comprimido se puede seguir editando?</button><div class="faq-answer">Sí, es texto plano con la misma estructura, solo sin saltos de línea. Se abre en Illustrator, Inkscape o Figma sin problema, aunque al estar todo en una línea el editor lo reformatea al guardar. Guarda tu copia de trabajo antes de sustituirla por la versión minificada.</div></div>
       </section>
 
 <section class="localization-section">
@@ -216,12 +267,12 @@
     <li><strong>Imágenes animadas incluidas:</strong> Si tu SVG tiene animación, el peso extra se multiplica en cada visita. Minificarlo antes de publicarlo ayuda a que las animaciones corran fluidas en celulares modestos.</li>
   </ul>
   <p>La lógica es simple: si vas a poner tu tienda al alcance de toda la región, no le pidas al visitante promedio que descargue 2 megabytes de logotipos e íconos antes de poder ver tu producto. Con un par de clics, cada SVG pasa de ser una carga a un detalle invisible que carga al instante. Este ahorro es especialmente valioso para quienes recién empiezan y no pueden pagar un plan de hosting caro con CDN incluida: optimizar los archivos con herramientas gratuitas es el primer paso que cualquier sitio serio debe dar.</p>
-  <p>Y no solo importa por el lado del comprador: el costo de almacenamiento y transferencia también baja. Muchos emprendedores de la región usan planes de hosting compartido con límites mensuales de transferencia. Si tus íconos y logotipos están inflados con metadatos, cada visita consume más cuota de la cuenta y, al final del mes, pagas más por un servicio que podrías optimizar. Minificar tus SVG cuesta cero pesos y reduce tu consumo de transferencia de forma tangible. En un ecosistema donde cada peso de operación cuenta, esa clase de optimización silenciosa es la que separa a los negocios que sobreviven de los que crecen mes a mes.</p>
+  <p>Y no solo importa por el lado del comprador: el costo de almacenamiento y transferencia también baja. Muchos emprendedores de la región usan planes de hosting compartido con límites mensuales de transferencia. Si tus íconos y logotipos están inflados con saltos de línea e indentación, cada visita consume más cuota de la cuenta y, al final del mes, pagas más por un servicio que podrías optimizar. Minificar tus SVG cuesta cero pesos y reduce tu consumo de transferencia en la medida en que el archivo venga con formato tangible. En un ecosistema donde cada peso de operación cuenta, esa clase de optimización silenciosa es la que separa a los negocios que sobreviven de los que crecen mes a mes.</p>
 </section>
 
 <section class="localization-section">
   <h2>Diseñadores Freelancers: Limpiar SVG antes de Entregar</h2>
-  <p>En el ecosistema de diseño freelance de Latinoamérica, hay un ritual silencioso que todos los que llevan años en el oficio conocen: antes de entregar un proyecto, se limpian los archivos. Un logotipo entregado con los metadatos del programa original, con capas de prueba y comentarios internos, dice al cliente que el trabajo salió crudo. En cambio, un SVG liviano, limpio y ordenado comunica profesionalismo incluso antes de que el cliente lo abra. Es la diferencia entre un entregable que parece hecho en prisa y uno que parece de estudio internacional.</p>
+  <p>En el ecosistema de diseño freelance de Latinoamérica, hay un ritual silencioso que todos los que llevan años en el oficio conocen: antes de entregar un proyecto, se limpian los archivos. Un logotipo entregado con el código sin limpiar, con la indentación heredada del programa original y capas de prueba dentro, dice al cliente que el trabajo salió crudo. En cambio, un SVG liviano, limpio y ordenado comunica profesionalismo incluso antes de que el cliente lo abra. Es la diferencia entre un entregable que parece hecho en prisa y uno que parece de estudio internacional.</p>
   <p>Los clientes de la región suelen ser pequeñas empresas: una cafetería de Bogotá que necesita su logo para la carta digital, una academia de baile de Guadalajara que lo quiere para su volante, un despacho de abogados de Monterrey que lo necesita en su papelería digital. Esos clientes no tienen Illustrator instalado, y si reciben un SVG de 600 kilobytes con comentarios del diseñador, el archivo se abre lento en Canva o en PowerPoint. Al entregarlo ya minificado, el diseñador evita de antemano esa llamada de auxilio: oye, tu logo se traba cuando lo pongo en mi volante. Este detalle, invisible a simple vista, es parte del valor que un buen profesional agrega sin cobrar extra.</p>
   <h3>Checklist de entrega profesional</h3>
   <ul>
@@ -231,7 +282,7 @@
     <li><strong>Prueba en Canva del cliente:</strong> Abre tu SVG minificado en Canva como lo hará tu cliente. Si carga rápido y se ve nítido, tu entrega ya pasó la prueba del mundo real.</li>
     <li><strong>Conserva siempre el original:</strong> No sobrescribas el SVG de Illustrator con el minificado. Guarda el original en tu carpeta de proyecto; el comprimido es solo para entrega.</li>
   </ul>
-  <p>Muchos diseñadores en la región han convertido esta herramienta en su paso obligatorio de cierre de proyecto. Les ahorra tener que instalar software de optimización en su computadora, y les entrega un resultado predecible: eliminación de espacios y metadatos, sin tocar las curvas del dibujo. En un oficio donde la reputación se construye de cliente en cliente, esos pequeños detalles de limpieza son los que hacen que te refieran con otros negocios. Un entregable prolijo pesa poco, literal y figuradamente, y se recuerda.</p>
+  <p>Muchos diseñadores en la región han convertido esta herramienta en su paso obligatorio de cierre de proyecto. Les ahorra tener que instalar software de optimización en su computadora, y les entrega un resultado predecible: eliminación de espacios y saltos de línea, sin tocar las curvas del dibujo. En un oficio donde la reputación se construye de cliente en cliente, esos pequeños detalles de limpieza son los que hacen que te refieran con otros negocios. Un entregable prolijo pesa poco, literal y figuradamente, y se recuerda.</p>
   <p>Algo que también distingue a los estudios consolidados de los freelancers que recién empiezan es la documentación del proyecto. Cuando un diseñador profesional entrega una carpeta, incluye una versión SVG minificada para web, una PNG de alta resolución para impresión y un PDF con el manual de marca. Esta herramienta acelera ese proceso: en lugar de pagar una suscripción a un software de optimización, el diseñador sube cada SVG, lee el ahorro en pantalla y descarga la versión limpia. Los clientes que reciben una carpeta así perciben de inmediato que están tratando con alguien metódico. En mercados donde la competencia por un mismo proyecto es feroz, esa percepción es la que hace que el cliente elija a uno u otro profesional. Y como la herramienta no requiere instalación ni registro, se puede usar incluso en una computadora prestada, en una cabina de internet o en el celular antes de una reunión de trabajo.</p>
 </section>
 
@@ -248,7 +299,7 @@
     <li><strong>Redes sociales y flyers:</strong> Instagram y Facebook comprimen lo que subes, pero un SVG ya liviano les da un resultado más nítido que un pesado.</li>
   </ul>
   <p>En la práctica, comprimir SVG es uno de esos hábitos de higiene digital que una vez que adoptas no abandonas. No cambia cómo se ve tu trabajo, pero cambia cómo lo experimentan las personas que lo reciben: tu sitio carga más rápido, tu presentación abre sin tirones, tu invitación digital no se queda a medias. Es una de las pocas mejoras de rendimiento en las que todos ganan sin que nadie note que hiciste algo. Y como la herramienta es gratuita, funciona en el navegador y respeta tus archivos al no subirlos a ninguna parte, no hay razón para no incorporarla a tu flujo de trabajo. Tu próxima entrega será más liviana, y tus visitantes te lo agradecerán con una página que carga en un suspiro.</p>
-  <p>Finalmente, no olvides revisar los SVG que ya están publicados. Si llevas meses con tu sitio en línea, es muy probable que alguno de tus logotipos o íconos siga con los metadatos del programa de origen. Descarga ese archivo desde tu propio hosting, pásalo por esta herramienta, comprueba el ahorro y vuelve a subir la versión liviana. En muchos casos encontrarás una reducción del cincuenta por ciento o más sin cambiar nada visible. Es una de esas tareas de mantenimiento que toman una tarde entera para un sitio grande, pero que pagan dividendos durante años en forma de páginas más rápidas, menos datos consumidos por tus visitantes y un posicionamiento más amable en las búsquedas de Google.</p>
+  <p>Finalmente, no olvides revisar los SVG que ya están publicados. Si llevas meses con tu sitio en línea, es muy probable que alguno de tus logotipos o íconos siga con el formato con el que lo exportó el programa de origen. Descarga ese archivo desde tu propio hosting, pásalo por esta herramienta, comprueba el ahorro y vuelve a subir la versión liviana. En muchos casos encontrarás una reducción del cincuenta por ciento o más sin cambiar nada visible. Es una de esas tareas de mantenimiento que toman una tarde entera para un sitio grande, pero que pagan dividendos durante años en forma de páginas más rápidas, menos datos consumidos por tus visitantes y un posicionamiento más amable en las búsquedas de Google.</p>
 </section>
 
       <section class="related-tools">

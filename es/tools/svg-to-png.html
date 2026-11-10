@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/svg-to-png">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/svg-to-png">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 
   <style>
     .svg-workspace { display: flex; gap: 24px; flex-wrap: wrap; }
@@ -161,6 +164,30 @@
         "@type": "Answer",
         "text": "Claro. Si tienes una ilustración o un sticker en SVG, conviértelo a PNG con fondo transparente y úsalo en tus estados de WhatsApp, en publicaciones de Instagram o como material para TikTok. La escala 2x o 3x asegura que la ilustración se vea nítida aunque la red comprima la imagen."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué mi SVG se descarga en blanco?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Casi siempre por recursos externos: si el SVG usa imágenes enlazadas con href a un archivo aparte o fuentes que no van incrustadas, el navegador no las carga al dibujarlo en el lienzo. Convierte esas imágenes a datos incrustados y convierte el texto a trazados antes de exportar."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se conserva la transparencia?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "En PNG y en WebP sí. En JPG no existe el canal alfa, así que las zonas transparentes se rellenan de negro al codificar; si necesitas JPG sobre blanco, pon un rectángulo blanco como fondo dentro del propio SVG antes de convertirlo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo pegar el código en lugar de subir el archivo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, hay una pestaña para pegar el marcado completo del SVG; se leen el viewBox o el ancho y alto para calcular las dimensiones de salida. Si el código viene de un editor, quita primero las etiquetas de XML que pueda haber antes del elemento svg."
+      }
     }
   ]
 }
@@ -217,7 +244,27 @@
       <nav class="breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/es/tools/">Herramientas</a><span>/</span><span>📐 SVG a PNG</span></nav>
       <div class="tool-page-header">
         <h1>📐 SVG a PNG</h1>
-        <p>Convierte archivos SVG a PNG, JPG o WebP.</p>
+        <p class="answer-lead">Convierte un SVG en PNG, JPG o WebP eligiendo la escala de 1x a 4x, y acepta tanto el archivo como el código pegado directamente. El SVG se renderiza en un lienzo del navegador, así que el resultado conserva la nitidez del vector al tamaño que pidas. La transparencia se mantiene en PNG y se pierde en JPG, donde las zonas vacías salen negras.</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">Precio</span><span class="f-v">Gratis, sin registro</span></li>
+          <li><span class="f-k">Escala</span><span class="f-v">1x, 2x, 3x y 4x</span></li>
+          <li><span class="f-k">Entrada</span><span class="f-v">Archivo o código SVG</span></li>
+          <li><span class="f-k">Salida</span><span class="f-v">PNG, JPG o WebP</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Qué escala pedir según el destino</h2>
+          <table>
+            <thead><tr><th>Destino</th><th>Escala</th><th>Tamaño de salida</th></tr></thead>
+            <tbody>
+              <tr><td>Icono de 24 px en una web</td><td>1x</td><td>El ancho del viewBox</td></tr>
+              <tr><td>Logo en pantalla retina</td><td>2x</td><td>El doble de ancho</td></tr>
+              <tr><td>Ilustración para una app móvil</td><td>3x</td><td>El triple de ancho</td></tr>
+              <tr><td>Logo para imprimir a 300 dpi</td><td>4x</td><td>Cuatro veces el ancho del SVG</td></tr>
+              <tr><td>SVG de 2000 px con filtros</td><td>1x o 2x</td><td>A 4x tarda y consume memoria</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Upload / Paste Area -->
@@ -394,6 +441,9 @@
       <div class="faq-item"><button class="faq-question">¿Qué pasa con un SVG animado?</button><div class="faq-answer">El lienzo captura el estado estático inicial de la animación. Si necesitas un cuadro concreto, edita el código SVG y ajusta los valores antes de convertirlo; la exportación a PNG siempre produce una imagen fija.</div></div>
       <div class="faq-item"><button class="faq-question">¿Puedo convertir el logo de mi tienda de Mercado Libre a PNG?</button><div class="faq-answer">Sí. Muchos diseñadores entregan el logotipo en SVG, pero Mercado Libre, WhatsApp y los catálogos piden PNG cuadrado con fondo transparente. Sube el SVG, elige escala 3x o 4x y genera un PNG nítido de 800×800 o más, listo para el perfil de la tienda y las publicaciones.</div></div>
       <div class="faq-item"><button class="faq-question">¿Sirve para crear imágenes de WhatsApp, Instagram o TikTok?</button><div class="faq-answer">Claro. Si tienes una ilustración o un sticker en SVG, conviértelo a PNG con fondo transparente y úsalo en tus estados de WhatsApp, en publicaciones de Instagram o como material para TikTok. La escala 2x o 3x asegura que la ilustración se vea nítida aunque la red comprima la imagen.</div></div>
+              <div class="faq-item"><button class="faq-question">¿Por qué mi SVG se descarga en blanco?</button><div class="faq-answer">Casi siempre por recursos externos: si el SVG usa imágenes enlazadas con href a un archivo aparte o fuentes que no van incrustadas, el navegador no las carga al dibujarlo en el lienzo. Convierte esas imágenes a datos incrustados y convierte el texto a trazados antes de exportar.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Se conserva la transparencia?</button><div class="faq-answer">En PNG y en WebP sí. En JPG no existe el canal alfa, así que las zonas transparentes se rellenan de negro al codificar; si necesitas JPG sobre blanco, pon un rectángulo blanco como fondo dentro del propio SVG antes de convertirlo.</div></div>
+        <div class="faq-item"><button class="faq-question">¿Puedo pegar el código en lugar de subir el archivo?</button><div class="faq-answer">Sí, hay una pestaña para pegar el marcado completo del SVG; se leen el viewBox o el ancho y alto para calcular las dimensiones de salida. Si el código viene de un editor, quita primero las etiquetas de XML que pueda haber antes del elemento svg.</div></div>
       </section>
 
 <section class="related-tools">
