@@ -41,7 +41,7 @@
       "name": "¿Puedo capturar cualquier sitio web?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Se pueden capturar la mayoría de los sitios públicos. Algunas páginas con protección estricta o que requieren iniciar sesión, como la banca en línea, pueden no cargarse bien dentro de la vista previa. Para esos casos, toma la captura con los botones del celular y complementa con lo que tengas a la mano."
+        "text": "Solo las páginas que el navegador permite leer desde aquí, es decir, las del mismo origen que esta herramienta. Con sitios externos falla por dos vías distintas: muchos prohíben que los incrusten (X-Frame-Options o CSP) y, aunque se dejen incrustar, el contenido de otro dominio no se puede leer para dibujarlo en un lienzo. Para una web ajena, usa la captura del sistema operativo o guarda la página como PDF."
       }
     },
     {
@@ -73,7 +73,7 @@
       "name": "¿La captura incluye toda la página o solo lo visible en la pantalla?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "La captura abarca la página completa, desde la parte superior hasta el final del contenido, no solo la sección que cabe en tu pantalla. Por eso en la imagen final se conservan las notas pequeñas del fondo, los sellos digitales y los textos legales que normalmente se cortan con la captura manual del celular."
+        "text": "Cuando la página se deja capturar, la imagen abarca todo el cuerpo del documento, no solo la parte visible en pantalla. Cuando no se deja —el caso habitual en webs externas— no se genera ninguna imagen, así que no hay captura parcial: o sale completa o no sale."
       }
     },
     {
@@ -82,6 +82,22 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "No. La herramienta es gratuita, no pide registro, no instala nada y no muestra marcas de agua sobre la imagen resultante. Puedes capturar todas las páginas que necesites desde el teléfono o la computadora, sin límite de uso diario."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Por qué pulso descargar y no pasa nada?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Porque el navegador lanza un error de seguridad al intentar leer el contenido del visor cuando la página es de otro dominio; el fallo ocurre en la consola y la interfaz no muestra ningún aviso. Pasa con casi cualquier web pública: incrustar no equivale a poder leer, y aquí no hay servidor que haga la captura por ti."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Hay un servicio de captura en el servidor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. No se envía la URL a ninguna API ni se procesa la imagen fuera del navegador, y por eso tampoco hay cuota ni marca de agua. La contrapartida es que los límites del navegador son los límites de la herramienta: nada que no pueda leer el propio navegador se puede convertir en imagen desde aquí."
       }
     }
   ]
@@ -98,7 +114,28 @@
 </header>
 <main class="container">
 <h1>Captura de Web a Imagen</h1>
-<p class="lead">Introduce la URL de cualquier página web para capturar una captura de página completa y descargarla en PNG o JPG de alta resolución. Ideal para guardar contenido web, crear vistas previas o archivar páginas.</p>
+        <p class="answer-lead">Esta herramienta abre una URL dentro de un visor y genera un PNG o un JPG del contenido con html2canvas, sin pasar por ningún servidor. El límite está en el navegador: solo puede leer el interior del visor cuando la página es del mismo origen que esta herramienta, así que funciona con páginas propias o servidas desde este sitio y falla con portales externos, que además suelen prohibir que los incrusten. No hay servicio de captura remota detrás.</p>
+
+        <ul class="facts-strip">
+          <li><span class="f-k">Precio</span><span class="f-v">Gratis, sin registro</span></li>
+          <li><span class="f-k">Entrada</span><span class="f-v">Una URL http o https</span></li>
+          <li><span class="f-k">Privacidad</span><span class="f-v">Local, sin servidor</span></li>
+          <li><span class="f-k">Salida</span><span class="f-v">PNG o JPG</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>Qué ocurre según el tipo de página que pegues</h2>
+          <table>
+            <thead><tr><th>Tipo de página</th><th>Resultado real</th><th>Alternativa</th></tr></thead>
+            <tbody>
+              <tr><td>Página de este mismo sitio</td><td>Se carga en el visor y se captura completa</td><td>Descarga en PNG para conservar la nitidez</td></tr>
+              <tr><td>Portal con X-Frame-Options o CSP</td><td>El visor queda en blanco: el sitio prohíbe incrustarse</td><td>Usa la captura del sistema o del móvil</td></tr>
+              <tr><td>Banco, correo o web con sesión iniciada</td><td>No se puede leer el contenido desde otro origen</td><td>Captura desde la propia aplicación</td></tr>
+              <tr><td>Ficha de Mercado Libre o Amazon</td><td>La captura no se genera por el bloqueo entre orígenes</td><td>Guarda la página como PDF desde el navegador</td></tr>
+              <tr><td>Página propia en local</td><td>Funciona si abres la herramienta en el mismo origen</td><td>Imprime a PDF para archivar el contenido</td></tr>
+            </tbody>
+          </table>
+        </div>
 <div class="url-input-group" style="margin:2rem 0;">
 <input type="url" id="urlInput" placeholder="https://example.com" style="width:70%;padding:0.8rem;font-size:1rem;">
 <button id="captureBtn" class="primary">Capturar pantalla</button>
@@ -161,12 +198,14 @@
 </section>
 <section class="faq">
 <h2>Preguntas frecuentes</h2>
-<details><summary class="faq-question">¿Puedo capturar cualquier sitio web?</summary><p>Se pueden capturar la mayoría de los sitios públicos. Algunas páginas con protección estricta o que requieren iniciar sesión, como la banca en línea, pueden no cargarse bien dentro de la vista previa. Para esos casos, toma la captura con los botones del celular y complementa con lo que tengas a la mano.</p></details>
+<details><summary class="faq-question">¿Puedo capturar cualquier sitio web?</summary><p>Solo las páginas que el navegador permite leer desde aquí, es decir, las del mismo origen que esta herramienta. Con sitios externos falla por dos vías distintas: muchos prohíben que los incrusten (X-Frame-Options o CSP) y, aunque se dejen incrustar, el contenido de otro dominio no se puede leer para dibujarlo en un lienzo. Para una web ajena, usa la captura del sistema operativo o guarda la página como PDF.</p></details>
 <details><summary class="faq-question">¿Mis datos se almacenan en algún servidor?</summary><p>No. Todas las capturas se procesan directamente en tu navegador: la página que abres se carga en el visor local y la imagen resultante se genera en tu propio dispositivo. No se envía ningún enlace ni ningún dato a nuestros servidores, así que puedes trabajar con comprobantes privados con confianza.</p></details>
 <details><summary class="faq-question">¿Cómo guardo una publicación de Mercado Libre como imagen antes de que caduque?</summary><p>Copia el enlace del anuncio, pégalo en la caja de esta herramienta y pulsa el botón de captura. Cuando la página cargue completa, descarga la imagen en PNG o JPG y guárdala en tu carpeta de compras. Así conservas el precio y la descripción exactos para tu comparativa o tu reclamo.</p></details>
 <details><summary class="faq-question">¿Puedo capturar un recibo desde el celular para enviarlo por WhatsApp?</summary><p>Sí. Abre esta página en el navegador de tu celular, pega el enlace del recibo electrónico y captura la página completa. La imagen resultante se descarga a tu galería y la puedes enviar por WhatsApp igual que cualquier foto, sin que nada se corte a la mitad.</p></details>
-<details><summary class="faq-question">¿La captura incluye toda la página o solo lo visible en la pantalla?</summary><p>La captura abarca la página completa, desde la parte superior hasta el final del contenido, no solo la sección que cabe en tu pantalla. Por eso en la imagen final se conservan las notas pequeñas del fondo, los sellos digitales y los textos legales que normalmente se cortan con la captura manual del celular.</p></details>
+<details><summary class="faq-question">¿La captura incluye toda la página o solo lo visible en la pantalla?</summary><p>Cuando la página se deja capturar, la imagen abarca todo el cuerpo del documento, no solo la parte visible en pantalla. Cuando no se deja —el caso habitual en webs externas— no se genera ninguna imagen, así que no hay captura parcial: o sale completa o no sale.</p></details>
 <details><summary class="faq-question">¿Necesito registrarme o pagar algo para usar la herramienta?</summary><p>No. La herramienta es gratuita, no pide registro, no instala nada y no muestra marcas de agua sobre la imagen resultante. Puedes capturar todas las páginas que necesites desde el teléfono o la computadora, sin límite de uso diario.</p></details>
+      <details><summary class="faq-question">¿Por qué pulso descargar y no pasa nada?</summary><p>Porque el navegador lanza un error de seguridad al intentar leer el contenido del visor cuando la página es de otro dominio; el fallo ocurre en la consola y la interfaz no muestra ningún aviso. Pasa con casi cualquier web pública: incrustar no equivale a poder leer, y aquí no hay servidor que haga la captura por ti.</p></details>
+      <details><summary class="faq-question">¿Hay un servicio de captura en el servidor?</summary><p>No. No se envía la URL a ninguna API ni se procesa la imagen fuera del navegador, y por eso tampoco hay cuota ni marca de agua. La contrapartida es que los límites del navegador son los límites de la herramienta: nada que no pueda leer el propio navegador se puede convertir en imagen desde aquí.</p></details>
 </section>
 </main>
 <script>
