@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/case-converter">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/case-converter">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -168,6 +171,22 @@
         "@type": "Answer",
         "text": "可以——在适用时支持批量分析。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "中文或日文会被改动吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不会。中文、日文、韩文没有大小写之分，转换只作用于英文字母，一段纯中文粘进来点任何按钮，输出和输入完全一样。中英混排时只有英文部分会变，中文原样保留——所以想给中文标题排版，这个工具帮不上，得手动加空格或标点。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "原来的空格和换行会保留吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "前四个按钮（全大写、全小写、标题式、句首大写）是逐字符处理，空格、换行、缩进都原样保留。后四个是给变量名用的格式转换，会按空格、下划线、连字符重新切词，多余空格被合并，换行也会被当成一个空格，所以拿它处理整段文章会丢排版。"
+      }
     }
   ]
 }
@@ -231,7 +250,30 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🔠 大小写转换</span></nav>
       <div class="tool-page-header">
         <h1>🔤 大小写转换</h1>
-        <p>在大小写、首字母大写等多种文本格式间转换——免费，在浏览器中完成。</p>
+        <p class="answer-lead">把一段文字粘进左边的框，点右边任意一个按钮，就在全大写、全小写、标题式、句首大写和 camelCase、PascalCase、snake_case、kebab-case 这 8 种格式之间转换，结果显示在输出框里，可以一键复制。转换只在你的浏览器里跑几行正则，文字不会上传。中文、日文没有大小写概念，这 8 个按钮只对拉丁字母起作用。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">粘贴纯文本，8 种转换</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，页面内完成</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">文本框显示，可复制</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>8 个按钮各自动了什么，什么时候会翻车</h2>
+          <table>
+            <thead><tr><th>按钮</th><th>实际做了什么</th><th>什么时候别用</th></tr></thead>
+            <tbody>
+              <tr><td>UPPERCASE</td><td>整段字母转大写</td><td>网址、邮箱变大写就失效了</td></tr>
+              <tr><td>lowercase</td><td>整段字母转小写</td><td>API、PDF 这类缩写会被改小</td></tr>
+              <tr><td>Title Case</td><td>每个单词首字母大写</td><td>the、of 这类虚词也大写；中文不变</td></tr>
+              <tr><td>Sentence case</td><td>先整段转小写，再抬句首</td><td>只认英文句号问号感叹号，缩写会被压小</td></tr>
+              <tr><td>camelCase</td><td>按空格、下划线、连字符切词</td><td>首词整体转小写，PDF 会变成 pdf</td></tr>
+              <tr><td>PascalCase</td><td>切词后每个词首字母大写</td><td>全大写缩写会被拆成普通单词</td></tr>
+              <tr><td>snake_case</td><td>切词后统一用下划线连接</td><td>空格和连字符都会变下划线</td></tr>
+              <tr><td>kebab-case</td><td>切词后统一用连字符连接</td><td>拿去当文件名要再检查一遍</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -249,27 +291,27 @@
 </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🔠</span></div>
-              <div class="before-after-item-caption after">转换ed case</div>
+              <div class="before-after-item-caption after">转换后</div>
             </div>
           </div>
         </div>
 
 <div class="two-col">
           <div class="controls">
-            <h2>📥 输入 Text</h2>
-            <textarea id="case输入" placeholder="Enter text to convert..."></textarea>
+            <h2>📥 输入文本</h2>
+            <textarea id="case输入" placeholder="在这里粘贴或输入要转换的文字…"></textarea>
           </div>
           <div class="controls">
-            <h2>📤 转换ed Text</h2>
-            <textarea id="case输出" readonly placeholder="Choose a case below..."></textarea>
+            <h2>📤 转换结果</h2>
+            <textarea id="case输出" readonly placeholder="点下方按钮选择一种格式…"></textarea>
             <div class="btn-row">
               <button class="btn btn-secondary" id="case复制Btn">📋 复制</button>
-              <button class="btn btn-secondary" id="caseClearBtn">Clear</button>
+              <button class="btn btn-secondary" id="caseClearBtn">清空</button>
             </div>
           </div>
         </div>
         <div class="controls">
-          <h2>🔄 转换 To</h2>
+          <h2>🔄 转换为</h2>
           <div class="btn-row">
             <button class="btn btn-primary" data-case="upper">UPPERCASE</button>
             <button class="btn btn-primary" data-case="lower">lowercase</button>
@@ -383,6 +425,8 @@
 <div class="faq-item"><button class="faq-question">即时吗？</button><div class="faq-answer">是的——输入即转换。</div></div>
 <div class="faq-item"><button class="faq-question">分析准确吗？</button><div class="faq-answer">准确——工具使用标准算法和解析器，结果可靠。</div></div>
 <div class="faq-item"><button class="faq-question">可以处理多个文件吗？</button><div class="faq-answer">可以——在适用时支持批量分析。</div></div>
+              <div class="faq-item"><button class="faq-question">中文或日文会被改动吗？</button><div class="faq-answer">不会。中文、日文、韩文没有大小写之分，转换只作用于英文字母，一段纯中文粘进来点任何按钮，输出和输入完全一样。中英混排时只有英文部分会变，中文原样保留——所以想给中文标题排版，这个工具帮不上，得手动加空格或标点。</div></div>
+        <div class="faq-item"><button class="faq-question">原来的空格和换行会保留吗？</button><div class="faq-answer">前四个按钮（全大写、全小写、标题式、句首大写）是逐字符处理，空格、换行、缩进都原样保留。后四个是给变量名用的格式转换，会按空格、下划线、连字符重新切词，多余空格被合并，换行也会被当成一个空格，所以拿它处理整段文章会丢排版。</div></div>
       </section>
 <section class="related-tools"><h2>你可能还喜欢</h2><div class="related-tools-grid"><a href="/zh/tools/word-counter" class="related-tool-card"><span class="tool-icon">📝</span><div class="tool-info"><strong>字数统计</strong><span class="tool-desc">Count words in your text</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/text-sorter" class="related-tool-card"><span class="tool-icon">↕️</span><div class="tool-info"><strong>文本排序</strong><span class="tool-desc">Sort lines alphabetically</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/text-find-replace" class="related-tool-card"><span class="tool-icon">🔄</span><div class="tool-info"><strong>查找替换</strong><span class="tool-desc">Find and replace text</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>

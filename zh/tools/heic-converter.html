@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/heic-converter">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/heic-converter">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -58,14 +61,14 @@
     {
       "@type": "HowToStep",
       "position": 2,
-      "name": "Choose 格式",
-      "text": "Select output format: JPG, PNG, or WebP."
+      "name": "选输出格式",
+      "text": "选择 JPG、PNG 或 WebP。JPG 通用体积小，PNG 无损，WebP 体积最小但兼容性略差。"
     },
     {
       "@type": "HowToStep",
       "position": 3,
-      "name": "Adjust 质量",
-      "text": "Set JPG/WebP quality slider if needed."
+      "name": "点击全部转换",
+      "text": "转换按解码库固定参数出图，页面没有质量滑块，输出体积取决于原图。"
     },
     {
       "@type": "HowToStep",
@@ -171,6 +174,22 @@
         "@type": "Answer",
         "text": "不需要。全部在浏览器内运行——无需应用、插件或扩展。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么页面没有质量滑块？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "因为解码库 heic2any 只负责把 HEIC 解出来并编码成目标格式，接口里没有质量参数，加了滑块也调不动结果。与其摆一个不生效的控件，不如把话说清楚：转出来的 JPG 质量是固定的，要控体积就转完再走压缩器，那里调质量才真的有用。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "转完的照片还是原分辨率吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "是。解码后按原图宽高画进 canvas，不做任何缩放，4032×3024 的 iPhone 主摄照片转出来还是 4032×3024。所以一批照片转完可能几百 MB，想发微信或上传商品后台，转完记得再压一轮。"
+      }
     }
   ]
 }
@@ -236,7 +255,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🖼️ HEIC 转换</span></nav>
       <div class="tool-page-header">
         <h1>🖼️ HEIC 转换器</h1>
-        <p>将 HEIC（iPhone 照片）转换为 JPG、PNG 或 WebP。免费、快速、无需上传。</p>
+        <p class="answer-lead">把 iPhone 拍的 HEIC 照片转成 JPG、PNG 或 WebP，可以一次选多张排队处理，转完单张下载或打包 ZIP。解码在浏览器里用 heic2any 完成，照片不上传，第一次打开要下几 MB 的解码库所以会慢几秒。页面不提供质量滑块——解码库按固定参数出图，转出来的体积由原图决定，嫌大要另外压。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">HEIC/HEIF → JPG/PNG/WebP</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地解码</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">单张下载或 ZIP</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>iPhone 照片发给谁，就转成什么格式</h2>
+          <table>
+            <thead><tr><th>拿去做什么</th><th>转成</th><th>要注意的地方</th></tr></thead>
+            <tbody>
+              <tr><td>发给安卓手机或电脑</td><td>JPG</td><td>兼容性最好，体积也最小</td></tr>
+              <tr><td>传微信原图</td><td>JPG</td><td>别选原图发送，否则又变回大文件</td></tr>
+              <tr><td>接着 PS 或修图</td><td>PNG</td><td>无损但体积可能是 JPG 的三倍</td></tr>
+              <tr><td>放到网站上</td><td>WebP</td><td>体积小，但老浏览器打不开</td></tr>
+              <tr><td>要投稿或打印</td><td>JPG 高像素</td><td>解码后不缩尺寸，原图多少像素就多少</td></tr>
+              <tr><td>批量转一整卷</td><td>任意格式</td><td>排队转，转完打包 ZIP 一次拿走</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -279,15 +319,6 @@
               <button class="format-btn active" data-fmt="jpg" onclick="set格式('jpg',this)">JPG</button>
               <button class="format-btn" data-fmt="png" onclick="set格式('png',this)">PNG</button>
               <button class="format-btn" data-fmt="webp" onclick="set格式('webp',this)">WebP</button>
-            </div>
-          </div>
-
-          <!-- 质量 -->
-          <div class="card" id="qualityCard">
-            <h3>质量</h3>
-            <div class="slider-group">
-              <label>质量 <span class="slider-value" id="qualVal">90</span>%</label>
-              <input type="range" id="qualSlider" min="10" max="100" value="90" oninput="update质量()">
             </div>
           </div>
 
@@ -381,8 +412,8 @@
   <h2>使用方法</h2>
   <div class="how-to-steps">
     <div class="how-to-step"><div class="step-number">1</div><h4>上传 HEIC</h4><p>拖入一张或多张 .HEIC 文件。</p></div>
-    <div class="how-to-step"><div class="step-number">2</div><h4>Choose 格式</h4><p>Select JPG, PNG, or WebP output format.</p></div>
-    <div class="how-to-step"><div class="step-number">3</div><h4>Adjust 质量</h4><p>Set the quality level (10-100%).</p></div>
+    <div class="how-to-step"><div class="step-number">2</div><h4>选输出格式</h4><p>JPG 通用、体积小；PNG 无损、体积大；WebP 兼顾两者。</p></div>
+    <div class="how-to-step"><div class="step-number">3</div><h4>点「全部转换」</h4><p>转换按解码库的固定参数出图，页面没有质量滑块，体积由原图决定。</p></div>
     <div class="how-to-step"><div class="step-number">4</div><h4>转换并下载</h4><p>点击「全部转换」后下载结果。</p></div>
   </div>
 </section>
@@ -390,18 +421,18 @@
 <h2>详细使用指南</h2>
 
       <div class="guide-block">
-        <h3>Step 1: 上传 HEIC Files</h3>
-        <p>Drag and drop .HEIC / .HEIF files.</p>
+        <h3>第一步：把 HEIC 拖进来</h3>
+        <p>从 iPhone 的「文件」里拷出来的 .HEIC、.HEIF 都能直接拖，一次可以选多张，页面把它们排进队列依次转换。</p>
       </div>
 
       <div class="guide-block">
-        <h3>Step 2: Choose 输出格式</h3>
-        <p>Select JPG (smaller, universal), PNG (lossless, larger), or WebP (best of both).</p>
+        <h3>第二步：决定输出格式</h3>
+        <p>发给别人、传微信就用 JPG，兼容性最好；要留透明通道或接着修图用 PNG；做网页、追体积用 WebP，但个别国产浏览器和老版办公软件不认 WebP，发给客户前先确认。</p>
       </div>
 
       <div class="guide-block">
-        <h3>Step 3: Adjust 质量</h3>
-        <p>Use the quality slider to control the output file size.</p>
+        <h3>第三步：转完先看体积</h3>
+        <p>解码库不接受质量参数，转出来的 JPG 有多大取决于原图。嫌大就在转换完成后把图丢进压缩器再压一轮，那里才是调质量和宽度的地方；这一步骗不了人，滑块都没有就没得调。</p>
       </div>
 
       <div class="guide-block">
@@ -480,6 +511,8 @@
 <div class="faq-item"><button class="faq-question">支持 Live Photos 吗？</button><div class="faq-answer">仅转换静态图像，动态数据不保留。</div></div>
 <div class="faq-item"><button class="faq-question">有文件大小限制吗？</button><div class="faq-answer">支持最大 100MB 的文件。超大文件可能需要多几秒处理。</div></div>
 <div class="faq-item"><button class="faq-question">需要安装任何东西吗？</button><div class="faq-answer">不需要。全部在浏览器内运行——无需应用、插件或扩展。</div></div>
+              <div class="faq-item"><button class="faq-question">为什么页面没有质量滑块？</button><div class="faq-answer">因为解码库 heic2any 只负责把 HEIC 解出来并编码成目标格式，接口里没有质量参数，加了滑块也调不动结果。与其摆一个不生效的控件，不如把话说清楚：转出来的 JPG 质量是固定的，要控体积就转完再走压缩器，那里调质量才真的有用。</div></div>
+        <div class="faq-item"><button class="faq-question">转完的照片还是原分辨率吗？</button><div class="faq-answer">是。解码后按原图宽高画进 canvas，不做任何缩放，4032×3024 的 iPhone 主摄照片转出来还是 4032×3024。所以一批照片转完可能几百 MB，想发微信或上传商品后台，转完记得再压一轮。</div></div>
       </section>
 
 <section class="related-tools">
@@ -569,9 +602,6 @@ const previewCanvas = $('previewCanvas');
 const placeholderText = $('placeholderText');
 const previewWrapper = $('previewWrapper');
 const downloadArea = $('downloadArea');
-const qualityCard = $('qualityCard');
-const qualSlider = $('qualSlider');
-const qualVal = $('qualVal');
 
 let heicFiles = []; // support multiple
 
@@ -586,12 +616,12 @@ file输入.addEventListener('change', e => { if (e.target.files.length) handleFi
 
 function handleFiles(files) {
   const valid = files.filter(f => f.name.toLowerCase().endsWith('.heic') || f.name.toLowerCase().endsWith('.heif') || f.type === 'image/heic' || f.type === 'image/heif');
-  if (!valid.length) return alert('Please select valid HEIC/HEIF files.');
+  if (!valid.length) return alert('请选择 .heic 或 .heif 文件');
   heicFiles = heicFiles.concat(valid.map(f => ({ file: f, converted: null })));
   heicFile = valid[0];
   dropzone.style.display = 'none';
   file提示.style.display = 'block';
-  file提示.innerHTML = `<strong>${valid.length} file(s) loaded</strong>`;
+  file提示.innerHTML = `<strong>已载入 ${valid.length} 张</strong>`;
   placeholderText.style.display = 'none';
   previewCanvas.style.display = 'block';
   convertBtn.disabled = false;
@@ -602,11 +632,6 @@ function set格式(fmt, btn) {
   output格式 = fmt;
   document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  qualityCard.style.display = (fmt === 'jpg' || fmt === 'webp') ? 'block' : 'none';
-}
-
-function update质量() {
-  qualVal.textContent = qualSlider.value;
 }
 
 async function convertHeic() {

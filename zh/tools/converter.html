@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/converter">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/converter">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -177,6 +180,22 @@
         "@type": "Answer",
         "text": "淘宝和拼多多主图普遍要求 JPG 或 PNG 格式，建议尺寸 800×800 像素以上、纯白背景。实拍原片如果是其他格式，先批量转成 JPG 再上传，既能避免格式不被识别，也能把体积压到平台要求的范围内。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "GIF 动图转完为什么不动了？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "因为转换是把图像画到 canvas 上再重新编码，canvas 里只有一张静态画面，所以动图转完只剩第一帧。要保留动画，得用 GIF 编辑器去裁剪、调速，而不是走格式转换。反过来，把视频或动图转成静态 JPG 时，这个行为正好当「取首帧」用。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么转出来的 JPG 比原图还大？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "输出固定按 0.92 质量重新编码。原图如果是被微信、淘宝压过好几轮的小图，重新编码会连原来的压缩痕迹一起当成细节保下来，体积反而涨。这种情况没必要转，直接用原图；确实要变小，转到压缩器里手动调质量和宽度更靠谱。"
+      }
     }
   ]
 }
@@ -242,7 +261,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🔄 图片格式转换</span></nav>
       <div class="tool-page-header">
         <h1>🔄 图片格式转换器</h1>
-        <p>免费在线转换图片格式，JPG、PNG、WebP、GIF、BMP 互相转换，批量处理、本地运行不上传。</p>
+        <p class="answer-lead">在 JPG、PNG、WebP、GIF、BMP 五种格式之间互转，可以一次选中多张，转完单张下载或打包 ZIP。转换用浏览器 canvas 重新编码，图片不上传，也不消耗服务器流量。两个要说清的硬限制：所有输出统一按 0.92 质量编码，页面没有质量滑块；GIF 动图转出来只剩第一帧，动画不会保留。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">JPG/PNG/WebP/GIF/BMP</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地 canvas</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">单张下载或 ZIP 打包</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>转成什么格式，先看你要拿去干什么</h2>
+          <table>
+            <thead><tr><th>你要做的事</th><th>选这个格式</th><th>会失去什么</th></tr></thead>
+            <tbody>
+              <tr><td>淘宝、拼多多主图</td><td>JPG</td><td>透明背景被填成白底</td></tr>
+              <tr><td>带透明背景的 logo</td><td>PNG</td><td>体积是 JPG 的好几倍</td></tr>
+              <tr><td>公众号配图</td><td>JPG</td><td>反复另存会累积压缩痕迹</td></tr>
+              <tr><td>网页首屏要快</td><td>WebP</td><td>老版浏览器和部分办公软件不认</td></tr>
+              <tr><td>微信里直接发</td><td>JPG 或 PNG</td><td>BMP 太大，容易被拦</td></tr>
+              <tr><td>动图要留住动画</td><td>别在这里转</td><td>GIF 输出只有第一帧</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <input type="file" id="fileInput" accept="image/*" multiple hidden>
@@ -410,6 +450,8 @@
       <div class="faq-item"><button class="faq-question">我的照片会被上传到网站服务器吗？</button><div class="faq-answer">不会。整个转换过程都在你的浏览器本地完成，照片文件从不离开你的设备。处理证件照、合同截图、私人生活照时完全不用担心隐私泄露，这也是本工具和普通在线转换网站最大的区别。</div></div>
       <div class="faq-item"><button class="faq-question">iPhone 拍的 HEIC 照片怎么发给微信好友？</button><div class="faq-answer">iPhone 默认拍照存为 HEIC 格式，安卓手机和部分电脑直接打不开。先在本页把 HEIC 文件批量转成 JPG（或用专门的 HEIC 转换工具），再通过微信发送，好友在任何设备上都能正常查看。</div></div>
       <div class="faq-item"><button class="faq-question">淘宝、拼多多上架商品图应该用什么格式？</button><div class="faq-answer">淘宝和拼多多主图普遍要求 JPG 或 PNG 格式，建议尺寸 800×800 像素以上、纯白背景。实拍原片如果是其他格式，先批量转成 JPG 再上传，既能避免格式不被识别，也能把体积压到平台要求的范围内。</div></div>
+              <div class="faq-item"><button class="faq-question">GIF 动图转完为什么不动了？</button><div class="faq-answer">因为转换是把图像画到 canvas 上再重新编码，canvas 里只有一张静态画面，所以动图转完只剩第一帧。要保留动画，得用 GIF 编辑器去裁剪、调速，而不是走格式转换。反过来，把视频或动图转成静态 JPG 时，这个行为正好当「取首帧」用。</div></div>
+        <div class="faq-item"><button class="faq-question">为什么转出来的 JPG 比原图还大？</button><div class="faq-answer">输出固定按 0.92 质量重新编码。原图如果是被微信、淘宝压过好几轮的小图，重新编码会连原来的压缩痕迹一起当成细节保下来，体积反而涨。这种情况没必要转，直接用原图；确实要变小，转到压缩器里手动调质量和宽度更靠谱。</div></div>
       </section>
 
 <section class="localization-section" style="max-width:800px;margin:40px auto;padding:0 20px;">

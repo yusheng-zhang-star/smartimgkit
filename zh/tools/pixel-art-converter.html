@@ -20,7 +20,10 @@
   <meta property="og:site_name" content="SmartImgKit">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 
 <style>
     .px-workspace{display:grid;grid-template-columns:1fr 300px;gap:1.5rem;margin-top:1rem}
@@ -136,6 +139,22 @@
         "@type": "Answer",
         "text": "可以。导出的 PNG 是标准图片，直接设为微信、QQ、抖音头像，也可以贴进游戏视频素材和小红书复古风笔记。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "导出的图为什么还是原图那么大？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "像素画是在原尺寸画布上把方块画大，不是真的把图缩成几十像素。所以 4000 像素宽的照片导出还是 4000 像素宽，只是每 10 个像素变成同一个颜色。想要小图，导出后再用压缩器把宽度设成 200–400，或者用缩放工具按比例缩，效果一样但体积差十倍。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "颜色会变成 8-bit 的有限色吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不会。这里只做块状降采样，每个方块取的是原图那块区域的颜色，颜色数量一点没少，所以看着像马赛克而不像红白机画面。真要有限色和抖动，得用专门的像素画软件调调色板，这个页面只提供一个滑块的马赛克效果。"
+      }
     }
   ]
 }
@@ -159,7 +178,28 @@
       <nav class="breadcrumb" style="margin:1rem 0;"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>像素画转换</span></nav>
       <div class="tool-page-header">
         <h1>👾 照片转像素画 — 一秒变 8-bit 复古风</h1>
-        <p>上传任意照片，拖动滑块调节颗粒大小，立刻得到复古像素艺术效果，导出高清 PNG。</p>
+        <p class="answer-lead">上传一张照片，拖动「像素颗粒大小」滑块（2–50 像素），画面会被切成一个个方块，得到复古像素风的效果，导出 PNG。它做的是降采样再放大，不减颜色也不做调色板量化，所以文件大小和原图差不多，导出尺寸也还是原图像素。想要真正的 8-bit 有限色，这个页面做不到。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">任意图片 → PNG</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地 canvas</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">原尺寸 PNG</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>滑块拉到多少，出来是什么效果</h2>
+          <table>
+            <thead><tr><th>想要的效果</th><th>颗粒设成</th><th>结果</th></tr></thead>
+            <tbody>
+              <tr><td>轻微复古感</td><td>2–4 像素</td><td>远看几乎和原图一样</td></tr>
+              <tr><td>头像、表情包</td><td>8–12 像素</td><td>五官还认得出，块感明显</td></tr>
+              <tr><td>游戏素材草图</td><td>16–24 像素</td><td>只剩轮廓和大色块</td></tr>
+              <tr><td>极简色块风</td><td>40–50 像素</td><td>细节全丢，接近抽象画</td></tr>
+              <tr><td>想让文件变小</td><td>滑块帮不上</td><td>输出还是原尺寸 PNG</td></tr>
+              <tr><td>要真的 8-bit 调色板</td><td>这里没有</td><td>颜色数量不变，得用专门工具</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div id="dropZone" class="px-drop">
@@ -304,6 +344,8 @@
 <div class="faq-item"><button class="faq-question">什么照片转像素画最好看？</button><div class="faq-answer"><p>主体清晰、背景简单的照片效果最好：人像侧脸、宠物特写、风景建筑。复杂照片转完会糊成一团色块。</p></div></div>
 <div class="faq-item"><button class="faq-question">照片会被上传到服务器吗？</button><div class="faq-answer"><p>不会。像素化运算在浏览器内完成，照片不离开设备，处理私人照片或宠物照没有隐私顾虑。</p></div></div>
 <div class="faq-item"><button class="faq-question">做出来的像素画能当微信头像或游戏素材吗？</button><div class="faq-answer"><p>可以。导出的 PNG 是标准图片，直接设为微信、QQ、抖音头像，也可以贴进游戏视频素材和小红书复古风笔记。</p></div></div>
+              <div class="faq-item"><button class="faq-question">导出的图为什么还是原图那么大？</button><div class="faq-answer">像素画是在原尺寸画布上把方块画大，不是真的把图缩成几十像素。所以 4000 像素宽的照片导出还是 4000 像素宽，只是每 10 个像素变成同一个颜色。想要小图，导出后再用压缩器把宽度设成 200–400，或者用缩放工具按比例缩，效果一样但体积差十倍。</div></div>
+        <div class="faq-item"><button class="faq-question">颜色会变成 8-bit 的有限色吗？</button><div class="faq-answer">不会。这里只做块状降采样，每个方块取的是原图那块区域的颜色，颜色数量一点没少，所以看着像马赛克而不像红白机画面。真要有限色和抖动，得用专门的像素画软件调调色板，这个页面只提供一个滑块的马赛克效果。</div></div>
       </section>
     </div>
     <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
