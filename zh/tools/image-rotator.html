@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/image-rotator">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/image-rotator">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -210,6 +213,22 @@
         "@type": "Answer",
         "text": "支持 JPG、PNG、WebP 等常见格式。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "任意角度旋转后四个角是白的，怎么去掉？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "因为整张图转过去以后，原来矩形的边角必然空出来，canvas 只能填色。要么把背景色选成和原图一致的颜色，看着像没补过；要么转完用裁剪工具把空白切掉，留下中间完整的区域。这两个办法都得手动做一步，工具不会自动帮你裁。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "输出格式选哪个好？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "要再编辑或保留透明就选 PNG；只是发出去看，选 JPG 体积小一半，质量固定 0.92；要做网页素材选 WebP，同画质下最小，但发给别人前确认对方软件认。旋转本身不改变像素数，格式才决定体积。"
+      }
     }
   ]
 }
@@ -275,7 +294,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🔄 Image Rotator & Flipper</span></nav>
       <div class="tool-page-header">
         <h1>🔄 图片旋转器</h1>
-        <p>按任意角度旋转图片，或水平、垂直翻转。支持快捷 90° 旋转、自定义角度与微调。</p>
+        <p class="answer-lead">把图片按 90° 步进快速旋转，或者拖滑块转任意角度（0–360°），也能水平、垂直翻转，输出 PNG、JPG 或 WebP。任意角度旋转时画布会扩大以装下整张图，新露出的四个角可以用取色器填成任意颜色。整个处理在浏览器 canvas 里完成，图片不上传。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">JPG/PNG/WebP 互转</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地旋转</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">PNG/JPG/WebP 可选</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>转多少度，会付出什么代价</h2>
+          <table>
+            <thead><tr><th>你要做的动作</th><th>画布怎么变</th><th>要注意</th></tr></thead>
+            <tbody>
+              <tr><td>90° 的整数倍</td><td>宽高互换，不产生空角</td><td>画质几乎无损，最推荐</td></tr>
+              <tr><td>180°</td><td>尺寸不变，画面上下颠倒</td><td>和垂直翻转效果不同，别搞混</td></tr>
+              <tr><td>任意角度（如 3°）</td><td>画布扩大，四角露出空白</td><td>填色要和背景一致，否则有补丁</td></tr>
+              <tr><td>水平翻转</td><td>尺寸不变，左右镜像</td><td>文字会反着，慎用于含字的图</td></tr>
+              <tr><td>垂直翻转</td><td>尺寸不变，上下镜像</td><td>倒影合成时常用</td></tr>
+              <tr><td>只想要裁剪不补角</td><td>画布仍会扩大</td><td>转完再裁掉空白更干净</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Upload Area -->
@@ -501,6 +541,8 @@
 <div class="faq-item"><button class="faq-question">翻转和镜像有何区别？</button><div class="faq-answer">翻转水平或垂直交换像素；旋转转动整张图。</div></div>
 <div class="faq-item"><button class="faq-question">编辑可撤销吗？</button><div class="faq-answer">可以——下载前随时重置为原图。源文件不受影响。</div></div>
 <div class="faq-item"><button class="faq-question">所有图片格式都支持吗？</button><div class="faq-answer">支持 JPG、PNG、WebP 等常见格式。</div></div>
+              <div class="faq-item"><button class="faq-question">任意角度旋转后四个角是白的，怎么去掉？</button><div class="faq-answer">因为整张图转过去以后，原来矩形的边角必然空出来，canvas 只能填色。要么把背景色选成和原图一致的颜色，看着像没补过；要么转完用裁剪工具把空白切掉，留下中间完整的区域。这两个办法都得手动做一步，工具不会自动帮你裁。</div></div>
+        <div class="faq-item"><button class="faq-question">输出格式选哪个好？</button><div class="faq-answer">要再编辑或保留透明就选 PNG；只是发出去看，选 JPG 体积小一半，质量固定 0.92；要做网页素材选 WebP，同画质下最小，但发给别人前确认对方软件认。旋转本身不改变像素数，格式才决定体积。</div></div>
       </section>
 
 <section class="related-tools">

@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/watermark">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/watermark">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -148,6 +151,22 @@
         "@type": "Answer",
         "text": "支持 JPG、PNG、WebP 等常见格式。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "水印真的能防住盗图吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "挡得住随手转发，挡不住有心人。文字和 Logo 是直接画进像素里的，裁图裁掉边角、或者用修复工具抹一遍都能去掉，只是费点功夫。真要防，就把水印压在主体的关键位置上（比如商品正中），让裁掉水印等于废掉整张图。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "图片水印支持透明 PNG 的 Logo 吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "支持，上传带透明通道的 PNG Logo 才好看，白底 JPG 的 Logo 盖上去会带一块方块。Logo 大小按上传图的实际像素绘制，不随底图缩放，所以同一批图尺寸差太多时要分开处理，否则小图上 Logo 会显得过大。"
+      }
     }
   ]
 }
@@ -213,7 +232,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🔏 Watermark Tool</span></nav>
       <div class="tool-page-header">
         <h1>🔏 水印工具</h1>
-        <p>为照片添加文字或图片水印，位置、透明度、大小和颜色完全可控。</p>
+        <p class="answer-lead">给照片加水印，可以是文字也可以是自己的 Logo 图片，位置有五个固定点、透明度和字号可调、文字颜色任选，一次可以处理多张，输出 PNG 或 JPG。渲染用浏览器 canvas 完成，图片不上传。它的定位是防随手转发：水印压在画面上，但懂修图的人仍然能修掉，不是不可移除的版权保护。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">JPG/PNG/WebP 进，PNG 或 JPG 出</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地绘制</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">五档位置，透明度 0–100</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>水印加多重，看你怕的是哪种情况</h2>
+          <table>
+            <thead><tr><th>风险场景</th><th>水印怎么设</th><th>实际效果</th></tr></thead>
+            <tbody>
+              <tr><td>朋友圈被别人存图转发</td><td>半透明文字压右下角</td><td>挡住直接使用，挡不住裁掉</td></tr>
+              <tr><td>淘宝图被同行盗用</td><td>Logo 放中间，透明度 40%</td><td>裁不掉，只能修，成本高</td></tr>
+              <tr><td>内部草稿给客户看</td><td>大字斜压整个画面</td><td>防误发，正式图另出</td></tr>
+              <tr><td>作品集要署名</td><td>小字放左下角</td><td>不抢画面，署名清楚</td></tr>
+              <tr><td>批量给整店图片加标</td><td>一次多选 + 统一位置</td><td>位置固定，缩略图上也看得见</td></tr>
+              <tr><td>要求绝对不可去除</td><td>这个工具不够</td><td>需要隐形水印或平台版权备案</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <input type="file" id="fileInput" accept="image/*" multiple hidden>
@@ -230,11 +270,11 @@
               <button class="btn btn-secondary" id="imgModeBtn" style="padding:8px 16px;font-size:.85rem">Image Watermark</button>
             </div>
             <div id="textControls">
-              <input type="text" id="wmText" placeholder="Your watermark text" value="SmartImgKit">
+              <input type="text" id="wmText" placeholder="输入水印文字" value="SmartImgKit">
               <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
-                <div><label style="color:var(--text-secondary);font-size:.8rem">Color</label><input type="color" id="wmColor" value="#ffffff"></div>
-                <div><label style="color:var(--text-secondary);font-size:.8rem">Size</label><input type="number" id="wmSize" value="48" style="width:80px"></div>
-                <div><label style="color:var(--text-secondary);font-size:.8rem">Opacity</label><input type="range" id="wmOp" min="0" max="100" value="50" style="width:100px"></div>
+                <div><label style="color:var(--text-secondary);font-size:.8rem">颜色</label><input type="color" id="wmColor" value="#ffffff"></div>
+                <div><label style="color:var(--text-secondary);font-size:.8rem">字号</label><input type="number" id="wmSize" value="48" style="width:80px"></div>
+                <div><label style="color:var(--text-secondary);font-size:.8rem">透明度</label><input type="range" id="wmOp" min="0" max="100" value="50" style="width:100px"></div>
               </div>
         <div class="selling-points">
   <div class="sp-item"><span class="sp-icon">✅</span>添加文字或图片水印</div>
@@ -244,16 +284,16 @@
             </div>
             <div id="imgControls" class="hidden">
               <input type="file" id="wmImgInput" accept="image/*">
-              <div style="margin-top:8px"><label style="color:var(--text-secondary);font-size:.8rem">Opacity</label><input type="range" id="wmImgOp" min="0" max="100" value="50" style="width:200px"></div>
+              <div style="margin-top:8px"><label style="color:var(--text-secondary);font-size:.8rem">透明度</label><input type="range" id="wmImgOp" min="0" max="100" value="50" style="width:200px"></div>
             </div>
             <div style="margin-top:12px">
-              <label style="color:var(--text-secondary);font-size:.8rem">Position</label>
+              <label style="color:var(--text-secondary);font-size:.8rem">位置</label>
               <select id="wmPos">
-                <option value="bottom-right">Bottom Right</option>
-                <option value="bottom-left">Bottom Left</option>
-                <option value="top-right">Top Right</option>
-                <option value="top-left">Top Left</option>
-                <option value="center">Center</option>
+                <option value="bottom-right">右下角</option>
+                <option value="bottom-left">左下角</option>
+                <option value="top-right">右上角</option>
+                <option value="top-left">左上角</option>
+                <option value="center">居中</option>
               </select>
             </div>
           </div>
@@ -362,7 +402,7 @@
 
         <div class="guide-block">
           <h3>Step 3: Position & Apply</h3>
-          <p>Select a position from the dropdown: <strong>Bottom Right</strong> (most common), Bottom Left, Top Right, Top Left, or Center. Then click <strong>"Apply Watermark"</strong> to render it onto the image. Click <strong>"Download"</strong> to save.</p>
+          <p>位置下拉里有五档：右下、左下、右上、左上和居中。右下最常用，因为不挡主体；居中适合防裁图的场合。选好位置后点「应用水印」把水印真正画进像素，预览再好看也必须点这一步，否则下载到的还是原图；最后点「下载」保存。</p>
           <div class="tip"><strong>Tip:</strong> For subtle protection, use 30-50% opacity. For stronger branding, use 60-80% opacity with a contrasting color.</div>
         </div>
 
@@ -395,6 +435,8 @@
 <div class="faq-item"><button class="faq-question">透明度可调吗？</button><div class="faq-answer">可以——从淡到完全不透明。</div></div>
 <div class="faq-item"><button class="faq-question">编辑可撤销吗？</button><div class="faq-answer">可以——下载前随时重置为原图。源文件不受影响。</div></div>
 <div class="faq-item"><button class="faq-question">所有图片格式都支持吗？</button><div class="faq-answer">支持 JPG、PNG、WebP 等常见格式。</div></div>
+              <div class="faq-item"><button class="faq-question">水印真的能防住盗图吗？</button><div class="faq-answer">挡得住随手转发，挡不住有心人。文字和 Logo 是直接画进像素里的，裁图裁掉边角、或者用修复工具抹一遍都能去掉，只是费点功夫。真要防，就把水印压在主体的关键位置上（比如商品正中），让裁掉水印等于废掉整张图。</div></div>
+        <div class="faq-item"><button class="faq-question">图片水印支持透明 PNG 的 Logo 吗？</button><div class="faq-answer">支持，上传带透明通道的 PNG Logo 才好看，白底 JPG 的 Logo 盖上去会带一块方块。Logo 大小按上传图的实际像素绘制，不随底图缩放，所以同一批图尺寸差太多时要分开处理，否则小图上 Logo 会显得过大。</div></div>
       </section>
 
 <section class="related-tools">

@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/pdf-merge">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/pdf-merge">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -150,23 +153,23 @@
       "name": "保留书签吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "合并页面内容；按原文件顺序排列。"
+        "text": "不保留。pdf-lib 只复制页面内容，原文件的书签目录属于文档级结构，不会跟着页面走；表单字段、图层和附件也一样会丢。合并后的文件如果需要目录，只能在 PDF 编辑器里重建。"
       }
     },
     {
       "@type": "Question",
-      "name": "PDF 会上传到服务器吗？",
+      "name": "能合并 JPG 图片或 Word 文档吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "不会。全部通过 pdf-lib 和 pdf.js 在浏览器本地处理。"
+        "text": "不能，这个页面只接受 .pdf，其他格式拖进来会被过滤掉。图片先走「图片转 PDF」拼成一个 PDF，Word 先走「Word 转 PDF」转出来，再回到这里合并，三步就能把照片和文档凑成一份。"
       }
     },
     {
       "@type": "Question",
-      "name": "有页数或文件限制吗？",
+      "name": "合并完还能按原文件拆回去吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "无硬性限制。超大 PDF（100MB+）可能拖慢浏览器。"
+        "text": "能拆，但拆回来的是按合并后页码切分的 PDF，工具不知道原来的文件边界在哪。所以合并前记一下每个文件有多少页，拆的时候用「按页码范围拆分」填 1-8、9-15 这样的区间，还原出来的分组才和原来一致。"
       }
     }
   ]
@@ -231,7 +234,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🔗 PDF Merge</span></nav>
       <div class="tool-page-header">
         <h1>🔗 PDF 合并</h1>
-        <p>将多个 PDF 文件合并为一个——免费，在浏览器中完成。</p>
+        <p class="answer-lead">把多个 PDF 按添加顺序首尾相接合成一个文件，页面原样复制，原有的文字层、矢量图形和链接都还在，合并后依然能搜索和复制。合并用 pdf-lib 在浏览器里完成，文件不上传，文件数没有硬性上限。两个边界：不能拖拽调顺序，要换顺序只能重新选文件；原文件的书签目录和表单字段不会带过来。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">PDF 进，PDF 出</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地合并</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">按添加顺序拼接的文件</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>合并前先弄清这几件事</h2>
+          <table>
+            <thead><tr><th>遇到的情况</th><th>会怎样</th><th>怎么办</th></tr></thead>
+            <tbody>
+              <tr><td>两份文件都带页码</td><td>页码原样保留，出现 1、2、1、2</td><td>合并后再统一加一遍页码</td></tr>
+              <tr><td>页面大小不一致</td><td>各页保持原尺寸，混着 A4 和 A5</td><td>需要统一就打印缩放后另存</td></tr>
+              <tr><td>想调换文件顺序</td><td>列表没有排序按钮</td><td>按想要的顺序重新选文件</td></tr>
+              <tr><td>PDF 带打开密码</td><td>读不出来，直接报错</td><td>先用解锁工具去掉密码</td></tr>
+              <tr><td>单文件超过 200MB</td><td>浏览器内存吃紧，可能中断</td><td>先压缩图片再合并</td></tr>
+              <tr><td>需要保留书签目录</td><td>书签不会带过来</td><td>合并后在 PDF 编辑器里重建</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -338,10 +362,10 @@
       <section class="how-to-section"><h2>使用方法</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>Upload PDF</h4><p>Select one or more PDF files.</p></div><div class="how-to-step"><div class="step-number">2</div><h4>Configure</h4><p>Set your options.</p></div><div class="how-to-step"><div class="step-number">3</div><h4>Process</h4><p>Click the action button.</p></div><div class="how-to-step"><div class="step-number">4</div><h4>下载</h4><p>Get your processed PDF.</p></div></div></section>
 <h2>详细使用指南</h2><div class="guide-block"><h3>Upload PDF</h3><p>Select one or more PDF files.</p></div><div class="guide-block"><h3>Configure</h3><p>Set your options.</p></div><div class="guide-block"><h3>Process</h3><p>Click the action button.</p></div><div class="guide-block"><h3>下载</h3><p>Get your processed PDF.</p></div>
 <section class="faq-section"><h2>常见问题</h2><div class="faq-item"><button class="faq-question">PDF 会上传吗？</button><div class="faq-answer">不会。合并全程在浏览器里用 pdf-lib 完成，文件不经过服务器。</div></div><div class="faq-item"><button class="faq-question">最大能处理多大的文件？</button><div class="faq-answer">建议单个文件不超过 100MB。再大的话浏览器内存吃不消，合并过程会明显卡顿甚至中断。</div></div><div class="faq-item"><button class="faq-question">支持带密码的 PDF 吗？</button><div class="faq-answer">暂不支持。加密的 PDF 需要先解锁再合并，站内有解锁工具可以先用。</div></div><div class="faq-item"><button class="faq-question">有文件数限制吗？</button><div class="faq-answer">无硬性限制——浏览器能处理多少就合并多少。</div></div>
-<div class="faq-item"><button class="faq-question">保留书签吗？</button><div class="faq-answer">合并页面内容；按原文件顺序排列。</div></div>
-<div class="faq-item"><button class="faq-question">PDF 会上传到服务器吗？</button><div class="faq-answer">不会。全部通过 pdf-lib 和 pdf.js 在浏览器本地处理。</div></div>
-<div class="faq-item"><button class="faq-question">有页数或文件限制吗？</button><div class="faq-answer">无硬性限制。超大 PDF（100MB+）可能拖慢浏览器。</div></div>
-      </section>
+<div class="faq-item"><button class="faq-question">保留书签吗？</button><div class="faq-answer">不保留。pdf-lib 只复制页面内容，原文件的书签目录属于文档级结构，不会跟着页面走；表单字段、图层和附件也一样会丢。合并后的文件如果需要目录，只能在 PDF 编辑器里重建。</div></div>
+        <div class="faq-item"><button class="faq-question">能合并 JPG 图片或 Word 文档吗？</button><div class="faq-answer">不能，这个页面只接受 .pdf，其他格式拖进来会被过滤掉。图片先走「图片转 PDF」拼成一个 PDF，Word 先走「Word 转 PDF」转出来，再回到这里合并，三步就能把照片和文档凑成一份。</div></div>
+  <div class="faq-item"><button class="faq-question">合并完还能按原文件拆回去吗？</button><div class="faq-answer">能拆，但拆回来的是按合并后页码切分的 PDF，工具不知道原来的文件边界在哪。所以合并前记一下每个文件有多少页，拆的时候用「按页码范围拆分」填 1-8、9-15 这样的区间，还原出来的分组才和原来一致。</div></div>
+</section>
 <section class="related-tools"><h2>你可能还喜欢</h2><div class="related-tools-grid"><a href="/zh/tools/pdf-to-image" class="related-tool-card"><span class="tool-icon">📄</span><div class="tool-info"><strong>PDF to Image</strong><span class="tool-desc">Convert PDF pages to images</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/image-to-pdf" class="related-tool-card"><span class="tool-icon">📄</span><div class="tool-info"><strong>Image to PDF</strong><span class="tool-desc">Combine images into PDF</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 

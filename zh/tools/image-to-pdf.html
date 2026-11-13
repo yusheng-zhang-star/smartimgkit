@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/image-to-pdf">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/image-to-pdf">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -65,12 +68,12 @@
       "@type": "HowToStep",
       "position": 3,
       "name": "Configure",
-      "text": "Choose page size, margin, orientation."
+      "text": "选择页面尺寸、页边距和横竖方向，边距范围 0 到 100。"
     },
     {
       "@type": "HowToStep",
       "position": 4,
-      "name": "Convert & Download",
+      "name": "转换并下载",
       "text": "Click Convert to PDF."
     }
   ]
@@ -157,6 +160,22 @@
         "@type": "Answer",
         "text": "不需要。全部在浏览器内运行——无需应用、插件或扩展。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么 PDF 里的图变模糊了？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "因为每张图都按 JPEG 重新编码后嵌入，这一步本身有损失；另外选 A4 时页面比原图小，图要按比例缩小，缩得越多越糊。要尽量清楚就选「跟随图片尺寸」，页面等于原图大小，不缩放也不重采样。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "透明背景的 PNG 转进去为什么变黑了？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "PDF 这一层走的是 JPEG 编码，JPEG 不支持透明通道，透明像素被填成黑色。想在 PDF 里得到白底，先把透明图放到白色画布上另存为 JPG 再转；要保留透明，得用支持透明图像的 PDF 制作工具，这个页面做不到。"
+      }
     }
   ]
 }
@@ -222,7 +241,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>Image to PDF</span></nav>
       <div class="tool-page-header">
         <h1>📄 图片转 PDF</h1>
-        <p></p>
+        <p class="answer-lead">把多张图片按选择顺序拼成一个 PDF，页面可选 A4、Letter 或跟随图片尺寸，边距 0–100 可调，横竖页自动判断也能手动指定，每张图占一页。生成在浏览器里用 jsPDF 完成，图片不上传。要提前知道两件事：图片会被重新编码成 JPEG 嵌进 PDF，有轻微损失；PNG 的透明区域会变成黑色。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">JPG/PNG/WebP 等 → PDF</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地生成</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">一图一页，单个 PDF</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>页面尺寸怎么选，别让图被缩小或留一堆白边</h2>
+          <table>
+            <thead><tr><th>你的图</th><th>选这个模式</th><th>结果</th></tr></thead>
+            <tbody>
+              <tr><td>A4 打印或投简历</td><td>A4 + 竖版 + 边距 20</td><td>图按比例缩放居中，四周留白</td></tr>
+              <tr><td>手机截图存档</td><td>跟随图片尺寸</td><td>每页大小不一，但图一点不缩</td></tr>
+              <tr><td>扫描件、合同照片</td><td>A4 + 边距 0</td><td>满页铺开，最接近扫描效果</td></tr>
+              <tr><td>横拍的风景照</td><td>A4 + 自动方向</td><td>横图自动转成横版页，不旋转</td></tr>
+              <tr><td>电商详情长图</td><td>跟随图片尺寸</td><td>页面会很长，打印时会被缩成一条</td></tr>
+              <tr><td>几十张图拼一份</td><td>分两批做</td><td>一次太多张容易卡在内存上</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <div class="upload-area" id="uploadArea">
@@ -376,6 +416,8 @@
 <div class="faq-item"><button class="faq-question">边距可调吗？</button><div class="faq-answer">可以，含无边距选项以实现满版图片。</div></div>
 <div class="faq-item"><button class="faq-question">有文件大小限制吗？</button><div class="faq-answer">支持最大 100MB 的文件。超大文件可能需要多几秒处理。</div></div>
 <div class="faq-item"><button class="faq-question">需要安装任何东西吗？</button><div class="faq-answer">不需要。全部在浏览器内运行——无需应用、插件或扩展。</div></div>
+              <div class="faq-item"><button class="faq-question">为什么 PDF 里的图变模糊了？</button><div class="faq-answer">因为每张图都按 JPEG 重新编码后嵌入，这一步本身有损失；另外选 A4 时页面比原图小，图要按比例缩小，缩得越多越糊。要尽量清楚就选「跟随图片尺寸」，页面等于原图大小，不缩放也不重采样。</div></div>
+        <div class="faq-item"><button class="faq-question">透明背景的 PNG 转进去为什么变黑了？</button><div class="faq-answer">PDF 这一层走的是 JPEG 编码，JPEG 不支持透明通道，透明像素被填成黑色。想在 PDF 里得到白底，先把透明图放到白色画布上另存为 JPG 再转；要保留透明，得用支持透明图像的 PDF 制作工具，这个页面做不到。</div></div>
       </section>
 
 <section class="related-tools">
@@ -535,7 +577,7 @@ convertBtn.addEventListener('click', async () => {
   let pdf;
   for (let i = 0; i < images.length; i++) {
     progFill.style.width = ((i / images.length) * 100) + '%';
-    statusText.textContent = `Processing image ${i+1}/${images.length}...`;
+    statusText.textContent = `正在处理第 ${i+1}/${images.length} 张…`;
 
     await new Promise(resolve => {
       img = new Image();
@@ -560,7 +602,7 @@ convertBtn.addEventListener('click', async () => {
   }
 
   progFill.style.width = '100%';
-  statusText.textContent = 'Done! Downloading...';
+  statusText.textContent = '完成，正在下载…';
   pdf.save('images.pdf');
   setTimeout(() => { progBar.style.display = 'none'; progFill.style.width = '0%'; statusText.textContent = ''; convertBtn.disabled = false; }, 2000);
 });

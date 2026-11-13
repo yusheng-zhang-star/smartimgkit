@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/background-remover">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/background-remover">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -172,6 +175,22 @@
         "@type": "Answer",
         "text": "可以换一张光线均匀、主体和背景对比更清楚的原图重试，抠图效果会好很多。也可以先输出蒙版版本，导入修图软件手动把边缘补干净，再合成最终成品。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "导出的 JPG 为什么背景是黑的？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "JPG 格式没有透明通道，透明区域在导出时会被填成黑色，看起来就像黑背景剪影。要透明效果就选 PNG 或 WebP；如果对方系统只吃 JPG（比如某些电商后台），先把抠好的 PNG 放在白色画布上另存为 JPG，白底主图就成了。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "一次能处理多少张？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "支持一次选多张排队处理，页面对张数没有硬性上限，转完可以打包 ZIP。实际瓶颈是本机内存和 CPU：每张都要过一遍模型，十几张在手机上就会明显卡，二三十张在普通笔记本上比较稳。上百张建议分批，中途别关标签页。"
+      }
     }
   ]
 }
@@ -237,7 +256,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🪄 抠图去背景</span></nav>
       <div class="tool-page-header">
         <h1>🪄 在线抠图去背景</h1>
-        <p>一键移除图片背景，生成透明 PNG——全部在浏览器本地处理，无需上传，几秒完成，完全免费。</p>
+        <p class="answer-lead">上传照片，浏览器里跑一个本地抠图模型，把主体和背景分开，输出透明 PNG，也可以选 JPG 或 WebP。首次使用要下载约 30MB 的识别引擎，之后走缓存不再等待，照片全程不上传。硬限制说在前面：模型对发丝、纱质、绒毛边缘处理得比较粗糙，纯色背景的商品图最稳，复杂的要自己修。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">JPG/PNG/WebP 进来，三种出去</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，模型跑在本机</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">透明 PNG 或黑白蒙版</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>哪类照片能抠干净，哪类会翻车</h2>
+          <table>
+            <thead><tr><th>照片类型</th><th>抠出来什么样</th><th>更靠谱的做法</th></tr></thead>
+            <tbody>
+              <tr><td>白墙、纯色背景商品图</td><td>边缘干净，基本可直接用</td><td>主图和详情页都能拿去上架</td></tr>
+              <tr><td>人像证件照</td><td>发际线一带略毛糙</td><td>先缩到 600 像素再抠，毛边看不出来</td></tr>
+              <tr><td>毛绒玩具、宠物</td><td>绒毛被削掉一圈，像剪坏了</td><td>抠完加一圈同色描边遮住</td></tr>
+              <tr><td>玻璃杯、婚纱、纱帘</td><td>半透明区域被硬切成实心</td><td>这类得靠蒙版自己补，工具做不了</td></tr>
+              <tr><td>主体和背景颜色接近</td><td>主体被挖掉一块</td><td>换背景重拍比后期修更快</td></tr>
+              <tr><td>深色背景配黑发</td><td>边缘把头发吃掉</td><td>选蒙版输出，自己在修图软件里补</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <input type="file" id="fileInput" accept="image/*" multiple hidden>
@@ -416,6 +456,8 @@
   <div class="faq-item"><button class="faq-question">淘宝商品白底主图用这个工具怎么做？</button><div class="faq-answer">把实拍商品照上传，点「去除背景」得到透明 PNG，再选 JPG 输出就是标准白底图。建议商品居中、四周留白均匀，800×800 像素以上，直接就能传淘宝、拼多多后台审核。</div></div>
   <div class="faq-item"><button class="faq-question">证件照想换蓝底或红底怎么办？</button><div class="faq-answer">先用本工具把证件照的原背景去掉，得到人物透明 PNG，再叠加到蓝底或红底上即可。适合报名、简历、社保照片临时换色；正式证件照建议再用专门的证件照工具核对尺寸。</div></div>
   <div class="faq-item"><button class="faq-question">抠图效果不理想怎么办？</button><div class="faq-answer">可以换一张光线均匀、主体和背景对比更清楚的原图重试，抠图效果会好很多。也可以先输出蒙版版本，导入修图软件手动把边缘补干净，再合成最终成品。</div></div>
+              <div class="faq-item"><button class="faq-question">导出的 JPG 为什么背景是黑的？</button><div class="faq-answer">JPG 格式没有透明通道，透明区域在导出时会被填成黑色，看起来就像黑背景剪影。要透明效果就选 PNG 或 WebP；如果对方系统只吃 JPG（比如某些电商后台），先把抠好的 PNG 放在白色画布上另存为 JPG，白底主图就成了。</div></div>
+        <div class="faq-item"><button class="faq-question">一次能处理多少张？</button><div class="faq-answer">支持一次选多张排队处理，页面对张数没有硬性上限，转完可以打包 ZIP。实际瓶颈是本机内存和 CPU：每张都要过一遍模型，十几张在手机上就会明显卡，二三十张在普通笔记本上比较稳。上百张建议分批，中途别关标签页。</div></div>
       </section>
 
 <section class="localization-section" style="max-width:800px;margin:40px auto;padding:0 20px;">

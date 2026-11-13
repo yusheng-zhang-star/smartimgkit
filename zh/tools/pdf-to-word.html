@@ -24,7 +24,10 @@
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/pdf-to-word">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/pdf-to-word">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
   {
     "inLanguage": "zh","@context": "https://schema.org",
@@ -167,6 +170,22 @@
         "@type": "Answer",
         "text": "很方便。转成Word后直接在文档里修改条款文字、调整段落格式，比在PDF上加批注高效得多。因为文件是本地处理，合同这种敏感信息完全不会泄露。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么转出来的 Word 一个字都没有？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "因为这份 PDF 是扫描件或照片生成的，里面只有图像没有文本层，pdf.js 读不到任何字符，导出的就是空文档。判断方法很简单：在原 PDF 里试着选中一行字，选不中就说明没有文本层，得先走 OCR 识别，再来转 Word。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "转换会保留原来的字体和字号吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不会。所有文字统一用 Word 的默认样式写入，段落之间的换行按 PDF 里的文字位置推断，所以粗细、颜色、居中都丢了。想要排版接近原样，只能在 Word 里重新套样式，或者直接用能还原版面的桌面软件。"
+      }
     }
   ]
 }
@@ -200,7 +219,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>PDF转Word</span></nav>
       <div class="tool-page-header">
         <h1>📝 PDF转Word在线工具</h1>
-        <p>把PDF文件转换成可编辑的Word（.docx），从每页提取文字生成干净的Word文档。100%在浏览器本地完成，文件不上传。</p>
+        <p class="answer-lead">从 PDF 的每一页提取文字，拼成一个能在 Word 里直接编辑的 .docx。解析用 pdf.js 读文本层，写文件用 docx 库，全程在浏览器里跑，PDF 不上传。它只搬文字：图片、表格线、分栏、字体字号一概不保留，扫描件因为压根没有文本层，转出来基本是空的。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">PDF → .docx</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地解析</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">纯文字的 Word 文档</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>转出来能不能用，先看你的 PDF 是哪一类</h2>
+          <table>
+            <thead><tr><th>PDF 类型</th><th>转出来是什么</th><th>建议</th></tr></thead>
+            <tbody>
+              <tr><td>电子版合同、通知</td><td>文字按段落排列，可直接改</td><td>改条款、换金额都行</td></tr>
+              <tr><td>扫描件、手机拍的文档</td><td>空文档或零星乱码</td><td>先做 OCR 再转 Word</td></tr>
+              <tr><td>双栏排版的论文</td><td>左右栏文字交错粘在一起</td><td>转完手动分段，别整段复制</td></tr>
+              <tr><td>带表格的报价单</td><td>单元格文字排成一行一行</td><td>表格线全丢，得重新画</td></tr>
+              <tr><td>图片为主的宣传页</td><td>只剩几个标题词</td><td>这类文件别指望转出正文</td></tr>
+              <tr><td>要求保留原版式</td><td>版式完全不留</td><td>用带版面还原的付费工具</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
         <div class="tool-container">
@@ -333,6 +373,8 @@
         <div class="faq-item"><button class="faq-question">有页数或者文件大小限制吗？</button><p>没有硬性限制。特别大的PDF文件（100MB以上）可能会让浏览器变慢，建议分批处理。</p></div>
         <div class="faq-item"><button class="faq-question">学生写论文用这个工具方便吗？怎么用效果最好？</button><p>非常适合。把参考文献PDF转成Word后，文字干净无乱码，直接复制引用段落比手打快多了。建议每次转3-5篇文献，转完立刻整理笔记，不要攒太多再一起处理。</p></div>
         <div class="faq-item"><button class="faq-question">合同PDF转Word后修改条款方便吗？</button><p>很方便。转成Word后直接在文档里修改条款文字、调整段落格式，比在PDF上加批注高效得多。因为文件是本地处理，合同这种敏感信息完全不会泄露。</p></div>
+              <div class="faq-item"><button class="faq-question">为什么转出来的 Word 一个字都没有？</button><div class="faq-answer">因为这份 PDF 是扫描件或照片生成的，里面只有图像没有文本层，pdf.js 读不到任何字符，导出的就是空文档。判断方法很简单：在原 PDF 里试着选中一行字，选不中就说明没有文本层，得先走 OCR 识别，再来转 Word。</div></div>
+        <div class="faq-item"><button class="faq-question">转换会保留原来的字体和字号吗？</button><div class="faq-answer">不会。所有文字统一用 Word 的默认样式写入，段落之间的换行按 PDF 里的文字位置推断，所以粗细、颜色、居中都丢了。想要排版接近原样，只能在 Word 里重新套样式，或者直接用能还原版面的桌面软件。</div></div>
       </section>
 
       <section class="related-tools">
@@ -362,12 +404,28 @@
   </footer>
 
   <script src="/js/main.js?v=8"></script>
-  <script src="/js/pdf.min.js?v=3.11.174"></script>
+  <script>
+(function(){
+  var _p=null;
+  window.__pdfReady=function(){
+    if(_p) return _p;
+    _p=new Promise(function(resolve,reject){
+      var s=document.createElement('script');
+      s.src='/js/pdf.min.js?v=3.11.174';
+      s.onload=function(){ window.pdfjsLib.GlobalWorkerOptions.workerSrc='/js/pdf.worker.min.js'; resolve(window.pdfjsLib); };
+      s.onerror=function(){ _p=null; reject(new Error("pdf.js load failed")); };
+      document.head.appendChild(s);
+    });
+    return _p;
+  };
+  function kick(){ window.__pdfReady(); ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.removeEventListener(e,kick,true); }); }
+  ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.addEventListener(e,kick,true); });
+})();
+</script>
   <script src="/js/docx.umd.min.js"></script>
   <script>
   (function() {
     'use strict';
-    pdfjsLib.GlobalWorkerOptions.workerSrc = '/js/pdf.worker.min.js';
     var docxLib = window.docx || (window.docx = {});
     var fileInput = document.getElementById('fileInput');
     var dropzone = document.getElementById('dropzone');
@@ -420,7 +478,7 @@
       setStatus('⏳ 正在读取PDF文件…');
       try {
         var arrayBuffer = await currentFile.arrayBuffer();
-        var pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        var pdf = await (await window.__pdfReady()).getDocument({ data: arrayBuffer }).promise;
         var numPages = pdf.numPages;
         var children = [];
         var extractedChars = 0;

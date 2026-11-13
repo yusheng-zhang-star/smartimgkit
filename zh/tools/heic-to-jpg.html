@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/heic-to-jpg">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/heic-to-jpg">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -164,6 +167,22 @@
         "@type": "Answer",
         "text": "基础的方向信息会保留，但相机型号、定位等 EXIF 元数据在转换后不再完整携带。发朋友圈、传店铺时这反而是隐私保护；若需彻底清除，可以再用 EXIF 清除工具处理一遍。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "页面为什么没有画质选项？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "因为解码库 heic2any 的接口里只有「转成什么格式」，没有质量参数，加了滑块也调不动输出。与其摆一个不生效的选项，不如直说：转出来的 JPG 质量是固定的，要控体积就在转完后拿压缩器再压一轮，那里调质量是真起作用。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "一次转几百张会怎样？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "页面不强制张数上限，但每张都要单独解码再编码，几百张会连着占内存，手机浏览器大概率卡死或直接崩掉标签页。稳妥的做法是每批 20 到 50 张，转完下载、清空列表，再选下一批，一整天下来几百张也能转完。"
+      }
     }
   ]
 }
@@ -229,7 +248,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>📱 HEIC 转 JPG</span></nav>
       <div class="tool-page-header">
         <h1>📱 HEIC 转 JPG</h1>
-        <p>把 iPhone 拍的 HEIC 照片批量转成通用 JPG，微信、安卓、电脑都能正常打开。</p>
+        <p class="answer-lead">把 iPhone 拍的 HEIC 照片转成 JPG 或 PNG，可以一次选多张、转完打包 ZIP 下载。解码在浏览器里用 heic2any 完成，照片不上传，第一次转换会先下几 MB 的解码库。一个要说清的边界：解码库不接受质量参数，页面因此不提供画质选项，转出来的体积由原图决定，嫌大得另外压。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">HEIC/HEIF → JPG 或 PNG</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地解码</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">单张下载或 ZIP 打包</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>HEIC 卡在哪一步，就按这条线处理</h2>
+          <table>
+            <thead><tr><th>你卡在哪</th><th>原因</th><th>这里怎么处理</th></tr></thead>
+            <tbody>
+              <tr><td>微信发安卓打不开</td><td>安卓微信不认 HEIC 编码</td><td>全选转 JPG，再重新发一次</td></tr>
+              <tr><td>淘宝后台上传失败</td><td>平台只收 JPG 和 PNG</td><td>转 JPG，单张压到 3MB 以内</td></tr>
+              <tr><td>电脑双击没反应</td><td>Windows 老版本缺 HEIC 解码器</td><td>转成 JPG 后任何看图软件都能开</td></tr>
+              <tr><td>要后期修图或合成</td><td>JPG 是有损格式</td><td>改选 PNG，体积大但不动画质</td></tr>
+              <tr><td>要留拍摄参数和定位</td><td>重编码只保留像素</td><td>原件另存一份，别覆盖</td></tr>
+              <tr><td>一次几百张旅行照</td><td>逐张解码，吃内存</td><td>分批转，每批几十张</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <div class="upload-area" id="uploadArea">
@@ -237,7 +277,7 @@
     <div class="upload-icon">📱</div>
     <h3>把 HEIC 文件拖到这里</h3>
     <p>或点击选择文件</p>
-    <p class="upload-hint">支持 .heic 和 .heif 文件，一次最多 50 张</p>
+    <p class="upload-hint">支持 .heic 和 .heif 文件，建议一次 50 张以内</p>
   </div>
 
   <div id="workspace" style="display:none">
@@ -246,12 +286,6 @@
       <select id="outputFormat">
         <option value="image/jpeg">JPG（通用、体积小）</option>
         <option value="image/png">PNG（无损）</option>
-      </select>
-      <label style="margin-left:1rem" for="jpgQuality">JPG 画质</label>
-      <select id="jpgQuality">
-        <option value="0.92">高（92%）</option>
-        <option value="0.80" selected>中（80%）</option>
-        <option value="0.60">低（60%）</option>
       </select>
     </div>
 
@@ -313,7 +347,7 @@
         <div class="feature-card">
           <div class="fc-icon">📦</div>
           <h3>批量处理</h3>
-          <p>一次最多 50 张，旅行照、商品照统一转完打包下载。</p>
+          <p>一次 50 张以内最稳，旅行照、商品照统一转完打包下载。</p>
         </div>
         <div class="feature-card">
           <div class="fc-icon">🆓</div>
@@ -382,9 +416,11 @@
   <div class="faq-item"><button class="faq-question">我的照片会被上传到网站服务器吗？</button><div class="faq-answer">不会。HEIC 解码全程在你的浏览器本地完成，照片文件从不经过任何服务器。相册里的生活照、证件照随便转，不用担心被留存或泄露。</div></div>
   <div class="faq-item"><button class="faq-question">iPhone 拍的 HEIC 照片微信发给安卓好友打不开怎么办？</button><div class="faq-answer">这是最常见的问题：安卓手机不认 HEIC 格式，好友收到只能看到一张空白或报错。解决办法是先把 HEIC 批量转成 JPG，再通过微信发送，任何设备都能正常打开。</div></div>
   <div class="faq-item"><button class="faq-question">怎么从 iPhone 把 HEIC 照片导到电脑上？</button><div class="faq-answer">用数据线连电脑后，Windows 直接拷贝出的照片就是 .HEIC 文件，双击打不开。把这些文件拖进本页转成 JPG 即可；也可以在 iPhone「设置-照片」里把传输方式改成「自动」，系统会自动转格式。</div></div>
-  <div class="faq-item"><button class="faq-question">一次可以转换多少张 HEIC 照片？</button><div class="faq-answer">一次最多支持 50 个文件，拖拽或多选都可以。几百张旅行照分两三批转换即可，全部在浏览器本地处理，不消耗上传流量，转完打包 ZIP 一次下载。</div></div>
+  <div class="faq-item"><button class="faq-question">一次可以转换多少张 HEIC 照片？</button><div class="faq-answer">页面不限制张数，一次选几十张都可以，但建议控制在 50 张以内。几百张旅行照分两三批转换即可，全部在浏览器本地处理，不消耗上传流量，转完打包 ZIP 一次下载。</div></div>
   <div class="faq-item"><button class="faq-question">淘宝、拼多多商家能直接上传 HEIC 照片吗？</button><div class="faq-answer">不能。电商平台普遍只认 JPG 和 PNG，HEIC 上传会报格式错误。用 iPhone 拍的商品照，先批量转成 JPG 再上架，顺便可以压缩到平台要求的大小，避免上传失败。</div></div>
   <div class="faq-item"><button class="faq-question">转换后的照片还保留拍摄时间和定位信息吗？</button><div class="faq-answer">基础的方向信息会保留，但相机型号、定位等 EXIF 元数据在转换后不再完整携带。发朋友圈、传店铺时这反而是隐私保护；若需彻底清除，可以再用 EXIF 清除工具处理一遍。</div></div>
+              <div class="faq-item"><button class="faq-question">页面为什么没有画质选项？</button><div class="faq-answer">因为解码库 heic2any 的接口里只有「转成什么格式」，没有质量参数，加了滑块也调不动输出。与其摆一个不生效的选项，不如直说：转出来的 JPG 质量是固定的，要控体积就在转完后拿压缩器再压一轮，那里调质量是真起作用。</div></div>
+        <div class="faq-item"><button class="faq-question">一次转几百张会怎样？</button><div class="faq-answer">页面不强制张数上限，但每张都要单独解码再编码，几百张会连着占内存，手机浏览器大概率卡死或直接崩掉标签页。稳妥的做法是每批 20 到 50 张，转完下载、清空列表，再选下一批，一整天下来几百张也能转完。</div></div>
       </section>
 
 <section class="localization-section" style="max-width:800px;margin:40px auto;padding:0 20px;">
@@ -489,7 +525,7 @@ const fileInput = $('fileInput'), uploadArea = $('uploadArea'), workspace = $('w
 const previewList = $('previewList'), convertBtn = $('convertBtn'), downloadAllBtn = $('downloadAllBtn');
 const addMoreBtn = $('addMoreBtn'), clearBtn = $('clearBtn');
 const progBar = $('progBar'), progFill = $('progFill'), statusText = $('statusText');
-const outputFormat = $('outputFormat'), jpgQuality = $('jpgQuality');
+const outputFormat = $('outputFormat');
 
 let files = []; // { name, blob, url, convertedUrl, convertedBlob }
 let convertedCount = 0;

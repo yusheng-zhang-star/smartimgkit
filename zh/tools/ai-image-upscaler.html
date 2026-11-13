@@ -25,7 +25,10 @@
 <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/ai-image-upscaler">
 <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/ai-image-upscaler">
 <link rel="stylesheet" href="/css/style.css?v=16">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 <style>
 * {margin:0; padding:0; box-sizing:border-box; font-family:system-ui, sans-serif;}
 .top {background:#1e3a8a; color:white; padding:1rem;}
@@ -166,6 +169,22 @@ button:disabled {background:#94a3b8; cursor:not-allowed;}
         "@type": "Answer",
         "text": "本工具采用浏览器高质量平滑插值，4 倍放大适合把小图放到更大画布上使用。若原图本身只有几百像素，放大能提升尺寸但不会凭空增加真实细节，建议放大后配合裁剪使用。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "放大 4 倍真的会变清晰吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不会。这里用的是浏览器的平滑插值（imageSmoothingQuality 设为 high），作用是把每个像素摊成几个像素并做过渡，边缘只会更软，不会多出原本没有的纹理。宣传里说的「AI 修复」需要专门的超分模型，这个页面没有加载任何模型。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么点完只下载了最后一张？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "每张处理完都会触发一次自动下载，但浏览器对连续多个下载有拦截策略，通常只放行第一个，后面的会被静默拦掉。把浏览器地址栏右侧的弹窗/下载拦截允许一次，或者每次少选几张，处理完再选下一批。"
+      }
     }
   ]
 }
@@ -183,7 +202,28 @@ button:disabled {background:#94a3b8; cursor:not-allowed;}
 </div></nav>
 <main class="container">
 <h1>免费在线批量图片放大工具</h1>
-<p style="margin:1rem 0; font-size:1.1rem; color:#475569;">在你的浏览器里直接把多张小图放大2倍或4倍，所有图片都在本地处理，不会上传服务器，不用注册，无水印，支持批量上传。</p>
+        <p class="answer-lead">把图片按 2 倍或 4 倍放大，用浏览器的插值算法把像素补出来，输出 PNG，全程本地不联网上传。它不是 AI 超分：没有模型去猜纹理，只是把每个像素摊开再平滑过渡，所以边缘不会更清楚，只会更软。适合救急凑尺寸，不适合指望它把糊图变清晰。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">JPG/PNG/WebP → PNG</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地插值</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">2 倍或 4 倍，PNG</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>什么图放大有意义，什么图纯属浪费</h2>
+          <table>
+            <thead><tr><th>输入情况</th><th>会发生什么</th><th>该怎么办</th></tr></thead>
+            <tbody>
+              <tr><td>小图标凑到平台最低尺寸</td><td>像素够数，边缘略软</td><td>能用，记得别超过 2 倍</td></tr>
+              <tr><td>微信压过的糊图</td><td>糊得更均匀，细节回不来</td><td>找原图，别放大</td></tr>
+              <tr><td>截图里的文字</td><td>放大后字糊成一团</td><td>重新截图，按目标尺寸截</td></tr>
+              <tr><td>老照片扫描件</td><td>噪点一起被放大</td><td>先降噪再放大</td></tr>
+              <tr><td>要印刷的照片</td><td>4 倍也补不出真实细节</td><td>用相机重拍或用专业超分</td></tr>
+              <tr><td>一次几十张</td><td>逐张自动下载</td><td>浏览器会拦，允许弹窗才行</td></tr>
+            </tbody>
+          </table>
+        </div>
 
 <div class="selling-points">
   <div class="sp-item"><span class="sp-icon">✅</span>批量放大 2 倍 / 4 倍</div>
@@ -292,7 +332,9 @@ button:disabled {background:#94a3b8; cursor:not-allowed;}
   <div class="faq-item"><button class="faq-question">微信发的图片被压缩模糊了，能放大修复吗？</button><div class="faq-answer">微信聊天图片通常被压缩到几百 KB，原本的细节已经丢失。本工具用高质量插值放大 2 倍后画面会更清晰、更适合打印或转发，但无法还原原本不存在的细节。</div></div>
   <div class="faq-item"><button class="faq-question">支持哪些图片格式？</button><div class="faq-answer">支持 JPG、PNG、WebP 三种常见格式，一次可拖入多张批量处理，数量不限。放大后的高清图以 PNG 格式自动下载，保证画质无损。</div></div>
   <div class="faq-item"><button class="faq-question">放大 4 倍后图片会不会出现马赛克？</button><div class="faq-answer">本工具采用浏览器高质量平滑插值，4 倍放大适合把小图放到更大画布上使用。若原图本身只有几百像素，放大能提升尺寸但不会凭空增加真实细节，建议放大后配合裁剪使用。</div></div>
-</section>
+        <div class="faq-item"><button class="faq-question">放大 4 倍真的会变清晰吗？</button><div class="faq-answer">不会。这里用的是浏览器的平滑插值（imageSmoothingQuality 设为 high），作用是把每个像素摊成几个像素并做过渡，边缘只会更软，不会多出原本没有的纹理。宣传里说的「AI 修复」需要专门的超分模型，这个页面没有加载任何模型。</div></div>
+        <div class="faq-item"><button class="faq-question">为什么点完只下载了最后一张？</button><div class="faq-answer">每张处理完都会触发一次自动下载，但浏览器对连续多个下载有拦截策略，通常只放行第一个，后面的会被静默拦掉。把浏览器地址栏右侧的弹窗/下载拦截允许一次，或者每次少选几张，处理完再选下一批。</div></div>
+      </section>
 
 <section class="localization-section" style="max-width:800px;margin:40px auto;padding:0 20px;">
   <h2 style="text-align:center;margin-bottom:20px;">国内电商与办公场景下的图片放大</h2>

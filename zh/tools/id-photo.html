@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/id-photo">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/id-photo">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 
   <style>
 
@@ -140,6 +143,22 @@
         "@type": "Answer",
         "text": "建议拿去照相馆或自助冲印点打 4 乘 6 英寸相纸，一张相纸排多张证件照剪开用，成本几毛钱。家用喷墨打印机容易偏色，办证窗口对底色和纸质都有要求，别图省事自己打。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么导出的 PNG 传不上报名系统？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "很多报名系统只认 .jpg，PNG 会被判格式不符。解决办法是导出后用格式转换器转成 JPG；如果系统还限制体积（常见 20–100KB），转完再压一轮，压到 80KB 左右既过审又不糊。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "抠出来的头发边缘发白怎么办？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "人像抠图模型在碎发、浅色衣领和逆光边缘容易留一圈浅色残影，换到深色底上尤其明显。稳妥的做法是拍的时候找纯色墙、穿深色衣服、头发别贴背景；已经拍坏了就在导出后放大到 200% 检查，边缘不行只能换张照片重做。"
+      }
     }
   ]
 }
@@ -195,7 +214,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🪪 证件照制作</span></nav>
       <div class="tool-page-header">
         <h1>🪪 证件照制作</h1>
-        <p></p>
+        <p class="answer-lead">按各国证件照的毫米规格裁切照片，自动抠掉背景换白底、蓝底或红底，按每毫米 11.811 像素（相当于 300 DPI）导出 PNG，拿去冲印或直接上传报名系统。抠图和裁切都在浏览器本地完成，照片不上传。要清楚它的短板：抠图模型对碎发和浅色衣服的边缘不够干净，导出是 PNG 而不是报名系统常见的 JPG。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">照片进，PNG 出</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地抠图</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">300 DPI，按毫米定尺寸</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>报名系统要什么，这里能给到什么</h2>
+          <table>
+            <thead><tr><th>系统要求</th><th>这里能不能满足</th><th>要补的一步</th></tr></thead>
+            <tbody>
+              <tr><td>一寸 25×35 毫米</td><td>内置规格，点一下就裁好</td><td>直接导出即可</td></tr>
+              <tr><td>护照 33×48 毫米白底</td><td>内置，抠图换白底</td><td>检查发际有没有白边</td></tr>
+              <tr><td>只收 JPG，不收 PNG</td><td>导出是 PNG</td><td>用格式转换器转成 JPG</td></tr>
+              <tr><td>要求 20–100KB</td><td>PNG 通常几百 KB</td><td>转 JPG 后再压到目标体积</td></tr>
+              <tr><td>要求纯白背景 RGB 255</td><td>填充的是纯白 #ffffff</td><td>别让边缘残留灰边</td></tr>
+              <tr><td>尺寸不在列表里</td><td>自定义宽高可填 10–200 毫米</td><td>按毫米输入，再核对像素</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <div class="id-photo-layout">
@@ -350,6 +390,8 @@
         <div class="faq-item"><button class="faq-question">国内一寸、二寸和考试报名的照片这里能做吗？</button><div class="faq-answer">可以。选「自定义尺寸」，一寸填 25 乘 35 毫米、二寸填 35 乘 49 毫米即可。考研、教资、护士资格等报名先看招考公告要求的底色，蓝底白底别选错，传系统前先用工具出图试传一次。</div></div>
         <div class="faq-item"><button class="faq-question">社保卡、身份证的蓝底照片这里能换吗？</button><div class="faq-answer">能。选第二代身份证规格，底色会自动带上国内标准蓝；居住证也用同款蓝底。白底证件照想换蓝底红底也只需点一下颜色按钮，工具自动把人物重新合成到新底色上，边缘比手动修图干净。</div></div>
         <div class="faq-item"><button class="faq-question">照片自己在家打印行不行？</button><div class="faq-answer">建议拿去照相馆或自助冲印点打 4 乘 6 英寸相纸，一张相纸排多张证件照剪开用，成本几毛钱。家用喷墨打印机容易偏色，办证窗口对底色和纸质都有要求，别图省事自己打。</div></div>
+              <div class="faq-item"><button class="faq-question">为什么导出的 PNG 传不上报名系统？</button><div class="faq-answer">很多报名系统只认 .jpg，PNG 会被判格式不符。解决办法是导出后用格式转换器转成 JPG；如果系统还限制体积（常见 20–100KB），转完再压一轮，压到 80KB 左右既过审又不糊。</div></div>
+        <div class="faq-item"><button class="faq-question">抠出来的头发边缘发白怎么办？</button><div class="faq-answer">人像抠图模型在碎发、浅色衣领和逆光边缘容易留一圈浅色残影，换到深色底上尤其明显。稳妥的做法是拍的时候找纯色墙、穿深色衣服、头发别贴背景；已经拍坏了就在导出后放大到 200% 检查，边缘不行只能换张照片重做。</div></div>
       </section>
     </div>
 

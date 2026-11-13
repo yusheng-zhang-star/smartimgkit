@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/pdf-split">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/pdf-split">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -168,6 +171,22 @@
         "@type": "Answer",
         "text": "无硬性限制。超大 PDF（100MB+）可能拖慢浏览器。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "页码范围写错了会怎样？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不会提示，也不会中断。解析时只处理落在 1 到总页数之间、且起点不大于终点的范围，其余直接跳过，所以写了 15-20 但文件只有 12 页，这一段什么都不会生成，最后的 ZIP 里就少一份。拆完先数一下文件个数对不对。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "拆出来的文件还能再合并回去吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "能。拆开再合并，页面内容和文字层都不变，唯一的差别是原文件的书签目录和表单字段在拆分时就已经丢了，合并也找不回来。所以如果只是临时分发，拆完别把原文件删了。"
+      }
     }
   ]
 }
@@ -231,7 +250,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>✂️ PDF 拆分ter</span></nav>
       <div class="tool-page-header">
         <h1>✂️ PDF 拆分器</h1>
-        <p>按页面范围或每 N 页将 PDF 拆分为多个文件——免费。</p>
+        <p class="answer-lead">把一个 PDF 按「每 N 页一份」「指定页码范围」或「每页单独一份」拆成多个文件，拆出来的每一份都是独立可用的 PDF，文字层和矢量图形原样保留。拆分用 pdf-lib 在浏览器里本地完成，文件不上传。一个必须知道的边界：页码范围写超出总页数时不会报错，越界的那一段会被直接丢掉。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">一个 PDF 进，多个 PDF 出</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地拆分</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">单份直下，多份打包 ZIP</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>三种拆分方式，什么时候用哪个</h2>
+          <table>
+            <thead><tr><th>要做的事</th><th>选这个方式</th><th>注意</th></tr></thead>
+            <tbody>
+              <tr><td>一本书按章节拆</td><td>指定页码范围</td><td>章与章之间得自己数准页</td></tr>
+              <tr><td>扫描件一页一个文件</td><td>每页单独一份</td><td>页数多时自动打包 ZIP</td></tr>
+              <tr><td>只抽第 3、7、12 页</td><td>页码范围写 3,7,12</td><td>逗号分隔，每段各出一份</td></tr>
+              <tr><td>只要前 10 页</td><td>范围写 1-10</td><td>拆出来就是一份新 PDF</td></tr>
+              <tr><td>把 1-3 和 8-10 各存一份</td><td>范围写 1-3,8-10</td><td>两段生成两个文件</td></tr>
+              <tr><td>页码写得比总页数大</td><td>越界那段被跳过</td><td>不报错，记得核对输出份数</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -262,22 +302,22 @@
         </label>
 
         <div class="controls hidden" id="controlsSection">
-          <h2>✂️ Split Options</h2>
+          <h2>✂️ 拆分选项</h2>
           <div class="pdf-info" id="pdf提示"></div>
           <div class="control-row">
-            <label>Split Mode</label>
+            <label>拆分方式</label>
             <select id="splitMode">
-              <option value="every">Every N pages</option>
-              <option value="ranges">Specific page ranges</option>
-              <option value="single">Extract every page</option>
+              <option value="every">每 N 页一份</option>
+              <option value="ranges">按页码范围拆分</option>
+              <option value="single">每页拆成单独文件</option>
             </select>
           </div>
           <div class="control-row" id="everyRow">
-            <label>Every N Pages</label>
+            <label>每份页数</label>
             <input type="number" id="everyN" value="1" min="1" style="width:80px;">
           </div>
           <div class="control-row hidden" id="rangesRow">
-            <label>Page Ranges</label>
+            <label>页码范围</label>
             <input type="text" id="ranges输入" placeholder="e.g. 1-3, 5, 7-10" style="flex:1;">
           </div>
           <div class="btn-row">
@@ -389,6 +429,8 @@
 <div class="faq-item"><button class="faq-question">拆分后是独立 PDF 吗？</button><div class="faq-answer">是的——每个输出都是有效独立 PDF。</div></div>
 <div class="faq-item"><button class="faq-question">PDF 会上传到服务器吗？</button><div class="faq-answer">不会。全部通过 pdf-lib 和 pdf.js 在浏览器本地处理。</div></div>
 <div class="faq-item"><button class="faq-question">有页数或文件限制吗？</button><div class="faq-answer">无硬性限制。超大 PDF（100MB+）可能拖慢浏览器。</div></div>
+              <div class="faq-item"><button class="faq-question">页码范围写错了会怎样？</button><div class="faq-answer">不会提示，也不会中断。解析时只处理落在 1 到总页数之间、且起点不大于终点的范围，其余直接跳过，所以写了 15-20 但文件只有 12 页，这一段什么都不会生成，最后的 ZIP 里就少一份。拆完先数一下文件个数对不对。</div></div>
+        <div class="faq-item"><button class="faq-question">拆出来的文件还能再合并回去吗？</button><div class="faq-answer">能。拆开再合并，页面内容和文字层都不变，唯一的差别是原文件的书签目录和表单字段在拆分时就已经丢了，合并也找不回来。所以如果只是临时分发，拆完别把原文件删了。</div></div>
       </section>
 <section class="related-tools"><h2>你可能还喜欢</h2><div class="related-tools-grid"><a href="/zh/tools/pdf-to-image" class="related-tool-card"><span class="tool-icon">📄</span><div class="tool-info"><strong>PDF to Image</strong><span class="tool-desc">转换 PDF pages to images</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/image-to-pdf" class="related-tool-card"><span class="tool-icon">📄</span><div class="tool-info"><strong>Image to PDF</strong><span class="tool-desc">Combine images into PDF</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
@@ -453,7 +495,7 @@
   splitMode.addEventListener('change', () => { everyRow.classList.toggle('hidden', splitMode.value !== 'every'); rangesRow.classList.toggle('hidden', splitMode.value !== 'ranges'); });
 
   function handleFile(file) {
-    if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) { alert('Please upload a PDF file.'); return; }
+    if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) { alert('请选择一个 PDF 文件'); return; }
     fileName = file.name.replace('.pdf', '');
     var ba = document.getElementById('beforeAfterPreview'); if (ba) ba.classList.add('hidden');
     statusSection.classList.remove('hidden');
@@ -506,7 +548,7 @@
           const r = ranges[ri]; let start, end;
           if (r.includes('-')) { [start, end] = r.split('-').map(x => parseInt(x)); }
           else { start = end = parseInt(r); }
-          if (start < 1 || end > numPages || start > end) { continue; }
+          if (!start || !end || start < 1 || end > numPages || start > end) { continue; }
           newPdf = await PDFDocument.create();
           pages = await newPdf.copyPages(srcPdf, [...Array(end - start + 1).keys()].map(x => x + start - 1));
           pages.forEach(p => newPdf.addPage(p));
