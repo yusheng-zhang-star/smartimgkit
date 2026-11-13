@@ -20,7 +20,10 @@
   <meta property="og:site_name" content="SmartImgKit">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 
 <style id="enrich-css">
 .selling-points{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:1rem 0 1.5rem}
@@ -130,6 +133,30 @@
         "@type": "Answer",
         "text": "可以。下载的图片是标准 JPG 格式，可以直接在微信、微博、小红书等平台分享。建议下载前用对比预览确认效果，避免过度美颜。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么磨完皮脸上出现一块块色斑？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "肤色识别是按红绿蓝的比例判断的，光线不均、阴影重的区域会被判成非皮肤而不处理，处理过的和没处理的区域交界就显出色块。解决办法是先把强度降到 20 以下，或者换一张正面均匀打光的照片，别在逆光或灯泡直射的照片上硬修。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "修好的图为什么是 PNG 而且很大？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "导出固定用 PNG 无损编码，避免二次压缩把磨皮后的过渡带压出噪点。代价是体积大，一张手机人像可能七八 MB。发朋友圈前用压缩器转成 JPG、质量设 80，肉眼几乎看不出差别。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "能给多人合影一起修吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "能，肤色识别是逐像素判断的，画面里有几个人就会一起处理，不需要框选。但也意味着背景里肉色的墙面、木质桌面可能被一起磨掉细节，所以合影背景最好别是大面积肤色系。"
+      }
     }
   ]
 }
@@ -152,7 +179,28 @@
     <div class="container">
       <div class="tool-page-header">
         <h1>💄 美颜编辑器</h1>
-        <p>去除红眼、磨皮美白、牙齿美白，一键美化人像照片。</p>
+        <p class="answer-lead">人像修图的三个基础动作：磨皮、美白、牙齿美白，另外带一个去红眼，强度都能用滑块调，输出 PNG。处理在浏览器 canvas 里逐像素完成，照片不上传。它的原理是识别肤色区域再做高斯模糊混合，不是 AI 换脸级的美颜，所以强度拉太高会失去皮肤纹理，看着像塑料。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">JPG/PNG/WebP → PNG</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地逐像素</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">PNG，强度可调</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>拉多少强度才自然，看你要用在哪</h2>
+          <table>
+            <thead><tr><th>用途</th><th>强度怎么设</th><th>过了会怎样</th></tr></thead>
+            <tbody>
+              <tr><td>证件照、简历头像</td><td>磨皮 20 以内</td><td>拉高会丢掉五官立体感</td></tr>
+              <tr><td>朋友圈自拍</td><td>磨皮 40 左右</td><td>皮肤像磨砂塑料，毛孔全无</td></tr>
+              <tr><td>产品模特图</td><td>磨皮 30 加轻度美白</td><td>过度美白会让肤色和实物不符</td></tr>
+              <tr><td>牙齿发黄的生活照</td><td>美白 30 到 50</td><td>牙齿变惨白，像贴片</td></tr>
+              <tr><td>夜景闪光灯红眼</td><td>用去红眼单独处理</td><td>整张调亮会把红眼一起放大</td></tr>
+              <tr><td>要保留皮肤质感</td><td>磨皮 10 到 15</td><td>几乎看不出动过，最保险</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
         <input type="file" id="fileInput" accept="image/*" style="display:none;">
@@ -334,6 +382,9 @@
 <div class="faq-item"><button class="faq-question">效果不理想怎么办？</button><div class="faq-answer">参数只是起点——可用编辑工具进一步微调。</div></div>
       <div class="faq-item"><button class="faq-question">用微信或抖音上传的照片会被保存吗？</button><div class="faq-answer">不会。照片只在你自己的浏览器内存中处理，关闭页面即彻底清除。工具不连接任何服务器，也不存储任何照片数据，你可以放心处理私人照片。</div></div>
       <div class="faq-item"><button class="faq-question">修好的照片可以直接发朋友圈吗？</button><div class="faq-answer">可以。下载的图片是标准 JPG 格式，可以直接在微信、微博、小红书等平台分享。建议下载前用对比预览确认效果，避免过度美颜。</div></div>
+              <div class="faq-item"><button class="faq-question">为什么磨完皮脸上出现一块块色斑？</button><div class="faq-answer">肤色识别是按红绿蓝的比例判断的，光线不均、阴影重的区域会被判成非皮肤而不处理，处理过的和没处理的区域交界就显出色块。解决办法是先把强度降到 20 以下，或者换一张正面均匀打光的照片，别在逆光或灯泡直射的照片上硬修。</div></div>
+        <div class="faq-item"><button class="faq-question">修好的图为什么是 PNG 而且很大？</button><div class="faq-answer">导出固定用 PNG 无损编码，避免二次压缩把磨皮后的过渡带压出噪点。代价是体积大，一张手机人像可能七八 MB。发朋友圈前用压缩器转成 JPG、质量设 80，肉眼几乎看不出差别。</div></div>
+        <div class="faq-item"><button class="faq-question">能给多人合影一起修吗？</button><div class="faq-answer">能，肤色识别是逐像素判断的，画面里有几个人就会一起处理，不需要框选。但也意味着背景里肉色的墙面、木质桌面可能被一起磨掉细节，所以合影背景最好别是大面积肤色系。</div></div>
       </section>
   <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
 </main>

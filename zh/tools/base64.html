@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/base64">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/base64">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -144,6 +147,22 @@
         "@type": "Answer",
         "text": "不会。全部在浏览器内处理，关闭标签页即丢弃。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "编码后体积为什么涨了三分之一？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Base64 把每 3 个字节转成 4 个字符，理论上固定增加约 33%，再加上 data:image/png;base64, 这串前缀。所以 100KB 的图编码完大约 133KB。页面会把这个增长比例算给你看，超过一定体积还会提醒别内联。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "解码出来的图为什么是 PNG，不是原来的格式？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "因为解码走的是浏览器画到 canvas 再导出的路子，导出统一用 PNG。原图是 JPG 的话，还原出来会变成体积更大的 PNG，像素本身不变、不会更清晰也不会更糊。要 JPG 就再走一趟格式转换。"
+      }
     }
   ]
 }
@@ -209,7 +228,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>📋 Base64 Encoder</span></nav>
       <div class="tool-page-header">
         <h1>🔐 Base64 编解码</h1>
-        <p>将图片转换为 Base64 Data URL，用于嵌入 HTML、CSS 和 JavaScript；也可将 Base64 解码回图片。</p>
+        <p class="answer-lead">把一张图片编码成 Base64 data URL，直接粘进 HTML、CSS 或 JS 里，省掉一次图片请求；也能把 Base64 字符串还原成图片。编码结果显示体积增长比例，大图会提醒值不值得内联。编解码都在浏览器本地完成，图片和代码都不上传。只处理图片，纯文本编码不在这个页面。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">图片 ⇄ Base64 字符串</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地转换</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">复制文本或下载 .txt / PNG</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>什么图该内联，什么图千万别内联</h2>
+          <table>
+            <thead><tr><th>图片情况</th><th>内联合不合适</th><th>原因</th></tr></thead>
+            <tbody>
+              <tr><td>几十像素的图标</td><td>合适</td><td>省一次请求，收益大于体积增加</td></tr>
+              <tr><td>首屏 logo</td><td>勉强可以</td><td>体积涨三分之一，但少一次往返</td></tr>
+              <tr><td>商品主图、封面大图</td><td>不要</td><td>字符串会拖慢 HTML 解析</td></tr>
+              <tr><td>背景纹理小图</td><td>合适</td><td>配合 CSS 复用，缓存无关紧要</td></tr>
+              <tr><td>要长期缓存的图</td><td>不要</td><td>内联后跟着 HTML 走，每次都要重下</td></tr>
+              <tr><td>邮件签名里的小图标</td><td>合适</td><td>很多邮件客户端会拦外链图片</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <div style="text-align:center;margin-bottom:16px">
@@ -429,6 +469,8 @@
 <div class="faq-item"><button class="faq-question">解码准确吗？</button><div class="faq-answer">是的——无损往返编解码。</div></div>
 <div class="faq-item"><button class="faq-question">这些工具生产环境够用吗？</button><div class="faq-answer">够用——遵循标准规范（RFC 3986、JSON 规范等）。</div></div>
 <div class="faq-item"><button class="faq-question">输入会被存储吗？</button><div class="faq-answer">不会。全部在浏览器内处理，关闭标签页即丢弃。</div></div>
+              <div class="faq-item"><button class="faq-question">编码后体积为什么涨了三分之一？</button><div class="faq-answer">Base64 把每 3 个字节转成 4 个字符，理论上固定增加约 33%，再加上 data:image/png;base64, 这串前缀。所以 100KB 的图编码完大约 133KB。页面会把这个增长比例算给你看，超过一定体积还会提醒别内联。</div></div>
+        <div class="faq-item"><button class="faq-question">解码出来的图为什么是 PNG，不是原来的格式？</button><div class="faq-answer">因为解码走的是浏览器画到 canvas 再导出的路子，导出统一用 PNG。原图是 JPG 的话，还原出来会变成体积更大的 PNG，像素本身不变、不会更清晰也不会更糊。要 JPG 就再走一趟格式转换。</div></div>
       </section>
 
 <section class="related-tools">

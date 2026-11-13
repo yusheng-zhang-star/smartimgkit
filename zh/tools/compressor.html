@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/compressor">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/compressor">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -142,6 +145,14 @@
         "@type": "Answer",
         "text": "不需要。全部在浏览器内运行——无需应用、插件或扩展。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么压缩后体积没变小，反而大了？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "两种情况：原图本来就被压过好几轮，重新编码会把压缩痕迹当成细节保下来，体积反而涨；或者输出选了 PNG，PNG 无损编码对照片类画面几乎必然比 JPG 大。先确认输出格式是 JPG 或 WebP，再把质量往下调一档试试。"
+      }
     }
   ]
 }
@@ -207,7 +218,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🗜️ Image Compressor</span></nav>
       <div class="tool-page-header">
         <h1>🗜️ 图片压缩器</h1>
-        <p>在保持画质的前提下压缩图片体积。全部在浏览器中处理。</p>
+        <p class="answer-lead">单张图片压缩：拖进一张图，调质量滑块（10–100）或选输出格式，点压缩后直接下载，全程在浏览器 canvas 里重新编码，图片不上传。适合临时把一张图压到平台限制以内。要弄清它的定位：这是单张版，要几十张一起压、要打包下载，得用批量压缩器那个页面。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">JPG/PNG/WebP 互转</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地编码</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">单张下载</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>压一张图，参数怎么定才不白压</h2>
+          <table>
+            <thead><tr><th>你的目标</th><th>质量设多少</th><th>实际情况</th></tr></thead>
+            <tbody>
+              <tr><td>发微信群不被压缩</td><td>75 到 80</td><td>微信仍会二次压缩，别压太狠</td></tr>
+              <tr><td>淘宝主图过 3MB 线</td><td>80 起试</td><td>多数手机照片一次就够</td></tr>
+              <tr><td>做网页首图</td><td>65 到 70</td><td>肉眼差别小，体积降一半</td></tr>
+              <tr><td>要保留文字清晰</td><td>85 以上或改 PNG</td><td>字多的图低质量会糊边</td></tr>
+              <tr><td>PNG 想变小</td><td>滑块无效</td><td>PNG 靠缩尺寸，不靠质量</td></tr>
+              <tr><td>几十张一起压</td><td>换批量压缩器</td><td>这个页面一次只处理一张</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -411,6 +443,8 @@
 <div class="faq-item"><button class="faq-question">压缩会改变图片尺寸吗？</button><div class="faq-answer">不会。压缩减小文件体积但保持原始像素尺寸。改变尺寸请用缩放工具。</div></div>
 <div class="faq-item"><button class="faq-question">有文件大小限制吗？</button><div class="faq-answer">支持最大 100MB 的文件。超大文件可能需要多几秒处理。</div></div>
 <div class="faq-item"><button class="faq-question">需要安装任何东西吗？</button><div class="faq-answer">不需要。全部在浏览器内运行——无需应用、插件或扩展。</div></div>
+              <div class="faq-item"><button class="faq-question">为什么压缩后体积没变小，反而大了？</button><div class="faq-answer">两种情况：原图本来就被压过好几轮，重新编码会把压缩痕迹当成细节保下来，体积反而涨；或者输出选了 PNG，PNG 无损编码对照片类画面几乎必然比 JPG 大。先确认输出格式是 JPG 或 WebP，再把质量往下调一档试试。</div></div>
+        <div class="faq-item"><button class="faq-question">压缩会改变图片尺寸吗？</button><div class="faq-answer">不会。这个页面只改编码质量，宽高像素完全不动，所以 4000×3000 的照片压完还是 4000×3000。想同时缩小尺寸，得用尺寸调整或批量压缩器（那里有最大宽度可选），单靠质量滑块压不下去的时候，缩尺寸往往比继续降质量更划算。</div></div>
       </section>
 
 <section class="related-tools">

@@ -24,7 +24,10 @@
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/csv-to-pdf">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/csv-to-pdf">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
   { 
   "inLanguage": "zh","@context": "https://schema.org", "@type": "WebApplication", "name": "CSV 转 PDF", "url": "https://smartimgkit.com/zh/tools/csv-to-pdf", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }, "description": "免费在线 CSV 转 PDF，把 .csv 表格转成排版整齐的 PDF 报告，可设纸张方向、字号、是否重复表头。适合财务对账报表导出、运营数据整理后提交、月度数据留档。浏览器本地处理，原始数据不上传服务器，转换后可核对行数与列宽再下载。" }
@@ -140,6 +143,22 @@
         "@type": "Answer",
         "text": "列多的表格选横向，比如财务报表有十几列；行多的表格选纵向，比如几百行的流水记录。工具自动适配。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "超过 5000 行会怎样？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "只渲染前 5000 行，剩下的直接丢弃，页面上会提示已截断。这是为了避免浏览器一次性排版几万行卡死。要出完整的长报表，就按时间或编号把 CSV 拆成几个小文件分别转，再用 PDF 合并工具拼起来，比一次硬转更稳。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "中文列名会乱码吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "按 UTF-8 读取不会乱码，但如果 CSV 是从 Excel 另存的 GBK 编码，中文会变成问号或乱码。解决办法是用 Excel 另存为时选「CSV UTF-8」，或者先用记事本另存成 UTF-8 再上传。这个页面不提供编码切换选项。"
+      }
     }
   ]
 }
@@ -173,7 +192,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>CSV转PDF</span></nav>
       <div class="tool-page-header">
         <h1>📊 CSV 转 PDF</h1>
-        <p>将 CSV 文件转换为排版整齐的 PDF 表格。支持引号字段、字段内逗号和大数据量。</p>
+        <p class="answer-lead">把 CSV 表格转成排版整齐的 PDF：自动识别逗号、分号或制表符分隔，支持引号包裹的字段和字段内逗号，可以选 A4、Letter 或 A3 横向，超过一页自动分页并重复表头。转换在浏览器里完成，文件不上传。硬限制在这里：最多渲染 5000 行，超出的部分会被截断，页面上会给出提示。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">CSV → PDF 表格</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地渲染</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">最多 5000 行，自动分页</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>表格宽或长的时候，先改这几处</h2>
+          <table>
+            <thead><tr><th>你的 CSV 情况</th><th>怎么设</th><th>会有什么限制</th></tr></thead>
+            <tbody>
+              <tr><td>列很多（十几列）</td><td>A3 横向</td><td>字号固定 8pt，列宽自动挤</td></tr>
+              <tr><td>行很多（几千行）</td><td>先确认不超 5000 行</td><td>超出部分被截断</td></tr>
+              <tr><td>用分号分隔的西文 CSV</td><td>分隔符选分号或自动</td><td>自动识别偶尔会判错</td></tr>
+              <tr><td>字段里带逗号</td><td>用引号包住字段</td><td>不加引号会被切成两列</td></tr>
+              <tr><td>要正式对账单</td><td>A4 纵向</td><td>超宽表格会压成细长条</td></tr>
+              <tr><td>要保留 Excel 样式</td><td>做不到</td><td>字体颜色、合并单元格全丢</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
         <div class="tool-container">
@@ -348,6 +388,8 @@
         <div class="faq-item"><button class="faq-question">财务对账单可以用这个工具转吗？</button><p>很合适。银行导出的流水CSV转成PDF就是规范的对账单，打印出来签字盖章就能用。PDF格式固定，任何设备打开排版都一样。</p></div>
         <div class="faq-item"><button class="faq-question">电商销售报表可以转成PDF报告吗？</button><p>可以。从淘宝、拼多多后台导出的CSV数据，转成PDF就是排版整齐的销售报表，直接放进周报月报里用。</p></div>
         <div class="faq-item"><button class="faq-question">横向和纵向页面怎么选？</button><p>列多的表格选横向，比如财务报表有十几列；行多的表格选纵向，比如几百行的流水记录。工具自动适配。</p></div>
+              <div class="faq-item"><button class="faq-question">超过 5000 行会怎样？</button><div class="faq-answer">只渲染前 5000 行，剩下的直接丢弃，页面上会提示已截断。这是为了避免浏览器一次性排版几万行卡死。要出完整的长报表，就按时间或编号把 CSV 拆成几个小文件分别转，再用 PDF 合并工具拼起来，比一次硬转更稳。</div></div>
+        <div class="faq-item"><button class="faq-question">中文列名会乱码吗？</button><div class="faq-answer">按 UTF-8 读取不会乱码，但如果 CSV 是从 Excel 另存的 GBK 编码，中文会变成问号或乱码。解决办法是用 Excel 另存为时选「CSV UTF-8」，或者先用记事本另存成 UTF-8 再上传。这个页面不提供编码切换选项。</div></div>
       </section>
 
       <section class="related-tools">

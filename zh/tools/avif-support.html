@@ -38,7 +38,10 @@
   "description": "在线检测你的浏览器是否支持 AVIF，并把 AVIF 图片解码后转成 JPG、PNG 或 WebP。含 Chrome、Edge、Safari、Firefox 的支持情况对照，讲清哪些系统打不开 AVIF、为什么存下来是空白，以及批量转换的办法。全部本地解码，图片不上传。"
 }
 </script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -201,6 +204,14 @@
         "@type": "Answer",
         "text": "不需要。全部在浏览器内运行——无需应用、插件或扩展。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "浏览器不支持 AVIF 时为什么转不了？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "因为解码用的是浏览器内核自带的 AVIF 解码器，页面只负责把解出来的像素画到 canvas 上再重新编码。内核不认识 AVIF，图片对象就加载失败，后面什么都做不了。遇到这种情况换 Chrome、Edge 或新版 Firefox 打开，比装插件省事。"
+      }
     }
   ]
 }
@@ -266,7 +277,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🖼️ AVIF 转换 — Decode & 转换</span></nav>
       <div class="tool-page-header">
         <h1>🅰 AVIF 支持</h1>
-        <p>检测浏览器的 AVIF 支持、解码 AVIF 图片并转换为 JPG/PNG/WebP。100% 在浏览器中完成。</p>
+        <p class="answer-lead">先测一下你当前浏览器能不能解 AVIF，再把 AVIF 图片转成 JPG、PNG 或 WebP，JPG 和 WebP 可以调质量（PNG 不调）。解码和转码都在浏览器里用 canvas 完成，图片不上传。关键前提在这里：解码走的是浏览器自带的 AVIF 能力，浏览器不支持 AVIF 时这个页面也转不了，所以它不能当「万能格式转换器」。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">AVIF → JPG/PNG/WebP</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地 canvas</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">单张下载，质量可调</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>先看你的浏览器，再决定怎么转</h2>
+          <table>
+            <thead><tr><th>你的情况</th><th>页面能做什么</th><th>做不到的部分</th></tr></thead>
+            <tbody>
+              <tr><td>Chrome、Edge、Firefox 新版</td><td>检测通过，AVIF 直接转 JPG</td><td>动图 AVIF 只取第一帧</td></tr>
+              <tr><td>老版 Safari 或国产套壳</td><td>检测会显示不支持</td><td>转不了，只能换浏览器或换设备</td></tr>
+              <tr><td>只想确认能不能看 AVIF</td><td>首页就有支持检测</td><td>检测结果只代表当前这台设备</td></tr>
+              <tr><td>要控制体积</td><td>JPG/WebP 有质量滑块 10–100</td><td>PNG 输出不吃质量参数</td></tr>
+              <tr><td>要保留透明通道</td><td>输出选 PNG 或 WebP</td><td>选 JPG 透明区域会变黑</td></tr>
+              <tr><td>一次几十张</td><td>一张一张来</td><td>没有批量队列，得重复操作</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Browser Support Status -->
@@ -507,6 +539,8 @@
 <div class="faq-item"><button class="faq-question">为什么要解码 AVIF？</button><div class="faq-answer">部分编辑器和平台尚不接受原生 AVIF。</div></div>
 <div class="faq-item"><button class="faq-question">有文件大小限制吗？</button><div class="faq-answer">支持最大 100MB 的文件。超大文件可能需要多几秒处理。</div></div>
 <div class="faq-item"><button class="faq-question">需要安装任何东西吗？</button><div class="faq-answer">不需要。全部在浏览器内运行——无需应用、插件或扩展。</div></div>
+              <div class="faq-item"><button class="faq-question">浏览器不支持 AVIF 时为什么转不了？</button><div class="faq-answer">因为解码用的是浏览器内核自带的 AVIF 解码器，页面只负责把解出来的像素画到 canvas 上再重新编码。内核不认识 AVIF，图片对象就加载失败，后面什么都做不了。遇到这种情况换 Chrome、Edge 或新版 Firefox 打开，比装插件省事。</div></div>
+        <div class="faq-item"><button class="faq-question">转成 JPG 会掉画质吗？</button><div class="faq-answer">会掉一点，但通常看不出来。质量滑块默认在一个偏高的档位，AVIF 原图本身压缩率很高，转成同尺寸 JPG 主要是把高效编码换成通用编码，细节损失集中在高对比边缘。要一点不损就选 PNG，代价是体积翻几倍。</div></div>
       </section>
 
 <section class="related-tools">

@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/cropper">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/cropper">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -152,6 +155,22 @@
         "@type": "Answer",
         "text": "小红书竖版笔记建议 3:4 或 9:16，内容展示更充分；朋友圈正方形动态用 1:1；横版风景照发朋友圈用 4:3 或 16:9。发之前按比例裁好，不会被平台自动裁切到奇怪的位置。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么裁剪框只能拖四个角？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "这套裁剪交互只实现了四角手柄，四条边的中点没有手柄，所以不能单独拉宽或拉高某一边。想微调高度，就按住上面两个角之一往上拖，宽度会自动按比例联动（选固定比例时）。要完全自由地改某一边，先把比例切回「自由裁剪」。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "裁剪后画质会变差吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不会。导出时按裁剪框在原图上的真实坐标取像素，1 比 1 复制，不做重采样也不放大。所以只要裁剪框不超过原图尺寸，清晰度和原图完全一致；反过来，把很小的区域裁出来再放大使用才会糊，那是放大造成的，不是裁剪造成的。"
+      }
     }
   ]
 }
@@ -217,7 +236,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>✂️ 图片裁剪</span></nav>
       <div class="tool-page-header">
         <h1>✂️ 在线图片裁剪器</h1>
-        <p>自由裁剪图片，或按 1:1、9:16 等预设比例裁剪，适合微信头像、淘宝主图、朋友圈配图。</p>
+        <p class="answer-lead">在图上拖出裁剪框，或者选 1:1、4:3、16:9、9:16 这类预设比例，框好之后导出。裁剪按原图的真实像素计算，屏幕上显示多大都不影响清晰度，输出固定为 PNG。图片不上传，裁剪在浏览器里完成。要说明的是：裁剪框只有四个角能拖，没有边中间的手柄。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">任意图片 → PNG</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地裁剪</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">按原图像素裁切</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>按用途挑比例，别裁完再返工</h2>
+          <table>
+            <thead><tr><th>要用在哪</th><th>选哪个比例</th><th>还要做什么</th></tr></thead>
+            <tbody>
+              <tr><td>微信头像</td><td>1:1</td><td>导出后缩到 800 以内</td></tr>
+              <tr><td>淘宝主图</td><td>1:1</td><td>主体占七成，留白边距</td></tr>
+              <tr><td>小红书竖版封面</td><td>9:16</td><td>注意上下安全区不被裁</td></tr>
+              <tr><td>朋友圈横图</td><td>4:3 或 16:9</td><td>4:3 更适合手机竖屏浏览</td></tr>
+              <tr><td>相机原片再构图</td><td>自由裁剪</td><td>按三分法留主体位置</td></tr>
+              <tr><td>要 JPG 不要 PNG</td><td>先裁再转</td><td>用格式转换器转一次</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- 裁剪前后对比 -->
@@ -402,6 +442,8 @@
       <div class="faq-item"><button class="faq-question">淘宝、拼多多商品主图要裁成什么比例？</button><div class="faq-answer">淘宝和拼多多主图都要求 1:1 正方形，建议尺寸 800×800 像素以上，方便平台放大浏览。拍摄时产品偏离中心的话，先用本工具按 1:1 把商品摆正居中，再上传。</div></div>
       <div class="faq-item"><button class="faq-question">手机上可以用这个工具裁剪图片吗？</button><div class="faq-answer">可以。用手机或平板的浏览器直接打开本页就能用，手指拖动虚线框即可裁剪。iPhone 或安卓都支持，不用下载任何应用，裁剪完直接保存到相册或下载目录。</div></div>
       <div class="faq-item"><button class="faq-question">小红书配图和朋友圈照片分别用什么比例？</button><div class="faq-answer">小红书竖版笔记建议 3:4 或 9:16，内容展示更充分；朋友圈正方形动态用 1:1；横版风景照发朋友圈用 4:3 或 16:9。发之前按比例裁好，不会被平台自动裁切到奇怪的位置。</div></div>
+              <div class="faq-item"><button class="faq-question">为什么裁剪框只能拖四个角？</button><div class="faq-answer">这套裁剪交互只实现了四角手柄，四条边的中点没有手柄，所以不能单独拉宽或拉高某一边。想微调高度，就按住上面两个角之一往上拖，宽度会自动按比例联动（选固定比例时）。要完全自由地改某一边，先把比例切回「自由裁剪」。</div></div>
+        <div class="faq-item"><button class="faq-question">裁剪后画质会变差吗？</button><div class="faq-answer">不会。导出时按裁剪框在原图上的真实坐标取像素，1 比 1 复制，不做重采样也不放大。所以只要裁剪框不超过原图尺寸，清晰度和原图完全一致；反过来，把很小的区域裁出来再放大使用才会糊，那是放大造成的，不是裁剪造成的。</div></div>
       </section>
 
 <section class="localization-section" style="max-width:800px;margin:40px auto;padding:0 20px;">

@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/color-palette">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/color-palette">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -119,26 +122,26 @@
     },
     {
       "@type": "Question",
-      "name": "提供色值吗？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "是的——每种颜色的 HEX 码，可复制。"
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "分析准确吗？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "准确——工具使用标准算法和解析器，结果可靠。"
-      }
-    },
-    {
-      "@type": "Question",
       "name": "可以处理多个文件吗？",
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "可以——在适用时支持批量分析。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么取出来的颜色和肉眼看到的不太一样？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "两个原因：一是图被缩到 100×100 取样，细节里的颜色被平均掉了；二是每个通道按 32 一档归并，相邻的颜色会被合并成同一个桶。所以结果更像「这块区域的主调」，而不是设计稿里那个精确色号。要精确色号，用吸管工具点单个像素更靠谱。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "能导出成 CSS 变量或调色板文件吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能批量导出，页面只提供单个色块的点击复制，一次复制一个 HEX 值。要整理成 CSS 变量就自己粘贴到编辑器里，一行一个写 --color-1: #xxxxxx；要 ASE 或 .clr 这类专业调色板文件，这个页面做不到。"
       }
     }
   ]
@@ -205,7 +208,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🎨 图片取色器</span></nav>
       <div class="tool-page-header">
         <h1>🎨 取色器</h1>
-        <p>从任意图片提取主色调，生成可直接使用的 CSS 颜色代码。设计师和开发者的取色利器。</p>
+        <p class="answer-lead">从一张图里提取 3 到 12 种主色，输出 HEX 和 RGB，点色块就能复制，适合照着参考图配色。提取方式是把图缩到 100×100 再按每通道 32 一档做分桶统计，取出现次数最多的几种，全程本地完成，图片不上传。它统计的是面积占比，不是视觉上最抓眼的颜色，所以小面积的亮色点缀通常挤不进前列。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">任意图片 → HEX/RGB 色值</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地取样</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">3–12 种主色，点击复制</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>取出来的色偏了，多半是这几种情况</h2>
+          <table>
+            <thead><tr><th>图片特点</th><th>结果会怎样</th><th>怎么修正</th></tr></thead>
+            <tbody>
+              <tr><td>大面积背景</td><td>背景色霸占前两三名</td><td>先抠掉背景再取色</td></tr>
+              <tr><td>渐变或天空</td><td>出来一堆相近的蓝</td><td>手动挑一深一浅两个用</td></tr>
+              <tr><td>商品实拍带阴影</td><td>暗部颜色被算成主色</td><td>裁掉阴影区再取色</td></tr>
+              <tr><td>小面积亮色点缀</td><td>排不进前列，直接消失</td><td>单独裁出那部分再取</td></tr>
+              <tr><td>黑白灰照片</td><td>出来都是灰阶</td><td>本来就没有彩色可提</td></tr>
+              <tr><td>同一张图换尺寸</td><td>结果基本一致</td><td>取样固定 100×100，与像素无关</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -378,9 +402,9 @@
       <div class="faq-item"><button class="faq-question">会显示哪些颜色格式？</button><div class="faq-answer">每种颜色给出 HEX 色值，下方还有一段 CSS 变量输出，按键名直接粘到样式表里就能用，不用再逐个抄色号。</div></div>
       <div class="faq-item"><button class="faq-question">能一键复制色值吗？</button><div class="faq-answer">能。点任意色块，HEX 值立刻进剪贴板，粘到设计软件或代码里都能直接用。</div></div>
       <div class="faq-item"><button class="faq-question">提取多少种颜色？</button><div class="faq-answer">前 5–10 种主色。</div></div>
-<div class="faq-item"><button class="faq-question">提供色值吗？</button><div class="faq-answer">是的——每种颜色的 HEX 码，可复制。</div></div>
-<div class="faq-item"><button class="faq-question">分析准确吗？</button><div class="faq-answer">准确——工具使用标准算法和解析器，结果可靠。</div></div>
 <div class="faq-item"><button class="faq-question">可以处理多个文件吗？</button><div class="faq-answer">可以——在适用时支持批量分析。</div></div>
+              <div class="faq-item"><button class="faq-question">为什么取出来的颜色和肉眼看到的不太一样？</button><div class="faq-answer">两个原因：一是图被缩到 100×100 取样，细节里的颜色被平均掉了；二是每个通道按 32 一档归并，相邻的颜色会被合并成同一个桶。所以结果更像「这块区域的主调」，而不是设计稿里那个精确色号。要精确色号，用吸管工具点单个像素更靠谱。</div></div>
+        <div class="faq-item"><button class="faq-question">能导出成 CSS 变量或调色板文件吗？</button><div class="faq-answer">不能批量导出，页面只提供单个色块的点击复制，一次复制一个 HEX 值。要整理成 CSS 变量就自己粘贴到编辑器里，一行一个写 --color-1: #xxxxxx；要 ASE 或 .clr 这类专业调色板文件，这个页面做不到。</div></div>
       </section>
 
 <section class="related-tools">
