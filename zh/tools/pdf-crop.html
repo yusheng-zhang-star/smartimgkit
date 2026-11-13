@@ -24,7 +24,10 @@
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/pdf-crop">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/pdf-crop">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
   { 
   "inLanguage": "zh","@context": "https://schema.org", "@type": "WebApplication", "name": "PDF 裁剪", "url": "https://smartimgkit.com/zh/tools/pdf-crop", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }, "description": "免费在线 PDF 裁剪，裁掉页面多余白边、页眉页脚残留和扫描时的黑边。适合论文页边距调整、扫描件留白裁剪、打印省纸和投屏比例适配。支持全页统一或逐页设置裁剪框，浏览器本地处理不上传，裁完的 PDF 版面比例不变形。" }
@@ -303,12 +306,28 @@
   </footer>
 
   <script src="/js/main.js?v=8"></script>
-  <script src="/js/pdf.min.js?v=3.11.174"></script>
+  <script>
+(function(){
+  var _p=null;
+  window.__pdfReady=function(){
+    if(_p) return _p;
+    _p=new Promise(function(resolve,reject){
+      var s=document.createElement('script');
+      s.src='/js/pdf.min.js?v=3.11.174';
+      s.onload=function(){ window.pdfjsLib.GlobalWorkerOptions.workerSrc='/js/pdf.worker.min.js'; resolve(window.pdfjsLib); };
+      s.onerror=function(){ _p=null; reject(new Error("pdf.js load failed")); };
+      document.head.appendChild(s);
+    });
+    return _p;
+  };
+  function kick(){ window.__pdfReady(); ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.removeEventListener(e,kick,true); }); }
+  ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.addEventListener(e,kick,true); });
+})();
+</script>
   <script src="/js/pdf-lib.min.js"></script>
   <script>
   (function() {
     'use strict';
-    pdfjsLib.GlobalWorkerOptions.workerSrc = '/js/pdf.worker.min.js';
     var fileInput = document.getElementById('fileInput');
     var dropzone = document.getElementById('dropzone');
     var cropArea = document.getElementById('cropArea');
@@ -334,7 +353,7 @@
       setStatus('⏳ Loading PDF…');
       try {
         pdfBytes = await f.arrayBuffer();
-        pdfDoc = await pdfjsLib.getDocument({ data: new Uint8Array(pdfBytes.slice(0)) }).promise;
+        pdfDoc = await (await window.__pdfReady()).getDocument({ data: new Uint8Array(pdfBytes.slice(0)) }).promise;
         numPages = pdfDoc.numPages; currentPage = 1;
         cropArea.style.display = 'block'; dropzone.style.display = 'none';
         selStart = null; selEnd = null;

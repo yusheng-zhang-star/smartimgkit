@@ -24,7 +24,10 @@
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/pdf-compare">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/pdf-compare">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
   { 
   "inLanguage": "zh","@context": "https://schema.org", "@type": "WebApplication", "name": "PDF 对比", "url": "https://smartimgkit.com/zh/tools/pdf-compare", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }, "description": "并排对比两个 PDF 的内容差异，逐页标出新增、删除和改动的文字，快速找出被改过的条款和数字。适合核对合同版本、审阅报价单、检查报告修订，避免签错版本。免费，文件在浏览器本地比对，不上传服务器，原始 PDF 不会被留存或缓存。" }
@@ -369,11 +372,27 @@
   </footer>
 
   <script src="/js/main.js?v=8"></script>
-  <script src="/js/pdf.min.js?v=3.11.174"></script>
+  <script>
+(function(){
+  var _p=null;
+  window.__pdfReady=function(){
+    if(_p) return _p;
+    _p=new Promise(function(resolve,reject){
+      var s=document.createElement('script');
+      s.src='/js/pdf.min.js?v=3.11.174';
+      s.onload=function(){ window.pdfjsLib.GlobalWorkerOptions.workerSrc='/js/pdf.worker.min.js'; resolve(window.pdfjsLib); };
+      s.onerror=function(){ _p=null; reject(new Error("pdf.js load failed")); };
+      document.head.appendChild(s);
+    });
+    return _p;
+  };
+  function kick(){ window.__pdfReady(); ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.removeEventListener(e,kick,true); }); }
+  ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.addEventListener(e,kick,true); });
+})();
+</script>
   <script>
   (function() {
     'use strict';
-    pdfjsLib.GlobalWorkerOptions.workerSrc = '/js/pdf.worker.min.js';
     var statusText = document.getElementById('statusText');
     var resultArea = document.getElementById('resultArea');
     var file1 = document.getElementById('file1');
@@ -392,7 +411,7 @@
       var f = e.target.files[0]; if (!f) return;
       var reader = new FileReader();
       reader.onload = async function(ev) {
-        try { pdfA = await pdfjsLib.getDocument({ data: new Uint8Array(ev.target.result) }).promise; }
+        try { pdfA = await (await window.__pdfReady()).getDocument({ data: new Uint8Array(ev.target.result) }).promise; }
         catch(err) { setStatus('❌ PDF A error: ' + err.message); return; }
         document.getElementById('label1').textContent = f.name + ' (' + pdfA.numPages + ' pages)';
         box1.classList.add('loaded');
@@ -404,7 +423,7 @@
       var f = e.target.files[0]; if (!f) return;
       var reader = new FileReader();
       reader.onload = async function(ev) {
-        try { pdfB = await pdfjsLib.getDocument({ data: new Uint8Array(ev.target.result) }).promise; }
+        try { pdfB = await (await window.__pdfReady()).getDocument({ data: new Uint8Array(ev.target.result) }).promise; }
         catch(err) { setStatus('❌ PDF B error: ' + err.message); return; }
         document.getElementById('label2').textContent = f.name + ' (' + pdfB.numPages + ' pages)';
         box2.classList.add('loaded');

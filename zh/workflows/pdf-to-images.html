@@ -14,8 +14,28 @@
 <meta name="theme-color" content="#f43f5e">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="../../css/style.css?v=16">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;700&display=swap" rel="stylesheet"></noscript>
+<script>
+(function(){
+  var _p=null;
+  window.__pdfReady=function(){
+    if(_p) return _p;
+    _p=new Promise(function(resolve,reject){
+      var s=document.createElement('script');
+      s.src='/js/pdf.min.js?v=3.11.174';
+      s.onload=function(){ window.pdfjsLib.GlobalWorkerOptions.workerSrc='/js/pdf.worker.min.js'; resolve(window.pdfjsLib); };
+      s.onerror=function(){ _p=null; reject(new Error("pdf.js load failed")); };
+      document.head.appendChild(s);
+    });
+    return _p;
+  };
+  function kick(){ window.__pdfReady(); ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.removeEventListener(e,kick,true); }); }
+  ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.addEventListener(e,kick,true); });
+})();
+</script>
 <script src="/js/jszip.min.js"></script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2385875044602242" crossorigin="anonymous"></script>
 <script type="application/ld+json">
@@ -136,10 +156,9 @@
 </div></main>
 <footer class="site-footer"><div class="container"><div class="footer-bottom"><p>&copy; 2026 SmartImgKit</p></div></div></footer>
 <script>
-pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 const $=id=>document.getElementById(id);let pdf=null,canvases=[];
 $('uploadArea').onclick=()=>$('fileInput').click();
-$('fileInput').onchange=async e=>{const f=e.target.files[0];if(!f)return;const buf=await f.arrayBuffer();pdf=await pdfjsLib.getDocument({data:buf}).promise;$('controls').style.display='block';alert(`已加载：${pdf.numPages} 页`);};
+$('fileInput').onchange=async e=>{const f=e.target.files[0];if(!f)return;const buf=await f.arrayBuffer();pdf=await (await window.__pdfReady()).getDocument({data:buf}).promise;$('controls').style.display='block';alert(`已加载：${pdf.numPages} 页`);};
 $('scale').oninput=()=>$('sVal').textContent=$('scale').value+'x';
 $('convBtn').onclick=async()=>{if(!pdf)return;$('convBtn').disabled=true;$('convBtn').textContent='转换中…';canvases=[];$('grid').innerHTML='';const scale=+$('scale').value;const fmt=$('fmt').value;for(let i=1;i<=pdf.numPages;i++){const page=await pdf.getPage(i);const vp=page.getViewport({scale:scale});const c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;await page.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;canvases.push(c);const w=document.createElement('canvas');w.width=200;w.height=200*c.height/c.width;w.getContext('2d').drawImage(c,0,0,w.width,w.height);$('grid').appendChild(w);}$('dlBtn').style.display='inline-block';$('convBtn').disabled=false;$('convBtn').textContent='开始转换';};
 $('dlBtn').onclick=async()=>{const zip=new JSZip();const fmt=$('fmt').value;for(let i=0;i<canvases.length;i++){const blob=await new Promise(r=>canvases[i].toBlob(r,fmt,fmt==='image/jpeg'?0.92:undefined));const ext=fmt==='image/png'?'png':'jpg';zip.file(`page-${String(i+1).padStart(3,'0')}.${ext}`,blob);}const blob=await zip.generateAsync({type:'blob'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='pdf-pages.zip';a.click();};
