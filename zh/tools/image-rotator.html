@@ -321,11 +321,11 @@
 <!-- Upload Area -->
               <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ 看看这个工具能做什么</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400&q=80" alt="Before" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
-              <div class="before-after-item-caption before">Before</div>
+              <div class="before-after-item-caption before">原图</div>
             </div>
         <div class="selling-points">
   <div class="sp-item"><span class="sp-icon">✅</span>按任意角度旋转或翻转图片</div>
@@ -336,7 +336,7 @@
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
                 <span style="font-size:3rem;opacity:0.5;">🔄</span>
               </div>
-              <div class="before-after-item-caption after">After — processed</div>
+              <div class="before-after-item-caption after">处理后</div>
             </div>
           </div>
         </div>        <input type="file" id="fileInput" accept="image/*" style="display:none;">
@@ -353,7 +353,7 @@
           <!-- Sidebar -->
           <div class="rotate-sidebar">
             <div class="control-group">
-              <label>Quick Rotate</label>
+              <label>快捷旋转</label>
               <div class="quick-actions">
                 <button class="quick-btn" id="rotateLeftBtn"><span class="btn-icon">↺</span> 90° Left</button>
                 <button class="quick-btn" id="rotateRightBtn"><span class="btn-icon">↻</span> 90° Right</button>
@@ -363,13 +363,13 @@
             </div>
 
             <div class="control-group">
-              <label>Custom Angle</label>
+              <label>任意角度</label>
               <input type="range" id="angleSlider" min="0" max="360" value="0" step="1">
               <div class="angle-display"><span id="angleValue">0</span>°</div>
             </div>
 
             <div class="control-group">
-              <label>Flip</label>
+              <label>翻转</label>
               <div class="quick-actions">
                 <button class="quick-btn" id="flipHBtn"><span class="btn-icon">↔</span> Horizontal</button>
                 <button class="quick-btn" id="flipVBtn"><span class="btn-icon">↕</span> Vertical</button>
@@ -377,12 +377,12 @@
             </div>
 
             <div class="control-group">
-              <label>Background Color (for rotated corners)</label>
+              <label>旋转后露角补底色</label>
               <input type="color" id="bgColor" value="#ffffff" style="width:100%;height:36px;border:1px solid var(--border);border-radius:6px;background:var(--bg-primary);cursor:pointer;padding:2px;">
             </div>
 
             <div class="control-group">
-              <label>Output Format</label>
+              <label>输出格式</label>
               <select id="outputFormat">
                 <option value="image/png">PNG</option>
                 <option value="image/jpeg">JPG</option>
@@ -391,8 +391,8 @@
             </div>
 
             <div class="tool-actions" style="flex-direction:column">
-              <button class="btn btn-primary" id="downloadBtn">💾 Download</button>
-              <button class="btn btn-secondary" id="resetBtn">🔄 Start Over</button>
+              <button class="btn btn-primary" id="downloadBtn">💾 下载</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 换一张</button>
             </div>
             <div id="status" class="text-center" style="color:var(--text-secondary);font-size:.85rem"></div>
           </div>
@@ -470,63 +470,56 @@
       <section class="how-to-section">
         <h2>使用方法</h2>
         <div class="how-to-steps">
-          <div class="how-to-step"><div class="step-number">1</div><h4>上传图片</h4><p>Click the upload area or drag and drop your image file.</p></div>
-          <div class="how-to-step"><div class="step-number">2</div><h4>Rotate or Flip</h4><p>Use quick rotation buttons (90° left/right), custom angle slider, or flip buttons.</p></div>
-          <div class="how-to-step"><div class="step-number">3</div><h4>Preview</h4><p>See the result instantly. The preview updates in real-time as you adjust.</p></div>
-          <div class="how-to-step"><div class="step-number">4</div><h4>下载</h4><p>Click Download to save the rotated or flipped image.</p></div>
+          <div class="how-to-step"><div class="step-number">1</div><h4>上传图片</h4><p>点上传区域或拖放图片文件，JPG/PNG/WebP/GIF/BMP 都支持，本地加载不上传。</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>旋转或翻转</h4><p>用 90° 快捷按钮、0–360° 角度滑块或水平/垂直翻转按钮调整方向。</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>预览</h4><p>预览实时刷新，任意角度旋转和补底色效果即刻可见。</p></div>
+          <div class="how-to-step"><div class="step-number">4</div><h4>下载</h4><p>点「下载」把旋转或翻转后的图存到本地。</p></div>
         </div>
       </section>
 
 <h2>详细使用指南</h2>
 
-        <div class="guide-block">
-          <h3>Step 1: Upload Your Image</h3>
-          <p>Click anywhere in the upload area or drag and drop an image file. Supported formats include JPG, PNG, WebP, GIF, and BMP. The image loads instantly and appears in the preview canvas. No data is sent to any server — everything stays in your browser.</p>
-        </div>
+        <div class="guide-block"><h3>第一步：上传图片</h3>
+<p>点上传区域或直接把图拖进来，JPG、PNG、WebP、GIF、BMP 都能读。图片只在浏览器里解码显示，全程不经过任何服务器。公众号配图、群里转发的截图、手机相册里的照片，都能直接处理。</p>
+</div>
 
-        <div class="guide-block">
-          <h3>Step 2: Choose Your Transformation</h3>
-          <p>You have several options for transforming your image:</p>
-          <ul>
-            <li><strong>Quick Rotate:</strong> Click "90° Left" or "90° Right" for common quarter-turn rotations. Use "180°" to flip the image upside down. These are the most common rotations for fixing photos taken in the wrong orientation.</li>
-            <li><strong>Custom Angle:</strong> Drag the angle slider from 0° to 360° for precise rotation at any angle. The current angle is displayed below the slider. Great for straightening tilted photos or creative effects.</li>
-            <li><strong>Flip:</strong> "Horizontal" creates a mirror image (left-right flip). "Vertical" flips the image top-to-bottom. These are perfect for creating reflections, mirror effects, or correcting scanned documents.</li>
-          </ul>
-        </div>
+        <div class="guide-block"><h3>第二步：选择旋转或翻转</h3>
+<p>三种改法，按需求选：</p>
+<ul>
+<li><strong>快捷旋转：</strong>「左转 90°」「右转 90°」适合手机横拍的照片转正，「180°」专治拍倒了的图。日常修方向用这三个按钮就够了，比拖滑块快。</li>
+<li><strong>任意角度：</strong>滑块在 0° 到 360° 之间连续调节，下方实时显示当前角度。照片地平线歪了两三度、扫描件放歪了一点，用小角度微调最合适。</li>
+<li><strong>翻转：</strong>「水平翻转」出镜像效果——自拍总是左右反的，翻一下就是别人眼里真实的你；「垂直翻转」上下颠倒，做倒影创意时用。</li>
+</ul>
+</div>
 
-        <div class="guide-block">
-          <h3>Step 3: Fine-Tune the Result</h3>
-          <p>The preview updates in real-time so you can see exactly how your image will look. When rotating by custom angles, the canvas expands to fit the entire image. You can choose a background color to fill the new corners that appear after rotation. Set it to white for printing, black for dark themes, or use the color picker to match any background.</p>
-        </div>
+        <div class="guide-block"><h3>第三步：微调效果</h3>
+<p>预览实时刷新，转多少度立刻能看到。非 90° 倍数的角度旋转后画布会变大，四角会露出底色，这时用取色器选一个背景色补上：要打印选白色，放深色 PPT 里选黑色，发到固定底色的平台就取那个平台的底色。</p>
+</div>
 
-        <div class="guide-block">
-          <h3>Step 4: Download</h3>
-          <p>When you're happy with the result, choose your output format (PNG for quality, JPG for smaller files, WebP for modern use) and click <strong>"Download"</strong>. The file saves to your device immediately — no watermarks, no quality loss, no server uploads.</p>
-        </div>
+        <div class="guide-block"><h3>第四步：下载</h3>
+<p>选好输出格式点「下载」：PNG 保画质、能存透明背景，JPG 体积小适合发聊天和上传，WebP 是新一代格式、压缩率更高。文件直接存到本地，不加水印、不二次压缩、不经过服务器。</p>
+</div>
 
-        <div class="guide-block">
-          <h3>Best Use Cases</h3>
-          <ul>
-            <li><strong>Fix photo orientation</strong> — Rotate sideways or upside-down photos from your camera roll</li>
-            <li><strong>Straighten tilted photos</strong> — Use the custom angle slider to fine-tune the horizon line</li>
-            <li><strong>Mirror selfies</strong> — Flip horizontally to create a true mirror reflection</li>
-            <li><strong>Creative compositions</strong> — Rotate at unusual angles for artistic effects</li>
-            <li><strong>Scanned documents</strong> — Flip or rotate scanned pages that came in the wrong orientation</li>
-            <li><strong>Social media prep</strong> — Rotate landscape to portrait or vice versa for different platforms</li>
-          </ul>
-        </div>
+        <div class="guide-block"><h3>典型使用场景</h3>
+<ul>
+<li><strong>手机照片转正：</strong>相机没开重力感应，横着拍的照片上传后一键右转 90°</li>
+<li><strong>扫描件摆正：</strong>纸质材料扫描进来歪了一点，用 1–5° 小角度拉直，比重新扫省事</li>
+<li><strong>自拍镜像：</strong>水平翻转一下，镜子里的自己变成别人看到的真实朝向</li>
+<li><strong>电商图片换方向：</strong>详情页主图要竖版、平台要横版，转一下不用重新设计</li>
+<li><strong>课件配图：</strong>把横版教材插图转成竖版塞进 PPT 版式，任意角度还能做倾斜排版</li>
+</ul>
+</div>
 
-        <div class="guide-block">
-          <h3>Pro Tips</h3>
-          <ul>
-            <li>For quick orientation fixes, use the 90° buttons — they're faster than the slider</li>
-            <li>When rotating by custom angles, choose a background color that matches your target background</li>
-            <li>PNG format preserves transparency — if your image has a transparent background, use PNG</li>
-            <li>You can combine rotation and flipping — rotate first, then flip for unique effects</li>
-            <li>Use "Reset" to go back to the original orientation without re-uploading</li>
-            <li>For straightening photos, try small angles (1-5°) and watch the preview closely</li>
-          </ul>
-        </div>
+        <div class="guide-block"><h3>实用技巧</h3>
+<ul>
+<li>日常修方向直接用 90° 按钮，比拖滑块精准又快</li>
+<li>拉直照片建议先试 1–3°，盯住预览里的地平线，转过头再往回找很费劲</li>
+<li>图有透明背景就选 PNG 输出，转成 JPG 透明区域会变成实色</li>
+<li>旋转和翻转可以叠加：先转 90° 再水平翻转，能组合出镜像斜排的效果</li>
+<li>转错了点「重置」就回到原图状态，不用重新上传</li>
+<li>非 90° 角度记得检查四角的补底色，否则发出去会有突兀的色块</li>
+</ul>
+</div>
 
 <section class="faq-section">
         <h2>常见问题</h2>
@@ -551,24 +544,21 @@
     <a href="/zh/tools/cropper" class="related-tool-card">
       <span class="tool-icon">🖼️</span>
       <div class="tool-info">
-        <strong>Image Cropper</strong>
-        <span class="tool-desc">Crop after rotating to perfect composition</span>
+        <strong>图片裁剪</strong><span class="tool-desc">旋转完顺手裁一刀，构图一步到位</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
     <a href="/zh/tools/compressor" class="related-tool-card">
       <span class="tool-icon">🗜️</span>
       <div class="tool-info">
-        <strong>Image Compressor</strong>
-        <span class="tool-desc">Compress rotated images for sharing</span>
+        <strong>图片压缩</strong><span class="tool-desc">压小体积再发群或上传</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
     <a href="/zh/tools/print-resizer" class="related-tool-card">
       <span class="tool-icon">🖨️</span>
       <div class="tool-info">
-        <strong>Print-Ready Resizer</strong>
-        <span class="tool-desc">Get exact print dimensions after rotation</span>
+        <strong>打印尺寸调整</strong><span class="tool-desc">旋转后精确匹配打印尺寸</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>

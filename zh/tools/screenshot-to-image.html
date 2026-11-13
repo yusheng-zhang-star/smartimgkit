@@ -38,7 +38,10 @@
   "description": "给截图套上浏览器窗口、笔记本或手机外框，加渐变背景、圆角和柔和阴影，导出高清 PNG 用于发布与演示。适合做产品介绍图、App 展示图、教程配图和社交媒体封面。本地处理不上传，截图不上服务器，出图可直接放进文档或文章。"
 }
 </script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -306,11 +309,11 @@
 <!-- Upload Area -->
               <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ 看看这个工具能做什么</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&q=80" alt="Before" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')">
-              <div class="before-after-item-caption before">Before</div>
+              <div class="before-after-item-caption before">原图</div>
             </div>
         <div class="selling-points">
   <div class="sp-item"><span class="sp-icon">✅</span>转换并增强截图</div>
@@ -321,7 +324,7 @@
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border-radius:8px;">
                 <span style="font-size:3rem;opacity:0.5;">📱</span>
               </div>
-              <div class="before-after-item-caption after">After — processed</div>
+              <div class="before-after-item-caption after">处理后</div>
             </div>
           </div>
         </div>        <input type="file" id="file输入" accept="image/*" style="display:none;">
@@ -338,47 +341,47 @@
           <div class="screenshot-sidebar">
 
             <div class="control-group">
-              <label>Frame Style</label>
+              <label>外框风格</label>
               <div class="frame-btns">
-                <button class="frame-btn active" data-frame="none">None</button>
-                <button class="frame-btn" data-frame="browser">Browser</button>
-                <button class="frame-btn" data-frame="laptop">Laptop</button>
-                <button class="frame-btn" data-frame="phone">Phone</button>
+                <button class="frame-btn active" data-frame="none">无</button>
+                <button class="frame-btn" data-frame="browser">浏览器</button>
+                <button class="frame-btn" data-frame="laptop">笔记本</button>
+                <button class="frame-btn" data-frame="phone">手机</button>
               </div>
             </div>
 
             <div class="control-group">
-              <label>Background Gradient</label>
+              <label>背景渐变</label>
               <div class="gradient-presets" id="gradientPresets"></div>
             </div>
 
             <div class="control-group">
-              <label>Custom Background</label>
+              <label>自定义背景色</label>
               <input type="color" id="bg颜色" value="#6366f1">
             </div>
 
             <div class="control-group">
-              <label>Padding: <span id="paddingValue">64</span>px</label>
+              <label>内边距: <span id="paddingValue">64</span>px</label>
               <input type="range" id="padding" min="0" max="200" value="64">
             </div>
 
             <div class="control-group">
-              <label>Corner 半径: <span id="radiusValue">16</span>px</label>
+              <label>圆角: <span id="radiusValue">16</span>px</label>
               <input type="range" id="corner半径" min="0" max="60" value="16">
             </div>
 
             <div class="control-group">
-              <label>Shadow Blur: <span id="shadowValue">40</span>px</label>
+              <label>阴影模糊: <span id="shadowValue">40</span>px</label>
               <input type="range" id="shadowBlur" min="0" max="80" value="40">
             </div>
 
             <div class="control-group">
-              <label>Shadow Opacity: <span id="shadowOpValue">25</span>%</label>
+              <label>阴影不透明度: <span id="shadowOpValue">25</span>%</label>
               <input type="range" id="shadowOpacity" min="0" max="100" value="25">
             </div>
 
             <div class="control-group">
-              <label>Image Scale: <span id="scaleValue">75</span>%</label>
+              <label>截图缩放: <span id="scaleValue">75</span>%</label>
               <input type="range" id="imageScale" min="30" max="100" value="75">
             </div>
 
@@ -393,7 +396,7 @@
 
             <div class="tool-actions" style="flex-direction:column">
               <button class="btn btn-primary" id="downloadBtn">💾 下载</button>
-              <button class="btn btn-secondary" id="resetBtn">🔄 Start Over</button>
+              <button class="btn btn-secondary" id="resetBtn">🔄 换一张</button>
             </div>
             <div id="status" class="text-center" style="color:var(--text-secondary);font-size:.85rem"></div>
           </div>
@@ -475,72 +478,64 @@
       <section class="how-to-section">
         <h2>使用方法</h2>
         <div class="how-to-steps">
-          <div class="how-to-step"><div class="step-number">1</div><h4>上传截图</h4><p>点击上传区域或拖放截图文件。</p></div>
-          <div class="how-to-step"><div class="step-number">2</div><h4>Choose Frame Style</h4><p>Select a background gradient, browser frame, or device mockup style.</p></div>
-          <div class="how-to-step"><div class="step-number">3</div><h4>Customize Appearance</h4><p>Adjust padding, corner radius, shadow, scale, and other visual options.</p></div>
-          <div class="how-to-step"><div class="step-number">4</div><h4>下载</h4><p>点击「下载」保存精美的截图。</p></div>
+          <div class="how-to-step"><div class="step-number">1</div><h4>上传截图</h4><p>点上传区域或拖放截图文件。</p></div>
+          <div class="how-to-step"><div class="step-number">2</div><h4>选外框风格</h4><p>选渐变背景、浏览器外框或笔记本/手机样机。</p></div>
+          <div class="how-to-step"><div class="step-number">3</div><h4>调整外观</h4><p>调内边距、圆角、阴影、缩放等视觉参数。</p></div>
+          <div class="how-to-step"><div class="step-number">4</div><h4>下载</h4><p>点「下载」把带外框的效果图存到本地。</p></div>
         </div>
       </section>
 
 <h2>详细使用指南</h2>
 
-        <div class="guide-block">
-          <h3>步骤 1：上传截图</h3>
-          <p>Click the upload area or drag and drop an image file. Supported formats include JPG, PNG, and WebP. The screenshot loads instantly and appears in the preview canvas. Your image stays on your device — nothing is uploaded to any server.</p>
-        </div>
+        <div class="guide-block"><h3>第一步：上传截图</h3>
+<p>点上传区域或拖图进来，JPG、PNG、WebP 都支持，截图本地解码不上传。</p>
+</div>
 
-        <div class="guide-block">
-          <h3>Step 2: Choose a Frame Style</h3>
-          <p>Select from four frame styles to present your screenshot:</p>
-          <ul>
-            <li><strong>None:</strong> Just the gradient background with rounded corners and shadow — clean and minimal</li>
-            <li><strong>Browser:</strong> A macOS-style browser window with a title bar, traffic light buttons, and an address bar</li>
-            <li><strong>Laptop:</strong> Your screenshot displayed on a laptop mockup with a realistic screen, keyboard, and trackpad</li>
-            <li><strong>Phone:</strong> Your screenshot displayed on a smartphone mockup with a bezel, notch, and home indicator</li>
-          </ul>
-        </div>
+        <div class="guide-block"><h3>第二步：选外框风格</h3>
+<p>四种外框风格，给截图加「背景故事」：</p>
+<ul>
+<li><strong>无边框：</strong>只有渐变背景、圆角和阴影，干净利落</li>
+<li><strong>浏览器窗口：</strong>macOS 风格标题栏加红黄绿三色圆点和地址栏，一眼看出「这是网页」</li>
+<li><strong>笔记本电脑：</strong>带屏幕、键盘和触控板的整机样机，适合展示网站整页</li>
+<li><strong>手机样机：</strong>带边框、刘海和底部横条，适合展示 App 界面</li>
+</ul>
+</div>
 
-        <div class="guide-block">
-          <h3>Step 3: Customize the Appearance</h3>
-          <p>Fine-tune every detail of your framed screenshot:</p>
-          <ul>
-            <li><strong>Background Gradient:</strong> Choose from 10 curated gradient presets — from cool blues to warm sunsets</li>
-            <li><strong>Custom Background:</strong> Use the color picker for a solid background color</li>
-            <li><strong>Padding:</strong> Control the space between the frame and the edge of the canvas (0-200px)</li>
-            <li><strong>Corner 半径:</strong> Round the corners of the screenshot (0-60px)</li>
-            <li><strong>Shadow:</strong> Add a soft drop shadow behind the frame with adjustable blur and opacity</li>
-            <li><strong>Image Scale:</strong> Control how large the screenshot appears within the canvas (30-100%)</li>
-          </ul>
-        </div>
+        <div class="guide-block"><h3>第三步：调整外观</h3>
+<p>细节都能调：</p>
+<ul>
+<li><strong>背景渐变：</strong>10 组预设渐变，从冷蓝到暖日落</li>
+<li><strong>纯色背景：</strong>取色器自选底色</li>
+<li><strong>内边距：</strong>外框到画布边缘的距离，0–200px</li>
+<li><strong>圆角：</strong>截图四角圆润程度，0–60px</li>
+<li><strong>阴影：</strong>模糊度和不透明度分开调，做出自然立体感</li>
+<li><strong>缩放：</strong>截图在画布里的占比，30–100%</li>
+</ul>
+</div>
 
-        <div class="guide-block">
-          <h3>步骤 4：下载</h3>
-          <p>When you're happy with the result, choose your output format (PNG, JPG, or WebP) and click <strong>"下载"</strong>. The file saves immediately to your device. No watermarks, no quality loss.</p>
-        </div>
+        <div class="guide-block"><h3>第四步：下载</h3>
+<p>选 PNG、JPG 或 WebP 输出后点「下载」，直接存本地，无水印。</p>
+</div>
 
-        <div class="guide-block">
-          <h3>Best Use Cases</h3>
-          <ul>
-            <li><strong>Social media posts</strong> — Make your screenshots stand out on Twitter, LinkedIn, and Instagram with beautiful gradient backgrounds</li>
-            <li><strong>博客 posts & tutorials</strong> — Present UI screenshots in browser frames for professional-looking documentation</li>
-            <li><strong>Presentations</strong> — Frame app screenshots in device mockups for pitch decks and slide decks</li>
-            <li><strong>Product pages</strong> — Showcase your app or website in laptop and phone mockups for marketing materials</li>
-            <li><strong>GitHub READMEs</strong> — Add polished screenshots to your project documentation</li>
-            <li><strong>Newsletter headers</strong> — Create eye-catching visuals for email campaigns</li>
-          </ul>
-        </div>
+        <div class="guide-block"><h3>典型使用场景</h3>
+<ul>
+<li><strong>公众号配图：</strong>后台截图套浏览器外框加渐变底，教程文章立刻有专业感</li>
+<li><strong>朋友圈晒成绩：</strong>业绩截图、成绩单套上渐变底和阴影，比裸截图体面</li>
+<li><strong>产品发布图：</strong>网站上线截图套笔记本样机，发群里、发动态都拿得出手</li>
+<li><strong>App 宣传：</strong>界面截图套手机样机，应用商店素材、推文头图直接用</li>
+<li><strong>技术文档：</strong>GitHub README、开发文档里的 UI 截图加浏览器框更清晰</li>
+</ul>
+</div>
 
-        <div class="guide-block">
-          <h3>Pro Tips</h3>
-          <ul>
-            <li>For Twitter/X, use a 16:9 aspect ratio screenshot with generous padding and a vibrant gradient background</li>
-            <li>The Browser frame style is perfect for web app screenshots — it immediately communicates "this is a website"</li>
-            <li>For mobile app screenshots, use the Phone frame to give viewers context about the screen size</li>
-            <li>A shadow blur of 30-50px with 20-30% opacity creates a natural, professional-looking depth effect</li>
-            <li>Match your gradient background to your brand colors for consistent visual identity</li>
-            <li>Use PNG format for screenshots with transparency or text — it preserves sharp edges</li>
-          </ul>
-        </div>
+        <div class="guide-block"><h3>实用技巧</h3>
+<ul>
+<li>发社交媒体用 16:9 截图加大内边距配亮色渐变，信息流里最显眼</li>
+<li>网页截图选浏览器外框，观众秒懂内容载体；App 截图选手机外框补充语境</li>
+<li>阴影模糊 30–50px、不透明度 20–30%，是最自然的立体感参数</li>
+<li>渐变底色尽量贴近品牌色，整组图风格才统一</li>
+<li>截图带文字或透明区域时输出选 PNG，边缘不发虚</li>
+</ul>
+</div>
 
 <section class="localization-section">
 <h2>教程截图转图片：知识博主的实用工具</h2>
@@ -604,16 +599,14 @@
     <a href="/zh/tools/text-on-image" class="related-tool-card">
       <span class="tool-icon">✏️</span>
       <div class="tool-info">
-        <strong>Text on Image</strong>
-        <span class="tool-desc">Add annotations to screenshots</span>
+        <strong>图片加文字</strong><span class="tool-desc">给截图加标注说明</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>
     <a href="/zh/tools/watermark" class="related-tool-card">
       <span class="tool-icon">🔒</span>
       <div class="tool-info">
-        <strong>Watermark Tool</strong>
-        <span class="tool-desc">Add watermarks to screenshots</span>
+        <strong>图片水印</strong><span class="tool-desc">给截图加防盗水印</span>
       </div>
       <span class="tool-arrow">→</span>
     </a>

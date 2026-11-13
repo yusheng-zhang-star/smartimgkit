@@ -25,7 +25,10 @@
   <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/pdf-to-image">
   <link rel="alternate" hreflang="x-default" href="https://smartimgkit.com/tools/pdf-to-image">
   <link rel="stylesheet" href="/css/style.css?v=16">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
 {
   
@@ -261,11 +264,11 @@
       <div class="tool-workspace">
 <!-- Before/After Preview -->
         <div class="before-after-preview" id="beforeAfterPreview">
-          <div class="before-after-label">✨ See what this tool can do</div>
+          <div class="before-after-label">✨ 看看这个工具能做什么</div>
           <div class="before-after-images">
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">📄</span></div>
-              <div class="before-after-item-caption before">Before: PDF file</div>
+              <div class="before-after-item-caption before">原图: PDF file</div>
             </div>
         <div class="selling-points">
   <div class="sp-item"><span class="sp-icon">✅</span>将 PDF 页面转为高质量图片</div>
@@ -274,7 +277,7 @@
 </div>
             <div class="before-after-item">
               <div style="height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);"><span style="font-size:4rem;">🖼️</span></div>
-              <div class="before-after-item-caption after">After: PNG/JPG images</div>
+              <div class="before-after-item-caption after">处理后: PNG/JPG images</div>
             </div>
           </div>
         </div>
@@ -600,12 +603,27 @@
   </footer>
 
   <script src="/js/main.js?v=8"></script>
-  <script src="/js/pdf.min.js?v=3.11.174"></script>
+  <script>
+(function(){
+  var _p=null;
+  window.__pdfReady=function(){
+    if(_p) return _p;
+    _p=new Promise(function(resolve,reject){
+      var s=document.createElement('script');
+      s.src='/js/pdf.min.js?v=3.11.174';
+      s.onload=function(){ window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js'; resolve(window.pdfjsLib); };
+      s.onerror=function(){ _p=null; reject(new Error("pdf.js load failed")); };
+      document.head.appendChild(s);
+    });
+    return _p;
+  };
+  function kick(){ window.__pdfReady(); ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.removeEventListener(e,kick,true); }); }
+  ["click","touchstart","drop","change","dragover"].forEach(function(e){ document.addEventListener(e,kick,true); });
+})();
+</script>
   <script>
 (function() {
         // Set pdf.js worker source
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
-
         const dropzone = document.getElementById('dropzone');
         const fileInput = document.getElementById('fileInput');
         const controlsSection = document.getElementById('controlsSection');
@@ -664,7 +682,7 @@
 
         async function loadPDF(arrayBuffer) {
             try {
-                const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+                const loadingTask = (await window.__pdfReady()).getDocument({ data: arrayBuffer });
                 pdfDoc = await loadingTask.promise;
                 pageTo.placeholder = pdfDoc.numPages;
                 pdfInfo.innerHTML += ` &nbsp;|&nbsp; <strong>Pages:</strong> ${pdfDoc.numPages}`;
