@@ -51,7 +51,10 @@
 
   <link rel="stylesheet" href="../../css/style.css?v=16">
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 
   <script src="/js/jszip.min.js"></script>
 
@@ -88,17 +91,17 @@
 
   "@type": "HowTo",
 
-  "name": "How to use Batch Watermark & Protect",
+  "name": "批量水印与保护使用步骤",
 
   "step": [
 
-    {"@type": "HowToStep", "position": 1, "name": "Upload", "text": "Drop or select multiple images (JPG/PNG/WebP)."},
+    {"@type": "HowToStep", "position": 1, "name": "上传", "text": "拖放或选择多张图片（JPG/PNG/WebP）。"},
 
-    {"@type": "HowToStep", "position": 2, "name": "Configure", "text": "Add text or image watermark, adjust opacity, choose to strip EXIF."},
+    {"@type": "HowToStep", "position": 2, "name": "配置", "text": "添加文字或图片水印，调整透明度，并选择是否去除 EXIF。"},
 
-    {"@type": "HowToStep", "position": 3, "name": "Run", "text": "Click Run Pipeline to apply watermark and strip EXIF."},
+    {"@type": "HowToStep", "position": 3, "name": "运行", "text": "点击运行流水线，应用水印并去除 EXIF。"},
 
-    {"@type": "HowToStep", "position": 4, "name": "Download", "text": "Download a single ZIP containing all watermarked images."}
+    {"@type": "HowToStep", "position": 4, "name": "下载", "text": "下载一个 ZIP，内含所有已加水印的图片。"}
 
   ]
 
@@ -332,11 +335,11 @@
 
       <section class="how-to-section"><h2>使用方法</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>拖放图片</h4><p>选择多张图片（JPG/PNG/WebP）。单次最多 50 张。</p></div><div class="how-to-step"><div class="step-number">2</div><h4>配置 3 个步骤</h4><p>添加文字水印，可选上传 Logo 图片，并选择是否去除 EXIF。</p></div><div class="how-to-step"><div class="step-number">3</div><h4>运行流水线</h4><p>点击“运行流水线”应用水印、去除 EXIF 并打包。</p></div><div class="how-to-step"><div class="step-number">4</div><h4>下载 ZIP</h4><p>所有加水印的图片都打包到一个 ZIP，可即时下载。</p></div></div></section>
 
-      <div class="guide-block"><h3>此工作流的作用</h3><p>Batch Watermark & Protect runs 2-3 operations in sequence on every uploaded image: (1) add a text watermark with configurable opacity and color, (2) optionally overlay an image watermark (your logo), (3) optionally strip EXIF metadata for privacy and smaller file size. The result is one ZIP per run containing all watermarked images.</p></div>
+      <div class="guide-block"><h3>此工作流的作用</h3><p>批量水印与保护会对每张上传的图片依次执行 2–3 个操作：① 叠加可调透明度与颜色的文字水印；② 按需叠加图片水印（你的 Logo）；③ 按需去除 EXIF 元数据以保护隐私并减小体积。每次运行产出一个 ZIP，内含所有已加水印的图片。</p></div>
 
-      <div class="guide-block"><h3>文字水印与图片水印</h3><p><strong>文字水印</strong> is best for copyright notices (e.g. "© 2026 Your Name"). <strong>图片水印</strong> uses your own logo or brand image, overlaid at 20% of the width. You can use both at the same time for maximum protection.</p></div>
+      <div class="guide-block"><h3>文字水印与图片水印</h3><p><strong>文字水印</strong>最适合版权声明（如「© 2026 你的名字」）。<strong>图片水印</strong>使用你自己的 Logo 或品牌图，以宽度的 20% 叠加。两者可同时启用，获得最强保护。</p></div>
 
-      <div class="guide-block"><h3>EXIF 去除</h3><p>EXIF metadata includes camera model, GPS location, date/time, and software used. Stripping EXIF makes files smaller and protects your privacy — especially important if you share photos taken with a smartphone (which may include GPS data).</p></div>
+      <div class="guide-block"><h3>EXIF 去除</h3><p>EXIF 元数据包含相机型号、GPS 位置、日期/时间以及所用软件。去除 EXIF 能让文件更小并保护隐私——尤其当你分享用手机拍摄、可能带 GPS 信息的照片时，这一点格外重要。</p></div>
 
       <div class="guide-block"><h3>最佳用例</h3><ul><li>在线分享前为一批照片添加版权保护</li><li>为商品照片添加品牌 Logo</li><li>发布图片前清理元数据</li><li>用您的版权批量处理客户照片</li></ul></div>
 
@@ -433,7 +436,7 @@
 
     const imageOnly = arr.filter(f => f.type.startsWith('image/'));
 
-    if (files.length + imageOnly.length > 50) { alert('Max 50 images per batch.'); return; }
+    if (files.length + imageOnly.length > 50) { alert('每批最多 50 张图片。'); return; }
 
     files = files.concat(imageOnly);
 
@@ -479,23 +482,23 @@
 
     if (wmText) {
 
-      steps.push({ id:'twm', label:'Text Watermark', runner:'textWatermark', options: { text: wmText, opacity, color:'#ffffff' } });
+      steps.push({ id:'twm', label:'文字水印', runner:'textWatermark', options: { text: wmText, opacity, color:'#ffffff' } });
 
     }
 
     if (logoBlob) {
 
-      steps.push({ id:'iwm', label:'Image Watermark', runner:'imageWatermark', options: { logoBlob, opacity:0.5 } });
+      steps.push({ id:'iwm', label:'图片水印', runner:'imageWatermark', options: { logoBlob, opacity:0.5 } });
 
     }
 
     if (stripExif) {
 
-      steps.push({ id:'exif', label:'Strip EXIF', runner:'stripExif', options: {} });
+      steps.push({ id:'exif', label:'去除 EXIF', runner:'stripExif', options: {} });
 
     }
 
-    if (!steps.length) { alert('Enable at least one step (text watermark, image watermark, or strip EXIF).'); return; }
+    if (!steps.length) { alert('请至少启用一个步骤（文字水印、图片水印或去除 EXIF）。'); return; }
 
     runBtn.disabled = true;
 
@@ -529,11 +532,11 @@
 
       await SmartImgKit.runners.exportZip(allOutputs, { filename: zipName }, () => {});
 
-      runBtn.textContent = '✓ Downloaded ' + allOutputs.length + ' files';
+      runBtn.textContent = '✓ 已下载 ' + allOutputs.length + ' 个文件';
 
     } catch (err) {
 
-      alert('Pipeline error: ' + err.message);
+      alert('流水线错误：' + err.message);
 
       runBtn.textContent = '🚀 运行流水线';
 
