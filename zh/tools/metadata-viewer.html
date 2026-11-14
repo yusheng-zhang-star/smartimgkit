@@ -203,6 +203,30 @@
         "@type": "Answer",
         "text": "微信聊天发送时一般会自动抹除部分 EXIF，但通过\"原图\"发送仍可能保留 GPS。发朋友圈前最好用本工具检查一下，有定位就先清除再发。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么有的照片一项都读不到？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "元数据在传播过程中会被反复清除：微信发图默认压缩并剥离、社交平台上传后重新编码、截图本身不带。文件里没有的数据，任何查看器都读不出来，这不是解析失败。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "GPS 能直接显示成地址吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能。工具只读取文件里存的经纬度原始值（度分秒或十进制），不做逆地理编码，所以拿不到街道名。要地址得把坐标贴到地图服务里查。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "下载的干净副本和原图一样清晰吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "像素尺寸一致，但副本是 canvas 重编码的 PNG，体积通常是原图数倍，色彩配置也不保留。只想删元数据又要小体积，用专门的 EXIF 清除工具，那边输出同样会变 PNG。"
+      }
     }
   ]
 }
@@ -268,7 +292,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>📋 图片 EXIF 信息查看</span></nav>
       <div class="tool-page-header">
         <h1>📋 元数据查看器</h1>
-        <p>查看图片中的隐藏元数据：EXIF、相机参数、GPS 位置、IPTC 和 XMP。100% 浏览器本地处理。</p>
+        <p class="answer-lead">把图片里的隐藏信息摊开看：EXIF（机型、镜头、光圈快门、ISO、拍摄时间）、GPS 坐标、IPTC 说明、XMP 扩展，逐项列成表格，可以导出成 JSON 归档，也能下载一份清空元数据的副本（副本走 canvas 重编码，体积会变大）。一次查看一张，图片不上传。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">JPG / PNG / WebP 进，JSON 或图片出</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地解析</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">元数据表 + JSON + 干净副本</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>想确认什么、能看到什么</h2>
+          <table>
+            <thead><tr><th>你想知道的事</th><th>能看到什么</th><th>看不到的原因</th></tr></thead>
+            <tbody>
+              <tr><td>这张照片是不是原图</td><td>机型、镜头、拍摄时间是否成套一致</td><td>微信、微博转发时元数据已被清掉</td></tr>
+              <tr><td>照片在哪拍的</td><td>有 GPS 就显示经纬度，精确到米级</td><td>截图、平台转存的图通常没有 GPS</td></tr>
+              <tr><td>图里有没有隐藏文字</td><td>IPTC 与 XMP 里的作者、版权、描述</td><td>只有专业软件写入过才有</td></tr>
+              <tr><td>想学拍摄参数</td><td>光圈、快门、ISO、焦距一应俱全</td><td>手机计算摄影的参数参考价值有限</td></tr>
+              <tr><td>要把元数据删干净</td><td>下载副本会重编码，EXIF 与 GPS 都不带</td><td>想保留画质用专门的 EXIF 清除工具</td></tr>
+              <tr><td>想批量检查一批图</td><td>一次一张，没有队列</td><td>批量请用批量元数据工具</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Upload -->
@@ -421,6 +466,9 @@
 <div class="faq-item"><button class="faq-question">可以一次处理多张图片吗？</button><div class="faq-answer">本工具一次查看一张图片的详细信息。需要批量清除元数据时，可以查看后逐张下载干净副本，或配合批量处理工具使用。</div></div>
 <div class="faq-item"><button class="faq-question">照片里的 GPS 位置会暴露我家地址吗？</button><div class="faq-answer">会。手机原图通常带有精确到几米的 GPS 坐标，直接发到淘宝、拼多多买家群或朋友圈，别人就能顺出拍摄位置。分享前建议先用本工具导出无 GPS 的干净图。</div></div>
 <div class="faq-item"><button class="faq-question">微信发图片会把定位一起发出去吗？</button><div class="faq-answer">微信聊天发送时一般会自动抹除部分 EXIF，但通过"原图"发送仍可能保留 GPS。发朋友圈前最好用本工具检查一下，有定位就先清除再发。</div></div>
+              <div class="faq-item"><button class="faq-question">为什么有的照片一项都读不到？</button><div class="faq-answer">元数据在传播过程中会被反复清除：微信发图默认压缩并剥离、社交平台上传后重新编码、截图本身不带。文件里没有的数据，任何查看器都读不出来，这不是解析失败。</div></div>
+        <div class="faq-item"><button class="faq-question">GPS 能直接显示成地址吗？</button><div class="faq-answer">不能。工具只读取文件里存的经纬度原始值（度分秒或十进制），不做逆地理编码，所以拿不到街道名。要地址得把坐标贴到地图服务里查。</div></div>
+        <div class="faq-item"><button class="faq-question">下载的干净副本和原图一样清晰吗？</button><div class="faq-answer">像素尺寸一致，但副本是 canvas 重编码的 PNG，体积通常是原图数倍，色彩配置也不保留。只想删元数据又要小体积，用专门的 EXIF 清除工具，那边输出同样会变 PNG。</div></div>
       </section>
 
 <section class="related-tools">

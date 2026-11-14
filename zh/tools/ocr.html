@@ -170,6 +170,30 @@
         "@type": "Answer",
         "text": "可以。先在微信里把图片保存到手机或电脑，再上传到本工具识别。注意微信会压缩图片，重要资料建议通过\"文件\"方式接收原图，识别效果更好。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "语言包有多大、要下几次？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "每种语言的数据包几十 MB，第一次选该语言时从 CDN 下载，之后走浏览器缓存。断网环境下第一次识别会失败，已经缓存过的语言仍可离线用。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "识别出来的换行能保留吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "按识别到的文本行输出，行内换行保留，但段落之间的空行和缩进会丢。粘到 Word 或公众号后台后需要重新分段，长文建议先粘到记事本过一遍。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "置信度百分比代表什么？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "那是 Tesseract 对整页识别结果的平均置信度，不是准确率保证。80% 以上通常可用，60% 以下说明图像质量或语言选错了，换图重试比逐字校对更省时间。"
+      }
     }
   ]
 }
@@ -235,7 +259,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🔍 图片文字识别</span></nav>
       <div class="tool-page-header">
         <h1>🔍 OCR 文字识别</h1>
-        <p></p>
+        <p class="answer-lead">用 Tesseract.js 在浏览器里跑文字识别，图片不出设备，可选 13 种语言：英语、简体中文、繁体中文、日语、韩语、法语、德语、西班牙语、葡萄牙语、俄语、阿拉伯语、印地语、意大利语，结果输出纯文本并可下载成 txt。没有版面还原，表格和分栏会串行；手写、竖排、艺术字基本识别不出来。首次识别要从 CDN 下载对应语言包。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无次数限制</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">JPG / PNG / WebP 进，TXT 出</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，仅首下语言包</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">纯文本，13 种语言可选</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>什么样的图能识别、什么样的不行</h2>
+          <table>
+            <thead><tr><th>图片来源</th><th>识别表现</th><th>建议</th></tr></thead>
+            <tbody>
+              <tr><td>截图、300dpi 扫描件</td><td>印刷体较稳，段落顺序基本正确</td><td>最理想的输入，直接用</td></tr>
+              <tr><td>手机拍的纸质文件</td><td>阴影和透视变形让错字明显增多</td><td>先裁正、调亮、提高对比度再识别</td></tr>
+              <tr><td>手写笔记、连笔字</td><td>几乎不可用，成段乱码</td><td>不要指望，手写另找方案</td></tr>
+              <tr><td>竖排中文、艺术字标题</td><td>字序被打乱，偏旁错认</td><td>古籍、海报识别价值很低</td></tr>
+              <tr><td>带表格的报表</td><td>只输出文字流，行列结构全丢</td><td>要表格结构得用专门的表格识别</td></tr>
+              <tr><td>一次十几张图</td><td>一次一张，换图要重新跑识别</td><td>批量识别建议用桌面端工具</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <div class="upload-area" id="uploadArea">
@@ -402,6 +447,9 @@
   <div class="faq-item"><button class="faq-question">识别效果不理想怎么办？</button><div class="faq-answer">建议换一张更清晰、文字更端正、对比度更高的图片，并选对识别语言。识别结果可直接在文本框里手动修改后再复制或下载。</div></div>
   <div class="faq-item"><button class="faq-question">手机相册里的截图能不能直接识别文字？</button><div class="faq-answer">可以。把手机相册里的聊天截图、网页截图、票据截图直接上传即可识别，单张图片建议控制在 10 MB 以内，截图越清晰识别越准。</div></div>
   <div class="faq-item"><button class="faq-question">微信收到的图片能直接提取文字吗？</button><div class="faq-answer">可以。先在微信里把图片保存到手机或电脑，再上传到本工具识别。注意微信会压缩图片，重要资料建议通过"文件"方式接收原图，识别效果更好。</div></div>
+              <div class="faq-item"><button class="faq-question">语言包有多大、要下几次？</button><div class="faq-answer">每种语言的数据包几十 MB，第一次选该语言时从 CDN 下载，之后走浏览器缓存。断网环境下第一次识别会失败，已经缓存过的语言仍可离线用。</div></div>
+        <div class="faq-item"><button class="faq-question">识别出来的换行能保留吗？</button><div class="faq-answer">按识别到的文本行输出，行内换行保留，但段落之间的空行和缩进会丢。粘到 Word 或公众号后台后需要重新分段，长文建议先粘到记事本过一遍。</div></div>
+        <div class="faq-item"><button class="faq-question">置信度百分比代表什么？</button><div class="faq-answer">那是 Tesseract 对整页识别结果的平均置信度，不是准确率保证。80% 以上通常可用，60% 以下说明图像质量或语言选错了，换图重试比逐字校对更省时间。</div></div>
       </section>
 
 <section class="localization-section" style="max-width:800px;margin:40px auto;padding:0 20px;">

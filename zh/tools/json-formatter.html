@@ -161,7 +161,7 @@
       "name": "这些工具生产环境够用吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "够用——遵循标准规范（RFC 3986、JSON 规范等）。"
+        "text": "只解决格式化和语法校验，等价于浏览器里的 JSON.parse 与 stringify，和语言自带实现结果一致。生产环境还要校验字段类型、必填项、取值范围，那些得靠 JSON Schema，这里不管。"
       }
     },
     {
@@ -170,6 +170,30 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "不会。全部在浏览器内处理，关闭标签页即丢弃。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "格式化会改变数据本身吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不会。流程是先 JSON.parse 成对象再 JSON.stringify 回字符串，键的顺序按插入顺序保留，数值精度在 IEEE 754 范围内不变。唯一的风险是超出安全整数范围的大整数（超过 2^53）会丢精度，这种 ID 要先当字符串处理。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么合法的 JSON 也报错？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "最常见的是三种：从文档里复制带上了全角引号或中文逗号、末尾多了逗号、用了注释。错误提示里会带位置信息，按位置往前看一两个字符通常就能找到问题。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "能只压缩不校验吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "压缩和校验其实是同一套解析过程：压缩必须先 parse 成功才能 stringify，所以非法 JSON 无法被压缩出来。想要容错处理，得用支持 JSON5 或 JSONC 的解析器。"
       }
     }
   ]
@@ -234,7 +258,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🔧 JSON 格式化</span></nav>
       <div class="tool-page-header">
         <h1>📋 JSON 格式化</h1>
-        <p>JSON 格式化、校验、压缩与美化——免费，在浏览器中完成。</p>
+        <p class="answer-lead">粘贴 JSON，点格式化按 2 或 4 个空格缩进重排，压缩按钮去掉所有空白，验证按钮只跑一次 JSON.parse 并指出出错位置。底层就是浏览器原生的 parse 和 stringify，所以只认标准 JSON：注释、单引号、尾随逗号一律报错，也没有按 key 排序或路径查询。纯文本处理，数据不上传、不写本地存储。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无次数限制</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">仅标准 JSON 文本</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，不落盘</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">2/4 空格缩进或压缩单行</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>输入什么、会得到什么：六种常见情况</h2>
+          <table>
+            <thead><tr><th>你的输入</th><th>工具的反应</th><th>怎么办</th></tr></thead>
+            <tbody>
+              <tr><td>带注释的配置文件</td><td>直接报错，JSON 标准不允许注释</td><td>先删注释，或换支持 JSON5 的编辑器</td></tr>
+              <tr><td>单引号字符串</td><td>报错 Unexpected token</td><td>全部换成双引号</td></tr>
+              <tr><td>最后一项带逗号</td><td>报错，尾随逗号不合法</td><td>删掉末项后的逗号</td></tr>
+              <tr><td>几 MB 的接口返回</td><td>能处理，但格式化后文本变长、页面会顿一下</td><td>超大文件改用命令行 jq</td></tr>
+              <tr><td>想按字母排 key</td><td>没有排序功能，顺序保持原样</td><td>排序要自己写脚本处理</td></tr>
+              <tr><td>中文和 emoji</td><td>原样保留，不转成 \u 转义</td><td>复制出去就能直接用</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -362,8 +407,11 @@
 </section>
 <section class="faq-section"><h2>常见问题</h2><div class="faq-item"><button class="faq-question">支持哪些 JSON 标准？</button><div class="faq-answer">只按标准 JSON（RFC 8259）解析。带注释的 JSON5、JSONC 不支持，粘贴进来会直接报语法错误，需要保留注释的话得先手动去掉。</div></div><div class="faq-item"><button class="faq-question">我的数据会被上传吗？</button><div class="faq-answer">不会，解析和格式化都在浏览器本地完成，配置文件不会离开设备。</div></div><div class="faq-item"><button class="faq-question">最大支持多大数据？</button><div class="faq-answer">建议 10MB 以内。再大的话浏览器解析会明显卡顿，超大文件改用命令行工具更合适。</div></div><div class="faq-item"><button class="faq-question">会校验 JSON 吗？</button><div class="faq-answer">是的——语法错误带行号高亮。</div></div>
 <div class="faq-item"><button class="faq-question">可压缩 JSON 吗？</button><div class="faq-answer">可以——在美化和压缩间切换。</div></div>
-<div class="faq-item"><button class="faq-question">这些工具生产环境够用吗？</button><div class="faq-answer">够用——遵循标准规范（RFC 3986、JSON 规范等）。</div></div>
+<div class="faq-item"><button class="faq-question">这些工具生产环境够用吗？</button><div class="faq-answer">只解决格式化和语法校验，等价于浏览器里的 JSON.parse 与 stringify，和语言自带实现结果一致。生产环境还要校验字段类型、必填项、取值范围，那些得靠 JSON Schema，这里不管。</div></div>
 <div class="faq-item"><button class="faq-question">输入会被存储吗？</button><div class="faq-answer">不会。全部在浏览器内处理，关闭标签页即丢弃。</div></div>
+              <div class="faq-item"><button class="faq-question">格式化会改变数据本身吗？</button><div class="faq-answer">不会。流程是先 JSON.parse 成对象再 JSON.stringify 回字符串，键的顺序按插入顺序保留，数值精度在 IEEE 754 范围内不变。唯一的风险是超出安全整数范围的大整数（超过 2^53）会丢精度，这种 ID 要先当字符串处理。</div></div>
+        <div class="faq-item"><button class="faq-question">为什么合法的 JSON 也报错？</button><div class="faq-answer">最常见的是三种：从文档里复制带上了全角引号或中文逗号、末尾多了逗号、用了注释。错误提示里会带位置信息，按位置往前看一两个字符通常就能找到问题。</div></div>
+        <div class="faq-item"><button class="faq-question">能只压缩不校验吗？</button><div class="faq-answer">压缩和校验其实是同一套解析过程：压缩必须先 parse 成功才能 stringify，所以非法 JSON 无法被压缩出来。想要容错处理，得用支持 JSON5 或 JSONC 的解析器。</div></div>
       </section>
 <section class="related-tools"><h2>你可能还喜欢</h2><div class="related-tools-grid"><a href="/zh/tools/url-encoder" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>URL Encoder</strong><span class="tool-desc">URL 编码/解码</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/base64" class="related-tool-card"><span class="tool-icon">🔐</span><div class="tool-info"><strong>Base64 Converter</strong><span class="tool-desc">Base64 编码/解码</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/regex-tester" class="related-tool-card"><span class="tool-icon">🔍</span><div class="tool-info"><strong>Regex Tester</strong><span class="tool-desc">正则表达式测试</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
