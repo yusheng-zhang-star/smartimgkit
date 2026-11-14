@@ -132,6 +132,30 @@
         "@type": "Answer",
         "text": "先用「一键增强」自动提亮，再把对比度拉高 15 到 25、饱和度加 20 左右，商品颜色立刻鲜亮。白底主图记得别加饱和过度，调完再用压缩工具压到 3MB 以内上传。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "一键增强用的是什么算法？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "没有模型。预设就是一组数值：亮度 +15、对比 +20、饱和 +10、锐化 30 这类固定组合，套上去之后仍然走 Canvas 滤镜和卷积。所以它对构图、主体、光线方向一概不知，逆光人像和过曝照片都可能越调越糟。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么锐化拉满以后更难看？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "锐化是 3×3 的拉普拉斯核，强度 100 时相当于把边缘对比放大几倍，同时把 JPEG 压缩噪点也一起放大，边缘出现白边光晕。商品图、文字截图用 20–40，人像建议 0–20。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "导出是 PNG 会不会太大？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "会。PNG 无损，一张 4000×3000 的照片轻松几十 MB，上传到有体积限制的平台会被拒。需要小体积时导出来后用图片压缩工具转成 JPEG，再上传。"
+      }
     }
   ]
 }
@@ -183,7 +207,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>✨ 图片美化</span></nav>
       <div class="tool-page-header">
         <h1>✨ 图片美化与增强</h1>
-        <p>免费在线调节照片亮度、对比度、饱和度与锐化，人像、风景一键预设自动调色，全程浏览器本地处理，照片不上传服务器。</p>
+        <p class="answer-lead">六个滑块加六个预设：亮度、对比度、饱和度、曝光、高光都取 −100 到 +100，锐化 0–100，锐化是真在跑 3×3 卷积核，高光按分区单独处理，预览实时，导出原尺寸 PNG。没有 AI 场景识别——一键增强只是把一组固定参数套上去，人像、风景、暖冷色调也都是预设组合，一次处理一张。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">常见图片进，PNG 出</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地计算</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">PNG，原尺寸</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>预设与滑块的真实效果对照</h2>
+          <table>
+            <thead><tr><th>你的操作</th><th>实际发生什么</th><th>适合什么图</th></tr></thead>
+            <tbody>
+              <tr><td>一键增强</td><td>提亮加对比再加一点锐化，参数固定</td><td>曝光不足、发灰的随手拍</td></tr>
+              <tr><td>人像优化</td><td>压对比、提亮，肤色变白但细节容易糊</td><td>脸部占比大时不要再叠锐化</td></tr>
+              <tr><td>风景增强</td><td>饱和度与对比一起推高，天空最容易过曝</td><td>先把曝光降一点再套预设</td></tr>
+              <tr><td>锐化推到 100</td><td>3×3 卷积全开，边缘出白边、噪点被放大</td><td>商品图 20–40 就够用</td></tr>
+              <tr><td>高光往负方向</td><td>压暗高光区，纯白底会变灰</td><td>白底商品图别碰这个滑块</td></tr>
+              <tr><td>连续点不同预设</td><td>每次都从原图重新算，不累积</td><td>可以放心来回切</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Upload + Preview -->
@@ -314,6 +359,9 @@
   <div class="faq-item"><button class="faq-question">我的照片会上传到网站服务器吗？</button><div class="faq-answer">不会。整个美化过程都在你的手机或电脑浏览器本地完成，照片文件从不离开设备。处理私人生活照、证件照、合同截图时完全不用担心隐私泄露。</div></div>
   <div class="faq-item"><button class="faq-question">手机浏览器能用吗？苹果和安卓都支持吗？</button><div class="faq-answer">可以。这是纯网页工具，微信、Safari、Chrome、夸克等手机浏览器直接打开就能拖入照片调节，不用装应用。安卓和 iPhone 都能用，调节完点下载即可存回相册。</div></div>
   <div class="faq-item"><button class="faq-question">淘宝商品图拍出来偏暗偏灰怎么调？</button><div class="faq-answer">先用「一键增强」自动提亮，再把对比度拉高 15 到 25、饱和度加 20 左右，商品颜色立刻鲜亮。白底主图记得别加饱和过度，调完再用压缩工具压到 3MB 以内上传。</div></div>
+              <div class="faq-item"><button class="faq-question">一键增强用的是什么算法？</button><div class="faq-answer">没有模型。预设就是一组数值：亮度 +15、对比 +20、饱和 +10、锐化 30 这类固定组合，套上去之后仍然走 Canvas 滤镜和卷积。所以它对构图、主体、光线方向一概不知，逆光人像和过曝照片都可能越调越糟。</div></div>
+        <div class="faq-item"><button class="faq-question">为什么锐化拉满以后更难看？</button><div class="faq-answer">锐化是 3×3 的拉普拉斯核，强度 100 时相当于把边缘对比放大几倍，同时把 JPEG 压缩噪点也一起放大，边缘出现白边光晕。商品图、文字截图用 20–40，人像建议 0–20。</div></div>
+        <div class="faq-item"><button class="faq-question">导出是 PNG 会不会太大？</button><div class="faq-answer">会。PNG 无损，一张 4000×3000 的照片轻松几十 MB，上传到有体积限制的平台会被拒。需要小体积时导出来后用图片压缩工具转成 JPEG，再上传。</div></div>
       </section>
 
 <section class="localization-section" style="max-width:800px;margin:40px auto;padding:0 20px;">

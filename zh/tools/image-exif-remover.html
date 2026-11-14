@@ -125,7 +125,7 @@
       "name": "影响画质吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "不会——仅移除元数据，像素不变。"
+        "text": "像素值不变，但文件一定变大。流程是解码像素后用 PNG 无损重写，画质不掉；原图 3MB 的手机照转出来常在 15MB 以上，发原图前留意平台的大小限制。"
       }
     },
     {
@@ -133,7 +133,7 @@
       "name": "分析准确吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "准确——工具使用标准算法和解析器，结果可靠。"
+        "text": "这里没有分析环节：它按 JPEG 段结构逐段走，遇到 APP1 段直接跳过不写，其余段照抄到 SOS 之后结束。清得干不干净取决于最终重编码——PNG 写出时所有 JPEG 段都不会带过去。"
       }
     },
     {
@@ -141,7 +141,31 @@
       "name": "可以处理多个文件吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "可以——在适用时支持批量分析。"
+        "text": "不能，一次只处理一张。批量清 EXIF 请用本站的批量元数据工具，那边可以一次丢多张。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "清完的图还能恢复 GPS 吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能。原始坐标只存在于被跳过的 APP1 段里，输出文件是重新编码的 PNG，根本没有那段数据，也没有备份。所以清之前如果需要留档，先把原图另存一份。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "PNG 会不会也被读出拍摄信息？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不会。PNG 里没有 EXIF 段可写，工具输出的又是 canvas 重编码结果，连文本块都不带。需要注意的是文件系统层面的创建时间不在图片里，那个信息只有原文件才有。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么处理时间比想象中长？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "大图要在浏览器里完整解码、再编码成 PNG，4000×3000 的照片 PNG 编码本身就要一两秒。处理期间别关标签页，编码完成前下载按钮不会出现。"
       }
     }
   ]
@@ -208,7 +232,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🗑️ 清除 EXIF</span></nav>
       <div class="tool-page-header">
         <h1>🚫 EXIF 清除</h1>
-        <p>一键抹掉图片中的隐藏元数据（EXIF），保护你的位置与隐私。全部在浏览器中完成。</p>
+        <p class="answer-lead">逐段扫描 JPEG 结构，跳过 APP1（EXIF）段，再用 canvas 重写成 PNG：GPS 坐标、拍摄时间、手机型号、镜头参数都不会出现在输出里。因为最终产物是重编码的 PNG，像素不掉但体积通常是原图的三到十倍；JPEG 里带的 ICC 色彩配置和 IPTC 说明也一并不保留。一次一张，照片不上传。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无数量限制</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">JPG 进，PNG 出</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地解析</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">PNG，体积约为原图数倍</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>不同来源的照片，清完之后是什么样</h2>
+          <table>
+            <thead><tr><th>照片来源</th><th>清理结果</th><th>建议</th></tr></thead>
+            <tbody>
+              <tr><td>手机直出 JPEG</td><td>GPS、机型、拍摄时间全消失，文件变成 PNG 且大数倍</td><td>发原图到闲鱼、招聘网站前先清一遍</td></tr>
+              <tr><td>微信、微博存下来的图</td><td>平台多半已经擦过一轮，可能本来就没有 EXIF</td><td>再清一次没有副作用</td></tr>
+              <tr><td>带色彩配置的专业照片</td><td>ICC 不保留，颜色可能变淡或偏</td><td>色彩要求高就用专业元数据工具</td></tr>
+              <tr><td>只改文件名</td><td>文件名不带信息，EXIF 才带</td><td>必须重新保存一份文件</td></tr>
+              <tr><td>手机截图</td><td>截图本来就没有 EXIF，处理前后几乎一样</td><td>PNG 进 PNG 出，体积接近</td></tr>
+              <tr><td>一次十张照片</td><td>一次一张，没有队列</td><td>改用批量 EXIF 清除工具</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <div class="before-after-preview" id="beforeAfterPreview">
@@ -366,9 +411,12 @@
         <div class="faq-item"><button class="faq-question">能一次清除多张图片的 EXIF 吗？</button><div class="faq-answer">这个页面一次处理一张。要批量的话走批量处理工具，它重存文件时会一并去掉元数据；张数多的时候比一张张点快得多。</div></div>
         <div class="faq-item"><button class="faq-question">输出一定是 PNG 吗？</button><div class="faq-answer">是。PNG 不会重新写入元数据，能保证清干净。如果对方只收 JPEG，下载后再用转换工具转一次即可，转的过程中也不会把 EXIF 带回来。</div></div>
       <div class="faq-item"><button class="faq-question">移除哪些元数据？</button><div class="faq-answer">EXIF 字段含 GPS、相机信息、时间戳。</div></div>
-<div class="faq-item"><button class="faq-question">影响画质吗？</button><div class="faq-answer">不会——仅移除元数据，像素不变。</div></div>
-<div class="faq-item"><button class="faq-question">分析准确吗？</button><div class="faq-answer">准确——工具使用标准算法和解析器，结果可靠。</div></div>
-<div class="faq-item"><button class="faq-question">可以处理多个文件吗？</button><div class="faq-answer">可以——在适用时支持批量分析。</div></div>
+<div class="faq-item"><button class="faq-question">影响画质吗？</button><div class="faq-answer">像素值不变，但文件一定变大。流程是解码像素后用 PNG 无损重写，画质不掉；原图 3MB 的手机照转出来常在 15MB 以上，发原图前留意平台的大小限制。</div></div>
+<div class="faq-item"><button class="faq-question">分析准确吗？</button><div class="faq-answer">这里没有分析环节：它按 JPEG 段结构逐段走，遇到 APP1 段直接跳过不写，其余段照抄到 SOS 之后结束。清得干不干净取决于最终重编码——PNG 写出时所有 JPEG 段都不会带过去。</div></div>
+<div class="faq-item"><button class="faq-question">可以处理多个文件吗？</button><div class="faq-answer">不能，一次只处理一张。批量清 EXIF 请用本站的批量元数据工具，那边可以一次丢多张。</div></div>
+              <div class="faq-item"><button class="faq-question">清完的图还能恢复 GPS 吗？</button><div class="faq-answer">不能。原始坐标只存在于被跳过的 APP1 段里，输出文件是重新编码的 PNG，根本没有那段数据，也没有备份。所以清之前如果需要留档，先把原图另存一份。</div></div>
+        <div class="faq-item"><button class="faq-question">PNG 会不会也被读出拍摄信息？</button><div class="faq-answer">不会。PNG 里没有 EXIF 段可写，工具输出的又是 canvas 重编码结果，连文本块都不带。需要注意的是文件系统层面的创建时间不在图片里，那个信息只有原文件才有。</div></div>
+        <div class="faq-item"><button class="faq-question">为什么处理时间比想象中长？</button><div class="faq-answer">大图要在浏览器里完整解码、再编码成 PNG，4000×3000 的照片 PNG 编码本身就要一两秒。处理期间别关标签页，编码完成前下载按钮不会出现。</div></div>
       </section>
 
 <section class="related-tools">

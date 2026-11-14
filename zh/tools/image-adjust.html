@@ -151,6 +151,30 @@
         "@type": "Answer",
         "text": "支持 JPG、PNG、WebP 等常见格式。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么导出只能是 JPEG？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "下载分支写死了 image/jpeg 和 0.92 质量，没有格式选择。好处是体积小、到处都能打开；代价是每次导出都会做一次有损压缩，同一张图反复调、反复导出，画质会一层层往下掉。要无损请用在导出处可选 PNG 的滤镜工具。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "调完能撤销回上一步吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能，没有历史栈。滑块是连续值，往回拖就是撤销，但没法回到某个中间状态。想保留一个版本就先导出一份再继续调。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "预览和导出会不一样吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "预览和导出走的是同一套 Canvas 滤镜，参数一致就不会有偏差。差异通常来自显示环节：预览被缩放到窗口宽度、屏幕色彩配置不同、或者看图软件自己做了锐化。判断效果时把预览缩放到 100% 再看。"
+      }
     }
   ]
 }
@@ -216,7 +240,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🎚️ 图片调整ment Tool</span></nav>
       <div class="tool-page-header">
         <h1>🎨 图像调整</h1>
-        <p>实时预览调节图片亮度、对比度和饱和度。全部在浏览器中处理。</p>
+        <p class="answer-lead">三个滑块调亮度（0–200%）、对比度（0–200%）、饱和度（0–300%），Canvas 滤镜实时重画预览，导出固定为 JPEG、质量 0.92、原尺寸。都是全局线性滤镜：没有曲线、没有分通道、没有局部蒙版，也没有历史记录，改坏了只能把滑块拖回 100。照片不上传，一次处理一张。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">常见图片进，JPEG 出</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地滤镜</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">JPEG 0.92，原尺寸</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>滑块推到哪儿会坏事：六个具体判断</h2>
+          <table>
+            <thead><tr><th>你的操作</th><th>画面会发生什么</th><th>建议</th></tr></thead>
+            <tbody>
+              <tr><td>亮度推到 150% 以上</td><td>高光直接死白，暗部堆噪点，细节救不回来</td><td>提亮停在 120–130 之间</td></tr>
+              <tr><td>饱和度拉到 300%</td><td>红色绿色溢色，人脸变橘，JPEG 压缩后出现彩边</td><td>商品图 110–130 就足够</td></tr>
+              <tr><td>三个滑块都在 100</td><td>等于原图，但导出仍是 JPEG 0.92 重编码，会掉一点点</td><td>不改就别导出</td></tr>
+              <tr><td>想调曲线或单通道</td><td>只有三个全局滤镜，通道、曲线、色温都没有</td><td>换桌面修图软件</td></tr>
+              <tr><td>十张商品图统一调</td><td>一次一张，参数不跟着文件保存</td><td>记下数值逐张套，最后一起导出</td></tr>
+              <tr><td>屏幕看和成品不一样</td><td>浏览器不读原图 ICC，导出写的是 sRGB</td><td>出稿前在目标设备上再看一遍</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <div class="before-after-preview" id="beforeAfterPreview">
@@ -428,6 +473,9 @@
 <div class="faq-item"><button class="faq-question">可以重置调节吗？</button><div class="faq-answer">可以——一键重置为原图。</div></div>
 <div class="faq-item"><button class="faq-question">编辑可撤销吗？</button><div class="faq-answer">可以——下载前随时重置为原图。源文件不受影响。</div></div>
 <div class="faq-item"><button class="faq-question">所有图片格式都支持吗？</button><div class="faq-answer">支持 JPG、PNG、WebP 等常见格式。</div></div>
+              <div class="faq-item"><button class="faq-question">为什么导出只能是 JPEG？</button><div class="faq-answer">下载分支写死了 image/jpeg 和 0.92 质量，没有格式选择。好处是体积小、到处都能打开；代价是每次导出都会做一次有损压缩，同一张图反复调、反复导出，画质会一层层往下掉。要无损请用在导出处可选 PNG 的滤镜工具。</div></div>
+        <div class="faq-item"><button class="faq-question">调完能撤销回上一步吗？</button><div class="faq-answer">不能，没有历史栈。滑块是连续值，往回拖就是撤销，但没法回到某个中间状态。想保留一个版本就先导出一份再继续调。</div></div>
+        <div class="faq-item"><button class="faq-question">预览和导出会不一样吗？</button><div class="faq-answer">预览和导出走的是同一套 Canvas 滤镜，参数一致就不会有偏差。差异通常来自显示环节：预览被缩放到窗口宽度、屏幕色彩配置不同、或者看图软件自己做了锐化。判断效果时把预览缩放到 100% 再看。</div></div>
       </section>
 
 <section class="related-tools">

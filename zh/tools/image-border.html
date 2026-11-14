@@ -94,7 +94,7 @@
       "name": "导出的是什么格式？圆角是透明的吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "默认导出 PNG，圆角区域是透明的，贴在任何颜色的背景上都不会露出白方块。需要 JPG 的话，下载后再用格式转换工具转一次即可。"
+        "text": "默认导出 PNG，但圆角区域不透明——画布先整幅填上底色（默认 #ffffff），圆角只是把照片裁成圆角矩形贴在上面。所以贴到深色背景上会看到白色圆角块，想要真透明得换工具。需要 JPG 的话，下载后再转换一次。"
       }
     },
     {
@@ -110,7 +110,7 @@
       "name": "边框会盖住原图内容吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "不会。边框画在原图外围，原图内容完整保留，只是四周多了一圈彩色边。拉边框宽度时图片会等比内缩，不会裁切到主体。"
+        "text": "会改变构图。画布尺寸不扩大，边框是画在画面内侧的圆角矩形，照片被等比缩进内框绘制，所以边宽 50 时整张图只剩中间一小块。好处是不裁切主体，坏处是原图被缩小、细节变少。"
       }
     },
     {
@@ -127,6 +127,30 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "颜色在取色器里任选，十六进制色值都能填；边框宽度从 0 到 50 像素连续可调。商品白边主图推荐白色、8 到 15 像素，效果最干净。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "圆角最大能到多少？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "滑块上限 50%，正好等于短边的一半，所以正方形照片会变成正圆，长方形照片会变成椭圆。圆角半径同时要减掉边宽，边宽 20、圆角 50% 时内框的圆角其实更小，看起来会比预期方一点。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "边框宽度是按百分比还是像素？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "像素，0 到 50 连续可调，与图片尺寸无关。这意味着同一组参数用在 4000px 的大图和 400px 的小图上，视觉粗细差十倍——批量做图时得按实际尺寸换算。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "底色什么时候看得见？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "只有圆角把角切掉的地方。圆角为 0 时整幅画面都被照片和边框占满，底色几乎不可见；圆角 50% 做圆形头像时，四角露出的就是底色，这也是头像必须选白底或浅底色的原因。"
       }
     }
   ]
@@ -193,7 +217,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>⬜ 图片加边框</span></nav>
       <div class="tool-page-header">
         <h1>⬜ 图片加边框与圆角</h1>
-        <p>免费在线给照片加自定义边框和圆角，可一键生成圆形头像、商品白边主图，全程浏览器本地处理，照片不上传服务器。</p>
+        <p class="answer-lead">给图片加边框和圆角：边宽 0–50 像素，圆角 0–50%（按短边算），边框色和底色各选一个颜色，输出 PNG。边框画在画面内侧——画布保持原尺寸，图片等比缩进内框，所以边宽越大图越小；圆角以外的区域填的是底色而不是透明，默认白底。圆角拉到 50% 正好是正圆，可以直接当头像。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">常见图片进，PNG 出</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地绘制</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">PNG，画布同原尺寸</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>用途决定参数：六种场景的具体取值</h2>
+          <table>
+            <thead><tr><th>用在什么地方</th><th>参数怎么配</th><th>注意什么</th></tr></thead>
+            <tbody>
+              <tr><td>微信、公众号头像</td><td>圆角 50%，边宽 0，底色选纯白或透明需求色</td><td>头像本身要方的，长方形会变椭圆</td></tr>
+              <tr><td>商品白边主图</td><td>边宽 8–15，底色白，圆角 0</td><td>边框向内吃尺寸，商品会被等比缩小</td></tr>
+              <tr><td>一圈彩色描边</td><td>边宽 10–30，边框色按品牌色取</td><td>画布不扩大，别指望边框长在图外面</td></tr>
+              <tr><td>细边框配大圆角</td><td>圆角 20% 以内配 5px 边框</td><td>圆角半径要减去边宽，否则内框更方</td></tr>
+              <tr><td>要透明背景的圆角图</td><td>做不到，圆角外填的是底色</td><td>需要真透明得用支持 alpha 的工具</td></tr>
+              <tr><td>边宽拉到 50</td><td>图片只剩中间一小块，等于加了极厚相框</td><td>边宽按像素算，小图尤其明显</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <div class="before-after-preview" id="beforeAfterPreview">
@@ -365,11 +410,14 @@
 
 <section class="faq-section">
         <h2>常见问题</h2>
-        <div class="faq-item"><button class="faq-question">导出的是什么格式？圆角是透明的吗？</button><div class="faq-answer">默认导出 PNG，圆角区域是透明的，贴在任何颜色的背景上都不会露出白方块。需要 JPG 的话，下载后再用格式转换工具转一次即可。</div></div>
+        <div class="faq-item"><button class="faq-question">导出的是什么格式？圆角是透明的吗？</button><div class="faq-answer">默认导出 PNG，但圆角区域不透明——画布先整幅填上底色（默认 #ffffff），圆角只是把照片裁成圆角矩形贴在上面。所以贴到深色背景上会看到白色圆角块，想要真透明得换工具。需要 JPG 的话，下载后再转换一次。</div></div>
         <div class="faq-item"><button class="faq-question">能一键做成圆形头像吗？</button><div class="faq-answer">可以。把圆角半径拉到 50%、边框宽度设 0，方形照片就会被裁成正圆形。微信头像、企业微信头像、社群头像这样做最省事，建议先用正方形照片。</div></div>
-        <div class="faq-item"><button class="faq-question">边框会盖住原图内容吗？</button><div class="faq-answer">不会。边框画在原图外围，原图内容完整保留，只是四周多了一圈彩色边。拉边框宽度时图片会等比内缩，不会裁切到主体。</div></div>
+        <div class="faq-item"><button class="faq-question">边框会盖住原图内容吗？</button><div class="faq-answer">会改变构图。画布尺寸不扩大，边框是画在画面内侧的圆角矩形，照片被等比缩进内框绘制，所以边宽 50 时整张图只剩中间一小块。好处是不裁切主体，坏处是原图被缩小、细节变少。</div></div>
         <div class="faq-item"><button class="faq-question">手机浏览器能用吗？我的照片会上传吗？</button><div class="faq-answer">全程在浏览器本地处理，照片不离开手机或电脑，微信、Safari、Chrome 都能直接打开使用。不用装应用、不用注册，处理完点下载存回相册。</div></div>
         <div class="faq-item"><button class="faq-question">支持哪些边框颜色和宽度？</button><div class="faq-answer">颜色在取色器里任选，十六进制色值都能填；边框宽度从 0 到 50 像素连续可调。商品白边主图推荐白色、8 到 15 像素，效果最干净。</div></div>
+              <div class="faq-item"><button class="faq-question">圆角最大能到多少？</button><div class="faq-answer">滑块上限 50%，正好等于短边的一半，所以正方形照片会变成正圆，长方形照片会变成椭圆。圆角半径同时要减掉边宽，边宽 20、圆角 50% 时内框的圆角其实更小，看起来会比预期方一点。</div></div>
+        <div class="faq-item"><button class="faq-question">边框宽度是按百分比还是像素？</button><div class="faq-answer">像素，0 到 50 连续可调，与图片尺寸无关。这意味着同一组参数用在 4000px 的大图和 400px 的小图上，视觉粗细差十倍——批量做图时得按实际尺寸换算。</div></div>
+        <div class="faq-item"><button class="faq-question">底色什么时候看得见？</button><div class="faq-answer">只有圆角把角切掉的地方。圆角为 0 时整幅画面都被照片和边框占满，底色几乎不可见；圆角 50% 做圆形头像时，四角露出的就是底色，这也是头像必须选白底或浅底色的原因。</div></div>
       </section>
 
 <section class="localization-section" style="max-width:800px;margin:40px auto;padding:0 20px;">

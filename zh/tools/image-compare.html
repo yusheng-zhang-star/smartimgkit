@@ -217,7 +217,7 @@
       "name": "差异如何显示？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "并排和叠加模式高亮差异。"
+        "text": "没有高亮。三种模式分别是左右分割、上下排列、半透明叠加，都只是把两张图摆在一起，工具不算像素差、不画差异边界，变化要靠眼睛找。"
       }
     },
     {
@@ -225,7 +225,7 @@
       "name": "支持像素级对比吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "是的——差异图显示变化像素。"
+        "text": "不是。两张图不会被逐像素相减，也不会生成差异图或相似度数值；尺寸不同时按各自比例摆进同一块画布，甚至不会自动对齐。要做像素级比对得用逐像素差分的专业工具。"
       }
     },
     {
@@ -233,7 +233,7 @@
       "name": "分析准确吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "准确——工具使用标准算法和解析器，结果可靠。"
+        "text": "谈不上准确与否：这里没有分析环节，工具只负责渲染显示，判断画质、噪点、色偏的是你的眼睛。前提是两边都缩放到 100% 再看，否则屏幕缩放会掩盖真实差异。"
       }
     },
     {
@@ -241,7 +241,31 @@
       "name": "可以处理多个文件吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "可以——在适用时支持批量分析。"
+        "text": "不能。一次只对比一组，A 图和 B 图各选一张，没有队列也不支持多组轮换；换图要重新选择，结果可以导出成一张 PNG 存档。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "两张图尺寸不同能对比吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "能摆在一起，但没法逐点对齐。工具按各自原始比例把两张图放进同一画布，不做缩放匹配、不做裁剪对齐，所以叠加模式下会看到明显的错位。要比对同一处细节，先用裁剪或缩放工具把两张图做成同尺寸。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "对比结果能导出吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "能。当前模式下的合成画面会导出成 comparison.png，包含分割线或叠加效果，适合发给同事确认改动。导出的是一张扁平图，原图两份不会被一起打包。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "支持 HEIC、TIFF 这类格式吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "看浏览器。工具用浏览器自带的解码能力，Chrome 和 Edge 通常能开 JPG、PNG、WebP、GIF、AVIF，HEIC 往往打不开，TIFF 基本不支持。遇到打不开就先转成 JPG 再进来。"
       }
     }
   ]
@@ -308,7 +332,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>📊 图片对比</span></nav>
       <div class="tool-page-header">
         <h1>🔍 图片对比</h1>
-        <p>用交互滑块、并排或叠加模式对比两张图片，适合修改前后对比与压缩质检。100% 浏览器本地处理。</p>
+        <p class="answer-lead">把两张图放在一起看：滑块模式左右分割、并排模式上下排列、叠加模式让 B 图半透明压在 A 图上，三种都只是摆放方式的差异，工具不做像素相减、不生成差异图、不给相似度分数。一次一组 A 加 B，对比画面可以导出成一张 PNG，图片不上传。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无限制</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">常见图片，导出 PNG</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地渲染</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">对比画面 PNG</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>三种模式各自能看出什么</h2>
+          <table>
+            <thead><tr><th>你想确认的事</th><th>该用哪种模式</th><th>看不到的部分</th></tr></thead>
+            <tbody>
+              <tr><td>压缩前后画质掉了多少</td><td>滑块模式，两边都缩放到 100%</td><td>并排容易把缩放差异当成画质差异</td></tr>
+              <tr><td>修图前后差在哪</td><td>滑块最直观，分割线随手拖</td><td>整体色调变化用叠加更明显</td></tr>
+              <tr><td>两张图是否对齐</td><td>叠加模式，看边缘是否重影</td><td>尺寸不同时不会自动对齐，要先统一</td></tr>
+              <tr><td>具体哪一块变了</td><td>没有差异高亮，只能靠眼睛扫</td><td>本工具不出热力图或差值百分比</td></tr>
+              <tr><td>手机上看对比</td><td>并排模式上下堆叠，竖着滑</td><td>叠加模式在手机上不好拖动</td></tr>
+              <tr><td>想留档给客户看</td><td>任意模式导出一张 PNG</td><td>导出的是拼好的画面，不含原图</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <div class="compare-layout">
@@ -491,10 +536,13 @@
       <div class="faq-item"><button class="faq-question">支持哪些图片格式？</button><div class="faq-answer">支持 JPG、PNG、WebP、GIF、BMP 输入，下载的对比图始终为 PNG 格式。</div></div>
       <div class="faq-item"><button class="faq-question">有文件大小限制吗？</button><div class="faq-answer">无硬性限制，但超大图片（宽超 5000px）渲染较慢。建议先缩小大图再对比。</div></div>
       <div class="faq-item"><button class="faq-question">可以用于商业项目吗？</button><div class="faq-answer">当然可以。输出图片可用于任何用途——个人或商业。</div></div>
-      <div class="faq-item"><button class="faq-question">差异如何显示？</button><div class="faq-answer">并排和叠加模式高亮差异。</div></div>
-<div class="faq-item"><button class="faq-question">支持像素级对比吗？</button><div class="faq-answer">是的——差异图显示变化像素。</div></div>
-<div class="faq-item"><button class="faq-question">分析准确吗？</button><div class="faq-answer">准确——工具使用标准算法和解析器，结果可靠。</div></div>
-<div class="faq-item"><button class="faq-question">可以处理多个文件吗？</button><div class="faq-answer">可以——在适用时支持批量分析。</div></div>
+      <div class="faq-item"><button class="faq-question">差异如何显示？</button><div class="faq-answer">没有高亮。三种模式分别是左右分割、上下排列、半透明叠加，都只是把两张图摆在一起，工具不算像素差、不画差异边界，变化要靠眼睛找。</div></div>
+<div class="faq-item"><button class="faq-question">支持像素级对比吗？</button><div class="faq-answer">不是。两张图不会被逐像素相减，也不会生成差异图或相似度数值；尺寸不同时按各自比例摆进同一块画布，甚至不会自动对齐。要做像素级比对得用逐像素差分的专业工具。</div></div>
+<div class="faq-item"><button class="faq-question">分析准确吗？</button><div class="faq-answer">谈不上准确与否：这里没有分析环节，工具只负责渲染显示，判断画质、噪点、色偏的是你的眼睛。前提是两边都缩放到 100% 再看，否则屏幕缩放会掩盖真实差异。</div></div>
+<div class="faq-item"><button class="faq-question">可以处理多个文件吗？</button><div class="faq-answer">不能。一次只对比一组，A 图和 B 图各选一张，没有队列也不支持多组轮换；换图要重新选择，结果可以导出成一张 PNG 存档。</div></div>
+              <div class="faq-item"><button class="faq-question">两张图尺寸不同能对比吗？</button><div class="faq-answer">能摆在一起，但没法逐点对齐。工具按各自原始比例把两张图放进同一画布，不做缩放匹配、不做裁剪对齐，所以叠加模式下会看到明显的错位。要比对同一处细节，先用裁剪或缩放工具把两张图做成同尺寸。</div></div>
+        <div class="faq-item"><button class="faq-question">对比结果能导出吗？</button><div class="faq-answer">能。当前模式下的合成画面会导出成 comparison.png，包含分割线或叠加效果，适合发给同事确认改动。导出的是一张扁平图，原图两份不会被一起打包。</div></div>
+        <div class="faq-item"><button class="faq-question">支持 HEIC、TIFF 这类格式吗？</button><div class="faq-answer">看浏览器。工具用浏览器自带的解码能力，Chrome 和 Edge 通常能开 JPG、PNG、WebP、GIF、AVIF，HEIC 往往打不开，TIFF 基本不支持。遇到打不开就先转成 JPG 再进来。</div></div>
       </section>
 
 <section class="related-tools">
