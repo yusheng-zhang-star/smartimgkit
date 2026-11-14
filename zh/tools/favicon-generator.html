@@ -142,7 +142,7 @@
       "name": "可以用自己的图片和字体吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "可以——上传自己的素材并使用内置字体选项。"
+        "text": "图片可以，字体不行。生成器只接受上传的图片文件，没有文字或 emoji 渲染功能，也没有字体选择项；想用文字做图标，先用制图工具排版好再导出 PNG。"
       }
     },
     {
@@ -151,6 +151,30 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "没有。下载内容干净无水印。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么 16px 的图标糊成一团？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "16×16 只有 256 个像素，任何细线、文字、渐变都会被抹平。做 favicon 时要按最小尺寸设计：一个大色块加一个极简轮廓，或者干脆只保留字母首字母。生成后把预览切到 16px 看，能认出来才算合格。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "生成的 ICO 内部是什么格式？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "标准 ICO 容器，每个尺寸里塞的是 PNG 数据（不是早期的 BMP），Windows Vista 之后的系统、macOS 和现代浏览器都能正确读取。很老的 IE 只认 BMP 版本，现在基本不用考虑。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "能加圆角、底色或留白吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能。这里只做等比缩放和格式打包，画布铺满原图。要圆角或纯色底，得先在制图软件里做好再上传；需要这些参数的是本站的 ICO 图标生成器，那边有留白和圆角滑块。"
       }
     }
   ]
@@ -217,7 +241,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>Favicon 生成器</span></nav>
       <div class="tool-page-header">
         <h1>⭐ Favicon 生成器</h1>
-        <p></p>
+        <p class="answer-lead">上传一张图，一次生成 16、32、48、64、128、256、512 七个尺寸的 PNG，同时打一个内含多尺寸 PNG 的 favicon.ico，并给出可直接粘贴的 link 标签和 site.webmanifest 代码。只有图片输入：没有文字或 emoji 生成、没有圆角留白和背景色设置，非正方形原图会被直接拉伸成正方形。全部在浏览器 canvas 里缩放，图片不上传。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无水印</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">PNG / JPG / WebP 进</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地缩放</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">7 档 PNG + ICO + ZIP</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>原图决定成品能不能用：六种输入的真实结果</h2>
+          <table>
+            <thead><tr><th>原图情况</th><th>生成出来是什么样</th><th>建议</th></tr></thead>
+            <tbody>
+              <tr><td>正方形，512px 以上</td><td>七档都清晰，ICO 内嵌的也是同样画质的 PNG</td><td>最理想的输入，直接生成</td></tr>
+              <tr><td>长方形 logo</td><td>被拉伸成正方形，圆形变椭圆、文字被压扁</td><td>先在做图软件里补白成正方形</td></tr>
+              <tr><td>原图只有 200px</td><td>256 和 512 靠插值放大，标签栏上会发虚</td><td>换更大的源文件再来</td></tr>
+              <tr><td>想要文字或 emoji 图标</td><td>没有文字渲染入口，只能上传现成图片</td><td>先用制图工具导出 PNG</td></tr>
+              <tr><td>只想要一个 ico</td><td>ZIP 里 PNG 和 favicon.ico 都在，ICO 内部已包含全部尺寸</td><td>单独取 favicon.ico 即可</td></tr>
+              <tr><td>代码直接贴进网站</td><td>生成的路径是根目录写法（/favicon-16.png）</td><td>文件要和代码放在同一层</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <div class="upload-area" id="uploadArea">
@@ -359,8 +404,11 @@
   <div class="faq-item"><button class="faq-question">这个和 ICO 图标生成器有什么区别？</button><p>这个是用于网站 favicon（固定尺寸 + HTML 代码）。ICO 图标生成器是用于桌面/应用图标（自定义尺寸）。</p></div>
 <div class="faq-item"><button class="faq-question">生成哪些尺寸？</button><div class="faq-answer">16x16、32x32 及 180x180 Apple touch 图标。</div></div>
 <div class="faq-item"><button class="faq-question">输出什么格式？</button><div class="faq-answer">ICO 和 PNG 格式。</div></div>
-<div class="faq-item"><button class="faq-question">可以用自己的图片和字体吗？</button><div class="faq-answer">可以——上传自己的素材并使用内置字体选项。</div></div>
+<div class="faq-item"><button class="faq-question">可以用自己的图片和字体吗？</button><div class="faq-answer">图片可以，字体不行。生成器只接受上传的图片文件，没有文字或 emoji 渲染功能，也没有字体选择项；想用文字做图标，先用制图工具排版好再导出 PNG。</div></div>
 <div class="faq-item"><button class="faq-question">下载有水印吗？</button><div class="faq-answer">没有。下载内容干净无水印。</div></div>
+              <div class="faq-item"><button class="faq-question">为什么 16px 的图标糊成一团？</button><div class="faq-answer">16×16 只有 256 个像素，任何细线、文字、渐变都会被抹平。做 favicon 时要按最小尺寸设计：一个大色块加一个极简轮廓，或者干脆只保留字母首字母。生成后把预览切到 16px 看，能认出来才算合格。</div></div>
+        <div class="faq-item"><button class="faq-question">生成的 ICO 内部是什么格式？</button><div class="faq-answer">标准 ICO 容器，每个尺寸里塞的是 PNG 数据（不是早期的 BMP），Windows Vista 之后的系统、macOS 和现代浏览器都能正确读取。很老的 IE 只认 BMP 版本，现在基本不用考虑。</div></div>
+        <div class="faq-item"><button class="faq-question">能加圆角、底色或留白吗？</button><div class="faq-answer">不能。这里只做等比缩放和格式打包，画布铺满原图。要圆角或纯色底，得先在制图软件里做好再上传；需要这些参数的是本站的 ICO 图标生成器，那边有留白和圆角滑块。</div></div>
       </section>
 
 <section class="related-tools">

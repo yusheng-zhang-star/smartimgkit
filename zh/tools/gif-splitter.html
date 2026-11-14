@@ -142,6 +142,30 @@
         "@type": "Answer",
         "text": "不会。GIF 拆分全程在浏览器本地完成，文件不离开你的设备，关闭页面即清除，没有任何上传和存储。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么第 5 帧只有一小块彩色？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "这是 GIF 的帧优化机制：完整画面只在关键帧里存一次，后续帧只记录和上一帧不同的矩形区域。工具直接把每帧自带的区域画到画布上，没有叠加前一帧，所以看起来残缺。这不是解析出错，想要完整画面请用带帧合成的工具。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "每帧的停留时间保留了吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "只显示在缩略图下方供参考，PNG 文件本身没有延迟字段，写了也存不住。要把时间信息带到下一环节，需要重新拼成动图时手动填。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "能动图 WebP 或者视频吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能。只认 GIF 和 APNG 两种容器，动图 WebP、MP4、MOV 都会解析失败并提示出错。两种格式都用本站的本地解码库，不需要联网，也不会有文件上传。"
+      }
     }
   ]
 }
@@ -164,7 +188,28 @@
     <div class="container">
       <div class="tool-page-header">
         <h1>✂️ GIF 分割</h1>
-        <p>将动画 GIF 或 APNG 拆分为逐帧图片，可单独下载 PNG 或打包 ZIP。</p>
+        <p class="answer-lead">用 gifuct-js 在本地解 GIF、UPNG 解 APNG，把每一帧导出成 PNG，可以单张点着下，也可以打包成 ZIP。要点在于：导出的是这一帧自身记录的图像区域，工具没有做叠加合成——经过优化的 GIF 从第二帧起常常只包含一小块变化区域，尺寸小于画面，拿到手会发现缺背景。解码库都从本站加载，文件不出设备。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无水印</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">GIF / APNG 进，PNG 出</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地解码</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">逐帧 PNG 或整包 ZIP</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>拆出来的帧和原图不一样？六种情形对照</h2>
+          <table>
+            <thead><tr><th>动图的情况</th><th>导出的帧长什么样</th><th>你该怎么办</th></tr></thead>
+            <tbody>
+              <tr><td>未优化的整帧动画</td><td>每帧都是完整画面，尺寸一致</td><td>最理想，直接拿去用</td></tr>
+              <tr><td>经过优化的 GIF</td><td>第二帧起只有变化的矩形区域，缺背景</td><td>需要完整帧得用带逐帧合成的工具</td></tr>
+              <tr><td>局部刷新加透明的动画</td><td>差异区域带透明块，导出的 PNG 会缺一块</td><td>本工具不复原叠加结果</td></tr>
+              <tr><td>APNG 动画</td><td>按 APNG 自己的帧拆，各自保留尺寸</td><td>可正常使用</td></tr>
+              <tr><td>想改帧再拼回去</td><td>只输出 PNG，没有合成 GIF 的功能</td><td>拿到 GIF 编辑器里重新拼</td></tr>
+              <tr><td>几百帧的大文件</td><td>一次性全解到内存再渲染缩略图，可能吃满</td><td>分批拆，或先压小原图</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
         <input type="file" id="fileInput" accept=".gif,.apng,image/gif,image/apng,image/png" style="display:none;">
@@ -307,6 +352,9 @@
 <div class="faq-item"><button class="faq-question">所有图片格式都支持吗？</button><div class="faq-answer">支持 JPG、PNG、WebP 等常见格式。</div></div>
       <div class="faq-item"><button class="faq-question">微信表情包拆出的帧可以直接当头像吗？</button><div class="faq-answer">可以。拆分出的单帧是 PNG 图片，微信头像支持 JPG 和 PNG 格式，直接选择下载的单帧即可使用。建议挑选表情最完整、画面最清晰的一帧。</div></div>
       <div class="faq-item"><button class="faq-question">动图文件会传到服务器吗？</button><div class="faq-answer">不会。GIF 拆分全程在浏览器本地完成，文件不离开你的设备，关闭页面即清除，没有任何上传和存储。</div></div>
+              <div class="faq-item"><button class="faq-question">为什么第 5 帧只有一小块彩色？</button><div class="faq-answer">这是 GIF 的帧优化机制：完整画面只在关键帧里存一次，后续帧只记录和上一帧不同的矩形区域。工具直接把每帧自带的区域画到画布上，没有叠加前一帧，所以看起来残缺。这不是解析出错，想要完整画面请用带帧合成的工具。</div></div>
+        <div class="faq-item"><button class="faq-question">每帧的停留时间保留了吗？</button><div class="faq-answer">只显示在缩略图下方供参考，PNG 文件本身没有延迟字段，写了也存不住。要把时间信息带到下一环节，需要重新拼成动图时手动填。</div></div>
+        <div class="faq-item"><button class="faq-question">能动图 WebP 或者视频吗？</button><div class="faq-answer">不能。只认 GIF 和 APNG 两种容器，动图 WebP、MP4、MOV 都会解析失败并提示出错。两种格式都用本站的本地解码库，不需要联网，也不会有文件上传。</div></div>
       </section>
   <div class="ad-zone ad-middle ad-loader-slot" data-ad-type="middle"></div>
 </main>

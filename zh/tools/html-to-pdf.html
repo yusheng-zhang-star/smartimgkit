@@ -141,6 +141,30 @@
         "@type": "Answer",
         "text": "没有硬性限制。特别大的HTML文件转换会慢一点，但完全免费不限量。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么颜色、图片、字号全变了？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "转换只遍历文本节点，把每块文字按统一字号重新排版，从不读取 CSS。也就是说这不是保真转换，而是把网页当作文本重新出版，视觉上一定和原页不同。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "能直接填网址抓取吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能。工具只接受本地 .html 文件或直接粘贴的源码，没有任何抓取逻辑。想转线上页面，先在浏览器里另存为网页再上传，或者直接用浏览器的打印功能。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "代码块会保留等宽字体吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "会。pre 标签会被单独识别，用 courier 等宽字体按原换行排版，缩进不丢，长行会按页宽折行——折行处会破坏代码对齐，需要精确对齐的代码建议直接截图。"
+      }
     }
   ]
 }
@@ -174,7 +198,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>HTML转PDF</span></nav>
       <div class="tool-page-header">
         <h1>🌐 HTML转PDF在线工具</h1>
-        <p>把HTML文件或网页代码转换成干净、可搜索的PDF文档。可以上传.html文件，也可以直接粘贴代码。100%在浏览器本地完成。</p>
+        <p class="answer-lead">把 .html 文件或直接粘贴的源码交给 DOMParser 解析，抽出标题、段落、列表、代码块，再用 jsPDF 重新排成 A4 或 Letter 的可搜索 PDF。它不是网页截图也不是浏览器打印：CSS 布局、字体、颜色、图片、表格样式全部丢掉，只剩下文字层级和阅读顺序。解析和生成都在浏览器里完成，文件不上传。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无页数限制</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">输入 .html / .htm 或代码，输出 PDF</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地解析</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">A4 或 Letter，11–14pt</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>网页转出来长什么样：六种典型页面对照</h2>
+          <table>
+            <thead><tr><th>网页的情况</th><th>PDF 里剩下什么</th><th>建议</th></tr></thead>
+            <tbody>
+              <tr><td>纯文字文章页</td><td>标题层级和段落顺序保留，文字可搜索可选中</td><td>直接转，A4 加 12pt</td></tr>
+              <tr><td>图片很多的页面</td><td>图片全部丢弃，只剩图注和正文</td><td>用浏览器自带的打印为 PDF</td></tr>
+              <tr><td>CSS 排版的落地页</td><td>多栏、卡片、渐变全丢，压成单栏流水文字</td><td>同上，本工具不渲染样式</td></tr>
+              <tr><td>只抓到源码的网页</td><td>外链 CSS 本来就没下载，样式无从保留</td><td>只当文字存档用</td></tr>
+              <tr><td>数据表格页</td><td>表格结构不保留，单元格文字连成一段</td><td>改用 Excel 转 PDF</td></tr>
+              <tr><td>几千字长文</td><td>按字号自动分页，不会截断内容</td><td>12pt 更易读，别用 11pt 硬塞</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
         <div class="tool-container">
@@ -333,6 +378,9 @@
         <div class="faq-item"><button class="faq-question">可以直接粘贴HTML代码转换吗？</button><p>可以。切换到粘贴模式，把HTML代码贴进去就能转，不用先存成文件。</p></div>
         <div class="faq-item"><button class="faq-question">电商详情页可以转成PDF存档吗？</button><p>可以。把详情页HTML保存下来转成PDF，方便以后对比排版和文案。</p></div>
         <div class="faq-item"><button class="faq-question">有文件大小限制吗？</button><p>没有硬性限制。特别大的HTML文件转换会慢一点，但完全免费不限量。</p></div>
+              <div class="faq-item"><button class="faq-question">为什么颜色、图片、字号全变了？</button><p>转换只遍历文本节点，把每块文字按统一字号重新排版，从不读取 CSS。也就是说这不是保真转换，而是把网页当作文本重新出版，视觉上一定和原页不同。</p></div>
+        <div class="faq-item"><button class="faq-question">能直接填网址抓取吗？</button><p>不能。工具只接受本地 .html 文件或直接粘贴的源码，没有任何抓取逻辑。想转线上页面，先在浏览器里另存为网页再上传，或者直接用浏览器的打印功能。</p></div>
+        <div class="faq-item"><button class="faq-question">代码块会保留等宽字体吗？</button><p>会。pre 标签会被单独识别，用 courier 等宽字体按原换行排版，缩进不丢，长行会按页宽折行——折行处会破坏代码对齐，需要精确对齐的代码建议直接截图。</p></div>
       </section>
 
       <section class="related-tools">

@@ -162,6 +162,30 @@
         "@type": "Answer",
         "text": "把报错信息里的 HTML 实体解码成可读文本，快速定位前端页面问题。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么引号没有被转义？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "实现上只用 div 的 textContent 转 innerHTML，浏览器这个转换只对 & < > 三个字符做转义，引号在文本节点里不构成威胁。所以要拼 HTML 属性值时，双引号仍需要你自己替换，否则可能出现属性截断。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "能把中文转成数字实体吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能。所有非 ASCII 字符在文本节点里就是原字符，浏览器不会把它变成 中 这类实体。要做全字符转实体，需要另写脚本或用支持编码选项的工具。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "解码时会执行脚本吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不会。解码走的是 textarea 的 innerHTML 赋值为纯文本再读 value，脚本标签只会变成可见的文字，不会被解析执行，也不会加载图片。反过来也说明它不能用来预览网页效果。"
+      }
     }
   ]
 }
@@ -225,7 +249,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🏷️ HTML 实体编码</span></nav>
       <div class="tool-page-header">
         <h1>🏷️ HTML 实体编码</h1>
-        <p>HTML 实体编码与解码——免费，在浏览器中完成。</p>
+        <p class="answer-lead">把文本里的 & < > 转成 HTML 实体，反过来也能把实体还原成字符：编码是把文本塞进 div 再读 innerHTML，解码是写进 textarea 再取值。所以只处理这三个最关键的字符，引号和非 ASCII 字符保持原样，不会变成 &#20013; 这种数字实体。纯文本处理，内容不上传，也不支持按文件批量转码。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">纯文本进出，无文件上传</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不涉及，输入框内完成</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">只转 & < > 三个字符</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>哪些字符会被转、哪些不会：逐条对照</h2>
+          <table>
+            <thead><tr><th>输入内容</th><th>编码结果</th><th>注意点</th></tr></thead>
+            <tbody>
+              <tr><td>& < ></td><td>&amp; &lt; &gt;</td><td>这三个就是防破版要处理的全部</td></tr>
+              <tr><td>双引号、单引号</td><td>原样保留，不转 &quot;</td><td>要放进属性值，得自己再处理一次</td></tr>
+              <tr><td>中文、emoji、日文</td><td>原样保留，不转数字实体</td><td>需要 &#x4E2D; 形式得换工具</td></tr>
+              <tr><td>原文里已有 &amp;</td><td>再编码变成 &amp;amp;，双重转义</td><td>编码前确认贴的是未转义原文</td></tr>
+              <tr><td>整段 HTML 标签</td><td>解码后标签变回 <div> 文字，但不会渲染</td><td>想看渲染效果要存成 .html 打开</td></tr>
+              <tr><td>同一段反复来回转</td><td>每轮多一层转义，越来越长</td><td>先清空输出框再换方向</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -334,6 +379,9 @@
 <section class="faq-section"><h2>常见问题</h2><div class="faq-item"><button class="faq-question">HTML 编码会被上传到服务器吗？</button><div class="faq-answer">不会。全部操作在浏览器本地完成，关闭标签页即丢弃，数据不外传。</div></div><div class="faq-item"><button class="faq-question">编码支持哪些特殊字符？</button><div class="faq-answer">支持 &lt;、&gt;、&amp;、&quot;、&apos; 五个标准 HTML 实体字符。</div></div><div class="faq-item"><button class="faq-question">Unicode 字符会被转义吗？</button><div class="faq-answer">不会。Unicode 字符原样保留，只转义五个保留字符。</div></div><div class="faq-item"><button class="faq-question">双向编码解码都支持吗？</button><div class="faq-answer">是的——编码和解码双向支持，一键切换。</div></div>
 <div class="faq-item"><button class="faq-question">写公众号文章时为什么要编码 HTML？</button><div class="faq-answer">粘贴代码到公众号编辑器前先编码，否则 &lt;div&gt; 等标签会被浏览器渲染成排版。</div></div>
 <div class="faq-item"><button class="faq-question">前端开发调试时编码工具怎么用？</button><div class="faq-answer">把报错信息里的 HTML 实体解码成可读文本，快速定位前端页面问题。</div></div>
+              <div class="faq-item"><button class="faq-question">为什么引号没有被转义？</button><div class="faq-answer">实现上只用 div 的 textContent 转 innerHTML，浏览器这个转换只对 & < > 三个字符做转义，引号在文本节点里不构成威胁。所以要拼 HTML 属性值时，双引号仍需要你自己替换，否则可能出现属性截断。</div></div>
+        <div class="faq-item"><button class="faq-question">能把中文转成数字实体吗？</button><div class="faq-answer">不能。所有非 ASCII 字符在文本节点里就是原字符，浏览器不会把它变成 &#20013; 这类实体。要做全字符转实体，需要另写脚本或用支持编码选项的工具。</div></div>
+        <div class="faq-item"><button class="faq-question">解码时会执行脚本吗？</button><div class="faq-answer">不会。解码走的是 textarea 的 innerHTML 赋值为纯文本再读 value，脚本标签只会变成可见的文字，不会被解析执行，也不会加载图片。反过来也说明它不能用来预览网页效果。</div></div>
       </section>
 <section class="related-tools"><h2>你可能还喜欢</h2><div class="related-tools-grid"><a href="/zh/tools/url-encoder" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>URL 编码</strong><span class="tool-desc">编码解码链接</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/base64" class="related-tool-card"><span class="tool-icon">🔐</span><div class="tool-info"><strong>Base64 转换</strong><span class="tool-desc">Base64 编码解码</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/json-formatter" class="related-tool-card"><span class="tool-icon">🔧</span><div class="tool-info"><strong>JSON 格式化</strong><span class="tool-desc">格式化 JSON 数据</span></div><span class="tool-arrow">→</span></a></div></section>
 

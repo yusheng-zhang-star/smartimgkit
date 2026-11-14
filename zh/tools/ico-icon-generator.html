@@ -153,6 +153,30 @@
         "@type": "Answer",
         "text": "没有水印，也没有次数和尺寸限制。每次生成多少个尺寸都免费，导出的 ICO 和 PNG 文件可直接用于个人软件、开源项目或公司内部工具，不需要额外授权。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "ICO 里面装的是 BMP 还是 PNG？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "装的是 PNG。每个尺寸都用 canvas 画好再编码成 PNG 塞进 ICO 容器，Windows Vista 以后系统和所有现代浏览器都支持，体积也比 BMP 版小得多。极老的 XP 图标缓存才需要 BMP 版本，现在可以不管。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "清晰算法和平滑算法差在哪？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "平滑算法开插值，缩小后边缘柔和但细线容易糊成一团；清晰算法关掉插值直接取最近像素，像素风、细线图标更锐利，代价是曲线出现锯齿。都可以先看预览再决定，预览就是最终输出。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "圆角会不会把图形裁掉？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "会裁掉圆角以外的部分，包括原本靠近四角的细节。圆角按边长的百分比算，10% 已经是明显的圆角块，做应用图标建议 15–22%，做系统图标建议 0，跟着系统风格走。"
+      }
     }
   ]
 }
@@ -218,7 +242,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>ICO 图标生成</span></nav>
       <div class="tool-page-header">
         <h1>⭐ ICO 图标生成</h1>
-        <p></p>
+        <p class="answer-lead">上传一张图（PNG、JPG、WebP 或 SVG），勾选 16 到 512 之间的尺寸，打成一个多尺寸 ICO。留白百分比、圆角百分比、透明底或纯色底都可调，缩放算法能选平滑或清晰（清晰会关掉插值），SVG 会按矢量原样重绘。ICO 里每个尺寸装的是 PNG 数据，全部本地生成，原图不上传。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无水印</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">PNG / JPG / WebP / SVG 进，ICO 出</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地绘制</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">ICO，内含所选全部尺寸</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>用途决定尺寸与参数：六种场景的建议</h2>
+          <table>
+            <thead><tr><th>用在什么地方</th><th>该勾哪些尺寸</th><th>参数怎么调</th></tr></thead>
+            <tbody>
+              <tr><td>Windows 桌面快捷方式</td><td>16 / 32 / 48 三档就够，多勾只是白占体积</td><td>点经典三尺寸，留白 0–5%</td></tr>
+              <tr><td>网站 favicon</td><td>补上 64 和 128，高分屏才不发虚</td><td>和 favicon 生成器二选一即可</td></tr>
+              <tr><td>小程序或软件打包图标</td><td>平台通常只要 256 或 512 的单张 PNG</td><td>只勾大尺寸，另存 PNG</td></tr>
+              <tr><td>原图不是正方形</td><td>按比例缩进方框，四周补留白，不拉伸</td><td>留白给 0–5%，多了显小</td></tr>
+              <tr><td>细线条的 logo</td><td>平滑缩放会糊成一团，128 以上尤其明显</td><td>选清晰算法，只出大尺寸</td></tr>
+              <tr><td>要圆角或底色</td><td>圆角按边长百分比裁，底色盖在透明区域下面</td><td>透明需求就保持透明底</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace" id="workspace">
 <label for="fileInput" class="upload-zone" id="dropZone">
@@ -404,6 +449,9 @@
   <div class="faq-item"><button class="faq-question">Windows 桌面图标显示发虚、有锯齿怎么办？</button><div class="faq-answer">通常是 ICO 里缺小尺寸条目。重新打开本工具，把 16、24、32、48 全部勾上再生成一次，并选择高质量缩放，替换掉旧图标后刷新桌面，小图标就清晰了。</div></div>
   <div class="faq-item"><button class="faq-question">淘宝店铺、微信公众号的头像能用这里生成的图吗？</button><div class="faq-answer">可以。导出 512 像素 PNG 后直接上传到公众号后台或淘宝店铺设置页即可；公众号头像会自动裁成圆形，关键画面记得放在正中央，避免被边框切掉。</div></div>
   <div class="faq-item"><button class="faq-question">下载的图标有水印或数量限制吗？</button><div class="faq-answer">没有水印，也没有次数和尺寸限制。每次生成多少个尺寸都免费，导出的 ICO 和 PNG 文件可直接用于个人软件、开源项目或公司内部工具，不需要额外授权。</div></div>
+              <div class="faq-item"><button class="faq-question">ICO 里面装的是 BMP 还是 PNG？</button><div class="faq-answer">装的是 PNG。每个尺寸都用 canvas 画好再编码成 PNG 塞进 ICO 容器，Windows Vista 以后系统和所有现代浏览器都支持，体积也比 BMP 版小得多。极老的 XP 图标缓存才需要 BMP 版本，现在可以不管。</div></div>
+        <div class="faq-item"><button class="faq-question">清晰算法和平滑算法差在哪？</button><div class="faq-answer">平滑算法开插值，缩小后边缘柔和但细线容易糊成一团；清晰算法关掉插值直接取最近像素，像素风、细线图标更锐利，代价是曲线出现锯齿。都可以先看预览再决定，预览就是最终输出。</div></div>
+        <div class="faq-item"><button class="faq-question">圆角会不会把图形裁掉？</button><div class="faq-answer">会裁掉圆角以外的部分，包括原本靠近四角的细节。圆角按边长的百分比算，10% 已经是明显的圆角块，做应用图标建议 15–22%，做系统图标建议 0，跟着系统风格走。</div></div>
       </section>
 
 <section class="related-tools">

@@ -112,7 +112,7 @@
       "name": "已有的 GIF 能拆开重新编辑吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "可以。直接把 GIF 文件上传进来，工具会自动拆成一帧一帧的图片，你可以删掉其中几帧、改一改每帧停留时间，再重新生成一版，相当于给旧动图做个精简改版。"
+        "text": "不行。工具把每个上传的文件当成一帧，GIF 进来只会取第一帧画面，不会自动拆帧。要先在本站的 GIF 分割工具里拆成逐帧 PNG，再一起上传到这里重新编排。"
       }
     },
     {
@@ -120,7 +120,7 @@
       "name": "图片会上传到服务器吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "不会。编码生成全部在你自己浏览器里完成，用的是本地脚本，选进去的照片不经过网络，做完关掉页面就没有痕迹，做私人合照动图也放心。"
+        "text": "不会。编码在你自己浏览器里完成，选进去的图片不上传。唯一需要网络的是首次编码时从 CDN 取 gif.js 的 worker 脚本，之后走缓存；断网状态下这一步会失败，照片本身仍然不会外传。做私人合照动图也放心。"
       }
     },
     {
@@ -153,6 +153,30 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "JPG、PNG、WebP 都能直接用，APNG 动图会被自动拆帧。手机截图、相机拍的照片、设计稿导出的 PNG 都行，混着上传也没问题，只要各帧比例尽量一致。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "GIF 和 APNG 到底该选哪个？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "发给别人、要贴进微信或聊天工具，选 GIF——兼容性最好，代价是 256 色。放在网页、PPT、设计稿里自己控制观看环境，选 APNG：无损、支持真彩色和半透明，但文件名是 .png，很多平台会把它当静态图只显示第一帧。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么每帧停留时间改了没生效？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "单帧输入框的范围是 50–5000 毫秒，超出会被浏览器忽略后回退。全局滑块只改所有帧的默认值，已经单独设置过的帧不会被覆盖，要逐帧确认。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "编码时页面卡住不动是坏了吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不是。gif.js 把编码放进最多 4 个 worker，帧数上百时主线程照样会被进度回调挤占，表现为滚动卡顿。等进度条走完就好，中途别关标签页，否则已编码的部分全部丢失。"
       }
     }
   ]
@@ -219,7 +243,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🎬 GIF 动图编辑</span></nav>
       <div class="tool-page-header">
         <h1>🎞️ GIF 编辑器</h1>
-        <p>用多张图片制作动画 GIF——免费、在线、无限制。</p>
+        <p class="answer-lead">把多张图片按顺序排成动画：每帧可单独设 50–5000 毫秒停留，导出宽度可指定（高度等比），画质三档外加 APNG 无损，编码由 gif.js 在最多 4 个 worker 里本地跑。图片不上传，但首次编码要从 CDN 取 worker 脚本，断网时合成会失败。上传的 GIF 只取第一帧，不会被自动拆帧。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无帧数硬限</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">JPG / PNG / WebP 进，GIF 或 APNG 出</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地编码</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">GIF 三档画质，或无损 APNG</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>导出参数的真实后果：六种组合怎么选</h2>
+          <table>
+            <thead><tr><th>你的选择</th><th>实际会发生什么</th><th>适合什么场合</th></tr></thead>
+            <tbody>
+              <tr><td>画质选低（10）</td><td>调色板压缩更狠，渐变出现色带，文件最小</td><td>聊天表情包、一次性动图</td></tr>
+              <tr><td>画质选高（3）</td><td>体积明显变大，但仍受 GIF 256 色上限约束</td><td>线条清晰的图标动画</td></tr>
+              <tr><td>画质选 APNG</td><td>下载的是 .png 文件，画质无损但体积大数倍，微信里常常不动</td><td>网页、PPT、设计稿</td></tr>
+              <tr><td>上传一张现成 GIF 改帧</td><td>整张 GIF 只变成一帧，不会自动拆分</td><td>先用 GIF 分割工具拆帧再导回来</td></tr>
+              <tr><td>不填导出宽度</td><td>沿用第一帧的原始宽度，其余帧等比缩放</td><td>素材尺寸本来就统一</td></tr>
+              <tr><td>几百帧的长动画</td><td>编码时间线性增长，标签页可能假死</td><td>控制在 50–100 帧更稳</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -410,12 +455,15 @@
 <section class="faq-section">
   <h2>常见问题</h2>
   <div class="faq-item"><button class="faq-question">最多可以加多少帧？</button><div class="faq-answer">没有硬性上限，但建议控制在 50 到 100 帧以内。帧数越多文件越大，微信发送和网页加载都会变慢；做一个三到五秒的循环动图，十帧左右就够了。</div></div>
-  <div class="faq-item"><button class="faq-question">已有的 GIF 能拆开重新编辑吗？</button><div class="faq-answer">可以。直接把 GIF 文件上传进来，工具会自动拆成一帧一帧的图片，你可以删掉其中几帧、改一改每帧停留时间，再重新生成一版，相当于给旧动图做个精简改版。</div></div>
-  <div class="faq-item"><button class="faq-question">图片会上传到服务器吗？</button><div class="faq-answer">不会。编码生成全部在你自己浏览器里完成，用的是本地脚本，选进去的照片不经过网络，做完关掉页面就没有痕迹，做私人合照动图也放心。</div></div>
+  <div class="faq-item"><button class="faq-question">已有的 GIF 能拆开重新编辑吗？</button><div class="faq-answer">不行。工具把每个上传的文件当成一帧，GIF 进来只会取第一帧画面，不会自动拆帧。要先在本站的 GIF 分割工具里拆成逐帧 PNG，再一起上传到这里重新编排。</div></div>
+  <div class="faq-item"><button class="faq-question">图片会上传到服务器吗？</button><div class="faq-answer">不会。编码在你自己浏览器里完成，选进去的图片不上传。唯一需要网络的是首次编码时从 CDN 取 gif.js 的 worker 脚本，之后走缓存；断网状态下这一步会失败，照片本身仍然不会外传。做私人合照动图也放心。</div></div>
   <div class="faq-item"><button class="faq-question">微信聊天里发出去的动图不动了怎么办？</button><div class="faq-answer">两个常见原因：一是文件太大，超过微信表情大小上限会被自动转成静图，把帧数减到十帧以内、宽度缩到 480 像素再试；二是选了 APNG 格式，微信对它支持不好，改回普通 GIF 格式重新生成即可。</div></div>
   <div class="faq-item"><button class="faq-question">做企业微信、工作群用的表情包有什么讲究？</button><div class="faq-answer">工作群表情包建议帧数少、节奏快，三到五帧、每帧两百毫秒左右最合适；别带同事正脸和公司内部信息。生成后先在自己手机上试发一次，确认能正常播放再发群里。</div></div>
   <div class="faq-item"><button class="faq-question">插入 PPT 和公众号文章的动图怎么控制大小？</button><div class="faq-answer">PPT 里动图建议宽度不超过 640 像素、十帧以内，放映时才不卡；公众号图文插入前先把文件压到 2 兆以内，不然读者加载半天。这两个场景优先选中档画质，清晰度和体积平衡最好。</div></div>
   <div class="faq-item"><button class="faq-question">支持哪些图片格式？</button><div class="faq-answer">JPG、PNG、WebP 都能直接用，APNG 动图会被自动拆帧。手机截图、相机拍的照片、设计稿导出的 PNG 都行，混着上传也没问题，只要各帧比例尽量一致。</div></div>
+              <div class="faq-item"><button class="faq-question">GIF 和 APNG 到底该选哪个？</button><div class="faq-answer">发给别人、要贴进微信或聊天工具，选 GIF——兼容性最好，代价是 256 色。放在网页、PPT、设计稿里自己控制观看环境，选 APNG：无损、支持真彩色和半透明，但文件名是 .png，很多平台会把它当静态图只显示第一帧。</div></div>
+        <div class="faq-item"><button class="faq-question">为什么每帧停留时间改了没生效？</button><div class="faq-answer">单帧输入框的范围是 50–5000 毫秒，超出会被浏览器忽略后回退。全局滑块只改所有帧的默认值，已经单独设置过的帧不会被覆盖，要逐帧确认。</div></div>
+        <div class="faq-item"><button class="faq-question">编码时页面卡住不动是坏了吗？</button><div class="faq-answer">不是。gif.js 把编码放进最多 4 个 worker，帧数上百时主线程照样会被进度回调挤占，表现为滚动卡顿。等进度条走完就好，中途别关标签页，否则已编码的部分全部丢失。</div></div>
       </section>
 
 <section class="related-tools">
