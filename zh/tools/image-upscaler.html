@@ -192,6 +192,30 @@
         "@type": "Answer",
         "text": "Logo、截图、文字类边缘锐利的图选 PNG，边缘干净；照片类选 JPG，文件小一半以上，发微信、传店铺都快；想兼顾体积和画质就选 WebP。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "这是 AI 放大吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不是。没有模型也没有推理，浏览器 canvas 只做插值重采样，再跑一遍 3×3 锐化卷积。所以它能缓解放大后的糊感，但不会像超分模型那样补出纹理或修复五官，模糊的原图放大后依然是模糊的原图。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "4 倍放大为什么失败了？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "画布尺寸超过了浏览器上限。Chrome 单边约 16384 像素、总面积约 2.68 亿像素，一张 4000×3000 的照片 4 倍后是 16000×12000（1.9 亿像素），接近甚至触顶，结果是空白或直接报错。先把原图缩到 2000px 再放大，或改用 2 倍分段处理。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "放大后文件有多大？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "按面积增长：2 倍约 4 倍像素量，4 倍约 16 倍。一张 2MB 的 JPEG 用 PNG 导出 4 倍后可能到上百 MB，浏览器下载也会卡。需要控制体积就选 JPG 或 WebP 输出。"
+      }
     }
   ]
 }
@@ -257,7 +281,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🔍 图片放大</span></nav>
       <div class="tool-page-header">
         <h1>🔍 在线图片放大</h1>
-        <p>把照片放大 2 倍、3 倍或 4 倍，配合锐化滤镜保持边缘清晰。适合打印、老照片修复、电商详情图，100% 浏览器本地处理。</p>
+        <p class="answer-lead">把图片按 2、3、4 倍放大，用 canvas 的双线性插值重采样，再叠一层 0–100 的锐化（默认 50），导出可选 PNG、JPG 或 WebP。没有 AI 超分模型：放大不会凭空长出新细节，只是插值加锐化，模糊的原图放大后还是模糊。4 倍时画布面积是原图的 16 倍，超过浏览器 canvas 上限（单边约 1.6 万像素）会直接失败。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">常见图片进，PNG/JPG/WebP 出</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地缩放</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">2/3/4 倍，锐化 0–100</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>倍数怎么选：六种判断与代价</h2>
+          <table>
+            <thead><tr><th>你的情况</th><th>放大后的实际效果</th><th>建议</th></tr></thead>
+            <tbody>
+              <tr><td>网页配图、详情页</td><td>2 倍边缘略软，锐化 30–50 可接受</td><td>最常用的档位</td></tr>
+              <tr><td>要打印 A4 以上</td><td>3 倍细节开始发虚，锐化会出白边</td><td>原图本身够清晰才值得</td></tr>
+              <tr><td>4 倍放大</td><td>画布面积 16 倍，内存和文件都吃紧</td><td>4000px 宽的图已接近上限</td></tr>
+              <tr><td>原图不足 600px</td><td>插值补不出细节，只会更糊</td><td>换高清原图，或接受模糊当装饰图</td></tr>
+              <tr><td>锐化拉到 100</td><td>边缘白边、噪点被一起放大</td><td>打印前 20–40 足够</td></tr>
+              <tr><td>多次导出反复调</td><td>每次都在已放大的结果上再插值</td><td>始终从原图重新来</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- 放大前后对比 -->
@@ -475,6 +520,9 @@
       <div class="faq-item"><button class="faq-question">淘宝详情图需要更大尺寸，怎么放大？</button><div class="faq-answer">详情页长图建议宽度不低于 750 像素。实拍图若只有 500 像素宽，放大 2 倍到 1000 像素，锐化调到 50%，上传后在手机上看会清楚很多，也符合平台对主图清晰度的要求。</div></div>
       <div class="faq-item"><button class="faq-question">锐化滑块拉到多少合适？</button><div class="faq-answer">默认 50% 适合大多数照片；截图、文字、线条类图片拉到 70% 到 100%，字会更锐利；水彩、柔焦人像保持 0 到 30%，避免出现边缘光晕。滑块拖动时右侧实时预览，调到看着舒服即可。</div></div>
       <div class="faq-item"><button class="faq-question">放大后保存成 PNG 还是 JPG？</button><div class="faq-answer">Logo、截图、文字类边缘锐利的图选 PNG，边缘干净；照片类选 JPG，文件小一半以上，发微信、传店铺都快；想兼顾体积和画质就选 WebP。</div></div>
+              <div class="faq-item"><button class="faq-question">这是 AI 放大吗？</button><div class="faq-answer">不是。没有模型也没有推理，浏览器 canvas 只做插值重采样，再跑一遍 3×3 锐化卷积。所以它能缓解放大后的糊感，但不会像超分模型那样补出纹理或修复五官，模糊的原图放大后依然是模糊的原图。</div></div>
+        <div class="faq-item"><button class="faq-question">4 倍放大为什么失败了？</button><div class="faq-answer">画布尺寸超过了浏览器上限。Chrome 单边约 16384 像素、总面积约 2.68 亿像素，一张 4000×3000 的照片 4 倍后是 16000×12000（1.9 亿像素），接近甚至触顶，结果是空白或直接报错。先把原图缩到 2000px 再放大，或改用 2 倍分段处理。</div></div>
+        <div class="faq-item"><button class="faq-question">放大后文件有多大？</button><div class="faq-answer">按面积增长：2 倍约 4 倍像素量，4 倍约 16 倍。一张 2MB 的 JPEG 用 PNG 导出 4 倍后可能到上百 MB，浏览器下载也会卡。需要控制体积就选 JPG 或 WebP 输出。</div></div>
       </section>
 
 <section class="localization-section" style="max-width:800px;margin:40px auto;padding:0 20px;">

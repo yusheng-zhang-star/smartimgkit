@@ -98,7 +98,7 @@
       "name": "透明 PNG 能加投影吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "能，而且效果最好。投影是沿着「不透明部分的轮廓」生成的，透明区域不会带出一块方影，抠好的产品图直接加就行。"
+        "text": "能，投影会跟着不透明部分的轮廓走（Canvas 阴影按 alpha 生成），但输出仍是不透明的——画布先被背景色填满。想要透明底投影，用本站专门给透明 PNG 加阴影的工具。"
       }
     },
     {
@@ -114,7 +114,7 @@
       "name": "背景该怎么选？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "电商主图用白色最稳，符合大多数平台要求。还想后期合成的选透明，PNG 保留 alpha，后面放什么底色都行。做主题海报可以用自定义色，跟画面对齐。"
+        "text": "电商主图用白色最稳，符合大多数平台要求；做主题海报可以选任意底色跟画面对齐。但这里没有透明选项：取色器只接受不透明颜色，输出的 PNG 一定带底色。"
       }
     },
     {
@@ -130,7 +130,7 @@
       "name": "背景透明吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "是的——输出为带透明通道的 PNG。"
+        "text": "不是。输出 PNG 虽然是 RGBA，但整幅画布先铺了一层背景色（默认纯白），透明通道被完全盖住。需要透明背景请换专门处理透明素材的工具。"
       }
     },
     {
@@ -147,6 +147,30 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "支持 JPG、PNG、WebP 等常见格式。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么输出是不透明的？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "绘制前先对整幅画布做了 fillRect 背景填充（默认 #ffffff，颜色可改），阴影再叠在上面，所以 PNG 虽然有透明通道但被完全盖住。要透明底投影，用本站给透明 PNG 加投影的那个工具。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "阴影浓度能调吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "没有单独的浓度滑块。深浅只能通过阴影颜色调——选纯黑最重，选 30%–50% 灰更轻，也可以在取色器里填带透明度的颜色值。模糊值越大，视觉上也会越淡。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "边缘为什么出现了空白带？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "画布是按 blur×2 加最大偏移量向外扩的，模糊 50、偏移 50 时四周各多出 150 像素纯背景色，图就被推到了中间。想少留白，把模糊和偏移一起调小。"
       }
     }
   ]
@@ -213,7 +237,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🌑 Image Drop Shadow Generator</span></nav>
       <div class="tool-page-header">
         <h1>🌑 图片加阴影</h1>
-        <p>为图片添加真实感的投影阴影，适合电商和社交媒体配图。全部在浏览器中处理。</p>
+        <p class="answer-lead">给不透明图片加投影：水平与垂直偏移各 ±50 像素、模糊 0–50、阴影颜色和背景色都能选，画布按模糊值自动外扩后导出 PNG。这里会先铺一层背景色（默认纯白），所以结果是整块不透明的图；需要透明底的投影请用专门给透明 PNG 加阴影的工具。一次一张，不上传。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无数量限制</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">常见图片进，PNG 出</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地渲染</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">PNG，画布按模糊外扩</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>参数与输出的关系：六种组合的实际结果</h2>
+          <table>
+            <thead><tr><th>参数组合</th><th>画布与画面变化</th><th>什么时候用</th></tr></thead>
+            <tbody>
+              <tr><td>背景色默认纯白</td><td>整幅不透明，圆角外也是白色</td><td>做电商白底配图正好</td></tr>
+              <tr><td>偏移 50 加模糊 50</td><td>四周各外扩 150 像素，图显小、留白大</td><td>常规 8–20 就够，别拉满</td></tr>
+              <tr><td>阴影用纯黑</td><td>白底上对比强烈，深底几乎看不出</td><td>深色背景改用 30% 灰</td></tr>
+              <tr><td>模糊设为 0</td><td>阴影变成硬边黑方块，像错位的复制品</td><td>只有故意要硬投影才这么设</td></tr>
+              <tr><td>原图本身带透明区</td><td>透明区先被背景色填满，阴影只落在图块外</td><td>透明素材换工具做</td></tr>
+              <tr><td>想给主体加贴合阴影</td><td>阴影是整块矩形的投影，不跟随轮廓</td><td>抠图后用透明投影工具</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <div class="before-after-preview" id="beforeAfterPreview">
@@ -395,13 +440,16 @@
 
 <section class="faq-section">
         <h2>常见问题</h2>
-        <div class="faq-item"><button class="faq-question">透明 PNG 能加投影吗？</button><div class="faq-answer">能，而且效果最好。投影是沿着「不透明部分的轮廓」生成的，透明区域不会带出一块方影，抠好的产品图直接加就行。</div></div>
+        <div class="faq-item"><button class="faq-question">透明 PNG 能加投影吗？</button><div class="faq-answer">能，投影会跟着不透明部分的轮廓走（Canvas 阴影按 alpha 生成），但输出仍是不透明的——画布先被背景色填满。想要透明底投影，用本站专门给透明 PNG 加阴影的工具。</div></div>
         <div class="faq-item"><button class="faq-question">投影能更柔和吗？</button><div class="faq-answer">把模糊半径往上拉，20 到 30px 通常就是很自然的柔化效果。再配合偏移量定方向，模拟侧上方打光，比纯四周发散的假投影真实得多。</div></div>
-        <div class="faq-item"><button class="faq-question">背景该怎么选？</button><div class="faq-answer">电商主图用白色最稳，符合大多数平台要求。还想后期合成的选透明，PNG 保留 alpha，后面放什么底色都行。做主题海报可以用自定义色，跟画面对齐。</div></div>
+        <div class="faq-item"><button class="faq-question">背景该怎么选？</button><div class="faq-answer">电商主图用白色最稳，符合大多数平台要求；做主题海报可以选任意底色跟画面对齐。但这里没有透明选项：取色器只接受不透明颜色，输出的 PNG 一定带底色。</div></div>
       <div class="faq-item"><button class="faq-question">投影可自定义吗？</button><div class="faq-answer">可以——偏移、模糊半径和颜色。</div></div>
-<div class="faq-item"><button class="faq-question">背景透明吗？</button><div class="faq-answer">是的——输出为带透明通道的 PNG。</div></div>
+<div class="faq-item"><button class="faq-question">背景透明吗？</button><div class="faq-answer">不是。输出 PNG 虽然是 RGBA，但整幅画布先铺了一层背景色（默认纯白），透明通道被完全盖住。需要透明背景请换专门处理透明素材的工具。</div></div>
 <div class="faq-item"><button class="faq-question">编辑可撤销吗？</button><div class="faq-answer">可以——下载前随时重置为原图。源文件不受影响。</div></div>
 <div class="faq-item"><button class="faq-question">所有图片格式都支持吗？</button><div class="faq-answer">支持 JPG、PNG、WebP 等常见格式。</div></div>
+              <div class="faq-item"><button class="faq-question">为什么输出是不透明的？</button><div class="faq-answer">绘制前先对整幅画布做了 fillRect 背景填充（默认 #ffffff，颜色可改），阴影再叠在上面，所以 PNG 虽然有透明通道但被完全盖住。要透明底投影，用本站给透明 PNG 加投影的那个工具。</div></div>
+        <div class="faq-item"><button class="faq-question">阴影浓度能调吗？</button><div class="faq-answer">没有单独的浓度滑块。深浅只能通过阴影颜色调——选纯黑最重，选 30%–50% 灰更轻，也可以在取色器里填带透明度的颜色值。模糊值越大，视觉上也会越淡。</div></div>
+        <div class="faq-item"><button class="faq-question">边缘为什么出现了空白带？</button><div class="faq-answer">画布是按 blur×2 加最大偏移量向外扩的，模糊 50、偏移 50 时四周各多出 150 像素纯背景色，图就被推到了中间。想少留白，把模糊和偏移一起调小。</div></div>
       </section>
 
 <section class="related-tools">

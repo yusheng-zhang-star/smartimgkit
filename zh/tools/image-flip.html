@@ -142,6 +142,30 @@
         "@type": "Answer",
         "text": "能。勾选垂直翻转即可把颠倒的照片正过来，扫描老照片、底片翻拍经常遇到方向反的问题。修完导出无损图片，再拿去冲印或排版，避免洗出来才发现方向反了的尴尬。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "翻转会不会让画质变差？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不会。翻转是把每个像素搬到镜像位置，不做重采样也不做有损压缩，边缘不会糊。唯一的代价是导出时按 PNG 重新编码，文件大小和原图不同；反复导出多次也不会叠加劣化。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么翻完照片里的文字是反的？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "这是镜像的必然结果。水平镜像等价于从纸背面看这张图，所有非对称内容——文字、logo、钟表指针——都会左右颠倒。修自拍时如果画面里有招牌或衣服上的字，宁可裁掉也别镜像。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "能一次翻转多张图吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能，一次一张，选新图才能换。批量镜像请用支持队列的批量处理工具，那边可以整组套同一组勾选项。"
+      }
     }
   ]
 }
@@ -207,7 +231,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🔄 图片翻转工具</span></nav>
       <div class="tool-page-header">
         <h1>🔃 图片翻转</h1>
-        <p>水平或垂直镜像翻转图片。全部在浏览器中处理。</p>
+        <p class="answer-lead">勾选水平镜像（默认已勾）、垂直翻转，或两个都勾，点开始翻转后导出 PNG、原尺寸。它只重排像素位置：不改分辨率、不插值、不调色，也不会读 EXIF 里的方向标记，所以手机竖拍横躺的照片翻不回来。一次一张，图片不上传；任意角度旋转是另一个工具的事。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">常见图片进，PNG 出</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地重绘</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">PNG，尺寸不变</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>什么情况该翻、翻了会怎样</h2>
+          <table>
+            <thead><tr><th>你的情况</th><th>翻转后的结果</th><th>注意什么</th></tr></thead>
+            <tbody>
+              <tr><td>自拍左右和真人相反</td><td>水平镜像能对上别人的视角</td><td>画面里的文字招牌会一起反过来</td></tr>
+              <tr><td>商品图上下放反</td><td>勾垂直翻转即可</td><td>只有真的颠倒才用，别和旋转混</td></tr>
+              <tr><td>两个都勾</td><td>等于转 180°，宽高不变</td><td>要转 90° 得用旋转工具</td></tr>
+              <tr><td>手机竖图躺着显示</td><td>翻转救不了，这是方向标记的问题</td><td>改用能按 EXIF 方向矫正的旋转工具</td></tr>
+              <tr><td>只想翻画面里的局部</td><td>整幅重绘，没有选区也没有蒙版</td><td>先裁出局部单独翻，再拼回去</td></tr>
+              <tr><td>同一张反复翻来翻去</td><td>每次都从原图重算，不会累积变形</td><td>但每次导出都是新的一版 PNG</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <div class="before-after-preview" id="beforeAfterPreview">
@@ -379,6 +424,9 @@
         <div class="faq-item"><button class="faq-question">发微信朋友圈之前照片方向反了，几秒能修好吗？</button><div class="faq-answer">可以。把照片拖进来，勾选水平或垂直翻转，点一下就出结果，再下载保存。整个过程在浏览器本地完成，原图不会上传，修完直接从相册选图发朋友圈，全程不到一分钟。</div></div>
         <div class="faq-item"><button class="faq-question">淘宝、拼多多卖家做商品主图时什么时候需要左右镜像？</button><div class="faq-answer">服装、鞋包类商品常需要模特朝向画面内侧，若原图模特朝外就用水平镜像调整。做左右对称的对比图、情侣款成对展示时，把其中一张镜像后两边朝向自然，主图更整齐统一。</div></div>
         <div class="faq-item"><button class="faq-question">打印照片或做证件照时图片上下颠倒了能修吗？</button><div class="faq-answer">能。勾选垂直翻转即可把颠倒的照片正过来，扫描老照片、底片翻拍经常遇到方向反的问题。修完导出无损图片，再拿去冲印或排版，避免洗出来才发现方向反了的尴尬。</div></div>
+              <div class="faq-item"><button class="faq-question">翻转会不会让画质变差？</button><div class="faq-answer">不会。翻转是把每个像素搬到镜像位置，不做重采样也不做有损压缩，边缘不会糊。唯一的代价是导出时按 PNG 重新编码，文件大小和原图不同；反复导出多次也不会叠加劣化。</div></div>
+        <div class="faq-item"><button class="faq-question">为什么翻完照片里的文字是反的？</button><div class="faq-answer">这是镜像的必然结果。水平镜像等价于从纸背面看这张图，所有非对称内容——文字、logo、钟表指针——都会左右颠倒。修自拍时如果画面里有招牌或衣服上的字，宁可裁掉也别镜像。</div></div>
+        <div class="faq-item"><button class="faq-question">能一次翻转多张图吗？</button><div class="faq-answer">不能，一次一张，选新图才能换。批量镜像请用支持队列的批量处理工具，那边可以整组套同一组勾选项。</div></div>
       </section>
 
 <section class="related-tools">

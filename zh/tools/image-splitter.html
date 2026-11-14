@@ -149,6 +149,38 @@
         "@type": "Answer",
         "text": "可以——缩放和裁剪均支持批量处理。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "拼回去为什么有细缝？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "因为每块尺寸是向下取整的：宽 1000 切 3 列，每块 333 像素，最后 1 像素被丢弃，三块拼起来只有 999。社交平台上传时还会各自重压缩一次，缝会更明显。要严丝合缝，先把原图裁成 3 的倍数再切。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "切出来的顺序怎么记？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "文件名是 原图名_行_列.png，行列都从 1 开始，比如 3×3 的第 2 行第 3 列就是 photo_2_3.png。九宫格发布时按 1_1、1_2、1_3、2_1 的顺序上传，从左上到右下。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "能切长图发公众号吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "可以，选 1 列多行就能把长截图切成若干段，每段都是完整宽度。但每段之间没有重叠，接缝处会截断一行字，阅读体验一般，长图更适合直接压窄发。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "切的块数有上限吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "没有硬限制，但行列一多（比如 10×10）会一次性生成上百个 canvas 并渲染缩略图，低配设备会卡。常规九宫格、十六宫格完全没问题。"
+      }
     }
   ]
 }
@@ -214,7 +246,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>✂️ Image Splitter</span></nav>
       <div class="tool-page-header">
         <h1>✂️ 图片分割</h1>
-        <p>将图片切分为九宫格等网格碎片，用于社交媒体发布。全部在浏览器中处理。</p>
+        <p class="answer-lead">按行×列把图片切成等分网格碎片，每块尺寸取 floor(宽/列) 与 floor(高/行)，除不尽的余数像素直接丢弃；单块可以点着下，也能一次打包成 ZIP，全部输出 PNG。切出来的每块是原图对应区域的原分辨率裁片，不缩放、不重压缩画质。一次一张，图片不上传。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无水印</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">常见图片进，PNG 出</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地裁切</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">逐块 PNG 或整包 ZIP</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>九宫格发图最容易踩的六个坑</h2>
+          <table>
+            <thead><tr><th>你要做的事</th><th>工具实际怎么切</th><th>注意什么</th></tr></thead>
+            <tbody>
+              <tr><td>3×3 发朋友圈、小红书</td><td>按 行_列 命名，行优先</td><td>发布顺序错了就拼不回原图</td></tr>
+              <tr><td>原图除不尽</td><td>每块 floor 取整，右侧或底部丢 1–3 像素</td><td>单看没感觉，拼合时会出现细缝</td></tr>
+              <tr><td>2×2 做四宫格</td><td>选 2 行 2 列，每块是原图 1/4</td><td>分辨率不变，只是范围变小</td></tr>
+              <tr><td>透明 PNG</td><td>透明区域原样保留</td><td>拼到深色背景上会透出底色</td></tr>
+              <tr><td>想不等分地切</td><td>只能按行列等分，没有自定义切割线</td><td>需要精确位置就用裁剪工具逐张裁</td></tr>
+              <tr><td>一次五张图</td><td>一次一张，切完重选文件</td><td>多组记得按组命名，别混在一起</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <div class="before-after-preview" id="beforeAfterPreview">
@@ -380,6 +433,10 @@
 <div class="faq-item"><button class="faq-question">碎片是单独导出吗？</button><div class="faq-answer">是的——每片单独下载，或全部打包为 ZIP。</div></div>
 <div class="faq-item"><button class="faq-question">缩放会降低画质吗？</button><div class="faq-answer">缩放使用高质量插值。放大无法添加原图中不存在的细节。</div></div>
 <div class="faq-item"><button class="faq-question">可以处理多张图片吗？</button><div class="faq-answer">可以——缩放和裁剪均支持批量处理。</div></div>
+              <div class="faq-item"><button class="faq-question">拼回去为什么有细缝？</button><div class="faq-answer">因为每块尺寸是向下取整的：宽 1000 切 3 列，每块 333 像素，最后 1 像素被丢弃，三块拼起来只有 999。社交平台上传时还会各自重压缩一次，缝会更明显。要严丝合缝，先把原图裁成 3 的倍数再切。</div></div>
+        <div class="faq-item"><button class="faq-question">切出来的顺序怎么记？</button><div class="faq-answer">文件名是 原图名_行_列.png，行列都从 1 开始，比如 3×3 的第 2 行第 3 列就是 photo_2_3.png。九宫格发布时按 1_1、1_2、1_3、2_1 的顺序上传，从左上到右下。</div></div>
+        <div class="faq-item"><button class="faq-question">能切长图发公众号吗？</button><div class="faq-answer">可以，选 1 列多行就能把长截图切成若干段，每段都是完整宽度。但每段之间没有重叠，接缝处会截断一行字，阅读体验一般，长图更适合直接压窄发。</div></div>
+        <div class="faq-item"><button class="faq-question">切的块数有上限吗？</button><div class="faq-answer">没有硬限制，但行列一多（比如 10×10）会一次性生成上百个 canvas 并渲染缩略图，低配设备会卡。常规九宫格、十六宫格完全没问题。</div></div>
       </section>
 
 <section class="related-tools">
