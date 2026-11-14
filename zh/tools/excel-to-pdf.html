@@ -132,6 +132,38 @@
         "@type": "Answer",
         "text": "会智能跨页。横向页面适合列多的表格，工具自动调整列宽适配纸张大小，不会出现半截表格。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "超过 5000 行会被截掉多少？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "只保留前 5000 行，后面的行不进 PDF，页面上方会印一行 showing first 5000 rows 提醒。这是代码里的硬上限 MAX_ROWS，不是性能建议——想要完整的表就按 5000 行拆成几个工作表分别转。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "多个工作表怎么排？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "每个 sheet 从新的一页开始，页首印一行 Sheet: 加表名（沿用工作簿的标签名），第一行内容被当作表头并在续页重复。换页时只重复表头，不重复 Sheet 标题，所以同一来源的多份报表混在一起时最好把来源写进表名。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "合并单元格会变成什么样？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "合并区域在读取时只有左上角保留值，其余为空，转成 PDF 后就是普通网格里一个值加几个空格，视觉上的合并效果没有了。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "字号能调大一点吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能。表格固定 8pt，只有页面方向（横向/纵向）可选。字太小想放大，只能减少列数或改用纵向页面让列宽变宽。"
+      }
     }
   ]
 }
@@ -164,7 +196,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>Excel转PDF</span></nav>
       <div class="tool-page-header">
         <h1>📊 Excel转PDF在线工具</h1>
-        <p>把Excel(.xlsx)转成PDF，每个工作表自动适配为一页表格。适合财务人事报表提交、银行对账单导出。100%浏览器本地处理。</p>
+        <p class="answer-lead">SheetJS 读表格、jsPDF 出 PDF：每个工作表单独起一页 A4，默认横向、8pt 字号、单元格内容自动换行，列宽按纸张自动收缩。单个工作表超过 5000 行时只保留前 5000 行，并在页首标注提示；图表、图片、底色、合并单元格、公式表达式都不会出现，只剩算好的值。文件不离开浏览器。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无页数限制</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">输入 .xlsx / .xls，输出 PDF</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地转换</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">A4 横向或纵向，上限 5000 行</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>表格情况 → 转换结果：先看这张表再上传</h2>
+          <table>
+            <thead><tr><th>表格情况</th><th>PDF 里会变成什么</th><th>建议</th></tr></thead>
+            <tbody>
+              <tr><td>普通报表，几千行以内</td><td>每表一页起排，行多自动续页，8pt 字可读</td><td>直接转，横向更适合列多的表</td></tr>
+              <tr><td>单个 sheet 超过 5000 行</td><td>超出部分被丢弃，页首印一行 showing first 5000 rows</td><td>按 5000 行拆表，或分多个 sheet 转</td></tr>
+              <tr><td>列特别多（20 列以上）</td><td>列宽被压到纸张宽度内，每格文字换行，行高被撑高</td><td>先在 Excel 里隐藏无关列，或选横向</td></tr>
+              <tr><td>带图表、图片、形状</td><td>全部丢失，只留单元格值</td><td>需要图表就截图，或用 Excel 自带导出</td></tr>
+              <tr><td>有公式的报表</td><td>显示公式算出来的值，公式本身不可见也无法编辑</td><td>转前确认数值已刷新</td></tr>
+              <tr><td>合并单元格、彩色底纹</td><td>合并与配色不保留，展开成普通网格</td><td>样式要求高就走 Excel 打印为 PDF</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
         <div class="tool-container">
@@ -352,6 +405,10 @@
         <div class="faq-item"><button class="faq-question">银行对账单可以用这个工具转吗？</button><p>很合适。银行导出的流水Excel转成PDF就是规范的对账单，打印出来签字盖章就能用。比直接发Excel文件格式固定不跑版。</p></div>
         <div class="faq-item"><button class="faq-question">人事报表转PDF后可以签字确认吗？</button><p>可以。绩效考核表Excel转成PDF后发给员工签字，PDF格式固定不能改数字，签了字就有法律效力。</p></div>
         <div class="faq-item"><button class="faq-question">宽表格打印出来会分页吗？</button><p>会智能跨页。横向页面适合列多的表格，工具自动调整列宽适配纸张大小，不会出现半截表格。</p></div>
+              <div class="faq-item"><button class="faq-question">超过 5000 行会被截掉多少？</button><p>只保留前 5000 行，后面的行不进 PDF，页面上方会印一行 showing first 5000 rows 提醒。这是代码里的硬上限 MAX_ROWS，不是性能建议——想要完整的表就按 5000 行拆成几个工作表分别转。</p></div>
+        <div class="faq-item"><button class="faq-question">多个工作表怎么排？</button><p>每个 sheet 从新的一页开始，页首印一行 Sheet: 加表名（沿用工作簿的标签名），第一行内容被当作表头并在续页重复。换页时只重复表头，不重复 Sheet 标题，所以同一来源的多份报表混在一起时最好把来源写进表名。</p></div>
+        <div class="faq-item"><button class="faq-question">合并单元格会变成什么样？</button><p>合并区域在读取时只有左上角保留值，其余为空，转成 PDF 后就是普通网格里一个值加几个空格，视觉上的合并效果没有了。</p></div>
+        <div class="faq-item"><button class="faq-question">字号能调大一点吗？</button><p>不能。表格固定 8pt，只有页面方向（横向/纵向）可选。字太小想放大，只能减少列数或改用纵向页面让列宽变宽。</p></div>
       </section>
 
       <section class="related-tools">

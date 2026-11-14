@@ -89,7 +89,7 @@
       "name": "处理在服务器上吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "不在。所有抠图和换白底计算都在你的浏览器内完成，照片不会上传到任何服务器。"
+        "text": "不在。抠图和换白底都在浏览器内完成，照片不会上传。首次使用会从 CDN 下载一次抠图模型权重，下发的是模型文件，不含你的图片。"
       }
     },
     {
@@ -105,7 +105,7 @@
       "name": "支持哪些图片格式？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "支持 JPG、PNG、WebP 等常见格式，单张最大 20MB。导出为透明背景 PNG 或白底 JPG，均可自由选择。"
+        "text": "支持 JPG、PNG、WebP 等浏览器能解码的格式。输出固定为 1600×1600 纯白底 PNG，没有透明底或 JPG 选项，尺寸也不可调。"
       }
     },
     {
@@ -122,6 +122,38 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "没有。工具永久免费，不限制处理张数，不加水印，无需注册账号。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么输出一定要 1600×1600？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "代码里画布宽高写死为 1600，商品按最长边 80%（约 1280px）居中放置，四周留白。淘宝、拼多多、Shopify 的白底主图都吃这个尺寸，需要别的尺寸得下下来自己裁。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "能输出透明背景吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能。生成时先 fillRect 铺一层 #ffffff，再把抠好的商品画上去，所以结果永远是白底。要透明底请回到抠图工具。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "模型下载要多久？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "权重从 jsDelivr 取，普通宽带几秒到十几秒，之后再打开页面会命中浏览器缓存。如果公司网络拦 CDN，按钮会一直停在正在运行 AI 抠图。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "边缘抠不干净怎么办？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "半透明材质（玻璃、纱、塑料包装）和商品与背景同色时最容易出错，抠图模型没有手动修边界面。建议换背景重拍，或用带画笔精修的工具补一遍。"
       }
     }
   ]
@@ -149,12 +181,32 @@
     <div class="container">
       <div class="tool-page-header">
         <h1>📦 电商产品图工作室</h1>
-        <p>AI 一键抠图换白底，为淘宝、拼多多、Shopify 生成干净的产品主图，全程本地处理。</p>
+        <p class="answer-lead">上传一张商品照，本地运行的抠图模型把背景去掉，再把商品居中放进 1600×1600 纯白画布，输出一张 PNG。模型权重从 CDN 拉一次，之后走浏览器缓存；照片本身不上传。输出尺寸和底色都是写死的——固定 1600×1600、固定纯白，没有透明底或自定义尺寸的开关，一次也只处理一张。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无数量限制</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">JPG / PNG / WebP，单张</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">照片不上传，仅首次下载模型</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">1600×1600 纯白底 PNG</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>原图情况决定成败：五种典型输入的结果</h2>
+          <table>
+            <thead><tr><th>原图情况</th><th>生成出来是什么样</th><th>建议</th></tr></thead>
+            <tbody>
+              <tr><td>商品与背景反差明显</td><td>轮廓通常干净，商品居中，最长边约 1280px</td><td>直接用，检查一遍边缘即可</td></tr>
+              <tr><td>本来就是纯白底商品图</td><td>模型仍会尝试抠图，白底商品可能被切掉边缘</td><td>已经有白底就不必用这个工具</td></tr>
+              <tr><td>需要透明底或自定义尺寸</td><td>输出被写死为 1600×1600 白底，无法改成透明或改尺寸</td><td>改用抠图工具自己排版</td></tr>
+              <tr><td>一次二十个 SKU</td><td>没有批量队列，一次一张，重新上传才能换图</td><td>按 SKU 逐张处理，量大换桌面批处理</td></tr>
+              <tr><td>首次点生成就失败</td><td>模型 CDN 拉不下来（网络受限或拦截），抠图无法启动</td><td>换网络重试，此工具不支持完全离线</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
         <div class="drop-zone" id="dropZone">
           <p style="font-size:1.2rem; margin-bottom:0.5rem;">📦 把产品图拖到这里</p>
-          <p style="color:var(--text-secondary);">支持 JPG/PNG，最大 20MB</p>
+          <p style="color:var(--text-secondary);">支持 JPG / PNG / WebP；超大图会更慢</p>
           <input type="file" id="fileInput" accept="image/*" hidden>
         </div>
         <div class="status" id="status"></div>
@@ -215,24 +267,28 @@
         <p>很多个人卖家、微商和工厂直销店主并没有专业的摄影棚，商品照大多用手机在室内、窗边甚至仓库里拍摄。这类照片常见的问题是背景杂乱——纸箱、货架、地面反光，拍出来的商品显得廉价。过去处理这些照片要么花钱请美工，要么自己下载软件学钢笔抠图，成本都不低。本地 AI 抠图工具的意义在于：让没有设计基础的卖家也能在手机上完成"拍摄到上架"的完整流程。</p>
         <p>推荐的工作流是这样的：白天自然光下拍摄商品，尽量让商品轮廓清晰、主体占画面一半以上；上传后先点生成，AI 会在本地把背景移除；如果边缘有残留，可以换一个角度重拍再处理，或者选择与商品颜色反差大的背景（例如深色商品配浅色背景）提高识别成功率；得到干净的白底图后，再按平台要求裁剪尺寸、添加必要的细节图。整个过程不依赖网络传输，照片不会经过任何第三方服务器。</p>
         <p>对于每天需要上新大量 SKU 的店铺，这套流程尤其实用：不需要为每一张图单独约美工，不需要下载大型软件，浏览器打开就能用，手机和电脑之间切换也不会中断工作。配合批量处理工具，还可以把同一批商品照片统一导出，保持整店主图的底色和构图一致，店铺看起来更专业。</p>
-        <p>实际操作中的几个经验：拍摄时尽量让商品与背景形成明显反差，例如深色衣服配浅色台面，AI 识别边缘会更干净；避免逆光拍摄导致商品轮廓发虚；透明或反光材质（玻璃瓶、塑料包装）的抠图边缘可能不够利落，这类商品建议选择稍高的分辨率重拍一次。生成白底图后，先检查一遍边缘是否干净、商品是否居中，再进入下一步排版，这样可以减少返工。工具生成的图片默认保留原始清晰度，不需要担心抠图后画质下降。</p>
+        <p>实际操作中的几个经验：拍摄时尽量让商品与背景形成明显反差，例如深色衣服配浅色台面，AI 识别边缘会更干净；避免逆光拍摄导致商品轮廓发虚；透明或反光材质（玻璃瓶、塑料包装）的抠图边缘可能不够利落，这类商品建议选择稍高的分辨率重拍一次。生成白底图后，先检查一遍边缘是否干净、商品是否居中，再进入下一步排版，这样可以减少返工。生成的图固定 1600×1600，商品最长边约 1280 像素：原图比这更大也会被缩到这个尺寸，原图更小则会被放大，所以拍摄分辨率高并不会让输出更清晰。</p>
         <p>做微商、代购或闲鱼二手交易的用户也能受益：闲置物品挂闲鱼时，一张干净的白底图明显比随手拍更有说服力，成交率和询问量都有提升；代购商品图统一白底后，发朋友圈也更整洁。工具免费、无水印、不限张数，高频使用也不用担心成本。</p>
       </section>
       <section class="localization-section">
         <h2 style="text-align:center;margin-bottom:20px;">隐私与效率：为什么产品图处理应该留在浏览器</h2>
         <p>对电商卖家来说，商品照片是重要的经营资产：未发布的款式图如果被上传到第三方服务器，存在被同行截留、提前上架的风险；带水印的原图也可能被恶意利用。这款工具的所有抠图和合成计算都在你的浏览器内完成，照片从头到尾不离开设备，从根本上避免了这类风险。处理未发布新品、定制商品、工厂打样图时，这一点尤其重要。</p>
-        <p>从效率角度看，本地处理意味着没有上传等待、没有云端队列、没有服务器宕机导致的进度丢失。上传一张 20MB 以内的商品照片，点击生成，AI 在本地完成识别和抠图，几秒后即可下载，网络状况不影响处理速度。需要临时修改主图、赶在平台活动报名截止前上新时，这种"打开就用"的体验非常关键。</p>
+        <p>从效率角度看，本地处理意味着没有上传等待、没有云端队列、没有服务器宕机导致的进度丢失。选好照片点生成，模型在本地推理，几秒后即可下载。唯一需要网络的是首次使用——那时要从 CDN 下载模型权重，之后走浏览器缓存。需要临时修改主图、赶在平台活动报名截止前上新时，这种"打开就用"的体验非常关键。</p>
         <p>工具没有账号体系，不会在你的设备上留下任何历史记录，关闭标签页后照片和结果都会从内存中清除，适合在公用电脑上处理。企业用户（电商代运营、摄影工作室、工厂电商部）可以放心把白底图制作嵌入工作流程，员工无需注册账号，不存在数据汇聚到某个服务商的合规问题，出图质量也足够满足商业用途。</p>
         <p>兼容性方面，桌面端 Chrome、Edge、Firefox、Safari 均可流畅运行，手机端直接在浏览器打开即可使用。实测一台 2020 年后的中端手机处理 1200 万像素商品照片约需 3-5 秒，与电脑端体验一致。如果你同时需要批量处理或为多张图统一尺寸，可以配合站内其他图片工具一起使用，所有工具都是本地处理、永久免费。</p>
         <p>需要说明的是，首次使用时会从公共 CDN 加载一次 AI 模型（约几 MB），之后会缓存在浏览器本地，后续处理不再重复下载；模型加载期间页面仍可正常上传照片。由于全部计算都在本地完成，工具也完全可以在弱网环境下使用——只要页面加载完成，后续抠图、合成都不依赖网络，这点对经常在仓库、展会展位等网络不稳场景处理商品图的卖家特别实用。</p>
       </section>
       <section class="faq-section">
         <h2>常见问题</h2>
-        <div class="faq-item"><button class="faq-question">处理在服务器上吗？</button><div class="faq-answer">不在。所有抠图和换白底计算都在你的浏览器内完成，照片不会上传到任何服务器。</div></div>
+        <div class="faq-item"><button class="faq-question">处理在服务器上吗？</button><div class="faq-answer">不在。抠图和换白底都在浏览器内完成，照片不会上传。首次使用会从 CDN 下载一次抠图模型权重，下发的是模型文件，不含你的图片。</div></div>
         <div class="faq-item"><button class="faq-question">淘宝主图白底要求是什么？</button><div class="faq-answer">淘宝/天猫主图建议 800×800 或 750×1000 像素，白色背景纯度接近 #FFFFFF，商品占画面 60%-80%，四周留白均匀。本工具默认输出 1600×1600 白底图，可直接裁剪适配平台要求。</div></div>
-        <div class="faq-item"><button class="faq-question">支持哪些图片格式？</button><div class="faq-answer">支持 JPG、PNG、WebP 等常见格式，单张最大 20MB。导出为透明背景 PNG 或白底 JPG，均可自由选择。</div></div>
+        <div class="faq-item"><button class="faq-question">支持哪些图片格式？</button><div class="faq-answer">支持 JPG、PNG、WebP 等浏览器能解码的格式。输出固定为 1600×1600 纯白底 PNG，没有透明底或 JPG 选项，尺寸也不可调。</div></div>
         <div class="faq-item"><button class="faq-question">手机照片能直接处理吗？</button><div class="faq-answer">可以。手机浏览器打开即可使用，拍摄的商品照直接选择上传，抠图换白底全程在本地完成，适合随时上新、临时修改主图。</div></div>
         <div class="faq-item"><button class="faq-question">免费版有数量限制吗？</button><div class="faq-answer">没有。工具永久免费，不限制处理张数，不加水印，无需注册账号。</div></div>
+              <div class="faq-item"><button class="faq-question">为什么输出一定要 1600×1600？</button><div class="faq-answer">代码里画布宽高写死为 1600，商品按最长边 80%（约 1280px）居中放置，四周留白。淘宝、拼多多、Shopify 的白底主图都吃这个尺寸，需要别的尺寸得下下来自己裁。</div></div>
+        <div class="faq-item"><button class="faq-question">能输出透明背景吗？</button><div class="faq-answer">不能。生成时先 fillRect 铺一层 #ffffff，再把抠好的商品画上去，所以结果永远是白底。要透明底请回到抠图工具。</div></div>
+        <div class="faq-item"><button class="faq-question">模型下载要多久？</button><div class="faq-answer">权重从 jsDelivr 取，普通宽带几秒到十几秒，之后再打开页面会命中浏览器缓存。如果公司网络拦 CDN，按钮会一直停在正在运行 AI 抠图。</div></div>
+        <div class="faq-item"><button class="faq-question">边缘抠不干净怎么办？</button><div class="faq-answer">半透明材质（玻璃、纱、塑料包装）和商品与背景同色时最容易出错，抠图模型没有手动修边界面。建议换背景重拍，或用带画笔精修的工具补一遍。</div></div>
       </section>
     </div>
   </main>

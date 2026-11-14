@@ -5,19 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="index, follow">
   <title>人脸打码 — 自动检测并模糊人脸</title>
-  <meta name="description" content="自动识别照片中的人脸并打码模糊，也能手动框选补漏，发布前保护当事人隐私。可调模糊强度与像素块大小，支持一张图里多张脸分别处理。适合校园活动、新闻配图、二手交易和社交平台晒图。全部在浏览器本地处理，图片不会上传到服务器。">
+  <meta name="description" content="自动识别照片中的人脸并打码：模糊、像素化、黑条遮挡三种方式，强度与覆盖边距可调，一次处理一张图。检测到的多张脸共用同一组参数，没有手动框选，模型加载失败时会退化为顶部区域估计。适合校园活动、新闻配图、二手交易和社交平台晒图。全部在浏览器本地处理，图片不会上传到服务器。">
   <meta name="keywords" content="face blur, blur faces, privacy protection, auto face detection, anonymize photos, GDPR compliance, face pixelate, online face blur">
   <link rel="canonical" href="https://smartimgkit.com/zh/tools/face-blur">
   <meta name="theme-color" content="#6366f1">
   <meta property="og:title" content="人脸打码 — 自动检测并模糊人脸">
-  <meta property="og:description" content="自动识别照片中的人脸并打码模糊，也能手动框选补漏，发布前保护当事人隐私。可调模糊强度与像素块大小，支持一张图里多张脸分别处理。适合校园活动、新闻配图、二手交易和社交平台晒图。全部在浏览器本地处理，图片不会上传到服务器。">
+  <meta property="og:description" content="自动识别照片中的人脸并打码：模糊、像素化、黑条遮挡三种方式，强度与覆盖边距可调，一次处理一张图。检测到的多张脸共用同一组参数，没有手动框选，模型加载失败时会退化为顶部区域估计。适合校园活动、新闻配图、二手交易和社交平台晒图。全部在浏览器本地处理，图片不会上传到服务器。">
   <meta property="og:url" content="https://smartimgkit.com/zh/tools/face-blur">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SmartImgKit">
   <meta property="og:image" content="https://smartimgkit.com/screenshots/face-blur.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="人脸打码 — 自动检测并模糊人脸">
-  <meta name="twitter:description" content="自动识别照片中的人脸并打码模糊，也能手动框选补漏，发布前保护当事人隐私。可调模糊强度与像素块大小，支持一张图里多张脸分别处理。适合校园活动、新闻配图、二手交易和社交平台晒图。全部在浏览器本地处理，图片不会上传到服务器。">
+  <meta name="twitter:description" content="自动识别照片中的人脸并打码：模糊、像素化、黑条遮挡三种方式，强度与覆盖边距可调，一次处理一张图。检测到的多张脸共用同一组参数，没有手动框选，模型加载失败时会退化为顶部区域估计。适合校园活动、新闻配图、二手交易和社交平台晒图。全部在浏览器本地处理，图片不会上传到服务器。">
   <meta name="twitter:image" content="https://smartimgkit.com/screenshots/face-blur.png">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/face-blur">
@@ -43,7 +43,7 @@
     "price": "0",
     "priceCurrency": "USD"
   },
-  "description": "自动识别照片中的人脸并打码模糊，也能手动框选补漏，发布前保护当事人隐私。可调模糊强度与像素块大小，支持一张图里多张脸分别处理。适合校园活动、新闻配图、二手交易和社交平台晒图。全部在浏览器本地处理，图片不会上传到服务器。"
+  "description": "自动识别照片中的人脸并打码：模糊、像素化、黑条遮挡三种方式，强度与覆盖边距可调，一次处理一张图。检测到的多张脸共用同一组参数，没有手动框选，模型加载失败时会退化为顶部区域估计。适合校园活动、新闻配图、二手交易和社交平台晒图。全部在浏览器本地处理，图片不会上传到服务器。"
 }
 </script>
   <script type="application/ld+json">
@@ -118,7 +118,7 @@
       "name": "一张照片能识别多少张脸？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "自动模式下一次能识别几十张人脸，团体照、合影都能覆盖，识别到的每张脸会自动打码。"
+        "text": "模型会在一次推理里框出所有置信度超过 0.5 的人脸，合影通常能全部覆盖；但远处的小脸、侧脸、被遮挡的脸容易漏检，打完一定要自己扫一遍。"
       }
     },
     {
@@ -126,7 +126,7 @@
       "name": "除了人脸，能打码别的东西吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "能。切到手动模式，在画面上框出任意区域，车牌、门牌、工牌、屏幕上的姓名都能遮掉。"
+        "text": "不能。工具只有模糊、像素化、黑条三种处理方式，作用范围完全来自自动检测到的人脸框，没有在画面上拖框的入口，所以车牌、门牌、工牌、屏幕上的姓名都遮不了。这类需求要用带矩形标注功能的图片编辑器。"
       }
     },
     {
@@ -150,7 +150,7 @@
       "name": "可以手动模糊吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "可以——手动调整或添加模糊区域。"
+        "text": "不可以。页面没有手动框选，也没有增删检测框的按钮；漏检的脸只能靠把内边距调到 20–50% 把范围撑大，代价是周围环境一起被糊。"
       }
     },
     {
@@ -167,6 +167,30 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "AI 增强是起点——可用编辑工具进一步微调。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "打码是模糊还是马赛克？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "两种都有，外加黑条遮挡。模糊是把脸框区域缩小再放大做的均值模糊，强度越大块越粗；像素化是按强度的一半取块大小，边缘更规整；黑条直接把框涂黑。三者都只作用于框内像素。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "模糊会被还原吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不会。模糊和像素化是把原像素覆盖成低分辨率结果，文件里没有保留原始人脸像素，导出的是重绘后的新 PNG。但强度太小（1–3）时仍有辨识度，正式发布建议 10 以上。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么检测很慢或者一直转圈？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "首次使用要从 CDN 下载 MediaPipe 的 face_detection 模型和 WASM 运行时，网络慢就要等十几秒。如果 CDN 被拦，页面会退化到区域估计模式，届时人脸不会被真正识别。"
       }
     }
   ]
@@ -233,7 +257,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🙈 人脸打码</span></nav>
       <div class="tool-page-header">
         <h1>🙈 人脸打码</h1>
-        <p>自动检测并模糊图片中的人脸，分享照片前先保护隐私。100% 浏览器本地处理，无需上传。</p>
+        <p class="answer-lead">用 MediaPipe 人脸检测模型在浏览器里框出人脸，再对框内区域做模糊、像素化或黑条遮挡，强度 1–50、内边距 0–50% 可调，一次处理一张图，输出与原图同尺寸的 PNG。照片不上传；模型权重从 CDN 加载，加载失败时页面会退化成顶部区域估计并标注（估计），可能糊错地方。没有手动框选，非人脸区域遮不了。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无水印</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">JPG / PNG / WebP 输入，PNG 输出</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，模型在本地推理</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">原尺寸 PNG，三种遮挡方式</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>照片情况决定打码是否可靠：六种常见判断</h2>
+          <table>
+            <thead><tr><th>照片情况</th><th>打码结果</th><th>建议</th></tr></thead>
+            <tbody>
+              <tr><td>正面、光线均匀的单人或合影</td><td>逐张框出人脸，全部按同一套参数处理</td><td>内边距给 10–20% 更保险</td></tr>
+              <tr><td>侧脸、低头、戴帽子口罩</td><td>容易漏检，被漏掉的脸保持原样</td><td>换角度重拍，或改用图片编辑器手绘遮挡</td></tr>
+              <tr><td>小脸、背景远处的人</td><td>模型以 640px 缩图检测，远处小脸常常框不到</td><td>裁切放大后单独处理</td></tr>
+              <tr><td>模型 CDN 拉不下来</td><td>退化为顶部中央 40%×35% 的区域估计，框上标注（估计）</td><td>换网络重试，识别会明显更准</td></tr>
+              <tr><td>要遮车牌、门牌、工牌</td><td>遮不了，工具只作用于检测到的人脸框</td><td>用带矩形标注的编辑器手动涂</td></tr>
+              <tr><td>想给不同脸用不同强度</td><td>所有框共用同一组强度与边距参数</td><td>分两次处理，或用编辑器逐个涂</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace" id="workspace">
 <!-- Before/After Preview -->
@@ -369,7 +414,7 @@
   <h2>使用方法</h2>
   <div class="how-to-steps">
     <div class="how-to-step"><div class="step-number">1</div><h4>上传图片</h4><p>拖拽或点击选择图片。</p></div>
-    <div class="how-to-step"><div class="step-number">2</div><h4>模糊模式</h4><p>选择自动检测、手动或两者结合。</p></div>
+    <div class="how-to-step"><div class="step-number">2</div><h4>模糊模式</h4><p>选择模糊、像素化或黑条遮挡三种方式之一。</p></div>
     <div class="how-to-step"><div class="step-number">3</div><h4>调整</h4><p>设置模糊强度并预览结果。</p></div>
     <div class="how-to-step"><div class="step-number">4</div><h4>下载</h4><p>点击「下载」保存模糊后的图片。</p></div>
   </div>
@@ -384,7 +429,7 @@
 
       <div class="guide-block">
         <h3>步骤 2：选择模糊模式</h3>
-        <p>选择自动检测（全部人脸）、手动（拖拽矩形框）或两者结合。</p>
+        <p>上传后自动检测全图人脸，没有手动框选入口；检测到的每张脸共用同一组强度与边距参数。</p>
       </div>
 
       <div class="guide-block">
@@ -394,7 +439,7 @@
 
       <div class="guide-block">
         <h3>步骤 4：预览与微调</h3>
-        <p>模糊结果会立即显示。若漏掉某张脸，可使用手动模式。</p>
+        <p>模糊结果会立即显示。若漏掉某张脸，把内边距调大到 20–50% 扩大覆盖范围，或换一张侧脸更少的照片。</p>
       </div>
 
       <div class="guide-block">
@@ -409,13 +454,16 @@
 
 <section class="faq-section">
   <h2>常见问题</h2>
-  <div class="faq-item"><button class="faq-question">一张照片能识别多少张脸？</button><div class="faq-answer">自动模式下一次能识别几十张人脸，团体照、合影都能覆盖，识别到的每张脸会自动打码。</div></div>
-  <div class="faq-item"><button class="faq-question">除了人脸，能打码别的东西吗？</button><div class="faq-answer">能。切到手动模式，在画面上框出任意区域，车牌、门牌、工牌、屏幕上的姓名都能遮掉。</div></div>
+  <div class="faq-item"><button class="faq-question">一张照片能识别多少张脸？</button><div class="faq-answer">模型会在一次推理里框出所有置信度超过 0.5 的人脸，合影通常能全部覆盖；但远处的小脸、侧脸、被遮挡的脸容易漏检，打完一定要自己扫一遍。</div></div>
+  <div class="faq-item"><button class="faq-question">除了人脸，能打码别的东西吗？</button><div class="faq-answer">不能。工具只有模糊、像素化、黑条三种处理方式，作用范围完全来自自动检测到的人脸框，没有在画面上拖框的入口，所以车牌、门牌、工牌、屏幕上的姓名都遮不了。这类需求要用带矩形标注功能的图片编辑器。</div></div>
   <div class="faq-item"><button class="faq-question">图片会上传到服务器吗？</button><div class="faq-answer">不会。人脸检测和打码都在浏览器本地跑，照片不出设备，处理证件、工牌这类敏感画面时不用担心外泄。</div></div>
 <div class="faq-item"><button class="faq-question">如何检测人脸？</button><div class="faq-answer">浏览器端人脸检测模型自动查找人脸。</div></div>
-<div class="faq-item"><button class="faq-question">可以手动模糊吗？</button><div class="faq-answer">可以——手动调整或添加模糊区域。</div></div>
+<div class="faq-item"><button class="faq-question">可以手动模糊吗？</button><div class="faq-answer">不可以。页面没有手动框选，也没有增删检测框的按钮；漏检的脸只能靠把内边距调到 20–50% 把范围撑大，代价是周围环境一起被糊。</div></div>
 <div class="faq-item"><button class="faq-question">AI 处理在服务器上吗？</button><div class="faq-answer">不在。AI 模型完全在浏览器内通过 WebAssembly 和 WebGL 运行。</div></div>
 <div class="faq-item"><button class="faq-question">效果不理想怎么办？</button><div class="faq-answer">AI 增强是起点——可用编辑工具进一步微调。</div></div>
+              <div class="faq-item"><button class="faq-question">打码是模糊还是马赛克？</button><div class="faq-answer">两种都有，外加黑条遮挡。模糊是把脸框区域缩小再放大做的均值模糊，强度越大块越粗；像素化是按强度的一半取块大小，边缘更规整；黑条直接把框涂黑。三者都只作用于框内像素。</div></div>
+        <div class="faq-item"><button class="faq-question">模糊会被还原吗？</button><div class="faq-answer">不会。模糊和像素化是把原像素覆盖成低分辨率结果，文件里没有保留原始人脸像素，导出的是重绘后的新 PNG。但强度太小（1–3）时仍有辨识度，正式发布建议 10 以上。</div></div>
+        <div class="faq-item"><button class="faq-question">为什么检测很慢或者一直转圈？</button><div class="faq-answer">首次使用要从 CDN 下载 MediaPipe 的 face_detection 模型和 WASM 运行时，网络慢就要等十几秒。如果 CDN 被拦，页面会退化到区域估计模式，届时人脸不会被真正识别。</div></div>
       </section>
 
 <section class="related-tools">

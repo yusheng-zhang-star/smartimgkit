@@ -139,6 +139,30 @@
         "@type": "Answer",
         "text": "打印选A4页面、12pt字号，打印效果最好。如果在手机上看，选小一点的字号内容更紧凑。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "插图真的完全保留不了吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "是。转换只遍历文本节点（标题、段落、列表、引用），图片标签直接跳过，所以画册、漫画、带插图的教材转出来只有文字。需要保留图片的场合不要用这个工具。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "转出来的 PDF 有目录书签吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "没有。章节标题会作为加粗文字排在正文里，但不会生成 PDF 的导航书签或可点击目录，长书翻章要靠搜索关键词。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "字体能指定吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能，只提供 11/12/14pt 三档字号和 A4/Letter 两种页面，字体用 PDF 内置的 Helvetica 系，中文按浏览器的字形渲染。原书的字体、字号、颜色都不沿用。"
+      }
     }
   ]
 }
@@ -172,7 +196,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>EPUB转PDF</span></nav>
       <div class="tool-page-header">
         <h1>📚 EPUB转PDF在线工具</h1>
-        <p>把EPUB电子书转成可搜索的PDF，按阅读顺序提取章节，保留标题与段落结构。适合电子书打印和阅读器兼容。100%浏览器本地处理。</p>
+        <p class="answer-lead">把 EPUB 拆成章节文字，再用 jsPDF 按 A4 或 Letter 重新排版成可搜索的 PDF：标题层级、段落、列表顺序保留，正文字号可选 11/12/14pt。只搬文字——插图、表格样式、原书字体和分栏都会丢，扫描版或带 DRM 的书提取不到内容。解析和生成全在浏览器里完成，书不离开设备。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">输入 .epub，输出 PDF</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地解析</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">A4 或 Letter，11–14pt</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>什么样的书适合转：六种情况的真实结果</h2>
+          <table>
+            <thead><tr><th>书的情况</th><th>转出来是什么样</th><th>建议</th></tr></thead>
+            <tbody>
+              <tr><td>纯文字小说、随笔</td><td>章节标题与段落完整，文字可搜索可选中，最接近预期</td><td>直接转，A4 加 12pt 最稳</td></tr>
+              <tr><td>图文混排的绘本、画册</td><td>图片一张都不保留，只剩文字，页面留白很多</td><td>换支持图片重排的工具，或直接打印原书</td></tr>
+              <tr><td>扫描版、图片型 EPUB</td><td>提取不到文字块，页面提示 No text content</td><td>先做 OCR 生成文字层再转</td></tr>
+              <tr><td>带 DRM 加密的书</td><td>解析失败或得到空白 PDF，无绕过的可能</td><td>先解密成无保护 EPUB</td></tr>
+              <tr><td>想还原原书版式</td><td>字体、行距、双栏、页眉页脚全部重排成单栏</td><td>用阅读器自带导出，或专业排版软件</td></tr>
+              <tr><td>几千页的合集</td><td>逐块排完才出文件，耗时随字数线性增长，中途不要切标签页</td><td>分卷转，单次几十万字以内更稳</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
         <div class="tool-container">
@@ -369,6 +414,9 @@
         <div class="faq-item"><button class="faq-question">Kindle上看EPUB不方便怎么办？</button><p>用这个工具把EPUB转成PDF，Kindle就能正常阅读了。比装转换软件方便，浏览器里直接转完下载。</p></div>
         <div class="faq-item"><button class="faq-question">电子书可以打印出来吗？</button><p>可以。把EPUB转成PDF后打印出来就是一本纸质书，看着比手机屏幕舒服多了。做读书笔记也方便。</p></div>
         <div class="faq-item"><button class="faq-question">打印选什么页面大小合适？</button><p>打印选A4页面、12pt字号，打印效果最好。如果在手机上看，选小一点的字号内容更紧凑。</p></div>
+              <div class="faq-item"><button class="faq-question">插图真的完全保留不了吗？</button><p>是。转换只遍历文本节点（标题、段落、列表、引用），图片标签直接跳过，所以画册、漫画、带插图的教材转出来只有文字。需要保留图片的场合不要用这个工具。</p></div>
+        <div class="faq-item"><button class="faq-question">转出来的 PDF 有目录书签吗？</button><p>没有。章节标题会作为加粗文字排在正文里，但不会生成 PDF 的导航书签或可点击目录，长书翻章要靠搜索关键词。</p></div>
+        <div class="faq-item"><button class="faq-question">字体能指定吗？</button><p>不能，只提供 11/12/14pt 三档字号和 A4/Letter 两种页面，字体用 PDF 内置的 Helvetica 系，中文按浏览器的字形渲染。原书的字体、字号、颜色都不沿用。</p></div>
       </section>
 
       <section class="related-tools">
