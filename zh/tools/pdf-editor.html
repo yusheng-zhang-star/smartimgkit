@@ -92,6 +92,38 @@
         "@type": "Answer",
         "text": "无硬性限制。超大 PDF（100MB+）可能拖慢浏览器。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "能输入中文吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "目前不能。文字元素用 PDF 内置的 Helvetica 字体，只含西文字符，导出含中文的文字元素会报编码错误。要加中文说明，可以先把文字做成 PNG 图片，再当图片元素叠加到页面上。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "放上去的元素能拖动或删掉吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "元素列表里可以删除单个元素，位置靠重新点击放置，不能拖动微调；建议先在预览里对准位置，再一次性导出。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "能一次加到所有页吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能。每个元素都绑定在你点击的那一页，需要逐页放置；整份文件要统一加水印时，这个工具的效率不高。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "导出后原文件会变吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不会。生成的是新文件，原 PDF 保持原样，改坏了重新上传再来一次即可。"
+      }
     }
   ]
 }
@@ -176,7 +208,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>PDF 编辑器</span></nav>
       <div class="tool-page-header">
         <h1>✏️ PDF 编辑器</h1>
-        <p>在 PDF 中添加文字、图片和形状。点击页面放置元素，可调整字体、字号和颜色。100% 在浏览器中完成。</p>
+        <p class="answer-lead">在 PDF 页面上叠加文字、图片或矩形色块：选好模式后在预览上点一下，元素就落在点击位置，文字字号 6–200 pt，矩形可以调透明度。它只能往上加东西，改不了原文，也没有荧光笔高亮。文字用的是 PDF 内置 Helvetica 字体，只含西文和数字，输入中文会在导出时报编码错误。全部在浏览器本地完成。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">仅 PDF</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地处理</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">叠加元素后的新 PDF</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>能改什么、改不了什么</h2>
+          <table>
+            <thead><tr><th>你想做的改动</th><th>能不能做</th><th>替代做法</th></tr></thead>
+            <tbody>
+              <tr><td>在条款旁加一句说明</td><td>能，加文字元素即可</td><td>中文要先做成图片再叠加</td></tr>
+              <tr><td>改掉原文里的错字</td><td>不能，只能往上盖</td><td>白色矩形盖住，再补新文字</td></tr>
+              <tr><td>盖住敏感信息</td><td>能盖矩形，但底层文字还在</td><td>用隐藏敏感信息工具处理</td></tr>
+              <tr><td>荧光笔式高亮重点</td><td>没有高亮工具</td><td>用低透明度黄色矩形模拟</td></tr>
+              <tr><td>每页都加同一句水印</td><td>要逐页点击放置</td><td>用批量工具或改源文件</td></tr>
+              <tr><td>插入、删除整页</td><td>不支持，本工具只加元素</td><td>用页面整理或删除页工具</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
         <div class="tool-container">
@@ -261,6 +314,10 @@
 <div class="faq-item"><button class="faq-question">会修改原件吗？</button><div class="faq-answer">不会——创建新的已编辑 PDF。</div></div>
 <div class="faq-item"><button class="faq-question">PDF 会上传到服务器吗？</button><div class="faq-answer">不会。全部通过 pdf-lib 和 pdf.js 在浏览器本地处理。</div></div>
 <div class="faq-item"><button class="faq-question">有页数或文件限制吗？</button><div class="faq-answer">无硬性限制。超大 PDF（100MB+）可能拖慢浏览器。</div></div>
+              <div class="faq-item"><button class="faq-question">能输入中文吗？</button><div class="faq-answer">目前不能。文字元素用 PDF 内置的 Helvetica 字体，只含西文字符，导出含中文的文字元素会报编码错误。要加中文说明，可以先把文字做成 PNG 图片，再当图片元素叠加到页面上。</div></div>
+        <div class="faq-item"><button class="faq-question">放上去的元素能拖动或删掉吗？</button><div class="faq-answer">元素列表里可以删除单个元素，位置靠重新点击放置，不能拖动微调；建议先在预览里对准位置，再一次性导出。</div></div>
+        <div class="faq-item"><button class="faq-question">能一次加到所有页吗？</button><div class="faq-answer">不能。每个元素都绑定在你点击的那一页，需要逐页放置；整份文件要统一加水印时，这个工具的效率不高。</div></div>
+        <div class="faq-item"><button class="faq-question">导出后原文件会变吗？</button><div class="faq-answer">不会。生成的是新文件，原 PDF 保持原样，改坏了重新上传再来一次即可。</div></div>
       </section>
 
       

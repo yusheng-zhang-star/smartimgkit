@@ -170,6 +170,30 @@
         "@type": "Answer",
         "text": "把试卷 PDF 按章节提取成单独文件，方便分章节复习打印。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "抽出的页序会变吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "按你填写的顺序生成。填 3, 1, 2 得到的就是 3、1、2 这个顺序，可以用它把某几页提到最前面。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "能同时抽多个不相连的区间吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "可以。用逗号隔开，比如 1-3, 8, 12-15，段数没有硬性限制，填得下就能处理。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "抽出后原文件还在吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "在。工具只读取原文件，导出的是新文件，原 PDF 不会被修改或删除。"
+      }
     }
   ]
 }
@@ -233,7 +257,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>📑 PDF 提取页面</span></nav>
       <div class="tool-page-header">
         <h1>📑 PDF 提取页面</h1>
-        <p>从 PDF 中提取指定页码或页面范围，生成新文件——免费。</p>
+        <p class="answer-lead">只把要用的页抽出来，另存成一份新 PDF。支持多段范围混填，用逗号、顿号、分号隔开都行，比如 1-3, 8, 12-15；抽出顺序就是你在输入框里写的顺序，所以还能顺手把某页提到最前面。适合从上百页资料里截出几章，或者把标书里要投的那几节单独拿出去。本地处理，不上传。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">仅 PDF</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地处理</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">只含所选页的新 PDF</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>填范围时的常见情况</h2>
+          <table>
+            <thead><tr><th>你的情况</th><th>会发生什么</th><th>建议</th></tr></thead>
+            <tbody>
+              <tr><td>只要中间连着一段</td><td>直接填区间，如 30-55</td><td>最快的方式，别逐页列</td></tr>
+              <tr><td>想把附件页挪到最前</td><td>按目标顺序填，如 40, 1-39</td><td>抽出顺序＝你填的顺序</td></tr>
+              <tr><td>填了不存在的页码</td><td>该段跳过，其余照常抽出</td><td>先对一遍总页数</td></tr>
+              <tr><td>用中文逗号、顿号分隔</td><td>能识别，混用也没问题</td><td>从聊天记录里直接抄</td></tr>
+              <tr><td>抽完发现少了几页</td><td>区间写反或超出范围</td><td>用总页数核对数量</td></tr>
+              <tr><td>其实是想删掉不要的页</td><td>抽出比删页更直接</td><td>留几页就填几页</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -345,6 +390,9 @@
 <div class="faq-item"><button class="faq-question">输出的是有效 PDF 吗？</button><div class="faq-answer">是的——提取的页面组成独立 PDF 文件。</div></div>
 <div class="faq-item"><button class="faq-question">合同审阅时怎么提取关键条款页？</button><div class="faq-answer">打开合同 PDF，输入条款所在页码范围，一键提取生成新 PDF 发给律师审阅。</div></div>
 <div class="faq-item"><button class="faq-question">考试复习时怎么拆分试卷？</button><div class="faq-answer">把试卷 PDF 按章节提取成单独文件，方便分章节复习打印。</div></div>
+              <div class="faq-item"><button class="faq-question">抽出的页序会变吗？</button><div class="faq-answer">按你填写的顺序生成。填 3, 1, 2 得到的就是 3、1、2 这个顺序，可以用它把某几页提到最前面。</div></div>
+        <div class="faq-item"><button class="faq-question">能同时抽多个不相连的区间吗？</button><div class="faq-answer">可以。用逗号隔开，比如 1-3, 8, 12-15，段数没有硬性限制，填得下就能处理。</div></div>
+        <div class="faq-item"><button class="faq-question">抽出后原文件还在吗？</button><div class="faq-answer">在。工具只读取原文件，导出的是新文件，原 PDF 不会被修改或删除。</div></div>
       </section>
 <section class="related-tools"><h2>你可能还喜欢</h2><div class="related-tools-grid"><a href="/zh/tools/pdf-to-image" class="related-tool-card"><span class="tool-icon">📄</span><div class="tool-info"><strong>PDF 转图片</strong><span class="tool-desc">PDF 转成图片</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/pdf-merge" class="related-tool-card"><span class="tool-icon">🔗</span><div class="tool-info"><strong>PDF 合并</strong><span class="tool-desc">合并多个 PDF</span></div><span class="tool-arrow">→</span></a></div></section>
 
