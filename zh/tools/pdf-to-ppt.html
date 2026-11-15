@@ -145,6 +145,30 @@
         "@type": "Answer",
         "text": "没有硬性限制。特别大的PDF（几百页）转换会慢一点，但完全免费不限量。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么转出来的文字不能编辑？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "因为每张幻灯片放的是整页的 JPEG 图片，不是可编辑的文本框。工具只做渲染和拼装，不解析文字结构，想要能改的 PPT 得从源文件重新做。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "转出来文件为什么这么大？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "每页都是整幅图片，3x 倍率下单个图片就有几 MB，页数一多文件很快上百 MB。降到 1.5x 或 2x 能明显减小。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "幻灯片比例是怎么定的？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "取第一页的页面宽高比，整份文件按这个比例统一。如果原 PDF 混排了横版和竖版页面，其他页会按同一比例缩放，可能出现留白。"
+      }
     }
   ]
 }
@@ -177,7 +201,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>PDF to PPT</span></nav>
       <div class="tool-page-header">
         <h1>📑 PDF转PPT在线工具</h1>
-        <p>把PDF每页转成PowerPoint幻灯片，每页渲染为高分辨率图片。适合课件整理和汇报材料二次加工。100%浏览器本地处理。</p>
+        <p class="answer-lead">把 PDF 每页渲染成图，一页塞进一张 PowerPoint 幻灯片，幻灯片尺寸按第一页的页面比例设定。要提醒的是：幻灯片里是 JPEG 图片（固定 0.92 质量），不是文本框，所以转出来一个字都改不了。渲染倍率三档——标准 1.5x、高 2x、最高 3x，越高越慢、文件越大。本地转换，文件不上传。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">PDF → PPTX</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地转换</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">每页一张图片幻灯片</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>值不值得转，先看用途</h2>
+          <table>
+            <thead><tr><th>你的目的</th><th>值不值得转</th><th>更好的做法</th></tr></thead>
+            <tbody>
+              <tr><td>只想在 PPT 里逐页放映</td><td>值得，一页一张</td><td>其实直接用 PDF 放映也行</td></tr>
+              <tr><td>想在 PPT 里改文字</td><td>做不到，全是图片</td><td>回源文件改完再转</td></tr>
+              <tr><td>要拿去继续排版</td><td>不合适，等于图片拼装</td><td>用 PDF 转 Word 再整理</td></tr>
+              <tr><td>50 页以上的大文件</td><td>能做但文件很大</td><td>先用 1.5x，够用就别调高</td></tr>
+              <tr><td>要投影看得清</td><td>选 3x</td><td>生成慢，导出后看文件大小</td></tr>
+              <tr><td>想加转场和动画</td><td>可以，转完在 PPT 里加</td><td>图片层不影响动画</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
         <div class="tool-container">
@@ -310,6 +355,9 @@
         <div class="faq-item"><button class="faq-question">会议纪要PDF怎么转成PPT分享？</button><p>用这个工具直接转。会议纪要PDF转成PPT后发到部门群，大家打开就能看，不用装PDF阅读器。</p></div>
         <div class="faq-item"><button class="faq-question">图片质量选哪个合适？</button><p>日常汇报用"高"质量就够了，清晰且文件大小适中。如果要投影到大屏幕，选"最高"质量。</p></div>
         <div class="faq-item"><button class="faq-question">有页数限制吗？</button><p>没有硬性限制。特别大的PDF（几百页）转换会慢一点，但完全免费不限量。</p></div>
+              <div class="faq-item"><button class="faq-question">为什么转出来的文字不能编辑？</button><p>因为每张幻灯片放的是整页的 JPEG 图片，不是可编辑的文本框。工具只做渲染和拼装，不解析文字结构，想要能改的 PPT 得从源文件重新做。</p></div>
+        <div class="faq-item"><button class="faq-question">转出来文件为什么这么大？</button><p>每页都是整幅图片，3x 倍率下单个图片就有几 MB，页数一多文件很快上百 MB。降到 1.5x 或 2x 能明显减小。</p></div>
+        <div class="faq-item"><button class="faq-question">幻灯片比例是怎么定的？</button><p>取第一页的页面宽高比，整份文件按这个比例统一。如果原 PDF 混排了横版和竖版页面，其他页会按同一比例缩放，可能出现留白。</p></div>
       </section>
 
       <section class="related-tools">

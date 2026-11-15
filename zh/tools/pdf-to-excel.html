@@ -5,19 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="index, follow">
   <title>PDF转Excel在线免费 - 表格提取到xlsx 财务流水对账工具</title>
-  <meta name="description" content="免费在线 PDF 转 Excel，把 PDF 里的表格和文字提取到 .xlsx，按行列结构还原、合并单元格尽量保留。适合发票与银行流水对账、财务报表二次编辑、报价单改数。浏览器本地转换，文件不上传服务器，转换后可校对行列再下载。">
+  <meta name="description" content="免费在线 PDF 转 Excel，把 PDF 里的表格和文字提取到 .xlsx，按文字坐标还原行列（不合并单元格）。适合发票与银行流水对账、财务报表二次编辑、报价单改数。浏览器本地转换，文件不上传服务器，转换后可校对行列再下载。">
   <meta name="keywords" content="pdf转excel, pdf转xlsx, 在线pdf转excel, PDF表格提取工具">
   <link rel="canonical" href="https://smartimgkit.com/zh/tools/pdf-to-excel">
   <meta name="theme-color" content="#6366f1">
   <meta property="og:title" content="PDF 转 Excel — 表格转成 .xlsx">
-  <meta property="og:description" content="免费在线 PDF 转 Excel，把 PDF 里的表格和文字提取到 .xlsx，按行列结构还原、合并单元格尽量保留。适合发票与银行流水对账、财务报表二次编辑、报价单改数。浏览器本地转换，文件不上传服务器，转换后可校对行列再下载。">
+  <meta property="og:description" content="免费在线 PDF 转 Excel，把 PDF 里的表格和文字提取到 .xlsx，按文字坐标还原行列（不合并单元格）。适合发票与银行流水对账、财务报表二次编辑、报价单改数。浏览器本地转换，文件不上传服务器，转换后可校对行列再下载。">
   <meta property="og:url" content="https://smartimgkit.com/zh/tools/pdf-to-excel">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SmartImgKit">
   <meta property="og:image" content="https://smartimgkit.com/screenshots/pdf-to-excel.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="PDF 转 Excel — 表格转成 .xlsx">
-  <meta name="twitter:description" content="免费在线 PDF 转 Excel，把 PDF 里的表格和文字提取到 .xlsx，按行列结构还原、合并单元格尽量保留。适合发票与银行流水对账、财务报表二次编辑、报价单改数。浏览器本地转换，文件不上传服务器，转换后可校对行列再下载。">
+  <meta name="twitter:description" content="免费在线 PDF 转 Excel，把 PDF 里的表格和文字提取到 .xlsx，按文字坐标还原行列（不合并单元格）。适合发票与银行流水对账、财务报表二次编辑、报价单改数。浏览器本地转换，文件不上传服务器，转换后可校对行列再下载。">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="alternate" hreflang="en" href="https://smartimgkit.com/tools/pdf-to-excel">
   <link rel="alternate" hreflang="es" href="https://smartimgkit.com/es/tools/pdf-to-excel">
@@ -30,7 +30,7 @@
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
   <script type="application/ld+json">
   { 
-  "inLanguage": "zh","@context": "https://schema.org", "@type": "WebApplication", "name": "PDF 转 Excel", "url": "https://smartimgkit.com/zh/tools/pdf-to-excel", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }, "description": "免费在线 PDF 转 Excel，把 PDF 里的表格和文字提取到 .xlsx，按行列结构还原、合并单元格尽量保留。适合发票与银行流水对账、财务报表二次编辑、报价单改数。浏览器本地转换，文件不上传服务器，转换后可校对行列再下载。" }
+  "inLanguage": "zh","@context": "https://schema.org", "@type": "WebApplication", "name": "PDF 转 Excel", "url": "https://smartimgkit.com/zh/tools/pdf-to-excel", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }, "description": "免费在线 PDF 转 Excel，把 PDF 里的表格和文字提取到 .xlsx，按文字坐标还原行列（不合并单元格）。适合发票与银行流水对账、财务报表二次编辑、报价单改数。浏览器本地转换，文件不上传服务器，转换后可校对行列再下载。" }
   </script>
 
   <style>
@@ -128,7 +128,31 @@
       "name": "转出来的Excel需要手动调整吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "普通规整表格还原效果很好。如果是合并单元格多、跨页断裂复杂的表格，转出来后可能需要微调行列对齐，但大部分数据已自动提取。"
+        "text": "普通规整表格能按坐标还原成行列。合并单元格不会被合并——跨格标题会落到其中一列，纵向合并的单元格里只有第一行有值，转出来后要自己补；数字也都是文本格式，要计算得先转成数值。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么转出来的数字不能直接求和？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "因为写进单元格的是文字，不是数值。按坐标提取时拿到的都是字符串，Excel 会把它们当文本处理，用「分列」或 VALUE 函数转一次才能计算。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "多个 PDF 能一次转吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能，一次处理一个文件。每页生成一个工作表，页数多的文件会得到很多个 sheet，导出前先想清楚要怎么用。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "合并单元格会保留吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不会。工具只按文字坐标填格子，不做任何合并，跨格标题会落到其中一列，纵向合并的单元格里只有第一行有值，其余空白需要你自己补。"
       }
     }
   ]
@@ -162,7 +186,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>PDF转Excel</span></nav>
       <div class="tool-page-header">
         <h1>📊 PDF转Excel在线工具</h1>
-        <p>把PDF里的表格和文字提取到Excel(.xlsx)，按行列结构还原，省去手工录数据。100%浏览器本地处理。</p>
+        <p class="answer-lead">把 PDF 里的文字按坐标还原成表格，导出成 .xlsx，每页生成一个工作表。做法是同一水平线上的文字归为一行、横坐标接近的归为一列，所以规整的表格（发票、流水、报价单）行列基本对得上。它不会合并单元格，数字也一律存成文本；扫描件没有文字层，提取不出来。本地转换，文件不上传。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">仅 PDF（须有文字层）</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地转换</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">.xlsx，每页一个工作表</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>转出来对不对得上，先看这几种情况</h2>
+          <table>
+            <thead><tr><th>你的 PDF 长什么样</th><th>转出来会怎样</th><th>你该怎么办</th></tr></thead>
+            <tbody>
+              <tr><td>财务报表、发票流水等规整表格</td><td>行列基本对得上</td><td>核对合计后直接用</td></tr>
+              <tr><td>表头是合并单元格</td><td>不会合并，标题落在某一列里</td><td>转完手动合并表头</td></tr>
+              <tr><td>一个单元格里有多行文字</td><td>可能被拆成两行</td><td>先合并再参与计算</td></tr>
+              <tr><td>扫描件、拍照转的 PDF</td><td>没有文字层，转出来是空的</td><td>先做文字识别再另想办法</td></tr>
+              <tr><td>要直接求和、筛选</td><td>数字是文本格式，公式算不出</td><td>在 Excel 里先转成数值</td></tr>
+              <tr><td>长表格跨页断开</td><td>每页生成独立工作表</td><td>按页分别处理或手动拼接</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
         <div class="tool-container">
@@ -291,7 +336,7 @@
 <h2>数据整理与档案数字化：PDF表格提取到Excel</h2>
 <p>做档案管理、做资料数字化的人经常需要把纸质文件扫描成PDF，然后再从PDF里提取数据到Excel做台账。用这个工具自动提取表格，比手动录入快多了。特别是那些老档案、老报表，扫描成PDF后表格结构还在，工具能识别出来。</p>
 <p>做采购管理的人也常用。供应商发来的报价单PDF，转成Excel后汇总比价，把各家的价格放在一张表里对比，比来回翻PDF方便多了。工具支持大文件，几十页的PDF也能处理，转换过程在浏览器本地完成，不需要上传文件。</p>
-<p>最后说个使用建议：如果转出来的Excel行列有点错位，你可以先在PDF里确认一下表格是不是规整的——合并单元格太多、表格跨页断裂的PDF，提取效果会打折扣。普通的财务报表、发票流水这种规整表格，还原效果都很好。</p>
+<p>最后说个使用建议：如果转出来的Excel行列有点错位，你可以先在PDF里确认一下表格是不是规整的——合并单元格太多、表格跨页断裂的PDF，提取效果会打折扣，转出来要自己补格。规整的财务报表、发票流水这类，行列基本对得上。</p>
 <p>做仓库管理的人也深有体会。供应商发来的送货单PDF，转成Excel后直接录入库存台账，比手动敲数字快多了。特别是那种几十行的送货明细，自动提取出来就是一张完整的表格。</p>
 <p>做招投标的人常用。招标文件里的工程量清单是PDF格式，你要做报价就得把清单录进Excel里计算。用这个工具自动提取，节省大量手动录入时间。</p>
 
@@ -322,7 +367,10 @@
         <div class="faq-item"><button class="faq-question">我的PDF会上传到服务器吗？</button><p>不会。所有转换都在浏览器本地完成，文件不会离开你的设备。</p></div>
         <div class="faq-item"><button class="faq-question">银行流水PDF可以转成Excel对账吗？</button><p>很合适。银行导出的流水PDF，转成Excel后直接和账面数据比对，找差异比对着PDF看快多了。财务数据本地处理，不用担心泄露。</p></div>
         <div class="faq-item"><button class="faq-question">发票PDF可以批量提取金额吗？</button><p>可以。发票PDF转成Excel后，金额、日期、税额都在表格里，汇总统计比一张张发票手动加总快多了。</p></div>
-        <div class="faq-item"><button class="faq-question">转出来的Excel需要手动调整吗？</button><p>普通规整表格还原效果很好。如果是合并单元格多、跨页断裂复杂的表格，转出来后可能需要微调行列对齐，但大部分数据已自动提取。</p></div>
+        <div class="faq-item"><button class="faq-question">转出来的Excel需要手动调整吗？</button><p>普通规整表格能按坐标还原成行列。合并单元格不会被合并——跨格标题会落到其中一列，纵向合并的单元格里只有第一行有值，转出来后要自己补；数字也都是文本格式，要计算得先转成数值。</p></div>
+              <div class="faq-item"><button class="faq-question">为什么转出来的数字不能直接求和？</button><p>因为写进单元格的是文字，不是数值。按坐标提取时拿到的都是字符串，Excel 会把它们当文本处理，用「分列」或 VALUE 函数转一次才能计算。</p></div>
+        <div class="faq-item"><button class="faq-question">多个 PDF 能一次转吗？</button><p>不能，一次处理一个文件。每页生成一个工作表，页数多的文件会得到很多个 sheet，导出前先想清楚要怎么用。</p></div>
+        <div class="faq-item"><button class="faq-question">合并单元格会保留吗？</button><p>不会。工具只按文字坐标填格子，不做任何合并，跨格标题会落到其中一列，纵向合并的单元格里只有第一行有值，其余空白需要你自己补。</p></div>
       </section>
 
       <section class="related-tools">

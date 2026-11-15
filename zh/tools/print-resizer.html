@@ -206,6 +206,22 @@
         "@type": "Answer",
         "text": "可以——缩放和裁剪均支持批量处理。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "比例不一样时是留白还是裁切？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "留白。工具按原图比例缩放到纸张范围内，剩余部分用底色填充，不会裁掉内容；想铺满整张纸，先用裁剪工具把照片裁成对应比例。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "输出的图片能直接送印吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "尺寸上可以，但要跟印厂确认两件事：文件是否需要 CMYK（浏览器导出只有 RGB），以及 DPI 标记——工具算对了像素，但不写 DPI 元数据，印厂核对时可能要重新指定。"
+      }
     }
   ]
 }
@@ -271,7 +287,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🖨️ Print-Ready Resizer</span></nav>
       <div class="tool-page-header">
         <h1>🖨️ 打印尺寸缩放</h1>
-        <p>按精确 DPI 和纸张尺寸调整图片大小以供打印：A4、Letter、A5、4×6、名片。100% 在浏览器中完成。</p>
+        <p class="answer-lead">按纸张和 DPI 重算像素，把图片做成能直接付印的尺寸：A4 300 DPI 就是 2480×3508 像素，比例不对时按原比例缩放并在四周留白，PNG 或 JPG 输出。要注意 DPI 只是算像素用的——浏览器导出的 JPG 不写入 DPI 元数据，印厂严格核对 300 DPI 标记时，还得在排版软件里再指定一次。图片不上传。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">JPG / PNG → PNG 或 JPG</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地处理</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">按纸张 × DPI 算出的像素</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>选错了会怎样</h2>
+          <table>
+            <thead><tr><th>你的用途</th><th>该选什么</th><th>会有什么后果</th></tr></thead>
+            <tbody>
+              <tr><td>A4 文档配图</td><td>A4 + 300 DPI</td><td>2480×3508，最常用的一档</td></tr>
+              <tr><td>冲印 4×6 照片</td><td>4×6 + 300 DPI</td><td>约 1200×1800，原图不够就糊</td></tr>
+              <tr><td>网页用图</td><td>150 DPI 足够</td><td>600 DPI 只会白白撑大体积</td></tr>
+              <tr><td>印厂要求 600 DPI</td><td>选 600，先确认清楚</td><td>文件体积成倍增长</td></tr>
+              <tr><td>原图比目标像素小</td><td>会被放大，细节不会增加</td><td>换更高分辨率的原图</td></tr>
+              <tr><td>纸张比例和照片不一致</td><td>按比例缩放并留白</td><td>想铺满得先自己裁切</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Upload Area -->
@@ -508,6 +545,8 @@
 <div class="faq-item"><button class="faq-question">包含哪些纸张尺寸？</button><div class="faq-answer">A4、A5、Letter、4×6 及名片尺寸。</div></div>
 <div class="faq-item"><button class="faq-question">缩放会降低画质吗？</button><div class="faq-answer">缩放使用高质量插值。放大无法添加原图中不存在的细节。</div></div>
 <div class="faq-item"><button class="faq-question">可以处理多张图片吗？</button><div class="faq-answer">可以——缩放和裁剪均支持批量处理。</div></div>
+              <div class="faq-item"><button class="faq-question">比例不一样时是留白还是裁切？</button><div class="faq-answer">留白。工具按原图比例缩放到纸张范围内，剩余部分用底色填充，不会裁掉内容；想铺满整张纸，先用裁剪工具把照片裁成对应比例。</div></div>
+        <div class="faq-item"><button class="faq-question">输出的图片能直接送印吗？</button><div class="faq-answer">尺寸上可以，但要跟印厂确认两件事：文件是否需要 CMYK（浏览器导出只有 RGB），以及 DPI 标记——工具算对了像素，但不写 DPI 元数据，印厂核对时可能要重新指定。</div></div>
       </section>
 
 <section class="related-tools">

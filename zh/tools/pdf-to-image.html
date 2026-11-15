@@ -194,6 +194,30 @@
         "@type": "Answer",
         "text": "可以。转出的 JPG/WebP 如需进一步减小体积，可用站内 图片压缩工具处理，在几乎不损失画质的情况下再压缩一轮。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "JPG 的压缩质量能调吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能。JPG 和 WebP 都固定用 0.92 质量导出，页面里没有质量滑块。想要更高保真就选 PNG，代价是文件更大。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "转 3x 大页幅会卡吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "可能会。3x 时 A4 页面单张就是约 1785×2526 像素，几十页一起渲染很吃内存，浏览器可能卡顿甚至崩溃；建议分批转，或先降到 2x 试效果。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "导出的文件怎么命名？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "按页序命名，形如 page-1.png、page-2.png，格式跟着你选的一致；打包下载时 ZIP 里也是这套命名，顺序不会乱。"
+      }
     }
   ]
 }
@@ -259,7 +283,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>📄 PDF 转图片</span></nav>
       <div class="tool-page-header">
         <h1>📄 PDF 转图片</h1>
-        <p>免费将 PDF 页面转换为 PNG、JPG 或 WebP 图片，在浏览器中完成，无需上传，无水印，支持 1x-3x 缩放渲染。</p>
+        <p class="answer-lead">把 PDF 每一页渲染成一张图片：PNG、JPG 或 WebP 三选一，缩放 1x–3x，还能只处理指定页码范围。输出按页序命名，可以逐张下载，也能打包成 ZIP 一次拿走。JPG 和 WebP 的压缩质量固定 0.92、不能调；3x 渲染大页幅时内存吃紧，页数多了容易卡。全程在浏览器本地渲染，文件不上传。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">PNG / JPG / WebP</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地渲染</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">每页一张，可打包 ZIP</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>输出格式和倍率怎么选</h2>
+          <table>
+            <thead><tr><th>你的用途</th><th>选什么</th><th>注意</th></tr></thead>
+            <tbody>
+              <tr><td>插进 PPT、Word</td><td>PNG 或 2x JPG</td><td>尺寸太大反而拖慢文档</td></tr>
+              <tr><td>发微信、传网页</td><td>1x JPG</td><td>体积比 PNG 小一个量级</td></tr>
+              <tr><td>印刷或放大看细节</td><td>3x PNG</td><td>内存吃紧，页多就分批转</td></tr>
+              <tr><td>只要其中几页</td><td>填页码范围再转</td><td>不用整份转完再删</td></tr>
+              <tr><td>需要精确 DPI</td><td>没有 DPI 选项，只有倍率</td><td>1x 大致等于页面原始尺寸</td></tr>
+              <tr><td>想做无损归档</td><td>PNG + 3x</td><td>体积会很大，先算好存储</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -514,6 +559,9 @@
 <div class="faq-item"><button class="faq-question">需要安装任何东西吗？</button><div class="faq-answer">不需要。全部在浏览器内运行——无需应用、插件或扩展。</div></div>
 <div class="faq-item"><button class="faq-question">PDF 带密码，可以转换吗？</button><div class="faq-answer">不支持带密码保护的 PDF。请先解除文档加密，或使用没有访问限制的 PDF 版本。</div></div>
 <div class="faq-item"><button class="faq-question">转换后的图片可以再压缩吗？</button><div class="faq-answer">可以。转出的 JPG/WebP 如需进一步减小体积，可用站内 <a href="/zh/tools/compressor">图片压缩工具</a>处理，在几乎不损失画质的情况下再压缩一轮。</div></div>
+              <div class="faq-item"><button class="faq-question">JPG 的压缩质量能调吗？</button><div class="faq-answer">不能。JPG 和 WebP 都固定用 0.92 质量导出，页面里没有质量滑块。想要更高保真就选 PNG，代价是文件更大。</div></div>
+        <div class="faq-item"><button class="faq-question">转 3x 大页幅会卡吗？</button><div class="faq-answer">可能会。3x 时 A4 页面单张就是约 1785×2526 像素，几十页一起渲染很吃内存，浏览器可能卡顿甚至崩溃；建议分批转，或先降到 2x 试效果。</div></div>
+        <div class="faq-item"><button class="faq-question">导出的文件怎么命名？</button><div class="faq-answer">按页序命名，形如 page-1.png、page-2.png，格式跟着你选的一致；打包下载时 ZIP 里也是这套命名，顺序不会乱。</div></div>
       </section>
 
 <section class="related-tools">
