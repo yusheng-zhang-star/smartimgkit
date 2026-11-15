@@ -170,6 +170,30 @@
         "@type": "Answer",
         "text": "粘贴 CSV 数据，用正则替换掉多余空格和特殊字符。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "能批量处理多个文件吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能，一次一段文本。要批量改文件内容，得逐个粘贴处理，或用脚本工具。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "替换错了能撤回吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "页面里没有撤销，但原文本还在输入框里——只要没点清空，重新替换一次即可；重要文本建议先复制一份再动手。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "支持大小写不敏感替换吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "支持，取消勾选「区分大小写」即可，替换结果会按你写的内容替换，不会自动改大小写。"
+      }
     }
   ]
 }
@@ -233,7 +257,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🔄 查找替换</span></nav>
       <div class="tool-page-header">
         <h1>✏️ 查找替换</h1>
-        <p>支持正则的文本查找与替换——免费，在浏览器中完成。</p>
+        <p class="answer-lead">在一段文本里查找并替换内容，三个开关：区分大小写、用正则、全部替换。正则走浏览器自带的 JS RegExp，支持 $1、$2 反向引用；不支持 PCRE 的 \A、\Z，也没有单独的多行标志开关。改完直接复制走或下载 txt，文本不上传。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">方言</span><span class="f-v">JavaScript RegExp</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地处理</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">可直接复制或下载</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>替换没生效，多半是这几个原因</h2>
+          <table>
+            <thead><tr><th>现象</th><th>原因</th><th>怎么改</th></tr></thead>
+            <tbody>
+              <tr><td>只替换了第一处</td><td>没勾「全部替换」</td><td>勾上再执行一次</td></tr>
+              <tr><td>特殊字符被当通配</td><td>没勾正则却写了 .*</td><td>要么勾正则，要么转义</td></tr>
+              <tr><td>正则里括号报错</td><td>使用了不支持的分组写法</td><td>改用 (?:) 或 (?<name>)</td></tr>
+              <tr><td>想跨行替换</td><td>没有 m 标志开关</td><td>用 [\s\S] 代替 .</td></tr>
+              <tr><td>$1 没被替换</td><td>没勾正则，或分组序号写错</td><td>先测试再全局替换</td></tr>
+              <tr><td>中文标点替换不到</td><td>全半角不一致</td><td>把两种标点都写进正则</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -360,6 +405,10 @@
 <div class="faq-item"><button class="faq-question">可预览更改吗？</button><div class="faq-answer">可以——应用前查看匹配结果。</div></div>
 <div class="faq-item"><button class="faq-question">批量修改错别字时怎么用？</button><div class="faq-answer">粘贴全文，输入错别字和正确词，一键全部替换。</div></div>
 <div class="faq-item"><button class="faq-question">数据清洗时怎么批量删格式？</button><div class="faq-answer">粘贴 CSV 数据，用正则替换掉多余空格和特殊字符。</div></div>
+              <div class="faq-item"><button class="faq-question">正则替换支持反向引用吗？</button><div class="faq-answer">支持，用 $1、$2 引用分组，比如把「张三」换成「张先生」可以写 张(.) 替换成 张$1先生。前提是勾上正则。</div></div>
+        <div class="faq-item"><button class="faq-question">能批量处理多个文件吗？</button><div class="faq-answer">不能，一次一段文本。要批量改文件内容，得逐个粘贴处理，或用脚本工具。</div></div>
+        <div class="faq-item"><button class="faq-question">替换错了能撤回吗？</button><div class="faq-answer">页面里没有撤销，但原文本还在输入框里——只要没点清空，重新替换一次即可；重要文本建议先复制一份再动手。</div></div>
+        <div class="faq-item"><button class="faq-question">支持大小写不敏感替换吗？</button><div class="faq-answer">支持，取消勾选「区分大小写」即可，替换结果会按你写的内容替换，不会自动改大小写。</div></div>
       </section>
 <section class="related-tools"><h2>你可能还喜欢</h2><div class="related-tools-grid"><a href="/zh/tools/regex-tester" class="related-tool-card"><span class="tool-icon">🔍</span><div class="tool-info"><strong>正则测试</strong><span class="tool-desc">测试正则表达式</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/text-diff" class="related-tool-card"><span class="tool-icon">↔️</span><div class="tool-info"><strong>文本对比</strong><span class="tool-desc">对比修改前后差异</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/case-converter" class="related-tool-card"><span class="tool-icon">🔠</span><div class="tool-info"><strong>大小写转换</strong><span class="tool-desc">转换文本大小写</span></div><span class="tool-arrow">→</span></a></div></section>
 

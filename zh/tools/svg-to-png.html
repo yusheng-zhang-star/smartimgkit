@@ -170,6 +170,38 @@
         "@type": "Answer",
         "text": "支持浏览器能渲染的大部分滤镜（模糊、投影、颜色矩阵）。Chrome、Firefox、Safari 的兼容性都很好，个别冷门滤镜可能不生效。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么转换后字体变了？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "SVG 里如果只是写了字体名而没嵌入字体文件，浏览器只能用本机字体去凑，缺字体就回落到默认字体。导出 SVG 前把文字转成路径，就能保证一致。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "最大能转多大？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "像素尺寸等于 SVG 宽高乘倍率，倍率最高 4x。一个 1000×1000 的 SVG 在 4x 下就是 4000×4000，再大浏览器容易内存不足。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "支持 SVG 动画吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不支持。转换只取静态一帧，SMIL 或 CSS 动画都不会被保留，脚本也不会执行。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "转换结果能商用吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "工具本身不加水印、不限制用途，但图形本身的版权归原作者，商用前确认授权。"
+      }
     }
   ]
 }
@@ -235,7 +267,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>📐 SVG 转 PNG</span></nav>
       <div class="tool-page-header">
         <h1>📐 SVG 转 PNG</h1>
-        <p>将 SVG 矢量文件转换为 PNG、JPG 或 WebP，可自定义倍率高清晰度栅格化。设计师和开发者的常用工具。100% 在浏览器中完成。</p>
+        <p class="answer-lead">把 SVG 矢量图栅格化成 PNG、JPG 或 WebP，倍率 1x–4x，像素尺寸等于 SVG 本身尺寸乘以倍率。转换靠浏览器绘制，所以外部引用的字体、外链图片、部分滤镜和脚本不会生效——设计稿里用了网络字体或外链图的，转出来会和原稿有差别。文件不上传，本地转换。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">SVG → PNG / JPG / WebP</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地转换</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">1x–4x，最大按 SVG 尺寸放大</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>转出来和设计稿不一致，先查这几项</h2>
+          <table>
+            <thead><tr><th>现象</th><th>原因</th><th>怎么办</th></tr></thead>
+            <tbody>
+              <tr><td>字体变成默认字体</td><td>SVG 引用了未嵌入的字体</td><td>在导出 SVG 时把文字转成轮廓</td></tr>
+              <tr><td>图片位置空白</td><td>引用了外链图片</td><td>把图片嵌成 base64</td></tr>
+              <tr><td>滤镜、模糊丢了</td><td>浏览器对 SVG 滤镜支持有限</td><td>导出前把效果栅格化</td></tr>
+              <tr><td>边缘发虚</td><td>倍率太低</td><td>小图标用 3x–4x</td></tr>
+              <tr><td>文件特别大</td><td>4x 的 PNG 体积成倍增长</td><td>图标类用 2x 就够</td></tr>
+              <tr><td>要透明背景</td><td>PNG 默认透明</td><td>JPG 不支持透明，会填白底</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Upload / Paste Area -->
@@ -456,6 +509,10 @@
         <div class="faq-item"><button class="faq-question">缩放倍数选多少合适？</button><div class="faq-answer">网页和 App 界面用 2x 起步，覆盖视网膜屏；普通展示 1x 即可；印刷物料直接 4x。</div></div>
         <div class="faq-item"><button class="faq-question">可以把转换结果商用吗？</button><div class="faq-answer">可以，输出图片归你自由使用。若 SVG 内嵌了商业授权字体，请注意字体授权范围以授权协议为准。</div></div>
         <div class="faq-item"><button class="faq-question">支持 SVG 滤镜和特效吗？</button><div class="faq-answer">支持浏览器能渲染的大部分滤镜（模糊、投影、颜色矩阵）。Chrome、Firefox、Safari 的兼容性都很好，个别冷门滤镜可能不生效。</div></div>
+              <div class="faq-item"><button class="faq-question">为什么转换后字体变了？</button><div class="faq-answer">SVG 里如果只是写了字体名而没嵌入字体文件，浏览器只能用本机字体去凑，缺字体就回落到默认字体。导出 SVG 前把文字转成路径，就能保证一致。</div></div>
+        <div class="faq-item"><button class="faq-question">最大能转多大？</button><div class="faq-answer">像素尺寸等于 SVG 宽高乘倍率，倍率最高 4x。一个 1000×1000 的 SVG 在 4x 下就是 4000×4000，再大浏览器容易内存不足。</div></div>
+        <div class="faq-item"><button class="faq-question">支持 SVG 动画吗？</button><div class="faq-answer">不支持。转换只取静态一帧，SMIL 或 CSS 动画都不会被保留，脚本也不会执行。</div></div>
+        <div class="faq-item"><button class="faq-question">转换结果能商用吗？</button><div class="faq-answer">工具本身不加水印、不限制用途，但图形本身的版权归原作者，商用前确认授权。</div></div>
       </section>
 
 <section class="related-tools">

@@ -170,6 +170,30 @@
         "@type": "Answer",
         "text": "粘贴 CSV 数据，按行排序后去重，导出干净的数据集。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "数字排序是智能的吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "按行首能解析出的数字比较，10 会排在 9 后面，这点比纯字符排序正确；但「第3页」「3 kg」这类带前缀的写法解析不出来，会退化成按字符比。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "能按指定列排序吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能。工具只按整行内容排，没有分列逻辑；要按某一列排，先把文本转成表格处理。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "去重是按整行还是按词？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "按整行。只有两行完全相同才会被去掉，一行里多一个空格也算不同。"
+      }
     }
   ]
 }
@@ -233,7 +257,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>↕️ 文本排序</span></nav>
       <div class="tool-page-header">
         <h1>🔢 文本排序</h1>
-        <p>按字母、数字、长度对文本行排序，可去重——免费，在浏览器中完成。</p>
+        <p class="answer-lead">把一段文本按行拆开重排：字母升序降序、按数值大小、按行长、整体倒序、随机打乱、去掉重复行，一共九种动作。数字排序按行首解析成数字比较，不是按字符逐个比，所以 9 会排在 10 前面。只处理纯文本，不上传，也不联网。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">输入</span><span class="f-v">纯文本，按行处理</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地处理</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">可直接复制或下载</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>排序结果不对，通常是这几种情况</h2>
+          <table>
+            <thead><tr><th>你的情况</th><th>会怎么排</th><th>建议</th></tr></thead>
+            <tbody>
+              <tr><td>混了中文和英文</td><td>按本地语言规则排，中英交错</td><td>先分开再各自排</td></tr>
+              <tr><td>数字带单位（10kg）</td><td>按行首数字解析，单位不参与</td><td>把单位去掉再排</td></tr>
+              <tr><td>想按第二列排序</td><td>不支持指定列</td><td>先拆成表格再排</td></tr>
+              <tr><td>有空行夹在中间</td><td>空行也当一行参与排序</td><td>先删空行再排</td></tr>
+              <tr><td>去重后顺序变了</td><td>去重保留首次出现的位置</td><td>先排序再去重</td></tr>
+              <tr><td>想随机抽签</td><td>随机打乱，每次结果不同</td><td>打乱后直接复制走</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -273,15 +318,15 @@
         <div class="controls">
           <h2>🔀 Sort Options</h2>
           <div class="btn-row">
-            <button class="btn btn-primary" data-sort="asc">A → Z (Ascending)</button>
-            <button class="btn btn-primary" data-sort="desc">Z → A (Descending)</button>
-            <button class="btn btn-primary" data-sort="numAsc">1 → 9 (Number Asc)</button>
-            <button class="btn btn-primary" data-sort="numDesc">9 → 1 (Number Desc)</button>
-            <button class="btn btn-primary" data-sort="lenAsc">Short → Long</button>
-            <button class="btn btn-primary" data-sort="lenDesc">Long → Short</button>
-            <button class="btn btn-primary" data-sort="reverse">↔ Reverse Order</button>
-            <button class="btn btn-primary" data-sort="random">🎲 Random Shuffle</button>
-            <button class="btn btn-primary" data-sort="unique">🧹 Remove Duplicates</button>
+            <button class="btn btn-primary" data-sort="asc">A → Z（升序）</button>
+            <button class="btn btn-primary" data-sort="desc">Z → A（降序）</button>
+            <button class="btn btn-primary" data-sort="numAsc">1 → 9（数字升序）</button>
+            <button class="btn btn-primary" data-sort="numDesc">9 → 1（数字降序）</button>
+            <button class="btn btn-primary" data-sort="lenAsc">短 → 长</button>
+            <button class="btn btn-primary" data-sort="lenDesc">长 → 短</button>
+            <button class="btn btn-primary" data-sort="reverse">↔ 整体倒序</button>
+            <button class="btn btn-primary" data-sort="random">🎲 随机打乱</button>
+            <button class="btn btn-primary" data-sort="unique">🧹 去掉重复行</button>
           </div>
         </div>
 
@@ -353,6 +398,10 @@
 <div class="faq-item"><button class="faq-question">能处理大列表吗？</button><div class="faq-answer">可以——数千行即时处理。</div></div>
 <div class="faq-item"><button class="faq-question">HR 整理员工名单时怎么排序？</button><div class="faq-answer">粘贴名单文本，按字母 A-Z 排序，导出后打印归档。</div></div>
 <div class="faq-item"><button class="faq-question">数据清洗时怎么去重？</button><div class="faq-answer">粘贴 CSV 数据，按行排序后去重，导出干净的数据集。</div></div>
+              <div class="faq-item"><button class="faq-question">会保留空行吗？</button><div class="faq-answer">会。空行被当成一个空字符串参与排序，字母序时通常挤在最前面；不想要空行就先手动删掉。</div></div>
+        <div class="faq-item"><button class="faq-question">数字排序是智能的吗？</button><div class="faq-answer">按行首能解析出的数字比较，10 会排在 9 后面，这点比纯字符排序正确；但「第3页」「3 kg」这类带前缀的写法解析不出来，会退化成按字符比。</div></div>
+        <div class="faq-item"><button class="faq-question">能按指定列排序吗？</button><div class="faq-answer">不能。工具只按整行内容排，没有分列逻辑；要按某一列排，先把文本转成表格处理。</div></div>
+        <div class="faq-item"><button class="faq-question">去重是按整行还是按词？</button><div class="faq-answer">按整行。只有两行完全相同才会被去掉，一行里多一个空格也算不同。</div></div>
       </section>
 <section class="related-tools"><h2>你可能还喜欢</h2><div class="related-tools-grid"><a href="/zh/tools/case-converter" class="related-tool-card"><span class="tool-icon">🔠</span><div class="tool-info"><strong>大小写转换</strong><span class="tool-desc">转换文本大小写</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/text-find-replace" class="related-tool-card"><span class="tool-icon">🔄</span><div class="tool-info"><strong>查找替换</strong><span class="tool-desc">查找替换文本</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/word-counter" class="related-tool-card"><span class="tool-icon">📝</span><div class="tool-info"><strong>字数统计</strong><span class="tool-desc">统计字数</span></div><span class="tool-arrow">→</span></a></div></section>
 

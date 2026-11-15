@@ -170,6 +170,38 @@
         "@type": "Answer",
         "text": "管用：把你的段落和参考资料逐段分别粘贴进来对比，标红的就是重合度最高的句子，先动手改写这些段落，再提交学校或期刊的正式查重系统。注意它只是辅助自查，不能替代官方查重系统的检测结果。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么改一个字会显示整行变了？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "因为比对粒度是整行。算法只判断两行是否完全相同，不做行内字符级对齐，所以行内的小改动会呈现为一删一增。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "能导出差异结果吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能导出文件。结果只在页面上高亮展示，需要留档就自己复制或截图。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "多大的文本会卡？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "算法要建 m×n 的表，两边各一万行就是上亿次比较，浏览器很可能卡死。几千行以内基本顺畅，超大文本建议先分章节比。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "能对比 PDF 或 Word 文件吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能直接传文件，只接受粘贴的纯文本。可以先把文档里的文字复制出来再粘进来。"
+      }
     }
   ]
 }
@@ -233,7 +265,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>↔️ 文本对比</span></nav>
       <div class="tool-page-header">
         <h1>🔍 文本对比</h1>
-        <p>粘贴两段文本，逐行高亮显示差异——免费使用，全程在浏览器中完成。</p>
+        <p class="answer-lead">粘两段文字，逐行比对，新增行标绿、删除行标红，相同的行原样保留。算法是逐行最长公共子序列，只比整行，不做逐字高亮——同一行里改了一个字，看起来就是「删一行 + 加一行」。几千行以内很快，上万行会明显卡甚至卡死。文字不上传，全在本地算。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">粒度</span><span class="f-v">逐行比对（LCS）</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地计算</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">高亮结果，不导出文件</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>哪些差异它抓得到、哪些抓不到</h2>
+          <table>
+            <thead><tr><th>你的情况</th><th>会怎么显示</th><th>建议</th></tr></thead>
+            <tbody>
+              <tr><td>整行新增或删除</td><td>清楚标出加号行、减号行</td><td>最适合看条款增删</td></tr>
+              <tr><td>一行里改了几个字</td><td>显示成一删一增</td><td>放大对照两行自己看</td></tr>
+              <tr><td>只差一个空格</td><td>算不同，会标出来</td><td>先统一空格再比</td></tr>
+              <tr><td>大小写不同</td><td>算不同</td><td>统一大小写后更干净</td></tr>
+              <tr><td>两边几千行</td><td>能算，稍等几秒</td><td>别超过一万行</td></tr>
+              <tr><td>要三方合并对比</td><td>不支持，只能两两比</td><td>分两轮比，或用人眼合</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -347,6 +400,10 @@
 <div class="faq-item"><button class="faq-question">能一次对比三个以上的版本吗？</button><div class="faq-answer">工具一次对比两份文本，这也是最常见的使用场景。如果手上有三个版本，可以链式对比：先把第一版和第二版比一遍，再拿比对结果和第三版继续比，逐步覆盖完整的修改历史。</div></div>
 <div class="faq-item"><button class="faq-question">微信里收到对方改好的合同，怎么快速看出改了哪几条？</button><div class="faq-answer">很方便：在微信里长按对方发来的合同消息，选择复制，粘贴到右侧输入框；再把你手上的旧版本粘贴到左侧，点击「对比文本」。高亮行会直接标出金额、期限、条款位置的改动，签约前心里有底，不会漏掉对方悄悄改掉的数字。</div></div>
 <div class="faq-item"><button class="faq-question">写毕业论文前想自查和已有文献的重复段落，这个工具管用吗？</button><div class="faq-answer">管用：把你的段落和参考资料逐段分别粘贴进来对比，标红的就是重合度最高的句子，先动手改写这些段落，再提交学校或期刊的正式查重系统。注意它只是辅助自查，不能替代官方查重系统的检测结果。</div></div>
+              <div class="faq-item"><button class="faq-question">为什么改一个字会显示整行变了？</button><div class="faq-answer">因为比对粒度是整行。算法只判断两行是否完全相同，不做行内字符级对齐，所以行内的小改动会呈现为一删一增。</div></div>
+        <div class="faq-item"><button class="faq-question">能导出差异结果吗？</button><div class="faq-answer">不能导出文件。结果只在页面上高亮展示，需要留档就自己复制或截图。</div></div>
+        <div class="faq-item"><button class="faq-question">多大的文本会卡？</button><div class="faq-answer">算法要建 m×n 的表，两边各一万行就是上亿次比较，浏览器很可能卡死。几千行以内基本顺畅，超大文本建议先分章节比。</div></div>
+        <div class="faq-item"><button class="faq-question">能对比 PDF 或 Word 文件吗？</button><div class="faq-answer">不能直接传文件，只接受粘贴的纯文本。可以先把文档里的文字复制出来再粘进来。</div></div>
       </section>
 <section class="related-tools"><h2>你可能还喜欢</h2><div class="related-tools-grid"><a href="/zh/tools/text-find-replace" class="related-tool-card"><span class="tool-icon">🔄</span><div class="tool-info"><strong>查找替换</strong><span class="tool-desc">批量查找并替换文本内容</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/case-converter" class="related-tool-card"><span class="tool-icon">🔠</span><div class="tool-info"><strong>大小写转换</strong><span class="tool-desc">一键切换英文字母大小写</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/json-formatter" class="related-tool-card"><span class="tool-icon">🔧</span><div class="tool-info"><strong>JSON 格式化</strong><span class="tool-desc">整理并校验 JSON 数据</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>

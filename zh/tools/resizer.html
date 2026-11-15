@@ -128,6 +128,38 @@
         "@type": "Answer",
         "text": "一寸照对应 295×413 像素，二寸照对应 413×626 像素。报名系统要求像素尺寸时，传进证件照直接填这两组数字即可。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "改尺寸会让画质变差吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "缩小一般没问题，放大就会糊——插值只能把像素撑开，不会补出新细节。要放大的图尽量找原始大文件。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "能一次改多张图吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能，一次一张。要批量统一尺寸，得逐张处理，或用桌面软件跑批。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "输出格式会变吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不会。PNG 进 PNG 出，JPG 进 JPG 出，WebP 同理；有损格式按 0.92 质量重新编码，属于轻微损失。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "怎么改证件照尺寸？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "按证件要求填像素（一寸常见 295×413，二寸 413×579），勾上保持宽高比可能对不上两个数值，这种情况先裁好比例再改尺寸。"
+      }
     }
   ]
 }
@@ -193,7 +225,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>📐 图片尺寸调整</span></nav>
       <div class="tool-page-header">
         <h1>📐 图片尺寸调整与缩放</h1>
-        <p>按精确像素或百分比修改图片大小，保持宽高比不变形，淘宝主图、小红书、证件照常用尺寸一键改好。</p>
+        <p class="answer-lead">按精确像素或百分比改图片尺寸，勾上「保持宽高比」就只填一边、另一边自动算，不会把人拉扁。输出沿用原图格式（PNG 进 PNG 出，JPG 进 JPG 出，质量 0.92），所以缩小不会变形，但放大不会变清晰。全程浏览器本地处理，照片不上传，一次处理一张。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">格式</span><span class="f-v">沿用原格式（JPG/PNG/WebP）</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地处理</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">按像素或百分比缩放</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>缩放会让图变糊吗</h2>
+          <table>
+            <thead><tr><th>你的操作</th><th>画质会怎样</th><th>建议</th></tr></thead>
+            <tbody>
+              <tr><td>把大图改小（缩图）</td><td>清晰度基本不损失</td><td>缩到目标尺寸一次到位，别反复缩</td></tr>
+              <tr><td>把小图改大（放大）</td><td>会变糊，插值不会补细节</td><td>尽量用原始大图，别从小图放大</td></tr>
+              <tr><td>只填宽度、勾保持比例</td><td>高度自动算，不变形</td><td>最常用的一种填法</td></tr>
+              <tr><td>两边都填、取消勾选</td><td>会被拉伸变形</td><td>只在做特殊效果时这么干</td></tr>
+              <tr><td>用百分比滑杆</td><td>按比例缩放，适合批量统一比例</td><td>百分比和像素别混着调</td></tr>
+              <tr><td>平台要求固定尺寸</td><td>按平台数值填即可</td><td>先看平台最新要求，别照旧攻略</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -376,6 +429,10 @@
       <div class="faq-item"><button class="faq-question">我的照片会上传到服务器吗？手机能用吗？</button><div class="faq-answer">不会。所有缩放都在浏览器本地完成，照片不离开设备，手机浏览器直接打开就能改尺寸，不用装应用、不用注册。</div></div>
       <div class="faq-item"><button class="faq-question">淘宝主图到底要多大尺寸？</button><div class="faq-answer">建议 800×800 像素以上、正方形纯白底，单张不超过 3MB。传进工具宽高都填 800，缩完再压到 1MB 左右上传最稳。</div></div>
       <div class="faq-item"><button class="faq-question">证件照一寸、二寸分别是多少像素？</button><div class="faq-answer">一寸照对应 295×413 像素，二寸照对应 413×626 像素。报名系统要求像素尺寸时，传进证件照直接填这两组数字即可。</div></div>
+              <div class="faq-item"><button class="faq-question">改尺寸会让画质变差吗？</button><div class="faq-answer">缩小一般没问题，放大就会糊——插值只能把像素撑开，不会补出新细节。要放大的图尽量找原始大文件。</div></div>
+        <div class="faq-item"><button class="faq-question">能一次改多张图吗？</button><div class="faq-answer">不能，一次一张。要批量统一尺寸，得逐张处理，或用桌面软件跑批。</div></div>
+        <div class="faq-item"><button class="faq-question">输出格式会变吗？</button><div class="faq-answer">不会。PNG 进 PNG 出，JPG 进 JPG 出，WebP 同理；有损格式按 0.92 质量重新编码，属于轻微损失。</div></div>
+        <div class="faq-item"><button class="faq-question">怎么改证件照尺寸？</button><div class="faq-answer">按证件要求填像素（一寸常见 295×413，二寸 413×579），勾上保持宽高比可能对不上两个数值，这种情况先裁好比例再改尺寸。</div></div>
       </section>
 
 <section class="localization-section" style="max-width:800px;margin:40px auto;padding:0 20px;">
