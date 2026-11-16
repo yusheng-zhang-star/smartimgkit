@@ -170,6 +170,46 @@
         "@type": "Answer",
         "text": "上传会议录像，提取 MP3 后整理成会议纪要文档。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "会提升音质吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不会。MP3 是有损编码，源是什么水平出来就是什么水平，码率只决定这一次损失多少，弥补不了原片已有的噪声和削波。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "能只截其中一段音频吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能，整条音轨导出。要片段先用视频裁剪器切出那段视频，再来抽音频。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "视频没有音轨会怎样？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "ffmpeg 直接报错，结果区不会出现文件。无声录屏、某些导出错误成无声的视频都会这样。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "输出是单声道还是立体声？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "按原音轨保留。原片是立体声就还是立体声，是单声道也不会被拆成两轨。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "转出来的 MP3 能直接传音乐平台吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "技术上能播，但平台审核一般要版权证明，码率 320 以下的文件也常被判为低质来源。自用、发给同事没问题。"
+      }
     }
   ]
 }
@@ -233,7 +273,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🎵 视频转 MP3</span></nav>
       <div class="tool-page-header">
         <h1>🎵 视频转 MP3</h1>
-        <p>从视频文件中提取高质量 MP3 音频——免费。</p>
+        <p class="answer-lead">把视频里的音轨单独抽出来存成 MP3，码率五档：64、128、192（默认）、256、320 kbps，用 libmp3lame 编码，画面整轨丢掉。适合从 MV、网课录屏、会议录像里扒音频。它只转码不修音：音量太小、有电流声、左右声道不平衡，这一页都改不了，得再拿去音频编辑软件处理。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">码率</span><span class="f-v">64–320 kbps 五档</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">MP3（libmp3lame）</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地转码</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>码率怎么选</h2>
+          <table>
+            <thead><tr><th>用途</th><th>选哪档</th><th>一小时大约占多少</th></tr></thead>
+            <tbody>
+              <tr><td>语音课、会议记录</td><td>64 kbps</td><td>约 28MB</td></tr>
+              <tr><td>播客、有声书</td><td>128 kbps</td><td>约 56MB</td></tr>
+              <tr><td>一般音乐（默认）</td><td>192 kbps</td><td>约 84MB</td></tr>
+              <tr><td>从无损源转来的高要求</td><td>320 kbps</td><td>约 140MB</td></tr>
+              <tr><td>想保留无损</td><td>做不到</td><td>换 FLAC 或 WAV 工具</td></tr>
+              <tr><td>还想更小</td><td>64 已是最低档</td><td>先截取片段再转</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -261,29 +322,29 @@
           <div class="dropzone-icon">🎬</div>
           <h3>上传视频文件</h3>
           <p>选择一个视频文件，在浏览器内用 ffmpeg.wasm 处理。</p>
-          <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:8px;">⚠️ First use may take ~30s to load ffmpeg.wasm (25MB)</p>
+          <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:8px;">⚠️ 首次使用需下载约 25MB 的 ffmpeg.wasm，可能要等 30 秒</p>
         </label>
         <div class="controls hidden" id="controlsSection">
-          <h2>📹 Video Info</h2>
+          <h2>📹 视频信息</h2>
           <div class="pdf-info" id="videoInfo"></div>
           <div class="control-row">
-            <label>Quality</label>
+            <label>码率</label>
             <select id="mp3Quality">
-              <option value="64k">64 kbps (small)</option>
-              <option value="128k">128 kbps (standard)</option>
-              <option value="192k" selected>192 kbps (good)</option>
-              <option value="256k">256 kbps (high)</option>
-              <option value="320k">320 kbps (best)</option>
+              <option value="64k">64 kbps（体积最小）</option>
+              <option value="128k">128 kbps（标准）</option>
+              <option value="192k" selected>192 kbps（推荐）</option>
+              <option value="256k">256 kbps（高）</option>
+              <option value="320k">320 kbps（最高）</option>
             </select>
           </div>
           <div class="btn-row">
-            <button class="btn btn-primary" id="processBtn">🎵 Process</button>
+            <button class="btn btn-primary" id="processBtn">🎵 开始提取</button>
             <button class="btn btn-secondary" id="resetBtn">重置</button>
           </div>
         </div>
         <div class="status-text hidden" id="statusSection"></div>
         <div class="result-section hidden" id="resultSection">
-          <h2>✅ Result</h2>
+          <h2>✅ 处理结果</h2>
           <div id="resultContent" style="text-align:center;"></div>
         </div>
 
@@ -349,12 +410,17 @@
   <div class="trust-badge"><div class="tb-icon">💯</div><div class="tb-title">永久免费</div><div class="tb-desc">无需注册、无水印</div></div>
   <div class="trust-badge"><div class="tb-icon">🚀</div><div class="tb-title">无需注册</div><div class="tb-desc">即刻开始，无需账号</div></div>
 </div>
-      <section class="how-to-section"><h2>视频转 MP3使用方法</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>上传视频</h4><p>选择一个视频文件。</p></div><div class="how-to-step"><div class="step-number">2</div><h4>配置</h4><p>设置输出选项。</p></div><div class="how-to-step"><div class="step-number">3</div><h4>处理</h4><p>点击处理按钮。</p></div><div class="how-to-step"><div class="step-number">4</div><h4>下载</h4><p>Get your converted video.</p></div></div></section>
+      <section class="how-to-section"><h2>视频转 MP3使用方法</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>上传视频</h4><p>选择一个视频文件。</p></div><div class="how-to-step"><div class="step-number">2</div><h4>配置</h4><p>设置输出选项。</p></div><div class="how-to-step"><div class="step-number">3</div><h4>处理</h4><p>点击处理按钮。</p></div><div class="how-to-step"><div class="step-number">4</div><h4>下载</h4><p>获取提取出的 MP3 音频。</p></div></div></section>
 <h2>视频转 MP3详细使用指南</h2><div class="guide-block"><h3>上传视频</h3><p>选择一个视频文件。</p></div><div class="guide-block"><h3>配置</h3><p>设置输出选项。</p></div><div class="guide-block"><h3>处理</h3><p>点击处理按钮。</p></div><div class="guide-block"><h3>下载</h3><p>Get your converted video.</p></div>
 <section class="faq-section"><h2>视频转 MP3常见问题</h2><div class="faq-item"><button class="faq-question">第一次加载为什么慢？</button><div class="faq-answer">ffmpeg.wasm 约 25MB，首次加载后会缓存在浏览器中。</div></div><div class="faq-item"><button class="faq-question">视频会上传到服务器吗？</button><div class="faq-answer">不会。全部在浏览器本地转码，视频不离开设备。</div></div><div class="faq-item"><button class="faq-question">支持哪些视频格式？</button><div class="faq-answer">MP4、WebM、MOV、AVI、MKV 等常见格式。</div></div><div class="faq-item"><button class="faq-question">输出什么音频格式？</button><div class="faq-answer">MP3 音频，从视频轨道提取。</div></div>
 <div class="faq-item"><button class="faq-question">有时长限制吗？</button><div class="faq-answer">长视频支持但耗时更长。</div></div>
 <div class="faq-item"><button class="faq-question">课程视频怎么提取音频听？</button><div class="faq-answer">上传课程视频，提取 MP3 后放到手机里通勤路上听。</div></div>
 <div class="faq-item"><button class="faq-question">会议录像怎么提取音频记录？</button><div class="faq-answer">上传会议录像，提取 MP3 后整理成会议纪要文档。</div></div>
+              <div class="faq-item"><button class="faq-question">会提升音质吗？</button><div class="faq-answer">不会。MP3 是有损编码，源是什么水平出来就是什么水平，码率只决定这一次损失多少，弥补不了原片已有的噪声和削波。</div></div>
+        <div class="faq-item"><button class="faq-question">能只截其中一段音频吗？</button><div class="faq-answer">不能，整条音轨导出。要片段先用视频裁剪器切出那段视频，再来抽音频。</div></div>
+        <div class="faq-item"><button class="faq-question">视频没有音轨会怎样？</button><div class="faq-answer">ffmpeg 直接报错，结果区不会出现文件。无声录屏、某些导出错误成无声的视频都会这样。</div></div>
+        <div class="faq-item"><button class="faq-question">输出是单声道还是立体声？</button><div class="faq-answer">按原音轨保留。原片是立体声就还是立体声，是单声道也不会被拆成两轨。</div></div>
+        <div class="faq-item"><button class="faq-question">转出来的 MP3 能直接传音乐平台吗？</button><div class="faq-answer">技术上能播，但平台审核一般要版权证明，码率 320 以下的文件也常被判为低质来源。自用、发给同事没问题。</div></div>
       </section>
 <section class="related-tools"><h2>你可能还喜欢</h2><div class="related-tools-grid"><a href="/zh/tools/video-to-gif" class="related-tool-card"><span class="tool-icon">🎞️</span><div class="tool-info"><strong>视频转 GIF</strong><span class="tool-desc">视频转 GIF 动图</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/compressor" class="related-tool-card"><span class="tool-icon">🗜️</span><div class="tool-info"><strong>图片压缩</strong><span class="tool-desc">压缩图片大小</span></div><span class="tool-arrow">→</span></a></div></section>
 

@@ -5,19 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="index, follow">
   <title>视频变速 — 0.25x 到 4x 加速减速</title>
-  <meta name="description" content="把视频加速或做成慢动作，0.25 倍到 4 倍可选，音轨自动同步不变调，可只处理选中片段。用 ffmpeg.wasm 在本地转码，视频不上传服务器，适合做教程快进、运动慢放分析和短视频节奏调整，导出后直接能传平台。">
+  <meta name="description" content="把视频加速或做成慢动作，0.5 倍到 4 倍可用（0.25 倍会因音频滤镜下限报错），音轨同步且不变调，整段处理、不能只转选段。用 ffmpeg.wasm 在本地转码，视频不上传服务器，适合做教程快进、运动慢放分析和短视频节奏调整，导出后直接能传平台。">
   <meta name="keywords" content="video speed changer, change video speed, speed up video, slow down video, adjust video speed">
   <link rel="canonical" href="https://smartimgkit.com/zh/tools/video-speed">
   <meta name="theme-color" content="#6366f1">
   <meta property="og:title" content="视频变速 — 0.25x 到 4x 加速减速">
-  <meta property="og:description" content="把视频加速或做成慢动作，0.25 倍到 4 倍可选，音轨自动同步不变调，可只处理选中片段。用 ffmpeg.wasm 在本地转码，视频不上传服务器，适合做教程快进、运动慢放分析和短视频节奏调整，导出后直接能传平台。">
+  <meta property="og:description" content="把视频加速或做成慢动作，0.5 倍到 4 倍可用（0.25 倍会因音频滤镜下限报错），音轨同步且不变调，整段处理、不能只转选段。用 ffmpeg.wasm 在本地转码，视频不上传服务器，适合做教程快进、运动慢放分析和短视频节奏调整，导出后直接能传平台。">
   <meta property="og:url" content="https://smartimgkit.com/zh/tools/video-speed">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SmartImgKit">
   <meta property="og:image" content="https://smartimgkit.com/screenshots/video-speed.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="视频变速 — 0.25x 到 4x 加速减速">
-  <meta name="twitter:description" content="把视频加速或做成慢动作，0.25 倍到 4 倍可选，音轨自动同步不变调，可只处理选中片段。用 ffmpeg.wasm 在本地转码，视频不上传服务器，适合做教程快进、运动慢放分析和短视频节奏调整，导出后直接能传平台。">
+  <meta name="twitter:description" content="把视频加速或做成慢动作，0.5 倍到 4 倍可用（0.25 倍会因音频滤镜下限报错），音轨同步且不变调，整段处理、不能只转选段。用 ffmpeg.wasm 在本地转码，视频不上传服务器，适合做教程快进、运动慢放分析和短视频节奏调整，导出后直接能传平台。">
   <meta name="twitter:image" content="https://smartimgkit.com/screenshots/video-speed.png">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/video-speed">
@@ -43,7 +43,7 @@
     "price": "0",
     "priceCurrency": "USD"
   },
-  "description": "把视频加速或做成慢动作，0.25 倍到 4 倍可选，音轨自动同步不变调，可只处理选中片段。用 ffmpeg.wasm 在本地转码，视频不上传服务器，适合做教程快进、运动慢放分析和短视频节奏调整，导出后直接能传平台。"
+  "description": "把视频加速或做成慢动作，0.5 倍到 4 倍可用（0.25 倍会因音频滤镜下限报错），音轨同步且不变调，整段处理、不能只转选段。用 ffmpeg.wasm 在本地转码，视频不上传服务器，适合做教程快进、运动慢放分析和短视频节奏调整，导出后直接能传平台。"
 }
 </script>
   <script type="application/ld+json">
@@ -144,7 +144,7 @@
       "name": "支持哪些速度范围？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "0.25x 至 4x 播放速度。"
+        "text": "0.5x 到 4x 可用；0.25x 这一档 atempo 会报参数越界，处理失败。"
       }
     },
     {
@@ -152,7 +152,7 @@
       "name": "音频会受影响吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "音频音高随速度调整。"
+        "text": "不会，atempo 保持音高不变，2 倍速只是节奏变快，声音不会变尖。"
       }
     },
     {
@@ -161,6 +161,46 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "无硬性限制，但越长视频耗时越多、内存占用越大。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么 0.25 倍这一档总是失败？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "atempo 的下限是 0.5，这一页把速度值原样传给 atempo，0.25 越界，ffmpeg 报错，结果区不会出现视频。想更慢就用 0.5× 处理两次。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "变速后音高会变吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不会。atempo 用时间拉伸保持音高，2× 只是节奏变快，声音不会变成尖细的花栗鼠；代价是语速快时齿音会更明显。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "时长会按比例变吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "会。2× 时长减半，0.5× 时长翻倍，画面帧数按比例重排。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "能只处理选中片段吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能，整段处理，没有起止时间输入。要先剪出片段，用视频裁剪器切好再来变速。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "处理完文件反而变大？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "有可能。输出统一用 libx264 重编码，没有质量档位，短视频尤其是手机原片容易变大。"
       }
     }
   ]
@@ -225,7 +265,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>⏩ Video 速度 Changer</span></nav>
       <div class="tool-page-header">
         <h1>⏩ 视频变速</h1>
-        <p>视频加速或慢放（0.25x 至 4x）——免费，在浏览器中完成。</p>
+        <p class="answer-lead">用 setpts 改画面节奏、atempo 改音频速度，两条轨同步，所以加速后声音还是原来的音高，不会变成花栗鼠。下拉框给 0.25× 到 4× 共八档，但 0.25× 这一档会失败：音频滤镜 atempo 的下限是 0.5，传 0.25 进去 ffmpeg 直接报参数越界，处理不出文件。想更慢，先用 0.5× 处理一次，拿结果再处理一次。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">可用档位</span><span class="f-v">0.5×–4×（0.25× 会报错）</span></li>
+          <li><span class="f-k">音频</span><span class="f-v">atempo 变速不变调</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地处理</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>选哪一档，先想清楚声音怎么办</h2>
+          <table>
+            <thead><tr><th>你的素材</th><th>选哪档</th><th>要注意</th></tr></thead>
+            <tbody>
+              <tr><td>教程录屏想快进</td><td>2× 或 3×</td><td>声音跟着变快但音高不变，人声会显得急</td></tr>
+              <tr><td>运动动作要看细节</td><td>0.5×</td><td>画面重编码，暗部有轻微损失</td></tr>
+              <tr><td>想要 0.25× 超慢</td><td>会报错，出不了文件</td><td>先 0.5× 再处理一次</td></tr>
+              <tr><td>只想留画面不要声音</td><td>本页没有静音选项</td><td>得用剪辑软件导无声版</td></tr>
+              <tr><td>需要 4× 以上</td><td>下拉框没有</td><td>分两次做，2× 再 2×</td></tr>
+              <tr><td>只变速其中一段</td><td>不支持，整段处理</td><td>先用视频裁剪器切出来再变速</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -379,10 +440,15 @@
 
 <p>做摄影的人常用。一段延时摄影视频想调整播放速度，让云流动得更自然。用这个工具上传延时视频，选 0.5 倍速度，一键导出慢动作版。因为浏览器本地处理，视频完全不会上传到第三方服务器，涉及个人摄影作品也不用担心泄露。</p>
 </section>
-<section class="faq-section"><h2>视频变速常见问题</h2><div class="faq-item"><button class="faq-question">为什么第一次加载很慢？</button><div class="faq-answer">ffmpeg.wasm 约 25MB，首次加载后会缓存在浏览器里，之后就快了。</div></div><div class="faq-item"><button class="faq-question">我的视频会被上传吗？</button><div class="faq-answer">不会。所有处理都在浏览器本地完成，视频不会离开你的设备。</div></div><div class="faq-item"><button class="faq-question">支持哪些视频格式？</button><div class="faq-answer">支持 MP4、WebM、MOV、AVI、MKV 等常见格式，输出 MP4 或 WebM。</div></div><div class="faq-item"><button class="faq-question">支持哪些速度范围？</button><div class="faq-answer">0.25x 至 4x 播放速度。</div></div>
-<div class="faq-item"><button class="faq-question">音频会受影响吗？</button><div class="faq-answer">音频音高随速度调整。</div></div>
+<section class="faq-section"><h2>视频变速常见问题</h2><div class="faq-item"><button class="faq-question">为什么第一次加载很慢？</button><div class="faq-answer">ffmpeg.wasm 约 25MB，首次加载后会缓存在浏览器里，之后就快了。</div></div><div class="faq-item"><button class="faq-question">我的视频会被上传吗？</button><div class="faq-answer">不会。所有处理都在浏览器本地完成，视频不会离开你的设备。</div></div><div class="faq-item"><button class="faq-question">支持哪些视频格式？</button><div class="faq-answer">支持 MP4、WebM、MOV、AVI、MKV 等常见格式，输出 MP4 或 WebM。</div></div><div class="faq-item"><button class="faq-question">支持哪些速度范围？</button><div class="faq-answer">0.5x 到 4x 可用；0.25x 这一档 atempo 会报参数越界，处理失败。</div></div>
+<div class="faq-item"><button class="faq-question">音频会受影响吗？</button><div class="faq-answer">不会，atempo 保持音高不变，2 倍速只是节奏变快，声音不会变尖。</div></div>
 
 <div class="faq-item"><button class="faq-question">有视频时长限制吗？</button><div class="faq-answer">无硬性限制，但越长视频耗时越多、内存占用越大。</div></div>
+              <div class="faq-item"><button class="faq-question">为什么 0.25 倍这一档总是失败？</button><div class="faq-answer">atempo 的下限是 0.5，这一页把速度值原样传给 atempo，0.25 越界，ffmpeg 报错，结果区不会出现视频。想更慢就用 0.5× 处理两次。</div></div>
+        <div class="faq-item"><button class="faq-question">变速后音高会变吗？</button><div class="faq-answer">不会。atempo 用时间拉伸保持音高，2× 只是节奏变快，声音不会变成尖细的花栗鼠；代价是语速快时齿音会更明显。</div></div>
+        <div class="faq-item"><button class="faq-question">时长会按比例变吗？</button><div class="faq-answer">会。2× 时长减半，0.5× 时长翻倍，画面帧数按比例重排。</div></div>
+        <div class="faq-item"><button class="faq-question">能只处理选中片段吗？</button><div class="faq-answer">不能，整段处理，没有起止时间输入。要先剪出片段，用视频裁剪器切好再来变速。</div></div>
+        <div class="faq-item"><button class="faq-question">处理完文件反而变大？</button><div class="faq-answer">有可能。输出统一用 libx264 重编码，没有质量档位，短视频尤其是手机原片容易变大。</div></div>
       </section>
 <section class="related-tools"><h2>你可能还喜欢</h2><div class="related-tools-grid"><a href="/zh/tools/video-to-gif" class="related-tool-card"><span class="tool-icon">🎞️</span><div class="tool-info"><strong>视频转 GIF</strong><span class="tool-desc">把视频转成 GIF 动图</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/compressor" class="related-tool-card"><span class="tool-icon">🗜️</span><div class="tool-info"><strong>图片压缩</strong><span class="tool-desc">压缩图片体积</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>

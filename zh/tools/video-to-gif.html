@@ -170,6 +170,46 @@
         "@type": "Answer",
         "text": "上传视频，选取搞笑片段，导出 GIF 后发抖音评论区。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么 GIF 比原视频大十几倍？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "GIF 每帧都是 256 色索引位图，帧间压缩能力远低于 H.264 的预测编码，同一段画面变成 GIF 体积自然暴涨，这是格式本身的问题。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "宽度填 1280 会更清楚吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "会更清楚也更巨大。手机和聊天窗口里 480 宽已经够看，多数平台还会再缩一次，填 1280 通常只换来更大的文件。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "GIF 能带声音吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能。GIF 格式不定义音频轨，输出里只有画面，原片的音轨会被丢掉。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "帧率能超过 30 吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "输入框限定 5 到 30，填更大的值不会生效。帧率越高画面越顺，体积也越大，10fps 是动图的常见平衡点。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么颜色不如原视频？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "这一页只做一次直接量化，没有 palettegen 加 paletteuse 的两遍调色板优化，所以渐变和肤色最容易出现色带。想要更好看只能缩短片段、减少颜色变化。"
+      }
     }
   ]
 }
@@ -233,7 +273,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🎞️ 视频转 GIF</span></nav>
       <div class="tool-page-header">
         <h1>🎞️ 视频转 GIF</h1>
-        <p>将视频片段转换为动图 GIF——免费，在浏览器中完成。</p>
+        <p class="answer-lead">从视频里截 1 到 60 秒的一段做成 GIF：宽度 100 到 1280 像素（默认 480），帧率 5 到 30（默认 10），缩放走 lanczos，输出是无限循环的动图。体积和清晰度主要由宽度与帧率决定，20 秒 480 宽的 GIF 常见 3 到 8MB。这一页没有做调色板优化，渐变、肤色、天空容易出现色带，不是参数没调好，是 GIF 的 256 色编码决定的。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">时长</span><span class="f-v">1–60 秒</span></li>
+          <li><span class="f-k">尺寸</span><span class="f-v">宽 100–1280px，帧率 5–30</span></li>
+          <li><span class="f-k">循环</span><span class="f-v">无限循环（-loop 0）</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>GIF 又大又糊时怎么调</h2>
+          <table>
+            <thead><tr><th>症状</th><th>原因</th><th>怎么改</th></tr></thead>
+            <tbody>
+              <tr><td>几 MB 发不出去</td><td>480 宽加 10fps 对聊天窗口仍偏大</td><td>宽度降到 240，帧率降到 5</td></tr>
+              <tr><td>颜色一块一块</td><td>256 色硬压，没做调色板优化</td><td>缩短片段，避开大面积渐变</td></tr>
+              <tr><td>想放 30 秒以上</td><td>时长输入上限 60 秒，体积会爆</td><td>拆成两段分别做</td></tr>
+              <tr><td>要半透明背景</td><td>GIF 只有全透明或全不透明</td><td>改用 WebM 或 APNG</td></tr>
+              <tr><td>竖屏素材按宽度缩放</td><td>高度自动等比，成片拉得很长</td><td>先把素材裁成接近方形再转</td></tr>
+              <tr><td>放到网页自动播放</td><td>-loop 0 就是无限循环</td><td>直接 img 标签嵌入即可</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -261,35 +322,35 @@
           <div class="dropzone-icon">🎬</div>
           <h3>上传视频文件</h3>
           <p>选择一个视频文件，在浏览器内用 ffmpeg.wasm 处理。</p>
-          <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:8px;">⚠️ First use may take ~30s to load ffmpeg.wasm (25MB)</p>
+          <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:8px;">⚠️ 首次使用需下载约 25MB 的 ffmpeg.wasm，可能要等 30 秒</p>
         </label>
         <div class="controls hidden" id="controlsSection">
-          <h2>📹 Video Info</h2>
+          <h2>📹 视频信息</h2>
           <div class="pdf-info" id="videoInfo"></div>
           <div class="control-row">
-            <label>Start Time (s)</label>
+            <label>开始时间（秒）</label>
             <input type="number" id="gifStart" value="0" min="0" step="0.1" style="width:100px;">
           </div>
           <div class="control-row">
-            <label>Duration (s)</label>
+            <label>时长（秒，1–60）</label>
             <input type="number" id="gifDuration" value="5" min="1" max="60" style="width:100px;">
           </div>
           <div class="control-row">
-            <label>Width (px)</label>
+            <label>宽度（像素，100–1280）</label>
             <input type="number" id="gifWidth" value="480" min="100" max="1280" style="width:100px;">
           </div>
           <div class="control-row">
-            <label>FPS</label>
+            <label>帧率（5–30）</label>
             <input type="number" id="gifFps" value="10" min="5" max="30" style="width:100px;">
           </div>
           <div class="btn-row">
-            <button class="btn btn-primary" id="processBtn">🎞️ Process</button>
+            <button class="btn btn-primary" id="processBtn">🎞️ 开始转换</button>
             <button class="btn btn-secondary" id="resetBtn">重置</button>
           </div>
         </div>
         <div class="status-text hidden" id="statusSection"></div>
         <div class="result-section hidden" id="resultSection">
-          <h2>✅ Result</h2>
+          <h2>✅ 处理结果</h2>
           <div id="resultContent" style="text-align:center;"></div>
         </div>
 
@@ -355,12 +416,17 @@
   <div class="trust-badge"><div class="tb-icon">💯</div><div class="tb-title">永久免费</div><div class="tb-desc">无需注册、无水印</div></div>
   <div class="trust-badge"><div class="tb-icon">🚀</div><div class="tb-title">无需注册</div><div class="tb-desc">即刻开始，无需账号</div></div>
 </div>
-      <section class="how-to-section"><h2>视频转 GIF使用方法</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>上传视频</h4><p>选择一个视频文件。</p></div><div class="how-to-step"><div class="step-number">2</div><h4>配置</h4><p>设置输出选项。</p></div><div class="how-to-step"><div class="step-number">3</div><h4>处理</h4><p>点击处理按钮。</p></div><div class="how-to-step"><div class="step-number">4</div><h4>下载</h4><p>Get your converted video.</p></div></div></section>
+      <section class="how-to-section"><h2>视频转 GIF使用方法</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>上传视频</h4><p>选择一个视频文件。</p></div><div class="how-to-step"><div class="step-number">2</div><h4>配置</h4><p>设置输出选项。</p></div><div class="how-to-step"><div class="step-number">3</div><h4>处理</h4><p>点击处理按钮。</p></div><div class="how-to-step"><div class="step-number">4</div><h4>下载</h4><p>获取转换后的 GIF 动图。</p></div></div></section>
 <h2>视频转 GIF详细使用指南</h2><div class="guide-block"><h3>上传视频</h3><p>选择一个视频文件。</p></div><div class="guide-block"><h3>配置</h3><p>设置输出选项。</p></div><div class="guide-block"><h3>处理</h3><p>点击处理按钮。</p></div><div class="guide-block"><h3>下载</h3><p>Get your converted video.</p></div>
 <section class="faq-section"><h2>视频转 GIF常见问题</h2><div class="faq-item"><button class="faq-question">第一次加载为什么慢？</button><div class="faq-answer">ffmpeg.wasm 约 25MB，首次加载后会缓存在浏览器中。</div></div><div class="faq-item"><button class="faq-question">视频会上传到服务器吗？</button><div class="faq-answer">不会。全部在浏览器本地转换，视频不离开设备。</div></div><div class="faq-item"><button class="faq-question">支持哪些视频格式？</button><div class="faq-answer">MP4、WebM、MOV、AVI、MKV 等常见格式。</div></div><div class="faq-item"><button class="faq-question">可裁剪 GIF 吗？</button><div class="faq-answer">可以——选择片段起止时间。</div></div>
 <div class="faq-item"><button class="faq-question">输出什么格式？</button><div class="faq-answer">动画 GIF，已优化体积。</div></div>
 <div class="faq-item"><button class="faq-question">做微信表情包时怎么转 GIF？</button><div class="faq-answer">上传视频，选择精彩片段，导出 GIF 后直接发到微信聊天。</div></div>
 <div class="faq-item"><button class="faq-question">抖音梗图怎么从视频截取？</button><div class="faq-answer">上传视频，选取搞笑片段，导出 GIF 后发抖音评论区。</div></div>
+              <div class="faq-item"><button class="faq-question">为什么 GIF 比原视频大十几倍？</button><div class="faq-answer">GIF 每帧都是 256 色索引位图，帧间压缩能力远低于 H.264 的预测编码，同一段画面变成 GIF 体积自然暴涨，这是格式本身的问题。</div></div>
+        <div class="faq-item"><button class="faq-question">宽度填 1280 会更清楚吗？</button><div class="faq-answer">会更清楚也更巨大。手机和聊天窗口里 480 宽已经够看，多数平台还会再缩一次，填 1280 通常只换来更大的文件。</div></div>
+        <div class="faq-item"><button class="faq-question">GIF 能带声音吗？</button><div class="faq-answer">不能。GIF 格式不定义音频轨，输出里只有画面，原片的音轨会被丢掉。</div></div>
+        <div class="faq-item"><button class="faq-question">帧率能超过 30 吗？</button><div class="faq-answer">输入框限定 5 到 30，填更大的值不会生效。帧率越高画面越顺，体积也越大，10fps 是动图的常见平衡点。</div></div>
+        <div class="faq-item"><button class="faq-question">为什么颜色不如原视频？</button><div class="faq-answer">这一页只做一次直接量化，没有 palettegen 加 paletteuse 的两遍调色板优化，所以渐变和肤色最容易出现色带。想要更好看只能缩短片段、减少颜色变化。</div></div>
       </section>
 <section class="related-tools"><h2>你可能还喜欢</h2><div class="related-tools-grid"><a href="/zh/tools/video-to-gif" class="related-tool-card"><span class="tool-icon">🎞️</span><div class="tool-info"><strong>视频转 GIF</strong><span class="tool-desc">视频转 GIF 动图</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/compressor" class="related-tool-card"><span class="tool-icon">🗜️</span><div class="tool-info"><strong>图片压缩</strong><span class="tool-desc">压缩图片大小</span></div><span class="tool-arrow">→</span></a></div></section>
 
@@ -513,7 +579,7 @@
       await ffmpeg.run('-i', 'input.mp4', '-ss', ss, '-t', t, '-vf', `fps=${fps},scale=${w}:-1:flags=lanczos`, '-loop', '0', 'output.gif');
       const data = ffmpeg.FS('readFile', 'output.gif');
       resultSection.classList.remove('hidden');
-      resultContent.innerHTML = `<img src="${URL.createObjectURL(new Blob([data.buffer], {type:'image/gif'}))}" style="max-width:100%;border-radius:8px;"><br><button class="btn btn-primary" style="margin-top:16px;" onclick="window.__downloadBlob__(${JSON.stringify([...data])}, '${fileName}.gif', 'image/gif')">⬇️ Download GIF</button>`;
+      resultContent.innerHTML = `<img src="${URL.createObjectURL(new Blob([data.buffer], {type:'image/gif'}))}" style="max-width:100%;border-radius:8px;"><br><button class="btn btn-primary" style="margin-top:16px;" onclick="window.__downloadBlob__(${JSON.stringify([...data])}, '${fileName}.gif', 'image/gif')">⬇️ 下载 GIF</button>`;
       statusSection.textContent = '✓ GIF created!';
     } catch(e) { statusSection.textContent = '✗ Error: ' + e.message; }
     processBtn.disabled = false;
