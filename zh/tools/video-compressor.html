@@ -145,7 +145,7 @@
       "name": "视频能缩多少？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "可调质量下显著缩减。"
+        "text": "取决于档位：720p 配 CRF 28 通常能压到原片的三到五成；CRF 16 配原始分辨率可能几乎不缩，甚至变大。"
       }
     },
     {
@@ -153,15 +153,7 @@
       "name": "保留画质吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "是的——均衡压缩保持可接受画质。"
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "支持哪些视频格式？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "MP4、WebM 等浏览器可播放的格式。处理使用 ffmpeg.wasm。"
+        "text": "重编码一定有损失。CRF 20 以内多数人看不出差别，CRF 28 在暗部和大面积渐变处会看到块。"
       }
     },
     {
@@ -170,6 +162,46 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "无硬性限制，但越长视频耗时越多、内存占用越大。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "会不会改时长和帧率？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "都不会。只重编码画面，帧率和时长按原样输出，音频转成 AAC 128k，所以音轨会有一点点二次损失。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么默认是 720p？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "为了让多数人一眼看到体积变化：1080p 降到 720p 通常能省三成以上。但要保留原分辨率，得自己在分辨率栏里改成「原始」。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "能压到指定大小吗，比如 20MB？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能。只有 CRF 四档和分辨率可选，没有目标体积输入。想要精确大小，只能试几档再挑最接近的。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "压完体积反而变大了，正常吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "正常。原片如果是平台压过一遍的低码率文件，用 CRF 16 重编码会写进更多细节，文件自然变大。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "支持哪些输入格式？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "MP4、WebM、MOV、AVI、MKV 等 ffmpeg 能解的容器都能读，输出统一是 MP4，兼容性最好。"
       }
     }
   ]
@@ -234,7 +266,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🗜️ 视频压缩器</span></nav>
       <div class="tool-page-header">
         <h1>🗜️ 视频压缩器</h1>
-        <p>通过调节画质和分辨率减小视频文件体积——免费。</p>
+        <p class="answer-lead">用 ffmpeg.wasm 在浏览器里重编码视频：H.264 画面加 AAC 128k 音频，质量按 CRF 分四档（28/24/20/16，数字越小越清楚），分辨率可选原始、1080p、720p、480p、360p，输出固定 MP4。要留意默认值是 720p——不动分辨率那一栏，1080p 素材会被压成 720p，想保原尺寸必须手动选「原始」。首次使用要下载约 25MB 的 ffmpeg 核心。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">编码</span><span class="f-v">H.264 + AAC 128k</span></li>
+          <li><span class="f-k">分辨率</span><span class="f-v">原始 / 1080p / 720p / 480p / 360p</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地转码</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>压不压、压到多少，看这张表</h2>
+          <table>
+            <thead><tr><th>你的情况</th><th>实际会发生什么</th><th>建议</th></tr></thead>
+            <tbody>
+              <tr><td>1080p 素材只想小一点</td><td>默认 720p 配 CRF 24，画面被缩到 1280 宽</td><td>先把分辨率改成「原始」再压</td></tr>
+              <tr><td>微信发不出去的大文件</td><td>时长不变，体积看 CRF 和分辨率</td><td>720p 配 CRF 28 先试一档</td></tr>
+              <tr><td>要投屏或长期存档</td><td>CRF 16 配原始分辨率，体积可能不降反升</td><td>别压，直接留原片</td></tr>
+              <tr><td>手机竖拍的 4K</td><td>按宽度缩到 720，高度自动取偶数对齐</td><td>竖屏选 480p 更省空间</td></tr>
+              <tr><td>想压到指定 20MB</td><td>没有目标体积选项</td><td>只能试几档 CRF 找接近值</td></tr>
+              <tr><td>原片本身压得很狠</td><td>再压一档，暗部会起块</td><td>CRF 20 以内，或者不压</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -361,10 +414,15 @@
 </div>
       <section class="how-to-section"><h2>视频压缩器使用方法</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>上传视频</h4><p>选择一个视频文件。</p></div><div class="how-to-step"><div class="step-number">2</div><h4>配置</h4><p>设置输出选项。</p></div><div class="how-to-step"><div class="step-number">3</div><h4>处理</h4><p>点击「处理」（ffmpeg.wasm 首次使用需加载）。</p></div><div class="how-to-step"><div class="step-number">4</div><h4>下载</h4><p>获取转换后的视频。</p></div></div></section>
 <h2>视频压缩器详细使用指南</h2><div class="guide-block"><h3>上传视频</h3><p>选择一个视频文件。</p></div><div class="guide-block"><h3>配置</h3><p>设置输出选项。</p></div><div class="guide-block"><h3>处理</h3><p>点击「处理」（ffmpeg.wasm 首次使用需加载）。</p></div><div class="guide-block"><h3>下载</h3><p>获取转换后的视频。</p></div>
-<section class="faq-section"><h2>视频压缩器常见问题</h2><div class="faq-item"><button class="faq-question">第一次打开为什么加载慢？</button><div class="faq-answer">视频处理靠 ffmpeg.wasm，核心文件约 25MB，首次要下载。下载完会缓存在浏览器里，之后再用就快了。</div></div><div class="faq-item"><button class="faq-question">视频会上传吗？</button><div class="faq-answer">不会。编解码全在你本机跑，视频不出设备。企业宣传片、未发布的素材也能处理。</div></div><div class="faq-item"><button class="faq-question">支持哪些格式？</button><div class="faq-answer">常见容器基本都能读：MP4、WebM、MOV、AVI、MKV 等。输出为 MP4 或 WebM，其中 MP4 兼容性最好。</div></div><div class="faq-item"><button class="faq-question">视频能缩多少？</button><div class="faq-answer">可调质量下显著缩减。</div></div>
-<div class="faq-item"><button class="faq-question">保留画质吗？</button><div class="faq-answer">是的——均衡压缩保持可接受画质。</div></div>
-<div class="faq-item"><button class="faq-question">支持哪些视频格式？</button><div class="faq-answer">MP4、WebM 等浏览器可播放的格式。处理使用 ffmpeg.wasm。</div></div>
+<section class="faq-section"><h2>视频压缩器常见问题</h2><div class="faq-item"><button class="faq-question">第一次打开为什么加载慢？</button><div class="faq-answer">视频处理靠 ffmpeg.wasm，核心文件约 25MB，首次要下载。下载完会缓存在浏览器里，之后再用就快了。</div></div><div class="faq-item"><button class="faq-question">视频会上传吗？</button><div class="faq-answer">不会。编解码全在你本机跑，视频不出设备。企业宣传片、未发布的素材也能处理。</div></div><div class="faq-item"><button class="faq-question">支持哪些格式？</button><div class="faq-answer">常见容器基本都能读：MP4、WebM、MOV、AVI、MKV 等。输出为 MP4 或 WebM，其中 MP4 兼容性最好。</div></div><div class="faq-item"><button class="faq-question">视频能缩多少？</button><div class="faq-answer">取决于档位：720p 配 CRF 28 通常能压到原片的三到五成；CRF 16 配原始分辨率可能几乎不缩，甚至变大。</div></div>
+<div class="faq-item"><button class="faq-question">保留画质吗？</button><div class="faq-answer">重编码一定有损失。CRF 20 以内多数人看不出差别，CRF 28 在暗部和大面积渐变处会看到块。</div></div>
+
 <div class="faq-item"><button class="faq-question">有视频时长限制吗？</button><div class="faq-answer">无硬性限制，但越长视频耗时越多、内存占用越大。</div></div>
+              <div class="faq-item"><button class="faq-question">会不会改时长和帧率？</button><div class="faq-answer">都不会。只重编码画面，帧率和时长按原样输出，音频转成 AAC 128k，所以音轨会有一点点二次损失。</div></div>
+        <div class="faq-item"><button class="faq-question">为什么默认是 720p？</button><div class="faq-answer">为了让多数人一眼看到体积变化：1080p 降到 720p 通常能省三成以上。但要保留原分辨率，得自己在分辨率栏里改成「原始」。</div></div>
+        <div class="faq-item"><button class="faq-question">能压到指定大小吗，比如 20MB？</button><div class="faq-answer">不能。只有 CRF 四档和分辨率可选，没有目标体积输入。想要精确大小，只能试几档再挑最接近的。</div></div>
+        <div class="faq-item"><button class="faq-question">压完体积反而变大了，正常吗？</button><div class="faq-answer">正常。原片如果是平台压过一遍的低码率文件，用 CRF 16 重编码会写进更多细节，文件自然变大。</div></div>
+        <div class="faq-item"><button class="faq-question">支持哪些输入格式？</button><div class="faq-answer">MP4、WebM、MOV、AVI、MKV 等 ffmpeg 能解的容器都能读，输出统一是 MP4，兼容性最好。</div></div>
       </section>
 <section class="related-tools"><h2>你可能还喜欢</h2><div class="related-tools-grid"><a href="/zh/tools/video-to-gif" class="related-tool-card"><span class="tool-icon">🎞️</span><div class="tool-info"><strong>视频转 GIF</strong><span class="tool-desc">把视频转为 GIF</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/compressor" class="related-tool-card"><span class="tool-icon">🗜️</span><div class="tool-info"><strong>图片压缩器</strong><span class="tool-desc">压缩图片</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>

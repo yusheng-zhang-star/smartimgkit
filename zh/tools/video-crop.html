@@ -5,19 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="index, follow">
   <title>视频裁剪 — 精确到帧设置起止时间</title>
-  <meta name="description" content="设定起止时间点，裁掉视频开头结尾多余部分，精度到单帧，可只导出选中的片段。用 ffmpeg.wasm 在本地转码，视频不上传服务器，适合剪掉录屏开头的准备动作、截取演讲的某个观点、从长视频里扒素材。导出保留原分辨率与音轨。">
+  <meta name="description" content="设定起止时间点，裁掉视频开头结尾多余部分，切点对齐关键帧（流复制不重编码），一次导出一段。用 ffmpeg.wasm 在本地转码，视频不上传服务器，适合剪掉录屏开头的准备动作、截取演讲的某个观点、从长视频里扒素材。导出保留原分辨率与音轨。">
   <meta name="keywords" content="video cropper, trim video, cut video, video trimmer, crop video online">
   <link rel="canonical" href="https://smartimgkit.com/zh/tools/video-crop">
   <meta name="theme-color" content="#6366f1">
   <meta property="og:title" content="视频裁剪 — 精确到帧设置起止时间">
-  <meta property="og:description" content="设定起止时间点，裁掉视频开头结尾多余部分，精度到单帧，可只导出选中的片段。用 ffmpeg.wasm 在本地转码，视频不上传服务器，适合剪掉录屏开头的准备动作、截取演讲的某个观点、从长视频里扒素材。导出保留原分辨率与音轨。">
+  <meta property="og:description" content="设定起止时间点，裁掉视频开头结尾多余部分，切点对齐关键帧（流复制不重编码），一次导出一段。用 ffmpeg.wasm 在本地转码，视频不上传服务器，适合剪掉录屏开头的准备动作、截取演讲的某个观点、从长视频里扒素材。导出保留原分辨率与音轨。">
   <meta property="og:url" content="https://smartimgkit.com/zh/tools/video-crop">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SmartImgKit">
   <meta property="og:image" content="https://smartimgkit.com/screenshots/video-crop.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="视频裁剪 — 精确到帧设置起止时间">
-  <meta name="twitter:description" content="设定起止时间点，裁掉视频开头结尾多余部分，精度到单帧，可只导出选中的片段。用 ffmpeg.wasm 在本地转码，视频不上传服务器，适合剪掉录屏开头的准备动作、截取演讲的某个观点、从长视频里扒素材。导出保留原分辨率与音轨。">
+  <meta name="twitter:description" content="设定起止时间点，裁掉视频开头结尾多余部分，切点对齐关键帧（流复制不重编码），一次导出一段。用 ffmpeg.wasm 在本地转码，视频不上传服务器，适合剪掉录屏开头的准备动作、截取演讲的某个观点、从长视频里扒素材。导出保留原分辨率与音轨。">
   <meta name="twitter:image" content="https://smartimgkit.com/screenshots/video-crop.png">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="alternate" hreflang="zh" href="https://smartimgkit.com/zh/tools/video-crop">
@@ -43,7 +43,7 @@
     "price": "0",
     "priceCurrency": "USD"
   },
-  "description": "设定起止时间点，裁掉视频开头结尾多余部分，精度到单帧，可只导出选中的片段。用 ffmpeg.wasm 在本地转码，视频不上传服务器，适合剪掉录屏开头的准备动作、截取演讲的某个观点、从长视频里扒素材。导出保留原分辨率与音轨。"
+  "description": "设定起止时间点，裁掉视频开头结尾多余部分，切点对齐关键帧（流复制不重编码），一次导出一段。用 ffmpeg.wasm 在本地转码，视频不上传服务器，适合剪掉录屏开头的准备动作、截取演讲的某个观点、从长视频里扒素材。导出保留原分辨率与音轨。"
 }
 </script>
   <script type="application/ld+json">
@@ -162,6 +162,46 @@
         "@type": "Answer",
         "text": "会弹出提示，什么都不会处理；改好时间再点「开始处理」即可。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么切出来的起点和我填的秒数不一样？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "流复制不能从任意一帧开始，必须从关键帧起切，ffmpeg 会找离设定时间最近的那个关键帧，所以起点可能提前或推后。要精确到帧只能把整段重编码，本页没有这个选项。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "音轨会一起切吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "会。-c copy 把视频轨和音频轨一起复制过去，没有音轨的片子也能切，只是输出同样没有声音。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "能切 4K 或者一小时的片子吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "流复制不解码，一小时素材通常几十秒就完成。真正的限制在内存：几个 GB 的文件要整块读进浏览器，太大的片子可能直接失败。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "输出是什么格式？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "固定 MP4。原片是 WebM 或某些 HEVC 文件时，复制进 MP4 容器可能不被支持，报错后建议先把原片转成 H.264 的 MP4。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "输入框支持 0.1 秒步进，能精确到 0.1 秒吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "输入能填到 0.1 秒，但实际切点仍受关键帧约束，小数的意义有限。想精确控制，靠剪辑软件的重编码裁剪。"
+      }
     }
   ]
 }
@@ -225,7 +265,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>✂️ 视频裁剪器</span></nav>
       <div class="tool-page-header">
         <h1>✂️ 视频裁剪器</h1>
-        <p>裁剪和修剪视频，去掉不需要的部分——免费，在浏览器中完成。</p>
+        <p class="answer-lead">输入开始秒数和时长，把中间那一段单独切出来。实现是流复制（-c copy）：不解码、不重编码，画质与原片完全一致，速度快到只取决于硬盘读写。代价是切点只能落在关键帧上——十秒一个 GOP 的片子，你写 3.2 秒开始，实际起点可能前移到最近的关键帧。它只切时间轴，不裁画面。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">方式</span><span class="f-v">按时间流复制（-c copy）</span></li>
+          <li><span class="f-k">精度</span><span class="f-v">切点对齐关键帧</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地处理</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>切出来跟你想的不一样时</h2>
+          <table>
+            <thead><tr><th>你遇到的情况</th><th>原因</th><th>怎么办</th></tr></thead>
+            <tbody>
+              <tr><td>起点比设定早了一两秒</td><td>流复制只能从关键帧起切</td><td>要帧级精度得重编码，本页没做</td></tr>
+              <tr><td>想要 9:16 竖版画面</td><td>本页只切时间，不裁画面</td><td>用视频旋转或画幅裁剪工具</td></tr>
+              <tr><td>结尾多出半秒</td><td>时长一样吸附关键帧</td><td>时长少填半秒再手动修</td></tr>
+              <tr><td>结束时间早于开始</td><td>直接弹提示，什么都不处理</td><td>改好时间重试</td></tr>
+              <tr><td>原片是 HEVC 的 MOV</td><td>能复制就复制，复制不进 MP4 会报错</td><td>先用别的工具转成 H.264</td></tr>
+              <tr><td>想一次切三段</td><td>不支持，一次一段</td><td>分三次做，或先切一段再切</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -341,7 +402,12 @@
 </div>
       <section class="how-to-section"><h2>怎么截取视频片段</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>上传视频</h4><p>把文件拖进上传区或点选。视频只在你自己的浏览器里处理，不会上传到任何服务器。</p></div><div class="how-to-step"><div class="step-number">2</div><h4>设定开始秒数</h4><p>写下要保留的片段从第几秒开始，支持 0.1 秒的微调步进。</p></div><div class="how-to-step"><div class="step-number">3</div><h4>设定结束秒数</h4><p>指出片段到哪里结束。结束早于开始时，工具会直接提醒你。</p></div><div class="how-to-step"><div class="step-number">4</div><h4>处理并下载</h4><p>点「开始处理」：完成后得到 MP4，带内嵌播放器和下载按钮。</p></div></div></section>
 <h2>这个工具到底做什么</h2><div class="guide-block"><h3>按时间剪，不是按画面剪</h3><p>这里的「裁剪」指的是把你选定的两个时刻之间的内容完整保留下来。它不裁画面边框、不改分辨率：竖屏视频剪完还是竖屏。要改构图得逐帧重新计算，这不是本页做的事——先说清楚，免得你用一半才发现。</p></div><div class="guide-block"><h3>不重编码，所以没有画质损失</h3><p>底层命令用的是 -c copy：视频流从一个点原样复制到另一个点，不做二次压缩。所以几百 MB 的文件也只要几秒，输出的 MP4 画质和原片完全一致。</p></div><div class="guide-block"><h3>剪切点会对齐到最近的关键帧</h3><p>不重编码的代价是起点可能向前退到上一个关键帧（通常差一两秒）。想要精确到某一帧的剪辑，就必须把整条视频重新编码，那是另一种工具的活。</p></div><div class="guide-block"><h3>时间先校验再动手</h3><p>结束秒数小于等于开始秒数时会弹出提示，什么都不会处理。片段时长由两个时间相减自动得出，改开始时间不用自己重算。</p></div><div class="guide-block"><h3>接受什么格式，输出什么文件</h3><p>只要浏览器能播放的都能处理：MP4、WebM、手机拍的 MOV 等。输出固定是 MP4；因为没有重编码，编码器和码率都沿用原文件。</p></div><div class="guide-block"><h3>大家实际在用它做什么</h3><p>把一小时网课回放剪到只剩讲解的那二十分钟，从家庭聚会长视频里抠出要发朋友圈的那一段，给准备发视频号的素材掐头去尾，或者把手机随手录的开头杂段整段去掉。</p></div><div class="guide-block"><h3>隐私和真实的限制</h3><p>所有处理都发生在你的浏览器里：文件不出设备，也不留任何历史记录，所以关标签页前记得先把结果下载下来。首次使用要下载约 25MB 的 ffmpeg 内核并进入缓存，之后的截取几乎瞬间完成，一小时的片子也一样。</p></div>
-<section class="faq-section"><h2>视频裁剪器常见问题</h2><div class="faq-item"><button class="faq-question">我的视频会被上传到服务器吗？</button><div class="faq-answer">不会。截取通过 ffmpeg.wasm 在你的浏览器里完成，原片和结果都不离开你的设备。</div></div><div class="faq-item"><button class="faq-question">截出来的片段会降画质吗？</button><div class="faq-answer">不会。不重编码直接复制视频流（-c copy），画质与原文件完全一致。</div></div><div class="faq-item"><button class="faq-question">能裁掉画面的边缘吗？</button><div class="faq-answer">不能，这个工具按时间截取。裁画面要逐帧重新计算，本页没有实现这个功能。</div></div><div class="faq-item"><button class="faq-question">为什么第一次用比较慢？</button><div class="faq-answer">浏览器要下载约 25MB 的 ffmpeg 内核。之后它会留在缓存里，再截取几乎是瞬间的事。</div></div><div class="faq-item"><button class="faq-question">支持哪些输入格式？</button><div class="faq-answer">你的浏览器能播放的都行：MP4、WebM、手机拍的 MOV 等。输出是不重编码的 MP4。</div></div><div class="faq-item"><button class="faq-question">结束时间比开始时间还早会怎样？</button><div class="faq-answer">会弹出提示，什么都不会处理；改好时间再点「开始处理」即可。</div></div></section>
+<section class="faq-section"><h2>视频裁剪器常见问题</h2><div class="faq-item"><button class="faq-question">我的视频会被上传到服务器吗？</button><div class="faq-answer">不会。截取通过 ffmpeg.wasm 在你的浏览器里完成，原片和结果都不离开你的设备。</div></div><div class="faq-item"><button class="faq-question">截出来的片段会降画质吗？</button><div class="faq-answer">不会。不重编码直接复制视频流（-c copy），画质与原文件完全一致。</div></div><div class="faq-item"><button class="faq-question">能裁掉画面的边缘吗？</button><div class="faq-answer">不能，这个工具按时间截取。裁画面要逐帧重新计算，本页没有实现这个功能。</div></div><div class="faq-item"><button class="faq-question">为什么第一次用比较慢？</button><div class="faq-answer">浏览器要下载约 25MB 的 ffmpeg 内核。之后它会留在缓存里，再截取几乎是瞬间的事。</div></div><div class="faq-item"><button class="faq-question">支持哪些输入格式？</button><div class="faq-answer">你的浏览器能播放的都行：MP4、WebM、手机拍的 MOV 等。输出是不重编码的 MP4。</div></div><div class="faq-item"><button class="faq-question">结束时间比开始时间还早会怎样？</button><div class="faq-answer">会弹出提示，什么都不会处理；改好时间再点「开始处理」即可。</div></div>        <div class="faq-item"><button class="faq-question">为什么切出来的起点和我填的秒数不一样？</button><div class="faq-answer">流复制不能从任意一帧开始，必须从关键帧起切，ffmpeg 会找离设定时间最近的那个关键帧，所以起点可能提前或推后。要精确到帧只能把整段重编码，本页没有这个选项。</div></div>
+        <div class="faq-item"><button class="faq-question">音轨会一起切吗？</button><div class="faq-answer">会。-c copy 把视频轨和音频轨一起复制过去，没有音轨的片子也能切，只是输出同样没有声音。</div></div>
+        <div class="faq-item"><button class="faq-question">能切 4K 或者一小时的片子吗？</button><div class="faq-answer">流复制不解码，一小时素材通常几十秒就完成。真正的限制在内存：几个 GB 的文件要整块读进浏览器，太大的片子可能直接失败。</div></div>
+        <div class="faq-item"><button class="faq-question">输出是什么格式？</button><div class="faq-answer">固定 MP4。原片是 WebM 或某些 HEVC 文件时，复制进 MP4 容器可能不被支持，报错后建议先把原片转成 H.264 的 MP4。</div></div>
+        <div class="faq-item"><button class="faq-question">输入框支持 0.1 秒步进，能精确到 0.1 秒吗？</button><div class="faq-answer">输入能填到 0.1 秒，但实际切点仍受关键帧约束，小数的意义有限。想精确控制，靠剪辑软件的重编码裁剪。</div></div>
+      </section>
 <section class="related-tools"><h2>你可能还喜欢</h2><div class="related-tools-grid"><a href="/zh/tools/video-to-gif" class="related-tool-card"><span class="tool-icon">🎞️</span><div class="tool-info"><strong>Video to GIF</strong><span class="tool-desc">视频转 GIF</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/compressor" class="related-tool-card"><span class="tool-icon">🗜️</span><div class="tool-info"><strong>Image Compressor</strong><span class="tool-desc">图片压缩</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
 

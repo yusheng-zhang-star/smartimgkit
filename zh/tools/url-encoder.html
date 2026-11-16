@@ -141,14 +141,6 @@
     },
     {
       "@type": "Question",
-      "name": "遵循 RFC 3986 吗？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "是的——标准 URL 百分号编码。"
-      }
-    },
-    {
-      "@type": "Question",
       "name": "可编码完整 URL 吗？",
       "acceptedAnswer": {
         "@type": "Answer",
@@ -169,6 +161,38 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "把含中文或特殊字符的链接编码后再分享，避免对方打开时乱码。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么 %2F 解码后还是 %2F？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "解码按钮调用的是 decodeURI，按规范它保留 / ? # & = : ; @ 这些 URL 保留字符不还原，免得把参数结构拆散。要还原它们只能手动替换，或在浏览器控制台用 decodeURIComponent。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "一个汉字为什么变成三个 %XX？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "UTF-8 里一个常用汉字占三字节，每字节写成百分号加两位十六进制，所以「中」是 %E4%B8%AD；emoji 占四字节，转义串更长。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "整段多行文本能一次编码吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "能。整段一起编码，换行变 %0A，回车变 %0D，制表符变 %09。粘回接口地址时要留意这些转义不会再自动还原。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "加号会被当成空格吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "这一页不会。encodeURIComponent 把空格编成 %20 而不是 +，解码时也不把 + 当空格，所以从查询串复制的 + 需要先换成 %20。"
       }
     }
   ]
@@ -233,7 +257,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🔗 URL 编解码</span></nav>
       <div class="tool-page-header">
         <h1>🔗 URL 编解码</h1>
-        <p>URL 字符串百分号编码与解码——免费，在浏览器中完成。</p>
+        <p class="answer-lead">用浏览器原生的三个函数做百分号编解码：encodeURI 编整条链接（保留 / ? & =），encodeURIComponent 编单个参数值（连 / ? & 一起转），decodeURI 把 %E4%B8%AD 这类转义还原成中文。中文按 UTF-8 拆成三字节，一个常用汉字就是一个 %XX 加两个 %XX。结果只写进右边文本框，不上传、不落地文件。要注意解码只有 decodeURI 一个按钮，%2F、%3F 这类保留字符解不回来。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">功能</span><span class="f-v">编码 / 编码组件 / 解码</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，纯本地计算</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">文本框 + 一键复制</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>该按哪个按钮</h2>
+          <table>
+            <thead><tr><th>你要做的事</th><th>按哪个</th><th>结果差别</th></tr></thead>
+            <tbody>
+              <tr><td>整条链接里的中文要转义</td><td>编码（encodeURI）</td><td>/ ? & = 原样保留，只转中文和空格</td></tr>
+              <tr><td>单个查询参数值</td><td>编码组件（encodeURIComponent）</td><td>连 / ? & = 一起转，能安全拼进参数</td></tr>
+              <tr><td>把 %E4%B8%AD 还原成中文</td><td>解码（decodeURI）</td><td>中文回来，%2F 仍是 %2F</td></tr>
+              <tr><td>参数里的斜杠被编成 %2F</td><td>这一页解不回来</td><td>手动替换成 /，或改用 decodeURIComponent</td></tr>
+              <tr><td>从表单粘来的 + 当作空格</td><td>本页不认 +</td><td>先把 + 换成 %20 再点解码</td></tr>
+              <tr><td>想核对改前改后是否一致</td><td>交换输入/输出</td><td>两框对调，一步步比对</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -341,10 +386,14 @@
 </div>
       <section class="how-to-section"><h2>URL 编解码使用方法</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>输入文本</h4><p>把文本粘贴或输入到输入区。</p></div><div class="how-to-step"><div class="step-number">2</div><h4>选择操作</h4><p>点击「编码」「解码」或「编码组件」。</p></div><div class="how-to-step"><div class="step-number">3</div><h4>查看结果</h4><p>输出结果显示在右侧面板。</p></div><div class="how-to-step"><div class="step-number">4</div><h4>复制或交换</h4><p>复制结果或交换输入/输出。</p></div></div></section>
 <h2>URL 编解码详细使用指南</h2><div class="guide-block"><h3>输入文本</h3><p>把文本粘贴或输入到输入区。</p></div><div class="guide-block"><h3>选择操作</h3><p>点击「编码」「解码」或「编码组件」。</p></div><div class="guide-block"><h3>查看结果</h3><p>输出结果显示在右侧面板。</p></div><div class="guide-block"><h3>复制或交换</h3><p>复制结果或交换输入/输出。</p></div>
-<section class="faq-section"><h2>URL 编解码常见问题</h2><div class="faq-item"><button class="faq-question">编码和编码组件有什么区别？</button><div class="faq-answer">encodeURI 保留 URL 分隔符如 / 和 ?，encodeURIComponent 编码所有字符——用于查询参数。</div></div><div class="faq-item"><button class="faq-question">遵循 RFC 3986 标准吗？</button><div class="faq-answer">是的，使用浏览器原生 encodeURIComponent 函数，符合标准。</div></div><div class="faq-item"><button class="faq-question">为什么有时解码失败？</button><div class="faq-answer">如果输入包含无效百分号序列（如 %ZZ），解码会失败。请检查输入内容。</div></div><div class="faq-item"><button class="faq-question">遵循 RFC 3986 吗？</button><div class="faq-answer">是的——标准 URL 百分号编码。</div></div>
+<section class="faq-section"><h2>URL 编解码常见问题</h2><div class="faq-item"><button class="faq-question">编码和编码组件有什么区别？</button><div class="faq-answer">encodeURI 保留 URL 分隔符如 / 和 ?，encodeURIComponent 编码所有字符——用于查询参数。</div></div><div class="faq-item"><button class="faq-question">遵循 RFC 3986 标准吗？</button><div class="faq-answer">是的，使用浏览器原生 encodeURIComponent 函数，符合标准。</div></div><div class="faq-item"><button class="faq-question">为什么有时解码失败？</button><div class="faq-answer">如果输入包含无效百分号序列（如 %ZZ），解码会失败。请检查输入内容。</div></div>
 <div class="faq-item"><button class="faq-question">可编码完整 URL 吗？</button><div class="faq-answer">可以——编码组件或完整 URL。</div></div>
 <div class="faq-item"><button class="faq-question">前端开发调试时 URL 编码怎么用？</button><div class="faq-answer">接口返回的链接含中文参数时，先用这个工具解码成可读文本，快速定位问题。</div></div>
 <div class="faq-item"><button class="faq-question">微信分享链接含特殊字符怎么办？</button><div class="faq-answer">把含中文或特殊字符的链接编码后再分享，避免对方打开时乱码。</div></div>
+              <div class="faq-item"><button class="faq-question">为什么 %2F 解码后还是 %2F？</button><div class="faq-answer">解码按钮调用的是 decodeURI，按规范它保留 / ? # & = : ; @ 这些 URL 保留字符不还原，免得把参数结构拆散。要还原它们只能手动替换，或在浏览器控制台用 decodeURIComponent。</div></div>
+        <div class="faq-item"><button class="faq-question">一个汉字为什么变成三个 %XX？</button><div class="faq-answer">UTF-8 里一个常用汉字占三字节，每字节写成百分号加两位十六进制，所以「中」是 %E4%B8%AD；emoji 占四字节，转义串更长。</div></div>
+        <div class="faq-item"><button class="faq-question">整段多行文本能一次编码吗？</button><div class="faq-answer">能。整段一起编码，换行变 %0A，回车变 %0D，制表符变 %09。粘回接口地址时要留意这些转义不会再自动还原。</div></div>
+        <div class="faq-item"><button class="faq-question">加号会被当成空格吗？</button><div class="faq-answer">这一页不会。encodeURIComponent 把空格编成 %20 而不是 +，解码时也不把 + 当空格，所以从查询串复制的 + 需要先换成 %20。</div></div>
       </section>
 <section class="related-tools"><h2>你可能还喜欢</h2><div class="related-tools-grid"><a href="/zh/tools/base64" class="related-tool-card"><span class="tool-icon">🔐</span><div class="tool-info"><strong>Base64 转换</strong><span class="tool-desc">Base64 编码解码</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/json-formatter" class="related-tool-card"><span class="tool-icon">🔧</span><div class="tool-info"><strong>JSON 格式化</strong><span class="tool-desc">格式化验证 JSON</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/uuid-generator" class="related-tool-card"><span class="tool-icon">🆔</span><div class="tool-info"><strong>UUID 生成器</strong><span class="tool-desc">生成唯一标识</span></div><span class="tool-arrow">→</span></a></div></section>
 

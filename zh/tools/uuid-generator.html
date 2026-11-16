@@ -152,7 +152,7 @@
       "name": "应该用哪个 UUID 版本？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "v4（随机）最常用。v7（时间排序）非常适合数据库，因为它们按时间顺序排列。v1 包含 MAC 地址。"
+        "text": "v4（随机）最常用。v7（时间排序）适合做数据库主键——前缀是毫秒时间，写入更集中。v1 是时间戳格式，但这一页的节点段用随机数，不含 MAC 地址。"
       }
     },
     {
@@ -176,7 +176,7 @@
       "name": "支持哪些 UUID 版本？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "默认生成 UUID v4（随机）。"
+        "text": "v4、v7、v1 三种，下拉框切换，默认 v4。"
       }
     },
     {
@@ -201,6 +201,38 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "不会。全部在浏览器内处理，关闭标签页即丢弃。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "v1 会不会泄露我的 MAC 地址？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不会。标准 v1 的节点段是网卡地址，但这一页把节点段换成了 crypto 随机数，生成结果里没有你的硬件信息；代价是无法靠 UUID 反查是哪台机器生成的。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "同一毫秒里生成的多个 v7 是有序的吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不保证。前 48 位时间戳完全一样，后面全是随机位，同毫秒内的先后顺序是乱的。要严格单调递增得用数据库自增或雪花算法。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "能导出成 txt 或 CSV 文件吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能。只有「全部复制」把整块结果放进剪贴板，粘贴到记事本或 Excel 里自己保存。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "一次生成 10000 个会不会卡住？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "会在文本框里渲染一万行，一般机器一两秒出结果，低配设备可能停顿一下，不会崩溃。"
       }
     }
   ]
@@ -234,7 +266,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🆔 UUID 生成器</span></nav>
       <div class="tool-page-header">
         <h1>🆔 UUID 生成器</h1>
-        <p>批量生成 UUID v1、v4、v7——免费，在浏览器中完成。</p>
+        <p class="answer-lead">一次生成 1 到 10000 个 UUID，三种版本：v4 全随机、v7 带毫秒时间前缀、v1 时间戳格式。随机段统一取 crypto.getRandomValues()，不是 Math.random 那种伪随机。结果写进文本框，点「全部复制」进剪贴板——这一页不落地 .txt 文件。三个格式开关可以叠加：去连字符、转大写、套花括号。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">版本</span><span class="f-v">v4 / v7 / v1 三种</span></li>
+          <li><span class="f-k">数量</span><span class="f-v">一次 1–10000 个</span></li>
+          <li><span class="f-k">输出</span><span class="f-v">文本框 + 一键复制</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>三个版本怎么选</h2>
+          <table>
+            <thead><tr><th>你的用途</th><th>选哪个</th><th>理由</th></tr></thead>
+            <tbody>
+              <tr><td>数据库主键、日志批次号</td><td>v7</td><td>前 48 位是毫秒时间，写入索引更集中</td></tr>
+              <tr><td>不能透露生成时间的随机 ID</td><td>v4</td><td>122 位随机，不带任何时间信息</td></tr>
+              <tr><td>老系统只认 v1 格式</td><td>v1</td><td>结构兼容，节点段是随机数</td></tr>
+              <tr><td>同毫秒批量生成还要严格递增</td><td>做不到</td><td>随机段顺序不定，得靠数据库序列</td></tr>
+              <tr><td>担心暴露网卡地址</td><td>v1 也安全</td><td>这一页不写 MAC，节点段取随机值</td></tr>
+              <tr><td>要导进 BINARY(16) 字段</td><td>勾「无连字符」</td><td>32 位十六进制，不带短横线</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -353,10 +406,14 @@
 </div>
       <section class="how-to-section"><h2>UUID 生成器使用方法</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>选择版本</h4><p>选择 UUID v4（随机）、v7（时间排序）或 v1（时间戳）。</p></div><div class="how-to-step"><div class="step-number">2</div><h4>设置数量</h4><p>输入要生成的 UUID 数量（1-10000）。</p></div><div class="how-to-step"><div class="step-number">3</div><h4>选择格式</h4><p>按需选择连字符、大写、花括号等格式。</p></div><div class="how-to-step"><div class="step-number">4</div><h4>生成</h4><p>点击生成并复制结果。</p></div></div></section>
 <h2>UUID 生成器详细使用指南</h2><div class="guide-block"><h3>选择版本</h3><p>选择 UUID v4（随机）、v7（时间排序）或 v1（时间戳）。</p></div><div class="guide-block"><h3>设置数量</h3><p>输入要生成的 UUID 数量（1-10000）。</p></div><div class="guide-block"><h3>选择格式</h3><p>按需选择连字符、大写、花括号等格式。</p></div><div class="guide-block"><h3>生成</h3><p>点击生成并复制结果。</p></div>
-<section class="faq-section"><h2>UUID 生成器常见问题</h2><div class="faq-item"><button class="faq-question">应该用哪个 UUID 版本？</button><p>v4（随机）最常用。v7（时间排序）非常适合数据库，因为它们按时间顺序排列。v1 包含 MAC 地址。</p></div><div class="faq-item"><button class="faq-question">这些是真正随机的吗？</button><p>v4 使用 crypto.getRandomValues()（CSPRNG）。v7 使用 CSPRNG + 时间戳。两者都是加密安全的。</p></div><div class="faq-item"><button class="faq-question">最大生成数量是多少？</button><p>每次最多 10,000 个。你可以多次点击生成获取更多。</p></div><div class="faq-item"><button class="faq-question">支持哪些 UUID 版本？</button><p>默认生成 UUID v4（随机）。</p></div>
+<section class="faq-section"><h2>UUID 生成器常见问题</h2><div class="faq-item"><button class="faq-question">应该用哪个 UUID 版本？</button><p>v4（随机）最常用。v7（时间排序）适合做数据库主键——前缀是毫秒时间，写入更集中。v1 是时间戳格式，但这一页的节点段用随机数，不含 MAC 地址。</p></div><div class="faq-item"><button class="faq-question">这些是真正随机的吗？</button><p>v4 使用 crypto.getRandomValues()（CSPRNG）。v7 使用 CSPRNG + 时间戳。两者都是加密安全的。</p></div><div class="faq-item"><button class="faq-question">最大生成数量是多少？</button><p>每次最多 10,000 个。你可以多次点击生成获取更多。</p></div><div class="faq-item"><button class="faq-question">支持哪些 UUID 版本？</button><p>v4、v7、v1 三种，下拉框切换，默认 v4。</p></div>
 <div class="faq-item"><button class="faq-question">可批量生成吗？</button><p>可以——一次生成多个 UUID。</p></div>
 <div class="faq-item"><button class="faq-question">这些工具生产环境够用吗？</button><p>够用——遵循标准规范（RFC 3986、JSON 规范等）。</p></div>
 <div class="faq-item"><button class="faq-question">输入会被存储吗？</button><p>不会。全部在浏览器内处理，关闭标签页即丢弃。</p></div>
+              <div class="faq-item"><button class="faq-question">v1 会不会泄露我的 MAC 地址？</button><p>不会。标准 v1 的节点段是网卡地址，但这一页把节点段换成了 crypto 随机数，生成结果里没有你的硬件信息；代价是无法靠 UUID 反查是哪台机器生成的。</p></div>
+        <div class="faq-item"><button class="faq-question">同一毫秒里生成的多个 v7 是有序的吗？</button><p>不保证。前 48 位时间戳完全一样，后面全是随机位，同毫秒内的先后顺序是乱的。要严格单调递增得用数据库自增或雪花算法。</p></div>
+        <div class="faq-item"><button class="faq-question">能导出成 txt 或 CSV 文件吗？</button><p>不能。只有「全部复制」把整块结果放进剪贴板，粘贴到记事本或 Excel 里自己保存。</p></div>
+        <div class="faq-item"><button class="faq-question">一次生成 10000 个会不会卡住？</button><p>会在文本框里渲染一万行，一般机器一两秒出结果，低配设备可能停顿一下，不会崩溃。</p></div>
       </section>
 <section class="related-tools"><h2>你可能还喜欢</h2><div class="related-tools-grid"><a href="/zh/tools/password-generator" class="related-tool-card"><span class="tool-icon">🔐</span><div class="tool-info"><strong>密码生成器</strong><span class="tool-desc">创建安全密码</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/word-counter" class="related-tool-card"><span class="tool-icon">📝</span><div class="tool-info"><strong>字数统计</strong><span class="tool-desc">统计字数和字符数</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/base64" class="related-tool-card"><span class="tool-icon">🔐</span><div class="tool-info"><strong>Base64 转换</strong><span class="tool-desc">Base64 编码解码</span></div><span class="tool-arrow">→</span></a></div></section>
 

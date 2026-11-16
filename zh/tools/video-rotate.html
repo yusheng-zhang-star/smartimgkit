@@ -150,14 +150,6 @@
     },
     {
       "@type": "Question",
-      "name": "所有视频格式都支持吗？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "MP4、WebM 等浏览器可播放格式。"
-      }
-    },
-    {
-      "@type": "Question",
       "name": "支持哪些视频格式？",
       "acceptedAnswer": {
         "@type": "Answer",
@@ -170,6 +162,46 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "无硬性限制，但越长视频耗时越多、内存占用越大。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "转完画质会变差吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "会轻微下降，因为画面用 libx264 重编码了一次，而且没有质量档位可选。音轨是直接复制的，不受影响。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么手机拍的视频转 90° 后像是转了两次？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "手机视频常带旋转元数据，ffmpeg 默认先按元数据自动摆正，你再叠一次 90° 就过头了。这种情况改用 270° 试一次，或者先用元数据工具清掉旋转标记。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "支持任意角度旋转吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不支持，只有 90°、180°、270° 和两个方向的翻转。斜着拍歪的画面这一页修不了。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "能一次转多个视频吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不能，一次处理一个文件，转完再传下一个。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "竖屏素材转 90° 变成横的，正常吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "正常。90° 和 270° 就是交换宽高，竖屏进去横屏出来；想保持竖屏又要纠正方向，通常该用 180° 或翻转。"
       }
     }
   ]
@@ -234,7 +266,28 @@
       <nav class="breadcrumb"><a href="/zh/">首页</a><span>/</span><a href="/zh/tools/">工具</a><span>/</span><span>🔃 视频旋转器</span></nav>
       <div class="tool-page-header">
         <h1>🔃 视频旋转器</h1>
-        <p>旋转（90°/180°/270°）和翻转视频——免费，在浏览器中完成。</p>
+        <p class="answer-lead">把横拍的视频转成竖的，或者把上下颠倒的素材翻回来。五个选项：顺时针 90°、180°、顺时针 270°，加上水平翻转和垂直翻转。画面走 transpose 滤镜重编码，音轨直接复制不重压。90° 和 270° 会真正交换宽高，1920×1080 进来就是 1080×1920 出去。没有任意角度，也做不了 1 到 2 度的水平微调。</p>
+        <ul class="facts-strip">
+          <li><span class="f-k">价格</span><span class="f-v">免费，无需注册</span></li>
+          <li><span class="f-k">角度</span><span class="f-v">90° / 180° / 270° + 双向翻转</span></li>
+          <li><span class="f-k">编码</span><span class="f-v">画面重编码，音频直通</span></li>
+          <li><span class="f-k">上传</span><span class="f-v">不上传，本地处理</span></li>
+        </ul>
+        <style>.compare-table tbody td:first-child{white-space:nowrap;font-weight:600;color:var(--text-primary)}.compare-table thead th:first-child{white-space:nowrap}</style>
+        <div class="compare-table">
+          <h2>转多少度，看素材原来怎么拍的</h2>
+          <table>
+            <thead><tr><th>素材情况</th><th>选哪个</th><th>输出尺寸</th></tr></thead>
+            <tbody>
+              <tr><td>手机横着拍，画面躺倒</td><td>顺时针 90°</td><td>1920×1080 变成 1080×1920</td></tr>
+              <tr><td>画面上下颠倒</td><td>180°</td><td>宽高都不变</td></tr>
+              <tr><td>横拍但方向相反</td><td>顺时针 270°</td><td>宽高交换</td></tr>
+              <tr><td>前置摄像头自拍是镜像</td><td>水平翻转</td><td>宽高不变，左右对调</td></tr>
+              <tr><td>想校正歪了 3 度的画面</td><td>做不到</td><td>用剪辑软件的旋转微调</td></tr>
+              <tr><td>只想删掉旋转标记</td><td>不行，会重编码一遍</td><td>用元数据编辑工具</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="tool-workspace">
 <!-- Before/After Preview -->
@@ -353,9 +406,14 @@
       <section class="how-to-section"><h2>视频旋转器使用方法</h2><div class="how-to-steps"><div class="how-to-step"><div class="step-number">1</div><h4>上传视频</h4><p>选择一个视频文件。</p></div><div class="how-to-step"><div class="step-number">2</div><h4>配置</h4><p>设置输出选项。</p></div><div class="how-to-step"><div class="step-number">3</div><h4>处理</h4><p>点击「处理」（ffmpeg.wasm 首次使用需加载）。</p></div><div class="how-to-step"><div class="step-number">4</div><h4>下载</h4><p>获取转换后的视频。</p></div></div></section>
 <h2>视频旋转器详细使用指南</h2><div class="guide-block"><h3>上传视频</h3><p>选择一个视频文件。</p></div><div class="guide-block"><h3>配置</h3><p>设置输出选项。</p></div><div class="guide-block"><h3>处理</h3><p>点击「处理」（ffmpeg.wasm 首次使用需加载）。</p></div><div class="guide-block"><h3>下载</h3><p>获取转换后的视频。</p></div>
 <section class="faq-section"><h2>视频旋转器常见问题</h2><div class="faq-item"><button class="faq-question">第一次为什么加载慢？</button><div class="faq-answer">要下载约 25MB 的 ffmpeg.wasm 核心，首次会慢一些，之后走浏览器缓存。</div></div><div class="faq-item"><button class="faq-question">视频会上传吗？</button><div class="faq-answer">不会，转码在本机完成，视频不离开设备。</div></div><div class="faq-item"><button class="faq-question">支持哪些格式？</button><div class="faq-answer">MP4、WebM、MOV、AVI、MKV 等常见格式都能输入，输出为 MP4 或 WebM。</div></div><div class="faq-item"><button class="faq-question">支持哪些旋转？</button><div class="faq-answer">90°、180°、270°。</div></div>
-<div class="faq-item"><button class="faq-question">所有视频格式都支持吗？</button><div class="faq-answer">MP4、WebM 等浏览器可播放格式。</div></div>
+
 <div class="faq-item"><button class="faq-question">支持哪些视频格式？</button><div class="faq-answer">MP4、WebM 等浏览器可播放的格式。处理使用 ffmpeg.wasm。</div></div>
 <div class="faq-item"><button class="faq-question">有视频时长限制吗？</button><div class="faq-answer">无硬性限制，但越长视频耗时越多、内存占用越大。</div></div>
+              <div class="faq-item"><button class="faq-question">转完画质会变差吗？</button><div class="faq-answer">会轻微下降，因为画面用 libx264 重编码了一次，而且没有质量档位可选。音轨是直接复制的，不受影响。</div></div>
+        <div class="faq-item"><button class="faq-question">为什么手机拍的视频转 90° 后像是转了两次？</button><div class="faq-answer">手机视频常带旋转元数据，ffmpeg 默认先按元数据自动摆正，你再叠一次 90° 就过头了。这种情况改用 270° 试一次，或者先用元数据工具清掉旋转标记。</div></div>
+        <div class="faq-item"><button class="faq-question">支持任意角度旋转吗？</button><div class="faq-answer">不支持，只有 90°、180°、270° 和两个方向的翻转。斜着拍歪的画面这一页修不了。</div></div>
+        <div class="faq-item"><button class="faq-question">能一次转多个视频吗？</button><div class="faq-answer">不能，一次处理一个文件，转完再传下一个。</div></div>
+        <div class="faq-item"><button class="faq-question">竖屏素材转 90° 变成横的，正常吗？</button><div class="faq-answer">正常。90° 和 270° 就是交换宽高，竖屏进去横屏出来；想保持竖屏又要纠正方向，通常该用 180° 或翻转。</div></div>
       </section>
 <section class="related-tools"><h2>你可能还喜欢</h2><div class="related-tools-grid"><a href="/zh/tools/video-to-gif" class="related-tool-card"><span class="tool-icon">🎞️</span><div class="tool-info"><strong>视频转 GIF</strong><span class="tool-desc">把视频转为 GIF</span></div><span class="tool-arrow">→</span></a><a href="/zh/tools/compressor" class="related-tool-card"><span class="tool-icon">🗜️</span><div class="tool-info"><strong>图片压缩器</strong><span class="tool-desc">压缩图片</span></div><span class="tool-arrow">→</span></a></div></section>
     </div>
